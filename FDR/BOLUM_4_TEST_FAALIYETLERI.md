@@ -489,7 +489,7 @@ boştur.
 | Holybro M9N GNSS | 3B fix ve `GLOBAL_POSITION_INT` canlı akışı (§4.9.1 G1 ölçütleri) | **KISMEN**: alıcı tanındı — OLCUM `u-blox 1 HW: 000A0000 SW: ROM SPG 5.10` (15:38). 3B fix ve akış kaydı yok → ÖLÇÜLEMEDİ |
 | Raspberry Pi HQ (IMX477) | `nvarguscamerasrc` üzerinden köprü kare akışı (§4.10.1 ölçütleri) | **ÖLÇÜLEMEDİ** — 5 Eylül'de Jetson takılmadı; 6 Eylül'de köprü kartta **dosya kaynağıyla** açıldı (ÖLÇÜM, D-431) ama CSI kamera **bağlı değildi** → `nvarguscamerasrc` yolu ölçülmedi |
 | 2 × SiK 433 MHz telsiz | RTT p95 < 0,2 s ve menzil (§4.5) | **KISMEN**: bağlantı BEYAN (~18:45, "tamam oldu"); RTT, kayıp ve menzil ÖLÇÜLEMEDİ (§4.5) |
-| FCHUB-12S V2 · 5008 340KV × 4 · 12×10 pervane | tam yükte akım ve `VIBE` titreşim kaydı (§4.3.3 adım 3.1) | **KISMEN**: pervanesiz motor testi OLCUM (18:06); sıra/yön 4/4 BEYAN, video yok; ESC kalibrasyonu YAPILMADI; tam yükte akım ve `VIBE` ÖLÇÜLEMEDİ (pervane takılmadı). ESC künyesi sahada **"60 A V2"** ×4 (plan 80 A) — BEYAN, §4.13.4 |
+| FCHUB-12S V2 · ~~5008 340KV × 4 · 12×10 pervane~~ → SunnySky X2220 980KV V3 × 4 · 10×4,5 (BEYAN, etiket yok — 7 Eylül beyanı, D-435; 5 Eylül motor testinin hangi motorla koştuğu BEYAN GEREKLİ) | tam yükte akım ve `VIBE` titreşim kaydı (§4.3.3 adım 3.1) | **KISMEN**: pervanesiz motor testi OLCUM (18:06); sıra/yön 4/4 BEYAN, video yok; ESC kalibrasyonu YAPILMADI; tam yükte akım ve `VIBE` ÖLÇÜLEMEDİ (pervane takılmadı). ESC künyesi sahada **"60 A V2"** ×4 (plan 80 A) — BEYAN, §4.13.4 |
 | 4S 10 Ah 25C pil + iMAX B6 şarj | kapasite ve şarj çevrimi; günde 2 uçuş kısıtının doğrulanması | **KISMEN**: pil takıldı, `PreArm: Battery 1 low voltage failsafe` kayboldu — OLCUM (18:03). MP gerilimi ↔ multimetre (±0,1 V), kapasite ve şarj çevrimi ÖLÇÜLEMEDİ |
 | FS-i6 kumanda + FS-iA6B alıcı | menzil ve failsafe davranışı (§4.5, §4.12) | **KISMEN**: bind BEYAN (16:18); `RCInput: decoding IBUS(1)` OLCUM (18:03); alıcı FS-iA6B teyit (B harfi, BEYAN). Menzil ve RC failsafe ÖLÇÜLEMEDİ (§4.5, §4.12) |
 | İKA ekipmanları | 🔴 **gerçek İKA motor sürücüsü YOKTUR** (R12/T149); İKA ekipman listesi henüz kapalı değildir (§4.11) | ekipman seçilmedi |
@@ -1501,7 +1501,7 @@ Bu maddeler kapanmadan ilgili kayıtlar "tamamlanmış" sayılmaz ve bu raporda 
    **etiket fotoğrafı ve tam marka/model gerekli**. Teyit edilen: RC alıcı
    **FS-iA6B** (B harfi görüldü, BEYAN). Teyit kaydı olmayan: ~~Jetson Nano 4GB~~ (6 Eylül'de kartta ÖLÇÜLDÜ: **Jetson Orin Nano Developer Kit 4 GB**, beyan yanlışlandı — D-431),
    Holybro M9N (GPS `u-blox` OLCUM'u marka etiketi değildir), RPi HQ (IMX477),
-   FCHUB-12S V2, 5008 340KV ×4, 12×10 pervane, 2× SiK 433 MHz, 4S 10 Ah 25C.
+   FCHUB-12S V2, 5008 340KV ×4, 12×10 pervane (⚠ 7 Eylül: ~~5008 / 12×10~~ → X2220 980KV V3 / 10×4,5 BEYAN, D-435), 2× SiK 433 MHz, 4S 10 Ah 25C.
    Bu rapordaki "Pixhawk 6C + PM02" ifadeleri künye teyidiyle düzeltilecektir.
 2. ~~**BEYAN GEREKLİ (insan):** Jetson Nano üzerinde ölçülen p50/p95 FPS değerleri (PT ve ONNX; `--cihaz` beyanıyla)~~ → **ÖLÇÜLDÜ 6 Eylül (D-431):** `--cihaz 0` (Orin GPU); PT **1,35/1,06** · engine **1,58/1,33** FPS; ONNX **HATA** (sm_87 çekirdeği yok) — `results/jetson_20260906/jetson_fps_20260906_orin_nano/ozet.json`.
 3. **BEYAN GEREKLİ (insan):** SiK 433 MHz çift üzerinde ölçülen RTT p50/p95,

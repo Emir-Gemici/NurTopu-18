@@ -91,7 +91,8 @@
   <circle cx="680" cy="775" r="26" fill="#ffffff" stroke="#37474f" stroke-width="1.6"/>
   <text x="680" y="780" text-anchor="middle" font-size="12.5" fill="#263238" font-weight="bold">M3</text>
   <text x="680" y="818" text-anchor="middle" font-size="10" fill="#263238">sol ön · CW</text>
-  <text x="560" y="833" text-anchor="middle" font-size="9.5" fill="#455a64">5008 340 KV ×4 · yerleşim plan (BOLUM_5 §5.2.3) · yön BEYAN, video yok (D-429 §6) · M1 hasarlı (D-429 §2)</text>
+  <text x="560" y="833" text-anchor="middle" font-size="9.5" fill="#455a64"><tspan text-decoration="line-through">5008 340 KV ×4</tspan> → SunnySky X2220 980KV V3 ×4 · 10×4,5 pervane (BEYAN, etiket fotoğrafı yok — 7 Eylül beyanı, D-435)</text>
+  <text x="560" y="847" text-anchor="middle" font-size="9.5" fill="#455a64">yerleşim plan (BOLUM_5 §5.2.3) · yön BEYAN, video yok (D-429 §6) · M1 hasarlı (D-429 §2)</text>
   <text x="692" y="735" text-anchor="start" font-size="10" fill="#263238">3 faz ×4</text>
   <rect x="760" y="250" width="320" height="60" rx="6" fill="#ffffff" stroke="#37474f" stroke-width="1.6"/>
   <text x="920" y="276.4" text-anchor="middle" font-size="12" font-weight="bold">SiK 433 MHz telemetri</text>
@@ -142,7 +143,7 @@
   <polyline class="hat" data-hat="H07" data-tur="pwm" points="680,650 680,540" fill="none" stroke="#ef6c00" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
   <!-- H08 ESC BEC 5 V ×4 → Pixhawk servo rayı (paralel) -->
   <polyline class="hat" data-hat="H08" data-tur="guc" points="708,650 708,540" fill="none" stroke="#c62828" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>
-  <!-- H09 ESC → motor 3 faz ×4 (5008 340 KV) -->
+  <!-- H09 ESC → motor 3 faz ×4 (~~5008 340 KV~~ → SunnySky X2220 980KV V3, BEYAN — 7 Eylül beyanı, D-435) -->
   <polyline class="hat" data-hat="H09" data-tur="guc" points="440,710 440,749" fill="none" stroke="#c62828" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
   <polyline class="hat" data-hat="H09" data-tur="guc" points="520,710 520,749" fill="none" stroke="#c62828" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
   <polyline class="hat" data-hat="H09" data-tur="guc" points="600,710 600,749" fill="none" stroke="#c62828" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>

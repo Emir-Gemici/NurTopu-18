@@ -83,7 +83,7 @@ değildir ve bu özet eşitmiş gibi yazmaz.
 
 **(1) İHA — FDA görev test uçuşu aracı (çoklu rotor).** Final tasarım faaliyeti
 tamamlanmış, donanım künyesi sabitlenmiştir: Pixhawk 6C + PM02, Holybro M9N,
-5008 340KV ×4 motor / 12×10 pervane, 80 A ESC, FCHUB-12S V2 güç dağıtımı,
+~~5008 340KV ×4 motor / 12×10 pervane~~ → **SunnySky X2220 980KV V3 ×4** motor (BEYAN, etiket fotoğrafı yok) / **10×4,5 (1045)** pervane (7 Eylül beyanı, D-435) — 5008'ler iade edildi; itki bütçesi **ÖLÇÜLEMEDİ** (Bölüm 3 §3.2.1.1.1, T211), 80 A ESC, FCHUB-12S V2 güç dağıtımı,
 FlySky FS-i6 (iBUS), 2× SiK 433 MHz telemetri, görev bilgisayarı ~~**Jetson Nano 4GB** (JetPack 4.6)~~
 → **Jetson Orin Nano Developer Kit 4 GB** (JetPack 7.2.1, Ubuntu 24.04, Python 3.12; 3 Eylül beyanı 'Nano 4GB' 6 Eylül'de kartla YANLIŞLANDI — D-431), kamera **Raspberry Pi HQ (IMX477, CSI)**, 4S 10 Ah pil
 (`SAHA_HAZIRLIK_PLANI_20260903.md` §0.2 — **kullanıcı beyanı**, 5 Eylül'de kutu

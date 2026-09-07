@@ -91,8 +91,8 @@ tarihli not düşüldü. 5 Eylül tutanağında tartı satırı yoktur; "Ölçü
 | A5 | Ayak | `Drone_Legs` (ABS, **destekli**) | 4 | Ü | FDM, P2S | **ÖLÇÜLEMEDİ** | BEYAN GEREKLİ | BEYAN GEREKLİ | Üretildi | BEYAN GEREKLİ | BEYAN GEREKLİ |
 | A6 | GNSS tutucu | `GPS_Holder` (ABS, **destekli**) | 1 | Ü | FDM, P2S | **ÖLÇÜLEMEDİ** | BEYAN GEREKLİ | BEYAN GEREKLİ | Üretildi | BEYAN GEREKLİ | BEYAN GEREKLİ |
 | A7 | Taban pedi | TPU 95A | 4 | Ü | FDM, P2S | **ÖLÇÜLEMEDİ** | BEYAN GEREKLİ | BEYAN GEREKLİ | Üretildi | BEYAN GEREKLİ | BEYAN GEREKLİ |
-| A8 | Motor | **5008 340KV** | 4 | S | — | — | — | BEYAN GEREKLİ | Kutu açıldı 5 Eylül; motor testi koştu (ÖLÇÜM `starting motor test` → `finished motor test`, D-426 §1); sıra/yön 4/4 BEYAN, video BEYAN GEREKLİ | BEYAN GEREKLİ | BEYAN GEREKLİ |
-| A9 | Pervane | **12×10** | 4 (+ yedek set) | S | — | — | — | BEYAN GEREKLİ | Kutuda; **yedek set alınacak** | BEYAN GEREKLİ | BEYAN GEREKLİ |
+| A8 | Motor | ~~**5008 340KV**~~ → **SunnySky X2220 980KV V3** (BEYAN, etiket fotoğrafı yok; 7 Eylül beyanı, D-435) | 4 | S | — | — | — | BEYAN GEREKLİ | Kutu açıldı 5 Eylül; motor testi koştu (ÖLÇÜM `starting motor test` → `finished motor test`, D-426 §1); sıra/yön 4/4 BEYAN, video BEYAN GEREKLİ. **7 Eylül:** 5008'ler iade edildi, X2220'ler 2 yıl önce kullanılmış eski motorlar (BEYAN, D-435) — iade tutarı BEYAN GEREKLİ | BEYAN GEREKLİ | BEYAN GEREKLİ |
+| A9 | Pervane | ~~**12×10**~~ → **10×4,5 (1045)** (7 Eylül beyanı, D-435) | 4 (+ yedek set) | S | — | — | — | BEYAN GEREKLİ | Kutuda; **yedek set alınacak** | BEYAN GEREKLİ | BEYAN GEREKLİ |
 | A10 | ESC | plan **80 A, DShot destekli**; 5 Eylül kutudan **"60 A V2"** çıktı (BEYAN, D-426 §3) — tam marka/model BEYAN GEREKLİ | 4 | S | — | — | — | BEYAN GEREKLİ | Kutu açıldı 5 Eylül; ESC kalibrasyonu YAPILMADI | BEYAN GEREKLİ | BEYAN GEREKLİ |
 | A11 | Güç dağıtım kartı | **Matek XCLASS FCHUB-12S V2** (PDB + akım sensörü) | 1 | S | — | — | — | BEYAN GEREKLİ | Kutuda | BEYAN GEREKLİ | BEYAN GEREKLİ |
 | A12 | Uçuş kontrolcüsü | **Pixhawk 6C** — fabrikadan PX4 ile geldi; ArduCopter **4.5.7** flash edildi ve sabitlendi (ÖLÇÜM `ArduCopter V4.5.7 (2a3dc4b7)`, D-424/D-425/D-426) | 1 | S | — | — | — | BEYAN GEREKLİ (DDR beyanı 59 g) | Kutu açıldı 5 Eylül; çalışıyor | BEYAN GEREKLİ | BEYAN GEREKLİ |
@@ -148,7 +148,7 @@ içindir. Aşağıda her satırın FDR'deki karşılığı ve bütçeye etkisini
 | 6 | Telemetri (uçak) | Holybro SiK 433 | 1 | 35 | **Değişmedi** (A16) | — |
 | 7 | GNSS | Holybro **M10** + pusula | 1 | 32 | **M9N** ile değişti (A14) | azaltıcı |
 | 8 | RC alıcı | **TBS Crossfire** Nano RX | 1 | 10 | **FlySky FS-i6 / FS-iA6B (iBUS)** (A15) | **azaltıcı** |
-| 9 | Motor | SunnySky X2216 1100KV | 2 | 138 | FDA aracında **5008 340KV ×4** (A8) | **artırıcı** (4 adet, daha büyük) |
+| 9 | Motor | SunnySky X2216 1100KV | 2 | 138 | FDA aracında ~~**5008 340KV ×4**~~ → **SunnySky X2220 980KV V3 ×4** (A8; (7 Eylül beyanı, D-435)) | ~~**artırıcı** (4 adet, daha büyük)~~ → 4 adet; X2220 küçük sınıf motor (85 g, veri sayfası), yön **BEYAN GEREKLİ** (5008 iadesi + X2220 tutarı) |
 | 10 | Servo (kanat/kuyruk) | EMAX ES08MA II | 4 | 48 | FDA aracında **yok**; finalde kalır | ertelendi |
 | 11 | Pil | 4S 14–15 Ah Li-ion | 1 | 1000 | **4S 10 Ah 25C LiPo** (A21) | azaltıcı |
 | 12 | Paraşüt | Opale Rescue 2,5 m² | 1 | 120 | FDA'da **yok**; finalde zorunlu (§6) | ertelendi |
@@ -208,7 +208,7 @@ Aşağıdaki kalemler 4 Eylül'e kadar alınacaktır; her satırın **teknik ger
 | D3 | JST-GH 6-pin kablo + dişi-dişi jumper | zorunlu | TELEM1 (SiK) ve TELEM2 → Nano UART | BEYAN GEREKLİ | BEYAN GEREKLİ |
 | D4 | USB webcam | zorunlu | CSI kamera yolu açılmazsa yedek (`--kaynak 0`) | BEYAN GEREKLİ | BEYAN GEREKLİ |
 | D5 | XT60/XT90 fiş, kablo bağı, ısı makaronu, damper bant | zorunlu | kablolama demeti üretimi | BEYAN GEREKLİ | BEYAN GEREKLİ |
-| D6 | **Yedek pervane seti (12×10, CW+CCW)** | zorunlu | ilk uçuşlarda en sık kırılan parça | BEYAN GEREKLİ | BEYAN GEREKLİ |
+| D6 | **Yedek pervane seti (~~12×10~~ → 10×4,5 / 1045, CW+CCW — 7 Eylül beyanı, D-435)** | zorunlu | ilk uçuşlarda en sık kırılan parça | BEYAN GEREKLİ | BEYAN GEREKLİ |
 | D7 | Küçük ekran + klavye + ethernet kablosu | zorunlu | Nano ilk açılış | BEYAN GEREKLİ | BEYAN GEREKLİ |
 | D8 | Multimetre, tartı, baret/yelek | zorunlu | kablolama kontrolü, **UHDR kütle ölçümü**, saha emniyeti | BEYAN GEREKLİ | BEYAN GEREKLİ |
 | D9 | 2. pil 4S 10 Ah + ≥ 150 W şarj | öneri | tek pil günde 2 uçuşa kilitliyor; prova sayısını ikiye katlar | BEYAN GEREKLİ | BEYAN GEREKLİ |
@@ -316,7 +316,7 @@ kayıtlı değildir**; DDR'de kalem listesi ve ağırlıklar var, fiyat yok. Bu 
 | 6 | Telemetri (uçak) | Holybro SiK 433 | BEYAN GEREKLİ | SiK 433 (A16) | BEYAN GEREKLİ | HESAPLANAMAZ | değişmedi | — |
 | 7 | GNSS | Holybro M10 + pusula | BEYAN GEREKLİ | Holybro M9N (A14) | BEYAN GEREKLİ | HESAPLANAMAZ | azaltıcı | S2 |
 | 8 | RC alıcı | TBS Crossfire Nano RX | BEYAN GEREKLİ | FlySky FS-i6 + FS-iA6B (A15) | BEYAN GEREKLİ | HESAPLANAMAZ | azaltıcı | S2 |
-| 9 | Motor | SunnySky X2216 ×2 | BEYAN GEREKLİ | 5008 340KV ×4 (A8) | BEYAN GEREKLİ | HESAPLANAMAZ | artırıcı | S1 |
+| 9 | Motor | SunnySky X2216 ×2 | BEYAN GEREKLİ | ~~5008 340KV ×4~~ → SunnySky X2220 980KV V3 ×4 (A8; (7 Eylül beyanı, D-435); 5008 iadesi BEYAN GEREKLİ) | BEYAN GEREKLİ | HESAPLANAMAZ | ~~artırıcı~~ → yön BEYAN GEREKLİ | S1 |
 | 10 | Servo (kanat/kuyruk) | EMAX ES08MA II ×4 | BEYAN GEREKLİ | alınmadı — ertelendi (E8) | 0 (harcanmadı) | HESAPLANAMAZ | ertelendi | S1 |
 | 11 | Pil | 4S 14–15 Ah Li-ion | BEYAN GEREKLİ | 4S 10 Ah 25C LiPo (A21) | BEYAN GEREKLİ | HESAPLANAMAZ | azaltıcı | S1/S2 |
 | 12 | Paraşüt | Opale Rescue 2,5 m² | BEYAN GEREKLİ | alınmadı — ertelendi (E3) | 0 (harcanmadı) | HESAPLANAMAZ | ertelendi | S1 |
@@ -354,7 +354,7 @@ Bu satırların **planlanan maliyeti sıfırdır**, çünkü DDR'de karşılıkl
 | A5 | Ayak ×4 (ABS) | yok | 0 (planlanmadı) | üretildi — **PLA'dan ABS'ye revizyon** | BEYAN GEREKLİ | artırıcı | S3 |
 | A6 | GNSS tutucu (ABS) | yok | 0 (planlanmadı) | üretildi — **PLA'dan ABS'ye revizyon** | BEYAN GEREKLİ | artırıcı | S3 |
 | A7 | Taban pedi ×4 (TPU 95A) | yok | 0 (planlanmadı) | üretildi — **yeni eklendi** | BEYAN GEREKLİ | artırıcı | S3 |
-| A9 | Pervane 12×10 ×4 + yedek set | yok (DDR'de itki grubu farklı) | 0 (planlanmadı) | kutuda; yedek set alınacak (D6) | BEYAN GEREKLİ | artırıcı | S1 |
+| A9 | Pervane ~~12×10~~ → 10×4,5 (1045) ×4 + yedek set (7 Eylül beyanı, D-435) | yok (DDR'de itki grubu farklı) | 0 (planlanmadı) | kutuda; yedek set alınacak (D6) | BEYAN GEREKLİ | artırıcı | S1 |
 | A18 | microSD ≥ 64 GB + okuyucu (D1) | yok (Orin'de NVMe planlanmıştı) | 0 (planlanmadı) | **henüz alınmadı** | BEYAN GEREKLİ | artırıcı | S2 |
 | A22 | Şarj cihazı iMAX B6 | yok | 0 (planlanmadı) | mevcut (yeni alım yok) | 0 (harcanmadı) | nötr | — |
 | A24 | Sarf (bağ, makaron, damper, vida) (D5) | yok (ayrı kalem olarak) | 0 (planlanmadı) | **henüz alınmadı** | BEYAN GEREKLİ | artırıcı | S1 |
@@ -492,7 +492,7 @@ Bütçe sapması bu projede üç ayrı sebepten doğmuştur; üçü de teknik ka
 
 | # | Sapma sebebi | Somut örnek | Bütçe yönü | Teknik bedeli |
 |---|---|---|---|---|
-| S1 | **Araç sınıfı farkı** — FDA'nın §5.3.2 çoklu rotor şartı DDR'de yoktu | 4× 5008 motor + 4× ESC (plan 80 A; 5 Eylül kutudan "60 A V2", D-426 §3) + quad gövde eklendi; kanat servoları, pitot, airspeed, paraşüt zinciri ertelendi | net etki **BEYAN GEREKLİ** | yeni bir araç montaj/kalibrasyon hattı |
+| S1 | **Araç sınıfı farkı** — FDA'nın §5.3.2 çoklu rotor şartı DDR'de yoktu | 4× ~~5008~~ → SunnySky X2220 980KV V3 (7 Eylül beyanı, D-435) motor + 4× ESC (plan 80 A; 5 Eylül kutudan "60 A V2", D-426 §3) + quad gövde eklendi; kanat servoları, pitot, airspeed, paraşüt zinciri ertelendi | net etki **BEYAN GEREKLİ** | yeni bir araç montaj/kalibrasyon hattı |
 | S2 | **Tedarik zorunluluğu** — planlanan parça yerine bulunabilen parça | Orin NX → ~~Nano 4GB~~ **Orin Nano Developer Kit 4 GB** (3 Eylül beyanı 6 Eylül'de kartla yanlışlandı — D-431); M10 → M9N; TBS Crossfire → FlySky; Mauch → FCHUB+PM06 (plan PM02; 5 Eylül kutudan PM06 — D-426 §3) | yön **BEYAN GEREKLİ** (Jetson tutarı yok) | ~~Nano'da `ultralytics` için ayrı Python 3.8 yığını; **TensorRT `.engine` ölçülemez**; FPS kapısı riske girdi~~ → 6 Eylül: Python 3.12 + GPU torch, `.engine` derlendi (denklik D-303 DÜŞTÜ → uçuş `.pt`), FPS kapısı **GEÇTİ** |
 | S3 | **Üretim kararı revizyonu** | Ayak/GPS tutucu **PLA → ABS**; **TPU taban pedi** eklendi; kol 3–4 daha ağır reçeteyle basıldı | küçük artırıcı | ısı dayanımı ↑, baskı süresi ↑ |
 

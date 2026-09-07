@@ -139,13 +139,15 @@ HATLAR = [
         cizgiler=[("guc", [(708, 650), (708, 540)], 1.5)],
     ),
     dict(
-        id="H09", ad="ESC → motor 3 faz ×4 (5008 340 KV)",
+        id="H09", ad="ESC → motor 3 faz ×4 (~~5008 340 KV~~ → SunnySky X2220 980KV V3, BEYAN — 7 Eylül beyanı, D-435)",
         nereden="4× ESC", nereye="M1 sağ ön · M2 sol arka · M3 sol ön · M4 sağ arka (quad-X)",
-        durum="ÖLÇÜLDÜ (motor testi koştu); sıra/yön 4/4 BEYAN — video yok; M1 hasarlı",
+        durum="ÖLÇÜLDÜ (motor testi koştu); sıra/yön 4/4 BEYAN — video yok; M1 hasarlı; motor künyesi 7 Eylül beyanıyla değişti, etiket fotoğrafı yok",
         kaynak="D-426 §1 (18:06 `starting motor test` → `finished motor test`; ~18:30 sıra/yön 4/4 BEYAN, video BEYAN GEREKLİ); "
                "D-429 §2 madde 4 (M1 sağ ön hasarlı) ve §6 madde 2 (motor yönü videosuz doğru sayılmaz); "
                "yerleşim: FDR BOLUM_5 §5.2.3 (1 sağ ön CCW, 2 sol arka CCW, 3 sol ön CW, 4 sağ arka CW); "
-               "param:FRAME_CLASS,1 · param:FRAME_TYPE,1",
+               "param:FRAME_CLASS,1 · param:FRAME_TYPE,1; "
+               "D-435 (7 Eylül beyanı: 5008 340KV iade edildi → SunnySky X2220 980KV V3 ×4 + 10×4,5 pervane, "
+               "etiket fotoğrafı yok — BEYAN; itki bütçesi ÖLÇÜLEMEDİ, FDR BOLUM_3 §3.2.1.1.1 · T211)",
         cizgiler=[("guc", [(440, 710), (440, 749)], 3), ("guc", [(520, 710), (520, 749)], 3),
                   ("guc", [(600, 710), (600, 749)], 3), ("guc", [(680, 710), (680, 749)], 3)],
     ),
@@ -236,6 +238,9 @@ TUTARSIZLIKLAR = [
     "döküm ve D-428 §5d **AUX 1–4 (`SERVO9–12`)** diyor. Bu şema dökümü esas alır; metinler düzeltilmelidir.",
     "SAHA_HAZIRLIK_PLANI_20260903.md §2.3 ve §0.2 hâlâ **PM02** ve **`MAIN OUT 1–4`** yazar (D-426 §3: PM06; D-428 §5d: AUX).",
     "Şablon config/pixhawk/arducopter_fda.param `RC_SPEED` yorumu 'PWM 400 Hz (MAIN 1-4)' — döküm 490, karar 400 (D-429 §4).",
+    "Motor künyesi: 7 Eylül'e kadar 12 dosya **5008 340KV / 12×10** yazıyordu; 7 Eylül beyanı **SunnySky X2220 980KV V3 / 10×4,5** "
+    "(D-435, etiket fotoğrafı yok — BEYAN). T211 ile eski metin üstü çizilerek düzeltildi; D-429 §5 ve D-435 başlığı hâlâ eski adı taşır "
+    "(REVIEW_LOG kayıtları değiştirilmez).",
 ]
 
 
@@ -387,7 +392,11 @@ def svg_uret() -> str:
         p.append(f'  <circle cx="{x}" cy="775" r="26" fill="#ffffff" stroke="#37474f" stroke-width="1.6"/>')
         p.append(_metin(x, 780, ad, 12.5, anchor="middle", agirlik="bold"))
         p.append(_metin(x, 818, konum, 10, anchor="middle"))
-    p.append(_metin(560, 833, "5008 340 KV ×4 · yerleşim plan (BOLUM_5 §5.2.3) · yön BEYAN, video yok (D-429 §6) · M1 hasarlı (D-429 §2)",
+    # Motor künyesi 7 Eylül beyanıyla değişti (D-435): eski etiket üstü çizili kalır, silinmez.
+    p.append('  <text x="560" y="833" text-anchor="middle" font-size="9.5" fill="#455a64">'
+             '<tspan text-decoration="line-through">5008 340 KV ×4</tspan> → SunnySky X2220 980KV V3 ×4 · 10×4,5 pervane '
+             '(BEYAN, etiket fotoğrafı yok — 7 Eylül beyanı, D-435)</text>')
+    p.append(_metin(560, 847, "yerleşim plan (BOLUM_5 §5.2.3) · yön BEYAN, video yok (D-429 §6) · M1 hasarlı (D-429 §2)",
                     9.5, anchor="middle", renk="#455a64"))
     p.append(_metin(692, 735, "3 faz ×4", 10))
 
