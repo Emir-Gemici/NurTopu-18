@@ -12,6 +12,8 @@ Harita taramasi (plan v2) bulgulari:
       kapiyi GPU isine cevirirdi — o, P4 runbook'unda manuel maddedir.)
 """
 import math
+import re
+import socket
 import subprocess
 import sys
 import unittest
@@ -152,6 +154,84 @@ class CommsLoopbackSarmalayici(unittest.TestCase):
         self.assertEqual(s.returncode, 0,
                          f"test_comms dustu:\n{s.stdout[-400:]}\n{s.stderr[-200:]}")
         self.assertIn("TEST GEÇTİ", s.stdout)
+
+
+class CommsLoopbackUretimPortundanBagimsiz(unittest.TestCase):
+    """T209 / D-427: comms/test_comms.py loopback'i URETIM YKS/IKA portlarina
+    bind ETMEZ.
+
+    5 Eylul'de saha PC'sinde `yks_gui --bind 0.0.0.0:5005` acikken tam suit
+    uc kez `link.py:34 -> WinError 10013` ile dustu (D-427 tablosu); saha PC'si
+    = YKS PC'si oldugundan push kapisi (anayasa §5) YKS kapanana dek kilitli
+    kaliyordu. Cozum: ephemeral bind + `getsockname()`; sabit port yalniz
+    sozlesme belgesine aittir.
+
+    Port sayilari burada CIPLAK yazilmaz (madde 16): uretim argparse
+    varsayilanlarindan okunur (`comms/yks_gui.py` ve `comms/ika_receiver.py`
+    `--bind`). Uretim portu degisirse tutucu da onu izler.
+    """
+    TEST_COMMS = KOK / "comms" / "test_comms.py"
+    URETIM_KAYNAK = {"yks": "yks_gui.py", "ika": "ika_receiver.py"}
+
+    @classmethod
+    def _uretim_portlari(cls):
+        portlar = {}
+        for ad, dosya in cls.URETIM_KAYNAK.items():
+            src = (KOK / "comms" / dosya).read_text(encoding="utf-8")
+            m = re.search(r'"--bind",\s*default="0\.0\.0\.0:(\d+)"', src)
+            assert m, f"{dosya}: `--bind` varsayilani bulunamadi; uretim portu okunamadi"
+            portlar[ad] = int(m.group(1))
+        return portlar
+
+    @staticmethod
+    def _tutucu_ac(port):
+        """Portu canli YKS gibi tutar: SO_REUSEADDR YOK, Windows'ta
+        SO_EXCLUSIVEADDRUSE (link.py `reuse=False` yolu, D-405). Port zaten
+        baska surecte (gercek YKS/IKA) tutuluyorsa tutucu acilmaz — on kosul
+        ("port dolu") zaten saglanmistir; None doner."""
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        if hasattr(socket, "SO_EXCLUSIVEADDRUSE"):
+            s.setsockopt(socket.SOL_SOCKET, socket.SO_EXCLUSIVEADDRUSE, 1)
+        try:
+            s.bind(("127.0.0.1", port))
+        except OSError:
+            s.close()
+            return None
+        return s
+
+    def test_uretim_portlari_tutuluyorken_test_comms_gecer(self):
+        """(a) 5005 VE 5006'yi tutan iki sahte soket ACIKKEN test_comms cikis 0."""
+        portlar = self._uretim_portlari()
+        tutan = {}
+        for ad, port in portlar.items():
+            t = self._tutucu_ac(port)
+            if t is not None:
+                self.addCleanup(t.close)
+                self.assertEqual(t.getsockname()[1], port)
+            tutan[ad] = "bu test" if t is not None else "baska surec (gercek YKS/IKA?)"
+        s = subprocess.run(
+            [VENV, str(self.TEST_COMMS)],
+            capture_output=True, text=True, timeout=120,
+            encoding="utf-8", errors="replace", cwd=str(KOK / "comms"))
+        self.assertEqual(
+            s.returncode, 0,
+            f"uretim portlari {portlar} tutuluyorken ({tutan}) test_comms dustu "
+            f"— D-427 geri geldi:\n{s.stdout[-400:]}\n{s.stderr[-400:]}")
+        self.assertIn("TEST GEÇTİ", s.stdout)
+
+    def test_kaynakta_sabit_uretim_portu_yok(self):
+        """(b) Vakumluluk: ustteki test yesilken kaynak hala sabit porta bind
+        ediyor olamaz — `("127.0.0.1", 5005)` / `("127.0.0.1", 5006)` sabitleri
+        test_comms.py metninde YOK; yorum disi kodda port sayisi hic gecmez."""
+        src = self.TEST_COMMS.read_text(encoding="utf-8")
+        kod = "\n".join(satir.split("#", 1)[0] for satir in src.splitlines())
+        for ad, port in self._uretim_portlari().items():
+            sabit = f'("127.0.0.1", {port})'
+            # assertNotIn degil: dusunce tum kaynak metni mesaja dokuluyor.
+            self.assertFalse(sabit in src,
+                             f"test_comms.py hala {ad} uretim portuna sabit bagli: {sabit}")
+            self.assertIsNone(re.search(rf"\b{port}\b", kod),
+                              f"test_comms.py yorum disi kodunda {ad} uretim portu ({port}) geciyor")
 
 
 if __name__ == "__main__":
