@@ -598,7 +598,7 @@ etkisinin hesabı §2.2.5.5'tedir.
 | 13 | FDR puan tablosu (Tablo 4) ve FDA formülü (FDR×0,85 + uçuş×0,15) | `results/sartname_bosluk/sartname_metin.txt` §5.3.1–5.3.2 | aynı çıkarım | 2026-08-26 |
 | 14 | DDR aviyonik BOM'u (**26 satır**, en büyük numara 27, toplam 2293 g) | `navitas-teknofest/references/ddr_requirements.md` | DDR dönemi Excel aktarımı — **DOĞRULANACAK** | 2026-07 (tarih damgası yok) |
 | 15 | DDR mimari şemasında "Pixhawk 6X" / "Jetson Orin NX" / "M10" | `navitas-teknofest/references/avionics_software.md` | — | 2026-07 |
-| 16 | Gerçek donanım künyesi (Pixhawk 6C, M9N, Nano 4GB, FCHUB-12S, 5008 340KV, RPi HQ, 4S 10 Ah) | `SAHA_HAZIRLIK_PLANI_20260903.md` §0.2 | **kullanıcı beyanı**, 3 Eylül 2026 — kutu 5 Eylül'de açılıp teyit edilecek | 2026-09-03 |
+| 16 | Gerçek donanım künyesi (Pixhawk 6C, M9N, ~~Nano 4GB~~, FCHUB-12S, 5008 340KV, RPi HQ, 4S 10 Ah) | `SAHA_HAZIRLIK_PLANI_20260903.md` §0.2 | **kullanıcı beyanı**, 3 Eylül 2026 — ~~kutu 5 Eylül'de açılıp teyit edilecek~~ → 5–6 Eylül'de kutu açıldı: Jetson **Orin Nano Developer Kit 4 GB** (beyan yanlışlandı, D-431), ESC Skywalker 60A V2, PM06 (D-426) | 2026-09-03 → 2026-09-06 |
 | 17 | Planlanan 3–21 Eylül takvimi | `SAHA_HAZIRLIK_PLANI_20260903.md` §4 | — | 2026-09-03 |
 | 18 | FDA görev kipi sözleşmesi (`--fda`) | `CONTRACTS.md` §6.7 · `REVIEW_LOG.md` D-408 | `tests/test_faz_b_yks_fda_kipi.py` (9 test, 4/4 mutant) | 2026-09-02 |
 | 19 | MAVLink çoğullayıcı zorunluluğu | `CONTRACTS.md` §7.4 · `FAZ_B_GUN_PLANI.md` §1 | `scripts/mavlink_dogrula.py` | 2026-09-02 |

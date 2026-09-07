@@ -82,7 +82,7 @@ altında durur. Bölüm sonundaki **Kanıt dizini** tablosu **satır satır** ko
 | 3.5.1 … 3.5.5 | §3.3.4.2.3 … §3.3.4.2.7 | kapı tablosu · iki ölçüm hattı · geçilmeyen kapı · kapsam sınırı · kapı olmayanlar |
 | 3.6 | §3.3.4.1 | emniyet mimarisi → algoritma akışının emniyet kolu |
 | 3.6.1 … 3.6.7 | §3.3.4.1.10 … §3.3.4.1.16 | fail-closed · ARM · hakem onayı · İKA kilidi · süreler · FDA kipi · tazelik |
-| 3.7 | §3.3.1.1.12 … §3.3.1.1.16 | görev bilgisayarı yığını (Jetson Nano 4GB) |
+| 3.7 | §3.3.1.1.12 … §3.3.1.1.16 | görev bilgisayarı yığını (~~Jetson Nano 4GB~~ → Orin Nano Developer Kit 4 GB; alt bölümün başında 6 Eylül bandı, D-431) |
 | 3.7.1 … 3.7.5 | §3.3.1.1.12 … §3.3.1.1.16 | venv/tekerlek · kamera köprüsü · systemd · FPS kapısı · mühür |
 | 3.8 | §3.3.4.3 | haberleşme → haberleşme paket yapısı |
 | 3.8.1 … 3.8.4 | §3.3.4.3.1 … §3.3.4.3.4 | çerçeve · ACK tekrar · gecikmeler · ölçülemeyenler |

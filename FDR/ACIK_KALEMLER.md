@@ -47,7 +47,7 @@ Bu üç kalem için doğru okuma: **"Jetson açılırsa cumartesi kapanır; aç�
 | # | kalem | neden kapanmıyor |
 |---|---|---|
 | 14 | **Gerçek arena karesi yok** | Kırmızı H brandası + moloz + bariyer içeren, ≥30 m irtifadan çekilmiş görüntümüz hiç olmadı. Kabul kapılarının tamamı sentetik kümede koşuldu; rapor bunu her bölümde tekrar eder ve saha başarımı **iddia etmez**. |
-| 15 | TensorRT `.engine` denkliği | Nano 4GB'de 21 Eylül için derlenmesi planlanmıyor; PT/ONNX ile uçulacak, `.engine` **ÖLÇÜLEMEDİ** kalır |
+| 15 | TensorRT `.engine` denkliği | ~~Nano 4GB'de 21 Eylül için derlenmesi planlanmıyor; PT/ONNX ile uçulacak, `.engine` **ÖLÇÜLEMEDİ** kalır~~ → **6 Eylül (D-431):** Orin Nano'da FP16 engine derlendi ve **ÖLÇÜLDÜ** (p50/p95 1,58/1,33 FPS) ama D-303 karar denkliği **3/126 DÜŞTÜ** (eşik 1/52) → uçuş `.pt` (GPU) ile; kalem "ölçülemedi" değil "denklik düştü" olarak sınırda kalır — `results/jetson_20260906/jetson_log_20260906/engine_karar_denkligi.json` |
 | ~~16~~ | ~~Gazebo fiziksel temas koşusu — kapanmayacak sınır~~ → 🔴 **YENİDEN AÇILDI (3 Eylül, D-417).** Yönerge `Y-3.3.3` ve `Y-4-M07` **3B görev icra simülasyonunu PUANLANAN bir gereksinim** yapıyor: İHA ve İKA'nın CAD modelleriyle sanal görev icrası + başarı oranları + grafikler + **video linki**. "Simülasyon saha kanıtı değildir" doğru ama **yönerge saha kanıtı olarak istemiyor**, ayrı bir çıktı olarak istiyor. Kapanmaz sayılamaz |
 
 ## 4. İnsan beyanı — rapor teslimine kadar (ÖLÇÜM DEĞİL, BİLGİ)

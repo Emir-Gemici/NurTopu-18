@@ -1556,7 +1556,7 @@ Bu maddeler kapanmadan ilgili kayıtlar "tamamlanmış" sayılmaz ve bu raporda 
 | 32 | T99 vakum kapıları `V1/V3/V4 = true`; araç maskesi 7/260 karede dolu | `results/t99_uretim_imzasi/olcum_20260903.json` · `ON_KAYIT.md` | `scripts/olcum/` T99 ölçüm betiği | 2026-09-03 |
 | 33 | Suit büyüme dizisi 1489 → 1617 → 1685 → 1826 → 1827 → 1875 → 1882 → **1896** | `REVIEW_LOG.md` D-388 §5, D-403 §6, D-404 §5, D-406, D-407 §4 + bu koşum | `unittest discover` | 2026-09-02…03 |
 | 34 | Uçuş testi planı ve kapıları (3.1–3.7), takvim | `SAHA_HAZIRLIK_PLANI_20260903.md` §3, §4, §5 | — (plan) | 2026-09-03 |
-| 35 | Gerçek donanım künyesi (Nano 4GB, Pixhawk 6C, M9N, RPi HQ, 4S 10 Ah) | `SAHA_HAZIRLIK_PLANI_20260903.md` §0.2 | **kullanıcı beyanı**, 3 Eylül 2026 — kutu 5 Eylül'de açılıp teyit edilecek | 2026-09-03 |
+| 35 | Gerçek donanım künyesi (~~Nano 4GB~~, Pixhawk 6C, M9N, RPi HQ, 4S 10 Ah) | `SAHA_HAZIRLIK_PLANI_20260903.md` §0.2 | **kullanıcı beyanı**, 3 Eylül 2026 — ~~kutu 5 Eylül'de açılıp teyit edilecek~~ → 5–6 Eylül'de kutu açıldı: Jetson **Orin Nano Developer Kit 4 GB** (beyan yanlışlandı, D-431), ESC Skywalker 60A V2, PM06 (D-426) | 2026-09-03 → 2026-09-06 |
 | 36 | Şartname §5.3.1 Tablo 4 (Bölüm 4 = 15 puan) ve §5.3.2 görev kuralları | `results/sartname_bosluk/sartname_metin.txt` s.17–18 | PyMuPDF metin çıkarımı | 2026-08-26 |
 | 37 | Yükümlülük haritası R1–R22 (R20 SiK "hâlâ ÖLÇÜLMEDİ", R12 motor "YOK") | `results/sartname_bosluk/rapor.md` | `scripts/…/rapor_uret.py` + elle tarama | 2026-08-26 |
 | 38 | Tam suit **2104 test · OK (skipped=3) · 390,131 s** | `results/faz_b_oncesi/cuma_kontrol/tam_suit.txt:353,355` (HEAD, commit `3db848c`) | `…\venv\Scripts\python.exe -m unittest discover -s tests` | 2026-09-04 |
