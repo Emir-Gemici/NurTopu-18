@@ -30329,3 +30329,39 @@ spektrum uygulaması) ±%3 içinde; değilse düşük olan taraf suçlu.
 "uzatılmış yeni drone kolu" tasarlandı; araçta kaç tane var, soruldu).
 Her iki ailede de kalkış kuralı aynı: `MOT_SLEW_UP_TIME` 0→1,0 s, ≥2 s rampa, yerde %25 rampa
 testi, M1 değişmeden ve muayene 0–12 bitmeden güç yok.
+
+### D-435 — MOTOR KÜNYESİ DEĞİŞMİŞ: 5008 340KV iade edildi, araçta "Skywalker 2207 980KV" (BEYAN) + 10×4,5 pervane + 4S; motorlar 2 yıl önce kullanılmış eski motorlar — depodaki 12 dosya ve D-429 hâlâ 5008/12×10 diyor; itki bütçesi HİÇ HESAPLANMADI
+
+**Tarih:** 7 Eylül 2026 · **Kaynak:** kullanıcı beyanı (7 Eyl sabah, arm/devrilme sohbeti içinde):
+"bu motorlar en son 2 yıl önce kullanılmıştı … 340kv olanları iade edip skywalker'ın 2207 980kv
+motoru ve 1045 pervane ve 4s batarya kullanıyoruz; motorlar geçmişte hasar görmüş olabilir mi".
+Etiket fotoğrafı ve veri sayfası **yok**; "2207" mi "2212" mi, marka gerçekten Skywalker mı
+(Hobbywing'in Skywalker serisi uçak ESC'sidir) — **etiket okunana kadar BEYAN**.
+
+**Ölçüm 1 — depo bunu bilmiyor.** `5008|340KV|12×10` geçen ana ağaç dosyaları: FDR Bölüm 1–7,
+`FDR/sekiller/iha_baglanti_kaynaklar.md`, `scripts/fdr_iha_baglanti_svg.py:142,390` (şema etiketi
+"5008 340 KV"), `SAHA_HAZIRLIK_PLANI_20260903.md:38` ("4S'te ~10–12 A/motor asılı, tepe 30+ A"
+— 5008 için yazılmış TAHMİN, artık geçersiz), `SAHA_OLAY_SONRASI_MUAYENE.md` madde 1 ve 4,
+`config/pixhawk/arducopter_fda.param:28` (yorum satırı), `results/faz_b_oncesi/CUMA_KONTROL_KARTI.md`.
+D-429 §5 de "5008 340KV" der. → **T211**.
+
+**Ölçüm 2 — itki bütçesi yok.** Toplam kütle **ÖLÇÜLEMEDİ** (T10; 5 Eylül tartı tutanağı
+yapılmadı). 22 mm statorlu 980KV sınıfı motorun 4S + 10×4,5 ile tam gazda çektiği akım sınıfın
+tipik sürekli sınırının üstündedir (sınıf verisi, bu motorun sayfası değil — TAHMİN; sayı
+etikete/veri sayfasına göre yazılacak). Kural: **hover ≤ %50 gaz ve hover akımı ≤ motorun sürekli
+akımı** sağlanmadan güç verilmez; ikisi de tartı + veri sayfası ister (İNSAN).
+
+**Ölçüm 3 — devrilme teşhisine etkisi.** "Eski motor hasarı" D-434 (a) ailesine girer ve loga uyar:
+P20'de (21:00, 32 s) roll +8…+17° (sağ aşağı) sürerken M1 1949 doygun, M2 1150 tabanda —
+kontrolcü **sağ-ön köşeyi** kaldıramıyor; duman atan motor da M1. P19 (ilk devrilme) ise
+simetrik (roll −2…−6°): ya iki ön motor birden zayıf ya CG/geometri. M1'in P19 çarpmasından
+ÖNCE mi zayıftı, çarpmayla mı bozuldu — logdan ayrılamaz. Küçük statorlu motorun 25 s tam gazda
+tutulması (P20) dumanı tek başına da açıklar.
+
+**Ne yapılır (madde 5/9 — İNSAN):** (1) motor etiketi fotoğrafı + veri sayfası (4S / 10×4,5
+satırı: itki, akım); (2) pilli tam araç tartısı; (3) dört motorda güçsüz muayene: rulman (elle
+dönüş sessiz, eksenel/radyal boşluk yok), mil salgısı, mıknatıs çatlağı/kopuğu, sargı rengi ve
+vernik kokusu, iki faz kısa devre edilip elle çevirme (üç çift de eşit ve düzgün fren; çentikli
+ya da eşitsiz = sargı/mıknatıs hasarı), dört motor birbiriyle karşılaştırılır; (4) güçlü: aynı
+PWM'de pervane geçiş frekansı ±%3, 30 s %50 sonrası sıcaklık eşit. Hasarlı motor tek tek değil
+**set** değişir (eşleşmeyen itki = D-434 (a)).
