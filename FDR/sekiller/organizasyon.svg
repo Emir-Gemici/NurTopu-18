@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="640" viewBox="0 0 900 640" font-family="'Segoe UI', 'Noto Sans', Arial, sans-serif">
+  <title>Organizasyon şeması — icra yetkileri, rol bazlı (FDR §2.1.2)</title>
+  <defs>
+    <marker id="ok" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M 0 0 L 10 4 L 0 8 Z" fill="#333333"/>
+    </marker>
+    <marker id="ok-kesik" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M 0 0 L 10 4 L 0 8 Z" fill="#6b4c9a"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="900" height="640" fill="#ffffff"/>
+
+  <!-- başlık -->
+  <text x="24" y="32" font-size="19" font-weight="bold" fill="#111111">Organizasyon şeması — icra yetkileri (rol bazlı, isimsiz)</text>
+  <text x="24" y="54" font-size="12" fill="#444444">İcra hattı: görev emri yukarıdan aşağı, tek yön (düz ok). Denetim hattı: kanıt aşağıdan yukarı, hüküm R1'e döner (kesikli ok). R8 icra hattının dışındadır.</text>
+
+  <!-- R1 — tek karar mercii -->
+  <rect x="120" y="76" width="640" height="76" rx="4" fill="#eef3fb" stroke="#1f3f7a" stroke-width="2"/>
+  <text x="440" y="100" text-anchor="middle" font-size="15" font-weight="bold" fill="#111111">R1 · TAKIM KAPTANI — tek karar mercii</text>
+  <text x="440" y="122" text-anchor="middle" font-size="12" fill="#111111">İCRA: "Takım Hazır" ilanı · uçuş/uçmama kararı · rol ataması · tedarik onayı · koordinat girişi onayı</text>
+  <text x="440" y="141" text-anchor="middle" font-size="11" fill="#444444">hiçbir icra birimi kendi başına uçuş kararı veremez (§2.1.2 kural 1)</text>
+
+  <!-- icra hattı: görev emri R1 → R2..R7 -->
+  <line x1="440" y1="152" x2="440" y2="186" stroke="#333333" stroke-width="1.5"/>
+  <line x1="105" y1="186" x2="795" y2="186" stroke="#333333" stroke-width="1.5"/>
+  <text x="452" y="178" font-size="11" fill="#333333">görev emri (icra hattı, tek yön)</text>
+  <line x1="105" y1="186" x2="105" y2="206" stroke="#333333" stroke-width="1.5" marker-end="url(#ok)"/>
+  <line x1="243" y1="186" x2="243" y2="206" stroke="#333333" stroke-width="1.5" marker-end="url(#ok)"/>
+  <line x1="381" y1="186" x2="381" y2="206" stroke="#333333" stroke-width="1.5" marker-end="url(#ok)"/>
+  <line x1="519" y1="186" x2="519" y2="206" stroke="#333333" stroke-width="1.5" marker-end="url(#ok)"/>
+  <line x1="657" y1="186" x2="657" y2="206" stroke="#333333" stroke-width="1.5" marker-end="url(#ok)"/>
+  <line x1="795" y1="186" x2="795" y2="206" stroke="#333333" stroke-width="1.5" marker-end="url(#ok)"/>
+
+  <!-- R2 PİLOT (uçuş anı: R5 ile eşzamanlı) -->
+  <rect x="40" y="206" width="130" height="122" rx="4" fill="#ffffff" stroke="#333333" stroke-width="1.5"/>
+  <rect x="40" y="206" width="130" height="7" fill="#d99a00"/>
+  <text x="105" y="232" text-anchor="middle" font-size="13" font-weight="bold" fill="#111111">R2 · PİLOT</text>
+  <text x="105" y="248" text-anchor="middle" font-size="10" fill="#444444">(başlatma yetkisi yok)</text>
+  <text x="105" y="270" text-anchor="middle" font-size="10" font-weight="bold" fill="#444444">İCRA</text>
+  <text x="105" y="288" text-anchor="middle" font-size="11" fill="#111111">uçuşu KESME</text>
+  <text x="105" y="304" text-anchor="middle" font-size="11" fill="#111111">mod anahtarı</text>
+  <text x="105" y="320" text-anchor="middle" font-size="10" fill="#8a5a00">uçuş anı: eşzamanlı R5</text>
+
+  <!-- R3 AVİYONİK -->
+  <rect x="178" y="206" width="130" height="122" rx="4" fill="#ffffff" stroke="#333333" stroke-width="1.5"/>
+  <text x="243" y="232" text-anchor="middle" font-size="13" font-weight="bold" fill="#111111">R3 · AVİYONİK</text>
+  <text x="243" y="248" text-anchor="middle" font-size="10" fill="#444444">sorumlusu</text>
+  <text x="243" y="270" text-anchor="middle" font-size="10" font-weight="bold" fill="#444444">İCRA</text>
+  <text x="243" y="288" text-anchor="middle" font-size="11" fill="#111111">parametre yükleme</text>
+  <text x="243" y="304" text-anchor="middle" font-size="11" fill="#111111">kablo hattı kabulü</text>
+
+  <!-- R4 GÖREV BİLGİSAYARI / KAMERA -->
+  <rect x="316" y="206" width="130" height="122" rx="4" fill="#ffffff" stroke="#333333" stroke-width="1.5"/>
+  <text x="381" y="232" text-anchor="middle" font-size="13" font-weight="bold" fill="#111111">R4 · GÖREV</text>
+  <text x="381" y="248" text-anchor="middle" font-size="10" fill="#444444">bilgisayarı / kamera</text>
+  <text x="381" y="270" text-anchor="middle" font-size="10" font-weight="bold" fill="#444444">İCRA</text>
+  <text x="381" y="288" text-anchor="middle" font-size="11" fill="#111111">sürüm/paket kurulumu</text>
+  <text x="381" y="304" text-anchor="middle" font-size="11" fill="#111111">kamera kaynağı seçimi</text>
+
+  <!-- R5 YKS OPERATÖRÜ (uçuş anı: R2 ile eşzamanlı) -->
+  <rect x="454" y="206" width="130" height="122" rx="4" fill="#ffffff" stroke="#333333" stroke-width="1.5"/>
+  <rect x="454" y="206" width="130" height="7" fill="#d99a00"/>
+  <text x="519" y="232" text-anchor="middle" font-size="13" font-weight="bold" fill="#111111">R5 · YKS</text>
+  <text x="519" y="248" text-anchor="middle" font-size="10" fill="#444444">operatörü</text>
+  <text x="519" y="270" text-anchor="middle" font-size="10" font-weight="bold" fill="#444444">İCRA</text>
+  <text x="519" y="288" text-anchor="middle" font-size="11" fill="#111111">ACK'siz onayı REDDETME</text>
+  <text x="519" y="304" text-anchor="middle" font-size="11" fill="#111111">ekran düzeni</text>
+  <text x="519" y="320" text-anchor="middle" font-size="10" fill="#8a5a00">uçuş anı: eşzamanlı R2</text>
+
+  <!-- R6 İKA SORUMLUSU -->
+  <rect x="592" y="206" width="130" height="122" rx="4" fill="#ffffff" stroke="#333333" stroke-width="1.5" stroke-dasharray="5 3"/>
+  <text x="657" y="232" text-anchor="middle" font-size="13" font-weight="bold" fill="#111111">R6 · İKA</text>
+  <text x="657" y="248" text-anchor="middle" font-size="10" fill="#444444">sorumlusu (final dalgası)</text>
+  <text x="657" y="270" text-anchor="middle" font-size="10" font-weight="bold" fill="#444444">İCRA</text>
+  <text x="657" y="288" text-anchor="middle" font-size="11" fill="#111111">İKA sürücü seçimi</text>
+  <text x="657" y="304" text-anchor="middle" font-size="11" fill="#111111">(donanım kararı)</text>
+  <text x="657" y="320" text-anchor="middle" font-size="10" fill="#444444">FDA'da İKA yok — rol boşta</text>
+
+  <!-- R7 YAZILIM / GÖRÜNTÜ İŞLEME -->
+  <rect x="730" y="206" width="130" height="122" rx="4" fill="#ffffff" stroke="#333333" stroke-width="1.5"/>
+  <text x="795" y="232" text-anchor="middle" font-size="13" font-weight="bold" fill="#111111">R7 · YAZILIM</text>
+  <text x="795" y="248" text-anchor="middle" font-size="10" fill="#444444">görüntü işleme</text>
+  <text x="795" y="270" text-anchor="middle" font-size="10" font-weight="bold" fill="#444444">İCRA</text>
+  <text x="795" y="288" text-anchor="middle" font-size="11" fill="#111111">kod değişikliği</text>
+  <text x="795" y="304" text-anchor="middle" font-size="11" fill="#111111">(mühre kadar)</text>
+  <text x="795" y="320" text-anchor="middle" font-size="10" font-weight="bold" fill="#b02a2a">EŞİK DEĞİŞTİRME YOK</text>
+
+  <!-- denetim hattı: kanıt R2..R7 → R8 -->
+  <line x1="105" y1="328" x2="105" y2="360" stroke="#6b4c9a" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <line x1="243" y1="328" x2="243" y2="360" stroke="#6b4c9a" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <line x1="381" y1="328" x2="381" y2="360" stroke="#6b4c9a" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <line x1="519" y1="328" x2="519" y2="360" stroke="#6b4c9a" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <line x1="657" y1="328" x2="657" y2="360" stroke="#6b4c9a" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <line x1="795" y1="328" x2="795" y2="360" stroke="#6b4c9a" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <line x1="105" y1="360" x2="795" y2="360" stroke="#6b4c9a" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <line x1="440" y1="360" x2="440" y2="396" stroke="#6b4c9a" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#ok-kesik)"/>
+  <text x="452" y="386" font-size="11" fill="#6b4c9a">ürettiği kanıt (log · ölçüm · suit çıktısı)</text>
+
+  <!-- R8 — denetim, icra hattının dışında (çift çerçeve) -->
+  <rect x="196" y="392" width="488" height="98" rx="4" fill="#f6f2fb" stroke="#6b4c9a" stroke-width="2"/>
+  <rect x="200" y="396" width="480" height="90" rx="3" fill="none" stroke="#6b4c9a" stroke-width="1"/>
+  <text x="440" y="420" text-anchor="middle" font-size="14" font-weight="bold" fill="#111111">R8 · KANIT-KALİTE (DENETİM)</text>
+  <text x="440" y="441" text-anchor="middle" font-size="12" fill="#111111">İCRA: kapıyı GEÇERSİZ sayma · bulguyu deftere yazma · ön kayıt tutma</text>
+  <text x="440" y="460" text-anchor="middle" font-size="11" fill="#444444">icra hattının DIŞINDADIR — kanıt üreten rolün onayına bağlı değildir (§2.1.6 / 3)</text>
+  <text x="440" y="477" text-anchor="middle" font-size="11" fill="#444444">bağımsızlık: bir iş, onu yapanın onayıyla kapanmaz</text>
+
+  <!-- hüküm R8 → R1 (icra birimlerine değil) -->
+  <line x1="684" y1="441" x2="880" y2="441" stroke="#6b4c9a" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <line x1="880" y1="441" x2="880" y2="114" stroke="#6b4c9a" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <line x1="880" y1="114" x2="762" y2="114" stroke="#6b4c9a" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#ok-kesik)"/>
+  <text x="895" y="300" transform="rotate(-90 895 300)" text-anchor="middle" font-size="11" fill="#6b4c9a">bulgu / kapı hükmü R1'e döner — icra birimlerine DEĞİL (döngü kapanır)</text>
+
+  <!-- uçuş anı eşzamanlılık notu (§2.1.4 – §2.1.5) -->
+  <rect x="24" y="512" width="852" height="48" rx="4" fill="#fff7e6" stroke="#d99a00" stroke-width="1.5"/>
+  <rect x="24" y="512" width="8" height="48" fill="#d99a00"/>
+  <text x="44" y="532" font-size="12" font-weight="bold" fill="#111111">Uçuş anı: R2 Pilot ve R5 YKS operatörü EŞZAMANLIDIR (görev ≤ 10 dk) — tek kişi ikisini birden yapamaz (§2.1.4 "Uçuş" satırı, §2.1.5).</text>
+  <text x="44" y="550" font-size="11" fill="#444444">Montaj günü ve yer provalarında çakışma yoktur. Uçuş günü için bu iki rolden birine ikinci kişi: BEYAN GEREKLİ (insan) — §2.1.7 / 4.</text>
+
+  <!-- alt yazı -->
+  <text x="24" y="592" font-size="11" fill="#444444">Şema rol bazlıdır; isim içermez (Y-2.1-M02). Bir kişi birden çok kutuyu üstlenebilir; kanıt üreten rol ile onu onaylayan rol aynı kişi olamaz (§2.1.3, §2.1.6 / 3).</text>
+  <text x="24" y="610" font-size="11" fill="#444444">R6 kesikli çerçeve: FDA aracında İKA yoktur, rol bugün boştadır (§2.1.7 / 5). Sarı şerit: uçuş anı eşzamanlılığı.</text>
+  <text x="24" y="628" font-size="11" fill="#444444">kaynak: FDR Bölüm 2 §2.1.2 (hatlar ve kurallar), §2.1.3 (yetkiler), §2.1.4–§2.1.5 (uçuş anı) · 7 Eylül 2026</text>
+</svg>
