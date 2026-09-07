@@ -190,3 +190,7 @@ wheels/
 # D-424: Pixhawk 6C ArduCopter firmware'i (scripts/pixhawk_firmware_indir.py
 # ile indirilir, bellek_hazirla.py saha bellegine kopyalar). ~6 MB ikili.
 firmware/
+
+# D-431: TensorRT engine dosyalari karta ozel ikili (57 MB), depoya girmez; Jetson
+# uretir, kayit defteri sha256 tasir.
+*.engine

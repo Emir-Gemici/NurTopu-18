@@ -13,21 +13,23 @@
 gerektirir**. D-413'e göre kartta microSD yuvası yoktur (eMMC modül + M.2) ve
 eMMC'nin **boş çıkma ihtimali vardır**; o durumda Ubuntu x86_64 host + SDK
 Manager yolu (~20 GB indirme + NVIDIA hesabı + micro-USB) gerekir ve Jetson
-cumartesi açılmayabilir. Ayrıca `python3.8` kurulumu **internet ister**
+cumartesi açılmayabilir. Ayrıca `python3.8` kurulumu **internet ister** — ⚠ **GEÇERSİZ (D-431, 6 Eylül ölçümü):** kart Jetson Orin Nano Developer Kit 4 GB / JetPack 7.2.1 **kurulu** / Python 3.12 çıktı; eMMC-flash-`python3.8` zinciri düştü, kurulum `~/venv312` + çevrimiçi pip ile yapıldı (`jetson_paket/JETSON_ORIN_NANO_KURULUM.md` §1–2)
 (`JETSON_NANO_KURULUM.md` §3.1).
 
 Bu üç kalem için doğru okuma: **"Jetson açılırsa cumartesi kapanır; açılmazsa
 `ÖLÇÜLEMEDİ` olarak taşınır."** Ölçülemeyen şey geçmiş sayılmaz.
+
+> ⚠ **6 Eylül düzeltmesi (D-431):** Jetson 5 Eylül'de değil **6 Eylül'de** açıldı ve yukarıdaki varsayımların tamamı kartla yanlışlandı: kart **Jetson Orin Nano Developer Kit 4 GB** (p3767-0004), JetPack **7.2.1** (L4T R39.2.1), Ubuntu 24.04, Python **3.12.3**, kök **NVMe** — eMMC/microSD, `python3.8`, cp38 tekerlek ve venv38 kısıtları bu kartta geçersiz (`results/jetson_20260906/ORTAM_KUNYESI.txt`). Kalem 4 ve 5 aşağıda ÖLÇÜLDÜ olarak kapatıldı; kalem 3 (Pixhawk MAVLink kapısı) açık — 6 Eylül'de Pixhawk Jetson'a bağlı değildi (`jetson_baslat.sh --kuru`: `[YOK]` yalnız `/dev/ttyACM0`, çıkış 3).
 
 | # | kalem | nasıl kapanır | bölüm |
 |---|---|---|---|
 | 1 | Kalkış kütlesi, ağırlık merkezi, **her parçanın gerçek tartısı** | tartı + tutanak; UHDR ve Bölüm 5/7 bunu ister | 3, 5, 7 |
 | 2 | Kameranın **ölçülen** yatay görüş açısı | `codes/kamera_dogrula.py` (bugünkü 55–63° bir **lens hesabıdır**, ölçüm değil) | 3 |
 | 3 | Gerçek Pixhawk üzerinde MAVLink akış kapısı | `scripts/mavlink_dogrula.py` üç uçta aynı anda: HEARTBEAT sysid · konum ≥ 4 Hz · iniş durumu ≥ 1 Hz | 3, 4, 6 |
-| 4 | **Jetson Nano gerçek FPS** (p50/p95) | `scripts/jetson_fps.py`; kapı **0,61 FPS**, eşik gevşetilmez | 3, 4 |
-| 5 | Çıkarım arka ucu kararı | `torch.cuda.is_available()` sonucu + seçilen yol (CUDA wheel / onnxruntime / CPU) | 3 |
+| ~~4~~ | ~~**Jetson Nano gerçek FPS** (p50/p95)~~ → **ÖLÇÜLDÜ 6 Eylül (D-431)** — kart Orin Nano Developer Kit 4 GB; `scripts/jetson_fps.py` 120 örnek, imgsz 512, `data/raw_frames`, mpp=None: **pt p50/p95 1,35/1,06 FPS** (739/942 ms) · **engine 1,58/1,33 FPS** (635/751 ms) · eşik **0,61** → **GEÇTİ**; 10 dk sürekli (900 örnek): pt 770/922 ms · engine 649/765 ms, tegrastats gpu ≤ 56,3 °C. ONNX kolu **HATA** (`cudaErrorNoKernelImageForDevice`). Sınır: mpp=None ölçeksiz Katman-A kipidir; kamera bağlı değildi | `results/jetson_20260906/jetson_fps_20260906_orin_nano/ozet.json` · `results/jetson_20260906/jetson_fps_20260906_orin_nano_10dk/ozet.json` · `results/jetson_20260906/jetson_fps_20260906_orin_nano_10dk/tegrastats.log` | 3, 4 |
+| ~~5~~ | ~~Çıkarım arka ucu kararı~~ → **ÖLÇÜLDÜ 6 Eylül (D-431)**: `torch.cuda.is_available()` **True** (`cuda_adi: Orin`, torch 2.11.0+cu130); **uçuş `.pt` GPU ile** (kayıt defteri `path` `.pt`, FPS kapısı geçiyor). TensorRT `.engine` derlendi ve deftere kaydedildi ama engine↔pt denkliği D-303 oransal **3/126 DÜŞTÜ** → üretime alınmadı (§3 kalem 15). ONNX GPU: `onnxruntime-gpu` 1.29 sm_87 çekirdeği yok (**HATA**) → ONNX yolu bu kartta **DOĞRULANMAMIŞ** | `results/jetson_20260906/jetson_fps_20260906_orin_nano/ozet.json` (`ortam`, `vakalar[onnx].sebep`) | 3 |
 | 6 | SiK 433 MHz RTT ve paket kaybı | `scripts/sik_rf_olc.py`; DDR'deki ">%98, 300 m" iddiasının kanıtı **yok** | 3, 4, 7 |
-| 7 | ArduCopter sürümü, kalibrasyon çıktıları, pervanesiz motor testi | Mission Planner; sahada okunan parametre dökümü repoya işlenir | 3, 5, 6 |
+| 7 | ArduCopter sürümü, kalibrasyon çıktıları, pervanesiz motor testi | Mission Planner; sahada okunan parametre dökümü repoya işlenir → **KISMEN KAPANDI:** sürüm `ArduCopter V4.5.7 (2a3dc4b7)` ÖLÇÜM (D-426 §1); accel/level ve pusula ofsetleri 6 Eylül dökümünde (D-428 §1); ESC kalibrasyonu 6 Eylül'de başarılı yordamla yapıldı (D-428 §3, beyan); motor testi 4/4 **BEYAN**, video yok; döküm `config/pixhawk/arducopter_fda_20260906.param` (D-428 §5g) | 3, 5, 6 |
 | 8 | Uçuş kontrolcüsü parametrelerinin **sahada okunan** hâli | `config/pixhawk/arducopter_fda_20260905.param` (bugün yok, cumartesi üretilir) → **AÇIK (5 Eylül akşamı, D-426 §4): dosya YOK** — `config/pixhawk/README.md` §1 adım 6 (`Full Parameter List` → `Save to file`) sahada yapılmadı. Döküm alındığında bakılacak: `RC_PROTOCOLS` sahada 4 → 1 yapıldı ve geri alınmadı (D-426 §2); `BRD_SAFETY_DEFOFF` değiştirilmedi. Bu satır kapanmadan Bölüm 2/5/6'daki döküm atıfları açık kalır | 2, 5, 6 |
 
 ## 2. 6–19 Eylül uçuş testleri — ölçümle kapanır
@@ -80,7 +82,7 @@ Bu üç kalem için doğru okuma: **"Jetson açılırsa cumartesi kapanır; aç�
 
 - **Bölüm 1 (Özet)** diğer altı bölüm sabitlendikten sonra son hâlini alır; bugünkü
   hâli taslaktır.
-- **Bölüm 3 ile Bölüm 5/7 tutarlılığı:** donanım revizyon tablosu (Orin NX → Nano 4GB,
+- **Bölüm 3 ile Bölüm 5/7 tutarlılığı:** donanım revizyon tablosu (Orin NX → ~~Nano 4GB~~ **Orin Nano Developer Kit 4 GB** (6 Eylül ölçüm, D-431),
   6X → 6C, M10 → M9N, Crossfire → FS-i6) üç bölümde de **aynı** olmalı; teslimden önce
   tek kaynaktan doğrulanır.
 - **Denetim borcu:** FDA kipi sözleşmesini (§6.7) yazan ile uygulayan aynı el; bağımsız

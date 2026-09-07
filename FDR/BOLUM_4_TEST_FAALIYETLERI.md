@@ -9,12 +9,14 @@
 > **Bu bölümün iddia ETMEDİĞİ.** Hiçbir sayı "sahada çalışır" demez. Arena
 > ölçümlerinin tamamı sentetiktir; elimizde **gerçek arena/HTAB karesi yoktur**
 > ve maket çekimi yapılmayacaktır. Uçuş testleri 6–19 Eylül planlıdır ve bu
-> rapor yazılırken **hiçbiri koşulmamıştır**. Jetson Nano üzerinde gerçek FPS
-> **ölçülmemiştir**; SiK 433 MHz RF menzili **ölçülmemiştir**.
+> rapor yazılırken **hiçbiri koşulmamıştır**. Jetson üzerinde gerçek FPS ~~**ölçülmemiştir**~~
+> → **6 Eylül'de ÖLÇÜLDÜ** (kart Orin Nano Developer Kit 4 GB; pt 1,35/1,06 · engine 1,58/1,33 FPS,
+> eşik 0,61 — D-431, §4.4); SiK 433 MHz RF menzili **ölçülmemiştir**.
 >
 > **İki araç ayrımı.** Şartname §5.3.2 görev test uçuşu (prova: 21 Eylül Adıyaman · resmî uçuş: 30 Eylül–3 Ekim)
 > **çoklu rotorlu** bir araçla yapılır: 3B baskı quadcopter, Pixhawk 6C + PM02,
-> Jetson Nano 4GB, Raspberry Pi HQ (IMX477). Yarışma görevinin (§2.2) aracı
+> Jetson Orin Nano Developer Kit 4 GB (3 Eylül beyanı 'Nano 4GB' 6 Eylül'de kartla yanlışlandı, D-431),
+> Raspberry Pi HQ (IMX477). Yarışma görevinin (§2.2) aracı
 > **sabit kanat + mancınık + paraşüt + İKA**'dır ve ayrı sistemdir. Aşağıdaki
 > testlerin **tamamı** algı–karar–haberleşme–yer istasyonu katmanına aittir; bu
 > katman iki araçta da aynıdır. Uçuş kontrolcüsü yapılandırması ayrışır ve
@@ -482,10 +484,10 @@ boştur.
 
 | ekipman | koşulacak kabul kapısı | bugünkü sonuç |
 |---|---|---|
-| Jetson Nano 4GB | PT ve ONNX için p50 **ve** p95 FPS ≥ 0,61 (türetimi §4.8.2.3) | **ÖLÇÜLEMEDİ** — 5 Eylül'de Jetson araca takılmadı (D-426 §4) |
+| ~~Jetson Nano 4GB~~ **Jetson Orin Nano Developer Kit 4 GB** (6 Eylül'de kartla ölçüldü — D-431) | PT ve ONNX için p50 **ve** p95 FPS ≥ 0,61 (türetimi §4.8.2.3) | ~~**ÖLÇÜLEMEDİ** — 5 Eylül'de Jetson araca takılmadı (D-426 §4)~~ → **6 Eylül ÖLÇÜM (D-431):** genel kapı kartta **15/15 · 15/15**; `jetson_fps.py` 120 örnek: **PT 1,35/1,06 FPS · engine 1,58/1,33 FPS** ≥ 0,61 → **GEÇTİ**; 10 dk sürekli 900 örnek, gpu ≤ 56,3 °C; **ONNX HATA** (`cudaErrorNoKernelImageForDevice`) → ONNX kolu bu kartta geçmedi, ölçülemedi; engine↔pt denkliği D-303 oransal **DÜŞTÜ** → uçuş `.pt`; kamera köprüsü dosya kaynağıyla açıldı. **ÖLÇÜLEMEDİ:** CSI kamera (bağlı değil), Pixhawk MAVLink kapısı (`--kuru`: `[YOK]` `/dev/ttyACM0`). Kanıt `results/jetson_20260906/` |
 | Pixhawk 6C + güç modülü (plan PM02; sahada **PM06** — BEYAN, §4.13.4) | `scripts/mavlink_dogrula.py` 3/3 · `EXTENDED_SYS_STATE` akışı (§4.9.4) | **KISMEN**: firmware 4.5.7 + parametre yükleme OLCUM (tutanak 15:08); PM06 → `POWER1` OLCUM (18:03). `mavlink_dogrula.py` kapısı **koşulmadı** → ÖLÇÜLEMEDİ (§4.13.1 #6); parametre dökümü yok (#9) |
 | Holybro M9N GNSS | 3B fix ve `GLOBAL_POSITION_INT` canlı akışı (§4.9.1 G1 ölçütleri) | **KISMEN**: alıcı tanındı — OLCUM `u-blox 1 HW: 000A0000 SW: ROM SPG 5.10` (15:38). 3B fix ve akış kaydı yok → ÖLÇÜLEMEDİ |
-| Raspberry Pi HQ (IMX477) | `nvarguscamerasrc` üzerinden köprü kare akışı (§4.10.1 ölçütleri) | **ÖLÇÜLEMEDİ** — Jetson takılmadı, köprü koşulmadı |
+| Raspberry Pi HQ (IMX477) | `nvarguscamerasrc` üzerinden köprü kare akışı (§4.10.1 ölçütleri) | **ÖLÇÜLEMEDİ** — 5 Eylül'de Jetson takılmadı; 6 Eylül'de köprü kartta **dosya kaynağıyla** açıldı (ÖLÇÜM, D-431) ama CSI kamera **bağlı değildi** → `nvarguscamerasrc` yolu ölçülmedi |
 | 2 × SiK 433 MHz telsiz | RTT p95 < 0,2 s ve menzil (§4.5) | **KISMEN**: bağlantı BEYAN (~18:45, "tamam oldu"); RTT, kayıp ve menzil ÖLÇÜLEMEDİ (§4.5) |
 | FCHUB-12S V2 · 5008 340KV × 4 · 12×10 pervane | tam yükte akım ve `VIBE` titreşim kaydı (§4.3.3 adım 3.1) | **KISMEN**: pervanesiz motor testi OLCUM (18:06); sıra/yön 4/4 BEYAN, video yok; ESC kalibrasyonu YAPILMADI; tam yükte akım ve `VIBE` ÖLÇÜLEMEDİ (pervane takılmadı). ESC künyesi sahada **"60 A V2"** ×4 (plan 80 A) — BEYAN, §4.13.4 |
 | 4S 10 Ah 25C pil + iMAX B6 şarj | kapasite ve şarj çevrimi; günde 2 uçuş kısıtının doğrulanması | **KISMEN**: pil takıldı, `PreArm: Battery 1 low voltage failsafe` kayboldu — OLCUM (18:03). MP gerilimi ↔ multimetre (±0,1 V), kapasite ve şarj çevrimi ÖLÇÜLEMEDİ |
@@ -553,8 +555,8 @@ Yönergenin üç kalemine cevap (`REVIEW_LOG.md` D-426 §4):
 
 ⚠ Pixhawk parametrelerinin kendisi **repo dışıdır** (R17). Kalibrasyon sonrası
 parametre dökümü `config/pixhawk/` altına kanıt olarak alınacaktır
-(§4.13.1 kalem 9). 5 Eylül'de döküm **alınmadı**: beklenen dosya
-`config/pixhawk/arducopter_fda_20260905.param` yoktur (D-426 §4;
+(§4.13.1 kalem 9). 5 Eylül'de döküm **alınmadı** (D-426 §4); 6 Eylül 20:22 dökümü
+`config/pixhawk/arducopter_fda_20260906.param` repodadır ve accel/pusula ofsetlerini taşır (D-428 §1, §5g;
 `config/pixhawk/README.md` §1 adım 6). Şablon dosyası
 `config/pixhawk/arducopter_fda.param` kalibrasyon değeri **içermez**
 (README §2: kalibrasyonlar parametre dosyasında yoktur, dosya bunları ezmez).
@@ -775,18 +777,36 @@ yanlış şerit, FP16 doğru). Kalan pay yalnız TensorRT katman birleştirmesid
 
 ### 4.8.4 Doğruluk matrisleri
 
-🔴 **ÖLÇÜLEMEDİ: yönergenin istediği anlamda bir doğruluk (karışıklık) matrisi
-üretilmedi.** Nedeni uydurma değil, ölçülmüş bir olgudur: kabul kümesinin
-referansı YOLO etiketinden rasterlenen maskedir ve **etiketsiz alan geçilemez
-sayılır** (§4.8.1, D-315). Böyle bir referans üzerine kurulacak sınıf-karşı-sınıf
-matrisi, etiket kapsamı eksikliğini model hatası gibi gösterirdi — `sa_000090`
-karesinde model şerit 3'te 89.913 px serbest görürken yer gerçeği 18.042 px
-görür, engel pikselleri ise neredeyse aynıdır (42.123 ↔ 43.781).
+**ÖLÇÜLDÜ — 7 Eylül 2026.** Sınıf bazlı karışıklık matrisi kör **DOĞRULAMA kümesi `test29`**
+(CONTRACTS §12; 29 kare, 3840×2160) üzerinde, üretim modeli v36 (`1d1caca6…6911`) ve
+üretim çalışma noktasında (CONF 0,30 · imgsz 512), **CPU** ile üretildi:
+`scripts/olcum/176_piksel_karisiklik_matrisi.py` →
+`results/gece_20260907/karisiklik/piksel_karisiklik_test29.{json,md,png}` (+ `kosum.log`,
+`ultralytics_val/`); nöbetçi `tests/test_gece_karisiklik_matrisi.py`. Tam tablo ve kare bazlı
+sayılar §3.3.4.2.8 (b)'dedir; özet — piksel düzeyi (satır tahmin, sütun yer gerçeği):
 
-Bu yüzden başarım **karar düzeyinde** ölçülmüştür: K7 doğrudan *"yayınlanan
-şerit referansla aynı mı"* sorusunu sorar ve **84/85 = %98,8** yanıtını verir
-(§4.8.1). Gerçek arena karesi geldiğinde (§4.13.1 kalem 1) matris, K7'nin
-ölçtüğü şerit kimliği üzerinden üretilecektir.
+| tahmin \ yer gerçeği | zemin | engel | ETİKETSİZ |
+|---|---:|---:|---:|
+| zemin | **12.004.796** | 790.630 | 3.445.818 |
+| engel | 3.080.875 | **92.405.877** | 11.819.510 |
+| yok | 8.515.024 | 28.602.498 | 79.872.572 |
+
+IoU zemin **0,4922** · engel **0,7400** (etiketsiz sütun FP sayılmadan; sayılarak
+0,4313 · 0,6760); örnek düzeyi (`ultralytics` val, aynı CONF/imgsz): zemin 15/1/1 ·
+engel 1/33/11 · arka plan 35/142/—.
+
+Bu ölçümün 5 Eylül'e kadar **yapılmama gerekçesi** ölçülmüş bir olguydu ve hâlâ geçerlidir:
+referans YOLO etiketinden rasterlenen maskedir ve **etiketsiz alan geçilemez sayılırsa**
+(§4.8.1, D-315) matris etiket kapsamı eksikliğini model hatası gibi gösterir — `sa_000090`
+karesinde model şerit 3'te 89.913 px serbest görürken yer gerçeği 18.042 px görür, engel
+pikselleri ise neredeyse aynıdır (42.123 ↔ 43.781). 176 bu itirazı **matrisin içine alarak**
+çözer: etiketsiz piksel **üçüncü, ayrı sütundur**, engele katılmaz ve IoU iki paydayla
+verilir. Kümenin piksellerinin %39,6'sı etiketsizdir; bu sütun model hatası **değildir**.
+
+Karar düzeyi ölçüm (K7: *"yayınlanan şerit referansla aynı mı"*, **84/85 = %98,8**, §4.8.1)
+matrisin yerine geçmez, yanında durur. **SINIR:** `test29` arena değildir (kırsal yol; kırmızı H,
+moloz, fiziki bariyer yok) ve ışık/gölge kesiti içermez — o satır **ÖLÇÜLEMEDİ** kalır. Gerçek
+arena karesi geldiğinde (§4.13.1 kalem 1) aynı betik o küme üzerinde koşar.
 
 ---
 
@@ -1077,9 +1097,9 @@ uçuş yapılandırmasında monte değildir ve Jetson takılı değildir (§4.13
 
 ### 4.10.1 Kamera köprüsü — dayanıklılık (D-407 §2)
 
-Jetson Nano'nun CSI kamerası (IMX477) `nvarguscamerasrc` ister; üretim çıkarım
+Jetson'ın CSI kamerası (IMX477) `nvarguscamerasrc` ister; üretim çıkarım
 süreci ise sistem Python'undan ayrıdır. Köprü (`scripts/kamera_koprusu.py`,
-Python 3.6 uyumlu) MJPEG olarak servis eder.
+Python 3.6 uyumlu — 6 Eylül'de kartın sistem Python'u **3.12** çıktı, uyum kısıtı fiilen gerekmedi; köprü kartta sistem Python 3.12 + cv2 4.6 ile dosya kaynağında açıldı, CSI kamera bağlı değildi → ÖLÇÜLEMEDİ, D-431) MJPEG olarak servis eder.
 
 | ölçüm | sonuç |
 |---|---|
@@ -1219,7 +1239,7 @@ Bölüm 3/5/7 künyesi düzeltilecek.
 |---|---|---|
 | RC failsafe testi (kumanda kapat → CH3 < 975? `Radio Failsafe`?) | **ÖLÇÜLEMEDİ** — iki kez istendi, sonuç gelmedi; `.param` yorumundaki "iBUS alıcısı çerçeve basmayı keser" **varsayımdır** | R3 / R2 |
 | ESC kalibrasyonu | **YAPILMADI** ("hepsi birden" yordamı verildi; ESC markası bilinmiyor) | R3 |
-| parametre dökümü `config/pixhawk/arducopter_fda_20260905.param` | **dosya YOK** (kontrol edildi) | R3 |
+| parametre dökümü (5 Eylül) | **dosya YOK** (kontrol edildi) → 6 Eylül 20:22 dökümü `config/pixhawk/arducopter_fda_20260906.param` repoda (D-428 §5g) | R3 |
 | pil gerilimi MP ↔ multimetre (±0,1 V) | ÖLÇÜLEMEDİ | — |
 | pusula kalibrasyonu | dışarıda, her şey takılıyken — **Jetson takılı DEĞİL**; Jetson takılınca yeniden | R3 |
 | accel + level | BEYAN "yapıldı" — kart sabitlenmiş miydi belirsiz; **teyit yok** | R3 |
@@ -1367,10 +1387,9 @@ testlerindedir (§4.3.3).**
 | Motor kesme (DISARM) | — | uçuş yok |
 | Emniyet düğmesi | `BRD_SAFETY_DEFOFF` değiştirilmedi | fiziksel düğme çözüldü, OLCUM `PreArm: Hardware safety switch` kayboldu — bu bir **arm ön koşuludur**, arıza tepkisi değil |
 
-⚠ Parametrelerin **kartta** hangi değerde olduğu ölçülmedi: 5 Eylül dökümü
-(`arducopter_fda_20260905.param`) alınmadı; `RC_PROTOCOLS` sahada 4 → 1
-yapılıp geri alınmadı (D-426 §2), dolayısıyla şablon ile kart en az bir
-satırda **farklıdır**.
+⚠ Parametrelerin **kartta** hangi değerde olduğu 5 Eylül'de ölçülmedi: döküm
+alınmadı; `RC_PROTOCOLS` sahada 4 → 1 yapılıp geri alınmadı (D-426 §2), dolayısıyla
+şablon ile kart en az bir satırda **farklıdır**. **6 Eylül 20:22 dökümü** (`config/pixhawk/arducopter_fda_20260906.param`, D-428 §5g) bunu ölçtü: `RC_PROTOCOLS=1`; ayrıca `FS_THR_ENABLE` 1→**3** ve `BATT_FS_LOW_ACT` 2→**1** bilinçsiz değişmiş (D-428 §5b) — 30 m görev öncesi mimar kararı bekler; `FS_GCS_ENABLE` (dökümde 1) ve ikinci pusula kalibrasyonu bu dökümde yok → üçüncü döküm şart.
 
 **Saha testinin YERİNE GEÇMEYEN, bugün elde olan şey**, arıza emniyet
 komutlarının **yazılım yolunun** kapı altında olmasıdır:
@@ -1408,21 +1427,21 @@ pilot rol kodu ve uçuş log dosyasının adı.
 | # | ne | neden ölçülmedi | ne zaman | eşik |
 |---|---|---|---|---|
 | 1 | **Gerçek arena / HTAB karesi** | Arena benzeri saha + kırmızı H çekimi yok; **maket çekimi yapılmayacaktır** (kullanıcı kararı) | 21 Eylül'e kadar **açık kalır** | — |
-| 2 | **Jetson Nano gerçek FPS** | Donanım 5 Eylül'de geliyor → 5 Eylül: Jetson araca **takılmadı** ("sonranın işi", D-426 §4) | Jetson ilk koşum | **≥ 0,61 FPS** p50 **ve** p95; türetimi §4.8.2.3. **Eşik gevşetilmez** |
+| ~~2~~ | ~~**Jetson Nano gerçek FPS**~~ → **ÖLÇÜLDÜ 6 Eylül (D-431)** — kart Orin Nano Developer Kit 4 GB | 5 Eylül: Jetson araca **takılmadı** (D-426 §4) → 6 Eylül kartta: pt **1,35/1,06** · engine **1,58/1,33** FPS (120 örnek), 10 dk 900 örnek, ONNX HATA | 6 Eylül | **≥ 0,61 FPS** p50 **ve** p95 → **GEÇTİ**; eşik gevşetilmedi. Sınır: kamera bağlı değil, kareler diskten (`results/jetson_20260906/jetson_fps_20260906_orin_nano/ozet.json`) |
 | 3 | **SiK 433 MHz RF menzili / kayıp oranı** | Gerçek SiK çifti yok; UDP loopback ve `socket://` köprü kanıt sayılmaz → 5 Eylül: çift bağlandı (BEYAN, ~18:45), `scripts/sik_rf_olc.py` **koşulmadı**, mesafe kaydı yok (§4.5) | uçuş testleriyle | RTT p95 < 0,2 s. DDR'deki *">%98, 300 m"* iddiasının kanıtı **yoktur** (R20) |
 | 4 | **Uçuş testleri** (hover, Loiter/Auto, canlı algı, 3 tam prova, sıkı prova) | Araç monte edilmedi | **6–19 Eylül** | ≤ 10 dk, 0 müdahale, yanlış güzergâh 0 |
-| 5 | **TensorRT `.engine` ↔ PT karar kıyası** | `tensorrt` PC'de yok | Jetson Gün-1 | FP16 payı kapanır |
+| ~~5~~ | ~~**TensorRT `.engine` ↔ PT karar kıyası**~~ → **ÖLÇÜLDÜ 6 Eylül ve DÜŞTÜ (D-431)** | `tensorrt` PC'de yok → Jetson'da ölçüldü: F1 0 · F2 0,9953 · **D-303 oransal 3/126 DÜŞTÜ** (§4.8.3) | 6 Eylül | FP16 payı **kapanmadı**: engine üretime alınmadı, uçuş `.pt`; T66 ile tekrar |
 | 6 | **Gerçek Pixhawk üzerinde EXTENDED akışı ve `--kapi`** | Pixhawk yok → 5 Eylül: Pixhawk 4.5.7 ile çalışır durumda (§4.4), `scripts/mavlink_dogrula.py` **koşulmadı** (D-426'da koşum kaydı yok) | uçuş öncesi | `mavlink_dogrula` 3/3 |
-| 7 | **`jetson_baslat.sh` systemd / `--kur` / `--kapi` / `--dogrudan`** | Windows'ta koşulamaz | Jetson ilk koşum | kuru çıktı == gerçek `ExecStart` |
+| 7 | **`jetson_baslat.sh` systemd / `--kur` / `--kapi` / `--dogrudan`** | Windows'ta koşulamaz → 6 Eylül kartta `--kuru`: dosya/yorumlayıcı `[VAR]`, `[YOK]` yalnız `/dev/ttyACM0`, çıkış 3 (D-431); `--kapi` Pixhawk bağlı olmadığı için **ÖLÇÜLEMEDİ** | Pixhawk Jetson'a bağlanınca | kuru çıktı == gerçek `ExecStart`; `--kapi` 3/3 |
 | 8 | **Gerçek İKA motor sürücüsü** | Donanım arayüzü kararı verilmedi (R12/T149) | yarışma görevi öncesi | kuru koşuda `motor SAHİPSİZ` |
-| 9 | **Pixhawk geofence parametrelerinin kendisi** | Repo dışı (R17) → 5 Eylül: şablon yüklendi (OLCUM, §4.4 15:08) ama döküm `arducopter_fda_20260905.param` **alınmadı** (D-426 §4) | uçuş öncesi | `config/pixhawk/` kanıt olarak |
+| 9 | **Pixhawk geofence parametrelerinin kendisi** | Repo dışı (R17) → 5 Eylül: şablon yüklendi (OLCUM, §4.4 15:08) ama döküm **alınmadı** (D-426 §4) → 6 Eylül 20:22 dökümü `config/pixhawk/arducopter_fda_20260906.param` repoda: `FENCE_ENABLE,1` · `FENCE_ALT_MAX,50` (D-428 §5g); üçüncü döküm bekleniyor | uçuş öncesi | `config/pixhawk/` kanıt olarak |
 | 10 | **K5 figür bilgi px** | verdikt JSON'ında `OLCULEMEDI` | — | — |
-| 11 | **Nano kurulum belgesinin dış iddiaları** (bionic `python3.8`, `jetson-io` IMX477 menüsü, Qengineering CUDA wheel) | Kaynakla doğrulanmadı; betiğin **gerçek indirmesi** 14/14 aarch64 wheel ile çoğunu dolaylı teyit ediyor | 5 Eylül kart | belge zaten "kapı çıktısını deftere yapıştır" der |
+| ~~11~~ | ~~**Nano kurulum belgesinin dış iddiaları**~~ (bionic `python3.8`, `jetson-io` IMX477 menüsü, Qengineering CUDA wheel) → **6 Eylül'de KONUSUZ KALDI (D-431):** kart Nano değil Orin Nano Developer Kit 4 GB (JetPack 7.2.1, Python 3.12); belge bu kart için GEÇERSİZ bandı alır | Kaynakla doğrulanmadı; 14/14 aarch64 wheel bu kartta kullanılmadı | — | — |
 | 12 | **RC failsafe** (kumanda kapatma → `Radio Failsafe`, CH3 değeri) — 5 Eylül eklendi | İki kez istendi, sonuç gelmedi (D-426 §4); `config/pixhawk/arducopter_fda.param:128` yorumu **varsayım** | uçuş öncesi (§4.3.3 adım 3.1 öncesi) | `Radio Failsafe` mesajı görülür ve `FS_THR_ENABLE=1` tepkisi (RTL) — §4.12 |
 | 13 | **ESC kalibrasyonu** — 5 Eylül eklendi | YAPILMADI; ESC markası bilinmiyor ("60 A V2" etiketi, BEYAN) | uçuş öncesi | ArduPilot "hepsi birden" yordamı ya da marka belgesiyle gereksizlik kanıtı (D-426 §4) |
 | 14 | **Pusula kalibrasyonu** — 5 Eylül eklendi | YAPILMADI — Jetson takılı değil; takılınca yeniden gerekir (D-426 §4) | Jetson takılı, dışarıda | ofset < 300 (`SAHA_HAZIRLIK_PLANI_20260903.md` §2.4) |
 | 15 | **Accel + level teyidi** — 5 Eylül eklendi | BEYAN "yapıldı"; kart sabit değildi, döküm yok (D-426 §4) | kart sabitlenince | `INS_*` dökümü |
-| 16 | **Parametre dökümü** `config/pixhawk/arducopter_fda_20260905.param` — 5 Eylül eklendi | dosya yok (D-426 §4); `RC_PROTOCOLS` sahada 4 → 1, geri alınmadı (D-426 §2) | uçuş öncesi | döküm repoda, şablonla `Compare Params` farkı listeli |
+| 16 | **Parametre dökümü** — 5 Eylül eklendi | 5 Eylül: dosya yok (D-426 §4) → **6 Eylül 20:22:** `config/pixhawk/arducopter_fda_20260906.param` repoda (D-428 §5g); `RC_PROTOCOLS=1` (şablon 4), `FS_THR_ENABLE`/`BATT_FS_LOW_ACT` sapması (D-428 §5b); ikinci pusula kalibrasyonu ve `FS_GCS_ENABLE` bu dökümde yok | uçuş öncesi (üçüncü döküm) | döküm repoda, şablonla `Compare Params` farkı listeli |
 | 17 | **Pil gerilimi MP ↔ multimetre** — 5 Eylül eklendi | ölçülmedi (D-426 §4) | uçuş öncesi | ±0,1 V |
 | 18 | **Motor sırası/yönü** — 5 Eylül eklendi | BEYAN 4/4, video yok (D-426 §1) | pervane takılmadan önce | video — §4.13.4 madde 7 |
 
@@ -1480,12 +1499,11 @@ Bu maddeler kapanmadan ilgili kayıtlar "tamamlanmış" sayılmaz ve bu raporda 
    açılışında (D-426 §3) plandan **farklı** çıkan iki kalem: **ESC "60 A V2" ×4**
    (plan 80 A DShot) ve **güç modülü PM06** (plan PM02) — ikisi de sözlü BEYAN;
    **etiket fotoğrafı ve tam marka/model gerekli**. Teyit edilen: RC alıcı
-   **FS-iA6B** (B harfi görüldü, BEYAN). Teyit kaydı olmayan: Jetson Nano 4GB,
+   **FS-iA6B** (B harfi görüldü, BEYAN). Teyit kaydı olmayan: ~~Jetson Nano 4GB~~ (6 Eylül'de kartta ÖLÇÜLDÜ: **Jetson Orin Nano Developer Kit 4 GB**, beyan yanlışlandı — D-431),
    Holybro M9N (GPS `u-blox` OLCUM'u marka etiketi değildir), RPi HQ (IMX477),
    FCHUB-12S V2, 5008 340KV ×4, 12×10 pervane, 2× SiK 433 MHz, 4S 10 Ah 25C.
    Bu rapordaki "Pixhawk 6C + PM02" ifadeleri künye teyidiyle düzeltilecektir.
-2. **BEYAN GEREKLİ (insan):** Jetson Nano üzerinde ölçülen p50/p95 FPS değerleri
-   (PT ve ONNX; `--cihaz` beyanıyla) — `JETSON_NANO_KURULUM.md` §8.1 kartına.
+2. ~~**BEYAN GEREKLİ (insan):** Jetson Nano üzerinde ölçülen p50/p95 FPS değerleri (PT ve ONNX; `--cihaz` beyanıyla)~~ → **ÖLÇÜLDÜ 6 Eylül (D-431):** `--cihaz 0` (Orin GPU); PT **1,35/1,06** · engine **1,58/1,33** FPS; ONNX **HATA** (sm_87 çekirdeği yok) — `results/jetson_20260906/jetson_fps_20260906_orin_nano/ozet.json`.
 3. **BEYAN GEREKLİ (insan):** SiK 433 MHz çift üzerinde ölçülen RTT p50/p95,
    paket kaybı ve **menzil** (metre) — `scripts/sik_rf_olc.py` çıktısı.
 4. **BEYAN GEREKLİ (insan):** 6–19 Eylül uçuş testlerinin her biri için tarih,
@@ -1557,7 +1575,7 @@ Bu maddeler kapanmadan ilgili kayıtlar "tamamlanmış" sayılmaz ve bu raporda 
 | 51 | 4.7.1 flash sonrası `Compare Params` **Missing 9 params** (SYSID_THISMAV, SR1/SR2_POSITION, SR1/SR2_EXTRA3, RTL_ALT, LAND_SPEED, WPNAV_SPEED, ARMING_CHECK) | `REVIEW_LOG.md` D-425 (satır 29718) | Mission Planner `Compare Params` | 2026-09-05 |
 | 52 | Firmware 4.5.7 sabit: `firmware/arducopter.apj` **1.585.371 B**, `board_id` **56**, `firmware/firmware-version.txt` = `4.5.7-FIRMWARE_VERSION_TYPE_OFFICIAL` | `scripts/pixhawk_firmware_indir.py` (`SURUM = "stable-4.5.7"` satır 74, `BOARD_ID = 56` satır 54) · kapı `tests/test_pixhawk_firmware_yolu.py` (**10** test, `grep -c "def test_"`; firmware yoksa `skipTest`) | `python scripts/pixhawk_firmware_indir.py` · `ls -l firmware/` | 2026-09-05 |
 | 53 | Künye farkı: ESC **"60 A V2"** ×4 (plan 80 A), güç modülü **PM06** (plan PM02), RC alıcı **FS-iA6B** teyit | `REVIEW_LOG.md` D-426 §3 (satır 29852–29854) | **takım üyesi beyanı**, kutu açılışı — etiket fotoğrafı yok (§4.13.4 madde 1) | 2026-09-05 |
-| 54 | 5 Eylül'de yapılmayan/ölçülemeyen: RC failsafe, ESC kalibrasyonu, parametre dökümü (`arducopter_fda_20260905.param` **yok**), pil gerilimi ±0,1 V, pusula, accel teyidi, BEC kırmızı tel | `REVIEW_LOG.md` D-426 §4 (satır 29863–29869) | — (tutanak; ölçüm yok) | 2026-09-05 |
+| 54 | 5 Eylül'de yapılmayan/ölçülemeyen: RC failsafe, ESC kalibrasyonu, parametre dökümü (**yok**; 6 Eylül'de alındı: `arducopter_fda_20260906.param`, D-428 §5g), pil gerilimi ±0,1 V, pusula, accel teyidi, BEC kırmızı tel | `REVIEW_LOG.md` D-426 §4 (satır 29863–29869) | — (tutanak; ölçüm yok) | 2026-09-05 |
 | 55 | Şablon failsafe/çit parametreleri: `RC_PROTOCOLS,4` (:101; sahada 1'e alındı, geri alınmadı — D-426 §2, satır 29836) · `FS_THR_ENABLE,1` (:129; yorum :128 **varsayım**) · `FS_GCS_ENABLE,1` (:134) · `BATT_FS_LOW_ACT,2` / `CRT_ACT,1` (:120/:123) · `FENCE_ENABLE,1` / `FENCE_ACTION,1` (:140/:154) · `RTL_ALT,3500` (:161) | `config/pixhawk/arducopter_fda.param` (31 parametre, Copter-4.5 kaynağı, satır 17) | `tests/test_faz_b_pixhawk_sablon.py` (**12** test) — iç tutarlılık; kart değeri **dökümsüz** | 2026-09-05 |
 | 56 | Kuru koşu 4 Eylül (01:00 ve 09:52): **9 GEÇTİ · 0 DÜŞTÜ · 1 SAHİPSİZ (motor)**, `cikis_kodu` 1; 09:52 `sure_ms` cikarim 3304,4 (CPU) | `results/faz_b_oncesi/cuma_kontrol/kuru_kosu_0904.txt` · `results/saha_kuru_kosu_20260904_010058/ozet.json` · `results/saha_kuru_kosu_20260904_095222/ozet.json` | `scripts/saha_kuru_kosu.py` | 2026-09-04 |
 | 57 | Jetson açılış kuru koşuları 4 Eylül: udp `[YOK]: 7` · sik `[YOK]: 9`, ikisi de `cikis 3` (ana makine Windows, beyanlar tam); saha açılış kartı `exit=0` | `results/faz_b_oncesi/cuma_kontrol/jetson_udp_0904.txt` · `jetson_sik_0904.txt` · `saha_baslat_0904.txt` | `bash jetson_paket/jetson_baslat.sh --kuru` · `scripts/saha_baslat.py --komutlar` | 2026-09-04 |

@@ -65,7 +65,7 @@ süreçlerinin tamamının yarışmacı takımlar tarafından gerçekleştirilme
 | **Kablolama demeti** | **Takım üretimi** (kesim, lehim, makaron, etiket) | Yordam §5.2.4; kabul ölçütleri tabloda |
 | **Uçuş kontrolcüsü yapılandırması** | **Takım üretimi** — parametre ve görev planı dosyası olarak üretildi ve testle kilitlendi | `config/pixhawk/` (§5.2.6) |
 | **Görev yazılımı ve model** | **Takım üretimi** | `config/model_registry.json`, `tests/` (§5.2.8) |
-| **Görev bilgisayarı sistem imajı** | **Takım kurulumu** — tedarikçi imajı üzerine çevrimdışı yığın | `jetson_paket/JETSON_NANO_KURULUM.md` (§5.2.7) |
+| **Görev bilgisayarı sistem imajı** | **Takım kurulumu** — tedarikçi imajı (JetPack 7.2.1 kurulu geldi, kök NVMe) üzerine `~/venv312` + çevrimiçi pip (6 Eylül, D-431; çevrimdışı cp38 yığını Orin Nano'da kullanılmadı) | `jetson_paket/JETSON_ORIN_NANO_KURULUM.md` §1–2 (§5.2.7; `JETSON_NANO_KURULUM.md` GEÇERSİZ bandıyla arşiv) |
 
 ### 5.1.2 Özgünlük kanıtı (§6 intihal hükmü karşısında)
 
@@ -215,7 +215,7 @@ Aviyonik entegrasyonu **5 Eylül 2026** günü yapılacaktır. Yordam önceden y
 | Ana güç | pil (XT60/XT90) → **PM06** (plan PM02; kutudan PM06 çıktı, D-426 §3) → **FCHUB-12S** → 4× ESC (plan 80 A; kutudan **"60 A V2"** çıktı, D-426 §3 — tam marka/model BEYAN GEREKLİ) | polarite doğru; ohmmetre ile kısa devre yok — 5 Eylül: pil 18:03'te takıldı, kısa devre ölçümü tutanakta yok (ÖLÇÜLEMEDİ) |
 | Pixhawk gücü | PM06 → `POWER1` — PM06'nın 8 pinli kablosu 6 pinli `POWER1`'e uymadı, 6 pinli kablo takıldı; uydurma adaptör yapılmadı (D-426 §2) | **5,1–5,3 V**; `BATT_MONITOR=4` — 5 Eylül ÖLÇÜM: `PreArm: Battery 1 low voltage failsafe` listeden kayboldu (18:03); gerilim MP ↔ multimetre **ÖLÇÜLEMEDİ** |
 | Jetson gücü | FCHUB pad → **5 V / 5 A UBEC** → Nano barrel jack (J25), **`J48` jumper takılı**, ortak GND | yük altında **5,0–5,2 V** |
-| ESC sinyal | ESC PWM → `MAIN OUT 1–4` (motor sırasına göre) | pervanesiz motor testi |
+| ESC sinyal | ESC PWM → `AUX 1–4` (FMU PWM OUT; Pixhawk ile gelen "PWM IN / PWM OUT" adaptör kartı üzerinden; `SERVO9–12` = M4, M2, M1, M3 — D-428 §1, §5d) | pervanesiz motor testi — 5 Eylül 18:06 ÖLÇÜM (D-426 §1); sıra/yön 4/4 BEYAN, video yok |
 | RC | FS-iA6B'nin **`i-BUS SERVO`** portu (`CH1`–`CH6` değil: tek kanal PWM, Pixhawk görmez — 5 Eylül'de önce `CH6`'ya takılıydı, D-426 §2) → Pixhawk `PPM/SBUS RC`; kumanda bind edilir (`SAHA_HAZIRLIK_PLANI_20260903.md` §2.3 satır 117) | kanallar ekranda, uçlar 1000–2000 — 5 Eylül ÖLÇÜM: `RCInput: decoding IBUS(1)` (18:03); FS-iA6B teyit (B harfi); uç değerleri tutanakta yok |
 | Telemetri | SiK → `TELEM1` (JST-GH 6 pin, TX↔RX çapraz), 57600 | YKS'de HEARTBEAT |
 | **Jetson ↔ Pixhawk** | `TELEM2` → Nano 40-pin **pin 10 RX / pin 8 TX / pin 6 GND** (3,3 V; **5 V hattı bağlanmaz**) | `mavlink_dogrula` HEARTBEAT `sysid=1` |
@@ -270,8 +270,8 @@ Ayrıca kutudan çıkanla teyit edilecekler: `FRAME_CLASS=1`, `FRAME_TYPE` (X), 
 `FS_THR_ENABLE 1`, `FS_GCS_ENABLE 1`, `BATT_FS_LOW/CRT` (4S: 14,4 / 14,0 V), `ARMING_CHECK=1`.
 
 **Üretim çıktısı olarak sahada alınacak kanıt:** yapılandırma bittikten sonra
-`Save to file` → `config/pixhawk/arducopter_fda_20260905.param` → depoya işlenecektir.
-5 Eylül: **dosya YOK** (kontrol edildi, `REVIEW_LOG.md` D-426 §4) — döküm alınmadı, açık kalem.
+`Save to file` → tarihli `config/pixhawk/arducopter_fda_<YYYYMMDD>.param` → depoya işlenecektir.
+5 Eylül: **dosya YOK** (kontrol edildi, `REVIEW_LOG.md` D-426 §4) — döküm alınmadı; **6 Eylül 20:22:** `config/pixhawk/arducopter_fda_20260906.param` depoda (D-428 §5g), üçüncü döküm bekleniyor.
 Firmware: kart PX4 ile geldi, ArduCopter **4.5.7** flash edildi ve sürüm sabitlendi (4.7.1'de
 31 parametrenin 9'u yok — D-424/D-425; ayrıntı Bölüm 3 §3.3.1.1.11); ÖLÇÜM `ArduCopter V4.5.7 (2a3dc4b7)`.
 Görev koordinatları **Adıyaman'da** girilecektir; şablon şu an Null Island'da (0°, 0°)
@@ -287,6 +287,8 @@ Bu, projenin en kırılgan üretim adımıdır ve bu yüzden **tamamı önceden 
 Orin NX'ti — Bölüm 2 §2.2.5.1). JetPack 4.6.x'in sistem Python'u **3.6**'dır; depo `ultralytics`
 ister (Python ≥ 3.8). Bu yüzden üretim kararı: Nano'da **ayrı bir Python 3.8 sanal ortamı**
 (`~/venv38`) kurulur ve paketler oraya konur.
+
+> ⚠ **6 Eylül düzeltmesi (D-431):** kart açıldığında **Jetson Orin Nano Developer Kit 4 GB** (JetPack 7.2.1, Ubuntu 24.04, Python 3.12; 3 Eylül beyanı 'Nano 4GB' 6 Eylül'de kartla YANLIŞLANDI — D-431) çıktı. Yukarıdaki kısıt ve venv38/cp38 kararı bu kartta **uygulanmadı**; kurulum kartta `nvidia-jetpack` + `~/venv312` (GPU torch 2.11.0+cu130) ile yapıldı, genel kapı 15/15 · 15/15 ve FPS kapısı (pt 1,35/1,06 · engine 1,58/1,33 ≥ 0,61) **GEÇTİ**. Çevrimdışı tekerlek ölçümü (aşağıda) tarihli kayıt olarak durur; `results/jetson_20260906/ORTAM_KUNYESI.txt`.
 
 **Çevrimdışı paket üretimi (ölçüldü).** `scripts/nano_tekerlek_indir.py` ile PC'de gerçek
 indirme yapılmıştır:
@@ -309,8 +311,9 @@ tutturulamayabilir. Bu **ölçülmemiştir** ve tahmin edilmemiştir.
 - Denenecek sıra: (1) JetPack 4.6 / Py3.8 için **CUDA torch** topluluk tekerleği, (2)
   `onnxruntime` ile `.onnx` (CPU'da torch'tan hızlı olabilir), (3) CPU torch.
 - **Eşik gevşetilmez.** Kapı düşerse "düştü" yazılır ve sebep deftere geçer.
-- **TensorRT `.engine` bu kartta ÖLÇÜLEMEDİ sayılır**: `venv38` içinde `tensorrt` modülü yoktur
-  (JetPack 4.6'nın TensorRT bağı sistem Python 3.6'ya bağlıdır). Uçuş **PT ya da ONNX** ile yapılır.
+- ~~**TensorRT `.engine` bu kartta ÖLÇÜLEMEDİ sayılır**: `venv38` içinde `tensorrt` modülü yoktur
+  (JetPack 4.6'nın TensorRT bağı sistem Python 3.6'ya bağlıdır). Uçuş **PT ya da ONNX** ile yapılır.~~
+  → **6 Eylül (D-431):** Orin Nano'da TensorRT 10.16.2 var; `.engine` derlendi ve deftere yazıldı (sha `bb9bd868…0300`), ama engine↔pt denkliği **D-303 oransal 3/126 DÜŞTÜ** → üretime alınmadı; **uçuş `.pt` GPU** ile. ONNX GPU bu kartta HATA (sm_87 çekirdeği yok) → ONNX yolu doğrulanmamış.
   Kayıt defterinde `.engine` türevlerinin sha256 alanları `DERLENINCE_YAZILIR` yer tutucusundadır
   ve yer tutucu **fail-closed reddedilir** — yani derlenmemiş bir motor sessizce üretime giremez.
 
@@ -338,7 +341,7 @@ ile ölçülecektir. Ölçek (`mpp`) zinciri bu değere bağlı olduğu için ö
 
 | karar | gerekçe (ölçülmüş / belgelenmiş) |
 |---|---|
-| Jetson için **ayrı 5 V / 5 A UBEC** → barrel jack (J25) + `J48` jumper | FCHUB'ın 2 A BEC'i Nano'nun MAXN modunu besleyemez; micro-USB'den besleme MAXN'de çöker (kart belgesi) |
+| Jetson için **ayrı 5 V / 5 A UBEC** → barrel jack (J25) + `J48` jumper — ⚠ 6 Eylül: kart **Orin Nano Developer Kit** çıktı, J25/J48 Nano'ya aitti; Orin Nano besleme yolu ve gerilimi **DOĞRULANACAK** (D-431) | FCHUB'ın 2 A BEC'i Nano'nun MAXN modunu besleyemez; micro-USB'den besleme MAXN'de çöker (kart belgesi — Nano için yazıldı) |
 | Pixhawk ↔ Jetson **TELEM2 → 40-pin UART** (`/dev/ttyTHS1`), MAVLink2 57600 | Tek kablo, USB hub yok; yedek yol micro-USB → `/dev/ttyACM0` |
 | 3,3 V mantık; **5 V hattı bağlanmaz** | Nano GPIO 3,3 V'tur |
 
@@ -635,7 +638,7 @@ listesini tamamlar.
 | R2 | Ayak + GPS tutucu **PLA → ABS** | `Plaka6_PLA_Ayak_GPS.3mf` (23.08 07:40) ↔ `Plaka_Ayak.3mf` + `Plaka_GPS_Holder.3mf` (23.08 11:19–12:56) | **YOK** — dosya adları geçişi kanıtlar, gerekçeyi kanıtlamaz |
 | R3 | **TPU taban pedi ×4** eklenmesi | `tpu_taban_pedi_x4.3mf` | **YOK** — amaç (iniş darbe sönümü) metinde yazılı, karar kaydı yok |
 | R4 | Ayak+GPS tek plakadan **iki ayrı plakaya** bölünmesi | eski/yeni kuşak plaka dosyaları | **YOK** |
-| R5 | Görev bilgisayarı Orin NX → **Jetson Nano 4GB** | Bölüm 2 §2.2.5.1; `jetson_paket/JETSON_NANO_KURULUM.md` | **VAR** (Bölüm 2'de kayıtlı; üretim etkisi §5.2.7) |
+| R5 | Görev bilgisayarı Orin NX → ~~**Jetson Nano 4GB**~~ **Jetson Orin Nano Developer Kit 4 GB** (6 Eylül'de kartla ölçüldü; 3 Eylül beyanı yanlışlandı — D-431) | Bölüm 2 §2.2.5.1; `jetson_paket/JETSON_NANO_KURULUM.md` (GEÇERSİZ bandı alır); `results/jetson_20260906/ORTAM_KUNYESI.txt` | **VAR** (Bölüm 2'de kayıtlı; üretim etkisi §5.2.7 — 6 Eylül düzeltmesiyle) |
 
 **BEYAN GEREKLİ (insan): PLA→ABS geçişinin gerekçesi** (ısı dayanımı, kırılganlık, saha
 sıcaklığı vb.) — dosya adları geçişi kanıtlar, gerekçeyi kanıtlamaz.
@@ -738,7 +741,7 @@ süresi), §5.2.7 (kamera FOV, FPS kapısı, `.engine`), §5.2.9 (t_hazırlık, 
 | 13 | Pixhawk parametre dosyası **31 satır**; görev planı **8 satır**; 12 test | `config/pixhawk/arducopter_fda.param`, `fda_gorev.waypoints`, `README.md` | `grep -c "^[A-Z_0-9]*," …`; `tests/test_faz_b_pixhawk_sablon.py` | 2026-09-03 |
 | 14 | Kötü-durum süre bütçesi 221,5 s ≤ 600 s | `config/pixhawk/README.md` §"Sıra ve süre bütçesi" | test içinde hesaplanır (P7) | 2026-09-03 |
 | 15 | Çevrimdışı tekerlek: 14/14 paket · 51 dosya · 246 MB; sürüm listesi | `results/faz_b_oncesi/CUMA_KONTROL_KARTI.md` §A; `wheels/INDIRME_RAPORU.txt` | `scripts/nano_tekerlek_indir.py` | 2026-09-03 |
-| 16 | Nano yığını kararları (venv38, GStreamer'sız pip cv2, `.engine` yok, MAXN 10 W, J48) | `jetson_paket/JETSON_NANO_KURULUM.md` §0–§2 | — (belge, testle kilitli: `tests/test_faz_b_nano_kurulum.py`) | 2026-09-03 |
+| 16 | Nano yığını kararları (venv38, GStreamer'sız pip cv2, `.engine` yok, MAXN 10 W, J48) — **GEÇERSİZ (D-431)**; Orin Nano kararları: `~/venv312` (`--system-site-packages`), köprü sistem Python 3.12 + cv2 4.6 GStreamer'lı, `.engine` derlendi ama uçuş `.pt` (D-303 denkliği düştü), 10W kipi, J48 yok | `jetson_paket/JETSON_ORIN_NANO_KURULUM.md` §0–§2, §8 | — (belge, testle kilitli: `tests/test_faz_b_nano_kurulum.py` K8) | 2026-09-06 (ölçüm) · 2026-09-07 (kayıt) |
 | 17 | Kamera köprüsü uçları ve test sayıları (köprü 7, `jetson_baslat` 42, paket 18) | `scripts/kamera_koprusu.py`, `SAHA_HAZIRLIK_PLANI_20260903.md` §1.4 | `tests/test_faz_b_kamera_koprusu.py` | 2026-09-03 |
 | 18 | Systemd birim komut satırları, `--fov 78` varsayılanı, `[YOK]` 9 satır, exit 3 | `results/faz_b_oncesi/cuma_kontrol/cuma_kontrol.txt` §6 | `jetson_paket/jetson_baslat.sh --kuru` | 2026-09-03 |
 | 19 | Kuru koşu 9 GEÇTİ / 1 SAHİPSİZ, `rota GECTI yol_no=2 [31 ms]` | `results/faz_b_oncesi/cuma_kontrol/cuma_kontrol.txt` §5 + `kuru_kosu/` | `scripts/saha_kuru_kosu.py` | 2026-09-03 |

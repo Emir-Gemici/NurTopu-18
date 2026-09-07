@@ -57,8 +57,8 @@
 
 ## 4. Önceki devam noktasından hâlâ açık (4 Eylül gecesi listesi)
 
-- Nano'da `python3.8` kurulumu internet ister, çevrimdışı yedeği yok.
-- Taşıyıcı kartın modeli depoda yazmıyor; eMMC boş çıkarsa kurtarma pini bilinmiyor.
+- ~~Nano'da `python3.8` kurulumu internet ister, çevrimdışı yedeği yok.~~ **KAPANDI (D-431):** kart Orin Nano / JetPack 7.2.1 / Py 3.12; `python3.8` gerekmedi, `~/venv312` 6 Eylül'de çevrimiçi kuruldu (`jetson_paket/orin_nano_venv_kurulum.sh`).
+- ~~Taşıyıcı kartın modeli depoda yazmıyor; eMMC boş çıkarsa kurtarma pini bilinmiyor.~~ **KAPANDI (D-431):** NVIDIA Jetson Orin Nano Developer Kit (modül p3767-0004), JetPack 7.2.1 kurulu geldi, kök NVMe — flash gerekmedi (`jetson_paket/JETSON_ORIN_NANO_KURULUM.md` §0).
 - USB dışında Jetson'a dosya yolu (ethernet/scp) belgede yok — HDD paketi bunu
   kısmen kapattı (NTFS: `ntfs-3g` + `izinleri_duzelt.sh`).
 - `YKS_IP` elle beyan, DHCP'de sessiz red (kod+belge).

@@ -131,7 +131,9 @@ Pervaneler **en son**, pil **en son**; pil fişi = tek güç kesici.
 | ☐ | **ESC** kalibrasyonu; **motor testi pervanesiz**: sıra A-B-C-D, yönler | video |
 | ☐ | Failsafe'ler (RC/GCS/pil), **geofence** (irtifa 50 m + prova alanı poligonu), `ARMING_CHECK=1` | arm mesajları temiz |
 | ☐ | `SERIAL1/2` MAVLink2, `SR` hızları, `SYSID_THISMAV=1` | `mavlink_dogrula` 3/3 |
-| ☐ | Parametreleri kaydet → `config/pixhawk/arducopter_fda_20260905.param` → repo | commit |
+| ☐ | Parametreleri kaydet → `config/pixhawk/arducopter_fda_<YYYYMMDD>.param` → repo (6 Eylül: `arducopter_fda_20260906.param`, D-428 §5g; 5 Eylül dökümü hiç alınmadı) | commit |
+
+**ESC kalibrasyonu — 6 Eylül'de ölçülen yordam** (`REVIEW_LOG.md` D-428 §3; ESC etiketi Hobbywing Skywalker 60A V2 — beyan; AUX 1–4). "Hepsi birden" iki kez tutmadı; tutan sıra: `POWER1` fişi çıkarılmış + pil takılı değil → Pixhawk yalnız USB'de, MP'den ESC-kal passthrough (`Messages` her 5 sn `Initialising ArduPilot`) → düğme → **sonra** pil → yüksek gaz tonu → 2 bip → gaz alta → uzun bip. D-428'in cümlesiyle: *"**Skywalker V2 kalibrasyon kararını kendi açılış anında verir**; pil-öncesi sinyal şart."* Pil takılıyken başlatmak ESC'yi normal moda sokar (hızlı üçlü bip = "gaz sıfırda değil"); USB-önce-pil-sonra ama `POWER1` takılıyken kart yeniden başlıyor (çıkarım, kanıt yok). Dördünün birlikte dönmesi beyandır, video yok.
 
 ### 2.5 Jetson Nano kurulumu (14:30–17:00) — `JETSON_NANO_KURULUM.md` — 🔴 GEÇERSİZ (D-431): 6 Eylül'de Orin Nano'ya `jetson_paket/JETSON_ORIN_NANO_KURULUM.md` §1–2 ile kuruldu; aşağıdaki adımlar Nano tarihçesidir
 | ✓ | adım | kapı |

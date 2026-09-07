@@ -100,7 +100,7 @@ tarihli not düşüldü. 5 Eylül tutanağında tartı satırı yoktur; "Ölçü
 | A14 | GNSS / pusula | **Holybro M9N** | 1 | S | — | — | — | BEYAN GEREKLİ (DDR'de M10 için 32 g) | Kutuda | BEYAN GEREKLİ | BEYAN GEREKLİ |
 | A15 | RC kumanda + alıcı | **FlySky FS-i6** + FS-iA6B (iBUS) — FS-iA6B 5 Eylül'de teyit (B harfi, D-426 §3) | 1 set | S | — | — | — | BEYAN GEREKLİ | Kutu açıldı 5 Eylül; **bind edildi** (BEYAN), `RCInput: decoding IBUS(1)` (ÖLÇÜM, D-426 §1); alıcı `i-BUS SERVO` portu | BEYAN GEREKLİ | BEYAN GEREKLİ |
 | A16 | Telemetri | **SiK 433 MHz** | 2 | S | — | — | — | BEYAN GEREKLİ (DDR beyanı 35 g/adet) | Kutuda | BEYAN GEREKLİ | BEYAN GEREKLİ |
-| A17 | Görev bilgisayarı | **Jetson Nano 4GB** (Dev Kit) | 1 | S | — | — | — | BEYAN GEREKLİ | **Kargoda — 4/5 Eylül teslim** | BEYAN GEREKLİ | BEYAN GEREKLİ |
+| A17 | Görev bilgisayarı | ~~**Jetson Nano 4GB** (Dev Kit)~~ → **Jetson Orin Nano Developer Kit 4 GB** (JetPack 7.2.1, Ubuntu 24.04, Python 3.12; 3 Eylül beyanı 'Nano 4GB' 6 Eylül'de kartla YANLIŞLANDI — D-431) | 1 | S | — | — | — | BEYAN GEREKLİ | Teslim alındı; **6 Eylül kuruldu**, genel kapı 15/15 ve FPS kapısı GEÇTİ (ÖLÇÜM, D-431) | BEYAN GEREKLİ | BEYAN GEREKLİ |
 | A18 | microSD | ≥ 64 GB UHS-I + okuyucu | 1 | S | — | — | — | — | **Henüz alınmadı** (alışveriş listesi) | BEYAN GEREKLİ | BEYAN GEREKLİ |
 | A19 | Kamera | **Raspberry Pi HQ** (IMX477, CSI) + standart lens | 1 | S | — | — | — | BEYAN GEREKLİ (DDR'de Arducam için 50 g) | Kutuda; **FOV ölçülmedi** | BEYAN GEREKLİ | BEYAN GEREKLİ |
 | A20 | Jetson besleme | **UBEC 5 V / 5 A** | 1 | S | — | — | — | — | **Henüz alınmadı** | BEYAN GEREKLİ | BEYAN GEREKLİ |
@@ -141,7 +141,7 @@ içindir. Aşağıda her satırın FDR'deki karşılığı ve bütçeye etkisini
 | No | DDR kalemi | Model (DDR) | Adet | Ağırlık (g) | FDR'deki durum | Bütçe etkisinin yönü |
 |---|---|---|---|---|---|---|
 | 1 | Autopilot | Pixhawk 6C | 1 | 59 | **Değişmedi** (A12) | — |
-| 2 | İşlemci | Jetson **Orin NX** + carrier + soğutucu | 1 | 180 | **Jetson Nano 4GB** ile değişti (A17) | **azaltıcı** (Nano çok daha ucuz); teknik bedeli §7.5.2'de |
+| 2 | İşlemci | Jetson **Orin NX** + carrier + soğutucu | 1 | 180 | ~~**Jetson Nano 4GB**~~ **Jetson Orin Nano Developer Kit 4 GB** ile değişti (A17; 6 Eylül ölçüm, D-431) | yön **BEYAN GEREKLİ** (Orin Nano tutarı yok); teknik bedeli §7.5.2'de — 6 Eylül düzeltmesiyle |
 | 3 | Kamera | **Arducam** IMX477 12MP | 1 | 50 | **RPi HQ** (aynı sensör) (A19) | nötr/azaltıcı |
 | 4 | Pitot tüpü | Pitot + hortum | 1 | 10 | FDA aracında **yok**; finalde kalır | ertelendi |
 | 5 | Airspeed | Holybro MS5525DSO | 1 | 20 | FDA aracında **yok**; finalde kalır | ertelendi |
@@ -212,8 +212,8 @@ Aşağıdaki kalemler 4 Eylül'e kadar alınacaktır; her satırın **teknik ger
 | D7 | Küçük ekran + klavye + ethernet kablosu | zorunlu | Nano ilk açılış | BEYAN GEREKLİ | BEYAN GEREKLİ |
 | D8 | Multimetre, tartı, baret/yelek | zorunlu | kablolama kontrolü, **UHDR kütle ölçümü**, saha emniyeti | BEYAN GEREKLİ | BEYAN GEREKLİ |
 | D9 | 2. pil 4S 10 Ah + ≥ 150 W şarj | öneri | tek pil günde 2 uçuşa kilitliyor; prova sayısını ikiye katlar | BEYAN GEREKLİ | BEYAN GEREKLİ |
-| D10 | JetPack 4.6 / Py3.8 **GPU torch** tekerleği (indirme) | öneri | v36 YOLOv8m; CPU'da FPS kapısı düşebilir | BEYAN GEREKLİ | BEYAN GEREKLİ |
-| D11 | JetPack 4.6.x SD imajı (indirme) | zorunlu | Nano sistem imajı | BEYAN GEREKLİ | BEYAN GEREKLİ |
+| ~~D10~~ | ~~JetPack 4.6 / Py3.8 **GPU torch** tekerleği (indirme)~~ → gereksiz: kart Orin Nano (JetPack 7.2.1), GPU torch 2.11.0+cu130 kartta kuruldu, FPS kapısı GEÇTİ (D-431) | — | 6 Eylül düzeltmesi | 0 (indirme gerekmedi) | 0 |
+| ~~D11~~ | ~~JetPack 4.6.x SD imajı (indirme)~~ → gereksiz: kart JetPack 7.2.1 kurulu, NVMe kök ile geldi (D-431) | — | 6 Eylül düzeltmesi | 0 (indirme gerekmedi) | 0 |
 | D12 | Taşınabilir bellek (≥ 2 GB boş) | zorunlu | saha paketi **1,27 GB** kopyalanacak | BEYAN GEREKLİ | BEYAN GEREKLİ |
 
 **BEYAN GEREKLİ (insan): D1–D12 birim fiyatları, satın alma tarihleri ve fatura numaraları.**
@@ -309,7 +309,7 @@ kayıtlı değildir**; DDR'de kalem listesi ve ağırlıklar var, fiyat yok. Bu 
 | DDR No | Kalem | Planlanan (DDR) | Planlanan maliyet | Gerçekleşen (FDA aracı) | Gerçekleşen maliyet | Fark tutarı | Fark yönü | Nedeni (§7.5) |
 |---|---|---|---|---|---|---|---|---|
 | 1 | Autopilot | Pixhawk 6C | BEYAN GEREKLİ | Pixhawk 6C (A12) | BEYAN GEREKLİ | HESAPLANAMAZ | değişmedi | — |
-| 2 | Görev bilgisayarı | Jetson Orin NX + carrier | BEYAN GEREKLİ | Jetson Nano 4GB (A17) | BEYAN GEREKLİ | HESAPLANAMAZ | azaltıcı | S2 |
+| 2 | Görev bilgisayarı | Jetson Orin NX + carrier | BEYAN GEREKLİ | Jetson Orin Nano Developer Kit 4 GB (A17; D-431) | BEYAN GEREKLİ | HESAPLANAMAZ | BEYAN GEREKLİ (yön) | S2 |
 | 3 | Kamera | Arducam IMX477 | BEYAN GEREKLİ | RPi HQ IMX477 (A19) | BEYAN GEREKLİ | HESAPLANAMAZ | nötr/azaltıcı | S2 |
 | 4 | Pitot tüpü | Pitot + hortum | BEYAN GEREKLİ | alınmadı — ertelendi (E7) | 0 (harcanmadı) | HESAPLANAMAZ | ertelendi | S1 |
 | 5 | Airspeed | Holybro MS5525DSO | BEYAN GEREKLİ | alınmadı — ertelendi (E7) | 0 (harcanmadı) | HESAPLANAMAZ | ertelendi | S1 |
@@ -467,7 +467,7 @@ BEYAN GEREKLİ, ama **kalemler bugünden bellidir** — sahada karar verilecek b
 
 | risk (kapı) | düşerse ne olur | gereken satın alma | öncelik |
 |---|---|---|---|
-| **FPS < 0,61** (Nano CPU'da YOLOv8m) | Gerçek zamanlı tespit tazelik penceresine sığmaz | (a) yok — önce ONNX Runtime denenir (bedelsiz); (b) çare bulunamazsa **daha güçlü görev bilgisayarı** (Orin Nano/NX sınıfı) | **yüksek** — 5 Eylül'de belli olur |
+| ~~**FPS < 0,61** (Nano CPU'da YOLOv8m)~~ → **6 Eylül ÖLÇÜLDÜ, GEÇTİ (D-431):** kart zaten Orin Nano Developer Kit 4 GB; GPU ile pt **1,35/1,06** · engine **1,58/1,33** FPS ≥ 0,61 | Gerçek zamanlı tespit tazelik penceresine sığmaz | (a) ONNX Runtime bu kartta GPU'da **çalışmadı** (sm_87 çekirdeği yok); (b) daha güçlü kart **gerekmedi** — satın alma yok | ~~yüksek~~ **kapandı** (6 Eylül) |
 | **CSI kamera yolu açılmaz** | Görüntü hiç gelmez | **USB webcam** (D4, zaten listede) | orta — ucuz sigorta |
 | **Tek pil / 3 saat şarj** | Uçuş günü 2 uçuşla sınırlı; prova sayısı yetmez | **2. pil 4S 10 Ah + ≥ 150 W şarj** (D9) | orta |
 | **Pervane kırılması** | Uçuş günü iptal | **Yedek pervane seti** (D6, zaten listede) | yüksek — en sık kırılan parça |
@@ -493,7 +493,7 @@ Bütçe sapması bu projede üç ayrı sebepten doğmuştur; üçü de teknik ka
 | # | Sapma sebebi | Somut örnek | Bütçe yönü | Teknik bedeli |
 |---|---|---|---|---|
 | S1 | **Araç sınıfı farkı** — FDA'nın §5.3.2 çoklu rotor şartı DDR'de yoktu | 4× 5008 motor + 4× ESC (plan 80 A; 5 Eylül kutudan "60 A V2", D-426 §3) + quad gövde eklendi; kanat servoları, pitot, airspeed, paraşüt zinciri ertelendi | net etki **BEYAN GEREKLİ** | yeni bir araç montaj/kalibrasyon hattı |
-| S2 | **Tedarik zorunluluğu** — planlanan parça yerine bulunabilen parça | Orin NX → Nano 4GB; M10 → M9N; TBS Crossfire → FlySky; Mauch → FCHUB+PM06 (plan PM02; 5 Eylül kutudan PM06 — D-426 §3) | **azaltıcı** | Nano'da `ultralytics` için ayrı Python 3.8 yığını; **TensorRT `.engine` ölçülemez**; FPS kapısı riske girdi |
+| S2 | **Tedarik zorunluluğu** — planlanan parça yerine bulunabilen parça | Orin NX → ~~Nano 4GB~~ **Orin Nano Developer Kit 4 GB** (3 Eylül beyanı 6 Eylül'de kartla yanlışlandı — D-431); M10 → M9N; TBS Crossfire → FlySky; Mauch → FCHUB+PM06 (plan PM02; 5 Eylül kutudan PM06 — D-426 §3) | yön **BEYAN GEREKLİ** (Jetson tutarı yok) | ~~Nano'da `ultralytics` için ayrı Python 3.8 yığını; **TensorRT `.engine` ölçülemez**; FPS kapısı riske girdi~~ → 6 Eylül: Python 3.12 + GPU torch, `.engine` derlendi (denklik D-303 DÜŞTÜ → uçuş `.pt`), FPS kapısı **GEÇTİ** |
 | S3 | **Üretim kararı revizyonu** | Ayak/GPS tutucu **PLA → ABS**; **TPU taban pedi** eklendi; kol 3–4 daha ağır reçeteyle basıldı | küçük artırıcı | ısı dayanımı ↑, baskı süresi ↑ |
 
 ### 7.5.2 En pahalı sapma parasal değil: Orin NX → Nano 4GB
@@ -505,6 +505,8 @@ Bu satır bütçeyi **düşüren** ama teknik riski **artıran** tek kalemdir ve
 - Bedel 2: `venv38` içinde `tensorrt` yok → **`.engine` ÖLÇÜLEMEDİ**, uçuş PT/ONNX ile yapılacak.
 - Bedel 3: üretim modeli **YOLOv8m-seg**'dir; Nano CPU'da **0,61 FPS** kapısı düşebilir. Ölçülmedi, tahmin edilmedi.
 - Karşı önlem maliyeti: yedek USB webcam, GPU tekerleği araştırması, ikinci pil önerisi (D9/D10).
+
+⚠ **6 Eylül düzeltmesi (D-431):** yukarıdaki üç bedel **3 Eylül beyanına** (Nano 4GB) göre yazılmıştı. Kart açıldığında **Jetson Orin Nano Developer Kit 4 GB** (JetPack 7.2.1, Ubuntu 24.04, Python 3.12) çıktı: Bedel 1 (venv38 + cp38 tekerlek zinciri) **kullanılmadı**; Bedel 2 — `.engine` **derlendi ve ölçüldü** (denklik D-303 oransal 3/126 DÜŞTÜ → uçuş `.pt`); Bedel 3 — FPS kapısı GPU ile **GEÇTİ** (pt 1,35/1,06 · engine 1,58/1,33 ≥ 0,61). D10/D11 indirmeleri gereksizleşti. Başlıktaki "Orin NX → Nano 4GB" sapması gerçekte **Orin NX → Orin Nano 4 GB**'tır; parasal yön BEYAN GEREKLİ (tutar yok). Kanıt `results/jetson_20260906/` (`ORTAM_KUNYESI.txt`, `jetson_fps_20260906_orin_nano/ozet.json`, `jetson_log_20260906/engine_karar_denkligi.json`).
 
 ### 7.5.3 Ayni (nakit dışı) kaynak tüketimi — ölçülen
 
@@ -646,7 +648,7 @@ tarafından ve hangi kayıtla doldurulacağının satır satır belli olmasıdı
 | 15 | v31 = v30 bit-bit kopyası, **6,4 saat GPU** | `REVIEW_LOG.md` D-140 (alıntı D-252) | eğitim koşumu kıyası | 2026-08-16 |
 | 16 | T128/T128-B toplam **8,6 saat GPU**, cevap alınamadı | `REVIEW_LOG.md` D-252 / D-253 | — | 2026-08-21 |
 | 17 | v8 adayı 124 epoch / **6,19 saat**, kabul zinciri RED | `REVIEW_LOG.md` D-331 | `scripts/olcum/65_kabul_denetcisi.py` | 2026-08-28 |
-| 18 | `.engine` Nano'da derlenemiyor (bütçe sapmasının teknik bedeli) | `jetson_paket/JETSON_NANO_KURULUM.md` §0 | — (belge, testle kilitli) | 2026-09-03 |
+| 18 | ~~`.engine` Nano'da derlenemiyor~~ **GEÇERSİZ (D-431):** Orin Nano'da `.engine` **derlendi** (TensorRT 10.16.2, 57 283 989 B) ama engine↔pt D-303 oransal denkliği 3/126 **düştü** → uçuş `.pt`; teknik bedel "derlenemez" değil "denklik düştü" | `jetson_paket/JETSON_ORIN_NANO_KURULUM.md` §4, §8 | — (belge, testle kilitli) | 2026-09-06 |
 | 19 | FPS kapısı 0,61 (türetilmiş eşik) — henüz ölçülmedi | `FAZ_B_GUN_PLANI.md` §2; `results/fdr/GORUNTU_ISLEME_KANIT.md` §4 | D-374 / D-376 | 2026-09-01 |
 | 20 | Şartname §6 ağırlık limitleri (İHA 25 kg / İKA 10 kg) | `results/sartname_bosluk/sartname_metin.txt` §6 | PyMuPDF çıkarımı | 2026-08-26 |
 | 21 | Tablo A'nın gerçek satır sayısı **27** (A1…A27, atlanan numara yok); önceki metindeki "26 satır" hatalıydı | `FDR/BOLUM_7_BUTCE_GERCEKLEME.md` | satır sayımı, regex `^\| A\d+ \|` | 2026-09-04 |

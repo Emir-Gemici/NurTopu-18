@@ -87,6 +87,14 @@ kuralıyla ilgilidir, kişisel veri değildir; o iki sayı §2.1.7'de açık kal
 Şema iki hattı ayırır: **icra hattı** (görev emri yukarıdan aşağı akar) ve **denetim hattı**
 (kanıt aşağıdan yukarı akar, hüküm kaptana döner). R8 bilerek icra hattının **dışındadır**.
 
+![Organizasyon şeması — icra yetkileri, rol bazlı, isimsiz](sekiller/organizasyon.svg)
+
+*Şema rol bazlıdır, isim içermez (Y-2.1-M02). `sekiller/organizasyon.svg`, 7 Eylül 2026; kutular §2.1.3
+tablosundan (rol kodu + rol adı + icra yetkisi), hatlar ve kurallar §2.1.2'den, R2/R5 uçuş anı
+eşzamanlılığı §2.1.4–§2.1.5'ten (sarı şerit + not kutusu). Düz ok icra hattı, kesikli ok denetim hattı;
+R8'in hükmü R1'e döner. Nöbetçi: `tests/test_gece_sekiller.py` (isim taraması, R1–R8 tamlığı,
+eşzamanlılık notu). Aşağıdaki metin şeması aynı içeriğin düz-metin karşılığıdır ve korunur.*
+
 ```text
                       ┌───────────────────────────────────────────────┐
                       │             R1 · TAKIM KAPTANI                │
@@ -147,8 +155,8 @@ Aşağıdaki yapı **rol** üzerinden tanımlıdır; bir kişi birden çok rolü
 |---|---|---|---|---|
 | R1 | **Takım Kaptanı** | Görev günü tutanağı, saha kararları, kişi ataması, alışveriş/tedarik onayı | "Takım Hazır" ilanı; uçuş/uçmama kararı; koordinat girişi onayı | Saha tutanağı, karar kaydı |
 | R2 | **Pilot** | RC kumanda, arm/disarm ön kontrolü, manuel kurtarma (yalnız emniyet) | Uçuşu kesme; mod anahtarı kullanımı | Uçuş logu (`.bin`), hover/loiter kayıtları |
-| R3 | **Aviyonik sorumlusu** | Pixhawk 6C + güç dağıtımı + kablolama + kalibrasyon; failsafe/geofence | Parametre yükleme; kablo hattı kabulü | `config/pixhawk/arducopter_fda_20260905.param` (sahada alınacak döküm) |
-| R4 | **Görev bilgisayarı / kamera** | Jetson Nano 4GB kurulumu, kamera köprüsü, FPS kapısı, model yükleme | Sürüm/paket kurulumu; kamera kaynağı seçimi | `jetson_fps.py` çıktısı, `jetson_baslat.sh --kapi` çıktısı |
+| R3 | **Aviyonik sorumlusu** | Pixhawk 6C + güç dağıtımı + kablolama + kalibrasyon; failsafe/geofence | Parametre yükleme; kablo hattı kabulü | `config/pixhawk/arducopter_fda_20260906.param` (6 Eylül 20:22 dökümü, D-428 §5g; üçüncü döküm bekleniyor) |
+| R4 | **Görev bilgisayarı / kamera** | Jetson (Orin Nano Developer Kit 4 GB — D-431) kurulumu, kamera köprüsü, FPS kapısı, model yükleme | Sürüm/paket kurulumu; kamera kaynağı seçimi | `jetson_fps.py` çıktısı, `jetson_baslat.sh --kapi` çıktısı |
 | R5 | **YKS operatörü** | Yer kontrol istasyonu, hakem ekranı, aktarım/ACK, kronometreler | Ekran düzeni; ACK'siz onayı reddetme | `hakem_log`, YKS ekran kaydı |
 | R6 | **İKA sorumlusu** | İKA hattı (final dalgası); sürücü entegrasyonu, yük ve temas | İKA sürücü seçimi (donanım kararı) | `scripts/ika_surucu_kabul.py` kabul turu çıktısı |
 | R7 | **Yazılım / görüntü işleme** | Algı zinciri, rota kararı, sözleşmeler, testler | Kod değişikliği (mühre kadar); eşik **değiştirme yetkisi YOKTUR** | `tests/` suit çıktısı, `REVIEW_LOG.md` D-kayıtları |
@@ -387,7 +395,7 @@ beyan edilen toplam **2293 g**). Bugünkü gerçek künye kullanıcı beyanıdı
 | kalem | DDR BOM (15.07.2026) | **FDR — gerçek (03.09.2026)** | revizyon gerekçesi |
 |---|---|---|---|
 | Uçuş kontrolcüsü | Pixhawk 6C (BOM) / **Pixhawk 6X** (DDR mimari şeması) | **Pixhawk 6C** + PM02 güç modülü | DDR'nin iki belgesi çelişiyordu (BOM 6C, `avionics_software.md` şeması 6X); gerçek donanım **6C**'dir, çelişki bu raporla kapanır |
-| Görev bilgisayarı | Jetson **Orin NX** + carrier + soğutucu (180 g) | **Jetson Nano 4GB** (JetPack 4.6.x, sistem Python 3.6) | Tedarik. Sonucu ağırdır: `ultralytics` Py ≥ 3.8 ister → Nano'da ayrı Python 3.8 venv + çevrimdışı tekerlek zinciri kuruldu (Bölüm 5 §5.2.7) |
+| Görev bilgisayarı | Jetson **Orin NX** + carrier + soğutucu (180 g) | ~~**Jetson Nano 4GB** (JetPack 4.6.x, sistem Python 3.6) — 3 Eylül beyanı~~ → **Jetson Orin Nano Developer Kit 4 GB** (JetPack 7.2.1, Ubuntu 24.04, Python 3.12; 3 Eylül beyanı 'Nano 4GB' 6 Eylül'de kartla YANLIŞLANDI — D-431) | Tedarik. 3 Eylül'de sonucu ağır sanıldı (`ultralytics` Py ≥ 3.8 → ayrı Python 3.8 venv + çevrimdışı tekerlek zinciri, Bölüm 5 §5.2.7); 6 Eylül'de kart Python 3.12 ve apt'te TensorRT 10.16 ile geldi, cp38 zinciri kullanılmadı, `~/venv312` + GPU torch 2.11 kuruldu |
 | GNSS | Holybro **M10** GPS + pusula (32 g) | **Holybro M9N** | Tedarik |
 | Kamera | **Arducam** IMX477 12MP (50 g) | **Raspberry Pi HQ** (IMX477, CSI) + standart lens | Aynı sensör (IMX477), farklı kart. Lens FOV'u **ÖLÇÜLMEDİ** — 5 Eylül'de `kamera_dogrula` ile ölçülecek |
 | Güç dağıtımı / sensör | **Mauch PL-100** + Mauch PL 4-6S BEC + ayrı PDB | **Matek XCLASS FCHUB-12S V2** (PDB + akım sensörü) + **PM02** | Tedarik + sadeleştirme; akım ölçümü PM02'ye taşındı (`BATT_MONITOR=4`) |
@@ -407,10 +415,10 @@ beyan edilen toplam **2293 g**). Bugünkü gerçek künye kullanıcı beyanıdı
 | konu | DDR'de beyan / plan | **FDR — bugünkü gerçek** | kanıt |
 |---|---|---|---|
 | Model | YOLOv8-seg **nano**, NCNN, conf > 0,40 (DDR akış şeması) | **YOLOv8m-seg**, `navitas-seg-v36-512`, PyTorch; conf 0,30 | `config/model_registry.json`, `navitas-teknofest/references/avionics_software.md` |
-| Hızlandırma | TensorRT `.engine` (Jetson'da derlenir) | **Nano'da ÖLÇÜLEMEDİ** — venv38'de `tensorrt` modülü yok (JetPack 4.6 bağı Py3.6). PT/ONNX ile uçulur | `jetson_paket/JETSON_NANO_KURULUM.md` §0 |
+| Hızlandırma | TensorRT `.engine` (Jetson'da derlenir) | ~~**Nano'da ÖLÇÜLEMEDİ** — venv38'de `tensorrt` modülü yok (JetPack 4.6 bağı Py3.6). PT/ONNX ile uçulur~~ **6 Eylül (D-431, Orin Nano, TensorRT 10.16.2):** `.engine` `.pt`'den **derlendi** (57 283 989 B, sha256 `bb9bd868…0300`, deftere yazıldı); FPS engine 1,58/1,33 · pt 1,35/1,06 GEÇTİ; engine↔pt **D-303 oransal 3/126 DÜŞTÜ** → **uçuş `.pt`**, engine üretime alınmadı | `jetson_paket/JETSON_ORIN_NANO_KURULUM.md` §4–§5, §8 |
 | Rota karar yolu | tek yol varsayımı | **İki yol ayrıldı:** `analyze_path` üretim, `rota_bul` tanısal | D-295, `CONTRACTS.md` §11.2-EK |
 | Pixhawk erişimi | doğrudan seri | 🔴 **Çoğullayıcı zorunlu** — seri port tek sahipli, üç tüketici ayrı UDP ucundan okur | D-403, `CONTRACTS.md` §7.4 |
-| Kamera yolu | doğrudan `VideoCapture` | **Kamera köprüsü** (sistem Python 3.6 + GStreamer `nvarguscamerasrc` → MJPEG/HTTP) | D-406, `scripts/kamera_koprusu.py` |
+| Kamera yolu | doğrudan `VideoCapture` | **Kamera köprüsü** (sistem Python + GStreamer `nvarguscamerasrc` → MJPEG/HTTP; 3 Eylül'de 'Python 3.6' sanılıyordu, kartın sistem Python'u 3.12 — 6 Eylül'de köprü sistem Python 3.12 + cv2 4.6 ile **dosya kaynağında açıldı**, CSI kamera bağlı değildi → `nvarguscamerasrc` yolu ÖLÇÜLEMEDİ, D-431) | D-406, `scripts/kamera_koprusu.py`; `results/jetson_20260906/jetson_log_20260906/kamera_koprusu_dosya.log` |
 | Hedef Bölge (HB) dedektörü | DDR: üretime bağlanacak | **BAĞLANDI (1 Eylül 2026, D-386)** — kullanıcı renk teyidi + ölçek/şekil çifti kapısıyla; hedef **253/256** doğru pedde, ped örtülüyken **259/260 `HEDEF_YOK`** (fail-closed), karar maliyeti **sıfır**. Ara dönemdeki bağlanmama gerekçesi (gerçek pedde %0 isabet, kırmızı arabada yanlış pozitif) D-295 §2'de durur | D-295 §2 → **D-386** |
 | YKS görev kipi | tek kip | **`--fda` kipi eklendi** — paraşüt/İKA kapalı, bütçe tek 10 dk | D-408, `CONTRACTS.md` §6.7 |
 | Süre limitleri | belgede | **Sözleşme sabiti**: İHA 900 s, İKA 600 s, FDA operasyon 600 s | `codes/karar_sozlesmesi.py`, D-318 |
@@ -481,7 +489,7 @@ Yukarıdaki revizyonların her biri takvime **yeni bir iş kalemi** doğurmuştu
 
 | # | tetikleyen revizyon | doğan yeni iş akışı | plandaki yeri | kanıt |
 |---|---|---|---|---|
-| 1 | Jetson Orin NX → **Nano 4GB** | JetPack 4.6.x + ayrı Python 3.8 venv + **çevrimdışı aarch64 tekerlek zinciri** (14/14) | Per 3 Eyl (hazırlık) → Cmt 5 Eyl (kurulum) | D-406, D-407; `jetson_paket/JETSON_NANO_KURULUM.md` |
+| 1 | Jetson Orin NX → ~~**Nano 4GB**~~ **Orin Nano Developer Kit 4 GB** (6 Eylül'de kartla ölçüldü, D-431) | JetPack 4.6.x + ayrı Python 3.8 venv + **çevrimdışı aarch64 tekerlek zinciri** (14/14) hazırlandı → **6 Eylül'de kartla geçersiz**: JetPack 7.2.1 / Python 3.12; kurulum kartta apt + `~/venv312` ile yeniden yapıldı, kapılar geçti | Per 3 Eyl (hazırlık) → Cmt 5 Eyl (kurulum planı) → **Paz 6 Eyl (gerçek kurulum)** | D-406, D-407; `jetson_paket/JETSON_NANO_KURULUM.md` (GEÇERSİZ bandı alacak) → D-431 |
 | 2 | Arducam → **RPi HQ (CSI)** | **Kamera köprüsü** (sistem Py3.6 + GStreamer `nvarguscamerasrc` → MJPEG/HTTP) | Per 3 Eyl | D-406, `scripts/kamera_koprusu.py` |
 | 3 | Seri porta tek erişim → **üç tüketici** | **MAVLink çoğullayıcı** + doğrulama aracı | Çar 2 – Per 3 Eyl | D-403, `CONTRACTS.md` §7.4, `scripts/mavlink_dogrula.py` |
 | 4 | Tek görev kipi → **FDA kipi** | YKS `--fda` kipi; paraşüt/İKA düğmeleri kapalı; tek 10 dk bütçe | Çar 2 Eyl | D-408, `CONTRACTS.md` §6.7, `tests/test_faz_b_yks_fda_kipi.py` |
@@ -534,6 +542,8 @@ eder; donanım beyanı 3 Eylül'de değişmiştir (taşıyıcı kartta microSD y
 Plan belgesindeki karşılığı üstü çizilerek düzeltilmiştir: *"~~microSD flash~~ → Ubuntu'lu host
 ayarla (eMMC boş çıkarsa gerekecek, D-413)"* (`SAHA_HAZIRLIK_PLANI_20260903.md` §4).
 Satır kaynağında silinmemiş, düzeltilmiştir (§2.1.6 kural 4).
+
+⚠ **Jetson satırlarının güncellenmiş hâli (D-431).** "Per 3 Eyl — Jetson Nano yığını", "Cum 4 Eyl — microSD'ye JetPack 4.6.x yazımı" ve "Cmt 5 Eyl — Nano kurulumu" satırları 3 Eylül beyanına göre yazılmıştı. 5 Eylül'de Jetson araca takılmadı (D-426 §4); **6 Eylül'de** kart açıldı ve **Jetson Orin Nano Developer Kit 4 GB** (JetPack 7.2.1 kurulu, NVMe kök, Python 3.12) çıktı — imaj yazımı gerekmedi, cp38 tekerlek zinciri kullanılmadı, kurulum kartta yapıldı; genel kapı 15/15 · 15/15 ve FPS kapısı (pt 1,35/1,06 · engine 1,58/1,33 ≥ 0,61) o gün **GEÇTİ** (`results/jetson_20260906/`). Satırlar silinmedi; kapı sütunundaki "FPS ölçüldü" 6 Eylül'e aittir.
 
 **Takvimin ölçülmüş kısıtı:** tek pil ve iMAX B6 (~50 W → ~3 A → ~3 saat dolum) uçuş gününü
 **en fazla 2 uçuşa** kilitler. İkinci pil + ≥150 W şarj cihazı prova sayısını ikiye katlar;

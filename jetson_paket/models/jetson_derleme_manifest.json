@@ -16,7 +16,7 @@
   "O:\\navitas\\results\\onnx_export_v36_20260826\\navitas_seg_v36_best_512_fp16.onnx"
  ],
  "int8_kalibrasyon": null,
- "jetson_uyari": "PC'de uretilen TensorRT .engine Jetson Orin NX'te calismaz; engine Jetson'da derlenmelidir.",
+ "jetson_uyari": "PC'de uretilen TensorRT .engine Jetson'da calismaz; engine Jetson'da derlenir. Kart 6 Eylul'de olculdu: Jetson Orin Nano Developer Kit 4 GB (sm_87, JetPack 7.2.1, TensorRT 10.16.2) — D-431; 'Orin NX' beyani (DDR) gecersiz.",
  "jetson_komutlari": [
   "yolo export model=navitas_seg_v36_best.pt format=engine imgsz=512 half=True device=0 batch=1 workspace=2"
  ],

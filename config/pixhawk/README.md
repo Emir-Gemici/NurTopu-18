@@ -4,7 +4,8 @@
 > **ilk kez** yapılandırılacak. Mission Planner'da elle tıklanan değerin tutanağı da testi de
 > yoktur; bu klasördeki dosyalar repoda durur, `tests/test_faz_b_pixhawk_sablon.py` ile
 > kilitlidir ve sahada **tek komutla** yüklenir. Sahada alınan gerçek parametre dökümü
-> `arducopter_fda_20260905.param` adıyla **ayrıca** commit edilir (§2.4 son satır).
+> tarihli adla **ayrıca** commit edilir (§2.4 son satır) — ilk döküm `arducopter_fda_20260906.param`
+> (6 Eylül 20:22; 5 Eylül dökümü hiç alınmadı, D-428 §5g).
 
 | dosya | ne | biçim |
 |---|---|---|
@@ -63,7 +64,7 @@ kodundan** okundu (dosya adları `.param` başlığında). Sözleşme sabitleri
 4. Yeniden bağlan → **`Refresh Params`** → **`Compare Params`** ile dosyayla karşılaştır:
    fark listesi **boş** olmalı (fark varsa yazılmamış demektir; tekrar yükle).
 5. TEYİT listesini (§3) tek tek işaretle.
-6. `Config` → `Full Parameter List` → **`Save to file`** → `arducopter_fda_20260905.param` → repoya.
+6. `Config` → `Full Parameter List` → **`Save to file`** → `arducopter_fda_<YYYYMMDD>.param` → repoya (6 Eylül: `arducopter_fda_20260906.param`, D-428 §5g; ikinci pusula kalibrasyonu ve `FS_GCS_ENABLE` sonrası **üçüncü döküm** şart).
 
 **Görev planı**
 
@@ -96,9 +97,17 @@ pilot **Loiter** moduna alıp bekler; sonra `RTL`/`Land` — `Auto`'ya geri dön
 | **Koordinatlar** | `fda_gorev.waypoints` satır 0 (home) ve 2–5 (köşeler); 6 (loiter) isteğe bağlı | Şablonda 0,0 çevresinde `±0.0000898315°` (= ±10 m, `DUNYA_YARICAPI_M` ile) — kare şeklini korur; Adıyaman'da **kaptan** gerçek köşeleri girer (§1.7) |
 | **Fence poligonu** | Mission Planner `Flight Plan` → `Fence` → poligon çiz → `Upload` | Poligon yüklenince `FENCE_TYPE` **3 → 7** (bit 2 = Inclusion/Exclusion Circles+Polygons); `FENCE_RADIUS` alan yerleşimine göre yeniden ölçülür |
 | **Kalibrasyonlar** | Accel, level, pusula, radyo, ESC (§2.4) | Parametre dosyasında **yoktur**, dosya bunları ezmez |
-| **Tutanak dökümü** | `arducopter_fda_20260905.param` | §2.4 son satır; şablon dosyasına dokunulmaz |
+| **Tutanak dökümü** | `arducopter_fda_20260906.param` (6 Eylül 20:22, D-428 §5g); sonraki dökümler tarihli | §2.4 son satır; şablon dosyasına dokunulmaz |
 
 Başka hiçbir değer sahada "gözle" değiştirilmez; zorunlu değişiklik = D-kaydı + bu README + test.
+
+### 2.1 ESC kalibrasyonu — 6 Eylül'de ölçülen yordam (ESC: Hobbywing Skywalker 60A V2 — etiket beyanı; AUX 1–4 = `SERVO9–12`)
+
+"Hepsi birden" kalibrasyonu 6 Eylül'de iki kez tutmadı; üçüncü deneme tuttu. `REVIEW_LOG.md` D-428 §3'ten alıntı:
+
+> Deneme 1 (pil ile): Pixhawk LED döndü, düğme basıldı, ESC'ler **hızlı üçlü** bip = Hobbywing "gaz sıfırda değil" — ESC sinyali **normal modda** gördü, kalibrasyona girmedi. Deneme 2 (USB önce, sonra pil): "olmadı" — sebep muhtemelen pil takılınca PM06→POWER1 ile kartın **yeniden başlaması** (kanıt yok, çıkarım). Deneme 3 **başarılı**: POWER1 fişi çıkarıldı, Pixhawk USB'de ESC-kal passthrough'a alındı (MP `Messages` her 5 sn `Initialising ArduPilot` = `esc_calibration` bekleme döngüsü; `Restart board` satırı MP bağlanmadan önce gittiği için görülmedi), düğme basıldı, **sonra** pil → ESC'ler yüksek gazla açıldı → 2 bip → gaz alta → uzun bip. **Skywalker V2 kalibrasyon kararını kendi açılış anında verir**; pil-öncesi sinyal şart.
+
+Yordam (sıra bağlayıcıdır): **(1)** pervane yok, `POWER1` fişi çıkarılmış, pil takılı değil; **(2)** Pixhawk yalnız USB ile MP'ye bağlı → ESC kalibrasyon passthrough'u başlat, `Messages`'ta `Initialising ArduPilot` döngüsü görülsün; **(3)** düğmeye bas; **(4)** **sonra** pil → yüksek gaz tonu → 2 bip → gaz alta → uzun bip = tamam; **(5)** pil çıkar, `POWER1` tak. Sonuç "5'te 5" ve dört motorun birlikte dönmesi 6 Eylül'de **beyandır** (video yok, D-428 §1).
 
 ---
 

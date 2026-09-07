@@ -38,7 +38,7 @@
 | | §5.3.2 Görev Test Uçuşu | §2.2 Yarışma görevi |
 |---|---|---|
 | tarih | **30 Eylül – 3 Ekim 2026** (şartname Tablo 1) · prova **21 Eylül** Adıyaman | final haftası |
-| araç | **çoklu rotorlu drone** — 3B baskı quadcopter, Pixhawk 6C, Jetson Nano 4GB, RPi HQ kamera | **sabit kanat** + mancınık + paraşüt + İKA |
+| araç | **çoklu rotorlu drone** — 3B baskı quadcopter, Pixhawk 6C, Jetson Orin Nano Developer Kit 4 GB (6 Eylül ölçüm, D-431; 3 Eylül beyanı 'Nano 4GB' yanlışlandı), RPi HQ kamera | **sabit kanat** + mancınık + paraşüt + İKA |
 | kapsam | kalkış → tespit → YKS'ye aktarım + hakem onayı → iniş, **≤ 10 dk** | tam görev akışı, İKA dâhil |
 
 Algı, karar, haberleşme, yer istasyonu katmanı **iki araçta da aynı kod**tur;
@@ -79,11 +79,11 @@ dalgasına aittir.
 
 | şartname maddesi | gereksinim | karşılayan bileşen | kanıt (dosya / test) | durum | doğrulama yöntemi | yönerge kimliği (Y-) |
 |---|---|---|---|---|---|---|
-| **§5.3.2** | "çoklu rotorlu ve dikey iniş-kalkış yapabilen bir insansız hava aracı" | 3B baskı quadcopter (dronesolid gövde), 5008 340KV ×4, 12×10 pervane, 80 A DShot ESC, FCHUB-12S V2, Pixhawk 6C + PM02, Holybro M9N, FS-i6 (iBUS), 2× SiK 433 MHz, **Jetson Nano 4GB**, RPi HQ (IMX477) | Künye: `SAHA_HAZIRLIK_PLANI_20260903.md §0.2`. **Montaj 5 Eylül** — aviyonik kutuda, kutu açılmadı | **İNSAN-DONANIM** | gözle muayene (montaj ve künye teyidi, 5 Eylül; **yapılmadı**) | `Y-3.3.1-M02` · `Y-3.2.1-T10` |
+| **§5.3.2** | "çoklu rotorlu ve dikey iniş-kalkış yapabilen bir insansız hava aracı" | 3B baskı quadcopter (dronesolid gövde), 5008 340KV ×4, 12×10 pervane, 80 A DShot ESC, FCHUB-12S V2, Pixhawk 6C + PM02, Holybro M9N, FS-i6 (iBUS), 2× SiK 433 MHz, ~~**Jetson Nano 4GB**~~ **Jetson Orin Nano Developer Kit 4 GB** (6 Eylül'de kartta ÖLÇÜLDÜ, D-431), RPi HQ (IMX477) | Künye: `SAHA_HAZIRLIK_PLANI_20260903.md §0.2`. **Montaj 5 Eylül** — kutu açıldı, ESC/güç modülü plandan farklı çıktı (D-426 §3); Jetson künyesi 6 Eylül'de kartta ölçüldü (`results/jetson_20260906/ORTAM_KUNYESI.txt`) | **İNSAN-DONANIM** | gözle muayene (montaj ve künye teyidi, 5 Eylül; **yapılmadı**) | `Y-3.3.1-M02` · `Y-3.2.1-T10` |
 | **§5.3.2** | "**asgari 30 metre** irtifadan uçarak" tespit | `codes/karar_sozlesmesi.py::SARTNAME_ASGARI_IRTIFA_M = 30,0`; `asgari_irtifa_notu()` her karede irtifayı damgalar, 30 m altı `ASGARI_IRTIFA_ALTI` işaretlenir. Görev planı **32 m** (2 m baro payı) | `tests/test_t171_asgari_irtifa.py` (20 test). ⚠ Kaydın kendi cümlesi: bu şart daha önce sistemde **hiç uygulanmıyordu** ve uyum raporumuz uygulandığını **iddia ediyordu** (D-319) — düzeltildi ve kilitlendi | **KANITLI_TEST** | test | `Y-3.3.4-M01` · `Y-4-M10` |
 | **§5.3.2** | "20×20 metre boyutlarındaki simüle edilmiş test alanı" tek karede görülmeli | RPi HQ standart 6 mm lens, yatay FOV ≈ 55–63° → 30 m'de kare genişliği ≈ 31–37 m. `--fov` **beyan değil ölçüm** olacak: `kamera_dogrula` ile 5 Eylül'de ölçülür | Hesap ve gerekçe `SAHA_HAZIRLIK_PLANI_20260903.md §0.2`; çözünürlük sözleşmesi `CONTRACTS.md §8`, kilit `tests/test_t163_cozunurluk_sozlesmesi.py`. **5 Eylül'de ölçülmedi:** D-426 tutanağında kamera satırı yok, Jetson takılı değil (D-426 §4); `results/` altında `kamera_dogrula` çıktısı yok | **ÖLÇÜLEMEDİ** (5 Eylül'de ölçülmedi; yeni tarih BEYAN GEREKLİ) | hesaplama (lens FOV → kare genişliği); ölçüm `codes/kamera_dogrula.py` ile test — 5 Eylül'de **yapılmadı** | `Y-3.3.4-M02` · `Y-4-M03` |
 | **§5.3.2** | "uçuş esnasında **gerçek zamanlı** olarak YKİ'ye aktarmak" | `KararYayinci` (R4) + tazelik damgası + `karar_yas` (R5-ek) | **Uçtan uca kare gecikmesi ölçüldü**: 33 ölçülen gerçek karede (+3 ısınma karesi, yüzdeliklere katılmaz), üretim zinciri + gerçek telsiz halkası (UDP loopback ACK) → **p50 **0,085 s** · p95 0,113 s**, tazelik penceresinin (5 s) çok altında. Adım kırılımı ve ham veri `results/fda_butce/olcum_20260901.json`; nöbetçi `tests/test_b2_fda_butcesi.py` (13). ⚠ **Seri (SiK) hat ÖLÇÜLEMEDİ** | **KANITLI_TEST** (UDP) | test (uçtan uca gecikme ölçümü) | `Y-3.3.4-M03` · `Y-4-M09` |
-| **§5.3.2** | Gereken **kare hızı** — hakem onayı için tespit taze olmalı | Eşik **türetildi, tahmin edilmedi**: `GEREKLİ_FPS ≥ 1 / (5 · p)`, `p` = bir karenin geçerli rota yayınlama olasılığı | Sentetik arena `p = 0,9846` → 0,203 FPS; gerçek DJİ (sızıntısız, n=243) `p = 0,3457` → 0,579 FPS; en kötü uçuş 0,61 FPS. Ham çıktı `results/b4_fps/p_ve_kosu_20260901.json`; nöbetçi `tests/test_163_b4_olcum_nobetcisi.py` (13). **Saha `p`'si ÖLÇÜLEMEDİ** — gerçek arena karesi yok | **KANITLI_TEST** (iki çerçeve) · saha değeri **ÖLÇÜLEMEDİ** | hesaplama (eşik türetimi) + test (`p` ölçümü) + simülasyon (sentetik `p`) | `Y-3.3.4-M02` · `Y-4-M08` |
+| **§5.3.2** | Gereken **kare hızı** — hakem onayı için tespit taze olmalı | Eşik **türetildi, tahmin edilmedi**: `GEREKLİ_FPS ≥ 1 / (5 · p)`, `p` = bir karenin geçerli rota yayınlama olasılığı | Sentetik arena `p = 0,9846` → 0,203 FPS; gerçek DJİ (sızıntısız, n=243) `p = 0,3457` → 0,579 FPS; en kötü uçuş 0,61 FPS. Ham çıktı `results/b4_fps/p_ve_kosu_20260901.json`; nöbetçi `tests/test_163_b4_olcum_nobetcisi.py` (13). **Saha `p`'si ÖLÇÜLEMEDİ** — gerçek arena karesi yok. **Eşiğin Jetson'da karşılığı 6 Eylül'de ÖLÇÜLDÜ (D-431):** Orin Nano Developer Kit 4 GB, `scripts/jetson_fps.py` 120 örnek → pt p50/p95 **1,35/1,06 FPS** · engine **1,58/1,33 FPS** ≥ 0,61, **GEÇTİ**; `results/jetson_20260906/jetson_fps_20260906_orin_nano/ozet.json` | **KANITLI_TEST** (iki çerçeve + Jetson FPS kapısı) · saha değeri **ÖLÇÜLEMEDİ** | hesaplama (eşik türetimi) + test (`p` ölçümü) + simülasyon (sentetik `p`) | `Y-3.3.4-M02` · `Y-4-M08` |
 | **§5.3.2** | "gerçek zamanlı güzergah tespitinin alan hakem heyeti tarafından **doğrulanıp onaylanması**" | YKS hakem ekranı + iki aşamalı onay + `--fda` kipi (İKA kanıtı aranmaz; ACK `ref_tip` ile İHA'ya gider) | `tests/test_faz_b_yks_fda_kipi.py` (9 test; **M1–M4 mutasyonlarının 4'ü de yakalandı**), `tests/test_faz_b_ack_ref_tip.py` (14). ⚠ Bu kip **mimar tarafından yazıldı ve aynı el tarafından denetlendi**; bağımsız denetim borcu 21 Eylül öncesi ilk gerçek provada (hakem rolü oynanarak) kapatılacak | **KANITLI_TEST** (denetim borcu açık) | test (9 test, 4/4 mutant) + gözle muayene (hakem ekranı) | `Y-4-M11` |
 | **§5.3.2** | "tüm operasyon sürecinin (kalkış, tespit, veri aktarımı ve iniş) **maksimum 10 dakika**" | `codes/karar_sozlesmesi.py::SARTNAME_FDA_OPERASYON_SURESI_S = 600`; YKS `--fda` kipinde bütçe 900 yerine 600 s | `tests/test_t170_fda_sure_butcesi.py` (16 test), `tests/test_b2_fda_butcesi.py` (13). Görev planı kötü-durum süre bütçesi **221,5 s ≤ 600 s** (`config/pixhawk/README.md`). ⚠ *"600 saniyeye sığar"* hükmü **bilerek verilmedi**: uçuş, kamera yakalama ve seri hat ölçülemedi ve toplama **0 olarak girmedi** | **KANITLI_TEST** (yazılım payı) · uçuş **ÖLÇÜLEMEDİ** | hesaplama (süre bütçesi) + test (sabit kapıları) | `Y-4-M03` |
 | **§5.3.2** | "**yanlış güzergah tespiti** yapan takımlar 0 puan" | Fail-closed katmanlar: `rota_guven_reddi`, `rota_olcek_reddi`, `zemin_maskesi_reddi`, `rota_koridor_genisligi_reddi`, K-A uç-bant, `_rota_kararini_esikle`; **son savunma** `iha_sender.send_open_route` (eşik altı → NO_ROUTE); YKS eşik altı OPEN_ROUTE'a ACK vermez | `tests/test_rota_guven_esigi.py` (8), `tests/test_rota_ret_nedenleri.py` (10), `tests/test_koridor_genisligi.py`, `tests/test_zemin_kaplama_kapisi.py`, `tests/test_t141_rota_yoksa_surme.py` | **KANITLI_TEST** | test + simülasyon (kabul kapıları) | `Y-3.3.4-M02` · `Y-4-M08` |
@@ -97,7 +97,7 @@ dalgasına aittir.
 | **§6.2** | "müdahale → **100 ceza puanı** + süre hazırlığa eklenir" | `comms/yks_gui.py::mudahale` — −100 ceza + hazırlık kronometresinin devamı **kodda var** | ⚠ **doğrudan testi YOK** (`grep mudahale tests/` boş); kilitli olan yalnız manuel paraşüt −50 (`test_yks_gui_komut_durustlugu.py`) | **KOD_VAR_TEST_YOK** | gözle muayene (kod okuması); **test yok** | `Y-3.3.4-M01` |
 | **§6.2** | "Tekrar fırlatma süreci… süre **durdurulmaz**, 15 dakikaya dâhil" | YKS `firlatma()` kronometreyi **yeniden başlatmıyor** (`if self.t_iha0: return`), düğme kilitleniyor | Davranış kodda doğru; **doğrudan tekrar-fırlatma testi yok** (durum 2026-08-26'dan beri aynı). 4 Eylül'de eklenen `tests/test_yks_monotonik_kronometre.py` (3, commit `1b94dca`) kronometreyi duvar saatinden bağımsız kilitler, `firlatma()`'yı bir kez çağırır — **tekrarı sınamaz** | **KOD_VAR_TEST_YOK** | gözle muayene (kod okuması); **test yok** | `Y-3.3.4-M01` |
 | **§6.2 / §6.4** | "İHA görev süresi… azami **15 dakika**" · "İKA'nın HB'ye ulaşması için **10 dakika**" | `SARTNAME_IHA_GOREV_SURESI_S = 900`, `SARTNAME_IKA_GOREV_SURESI_S = 600`; İKA'da **iki ayrı son tarih** (bekleme / sürüş) — tek ortak deadline yasak. `CONTRACTS.md §7.1` | `tests/test_k5_k6_sure_limitleri.py` (9 test; sahte saat + gerçek UDP loopback, **4 mutasyonla düştüğü gösterildi**) | **KANITLI_TEST** | test (mutasyonlu) | `Y-4-M03` |
-| **§6.2 / §6.4** | "İHA-UB sınırları içinde icra etmeli; dışına taşan uçuşlar **Alan İhlali**" (300×300 m) | `SARTNAME_IHA_UB_KENAR_M = 300,0`, `iha_ub_ihlali(x, y)`. Üretimde `--ub-referans LAT,LON` ile her HEARTBEAT yerel `x,y` taşır; konum **aynı telemetri okuyucusundan** gelir, ikinci yol açılmaz | `tests/test_t162_alan_ihlali.py` (19 test; üretim döngüsü gerçekten koşuluyor). ⚠ Bu kapı **sahada ölüydü**: GUI denetimi vardı ama üretimde `x,y` üreten yol **yoktu** (D-307). Geofence'in kendisi Pixhawk parametresidir: `FENCE_ENABLE=1`, `FENCE_ALT_MAX 50` (`config/pixhawk/arducopter_fda.param:140,:148`) — **gerçek donanımda doğrulanmadı**: 5 Eylül'de parametre dökümü alınmadı (`arducopter_fda_20260905.param` **dosya YOK**, D-426 §4), RC failsafe testi sonuçsuz kaldı (ÖLÇÜLEMEDİ, D-426 §4) → §6.5.1 A13 | **KANITLI_TEST** (yazılım) · **ÖLÇÜLEMEDİ** (geofence) | test (üretim döngüsü koşuluyor); Pixhawk geofence'i gözle muayene ile — 5 Eylül'de **yapılmadı** (§6.5.1 A13) | `Y-4-M12` |
+| **§6.2 / §6.4** | "İHA-UB sınırları içinde icra etmeli; dışına taşan uçuşlar **Alan İhlali**" (300×300 m) | `SARTNAME_IHA_UB_KENAR_M = 300,0`, `iha_ub_ihlali(x, y)`. Üretimde `--ub-referans LAT,LON` ile her HEARTBEAT yerel `x,y` taşır; konum **aynı telemetri okuyucusundan** gelir, ikinci yol açılmaz | `tests/test_t162_alan_ihlali.py` (19 test; üretim döngüsü gerçekten koşuluyor). ⚠ Bu kapı **sahada ölüydü**: GUI denetimi vardı ama üretimde `x,y` üreten yol **yoktu** (D-307). Geofence'in kendisi Pixhawk parametresidir: `FENCE_ENABLE=1`, `FENCE_ALT_MAX 50` (`config/pixhawk/arducopter_fda.param:140,:148`) — **gerçek donanımda doğrulanmadı**: 5 Eylül'de parametre dökümü alınmadı (D-426 §4); 6 Eylül 20:22 dökümü `arducopter_fda_20260906.param` repoda — `FENCE_ENABLE,1` · `FENCE_ALT_MAX,50` kart değeri olarak okunuyor (D-428 §5g); RC failsafe 6 Eylül'de **ÖLÇÜLDÜ ve DÜŞTÜ** (D-428 §2) → §6.5.1 A13 | **KANITLI_TEST** (yazılım) · **ÖLÇÜLEMEDİ** (geofence) | test (üretim döngüsü koşuluyor); Pixhawk geofence'i gözle muayene ile — 5 Eylül'de **yapılmadı** (§6.5.1 A13) | `Y-4-M12` |
 | **§6.2** | "fırlatma/başlangıçtan görev bitimine kadar tüm süreçleri (seyrüsefer, tespit, veri aktarımı, sürüş) **tam otonom**" | Tespit otonom (R3) · aktarım otonom (R4) · seyrüsefer uçuş kontrolcüsünde (R2) · **sürüş açık** (R12) | Zincirin dört yarısından üçü kanıtlı, biri donanım bekliyor | **kısmen KANITLI_TEST** · sürüş **İNSAN-DONANIM** | analiz (zincir bütünlüğü) + test | `Y-3.3.4-M01` · `Y-3.3.3-M01` |
 | **§6.4** | "Aktarılan verinin doğruluğunun Alan Hakemi tarafından **teyit edilemediği** veya **veri akışının sağlanamadığı** durumlarda uçuş geçersiz" | `IkaReceiver.poll` `hb_timeout` → `link_lost` → güvenli duruş; `send_heartbeat` 1,0 s aralık < 3,0 s zaman aşımı (iki ardışık kayıp bağlantıyı düşürmez); iniş sonrası heartbeat en az İKA görev süresi kadar sürer | `tests/test_iha_landed_gate.py` (12), `tests/test_ika_no_route_recovery.py`, `tests/test_k5_k6_sure_limitleri.py` (9) | **KANITLI_TEST** | test | `Y-3.3.4-M03` · `Y-4-M12` |
 | **§6.4** | "Güvenlik Pilotunun… İHA'yı **manuel moda** alması → uçuş başarısız" | YKS `mod != AUTO` uyarısı var (`comms/yks_gui.py:1254`, `:3083`) | ⚠ **Üretim HEARTBEAT'i `mod` alanı ÜRETMİYOR** (`grep mod comms/iha_sender.py` → yalnız `karar_yas`); alanı yazan tek yer YKS'nin kendi demo üreticisidir. Sahada manuel-mod tespiti **hakem/pilot gözlemine** dayanır | **KOD_VAR_TEST_YOK** | gözle muayene (kod okuması); **test yok** | `Y-4-M12` |
@@ -452,12 +452,12 @@ tablosudur: kapanmış işleri saymak kolaydır, açık kalanı yazmak zordur.
 | **A7** | §6.4 (R21) | **Uçuş kipi (`mod`) üretim telemetrisinde yok.** YKS "manuel moda alındı" uyarısını gösterebiliyor ama alanı üreten üretim kodu yok | **2026-08-26**'dan beri kayıtlı | Alan MAVLink `HEARTBEAT.custom_mode`'dan türetilebilir; iş küçük ama sözleşme (`CONTRACTS §6`) değişikliği ister | `iha_sender.send_heartbeat` alanı taşısın + kapı | `Y-3.3.4-M03` · `Y-4-M12` |
 | **A8** | §6.2 (tekrar fırlatma) | Davranış doğru (kronometre yeniden başlamıyor) ama **doğrudan testi yok** | 2026-08-26 | Küçük kapsam; sırası gelmedi | Tek testlik iş | `Y-4-M01` |
 | **A9** | §2.2.6 / §7 | **Gazebo fiziksel temas koşusu ÖLÇÜLEMEDİ** (bu geliştirme makinesinde `gz` yok) | 2026-09-02 (D-391) | Ortam eksik | Gazebo'lu makinede prova koşusu | `Y-3.3.3-M01` · `Y-3.3.3-M02` · `Y-3.3.3-M03` · `Y-4-M07` |
-| **A10** | §5.3.2 (Jetson) | **Nano'da FPS ve CUDA durumu ölçülmedi.** v36 YOLOv8m-seg'dir; Nano **CPU** torch ile 512'de kapının (0,61 FPS) altına düşebilir | **2026-09-03** (D-406, dürüst risk kaydı) | Jetson 5 Eylül'de **takılmadı** (D-426 §4: pusula kalibrasyonu "Jetson takılınca yeniden"); `results/` altında Nano ölçümü yok (`results/jetson_fps_pc_smoke*` PC koşumudur); JetPack 4.6 için CUDA torch tekerleği insan görevi | `scripts/jetson_fps.py` p50/p95 ≥ türetilmiş eşik. **Eşik gevşetilmeyecek**; tarih BEYAN GEREKLİ | `Y-4-M04` |
+| ~~**A10**~~ | §5.3.2 (Jetson) | ~~**Nano'da FPS ve CUDA durumu ölçülmedi.** v36 YOLOv8m-seg'dir; Nano **CPU** torch ile 512'de kapının (0,61 FPS) altına düşebilir~~ → **KAPANDI 6 Eylül (D-431):** kart **Orin Nano Developer Kit 4 GB** (Nano değil); `torch.cuda.is_available()` **True**; `scripts/jetson_fps.py` p50/p95: pt **1,35/1,06** · engine **1,58/1,33** FPS ≥ 0,61 → **GEÇTİ**, eşik gevşetilmedi. Sınır: mpp=None, kareler diskten, kamera bağlı değil; ONNX kolu HATA | **2026-09-03** (D-406) → kapanış **2026-09-06** | 5 Eylül'de Jetson takılmadı (D-426 §4); 6 Eylül'de kartta ölçüldü — `results/jetson_20260906/jetson_fps_20260906_orin_nano/ozet.json` | — (koşul karşılandı) | `Y-4-M04` |
 | **A11** | §5.3.2 (denetim) | **`--fda` kipinin bağımsız denetimi yok**: sözleşmeyi (`CONTRACTS §6.7`) de uygulamayı da aynı el yazdı | 2026-09-03 (D-408, borç açıkça kaydedildi) | Denetleyen ajan kotada | Hakem rolü oynanarak gerçek provada doğrulama (21 Eylül öncesi) | `Y-4-M11` |
 | **A12** | §2.2.4 (R9) | **Otonom paraşüt tetiği ölçülmedi**; mekanik açma sistemi ve `CHUTE_*` parametreleri final dalgasının işidir | Proje başından | Sabit kanat platformu henüz yok | Final dalgası (`SAHA_HAZIRLIK_PLANI §7`) | `Y-3.2.1-T05` · `Y-4-M12` |
 
-**Açık satır sayımı:** 12. Bunların **4'ü donanım/veri beklemektedir** (A1, A2, A3, A4),
-**3'ü ölçüm bekleyen risk** (A5, A9, A10), **3'ü yazılım borcudur** (A6, A7, A8),
+**Açık satır sayımı:** ~~12~~ **11** (A10 6 Eylül'de kapandı, D-431). Bunların **4'ü donanım/veri beklemektedir** (A1, A2, A3, A4),
+**2'si ölçüm bekleyen risk** (A5, A9), **3'ü yazılım borcudur** (A6, A7, A8),
 **2'si denetim/final borcudur** (A11, A12).
 
 ### 6.5.2 Kapanma penceresi ve tarihi verilmemiş kalemler
@@ -468,17 +468,18 @@ tam prova) · A11 (21 Eylül öncesi) · A4 (ilk ölçüm 21 Eylül; **rapor tar
 kapatılamaz**) · A1 ve A12 (final dalgası).
 
 **5 Eylül geçti; A2 ve A10 kapanmadı** (D-426): SiK bağlandı ama RTT/kayıp
-ölçülmedi, Jetson takılmadı. A3'ün montaj adımı yapıldı (firmware, parametre,
+ölçülmedi, Jetson takılmadı. **A10 6 Eylül'de kapandı** (D-431): Jetson araca değil tezgâha
+alındı, kart Orin Nano Developer Kit 4 GB çıktı, FPS kapısı GEÇTİ. A3'ün montaj adımı yapıldı (firmware, parametre,
 GPS, RC, güç, motor testi — ÖLÇÜM); ilk hover plana göre Pazar 6 Eylül'e bırakıldı
 (D-426 §5), AUTO uçuş yok. **A13** 5 Eylül'de açıldı. Tarihi hâlâ yazılı olanlar:
 A3 (ilk hover → tam prova) · A11 (21 Eylül öncesi) · A4 (21 Eylül) · A1 ve A12
 (final dalgası).
 
-**Sekiz kalemin kapanma tarihi bugün verilmemiştir: A2, A5, A6, A7, A8, A9, A10, A13.**
+**~~Sekiz~~ Yedi kalemin kapanma tarihi bugün verilmemiştir: A2, A5, A6, A7, A8, A9, A13** (A10 6 Eylül'de kapandı, D-431).
 Bunların kapanma *koşulu* yazılıdır ama takvime bağlanmamıştır ve bu raporda
 tarih uydurulmamıştır.
 
-- **BEYAN GEREKLİ (insan):** A2 (SiK RTT), A5 (kör aralıklar), A6 (üretim yolunda ihlal denetimi), A7 (`mod` alanı), A8 (tekrar fırlatma testi), A9 (Gazebo temas koşusu), A10 (Nano FPS) ve A13 (Pixhawk failsafe/geofence/parametre dökümü) için kapanma tarihi — hangisi 21 Eylül provasından önce, hangisi sonra kapanacak.
+- **BEYAN GEREKLİ (insan):** A2 (SiK RTT), A5 (kör aralıklar), A6 (üretim yolunda ihlal denetimi), A7 (`mod` alanı), A8 (tekrar fırlatma testi), A9 (Gazebo temas koşusu) ve A13 (Pixhawk failsafe/geofence/parametre dökümü) için kapanma tarihi (A10 Nano FPS 6 Eylül'de kapandı, D-431) — hangisi 21 Eylül provasından önce, hangisi sonra kapanacak.
 
 İki kalem hakkında bu bölümün açık hükmü vardır ve gizlenmez:
 
@@ -492,10 +493,12 @@ tarih uydurulmamıştır.
 > `Y-6-M06` — *"Son olarak tüm gereksinimlerin genel uygunluk durumu özet bir tablo
 > veya pasta grafiği ile görsel olarak sunulmalıdır."*
 
-> 🔴 **PDF dizgi notu.** Aşağıdaki üç dağılım tablosu **pasta grafiğine çevrilecek
-> veri kümesidir**; markdown'da grafik gömülemediği için metin tabanlı bar
-> gösterim kullanılmıştır. Dizgide §6.6.2 ana pasta grafiği, §6.6.3 ve §6.6.4
-> yanına iki küçük halka grafik olarak yerleştirilir. Sayılar aynen taşınır.
+> **Grafik notu (7 Eylül 2026).** §6.6.2 halka grafiği ve §6.6.3 çubuk grafiği artık
+> markdown'a gömülü SVG'dir (`sekiller/uygunluk_pasta.svg`, `sekiller/uygunluk_yontem.svg`);
+> ikisi de `scripts/fdr_sekil_uret.py` ile **bu bölümdeki tablolardan okunarak** üretilir,
+> sayılar `tests/test_gece_sekiller.py` ile tabloya karşı her koşuda sınanır. Metin tabanlı
+> barlar, grafiği açamayan okur için korunmuştur. §6.6.4 yalnız tablodur (aşağıda not).
+> PDF dizgisi (`scripts/fdr_pdf_uret.py`) aynı SVG dosyalarını basar.
 
 ### 6.6.1 Durum sayımı — matris matris döküm
 
@@ -536,6 +539,13 @@ KOD_VAR_TEST_YOK (yeni testler cezayı ve tekrarı sınamıyor), `mod` alanı h�
 Yeniden sayım 5 Eylül sonrası: **aynı** (32 / 7 / 4 / 2; yöntem §6.6.1). Pasta grafiği
 verisi bu dört satırdır; dizgide yüzdeler ve etiketler aynen taşınır.
 
+![Genel uygunluk dağılımı — 45 gereksinim satırı, §6.6.2 verisinden](sekiller/uygunluk_pasta.svg)
+
+*Halka grafiği §6.6.2 tablosundan üretildi (`scripts/fdr_sekil_uret.py`, 7 Eylül 2026). Renk: yeşil
+kanıtlı · gri yazılım kapsamı dışı (insan/donanım) · sarı kısmen (kod var, test yok) · kırmızı açık
+(ölçülemedi). Dilim sayıları, oranları ve yay açıları `tests/test_gece_sekiller.py` ile tabloya karşı
+sınanır; tablo değişirse grafik yeniden üretilmeden kapı düşer.*
+
 ### 6.6.3 Doğrulama yöntemi dağılımı (ikinci grafik verisi)
 
 Sayılar §6.2.3'ten; bir satır birden çok yöntem taşıdığı için toplam 45'i aşar.
@@ -550,21 +560,27 @@ sonrası: toplam atama 65 → **66** (gözle muayene 10 → 11); diğer dört y�
 | hesaplama | 5 | %11,1 | █████ |
 | analiz | 4 | %8,9 | ████ |
 
+![Doğrulama yöntemi dağılımı — 45 satır, 66 yöntem ataması, §6.6.3 verisinden](sekiller/uygunluk_yontem.svg)
+
+*Çubuk grafiği §6.6.3 tablosundan üretildi (`scripts/fdr_sekil_uret.py`, 7 Eylül 2026). Bir satır
+birden çok yöntem taşıdığı için halka değil çubuk: oranlar 45 satıra göredir ve toplamı %100'ü aşar;
+halka bu tabloyu yanlış anlatırdı.*
+
 ### 6.6.4 Açık kalem dağılımı (üçüncü grafik verisi)
 
-Sayılar §6.5.1'in on üç satırından (3 Eylül'de on iki: 4 / 3 / 3 / 2 = %33,3 / %25,0 /
-%25,0 / %16,7; **A13** 5 Eylül'de açıldı, D-426 §4); gruplama §6.5.1 sonundaki
-sayımdadır. Oranlar bir ondalığa yuvarlanmıştır; satır toplamı %100,1 verir.
+Sayılar §6.5.1'in on iki satırından (3 Eylül'de on iki: 4 / 3 / 3 / 2; 5 Eylül'de **A13** açıldı → on üç: 4 / 4 / 3 / 2 = %30,8 / %30,8 / %23,1 / %15,4, D-426 §4; 6 Eylül'de **A10** kapandı → on iki, D-431); gruplama §6.5.1 sonundaki
+sayımdadır. Oranlar bir ondalığa yuvarlanmıştır.
 
 | küme | kalem | oran | dağılım (1 blok = 1 kalem) |
 |---|---:|---:|---|
-| donanım / veri bekliyor (A1, A2, A3, A4) | 4 | %30,8 | ████ |
-| ölçüm bekleyen risk (A5, A9, A10, A13) | 4 | %30,8 | ████ |
-| yazılım borcu (A6, A7, A8) | 3 | %23,1 | ███ |
-| denetim / final borcu (A11, A12) | 2 | %15,4 | ██ |
-| **toplam** | **13** | **%100,0** | |
+| donanım / veri bekliyor (A1, A2, A3, A4) | 4 | %33,3 | ████ |
+| ölçüm bekleyen risk (A5, A9, A13) | 3 | %25,0 | ███ |
+| yazılım borcu (A6, A7, A8) | 3 | %25,0 | ███ |
+| denetim / final borcu (A11, A12) | 2 | %16,7 | ██ |
+| **toplam** | **12** | **%100,0** | |
 
-- **BEYAN GEREKLİ (insan):** Bu üç tablonun PDF dizgisinde pasta/halka grafiğine çevrilmesi — yönergenin `Y-6-M06` hükmü **görsel** sunum ister; markdown kaynağında yalnız veri ve metin bar vardır.
+- ~~**BEYAN GEREKLİ (insan):** Bu üç tablonun PDF dizgisinde pasta/halka grafiğine çevrilmesi — yönergenin `Y-6-M06` hükmü **görsel** sunum ister; markdown kaynağında yalnız veri ve metin bar vardır.~~
+  **7 Eylül 2026 — üçte ikisi kapandı, beyan gerekmiyor:** §6.6.2 halka grafiği (`sekiller/uygunluk_pasta.svg`) ve §6.6.3 çubuk grafiği (`sekiller/uygunluk_yontem.svg`) markdown'a gömüldü; `scripts/fdr_sekil_uret.py` tabloları okur, `tests/test_gece_sekiller.py` sayıları tabloya karşı sınar (11 test; 5/5 mutasyon yakalandı). **§6.6.4 için grafik üretilmedi:** on üç kalemlik dört küme metin barla okunur; ayrı bir halka bilgi eklemez. Görsel istenirse aynı betiğe üçüncü tablo eklenir.
 
 ### 6.6.5 Bu bölümün yönerge maddelerine karşılığı
 
@@ -575,7 +591,7 @@ sayımdadır. Oranlar bir ondalığa yuvarlanmıştır; satır toplamı %100,1 v
 | `Y-6-M03` | her gereksinim için uygunluk durumu + tasarım kararlarıyla ilişkisi | §6.1 *durum* sütunu + §6.3 | VAR |
 | `Y-6-M04` | gereksinimlerin tasarım kararlarına etkisi, mimari ve performansa katkısı | §6.4 — 14 satırlık karar tablosu + 3 maliyet örneği | VAR |
 | `Y-6-M05` | karşılanamayan/kısmi gereksinimler, nedenleri, giderme planı | §6.5 — A1–A13 | VAR |
-| `Y-6-M06` | genel uygunluk durumunun **görsel** sunumu | §6.6.2–§6.6.4 veri tabloları + metin bar | **BEYAN GEREKLİ (insan): PDF dizgisinde pasta grafiği** |
+| `Y-6-M06` | genel uygunluk durumunun **görsel** sunumu | §6.6.2 halka grafiği (`sekiller/uygunluk_pasta.svg`) + §6.6.3 çubuk grafiği (`sekiller/uygunluk_yontem.svg`) + §6.6.4 veri tablosu; metin barlar korundu | VAR (7 Eylül 2026; grafikler tablodan üretilir, nöbetçi `tests/test_gece_sekiller.py`) |
 
 ### 6.6.6 Bu tablo okunurken bilinmesi gereken üç şey
 
@@ -605,7 +621,7 @@ sayılan satırlar burada tek tek yazılıdır:
 yalnız *birincil* etiketi ÖLÇÜLEMEDİ olan satırları sayar. §6.3.1'e göre altı
 satır daha ikincil etiket olarak ÖLÇÜLEMEDİ taşır (R9 otonom tetik, R13-ek
 fiziksel temas, saha `p`'si, uçuş süresi, Pixhawk geofence'i, gerçek SiK hattı).
-Ölçülemeyen kalemlerin tam listesi §6.5.1'dedir (13 satır; A13 5 Eylül'de eklendi).
+Ölçülemeyen kalemlerin tam listesi §6.5.1'dedir (12 satır; A13 5 Eylül'de eklendi, A10 6 Eylül'de kapandı — D-431).
 
 ---
 
@@ -646,6 +662,7 @@ Bu bölümde geçen **her sayının** kaynağı: dosya yolu · üreten betik/kom
 | ArduCopter parametre şablonu **31 parametre**, 4'ü **TEYİT** işaretli | `config/pixhawk/arducopter_fda.param` | Copter-4.5 kaynak dosyalarından doğrulandı (D-406) | 2026-09-03 |
 | Jetson Nano yığını: **14/14 paket** aarch64/cp38 wheel, 51 dosya, 246 MB | `wheels/INDIRME_RAPORU.txt` | `scripts/nano_tekerlek_indir.py`; `tests/test_faz_b_nano_kurulum.py` (20 test) | 2026-09-03 |
 | Donanım künyesi (quadcopter, Pixhawk 6C, Jetson Nano 4GB, RPi HQ, 4S 10 Ah) | `SAHA_HAZIRLIK_PLANI_20260903.md` §0.2 | kullanıcı beyanı, 3 Eylül; **5 Eylül'de kutu açılarak teyit edilecek** | 2026-09-03 (beyan) |
+| Jetson kartı **Orin Nano Developer Kit 4 GB** (JetPack 7.2.1, Python 3.12.3) — 'Nano 4GB' beyanı yanlışlandı; `torch.cuda.is_available()` True; `jetson_fps.py` pt **1,35/1,06** · engine **1,58/1,33** FPS (eşik 0,61, GEÇTİ); engine↔pt D-303 oransal **3/126 DÜŞTÜ** → uçuş `.pt`; kartta genel kapı 15/15 · 15/15 | `results/jetson_20260906/ORTAM_KUNYESI.txt` · `results/jetson_20260906/jetson_fps_20260906_orin_nano/ozet.json` · `results/jetson_20260906/jetson_log_20260906/engine_karar_denkligi.json`, `genel_kapi.log` | kartta koşum (D-431) | **2026-09-06** |
 | Sözleşme numaraları (§6.5 K1, §6.6 K4/K8, §6.7 FDA kipi, §7.1 süre, §7.2 sürücü, §7.3 temas, §7.4 çoğullayıcı, §7.5 SiK hub, §8 çözünürlük, §11.2 halka tablosu, §12 gerçek-kare kapısı) | `CONTRACTS.md` | — | güncel |
 | Şartname alıntıları ve madde numaraları (§2.1, §2.2.1–2.2.6, §5.3.1 Tablo 4, §5.3.2, §6, §6.1–6.4, §7) | `results/sartname_bosluk/sartname_metin.txt` (1314 satır; PDF 30 sayfa, PyMuPDF ile çıkarıldı) | `fitz` (PyMuPDF) metin çıkarımı | 2026-08-26 |
 | Yükümlülük haritası R1–R22 (**bu bölümün başlangıç noktası; üç satırı bayat, §6.3.4'te düzeltildi**) | `results/sartname_bosluk/rapor.md` | şartname boşluk denetimi | 2026-08-26 / 27 |
@@ -657,7 +674,7 @@ Bu bölümde geçen **her sayının** kaynağı: dosya yolu · üreten betik/kom
 | Firmware sabitlemesi: `SURUM = "stable-4.5.7"`, `BOARD_ID = 56`; indirilen `arducopter.apj` **1.585.371 B**, git **2a3dc4b7**; `firmware-version.txt` = `4.5.7-FIRMWARE_VERSION_TYPE_OFFICIAL`; 4.7.1'de 31 parametrenin **9'u yok** | `scripts/pixhawk_firmware_indir.py:54, :74` · `firmware/` (saha belleği; ikili dosya repoya girmez) · `REVIEW_LOG.md` D-425 §1, §4 (satır 29787) | `scripts/pixhawk_firmware_indir.py`; kapı `tests/test_pixhawk_firmware_yolu.py` (10) | **2026-09-05** |
 | 5 Eylül Pixhawk kabulü — ÖLÇÜM (Mission Planner Messages): `ArduCopter V4.7.1 (dbe79216)` + "Missing 9 params" (14:52) · `ArduCopter V4.5.7 (2a3dc4b7)` · `Frame: QUAD/X` (15:08) · `u-blox 1 HW: 000A0000 SW: ROM SPG 5.10` (15:38) · `RCInput: decoding IBUS(1)` (18:03) · pil ve emniyet PreArm'ları kayboldu (18:03/18:05) · `starting motor test` → `finished motor test` (18:06). BEYAN: motor sıra/yön 4/4, SiK bağlandı, uçuş modları SwC | `REVIEW_LOG.md` D-426 §1 satır 29819–29829 | takım üyesinin yapıştırdığı MP satırları (sözlü bildirim BEYAN olarak ayrıldı) | **2026-09-05** |
 | Künye farkı (BEYAN): ESC **"60 A V2" ×4** (plan 80 A) · güç modülü **PM06** (plan PM02) · FS-iA6B **teyit**; tam marka/model BEYAN GEREKLİ | `REVIEW_LOG.md` D-426 §3 satır 29852–29854 · plan `SAHA_HAZIRLIK_PLANI_20260903.md:39, :41` | kutu açılışı, gözle | 2026-09-05 (beyan) |
-| 5 Eylül'de **yapılmayan / ölçülemeyen**: RC failsafe testi (sonuç gelmedi) · ESC kalibrasyonu · pusula kalibrasyonu (Jetson takılı değil) · parametre dökümü `arducopter_fda_20260905.param` (**dosya YOK**) · pil gerilimi MP↔multimetre · tartı · kamera FOV · SiK RTT · Nano FPS | `REVIEW_LOG.md` D-426 §4 satır 29863–29869; `ls config/pixhawk/` | — | 2026-09-05 |
+| 5 Eylül'de **yapılmayan / ölçülemeyen**: RC failsafe testi (sonuç gelmedi) · ESC kalibrasyonu · pusula kalibrasyonu (Jetson takılı değil) · parametre dökümü (**dosya YOK**; 6 Eylül'de alındı: `arducopter_fda_20260906.param`, D-428 §5g) · pil gerilimi MP↔multimetre · tartı · kamera FOV · SiK RTT · Nano FPS (6 Eylül'de Orin Nano'da ÖLÇÜLDÜ, D-431) | `REVIEW_LOG.md` D-426 §4 satır 29863–29869; `ls config/pixhawk/` | — | 2026-09-05 |
 | Kuru koşu **2026-09-04 09:52:22**: GEÇTİ 9 · DÜŞTÜ 0 · SAHİPSİZ 1 (motor) · `cikis_kodu: 1` · `saha_surucu_importlari: []` — 2 Eylül ile aynı | `results/saha_kuru_kosu_20260904_095222/ozet.json` | `scripts/saha_kuru_kosu.py` | **2026-09-04** |
 | Hakem kanıt kaydı olay kümesi: **16 olay** (`KANIT_OLAYLARI`), kenar + `KANIT_TEKRAR_ARALIGI_S = 30.0`; gerçek oturum `hakem_log.jsonl` (5 Eylül, YKS `--fda`, 14:29 → 19:07): **1115 satır, 5 olay adı** — KAMERA_KANIT 554 · TELEMETRI_KANIT 554 · UI_OLAYI 5 · OTURUM_BASLADI 1 · YKS_ARAYUZ_HAZIR 1 (İHA bağlı değil: ROTA_*/HAKEM_ONAYI_* yok) | `comms/yks_gui.py:127–151` · `CONTRACTS.md §6.8` (satır 444) · `results/prova/20260905_142958_15092/hakem_log.jsonl` | `comms/hakem_kaydi.py`; kapılar `tests/test_yks_hakem_kanit_olaylari.py` (22), `tests/test_yks_hakem_kanit_yolu.py` (6) | 2026-09-05 |
 | Süre ve mesafe sabitlerinin güncel satırları: `SARTNAME_ASGARI_IRTIFA_M :339` · `SARTNAME_IHA_GOREV_SURESI_S :1979` · `SARTNAME_IKA_GOREV_SURESI_S :1980` · `SARTNAME_FDA_OPERASYON_SURESI_S :1994` · `SARTNAME_HAZIRLIK_SURESI_S :1996` · `SARTNAME_IHA_UB_KENAR_M :2003` (3 Eylül satırları: :339, :1974–1998, :1989, :1991) | `codes/karar_sozlesmesi.py` | `grep -n "SARTNAME_" codes/karar_sozlesmesi.py` | D-427 sonrası |
@@ -668,11 +685,11 @@ Aşağıdaki satırlar **ölçülmemiştir** ve bu raporda sayı olarak geçmeme
 Rapor teslim edilmeden önce insan tarafından ölçülüp doldurulmalıdır:
 
 - **BEYAN GEREKLİ (insan):** Gerçek SiK 433 MHz çiftinde OPEN_ROUTE/IKA_GO/IHA_LANDED tur süresi (RTT p50/p95) ve paket kayıp oranı — `scripts/sik_rf_olc.py`. 5 Eylül'de SiK bağlandı (BEYAN, D-426 §1) ama ölçülmedi. DDR'deki ">%98 teslim, 300 m" iddiasının bugün **kanıtı yoktur**.
-- **BEYAN GEREKLİ (insan):** Jetson Nano 4GB üzerinde `torch.cuda.is_available()` sonucu ve `scripts/jetson_fps.py` p50/p95 kare hızı (PT ve ONNX kolları) — Jetson 5 Eylül'de takılmadı (D-426 §4); tarih BEYAN GEREKLİ.
+- ~~**BEYAN GEREKLİ (insan):** Jetson Nano 4GB üzerinde `torch.cuda.is_available()` sonucu ve `scripts/jetson_fps.py` p50/p95 kare hızı (PT ve ONNX kolları) — Jetson 5 Eylül'de takılmadı (D-426 §4); tarih BEYAN GEREKLİ.~~ → **ÖLÇÜLDÜ 6 Eylül (D-431):** kart Jetson Orin Nano Developer Kit 4 GB; `torch.cuda.is_available()` **True**; PT **1,35/1,06** · engine **1,58/1,33** FPS (≥ 0,61); ONNX kolu **HATA** (`cudaErrorNoKernelImageForDevice`) — `results/jetson_20260906/jetson_fps_20260906_orin_nano/ozet.json`.
 - **BEYAN GEREKLİ (insan):** RPi HQ kamera gerçek yatay FOV değeri (`kamera_dogrula` ölçümü); rapordaki 55–63° **lens beyanından türetilmiş tahmindir**, ölçüm değildir.
 - **BEYAN GEREKLİ (insan):** Montaj sonrası gerçek kütleler (İHA, İKA, yük) — §7 `m_İHA`/`m_İKA`/`m_yük` parametreleri.
 - **BEYAN GEREKLİ (insan):** İKA gerçek motor sürücüsü seçimi (seri / PWM / GPIO / MAVLink) ve `scripts/ika_surucu_kabul.py` K1–K6 sonuçları.
-- **BEYAN GEREKLİ (insan):** Pixhawk üzerinde geofence (`FENCE_*`) ve failsafe parametrelerinin **gerçek donanımda** doğrulanmış hâli; 5 Eylül'de döküm alınmadı — `config/pixhawk/arducopter_fda_20260905.param` **dosya YOK** (D-426 §4); RC failsafe sonucu gelmedi; ESC ve pusula kalibrasyonu yapılmadı (§6.5.1 A13).
+- **BEYAN GEREKLİ (insan):** Pixhawk üzerinde geofence (`FENCE_*`) ve failsafe parametrelerinin **gerçek donanımda** doğrulanmış hâli; 5 Eylül'de döküm alınmadı (D-426 §4); 6 Eylül 20:22 dökümü `config/pixhawk/arducopter_fda_20260906.param` repoda (D-428 §5g) — `FENCE_*`/`FS_*` kart değerleri oradan okunur, RC failsafe 6 Eylül'de ÖLÇÜLDÜ ve **DÜŞTÜ** (D-428 §2), ESC ve pusula kalibrasyonu 6 Eylül'de yapıldı (D-428 §1, §3 — beyan); üçüncü döküm bekleniyor (§6.5.1 A13).
 - **BEYAN GEREKLİ (insan):** ESC ve güç modülünün tam marka/modeli — sahada "60 A V2" ×4 (plan 80 A) ve PM06 (plan PM02) görüldü (D-426 §3, BEYAN); FDR Bölüm 3/5/7 künyesi buna göre düzeltilecek.
 - **BEYAN GEREKLİ (insan):** Motor sırası/yön testinin videosu — 4/4 doğru **BEYAN**'dır (D-426 §1); RC failsafe testinde `Radio Failsafe` satırı ve CH3 değeri.
 - **BEYAN GEREKLİ (insan):** İlk hover, Loiter/Auto ve tam prova uçuş logları (`VIBE`, EKF, pusula ofseti, IHA_LANDED damgası) — 6 Eylül ve sonrası.

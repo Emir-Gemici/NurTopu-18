@@ -124,6 +124,10 @@ def _md(metin: str) -> str:
         extension_configs={"toc": {"toc_depth": "1-3"}},
         output_format="html5",
     )
+    # `~~eski~~` üstü çizme: python-markdown çekirdeğinde yok, düz metin kalıyordu
+    # (7 Eylül, G5 çürütücü bulgusu — PDF'te görünür '~~'). Kaynak .md GitHub biçimini
+    # korur; yalnız HTML'de <del>'e çevrilir.
+    govde = re.sub(r"~~(.+?)~~", r"<del>\1</del>", govde, flags=re.S)
     return _sekil_yollarini_coz(govde)
 
 

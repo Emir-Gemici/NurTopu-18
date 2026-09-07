@@ -44,7 +44,7 @@ Fark gizlenmez; tablo aşağıdadır ve gerekçesi §3.2.1'dedir.
 
 | kalem | DDR beyanı (`navitas-teknofest/references/avionics_software.md`, `ddr_requirements.md`) | **FDR gerçeği** (kullanıcı beyanı 3 Eylül 2026, `SAHA_HAZIRLIK_PLANI_20260903.md` §0.2) |
 |---|---|---|
-| görev bilgisayarı | Jetson **Orin NX** (16 GB) | **Jetson Nano 4GB** |
+| görev bilgisayarı | Jetson **Orin NX** (16 GB) | ~~**Jetson Nano 4GB** (3 Eylül beyanı)~~ → **Jetson Orin Nano Developer Kit 4 GB** (JetPack 7.2.1, Ubuntu 24.04, Python 3.12; 3 Eylül beyanı 'Nano 4GB' 6 Eylül'de kartla YANLIŞLANDI — D-431) |
 | uçuş kontrolcüsü | Pixhawk **6X** | **Pixhawk 6C** + PM02 |
 | GNSS | Holybro **M10** | **Holybro M9N** |
 | kamera | Arducam IMX477 | **Raspberry Pi HQ (IMX477, CSI)** |
@@ -258,13 +258,13 @@ Kaynak: kullanıcı beyanı 3 Eylül 2026, `SAHA_HAZIRLIK_PLANI_20260903.md` §0
 | Gövde | Quadcopter, **3B baskı** (`dronesolid/`: kol, gövde, alt gövde, bacak, dome, GPS tutucu). GPS çubuğu + ayaklar ABS beyaz, kalanı **ABS-CF** siyah | **basıldı ve monte** |
 | Motor | **5008 340 KV × 4** | kutuda |
 | Pervane | **12 × 10** | kutuda |
-| ESC | **80 A, DShot destekli × 4** — ilk uçuşlarda **PWM 400 Hz** (MAIN 1–4) | kutuda |
+| ESC | **80 A, DShot destekli × 4** — ilk uçuşlarda **PWM 400 Hz** (MAIN 1–4) | kutuda. **7 Eylül notu:** kutudan Hobbywing Skywalker **60A V2** çıktı (D-428 §1, etiket BEYAN); ESC'ler **AUX 1–4**'te (`SERVO9–12` = M4, M2, M1, M3; D-428 §5d, 6 Eylül dökümü); kartta `RC_SPEED` **490** ölçüldü (`config/pixhawk/arducopter_fda_20260906.param` satır 659 — Copter-4.5 varsayılanı, ESC spec 50–432 Hz **dışı**) → şablona `RC_SPEED,400` girdi (D-429 §4; `tests/test_faz_b_pixhawk_sablon.py` P9, 16/16) |
 | Güç dağıtımı | **Matek XCLASS FCHUB-12S V2** (PDB + akım sensörü) | kutuda |
 | Uçuş kontrolcüsü | **Pixhawk 6C** + **PM02** güç modülü (POWER1, fabrika kalibreli V/I) | kutuda |
 | GNSS / pusula | **Holybro M9N**, direk üstü | kutuda |
 | RC | **FlySky FS-i6** + FS-iA6B alıcı (**iBUS**) | **bind edilmedi** |
 | Telemetri | **2 × SiK 433 MHz** (drone + YKS) | kutuda |
-| Görev bilgisayarı | **Jetson Nano 4GB** (JetPack 4.6.x) | **kurulumu YOK** — §3.3.1.1.12 |
+| Görev bilgisayarı | ~~**Jetson Nano 4GB** (JetPack 4.6.x)~~ → **Jetson Orin Nano Developer Kit 4 GB** (JetPack 7.2.1, Ubuntu 24.04, Python 3.12; 3 Eylül beyanı 'Nano 4GB' 6 Eylül'de kartla YANLIŞLANDI — D-431) | **kuruldu 6 Eylül** — genel kapı 15/15 · 15/15, FPS kapısı GEÇTİ; araca takılmadı, Pixhawk/kamera bağlı değil — §3.3.1.1.12 |
 | Kamera | **Raspberry Pi HQ (IMX477, CSI)**, standart lens | kutuda |
 | Pil / şarj | **1 × 4S 10 Ah 25C** · iMAX B6 (50 W → ~3 A → ~3 saat dolum) | **günde en çok 2 uçuş** |
 | Güç kesme | anahtar yok — **pil fişi çekilir** (XT60/XT90) | yordam: pervane en son, pil en son |
@@ -441,9 +441,9 @@ biçimde aşağıdadır: istasyonlar, mesaj sözleşmeleri, güç/sinyal topoloj
 çoğullayıcı, SiK hub, akış isteği, uçuş kontrolcüsü parametreleri ve görev bilgisayarı
 yığını. Eksik olan **çizimdir**:
 
-**BEYAN GEREKLİ (insan):** İHA için **renk kodlu** (güç / UART / PWM / I2C / CSI ayrı
-renk) vektörel bağlantı şeması. Bugün elimizdeki §3.3.1.1.7'deki ASCII topolojidir;
-içerik olarak eksiksizdir, **renk kodlu çizim değildir**.
+![İHA bağlantı şeması — ölçülen topoloji](sekiller/iha_baglanti.svg)
+
+*İHA bağlantı şeması: ölçülen topolojiden çizildi (`REVIEW_LOG.md` D-426/D-428/D-429, parametre dökümü `config/pixhawk/arducopter_fda_20260906.param`, 7 Eylül); güç / PWM / UART / I2C / CSI / RC ayrı renk, legend şemada. **DOĞRULANACAK** hatlar (FCHUB, ESC güç yolu, UBEC → Nano, TELEM2 ↔ Nano UART, CSI) kesik çizgidir — sahada ölçülmedi. Hat başına kaynak: `sekiller/iha_baglanti_kaynaklar.md`; nöbetçi: `tests/test_gece_baglanti_semasi.py`.*
 
 **BEYAN GEREKLİ (insan):** İKA için bağlantı şeması. İKA aviyoniği tedarik edilmediği
 için (§3.2.2) şema **yoktur**.
@@ -452,7 +452,7 @@ için (§3.2.2) şema **yoktur**.
 
 | istasyon | çalıştığı donanım | sorumluluğu | üretim kodu |
 |---|---|---|---|
-| **İHA / görev bilgisayarı** | Jetson Nano 4GB (Pixhawk 6C'ye bağlı) | kamera → algı → costmap → A* rota → karar eşikleme → telsiz yayını; iniş kanıtı; komut alımı | `codes/rpi_inference.py`, `comms/iha_sender.py`, `comms/iha_inis_yayinci.py`, `comms/iha_komut_alici.py` |
+| **İHA / görev bilgisayarı** | Jetson Orin Nano Developer Kit 4 GB (D-431; Pixhawk 6C'ye bağlı) | kamera → algı → costmap → A* rota → karar eşikleme → telsiz yayını; iniş kanıtı; komut alımı | `codes/rpi_inference.py`, `comms/iha_sender.py`, `comms/iha_inis_yayinci.py`, `comms/iha_komut_alici.py` |
 | **YKS / hakem ekranı** | saha dizüstü (Tk arayüzü) | canlı rota + ret sebebi gösterimi, iki aşamalı hakem onayı, kronometreler, komut üretimi | `comms/yks_gui.py`, `comms/kamera_istemci.py` |
 | **İKA** | (yarışma günü) diferansiyel sürüş aracı | rota önbelleği, sürüş izni kilidi, waypoint takibi | `comms/ika_receiver.py`, `simulation/scripts/ika_nav.py`, `simulation/scripts/ika_surucu.py` |
 
@@ -497,7 +497,7 @@ JSON, taşıyıcıdan bağımsız (UDP simülasyon / SiK 433 MHz saha). Sözleş
 ##### 3.3.1.1.4 Mesaj akışı — yarışma günü kipi (§2.2)
 
 ```
-        ┌──────────────────────── İHA (Jetson Nano 4GB) ────────────────────────┐
+        ┌───────────────────── İHA (Jetson Orin Nano 4 GB) ─────────────────────┐
         │  CSI kamera ──► kamera köprüsü ──► rpi_inference (algı+rota+karar)    │
         │        Pixhawk 6C ──► MAVLink çoğullayıcı ──┬─► irtifa (mpp)          │
         │                                             ├─► iniş kanıtı           │
@@ -570,11 +570,11 @@ sırasında `OPEN_ROUTE`, `IKA_GO`'dan **önce** gelir, yani YKS adresi `IKA_GO`
    └───┬────┘            │              │
        │                 │  TELEM1 ─────┼──► SiK 433 MHz  ──►  YKS (MAVLink)
        ▼                 │  TELEM2 ─────┼──► Jetson UART /dev/ttyTHS1 (MAVLink2 57600)
-  ┌─────────────┐        │  MAIN 1..4 ──┼──► ESC "60 A V2" ×4  ──► motor 5008 340KV ×4   ← plan 80 A (BEYAN, tam marka/model BEYAN GEREKLİ)
+  ┌─────────────┐        │  AUX 1..4  ──┼──► ESC Skywalker 60A V2 ×4  ──► motor 5008 340KV ×4   ← plan 80 A (BEYAN, tam marka/model BEYAN GEREKLİ)
   │ FCHUB-12S V2│        │  RCIN ◄──────┼─── FS-iA6B `i-BUS SERVO` portu (iBUS; CH1–CH6 DEĞİL)
   └──┬───────┬──┘        │  GPS1  ◄─────┼─── Holybro M9N
      │       │           └──────────────┘
-     │       └──► 5V/5A UBEC ──► Jetson Nano J25 (+ J48 jumper)
+     │       └──► 5V/5A UBEC ──► Jetson (Orin Nano Dev Kit; Nano J25/J48 varsayımı geçersiz — besleme yolu DOĞRULANACAK, D-431)
      └──► ESC ×4 güç                         │
                                   CSI ◄──────┴── Raspberry Pi HQ (IMX477)
 ```
@@ -697,9 +697,9 @@ kaldırıldı) → 3 test düştü; diğer 14 kapı her iki mutasyonda da geçti
 
 ##### 3.3.1.1.11 Uçuş kontrolcüsü yapılandırması — parametre ve görev şablonu
 
-`config/pixhawk/arducopter_fda.param` (**31 parametre**, her satırın üstünde NEDEN yorumu)
+`config/pixhawk/arducopter_fda.param` (**48 parametre** — 7 Eylül: 31 + `RC_SPEED` + 16 `SERVOn_FUNCTION`, D-429 §4; her satırın üstünde NEDEN yorumu)
 ve `config/pixhawk/fda_gorev.waypoints` (QGC WPL 110) repoda durur ve
-`tests/test_faz_b_pixhawk_sablon.py` (**12 test**) ile kilitlidir. Değerlerin kaynağı
+`tests/test_faz_b_pixhawk_sablon.py` (**16 test**; 7 Eylül'de P9 `RC_SPEED`, P10 motor çıkışları, P8f/P8g mutasyon kapıları eklendi) ile kilitlidir. Değerlerin kaynağı
 **ArduPilot Copter-4.5 kaynak kodudur** (dosya adları `.param` başlığında); sözleşme
 sabitleri `codes/karar_sozlesmesi.py`'den gelir.
 
@@ -724,7 +724,7 @@ uzatma payı kalsın.
 > bekleme ve hakem etkileşimi bu toplama girmemiştir.
 
 **Cumartesi teyide bırakılan değerler (3 Eylül planı; dosyada TEYİT işaretli):** `BRD_SER2_RTSCTS=0`,
-`RC_PROTOCOLS=4` (iBUS), `BATT_FS_LOW_ACT` / `BATT_FS_CRT_ACT`. Ayrıca kutudan çıkanla
+`RC_PROTOCOLS=4` (iBUS), `BATT_FS_LOW_ACT` / `BATT_FS_CRT_ACT`; 7 Eylül'de `SERVO9–12_FUNCTION` eklendi (ölçülen AUX 1–4 eşlemesi 36/34/33/35, D-428 §5d) — TEYİT listesi 8 ad. Ayrıca kutudan çıkanla
 doğrulanacaklar: `FRAME_CLASS=1` (quad), `FRAME_TYPE` (X), `MOT_PWM_TYPE=0`,
 `SYSID_THISMAV=1`, `SERIAL1`/`SERIAL2` (57600 MAVLink2), `SRx_POSITION` 4 Hz,
 `SRx_EXTRA3` 1 Hz, `BATT_MONITOR=4`, `FENCE_ENABLE=1` (irtifa 50 m + poligon),
@@ -742,7 +742,7 @@ doğrulanacaklar: `FRAME_CLASS=1` (quad), `FRAME_TYPE` (X), `MOT_PWM_TYPE=0`,
 | emniyet düğmesi | `PreArm: Hardware safety switch` kayboldu (18:05); fiziksel düğme, `BRD_SAFETY_DEFOFF` değiştirilmedi | ÖLÇÜM |
 | `BRD_SER2_RTSCTS=0`, `BATT_FS_LOW_ACT` / `BATT_FS_CRT_ACT` | **ÖLÇÜLEMEDİ** — tutanakta teyit satırı yok | — |
 | RC failsafe (kumanda kapat → `Radio Failsafe`) | **ÖLÇÜLEMEDİ** — iki kez istendi, sonuç gelmedi; `.param` yorumundaki "iBUS alıcısı çerçeve basmayı keser" **varsayımdır** | D-426 §4 |
-| Sahada okunan döküm `config/pixhawk/arducopter_fda_20260905.param` | **dosya YOK** (5 Eylül kontrol edildi) | D-426 §4 |
+| Sahada okunan döküm | 5 Eylül: **dosya YOK** (kontrol edildi, D-426 §4) → **6 Eylül 20:22:** `config/pixhawk/arducopter_fda_20260906.param` repoda (`RC_PROTOCOLS=1`, `FS_THR_ENABLE=3`, `BATT_FS_LOW_ACT=1`; ikinci pusula kalibrasyonu ve `FS_GCS_ENABLE` yok → üçüncü döküm şart) | D-426 §4 → D-428 §5g |
 | Accel + level | BEYAN "yapıldı"; kart sabitlenmiş miydi belirsiz — **teyit yok** | BEYAN |
 | Pusula kalibrasyonu | YAPILMADI — Jetson takılı değil; Jetson takılınca dışarıda yeniden | D-426 §4 |
 | ESC kalibrasyonu | YAPILMADI | D-426 §4 |
@@ -752,6 +752,8 @@ doğrulanacaklar: `FRAME_CLASS=1` (quad), `FRAME_TYPE` (X), `MOT_PWM_TYPE=0`,
 
 
 ##### 3.3.1.1.12 Görev bilgisayarı yığını — Python 3.8 venv + çevrimdışı tekerlek kurulumu (Jetson Nano 4GB)
+
+> ⚠ **6 Eylül düzeltmesi — bu alt bölümün kısıtı kartla YANLIŞLANDI (D-431).** Kart 6 Eylül'de açıldı: **Jetson Orin Nano Developer Kit 4 GB** (p3767-0004), JetPack **7.2.1** (L4T R39.2.1), Ubuntu 24.04, sistem Python **3.12.3**, kök NVMe (`results/jetson_20260906/ORTAM_KUNYESI.txt`). Aşağıdaki "JetPack 4.6 / Python 3.6 / venv38 / cp38 tekerlek" kararları 3 Eylül beyanına dayanıyordu ve bu kartta **uygulanmadı**; kurulum kartta `nvidia-jetpack` (CUDA 13.2, TensorRT 10.16.2) + `~/venv312` (torch 2.11.0+cu130, ultralytics 8.4.142, pymavlink 2.4.49) ile yapıldı. Kartta koşan kapılar: genel kapı **15/15 · 15/15** (`results/jetson_20260906/jetson_log_20260906/genel_kapi.log`); kayıt defteri v36 `.pt` `eslesti`; `torch.cuda.is_available()` **True**; FPS §3.3.1.1.15; `.engine` denkliği §3.4.1 A3. Metin tarihli kayıt olarak silinmedi.
 
 **Kısıt:** JetPack 4.6.x (Ubuntu 18.04) sistem Python'u **3.6**'dır; repo `ultralytics`
 ister (Python ≥ 3.8). NVIDIA'nın JetPack torch wheel'i **Py3.6 içindir** ve 3.8 venv'ine
@@ -779,8 +781,9 @@ wheel'i (**insan görevi**), (2) `onnxruntime` ile `.onnx`, (3) CPU torch.
 **Eşik gevşetilmez.** Ölçüm 5 Eylül'de **yapılmadı** — Jetson o gün takılmadı (`REVIEW_LOG.md`
 D-426 §4); FPS **ÖLÇÜLEMEDİ** olarak kalır, Jetson takıldığında `scripts/jetson_fps.py` ile ölçülür.
 
-**TensorRT `.engine`:** venv38'de `tensorrt` modülü **yoktur** (JetPack 4.6 bağı Py3.6).
-`.engine` bu kart için **ÖLÇÜLEMEDİ** sayılır; **PT/ONNX ile uçulur.**
+~~**TensorRT `.engine`:** venv38'de `tensorrt` modülü **yoktur** (JetPack 4.6 bağı Py3.6).
+`.engine` bu kart için **ÖLÇÜLEMEDİ** sayılır; **PT/ONNX ile uçulur.**~~
+→ **6 Eylül (D-431):** Orin Nano'da TensorRT 10.16.2 kuruldu; `.engine` `.pt`'den derlendi (530 s; 57 283 989 B; sha `bb9bd868…0300`, deftere `--turev-kaydet` ile yazıldı, `turev_eslesti`). Engine↔pt karar denkliği **ÖLÇÜLDÜ ve DÜŞTÜ** (F1 0 · F2 0,9953 · D-303 oransal 3/126 > 5/260) → engine üretime alınmadı, **uçuş `.pt` GPU ile**. ONNX GPU yolu bu kartta **HATA** (`onnxruntime-gpu` 1.29, `cudaErrorNoKernelImageForDevice`) → "ONNX ile uçulur" seçeneği bu kart için **doğrulanmamıştır**. `results/jetson_20260906/jetson_log_20260906/engine_karar_denkligi.json`, `results/jetson_20260906/jetson_log_20260906/engine_export.log`.
 
 
 ##### 3.3.1.1.13 Kamera köprüsü — iki Python sürümü arasındaki köprü
@@ -803,6 +806,7 @@ CSI'yi açar ve HTTP üzerinden sunar:
 Servis birimi `navitas-kamera-koprusu.service`, `KAMERA_PYTHON=/usr/bin/python3`.
 **Yedek:** USB webcam (UVC) `--kaynak 0`.
 Testler: köprü **7**, `jetson_baslat` **42**, paket bütünlüğü **18 dosya**.
+**6 Eylül (D-431):** köprü kartta sistem Python **3.12** + sistem cv2 4.6 (GStreamer=True) ile **dosya kaynağında açıldı** (`kaynak ACILDI`, `fps_tavani=5.0`, :8081 — `results/jetson_20260906/jetson_log_20260906/kamera_koprusu_dosya.log`; `/durum`/`/kare.jpg` HTTP yanıtları ham logda yok, tutanak beyanı). CSI kamera **bağlı değildi** → `nvarguscamerasrc` yolu **ÖLÇÜLEMEDİ**. "Python 3.6 uyumu" gereksinimi kartta geçersiz; kod uyumu testle kilitli kalır.
 
 Ayrıca YKS hakem ekranı için `comms/kamera_istemci.py` bu köprünün `/kare.jpg` + `/durum`
 uçlarını **ayrı ağdan** okur — görüntü **SiK hattına yüklenmez** ve bayat kare canlıymış gibi
@@ -863,6 +867,16 @@ işaret verildi**.
 gerileme; FPS maliyeti oranı 1,302 (bütçe kısıt değildi). Ön kayıt *"I2 düşerse RED, I1 ne
 olursa olsun"* diye **sonuç görülmeden** yazılmıştı ve umut verici bir ara sayı (%21,6) bu
 kurala çarptı. Bu, ön kayıt disiplininin somut iş gördüğü bir vakadır.
+
+**Jetson'da ÖLÇÜLDÜ — 6 Eylül 2026 (D-431):** kart Orin Nano Developer Kit 4 GB, `scripts/jetson_fps.py --cihaz 0`, imgsz 512, conf 0,3, `data/raw_frames`, 15 ısınma + **120 örnek**, mpp=None (ölçeksiz Katman-A kipi):
+
+| kol | toplam p50 / p95 (ms) | FPS p50 / p95 | eşik | hüküm |
+|---|---:|---:|---:|---|
+| `.pt` (PyTorch, GPU) | 739 / 942 | **1,35 / 1,06** | 0,61 | **GEÇTİ** |
+| `.engine` (TensorRT FP16) | 635 / 751 | **1,58 / 1,33** | 0,61 | **GEÇTİ** |
+| `.onnx` (onnxruntime-gpu 1.29) | — | — | — | **HATA** — `cudaErrorNoKernelImageForDevice` (sm_87 çekirdeği yok) |
+
+10 dk sürekli koşum (**900 örnek**): `.pt` 770 / 922 ms · `.engine` 649 / 765 ms; tegrastats gpu en yüksek **56,3 °C** (258 örnek). Darboğaz model değil: `.engine` ile çıkarım 87 ms, `get_masks` ~311 ms + Katman A ~208 ms CPU'da. Kanıt: `results/jetson_20260906/jetson_fps_20260906_orin_nano/ozet.json`, `results/jetson_20260906/jetson_fps_20260906_orin_nano_10dk/ozet.json`, `results/jetson_20260906/jetson_fps_20260906_orin_nano_10dk/tegrastats.log`. **Sınır:** kamera bağlı değildi, kareler diskten; saha `p`'si yine ÖLÇÜLEMEDİ.
 
 
 ##### 3.3.1.1.16 Sürüm mührü ve paket bütünlüğü
@@ -955,6 +969,17 @@ arka uçsuz **kurulamaz** — boş bir iskeletin "çalışıyor" görünmesi eng
 | Genel kapı `codes/test_rota_sentetik.py` | 5 Eylül için tarihli artefakt yok — bu tabloya yazılmadı (3 Eylül: 15/15) |
 | Kanıt defteri kayıt sayısı | **432** (`grep -c "^### D-" REVIEW_LOG.md`, son kayıt D-427) |
 
+**6 Eylül 2026 — Jetson kartında** (D-431; kart Orin Nano Developer Kit 4 GB, Python 3.12):
+
+| kapı | sonuç |
+|---|---|
+| Genel kapı `codes/test_rota_sentetik.py` (kartta) | **15/15 · şerit 15/15** (`results/jetson_20260906/jetson_log_20260906/genel_kapi.log`) |
+| Kayıt defteri | v36 `.pt` `eslesti`, `.engine` `turev_eslesti` |
+| T17 FPS (120 örnek) | pt **1,35/1,06** · engine **1,58/1,33** FPS, eşik 0,61 → **GEÇTİ** |
+| Engine↔pt denkliği | F1 0 · F2 0,9953 · **D-303 oransal 3/126 DÜŞTÜ** → uçuş `.pt` |
+| `jetson_baslat.sh --kuru` | `[YOK]` yalnız `/dev/ttyACM0` → çıkış 3 — Pixhawk bağlı değil, MAVLink kapısı **ÖLÇÜLEMEDİ** |
+| Tam süit (kartta) | `Ran 2121` · F5 E30 S8 — 26'sı ortam (`O:\` yolları, PC'deki kümeler), kalanı D-431'de sınıflandırılmış |
+
 
 ##### 3.3.1.3.3 İKA aviyonik entegrasyon planı
 
@@ -979,7 +1004,7 @@ işaretlidir — bu başlığa **hesap olarak** sayılamaz.
 
 Bilinen ve **doğrulanacak** bağlantılar (künyeden, ölçüm değil): XT60/XT90 pil fişi →
 PM02 → Pixhawk 6C POWER1 (6-pin); FCHUB-12S V2 → ESC ×4; FCHUB pil pad'i → 5 V/5 A UBEC
-→ Jetson Nano J25 (J48 jumper); Pixhawk `TELEM2` → Nano 40-pin UART (pin 8 TX / pin 10
+→ Jetson (3 Eylül'de Nano J25/J48 varsayımı; kart Orin Nano Developer Kit çıktı, besleme yolu **DOĞRULANACAK** — D-431); Pixhawk `TELEM2` → Jetson 40-pin UART (Orin Nano'da pin/aygıt adı DOĞRULANACAK; Nano için: pin 8 TX / pin 10
 RX / pin 6 GND, **3,3 V**, 5 V hattı bağlanmaz); CSI şerit → Raspberry Pi HQ.
 
 **ÖLÇÜLEMEDİ:** Kablo kesitleri (AWG), uzunlukları, akım taşıma kapasitesi ve gerilim
@@ -1573,12 +1598,36 @@ saat). Alan **yoksa** yaş BİLİNMİYOR demektir ve alıcı **taze saymaz.**
 
 ##### 3.3.4.1.17 Akış diyagramları — çizim eksiği
 
-**ÖLÇÜLEMEDİ:** Yönergenin istediği **çizilmiş akış diyagramları**. Bugün akış
+**7 Eylül 2026 — beş akış diyagramı koddan türetildi** (Y-3.3.4-M01). Her düğüm ya bir fonksiyon/blok (`dosya:satır`, satır o tanımın/deyimin başı) ya da koşul metni koddan **birebir** alıntılanmış bir karardır; başka düğüm tipi yoktur. Düğüm → satır tabloları `sekiller/akis_<x>_dugumler.md`; doğrulayıcı `scripts/akis_diyagram_dogrula.py` (7 Eylül: 337/337 düğüm tam satırda, 0 hata); nöbetçi `tests/test_gece_akis_diyagramlari.py` (13 test). SVG'ler Chrome headless ile üretildi (`scripts/mermaid_svg.py`; mermaid-cli yok). Vektördür: PDF'te sayfa genişliğine ölçeklenir, okunur ölçek için görüntüleyicide yakınlaştırılır ya da `.svg`/`.mmd` kaynağı ve düğüm tablosu okunur.
+
+(a) İHA ana döngüsü — `codes/rpi_inference.py` (`main` → `run_camera` → `kamera_kareleri`), 51 düğüm:
+
+![](sekiller/akis_a.svg)
+
+(b) Komut alıcısı — `comms/iha_komut_alici.py` (kaynak pini → bozuk/bilinmeyen CMD → saat ofseti ve zaman kapısı → oturum tekrar anahtarı → MAVLink → COMMAND_ACK → terminal → ACK), 68 düğüm:
+
+![](sekiller/akis_b.svg)
+
+(c) İniş kanıtı — `comms/iha_inis_yayinci.py` + `comms/inis_kaniti.py` (akış isteği/bakım, `_yerde_mi_sahipli` ardışık çift döngüsü, IHA_LANDED yayını + heartbeat), 62 düğüm:
+
+![](sekiller/akis_c.svg)
+
+(d) YKS hakem ekranı — `comms/yks_gui.py` (açılış ve `--fda`, dinleme ipliği, tik döngüsü, mesaj işleme, ACK bağlama, iki aşamalı onay, `KANIT_OLAYLARI` kanıt kaydı ve kilidi, fırlatma/İKA kilitleri), 86 düğüm:
+
+![](sekiller/akis_d.svg)
+
+(e) İKA otonom sürüş — `simulation/scripts/ika_nav.py` + `comms/ika_receiver.py` kapıları, 70 düğüm; halka 10 (motor sürücüsü) diyagramda `surucu()` → `_SURUCU = ika_surucu.GazeboSurucu()` (`simulation/scripts/ika_nav.py:59`) düğümü ve "gercek motor surucusu YOK" kenarıyla görünür — gerçek motor sürücüsü **yoktur** (§3.3.1.3.1):
+
+![](sekiller/akis_e.svg)
+
+Beşi de koddan türetildi (kaynak commit `f3441b4`, 2026-09-07; teslim commit `366f574`); düğüm tabloları `sekiller/akis_a_dugumler.md` … `sekiller/akis_e_dugumler.md`.
+
+**7 Eylül öncesi durum (o gün ölçülememişti):** Yönergenin istediği **çizilmiş akış diyagramları**. Bugün akış
 metin ve ASCII blok olarak vardır (§3.3.4.1.1 sekiz adım, satır numaralarıyla;
 §3.3.1.1.4 ve §3.3.1.1.5 iki kipin mesaj akışı). Bunlar akışın **içeriğidir**; eksik
 olan **görsel biçimdir**.
 
-**BEYAN GEREKLİ (insan):** (a) İHA ana döngüsü ve (b) İKA otonom sürüş döngüsü için
+**KARŞILANDI (7 Eylül 2026):** (a) `sekiller/akis_a.svg` (51 düğüm), (b) `sekiller/akis_e.svg` (70 düğüm). Halka 10 sahipsizliği (e)'de `_SURUCU = ika_surucu.GazeboSurucu()` düğümüyle (`simulation/scripts/ika_nav.py:59`) ve "varsayilan: Gazebo (gercek motor surucusu YOK)" kenar etiketiyle görünür; çalışmayan kutu çalışıyor gibi çizilmedi. 7 Eylül öncesinde insandan beklenen beyan şuydu: (a) İHA ana döngüsü ve (b) İKA otonom sürüş döngüsü için
 rapora gömülecek akış diyagramı görselleri. İKA döngüsünün diyagramı çizilirken
 **halka 10'un sahipsiz** olduğu (gerçek motor sürücüsü yok — §3.3.1.3.1) diyagramda da
 görünmelidir; çalışmayan bir kutu çalışıyor gibi çizilemez.
@@ -1760,7 +1809,8 @@ sonuç bu bölüme eklenecektir. Bu görüntü bugün **yoktur** ve maket çekim
 
 ##### 3.3.4.2.8 Yönergenin istediği "benzer koşullar" ve doğruluk matrisi
 
-Yönerge iki şey ister ve ikisi de bugün **karşılanmamıştır**:
+Yönerge iki şey ister: (a) bugün **karşılanmamıştır**; (b) 7 Eylül 2026'da DOĞRULAMA
+kümesinde **ölçülmüştür** (arena değil):
 
 **(a) Yarışma sahasına benzer koşullarda test.** Bugünkü iki ölçüm kümesi:
 sentetik arena (n = 260 kadraj) ve gerçek kırsal DJİ kareleri (`test29` n = 29,
@@ -1773,16 +1823,44 @@ benzeri gerçek saha görüntüsü (kırmızı H brandası + moloz + fiziki bari
 gerekir ve bugün **yoktur** (§3.3.4.2.6); maket çekimi **yapılmayacaktır**. Kapanma
 yolu: 5–19 Eylül saha uçuşlarında farklı saatlerde çekim.
 
-**(b) Doğruluk matrisleri.** Bugün elde olan K7'dir: **şerit doğruluğu** 84/85 = %98,82
-(§3.3.4.2.3). Bu bir **karışıklık matrisi değildir** — tek eksenlidir (doğru şerit /
-yanlış şerit) ve şerit etiketi bilinen 88 karelik alt küme üzerindedir. Gerçek kare
-kümesinde TP/FP/FN sayıları vardır (§3.3.4.2.5 tablosu) ama **sınıf bazlı matris**
-(zemin / engel / hedef) üretilmemiştir.
+**(b) Doğruluk matrisleri.** K7 (**şerit doğruluğu** 84/85 = %98,82, §3.3.4.2.3) bir
+**karışıklık matrisi değildir** — tek eksenlidir ve 88 karelik alt küme üzerindedir.
+Sınıf bazlı matris **7 Eylül 2026'da ÖLÇÜLDÜ** — kör **DOĞRULAMA kümesi `test29`**
+(CONTRACTS §12; 29 kare, 3840×2160, etiket uzlaşısı v3) üzerinde, üretim modeli v36
+(`1d1caca6…6911`, kayıt defterinden), **üretim algı yoluyla** (`_preprocess` → `predict`
+CONF 0,30 · imgsz 512 → `get_masks` → içeriğe kırp; `65_kabul_denetcisi.kaplama()` ile
+aynı zincir), **CPU** ile. Üretici `scripts/olcum/176_piksel_karisiklik_matrisi.py`; artefakt
+`results/gece_20260907/karisiklik/piksel_karisiklik_test29.{json,md,png}` + `kosum.log`;
+nöbetçi `tests/test_gece_karisiklik_matrisi.py` (10 test: satır/sütun toplamları = piksel,
+IoU 0..1, 29 kare, model sha256 = defter). **Piksel düzeyi**, 240.537.600 px; satır =
+tahmin, sütun = yer gerçeği; **etiketsiz piksel ayrı sütundur, engele KATILMAZ** (D-315):
 
-**ÖLÇÜLEMEDİ:** Sınıf bazlı karışıklık matrisi (piksel ya da nesne düzeyinde).
-Üretim yolu vardır — `scripts/olcum/65_kabul_denetcisi.py` yer gerçeği maskeleriyle
-çalışır — ama matris çıkarımı yazılmamıştır. Sorumlu rol: **R7 Yazılım / görüntü
-işleme**; **eşik değiştirme yetkisi yoktur**, yalnız ölçüm ekler.
+| tahmin \ yer gerçeği | zemin | engel | ETİKETSİZ | satır toplamı |
+|---|---:|---:|---:|---:|
+| zemin | **12.004.796** | 790.630 | 3.445.818 | 16.241.244 |
+| engel | 3.080.875 | **92.405.877** | 11.819.510 | 107.306.262 |
+| yok | 8.515.024 | 28.602.498 | 79.872.572 | 116.990.094 |
+| sütun toplamı | 23.600.695 | 121.799.005 | 95.137.900 | 240.537.600 |
+
+Sütun payı (yer gerçeği içinde): zemin → zemin **0,509** / engel 0,131 / yok 0,361 ·
+engel → engel **0,759** / zemin 0,006 / yok 0,235 · etiketsiz → yok 0,840. **IoU**
+(etiketsiz sütun FP sayılmadan): zemin **0,4922** · engel **0,7400**; etiketsiz FP
+sayılarak: 0,4313 · 0,6760. Etiketli piksel doğruluğu 0,7181; etiketsiz pay
+0,3955 (piksellerin %39,6'sı etiketsizdir — üçüncü sütun bu yüzden vardır). Kare
+bazında: 16/29 karede zemin tahmini **hiç yok** (§3.3.4.2.5'teki MASKE_YOK 16/29 ile aynı
+sayıdadır; o ölçüm ayrı hattır, `142_gece_olcum`), 11 karede zemin etiketi varken zemin
+tahmini yok (IoU 0); engel IoU 12 karede ≥ 0,90, 4 karede 0. T67 ince bariyer katmanının
+payı 8.707 px (1 kare) — yalnız-model matrisi JSON'da ayrıca durur, IoU'lar
+aynıdır. **Örnek (nesne) düzeyi** aynı CONF/imgsz ile `ultralytics` `model.val` (CPU,
+`dataset/test29_v3.yaml`; ultralytics ön işlemesi, üretim yolu değil): satır = tahmin, sütun
+= yer gerçeği, son satır/sütun arka plan — zemin **15** / 1 / 1 · engel 1 / **33** / 11 ·
+arka plan 35 / 142 / —; sütun toplamları 51 / 176 etiket dosyalarındaki poligon
+sayılarıyla birebir. Maske P 0,7196 · R 0,2114 · mAP50 0,1860 · mAP50-95 0,0672.
+
+**SINIR (değişmedi):** bu küme **DOĞRULAMA kümesidir, arena değildir** (kırsal yol; kırmızı H,
+moloz yığını, fiziki bariyer içermez) — arena başarımı iddia edilmez. Matrisin okunuşu
+§4.8.4'teki D-315 uyarısıyla yapılır: etiketsiz sütun model hatası değildir. Sorumlu rol:
+**R7 Yazılım / görüntü işleme**; **eşik değiştirme yetkisi yoktur**, yalnız ölçüm ekler.
 
 **5 Eylül eki — depo taraması ve var olan tek matris.** `results/`, `scripts/olcum/results/`
 ve `results/fdr/GORUNTU_ISLEME_KANIT.md` içinde v36 için sınıf bazlı matris / önerme-hatırlama
@@ -1807,14 +1885,15 @@ Sütun payı (`confusion_matrix_normalized.png`): zemin 0,49 / 0,51 · engel 0,4
 arka plan 0,29 / 0,71. Aynı koşumun `results.csv` epoch 2 satırı (= `best.pt`): maske
 **P 0,6236 · R 0,4168 · mAP50 0,3866** — toplam, sınıf bazlı değil.
 
-Bu matris yönergenin istediği matris **DEĞİLDİR** ve satır **ÖLÇÜLEMEDİ kalır**: (i) küme
+Bu matris yönergenin istediği matris **DEĞİLDİR** ve satırı tek başına kapatmaz: (i) küme
 arena değil, eğitim uçuşları 0037/0039'dan rastgele %15'tir (`dataset/dji_v7/images/val`,
 n = 73) ve yalnız erken durdurma içindir (`config/model_registry.json → _egitim`);
 (ii) örnek düzeyidir, piksel düzeyi değildir; (iii) sınıf ekseni modelin iki sınıfıdır —
 HB pedi ve ince bariyer model sınıfı değildir (§3.3.4.1.1); (iv) çalışma noktası üretimden
 farklıdır (üretim CONF 0,30, `65_kabul_denetcisi.py:113`); (v) dizin `.gitignore` (`runs/`)
-ile depo dışıdır, makine okunur matris dosyası yoktur. Kapanma yolu: Bölüm 4 §4.8.4 ekindeki
-ölçüm görevi (kör `test29` üzerinde örnek ve piksel düzeyi).
+ile depo dışıdır, makine okunur matris dosyası yoktur. **Kapandı (7 Eylül 2026):** yukarıdaki
+(b) ölçümü — kör `test29` üzerinde piksel ve örnek düzeyi, üretim çalışma noktasında, makine
+okunur JSON depoda (`results/gece_20260907/karisiklik/`).
 
 #### 3.3.4.3 Haberleşme Paket Yapısı
 
@@ -2138,15 +2217,19 @@ BEYAN GEREKLI (insan): Gercek Pixhawk 6C uzerinde `scripts/mavlink_dogrula.py`
 BEYAN GEREKLI (insan): Gercek SiK 433 MHz cifti uzerinde `scripts/sik_rf_olc.py`
   RTT p95 ve paket kaybi olcumu; ayrica menzil beyaninin kaniti.
 
-BEYAN GEREKLI (insan): Jetson Nano 4GB uzerinde `scripts/jetson_fps.py` p50/p95
-  FPS olcumu (PT ve ONNX, cihaz bilgisi ile) -- kapi 0,61 FPS, esik gevsetilmez.
+OLCULDU 6 Eylul (D-431): kart Jetson Orin Nano Developer Kit 4 GB (Nano 4GB beyani
+  yanlislandi); `scripts/jetson_fps.py` 120 ornek: pt p50/p95 1,35/1,06 FPS · engine
+  1,58/1,33 FPS · esik 0,61 -> GECTI; ONNX kolu HATA (cudaErrorNoKernelImageForDevice).
+  `results/jetson_20260906/jetson_fps_20260906_orin_nano/ozet.json`
 
-BEYAN GEREKLI (insan): `torch.cuda.is_available()` sonucu ve secilen cikarim
-  arka ucu (CUDA torch topluluk wheel'i / onnxruntime / CPU torch).
+OLCULDU 6 Eylul (D-431): `torch.cuda.is_available()` True (Orin, torch 2.11.0+cu130);
+  secilen arka uc: ucus `.pt` GPU. Engine derlendi ama D-303 oransal 3/126 DUSTU ->
+  uretime alinmadi; ONNX GPU bu kartta dogrulanmamis.
 
 BEYAN GEREKLI (insan): ArduCopter surum numarasi, kalibrasyon ciktilari (accel,
   pusula ofseti < 300), ESC kalibrasyonu ve pervanesiz motor testi videosu;
-  sahada okunan `arducopter_fda_20260905.param` dokumunun repoya islenmesi.
+  sahada okunan dokumun repoya islenmesi -> 6 Eylul 20:22 dokumu repoda:
+  `config/pixhawk/arducopter_fda_20260906.param` (D-428 §5g); ucuncu dokum sart.
 
 BEYAN GEREKLI (insan): Adiyaman test alaninin gercek kose koordinatlari
   (`config/pixhawk/fda_gorev.waypoints` bugun Null Island yer tutucusudur).
@@ -2171,9 +2254,9 @@ BEYAN GEREKLI (insan): Sabit kanat IHA icin agirlik-denge, boyut, kontrol
   yuzeyi, aerodinamik, kararlilik, performans ve yuk hesaplari; ya da
   "DDR'den beri guncelleme yoktur" beyani (yonerge bunu acikca ister).
 
-BEYAN GEREKLI (insan): IHA ve IKA icin RENK KODLU baglanti semasi
-  (guc / UART / PWM / I2C ayri renk). Bugun elde ASCII topoloji var,
-  cizim yok.
+BEYAN GEREKLI (insan): IKA icin RENK KODLU baglanti semasi — IKA
+  aviyonigi tedarik edilmedi. IHA semasi CIZILDI (7 Eylul, olculen
+  topoloji): sekiller/iha_baglanti.svg; olculmeyen hatlar DOGRULANACAK.
 
 BEYAN GEREKLI (insan): Aviyonik BOM'un birim agirlik, boyut ve fiyat
   sutunlari; Bolum 7 ile AYNI tablodan beslenmelidir.
@@ -2187,9 +2270,14 @@ OLCULEMEDI: Gorev icra simulasyonu (3.3.3) — Gazebo Classic 11 kosumu,
   dizini YOK. Kapanma: Podman kurulu bir makine + `dronesolid/*.STL`
   mesh baglanmasi + tek kosum.
 
-OLCULEMEDI: Sinif bazli karisiklik (dogruluk) matrisi ve farkli isik
-  acisi / golge kesitlerinde goruntu isleme dogrulugu. Arena benzeri
-  gercek kare yok; maket cekimi yapilmayacak.
+OLCULDU (7 Eylul 2026): Sinif bazli karisiklik matrisi — DOGRULAMA
+  kumesi test29 (arena DEGIL), v36, CPU, piksel + ornek duzeyi; IoU
+  zemin 0,4922 / engel 0,7400 (etiketli payda). Artefakt:
+  results/gece_20260907/karisiklik/piksel_karisiklik_test29.json
+  (+ .md, .png); uretici scripts/olcum/176_piksel_karisiklik_matrisi.py.
+
+OLCULEMEDI: Farkli isik acisi / golge kesitlerinde goruntu isleme
+  dogrulugu. Arena benzeri gercek kare yok; maket cekimi yapilmayacak.
 
 OLCULEMEDI: SiK 433 MHz hattinda fiili veri hizi (bit/s, paket/s).
   Bugunku sayilar gecikme olcumudur. Kapanma: 5 Eylul,
@@ -2243,7 +2331,7 @@ Bölümde geçen her sayının kaynağı. Biçim: **değer** · *dosya yolu* · 
 | 4.7.1'de `Compare Params` "Missing 9 params" (`SYSID_THISMAV`, `SR1/SR2_POSITION`, `SR1/SR2_EXTRA3`, `RTL_ALT`, `LAND_SPEED`, `WPNAV_SPEED`, `ARMING_CHECK`) → sürüm 4.5.7'ye sabitlendi | `REVIEW_LOG.md` D-425 §1, §3 (satır 29711–29790) | Mission Planner `Compare Params`; karar gerekçesi D-425 §3 | 2026-09-05 |
 | Firmware çevrimdışı: `SURUM = "stable-4.5.7"` · `board_id` 56 · `arducopter.apj` 1 585 371 B · `firmware-version.txt` = `4.5.7-FIRMWARE_VERSION_TYPE_OFFICIAL` · 10 test | `scripts/pixhawk_firmware_indir.py:74` · `firmware/` (ikili, depoda değil) · `scripts/bellek_hazirla.py:62-64` · `config/pixhawk/README.md:27-44` | `pixhawk_firmware_indir.py` (5 Eylül 14:58 indirme, `ls -l firmware/`); `tests/test_pixhawk_firmware_yolu.py` (`grep -c "def test_"` = 10) | 2026-09-05 |
 | RC alıcı portu `i-BUS SERVO` (önce `CH6`, Pixhawk görmedi) · `RC_PROTOCOLS` sahada 4 → 1, geri alınmadı · PM06 8 pinli kablo → 6 pinli kablo | `REVIEW_LOG.md` D-426 §2 (satır 29833–29844) · `SAHA_HAZIRLIK_PLANI_20260903.md` §2.3:117 | saha tutanağı (mimar oturumu) | 2026-09-05 |
-| 5 Eylül açık kalemler: RC failsafe ÖLÇÜLEMEDİ · ESC kalibrasyonu YAPILMADI · `arducopter_fda_20260905.param` dosya YOK · pil gerilimi ÖLÇÜLEMEDİ · pusula YAPILMADI (Jetson takılı değil) · accel BEYAN teyitsiz | `REVIEW_LOG.md` D-426 §4 (satır 29863–29868) | — | 2026-09-05 |
+| 5 Eylül açık kalemler: RC failsafe ÖLÇÜLEMEDİ · ESC kalibrasyonu YAPILMADI · parametre dökümü dosya YOK (6 Eylül'de alındı: `arducopter_fda_20260906.param`, D-428 §5g) · pil gerilimi ÖLÇÜLEMEDİ · pusula YAPILMADI (Jetson takılı değil) · accel BEYAN teyitsiz | `REVIEW_LOG.md` D-426 §4 (satır 29863–29868) | — | 2026-09-05 |
 | Kuru koşu 9 GEÇTİ · 1 SAHİPSİZ (motor) · 0 DÜŞTÜ · 0 ATLANDI, çıkış kodu 1; `surus_izni` sahibi `comms/iha_inis_yayinci.py:386` | `results/saha_kuru_kosu_20260904_095222/ozet.json` → `sayim`, `kopuk_halkalar`, `satirlar` | `scripts/saha_kuru_kosu.py` | 2026-09-04 09:52:22 |
 | Tam suit 2138 test: OK (~19:1x) · 1 FAIL ×2 (~14:5x, ~19:5x) — `test_p8_sim_katmani.test_comms_loopback_gecer`, ortam (5005/5006 canlı YKS/İKA süreçlerinde) | `REVIEW_LOG.md` D-427 (satır 29893–29895) · `comms/test_comms.py:35-36` | `unittest discover -s tests -q`; `netstat` + Win32_Process | 2026-09-05 |
 | Kanıt defteri **432** kayıt, son kayıt D-427 | `REVIEW_LOG.md` | `grep -c "^### D-" REVIEW_LOG.md` | 2026-09-05 |
@@ -2322,7 +2410,8 @@ Bölümde geçen her sayının kaynağı. Biçim: **değer** · *dosya yolu* · 
 | Çerçeve ihlalleri: 576×1024'te ORTA yerine SAĞ · %1 → %1,78 · 18/18 karede rota yok | `CONTRACTS.md` §3.1 | — | — |
 | HB varış: son waypoint ped kutusunda 253/256 · `FINAL_WP_RADIUS = 0,3 m` < `HB_KENAR_M/2 = 1,0 m` → pay ≥ 0,7 m | `CONTRACTS.md` §7.3 · `tests/test_p9e_branda_temas.py` | T150/D-386, P9e/D-391 | 2026-09-02 |
 | Sınıf şeması doğrulaması 8 GEÇTİ / 0 DÜŞTÜ (pozitif kontrol dâhil) | `codes/test_sinif_semasi.py` · `CONTRACTS.md` §1.2 | — | — |
-| Akış diyagramları (a)–(e): 5 Mermaid çizimi · düğüm = fonksiyon + dosya:satır · yerel lint 5 blok / 0 hata (pozitif kontrol 6 hata) · SVG render ÖLÇÜLEMEDİ (mmdc/pandoc yok) | §3.3.4.1.17 · `codes/rpi_inference.py:2298-2430` · `comms/iha_komut_alici.py:630-779, 879-926` · `comms/iha_inis_yayinci.py:361-419, 467-561` · `comms/inis_kaniti.py:925-1065` · `comms/yks_gui.py:1436-1503, 1521-1697, 1842-2101` · `simulation/scripts/ika_nav.py:203-413, 437-618` · `comms/ika_receiver.py:69-158, 231-306` | koddan elle türetim, commit `64cd543` (`git status` temiz) | 2026-09-05 |
+| Akış diyagramları (a)–(e): 5 Mermaid çizimi · düğüm = fonksiyon + dosya:satır · yerel lint 5 blok / 0 hata (pozitif kontrol 6 hata) · SVG render ÖLÇÜLEMEDİ (mmdc/pandoc yok) — **7 Eylül'de kapandı, sonraki satır** | §3.3.4.1.17 · `codes/rpi_inference.py:2298-2430` · `comms/iha_komut_alici.py:630-779, 879-926` · `comms/iha_inis_yayinci.py:361-419, 467-561` · `comms/inis_kaniti.py:925-1065` · `comms/yks_gui.py:1436-1503, 1521-1697, 1842-2101` · `simulation/scripts/ika_nav.py:203-413, 437-618` · `comms/ika_receiver.py:69-158, 231-306` | koddan elle türetim, commit `64cd543` (`git status` temiz) | 2026-09-05 |
+| Akış diyagramları (a)–(e) SVG: 5/5 üretildi (Chrome headless + mermaid@10, `scripts/mermaid_svg.py`) · 66.907 / 83.785 / 86.200 / 113.055 / 94.090 B · düğüm doğrulama `scripts/akis_diyagram_dogrula.py`: 51 + 68 + 62 + 86 + 70 = 337/337 düğüm TAM satırda, 0 hata (alt-grafik başlıkları dâhil; kenarda tanımsız ID yok) · nöbetçi `tests/test_gece_akis_diyagramlari.py` 13/13 OK (6 pozitif kontrol dâhil) | §3.3.4.1.17 · `FDR/sekiller/akis_{a..e}.mmd` / `.svg` / `_dugumler.md` | koddan türetim, kaynak commit `f3441b4`; teslim commit `366f574` | 2026-09-07 |
 | §3.3.4.1.1 satır karşılıkları (5 Eylül): `run_camera` 2298 · `run_video` 2125 · `run_image` 1960 · `_preprocess` 1892 · `get_masks` 744 · `kare_olcek_kahini` 453 · `analyze_path` 1352 · `_rota_kararini_esikle` 1779 · `_karari_yayinla` 285 · `KararYumusatici.suz` 2158 / `KARAR_HISTEREZIS_KARE` 2122 | `codes/rpi_inference.py` · `codes/karar_sozlesmesi.py` | `grep -n "^def \|^class \|^    def "` (commit `64cd543`) | 2026-09-05 |
 
 ### Aviyonik ve saha yığını

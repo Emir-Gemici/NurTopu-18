@@ -42,10 +42,14 @@ Her G-iş ayrı commit; düşen G-iş **atlanır, gizlenmez** — bu dosyanın s
 
 | iş | durum | kanıt |
 |---|---|---|
-| G1 | | |
-| G2 | | |
-| G3 | | |
-| G4 | | |
-| G5 | | |
-| G6 | | |
-| G7 | | |
+| G0a | GEÇTİ (master de78f1f; çürütücü RED → tek kusur: taşıma notunda D-428→D-431 kendine dönük değişim, 04:0x'te 4 dosyada düzeltildi) | 13 kapı dosyası OK; engine sha `bb9bd868…0300` 57.283.989 B; ayna bayt-eş; D-431 tek; FP32 girdisi çıktı (K4); export komutu .pt (K5); `*.engine` gitignore'a |
+| G0b | GEÇTİ (22162b2, add/add çakışması ours) | `test_faz_b_nano_kurulum` 26 OK(8 skip) + 10 kapı dosyası; mutasyon (bant silme, venv312 yolu) K8'de düştü; kalan "Nano 4GB/JetPack 4.6" 42 satır → bant/tarihçe |
+| G0c | KISMEN (commit yok; 95 düzenlemenin 85'i uygulandı, 10'u çürütücüde düştü ve GİRMEDİ; 3'ü G0b ile eşdeğer, atlandı; 1'i elle) | FDR kapıları 3/3; sayılar `results/jetson_20260906/…` JSON'larından mimar tarafından da yeniden hesaplandı (pt 739/939 ms, engine 635/751; 10 dk 770/922, 649/765) |
+| G1 | GEÇTİ (6a0196d) | `test_p8_sim_katmani` 10/10; mutasyon (sabit portlar geri) FAILED(2); T209 READY_FOR_REVIEW |
+| G1b | GEÇTİ (e6c25ab) | `test_runbook_komutlari_kosuyor` 4/4 + nöbetçi 4/4; koşum sonrası 5005/5006/5007 BOŞ (mimar da ölçtü); mutasyon taskkill kaldırılınca FAILED(2); kök `g1b_surec_sizintisi/deney_agac.txt` (venv python.exe başlatıcı, torun süreç); T210; D-432 |
+| G2 | GEÇTİ (d6d9a0e) | `test_faz_b_pixhawk_sablon` 16/16; 48 parametre; mutasyon A/B/C düştü; RC_SPEED 400, SERVO9–12 TEYİT, SERVO1–8/13–16 = 0 |
+| G3 | GEÇTİ (master 0575690) | nöbetçi 10/10; `results/gece_20260907/karisiklik/piksel_karisiklik_test29.json` (29 kare, 240.537.600 px; IoU zemin 0,43 / engel 0,68 tüm payda); örnek düzeyi mAP50 0,186 @conf 0,30; sınır: DOĞRULAMA kümesi, arena değil |
+| G4 | GEÇTİ (366f574) | 5 Mermaid → SVG, 337/337 düğüm tam satır; nöbetçi 13/13; çürütücü 6 rastgele düğümü açtı; sınır: A4'te yazı ~0,3 mm (vektör, ekranda okunur) |
+| G5 | GEÇTİ (a235119; çürütücü RED → yalnız `fdr_pdf_uret` çakışması (ours) ve `~~` üstü çizme; ikincisi PDF üreticide `<del>` ile kapatıldı) | `test_gece_sekiller` 11/11; halka 32/7/4/2, çubuk 39/11/7/5/4 tabloyla birebir; organizasyon şeması isimsiz |
+| G6 | GEÇTİ (8f50b2d) | `test_gece_baglanti_semasi` 14/14; 17 hat (11 ölçülü, 6 DOĞRULANACAK kesik); İKA çizilmedi |
+| G7 | G0c'ye katlandı | `20260905.param` atıfları → `20260906` (FDR + README + ACIK_KALEMLER); ESC kal. yordamı D-428 §3'ten README §1 ve plan §2.4'e |

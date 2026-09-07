@@ -84,8 +84,8 @@ değildir ve bu özet eşitmiş gibi yazmaz.
 **(1) İHA — FDA görev test uçuşu aracı (çoklu rotor).** Final tasarım faaliyeti
 tamamlanmış, donanım künyesi sabitlenmiştir: Pixhawk 6C + PM02, Holybro M9N,
 5008 340KV ×4 motor / 12×10 pervane, 80 A ESC, FCHUB-12S V2 güç dağıtımı,
-FlySky FS-i6 (iBUS), 2× SiK 433 MHz telemetri, görev bilgisayarı **Jetson Nano 4GB**
-(JetPack 4.6), kamera **Raspberry Pi HQ (IMX477, CSI)**, 4S 10 Ah pil
+FlySky FS-i6 (iBUS), 2× SiK 433 MHz telemetri, görev bilgisayarı ~~**Jetson Nano 4GB** (JetPack 4.6)~~
+→ **Jetson Orin Nano Developer Kit 4 GB** (JetPack 7.2.1, Ubuntu 24.04, Python 3.12; 3 Eylül beyanı 'Nano 4GB' 6 Eylül'de kartla YANLIŞLANDI — D-431), kamera **Raspberry Pi HQ (IMX477, CSI)**, 4S 10 Ah pil
 (`SAHA_HAZIRLIK_PLANI_20260903.md` §0.2 — **kullanıcı beyanı**, 5 Eylül'de kutu
 açılarak teyit edilecek). Özgün olan taraf gövde değil **karar mimarisidir**:
 serbest alan otoritesi + fail-closed + her karede tam mesaj (§Y-1-M01).
@@ -190,7 +190,7 @@ tavanı ve fail-loud `GercekSurucu` ile kapatıldı (§Y-1-M02(3)).
 - **BEYAN GEREKLİ (insan):** DDR aviyonik BOM'u (28 kalem, toplam **2293 g**;
   `navitas-teknofest/references/ddr_requirements.md`) **final aracına** aittir ve
   bugünkü FDA aracı künyesiyle aynı değildir (DDR'de Jetson Orin NX + Arducam IMX477
-  + Holybro M10 + TBS Crossfire; FDA aracında Jetson Nano 4GB + RPi HQ + M9N + FS-i6).
+  + Holybro M10 + TBS Crossfire; FDA aracında Jetson Orin Nano Developer Kit 4 GB (6 Eylül ölçüm, D-431; 3 Eylül beyanı 'Nano 4GB' yanlışlandı) + RPi HQ + M9N + FS-i6).
   Final aracının aviyonik BOM'unun DDR'ye göre revize edilip edilmediği beyan
   edilecek ve Bölüm 3.3.1'e DDR ↔ FDR karşılaştırmalı olarak girecektir.
 
@@ -200,8 +200,11 @@ tavanı ve fail-loud `GercekSurucu` ile kapatıldı (§Y-1-M02(3)).
 
 Hazır olan: algı → karar → aktarım → hakem onayı zinciri uçtan uca koşuyor, kapılar
 geçiyor (§Y-1-M10 tablosu), yer zinciri bütünleşik kuru koşuda 9/10 halkada GEÇTİ,
-ArduCopter parametre şablonu ve QGC görev planı testle kilitli, Jetson Nano yığını
-çevrimdışı kurulabilir hâlde.
+ArduCopter parametre şablonu ve QGC görev planı testle kilitli, Jetson yığını 6 Eylül'de
+kartta (Orin Nano Developer Kit 4 GB) kuruldu ve kapıları koştu: genel kapı 15/15 · 15/15,
+FPS kapısı GEÇTİ (pt 1,35/1,06 · engine 1,58/1,33 FPS, eşik 0,61) — D-431. (3 Eylül'deki
+"Nano yığını çevrimdışı kurulabilir" hazırlığı kartla yanlışlandı: cp38 tekerlek zinciri bu kartta
+kullanılamadı.)
 
 Hazır **olmayan** üç şey vardır ve üçü de bu raporda açık durur:
 
@@ -259,7 +262,7 @@ insan beyanı değil **uçuş kontrolcüsü kanıtıdır** (`EXTENDED_SYS_STATE.
 istasyonundaki "İHA İNDİ" düğmesi bu kilidi **açamaz**.
 
 **Fiziksel etkileşimler ve alt sistem konfigürasyonu (FDA aracı).** Görev
-bilgisayarı (Jetson Nano 4GB) CSI hattından kamerayı (RPi HQ, IMX477), UART
+bilgisayarı (Jetson Orin Nano Developer Kit 4 GB — D-431) CSI hattından kamerayı (RPi HQ, IMX477), UART
 hattından uçuş kontrolcüsünü (Pixhawk 6C) ve telsiz hattından YKS'yi görür. Aynı
 seri portu üç sürecin açmaya çalışması ölçülmüş bir çakışmaydı; hem MAVLink hem
 NAVITAS protokolü **çoğullayıcıya** bağlanmış ve kapıya alınmıştır (§Y-1-M04(e)).
@@ -292,6 +295,7 @@ LOITER 60 s → LAND) repoda ve testle kilitlidir; kötü-durum süre bütçesi
 **221,5 s ≤ 600 s** hesaplanmıştır. Jetson Nano yığını çevrimdışı kurulabilecek
 biçimde hazırlanmıştır (14/14 paket aarch64/cp38 tekerlek, 246 MB) — sahada
 internet varsayımı yoktur.
+⚠ **6 Eylül düzeltmesi (D-431):** kart Jetson Orin Nano Developer Kit 4 GB (Python 3.12) çıktı; cp38 tekerlek zinciri bu kartta kullanılamadı, kurulum kartta apt/pip ile (internetle) yapıldı ve kapılar geçti (genel kapı 15/15, FPS kapısı GEÇTİ). Çevrimdışı hazırlık tarihli kayıt olarak durur.
 
 **Saha kurulum prosedürü yazılıdır.** Kanonik saha yordamı `SAHA_RUNBOOK.md`
 (P4 · D-394) altında altı kart hâlinde durur: sahaya çıkmadan PC kontrolü,
@@ -491,7 +495,7 @@ sayılır**, elle tutulmaz.
 
 - **BEYAN GEREKLİ (insan):** Takım adı, takım numarası, kategori ve üniversite/kurum künyesi — bu bölümün başına eklenecek.
 - **BEYAN GEREKLİ (insan):** Gerçek kütleler (İHA, İKA, yük) — 5 Eylül tartı listesi.
-- **BEYAN GEREKLİ (insan):** Jetson Nano üzerinde ölçülen kare hızı ve `torch.cuda.is_available()` sonucu.
+- ~~**BEYAN GEREKLİ (insan):** Jetson Nano üzerinde ölçülen kare hızı ve `torch.cuda.is_available()` sonucu.~~ → **ÖLÇÜLDÜ 6 Eylül (D-431):** kart Jetson Orin Nano Developer Kit 4 GB; `torch.cuda.is_available()` **True** (`cuda_adi: Orin`); `scripts/jetson_fps.py` 120 örnek: pt p50/p95 **1,35/1,06 FPS** · engine **1,58/1,33 FPS**, eşik 0,61 → GEÇTİ; ONNX kolu HATA (`cudaErrorNoKernelImageForDevice`) — `results/jetson_20260906/jetson_fps_20260906_orin_nano/ozet.json`.
 - **BEYAN GEREKLİ (insan):** RPi HQ kamera gerçek yatay görüş açısı (`kamera_dogrula` ölçümü); rapordaki 55–63° aralığı lens beyanından türetilmiş **tahmindir**.
 - **BEYAN GEREKLİ (insan):** Gerçek SiK 433 MHz hattında gidiş-dönüş süresi ve paket kayıp oranı.
 - **DOĞRULANACAK:** Bu özetin sayıları rapor teslim edilmeden önce, teslim günündeki kapı koşusuyla **yeniden üretilmelidir**; bayat sayı taşımak bu projede birden çok kez kusur olarak kayda geçti.

@@ -52,10 +52,10 @@
 - [ ] FP16 engine derlendi (D-371 kararı: **FP16**; INT8 Gün-1'de YOK,
       KILAVUZ §6 "sırayla" kuralı).
 - [ ] Kapı T16: `.engine` oluştu **ve** tek kare çıkarım hatasız (§4 sonu).
-- [ ] 🔴 Registry'ye yaz: `turevler["navitas_seg_v36_best.engine"].sha256`
+- [ ] 🔴 Registry'ye yaz: `turevler["navitas_seg_v36_best_512_fp16.engine"].sha256` (6 Eylül'de YAZILDI: `bb9bd868…0300`, D-431; FP32 girdisi defterden çıkarıldı, K4)
       alanındaki `DERLENINCE_YAZILIR` gerçek sha256 ile değiştirildi.
       ⚠ 6 Eylül (D-431): yazılan girdi **`navitas_seg_v36_best_512_fp16.engine`** (derlenen
-      FP16); FP32 `navitas_seg_v36_best.engine` girdisi yer tutucu kaldı — mühürden önce
+      FP16); FP32 `navitas_seg_v36_best.engine` girdisi 7 Eylül'de defterden ÇIKARILDI (D-431 K4; derlenmedi, gerekmiyor) — mühür artık bunu istemez
       defterden çıkarılır ya da derlenir (D-431 K4, mimar kararı).
 - [ ] `jetson_fps.py` fail-closed denetimi yeniden koşuldu → `eslesti`.
 

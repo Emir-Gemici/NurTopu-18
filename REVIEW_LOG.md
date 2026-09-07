@@ -22522,6 +22522,8 @@ GUI'nin **açılış kaynağı** hâlâ `kompozit` (`comms/yks_gui.py:250`, `ALG
 
 ### D-303 · T79 kanıtı tazelendi: v36 `.pt` ↔ `.onnx` karar denkliği **259/260** (2026-08-27)
 
+> ⬆ **SONRADAN (D-431, 6 Eylül 2026):** buradaki oransal eşik (≤ 5/260) Jetson Orin Nano'da derlenen TensorRT `.engine` ↔ `.pt` denkliğine de uygulandı; engine **3/126 ile GEÇEMEDİ** → uçuş `.pt` ile (D-431 §3–4). Bu kaydın kendi ölçümü (v36 `.pt`↔`.onnx` 259/260) ve eşik **değişmedi**.
+
 **Ön kayıt:** `ON_KAYIT.md` §26 (kural sonuç görülmeden: ≤ 5/260 → "v34 seviyesinde"). **Kanıt:** `results/t79/{onnx_denklik_v36.json,v36.log}`.
 **Kapatılan boşluk:** T79'un (KRİTİK) ONNX denklik kaydı **v34'te kalmıştı** (D-203: 2/260, IoU 0,9959, azami sapma 18,4 m). Üretim modeli **v36**'dır ve saha TensorRT motorunu **ONNX'ten** türetecek; terfi (D-294) ONNX'i **üretti** ama kararı **karşılaştırmadı**.
 
@@ -29886,6 +29888,8 @@ kanit degildir; **yapistirilan satir** kanittir.
 
 ### D-427 — `test_comms` URETIM PORTLARINA (5005/5006) BIND EDIYOR: YKS canliyken tam suit HIC KOSAMAZ — 5 Eylul'de UC kez dustu, ucu de ortam
 
+> ⬆ **SONRADAN (D-432, 7 Eylül 2026):** buradaki "portları kullanıcının canlı `yks_gui`/`ika_nav`'ı tutuyor" teşhisi **EKSİKTİ** — o süreçler 10.0.0.x yer tutucu IP'li, test süitinin sızdırdığı süreçlerdi (runbook kapısı başlattığını öldürmüyordu). Kök neden ve düzeltme D-432 / T210; loopback ephemeral port T209.
+
 **Olcum (uc ayri kosu, ayni PC, 5 Eylul):**
 
 | saat | suit | dusen | portu tutan (netstat + Win32_Process) |
@@ -30150,6 +30154,8 @@ asimetri buradadir); (10) ESC sinyal sirasi + kirmizi teller; (12) TX pili + fai
 
 ### D-430 — MIMAR SUIT KIRMIZIYKEN PUSH ETTI (7 Eyl ~02:00, e27941d): zincir yalniz genel kapiya bakiyordu — kural betige baglandi
 
+> ⬆ **SONRADAN (D-432, 7 Eylül 2026):** buradaki "kullanıcı YKS'yi 00:43'te yeniden açmış" teşhisi **YANLIŞTI** — PID 35252/18224 süreçleri test süitinin sızdırdığı yer tutucu IP'li süreçlerdi (komut satırı okunmadan hüküm verildi). Kural ihlali (süit kırmızıyken push) hükmü ve `push_kapisi.py` onarımı **geçerli** kalır.
+
 **Ne oldu.** e27941d icin push zinciri: arka planda suit → bittiginde genel kapi →
 push. Suit ciktisi `FAILED (failures=1, skipped=3)` idi; zincirin kosulu **yalniz**
 genel kapinin "GECTI" satirina bakiyordu, suitin "OK" satirina bakmiyordu. Genel kapi
@@ -30198,3 +30204,40 @@ Kaynak: Jetson oturumu paketi GELISTIRICIYE_20260906, 7 Eylül 2026 gecesi (G0a,
 **4. Hüküm ve mimara giden kalemler.** (1) `FAZ_B_GUN_PLANI` §2 11:15 kuralı: D-303 aşıldı → **engine ÜRETİME ALINMAZ, uçuş `.pt` ile** (defter `path` zaten `.pt`; `.pt` FPS kapısını geçiyor). ⚠ S kümesi T66 değil; D-303 T66 için yazıldı; nihai karar PC'de T66 ile. (2) **Donanım künyesi** beş belgede ve `test_faz_b_nano_kurulum.py`'de düzeltilmeli. (3) `test_t143…engine_YER_TUTUCU` artık düşer (engine gerçek sha); test "yer tutucu YA DA dosya özetiyle birebir" olacak şekilde güncellenmeli. (4) Defterde `navitas_seg_v36_best.engine` yer tutucu kaldı — mühürden önce çıkarılmalı/derlenmeli (FAZ_B §3). (5) `jetson_derleme_manifest.json` `jetson_komutlari` "ONNX'ten export" ultralytics'te çalışmıyor; `.pt`'den. (6) 🔴 **FPS darboğazı model değil**: `get_masks` ~311 ms + costmap Katman A ~208 ms = toplamın %82'si, CPU'da; engine toplamda 104 ms kazandırıyor. (7) 4K karede costmap CPU'da dakikalar sürüyor (46 dk'da ~16 kare) — üretim 1280'de olduğu için uçuşu etkilemez, ama ölçüm betikleri 4K'yı küçültmeli. (8) `onnxruntime-gpu` PyPI sm_87'de çalışmıyor; ONNX yedek yolu CPU'da kalır (ölçülmedi). (9) `wheels/` 246 MB bu kartta anlamsız (madde 18: kullanıcı kararı). (10) Uyumluluk (kullanıcı sorusu): Jetson tarafı yalnız standart MAVLink konuşur (GLOBAL_POSITION_INT, EXTENDED_SYS_STATE, GPS_RAW_INT, COMMAND_LONG ARM/DISARM/RTL/LAND/DO_PARACHUTE), MAV_TYPE/kip denetimi yok → quad (ArduCopter) ve sabit kanat (ArduPlane) için ortak; gövdeye özgü olan `config/pixhawk/*.param` (Copter 4.5.7), görev dosyası, `--fda` kipi, FOV beyanı. ArduPlane ile **ölçülmedi**.
 
 **Mimar notu (7 Eylül 2026, G0a birleştirme — bu kaydı depoya taşıyan ajan, ölçümü yapan değil).** (1) 🔴 **ÖRÜNTÜ — kutusu açılmamış donanım hakkında varsayım, DÖRDÜNCÜ tekrar:** D-413 (Nano'da microSD yuvası var sanıldı, yoktu) · D-424 (Pixhawk'ta ArduCopter sanıldı, PX4 geldi) · D-426 §3 (künye üç yerde yanlış çıktı) · şimdi **Jetson'un kendisi**: 3 Eylül beyanı "Nano 4GB eMMC + üçüncü parti taşıyıcı, JetPack 4.6, Py 3.6" idi, kart **Orin Nano Developer Kit 4 GB / JetPack 7.2.1 / Py 3.12 / NVMe** çıktı (`results/jetson_20260906/ORTAM_KUNYESI.txt`, `/proc/device-tree/model`). Kural D-424 §5'te YAZILIYDI: kutudan çıkacak her donanım için "üzerinde ne var?" sorusu ÖN KAYITLA sorulur, cevabı üretici belgesinden doğrulanır, "istediğimiz şey" değilse çevrimdışı geçiş yolu hazırlanır. D-424 §5 kalan iki adayı (Jetson eMMC, SiK) kontrol etti ama **kartın modelini sormadı** — beyan tek kaynaktı, `/proc/device-tree/model` hiç okunmadı. Bedel: 246 MB cp38 tekerlek + Nano belgesi + `test_faz_b_nano_kurulum` kilidi geçersiz (paket beyanı; kazanım: TensorRT/CUDA apt ile kuruldu, engine derlendi). Kural değişmez; uygulama sırası değişir: **beyan ≠ ölçüm** — kutu açılır açılmaz ilk komut künyeyi ölçen komuttur, belge ondan sonra yazılır. (2) Bu birleştirmede uygulanan (G0a): defter engine sha'sı tek satır (`config/` + `jetson_paket/config/` ayna, ONCE.json ile diff'lendi — master ONCE ile birebirdi); FP32 `navitas_seg_v36_best.engine` yer tutucu girdisi profilden çıkarıldı (**K4**, `_fp32_engine_notu`); manifest `paket_icerigi`+not birleştirildi ve `jetson_komutlari` ile iki `JETSON_KILAVUZ.md` §4 komutu `.pt`'den derleyen komutla değiştirildi (**K5**); `test_t143` yer tutucu YA DA disk sha'sı kabul ediyor, gerçek engine varsa `turev_eslesti` sınıyor (**K3**); `JETSON_ORIN_NANO_KURULUM.md` (depo kökü → paket) ve `scripts/orin_nano_*.sh` KOPYALAR'a alındı (18→21, `test_jetson_comms_paketi` gerekçeyle güncellendi); kanıt `results/jetson_20260906/`; denklik betiği `scripts/olcum/170_engine_karar_denkligi.py` (paketin 165'i `165_trt_pc_provasi.py` ile çakışıyordu; çıplak model yolları defterden çözülecek şekilde değiştirildi, `--s-kume kabul` ile T66 tekrarı hazır). Uygulanmayan, başka işe giden: künye düzeltmeleri K1/K9/K10 (G0b), FDR kalemleri (G0c), K2 nihai karar (T66 ile Jetson'da), K6/K7/K8/K11 (mimar). ⚠ `.engine` `.gitignore`'da **YOK** (çürütücü D-405 bulgusu hâlâ açık): engine kopyaları `jetson_paket/models/` ve `models/` altında izlenmeyen dosya olarak duruyor, commit'e ALINMADI — `.gitignore` satırı mimar kararı.
+
+### D-432 — PUSH KILIDININ GERCEK KOKU: tam suit YER TUTUCU IP'li yks_gui/ika_nav sureclerini SIZDIRIYOR — D-427 ve D-430'un "kullanicinin canli YKS'si" teshisi EKSIKTI
+
+**Olcum (7 Eyl 02:0x–02:1x, `results/gece_20260907/sizinti_surecleri_0207.txt`).**
+Kullanici YKS'yi kapatip uyudu (02:45 bildirimi); mimar `ika_nav` (PID 18224) artigini
+kapatti, 5005/5006 BOS olculdu, `push_kapisi.py` suiti kostu ve bitti. Hemen ardindan
+netstat: 5005/5006 yine dolu — **dort yeni surec**, baslama saati suitin icinde
+(02:02:27 ve 02:02:33), hepsi **10.0.0.x** adresleriyle:
+
+    yks_gui.py --fda --ika 10.0.0.2:5006 --iha 10.0.0.4:5007 --kamera-url http://10.0.0.4:8080   (x2)
+    ika_nav.py comms --yks 10.0.0.1:5005                                                          (x2)
+
+10.0.0.1/2/4 kullanicinin agi degil, `tests/test_runbook_komutlari_kosuyor.py`'nin YER
+TUTUCU sozlugudur (D-421 §2 T3). Yani: runbook kapisi belgedeki komutlari gercekten
+kosuyor (dogru — amaci bu), ama argparse reddi olcumunden sonra **basariyla acilan** uzun
+omurlu sureci (Tk arayuzu, IKA dongusu) oldurmuyor; surec suitten sonra yasiyor, uretim
+portlarini tutuyor ve **bir sonraki** suitte `test_comms_loopback` (5005/5006'ya bind,
+D-427) `WinError 10013` ile dusuyor. Alfabetik sira (`test_p8_…` < `test_runbook_…`) yuzunden
+ayni kosumda dusmez; sonraki kosumda duser — 4 Eylul'den beri gorulen "bir yesil bir
+kirmizi" oruntusu tam budur.
+
+**Onceki teshislerin duzeltilmesi.** D-427 tablosundaki "PID 15092 yks_gui / 23952 ika_nav"
+ve D-430'daki "00:43 yks_gui / 01:31 ika_nav" surecleri de ayni 10.0.0.x komut satirini
+tasiyordu (`sizinti_surecleri_0207.txt` ustteki liste); baslama saatleri suit
+kosumlariyla cakisiyor (00:37 suit -> 00:43). Ikisi de **test sizintisiydi**, kullanicinin
+YKS'si degildi. Mimar komut satirindaki IP'leri okumadan "kullanici YKS'yi acmis" dedi —
+kanit onundeydi, okunmadi. Kayit.
+
+**Onarim.** (1) Gece turu G1b/T210: baslatilan her surec try/finally + Windows'ta agac
+olarak (`taskkill /T /F`) kapatilir; mumkunse betikler kendiliginden biten kiple kosulur;
+nobetci test: suit basi/sonu 5005/5006/5007 dinleyici sayisi artmaz. (2) G1/T209:
+`test_comms` loopback ephemeral porta gecer — sizinti olsa bile dusmez. (3) `push_kapisi.py`
+zaten portlar doluysa baslamiyor; T210 kapaninca bu kontrol "sizinti VAR -> dus" anlamina
+gelir, "bekle" degil.
+
+**Kural.** Bir surecin sahibi belli degilse once **komut satiri okunur** (`Win32_Process
+CommandLine`), sonra hukum verilir. "Kullanici acmis" bir teshis degil, varsayimdir.

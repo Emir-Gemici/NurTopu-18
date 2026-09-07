@@ -1,8 +1,8 @@
 # JETSON ORIN NANO 4GB (JetPack 7.2.1) — KURULUM VE GÜN-1 TUTANAĞI · 6 Eylül 2026
 
 > **7 Eylül 2026 — depoya taşıma notu (G0a, REVIEW_LOG D-431).** Bu belge 6 Eylül Jetson oturumunda
-> yazıldı ve `GELISTIRICIYE_20260906` paketiyle geldi. Taşınırken: paketin **D-431** numarası master'daki
-> D-431/429/430 ile çakıştığı için kayıt **D-431** oldu ve buradaki atıflar buna çevrildi; ham çıktılar
+> yazıldı ve `GELISTIRICIYE_20260906` paketiyle geldi. Taşınırken: paketin **D-428** numarası master'daki
+> D-428/429/430 ile çakıştığı için kayıt **D-431** oldu ve buradaki atıflar buna çevrildi; ham çıktılar
 > `results/jetson_20260906/` altına kondu (yollar yeniden köklendi); denklik betiği
 > `scripts/olcum/170_engine_karar_denkligi.py` (paketin 165 numarası `165_trt_pc_provasi.py` ile
 > çakışıyordu). Aynı gün uygulanan kararlar: FP32 `navitas_seg_v36_best.engine` yer tutucu girdisi

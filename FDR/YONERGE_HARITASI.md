@@ -46,7 +46,7 @@
 
 | kimlik | gereksinim | durum |
 |---|---|---|
-| `Y-2.1-M01` | **Bölüm 2.1 Organizasyonel Yapı** — takımın güncel organizasyonel yapılanması ve üyelerin/birimlerin **icra yetkileri şematize** edilmeli | KISMEN (şema yok) |
+| `Y-2.1-M01` | **Bölüm 2.1 Organizasyonel Yapı** — takımın güncel organizasyonel yapılanması ve üyelerin/birimlerin **icra yetkileri şematize** edilmeli | VAR (7 Eylül: `sekiller/organizasyon.svg` §2.1.2'ye gömüldü; rol bazlı, isimsiz; nöbetçi `tests/test_gece_sekiller.py`) |
 | `Y-2.1-M02` | 🔴 **İSİM YAZILMAZ.** *"üyelerin kişisel verilerinden (isim, görsel vb.) arındırılmış, tamamen rol bazlı ve profesyonel bir anlatım"* | **VAR** — rapor zaten rol bazlı (R1–R8) |
 | `Y-2.2-M01` | **Bölüm 2.2 Proje Takvimi** — DDR'deki takvimin **termin planına uygunluğu teyit** edilmeli | KISMEN |
 | `Y-2.2-M02` | İş takvimine **eklenen yeni iş akışları** varsa planlama analitik yaklaşımla **yeniden değerlendirilip güncellenmeli** | KISMEN |
@@ -155,8 +155,8 @@
 | `Y-3.3.3-M01` | 🔴 **Üç Boyutlu Simülasyon Ortamı** | İHA ve İKA'nın **3B CAD modelleriyle** sanal görev icrası: kalkış, görüntü işleme ile rota tespiti, **verinin İKA'ya aktarılması**, İKA'nın **otonom sürüşü** | KISMEN (Gazebo iskeleti var: 7 dünya + İHA/İKA/mancınık SDF + görev betikleri; CAD yok — mesh 0, koşum yok) |
 | `Y-3.3.3-M02` | 🔴 **Simülasyon Verileri** | otonom karar verme **başarı oranları**, **sanal görev süresi**, sistem tepkileri — **grafiklerle** | YOK |
 | `Y-3.3.3-M03` | 🔴 **Video Kanıtı** | simülasyonun ekran kaydı videosunun **linki** | YOK |
-| `Y-3.3.4-M01` | **Detaylı Algoritma Akışı** | İHA ve İKA otonom davranışlarını yöneten ana döngüler ve karar mekanizmalarının **akış diyagramları** | KISMEN (metin var, diyagram yok) |
-| `Y-3.3.4-M02` | **Görüntü İşleme Başarımı** | yarışma sahasına **benzer koşullarda** (farklı ışık açıları, gölgeler) test sonuçları ve **doğruluk matrisleri** | KISMEN (sentetik arena var, gerçek kare yok) |
+| `Y-3.3.4-M01` | **Detaylı Algoritma Akışı** | İHA ve İKA otonom davranışlarını yöneten ana döngüler ve karar mekanizmalarının **akış diyagramları** | VAR (7 Eylül: 5 diyagram koddan, `FDR/sekiller/akis_a..e.svg` + düğüm tabloları `akis_<x>_dugumler.md`, 337/337 düğüm dosya:satır tam; nöbetçi `tests/test_gece_akis_diyagramlari.py` 13/13) |
+| `Y-3.3.4-M02` | **Görüntü İşleme Başarımı** | yarışma sahasına **benzer koşullarda** (farklı ışık açıları, gölgeler) test sonuçları ve **doğruluk matrisleri** | KISMEN (doğruluk matrisi 7 Eylül'de DOĞRULAMA kümesinde ölçüldü — §3.3.4.2.8 (b), §4.8.4; arena ve ışık/gölge kesiti yok) |
 | `Y-3.3.4-M03` | **Haberleşme Paket Yapısı** | İHA↔İKA ve yer istasyonu↔araçlar arasında aktarılan paketlerin **nihai yapısı, veri hızı ve gecikme test sonuçları** | KISMEN (yapı var, gecikme ölçümü kısmi) |
 
 ## 4. Bölüm 4 — Test Faaliyetleri · **15 puan**

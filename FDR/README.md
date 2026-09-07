@@ -115,6 +115,7 @@ değişen uçuş kontrolcüsü yapılandırması ve gövdedir. Yer istasyonu bu 
 | kanıt defteri kaydı | **420** (`REVIEW_LOG.md`, `### D-` sayımı) | 3 Eylül 2026 |
 | üretim modeli | `navitas-seg-v36-512` (PyTorch, 512 px) | `config/model_registry.json` |
 | Jetson paketi | 18 dosya, kanonik kaynakla bayt-eş | `scripts/jetson_paket_hazirla.py` |
+| Jetson kartı ve FPS kapısı | **Jetson Orin Nano Developer Kit 4 GB** (JetPack 7.2.1, Python 3.12) — 3 Eylül beyanı 'Nano 4GB' yanlışlandı; `scripts/jetson_fps.py` 120 örnek: pt p50/p95 **1,35/1,06 FPS** · engine **1,58/1,33 FPS**, eşik 0,61 → GEÇTİ; engine↔pt denkliği D-303 oransal 3/126 **DÜŞTÜ** → uçuş `.pt` | 6 Eylül 2026 — `results/jetson_20260906/jetson_fps_20260906_orin_nano/ozet.json`, `results/jetson_20260906/jetson_log_20260906/engine_karar_denkligi.json` (D-431) |
 
 ⚠ Bölüm içindeki tablolar **yazıldıkları andaki** koşumu gösterir (ör. Bölüm 3 ve 4'te
 1875, D-408 anının sayısıdır; aradaki 7 test saha belleği kapılarıdır). Sayı ilerlemesi
@@ -132,6 +133,6 @@ Bölüm 2'de tarihli olarak izlenir — bu bir tutarsızlık değil, ölçüm zi
 
 - **BEYAN GEREKLİ (insan):** ekip isimleri ve rol ataması, birim fiyatlar ve
   tedarik durumu, 3B baskı süreleri, ölçülen gerçek kütleler.
-- **ÖLÇÜLECEK (cumartesi ve sonrası):** Jetson Nano gerçek FPS, SiK RF menzili,
+- **ÖLÇÜLECEK (cumartesi ve sonrası):** ~~Jetson Nano gerçek FPS~~ (6 Eylül'de Orin Nano üzerinde ÖLÇÜLDÜ, GEÇTİ — D-431), SiK RF menzili,
   uçuş testleri, gerçek arena/HTAB karesi.
 - Bölüm 1 özeti, diğer altı bölüm kesinleştikten **sonra** son hâlini alır.
