@@ -290,9 +290,9 @@ değeri 5 Eylül'de `kamera_dogrula` ile **ölçülecek** ve beyan ölçümle de
 
 **Neden var:** 7 Eylül beyanıyla motor künyesi değişti — ~~5008 340KV ×4 / 12×10~~ →
 **SunnySky X2220 980KV V3 ×4** (kullanıcı bildirdi; **etiket fotoğrafı yok → BEYAN**) +
-**10×4,5 (1045)** pervane + 4S 10 Ah (7 Eylül beyanı, D-435). `REVIEW_LOG.md` D-435 metni aynı günün
-ilk beyanını "Skywalker 2207 980KV" diye kaydeder; sonraki beyan X2220 980KV V3'tür — ikisi de
-BEYAN, etiket okunana kadar hangisi olduğu ÖLÇÜLMEDİ. 5008'ler iade edildi; X2220'ler **2 yıl önce
+**10×4,5 (1045)** pervane + 4S 10 Ah (7 Eylül beyanı, D-435). `REVIEW_LOG.md` D-435'in ilk metni sabahki
+belirsiz anımı ("2207 falan") kaydeder; kullanıcı aynı gün modeli **X2220-980KV V3** olarak netleştirdi
+(D-435 ek) — geçerli beyan budur; etiket fotoğrafı gelene kadar BEYAN kalır, ÖLÇÜM değildir. 5008'ler iade edildi; X2220'ler **2 yıl önce
 kullanılmış eski motorlar** (BEYAN). 6 Eylül devrilmeleri (D-429) bu motorlarla yapıldı (BEYAN).
 Depoda o güne kadar **hiç itki bütçesi yoktu** (D-435 ölçüm 2). Aşağıdaki tablo yalnız üretici veri
 sayfasına dayanır; **hiçbir satırı ölçüm değildir** ve kütle tartılmadan (T10) kapı kapanamaz.

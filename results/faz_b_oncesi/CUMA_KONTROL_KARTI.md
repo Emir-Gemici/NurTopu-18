@@ -38,7 +38,7 @@ Gün içinde kod değişmediyse geri kalanı geçerlidir.
 | 🛒 | JST-GH 6-pin kablo + dişi-dişi jumper — **SİPARİŞ EDİLDİ (4 Eylül); elde olduğu BEYAN EDİLMEDİ** | TELEM1 (SiK) ve TELEM2 → Nano UART. ⚠ UBEC geldi ama bu kablo gelmezse Pixhawk↔Nano hattı yine kurulamaz — **ayrı kalemdir, ayrı sorulur** |
 | ☐ | **USB webcam** (yedek kamera) | CSI yolu ilk gün açılmazsa `--kaynak 0` |
 | ✅ | ~~XT60/XT90 fiş, kablo bağı, ısı makaronu, damper bant~~ **HAZIR (4 Eylül)** | kablolama |
-| ☐ | **Yedek pervane seti (12×10, CW+CCW)** | ilk uçuşlarda en sık kırılan parça |
+| ☐ | **Yedek pervane seti (~~12×10~~ → 10×4,5 / 1045, CW+CCW — 7 Eylül beyanı, D-435)** | ilk uçuşlarda en sık kırılan parça |
 | ☐ | (öneri) **2. pil 4S 10 Ah + ≥150 W şarj** | tek pil → günde 2 uçuş |
 | ✅ | ~~YEDEK PLAN: Ubuntu'lu x86_64 bilgisayar~~ **AYARLANDI (4 Eylül)** — yalnız eMMC boş çıkarsa kullanılır → **GEREKMEDİ (D-431): JetPack 7.2.1 kurulu geldi, kök NVMe** | GEÇERSİZ (D-431): ~~eMMC BOŞ çıkarsa SDK Manager ile flash gerekir; **Windows'ta yapılamaz** · `JETSON_NANO_KURULUM.md` §1.2~~ |
 | 🛒 | ~~Taşıyıcı kartın kurtarma (FC REC) pini — üretici kılavuzu~~ **TEMİN EDİLDİ (4 Eylül)** | flash gerekirse pin adı tahmin edilemez |
