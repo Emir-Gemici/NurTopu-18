@@ -30288,3 +30288,44 @@ anahtarla arm'ı da reddeder — 20:26:20 ve 20:35:59'daki çevirmeler gaz 1893/
 **Şablona ekleme (ÖNERİ, uygulanmadı — madde 7/19):** `RC6_OPTION,153` + README §3 TEYİT satırı +
 `tests/test_faz_b_pixhawk_sablon.py`'a 1 test. Kullanıcı CH6'yı başka işleve (ör. 31 motor acil
 durdurma) ayırmak isterse karar önce; FS-i6'da CH5 modlara gittiği için **tek boş kanal CH6**.
+
+### D-434 — DEVRİLMELERDE PİLOT KOLU MERKEZDEYDİ, SEVİYE KALİBRASYONU TEMİZ: "pilot bastırdı" ve "yanlış seviye" adayları KAPANDI; kalan iki aile: komut başına itki asimetrisi (ESC uç noktası / zayıf ön motor-ESC) ve ağırlık dağılımı-geometri (CG önde, ön ayak pivotu, eşit olmayan kol)
+
+**Tarih:** 7 Eylül 2026 · **Kaynak:** 6 Eylül tlog (D-429 ile aynı) + döküm 20:22 · **Araç:**
+`scripts/ucus_tlog_pitch_kolu.py` · **Ham çıktı:** `results/ucus_loglari/20260906/pitch_kolu_analizi.txt`.
+**Tetik:** kullanıcı 7 Eylül sabah "3 saat yönü sol ön kesin dimi" → "pervaneler de doğru" (BEYAN).
+D-429 pencerelerinde pilotun pitch/roll kolu **hiç bakılmamıştı**; bu kayıt o boşluğu kapatır.
+
+**Ölçüm 1 — kollar merkezde.** Üç devrilmenin başlangıç anında RC_CHANNELS: roll 1500, pitch 1502
+(RC2_TRIM 1502). P19 20:56:43 gaz 1002→1446→1656 (1,1 s), pitch −0,7→−2,6→−10,3→**−40,8**; P26 21:34:07
+gaz 1079→**2000** (0,5 s), pitch −1,1→−8,5→**−38,8**; P20 21:00:29–31 gaz 1054→1344→1821, pitch −6,5→−11.
+Pitch kolu ancak P20'de, 21:00:40–46'da (araç yerde, gaz 1569–1745) 1113/1988 uçlarına gitti — ilk
+eğilmeden **10 s sonra**. "Pilot burnu bastırdı" adayı **kapandı**.
+
+**Ölçüm 2 — seviye ve kanal yönü.** `AHRS_TRIM_Y = −0,0257 rad (−1,5°)`, `AHRS_TRIM_X ≈ 0`,
+`INS_ACCOFFS` (0,018 / 0,003 / −0,29) ve `INS_ACCSCAL` (1,001 / 0,999 / 1,002) olağan; yerde duran araç
+P19/P26'da −0,6…−1,1°, P37'de +1,5° okuyor. `RC1_REVERSED = RC2_REVERSED = 0`. "Kontrolcünün
+seviyesi yanlış, kalkışta kendi burnu bastırıyor" adayı **kapandı** (yerde sıfıra yakın okuyor;
+yanlış olsaydı yerde ±10° okurdu). Kol yönü (ileri = burun aşağı) uçuşta sınanmadı — kalkış
+öncesi MP Radio Calibration'da bakılır: pitch kolu ileri → yeşil çubuk **aşağı**.
+
+**Ölçüm 3 — P37 (21:44) bilgi vermiyor.** 2,5 s rampa, 3,5 s tam gaz (1998–2000), pitch +1,4…+1,9,
+roll 0…1,3 **sabit**. Pervaneli bir araç tam gazda 3,5 s yerde düz duramaz; pervanesiz motor
+koşusu olduğu **çıkarımdır**, ölçülmedi (kullanıcıya soruldu).
+
+**Ölçüm 4 — arka, hover altında kalkıyor.** P19'da ilk eğilme gaz **1446**'da (%45) başladı,
+`MOT_THST_HOVER` 0,35 varsayılan (öğrenilmemiş; bu ağırlıkta gerçek hover muhtemelen daha yüksek).
+Dört motor eşit komuttayken arkanın önden önce kalkması: ya arka itki/komut > ön, ya arka daha hafif
+(CG önde). Log ikisini ayıramaz.
+
+**Hüküm.** Kontrolcü, pilot ve seviye elendi; motor yönü ve pervane eli kullanıcı BEYANI ile
+elendi (video yok — D-429 §6.2 kuralı sürüyor). Kalan iki aile ve tezgâh ayrımı:
+(a) **komut başına itki asimetrisi** — ESC uç noktaları (4/4 aynı yordamla kalibrasyon, D-428 §3),
+ön motor/ESC zayıflığı ya da ani gazda senkron kaybı (5008 340KV düşük KV + 0,2–0,6 s'de %45–100
+sıçrama). Ölçüm: sabitlenmiş araç, aynı PWM'de dört motorun pervane geçiş frekansı (telefon
+spektrum uygulaması) ±%3 içinde; değilse düşük olan taraf suçlu.
+(b) **ağırlık-geometri** — CG önde (pilli askı testi: dört motor merkezinden, burun düşmemeli),
+ön ayak pivotu, dört kolun merkez-motor mesafesi ve ayak yükseklikleri eşit (5 Eylül 14:43'te
+"uzatılmış yeni drone kolu" tasarlandı; araçta kaç tane var, soruldu).
+Her iki ailede de kalkış kuralı aynı: `MOT_SLEW_UP_TIME` 0→1,0 s, ≥2 s rampa, yerde %25 rampa
+testi, M1 değişmeden ve muayene 0–12 bitmeden güç yok.
