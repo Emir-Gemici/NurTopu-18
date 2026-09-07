@@ -393,6 +393,9 @@ class RpiInferenceUyumu(_KopruTesti):
 #   liste `sys.stdout.reconfigure` (3.7), `time.monotonic_ns` (3.7),
 #   `str.isascii` (3.7), `contextlib.nullcontext` (3.7), `math.prod` (3.8)
 #   adlarinin hicbirini GORMUYORDU.
+#   [D-431: 6 Eylul'de kart Orin Nano / JetPack 7.2.1 / sistem Py 3.12 + cv2 4.6
+#   cikti; asagidaki Nano kunyesi GECERSIZ, kisit bilerek TUTULUYOR — daha siki
+#   kapi gevsetilmez.]
 #   Jetson Nano'da (JetPack 4.6 / Ubuntu 18.04) kopru SISTEM Python 3.6 ile
 #   kosar — CSI kamera yalniz o yorumlayicinin GStreamer'li OpenCV'siyle acilir.
 #   Yani kacan bir 3.7+ cagrisi PC'de degil, SAHADA, ilk kez patlar.
@@ -557,6 +560,8 @@ PY36_MODUL = {
     """.split()),
 }
 
+#: (D-431: Orin Nano'da sistem cv2 4.6 — asagidaki 4.1 kumesi kapi olarak
+#: TUTULUR, gevsetilmez; "JetPack 4.6" kunyesi GECERSIZ, tarihce.)
 #: OpenCV 4.1.1 — JetPack 4.6 sistem paketi (python3-opencv). Kopru YALNIZ bu
 #: adlari kullanabilir; 4.5+ ile gelen bir ad da bu kapidan gecemez.
 CV2_41_ADLARI = frozenset("""

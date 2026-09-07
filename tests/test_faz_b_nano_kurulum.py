@@ -1,4 +1,4 @@
-"""FAZ B · GOREV N — JETSON NANO 4GB KURULUM KAPILARI.
+"""FAZ B · GOREV N — JETSON NANO 4GB KURULUM KAPILARI (+ D-431 ORIN NANO KILIDI).
 
 NEDEN (SAHA_HAZIRLIK_PLANI_20260903.md §1.3 / §1.5): Nano cumartesi KURULMAMIS
 geliyor; sistem Python 3.6, repo ultralytics (>= 3.8) ister. Kurulum belgesi
@@ -9,9 +9,20 @@ yoksa cumartesi bir dosya bir seyi, oteki baska seyi soyler. Bu test uc dosyayi
 GERCEKTEN okur, betigi GERCEKTEN kosar (--kuru: internet YOK, indirme YOK) ve
 sabitleri betigin kendi adlarindan alir (madde 16: ciplak sabit yok).
 
+D-431 (6 Eylul 2026, OLCULDU): kart Jetson Nano degil **Jetson Orin Nano Developer
+Kit 4 GB** (JetPack 7.2.1 / L4T R39.2.1, Ubuntu 24.04, Python 3.12.3, kok NVMe).
+Nano belgesi SILINMEDI (madde 18; kural 8: olculmus satir silinmez, etiketlenir)
+ama basina "🔴 GEÇERSİZ" bandi kondu; esas belge artik
+jetson_paket/JETSON_ORIN_NANO_KURULUM.md (6 Eylul kurulum tutanagi). Bu dosyanin
+Nano'ya OZGU belge kilitleri (K1, K4) bant varken ATLANIR — assert SILINMEZ; bant
+kalkarsa (belge yeniden esas olursa) eski kilitler kendiliginden geri gelir.
+Betik/gereksinim kilitleri (K2, K3, K5–K7) kosmaya devam eder: arsiv betigin
+sabitleri degismez. Yeni K8: bant + Orin belgesi + arsiv butunlugu.
+
 Kapilar:
   K1 belge var; adimlarin metin kilidi: python3.8, venv38, jetson-io,
      nvarguscamerasrc, swap, 0,61 (+ "Nano'da boyle DEGIL" isareti, betik/gereksinim adlari)
+     [D-431: GECERSIZ bandi varsa ATLANIR — K8 arsiv butunlugunu ayrica kilitler]
   K2 requirements_nano.txt = requirements_rpi.txt ustkumesi (+ torch, torchvision);
      opencv-python-headless LISTELENMEZ (gercek indirmede olculdu: ultralytics
      opencv-python ister, headless ile cift cv2 kurulur) — gerekcesi dosyada yazili
@@ -20,11 +31,20 @@ Kapilar:
      bayraklari; dest dizini ACILMAZ (indirme yok)
   K4 belge, betigin sabitlerini (python surumu, birincil platform) aynen tasir;
      PYTHON3 yolu jetson_baslat.sh SERVIS_KULLANICI'sinin ev dizinindedir
+     [D-431: GECERSIZ bandi varsa ATLANIR]
   K5 wheels/ .gitignore'da (tekerlekler repoya girmez)
   K6 fail-closed: gereksinim dosyasi yoksa cikis 1 + HATA; bos dosya da 1
   K7 betigin platform listesi glibc 2.27 ustunu (manylinux_2_28+) ICERMEZ; wheel
      ad denetimi yalniz-2_28 / x86 / cp39 wheel'ini reddeder, sikistirilmis etiket
      kumesini (icinde 2014_aarch64 olan) kabul eder
+  K8 (D-431) Nano belgesinin BASINDA GECERSIZ bandi var ve Orin belgesine + D-431'e
+     yonlendirir; bant Nano metnini SILMEMIS (K1 kilitleri, OZET satiri, wheels
+     kapisi hala orada); Orin belgesi VAR ve kritik satirlari tasir: JetPack 7.2.1,
+     venv312, Python 3.12, PYTHON3=/home/<kullanici>/venv312/bin/python (+ SUDO_USER
+     turetimi, mavproxy symlink), ucus .pt (engine URETIME ALINMAZ, D-303), FPS
+     esigi 0,61 ve olculen p50/p95 (1,35/1,06 · 1,58/1,33), OLCULEMEDI (kamera,
+     Pixhawk), olcum kaynagi (nv_tegra_release); Orin belgesinin kendisi bantli
+     DEGIL; arsiv betigi ve gereksinim listesi de bantli; venv312 betigi pakette.
 """
 import os
 import re
@@ -43,6 +63,8 @@ import nano_tekerlek_indir as nti  # noqa: E402
 
 PAKET = KOK / "jetson_paket"
 BELGE = PAKET / "JETSON_NANO_KURULUM.md"
+ORIN_BELGE = PAKET / "JETSON_ORIN_NANO_KURULUM.md"
+ORIN_VENV_BETIK = PAKET / "orin_nano_venv_kurulum.sh"
 BASLAT_SH = PAKET / "jetson_baslat.sh"
 GEREKSINIM_NANO = PAKET / "kod" / "requirements_nano.txt"
 GEREKSINIM_RPI = PAKET / "kod" / "requirements_rpi.txt"
@@ -56,6 +78,37 @@ BELGE_KILITLERI = ("python3.8", "venv38", "jetson-io", "nvarguscamerasrc", "swap
 CELISKI_ISARETI = "Nano'da böyle DEĞİL"
 NANO_EK_PAKETLER = ("torch", "torchvision")
 
+# ── D-431: GECERSIZ bandi ────────────────────────────────────────────────────
+#: Nano belgesinin basindaki bant (kural 8: silme yok, etiket + dogrusu). Orin
+#: belgesinin kendi metnindeki "GEÇERSİZDİR" sozu bant DEGILDIR — isaret 🔴 ile.
+GECERSIZ_BANDI = "🔴 **GEÇERSİZ"
+GECERSIZ_KAYDI = "D-431"
+#: Bant belgenin ILK satirlarinda olmali (basligin hemen altinda), sonda degil.
+BANT_PENCERESI = 1500
+#: Orin belgesinin tasimak zorunda oldugu olculmus kunye/karar satirlari.
+ORIN_KILITLERI = (
+    "JetPack 7.2.1", "Python 3.12", "Orin Nano", "venv312",
+    "orin_nano_venv_kurulum.sh", "nv_tegra_release",
+    "0,61", "1,35", "1,06", "1,58", "1,33",          # FPS esigi + olculen p50/p95
+    "ÜRETİME ALINMAZ", "D-303", "ÖLÇÜLEMEDİ",
+)
+ORIN_PYTHON3_KALIBI = re.compile(r"PYTHON3=/home/([a-z0-9_]+)/venv312/bin/python")
+#: test_wheels_sayisi_belgelerle_tutarli ile ayni kapi: bant §3.4'u silmemis olmali.
+WHEELS_KAPISI = re.compile(r"`ls ~/wheels/\*\.whl \| wc -l`\s*\*\*(\d+)\*\*")
+
+
+def _nano_gecersiz() -> bool:
+    """Nano belgesinin basinda D-431 bandi var mi (K1/K4 atlama kosulu)."""
+    if not BELGE.is_file():
+        return False
+    bas = BELGE.read_text(encoding="utf-8")[:BANT_PENCERESI]
+    return GECERSIZ_BANDI in bas and GECERSIZ_KAYDI in bas
+
+
+NANO_GECERSIZ = _nano_gecersiz()
+ATLAMA_NEDENI = ("Nano belgesi GECERSIZ bantli (D-431: kart Orin Nano cikti) — "
+                 "Nano'ya ozgu belge kilitleri arsiv; K8 kosar")
+
 
 def _gereksinim_adlari(yol: Path):
     return {nti.paket_adi(s) for s in nti.gereksinimleri_oku(yol)}
@@ -67,6 +120,7 @@ def _kos(argv, cwd=None):
                           timeout=120)
 
 
+@unittest.skipIf(NANO_GECERSIZ, ATLAMA_NEDENI)
 class K1BelgeTests(unittest.TestCase):
     def setUp(self):
         self.assertTrue(BELGE.is_file(), f"belge yok: {BELGE}")
@@ -164,6 +218,7 @@ class K3KuruKosumTests(unittest.TestCase):
         self.assertIn("--no-binary=:all:", son[0])
 
 
+@unittest.skipIf(NANO_GECERSIZ, ATLAMA_NEDENI)
 class K4BelgeBetikHizasiTests(unittest.TestCase):
     def setUp(self):
         self.metin = BELGE.read_text(encoding="utf-8")
@@ -295,6 +350,93 @@ class K7PlatformListesiTests(unittest.TestCase):
         self.assertEqual(nti.paket_adi("MAVProxy"), "mavproxy")
         self.assertEqual(nti.paket_adi("opencv_python-headless>=4.8; python_version<'3.9'"),
                          "opencv-python-headless")
+
+
+class K8OrinNanoKilidiTests(unittest.TestCase):
+    """D-431: 6 Eylul'de kart Orin Nano cikti. Nano belgesi bantli arsiv, Orin
+    belgesi esas. Bu sinif bant VARKEN kosar; K1/K4'un atladigi yerde arsiv
+    butunlugunu ve yeni belgeyi kilitler (assert silinmedi, yer degistirdi)."""
+
+    def setUp(self):
+        self.assertTrue(BELGE.is_file(), f"Nano belgesi yok (madde 18: silinmez): {BELGE}")
+        self.nano = BELGE.read_text(encoding="utf-8")
+        self.assertTrue(ORIN_BELGE.is_file(), f"Orin belgesi yok: {ORIN_BELGE}")
+        self.orin = ORIN_BELGE.read_text(encoding="utf-8")
+
+    def test_K8_nano_belgesi_basinda_GECERSIZ_bandi_ve_yonlendirme(self):
+        bas = self.nano[:BANT_PENCERESI]
+        self.assertIn(GECERSIZ_BANDI, bas, "Nano belgesinin basinda D-431 bandi yok")
+        self.assertIn(GECERSIZ_KAYDI, bas)
+        self.assertIn(ORIN_BELGE.name, bas, "bant Orin belgesine yonlendirmeli")
+        self.assertTrue(NANO_GECERSIZ, "_nano_gecersiz() banti gormeli (K1/K4 atlama kosulu)")
+        # bant "## 0." bolumunden ONCE: sona iliştirilmis bir dipnot bant sayilmaz
+        self.assertLess(self.nano.index(GECERSIZ_BANDI), self.nano.index("## 0."))
+        # bant dogrusunu da soyler: olculen kunye
+        for kunye in ("Orin Nano", "JetPack 7.2.1", "Python 3.12"):
+            with self.subTest(kunye=kunye):
+                self.assertIn(kunye, bas)
+
+    def test_K8_bant_arsivi_SILMEMIS(self):
+        """Kural 8: olculmus satir silinmez, etiketlenir. K1'in kilitleri hala orada."""
+        for kilit in BELGE_KILITLERI:
+            with self.subTest(kilit=kilit):
+                self.assertIn(kilit, self.nano)
+        self.assertGreaterEqual(self.nano.count(CELISKI_ISARETI), 3)
+        self.assertIn("OZET:", self.nano, "gercek indirme sonucu (3 Eylul) arsivde kalmali")
+        self.assertIsNotNone(WHEELS_KAPISI.search(self.nano),
+                             "§3.4 wheels kapisi silinmis (test_wheels_sayisi_belgelerle_tutarli)")
+        self.assertIn(f"python{nti.HEDEF_PYTHON_SURUMU}", self.nano)
+
+    def test_K8_orin_belgesi_kritik_satirlari_tasir(self):
+        for kilit in ORIN_KILITLERI:
+            with self.subTest(kilit=kilit):
+                self.assertIn(kilit, self.orin)
+        # Orin belgesi ESAS belgedir: kendisi bantli olamaz
+        self.assertNotIn(GECERSIZ_BANDI, self.orin[:BANT_PENCERESI])
+        # OLCULEMEDI != GECTI ilkesi belgede acik
+        self.assertIn("ÖLÇÜLEMEDİ ≠ GEÇTİ", self.orin)
+
+    def test_K8_orin_PYTHON3_yolu_venv312_ve_kullanici_turetimi(self):
+        """Nano belgesi PYTHON3'u jetson_baslat.sh varsayilan kullanicisinin evinde
+        veriyordu (K4). Orin'de kullanici olculdu ve varsayilandan FARKLI; belge
+        bunu SUDO_USER turetimiyle aciklamali, yol venv312 olmali."""
+        m = ORIN_PYTHON3_KALIBI.search(self.orin)
+        self.assertIsNotNone(m, "Orin belgesinde PYTHON3=/home/<kullanici>/venv312/bin/python yok")
+        kullanici = m.group(1)
+        self.assertIn("SUDO_USER", self.orin, "kullanici varsayilandan farkli; turetim aciklanmali")
+        self.assertIn(f"/home/{kullanici}", self.orin)
+        self.assertIn("venv312/bin/mavproxy.py", self.orin,
+                      "MAVProxy venv312'de; birim PATH'i icin symlink adimi belgede olmali")
+        self.assertNotIn("venv38/bin/python", self.orin.split("## 1.")[1] if "## 1." in self.orin else "",
+                         "Orin kurulum adimlarinda venv38 yolu olmamali")
+
+    def test_K8_ucus_modeli_pt_engine_uretime_alinmaz(self):
+        """D-303 oransal denklik dustu -> engine uretime ALINMAZ, ucus .pt (tutanak §8)."""
+        i = self.orin.index("ÜRETİME ALINMAZ")
+        pencere = self.orin[max(0, i - 400): i + 200]
+        self.assertIn(".pt", pencere, "hukum cumlesi ucus modelini .pt olarak soylemeli")
+        self.assertIn("D-303", pencere, "hukum D-303 esigine bagli olmali")
+        self.assertIn("DÜŞTÜ", self.orin, "denklik tablosunda DUSTU hukmu olmali")
+
+    def test_K8_arsiv_betik_ve_gereksinim_bantli_venv312_betigi_pakette(self):
+        # argparse description = ilk docstring satiri: ASCII bant, GECERSIZ + D-431
+        ilk = (nti.__doc__ or "").splitlines()[0]
+        self.assertIn("GECERSIZ", ilk)
+        self.assertIn(GECERSIZ_KAYDI, ilk)
+        self.assertIn("orin_nano_venv_kurulum.sh", nti.__doc__)
+        # Betigin sabitleri DEGISMEDI (arsiv, K3/K6/K7 hala anlamli)
+        self.assertEqual(nti.HEDEF_ABI, "cp38")
+        self.assertEqual(nti.NANO_GLIBC, "2.27")
+        # Gereksinim listesinin ilk yorum satiri bantli
+        gereksinim_ilk = GEREKSINIM_NANO.read_text(encoding="utf-8").splitlines()[0]
+        self.assertTrue(gereksinim_ilk.startswith("#"))
+        self.assertIn("GECERSIZ", gereksinim_ilk)
+        self.assertIn(GECERSIZ_KAYDI, gereksinim_ilk)
+        # Bantin isaret ettigi venv312 betigi pakette ve venv312'yi kuruyor
+        self.assertTrue(ORIN_VENV_BETIK.is_file(), f"venv312 betigi yok: {ORIN_VENV_BETIK}")
+        sh = ORIN_VENV_BETIK.read_text(encoding="utf-8", errors="replace")
+        self.assertIn("venv312", sh)
+        self.assertIn("--system-site-packages", sh)
 
 
 if __name__ == "__main__":

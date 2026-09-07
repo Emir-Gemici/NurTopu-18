@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""Jetson Nano 4GB icin Python 3.8 / aarch64 tekerleklerini PC'de CEVRIMDISI indirir.
+"""GECERSIZ (D-431) - Nano icin; Orin Nano'da kullanilmaz. Jetson Nano 4GB icin Python 3.8 / aarch64 tekerleklerini PC'de CEVRIMDISI indirir.
+
+GECERSIZ (D-431, 6 Eylul 2026, OLCULDU): kart Jetson Nano degil Jetson Orin Nano Developer
+Kit 4 GB (JetPack 7.2.1, Ubuntu 24.04, Python 3.12). cp38 tekerlekler bu kartta kurulmaz;
+kurulum venv312 betigi jetson_paket/orin_nano_venv_kurulum.sh ile (cevrimici pip) yapildi.
+Bu betik ARSIVDIR: sabitleri (cp38, glibc 2.27) DEGISTIRILMEZ, test kilidi surer
+(tests/test_faz_b_nano_kurulum.py K3/K6/K7). Asagidaki metin 3 Eylul tarihcesidir.
 
 NEDEN (SAHA_HAZIRLIK_PLANI_20260903.md §1.3 "Jetson Nano 4GB yigini — EN KRITIK"):
   * Nano'nun sistem Python'u 3.6; repo `ultralytics` ister (Python >= 3.8).

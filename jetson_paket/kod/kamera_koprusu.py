@@ -1,11 +1,17 @@
 #!/usr/bin/env python3
-"""NEDEN (SAHA_HAZIRLIK_PLANI_20260903.md §1.4 · donanim kunyesi §0.2 · GOREV K):
+"""[D-431: kart Orin Nano cikti - asagidaki 'Nano 4GB / JetPack 4.6' kunyesi GECERSIZ, bkz. 2. paragraf]
+NEDEN (SAHA_HAZIRLIK_PLANI_20260903.md §1.4 · donanim kunyesi §0.2 · GOREV K):
 Jetson Nano 4GB (JetPack 4.6.x, Ubuntu 18.04) uzerinde Raspberry Pi HQ kamera
 (IMX477, CSI) YALNIZ GStreamer `nvarguscamerasrc` ile okunur; GStreamer'li OpenCV
 yalniz SISTEM Python 3.6 + sistem OpenCV 4.1 paketinde vardir. `rpi_inference.py`
 ise `ultralytics` yuzunden Python >= 3.8 venv'de kosar ve o venv'in
 `opencv-python(-headless)` tekerlegi GStreamer'siz derlenmistir: venv'den
 kameraya DOGRUDAN ulasilamaz.
+
+D-431 (6 Eylul 2026, OLCULDU): kart Jetson Nano degil Jetson Orin Nano Developer Kit 4 GB
+(JetPack 7.2.1, Ubuntu 24.04, sistem Python 3.12 + python3-opencv 4.6 GStreamer'li). Ayrim
+aynen gecerli: kopru SISTEM Python'unda kosar, rpi_inference ~/venv312'de. Py3.6 / cv2 4.1
+API kisiti (tests/test_faz_b_kamera_koprusu.py) bilerek TUTULUR - daha siki kapi gevsetilmez.
 
 Bu surec KOPRUDUR: sistem Python'unda kareyi alir, JPEG'e cevirir ve
 `http://127.0.0.1:8080/video` ucundan multipart/x-mixed-replace (MJPEG) olarak

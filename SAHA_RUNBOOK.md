@@ -73,6 +73,15 @@ komutlar erişilebilir kalır.
 
 ## 3. İHA / Jetson (5 Eylül'den itibaren)
 
+> ⚠ **6 Eylül ölçümü (D-431):** kart **Jetson Orin Nano Developer Kit 4 GB / JetPack 7.2.1 /
+> Ubuntu 24.04 / Python 3.12** — "Nano 4GB / JetPack 4.6" varsayımı geçersiz. Kurulum tutanağı
+> `jetson_paket/JETSON_ORIN_NANO_KURULUM.md` (`JETSON_NANO_KURULUM.md` GEÇERSİZ bandıyla arşiv).
+> Jetson'da aşağıdaki `python3` = `~/venv312/bin/python` (`source ~/venv312/bin/activate`);
+> birimlerde `PYTHON3=/home/n4vitas/venv312/bin/python`, kullanıcı `n4vitas`, köprü `/usr/bin/python3`,
+> paket kökü `~/navitas` (symlink). **Uçuş modeli `.pt`** (engine↔pt D-303 oransal denkliği 3/126
+> DÜŞTÜ; engine yalnız açık `--model` ile). CSI kamera ve Pixhawk kapıları 6 Eylül'de **ÖLÇÜLEMEDİ**
+> (donanım bağlı değildi); `jetson_baslat.sh --kuru` çıktısında `[YOK]` yalnız `/dev/ttyACM0`.
+
 Cihaz kurulum ve `.engine` derleme: `jetson_paket/JETSON_KILAVUZ.md` +
 `jetson_paket/GUN1_KONTROL_LISTESI.md` (Gün-1 kapıları: T16/T17 FPS ve
 karar denkliği). İniş kanıtı yayıncısı (Jetson'da, uçuş öncesi hazır):
