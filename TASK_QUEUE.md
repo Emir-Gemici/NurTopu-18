@@ -9609,6 +9609,25 @@ esults	50_uc_kapi\`):
     - **Tam süit YKS açıkken:** bu gece **KOŞULMADI** (amele tam süiti koşmaz, mimar koşar) — ÖLÇÜLEMEDİ. Kapı koşulurken 5005/5006 boştu (`netstat`), yani (a)'daki tutucular testin kendi soketleriydi.
   - ⚠ **Denetim bekliyor** — yazan amele, onaylayan mimar (madde 19).
 
+- [STATUS: READY_FOR_REVIEW] **T210 — TEST SÜİTİ SÜREÇ SIZDIRIYOR: `test_runbook_komutlari_kosuyor` zaman aşımında yalnız doğrudan çocuğu öldürüyordu; `yks_gui`/`ika_nav` torunları 5005/5006'yı tutuyor, bir SONRAKİ süit `WinError 10013` ile düşüyordu — D-427/D-430'da "ortam kusuru" sanılan şeyin gerçek kökü** · `tests/test_runbook_komutlari_kosuyor.py`, `tests/surec_nobetcisi.py` (yeni yardımcı), `tests/test_zz_nobetci_surec_sizintisi.py` (yeni süit-sonu nöbetçisi) · **KRİTİK** (push kilidini kilitleyen ikinci bacak; T209 birincisi) · kanıt: `results/gece_20260907/sizinti_surecleri_0207.txt`, `results/gece_20260907/g1b_surec_sizintisi/`
+  - **Ölçülen kök (7 Eyl 02:1x, başamele ajanı):** `results/gece_20260907/g1b_surec_sizintisi/deney_agac.txt` — venv `python.exe` bir **başlatıcıdır** (255 KB, gerçek yorumlayıcıyı çocuk olarak açar). `subprocess.run(timeout=3)` → `kill()` sonrası **sağ kalanlar: torun başlatıcı (ebeveyni ölü) + gerçek torun yorumlayıcı**; doğrudan çocuk ve onun gerçek yorumlayıcısı ölür. Sızıntı dosyasındaki desen birebir aynı: `29312 parent=7096(YOK)` + `34632 parent=29312`. Runbook kapısı `saha_baslat.py yks …` / `ika …` satırlarını GERÇEKTEN koşar (D-421 §2 kararı), `saha_baslat` da `yks_gui`/`ika_nav`'ı `Popen` ile açar → tam bu zincir. Başlama saatleri süit koşumlarıyla 6 s arayla (= `timeout=6`) çakışıyor (01:50:59 / 01:51:05; 02:02:27 / 02:02:33).
+  - **Neden `--help` ile koşmak YETMEZ:** argparse `-h`'yi zorunlu-bayrak denetiminden ÖNCE işler ve 0 ile çıkar; "bayrak zorunlu oldu, belge güncellenmedi" (D-421 §1) görünmez olurdu. Kapı gerçek komutu koşmaya devam eder; amaç korunmuştur.
+  - **Yap (uygulandı):** (1) `tests/surec_nobetcisi.py`: `kos_agac_kapat(komut, timeout)` — `Popen` + `communicate(timeout)`; zaman aşımında `agaci_oldur` → Windows `taskkill /PID <pid> /T /F` (POSIX: `start_new_session` + `killpg`), `try/finally` ile KESİN; `udp_dinleyenler()` → `netstat -ano -p udp` satırlarından (adres, PID) **kümesi** (sayım değil: "biri kapandı biri sızdı" da yakalansın); nöbet portları `scripts/saha_baslat.KART_*` uçlarından türetilir (çıplak 5005/5006/5007 yok). T120 muafiyet işareti taşır (test değil, yardımcı). (2) Runbook kapısı `subprocess.run(timeout=6)` yerine `kos_agac_kapat`; yeni **T4**: koşumdan sonra nöbet portlarında yeni dinleyici yok. (3) `tests/test_zz_nobetci_surec_sizintisi.py`: **N1** süit başı (modül yüklenme anı = keşif, koşumdan önce) ile süit sonu (bu dosya `sorted()` sırasında SON) dinleyici kümesi farkı boş; **N2** portlar karttan türetildi (3 uç); **N3** dosyanın keşifte SON olduğu ada kilitli; **N4** pozitif kontrol — test kendi açtığı UDP soketini `netstat` ayrıştırıcısında GÖRÜYOR (kör nöbetçi sessiz geçemez).
+  - **Kapı kanıtı — GEÇTİ (7 Eyl ~02:20, `results/gece_20260907/g1b_surec_sizintisi/kapi_runbook_ve_nobetci.txt`):**
+    ```
+    $ O:\navitas-local-train\venv\Scripts\python.exe -m unittest discover -s tests -p "test_[rz][uz]*.py" -v   # = runbook kapısı + nöbetçi, TEK süreçte (nöbetçi son)
+    test_T4_kosum_sonrasi_nobet_portlarinda_YENI_dinleyici_YOK (...) ... ok
+    test_N1_suit_sonunda_nobet_portlarinda_YENI_dinleyici_YOK (...) ... ok
+    Ran 8 tests in 24.724s
+    OK
+    EXIT=0
+    $ netstat -ano -p udp | findstr ":5005 :5006 :5007"   (kosumdan SONRA)
+    (BOS — eslesen satir yok)
+    ```
+  - **Mutasyon — DÜŞTÜ (istenen), `mutasyon_taskkill_kaldirildi.txt`:** `agaci_oldur` içindeki `taskkill /T` geçici kaldırıldı (eski davranış: yalnız `p.kill()`) → `T4` **FAIL** + `N1` **FAIL**, `Ran 8 tests in 35.764s · FAILED (failures=2) · EXIT=1`; koşum sonrası netstat: `0.0.0.0:5005 … 19536` (`yks_gui.py --fda --ika 10.0.0.2:5006 …`), `0.0.0.0:5006 … 23416` (`ika_nav.py comms --yks 10.0.0.1:5005`) — 02:07 sızıntısıyla aynı desen. Geri alındı; `sha256_mutasyon_oncesi.txt` == `sha256_mutasyon_sonrasi.txt` (**bayt-eş**). Sızan yer tutucu süreçler (10.0.0.x argümanlı, kullanıcının YKS'si değil) `taskkill /T /F` ile temizlendi; netstat BOŞ.
+  - **Bilinçli sınırlar:** nöbetçi yalnız Windows'ta ölçer (POSIX'te `skipTest`, ÖLÇÜLEMEDİ — Jetson süiti ayrı); "süit sonu" = keşif sırası, paralel/rastgele sıralı koşucuda geçersiz (N3 adı kilitler ama sırayı değil); `yks_gui` Tk penceresi koşumda 6 s görünmeye devam eder (bilerek: gerçek komut, gerçek argparse). Tam süit bu gece **koşulmadı** (mimar koşar).
+  - ⚠ **Denetim bekliyor** — yazan başamele ajanı (madde 19: yazanın onayıyla kapanmaz). D-427/D-430'a dokunulmadı; REVIEW_LOG kaydı mimarındır.
+
 ---
 
 ## TAMAMLANANLAR

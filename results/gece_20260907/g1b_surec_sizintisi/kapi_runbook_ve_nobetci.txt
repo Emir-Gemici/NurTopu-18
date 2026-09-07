@@ -1,0 +1,24 @@
+$ O:\navitas-local-train\venv\Scripts\python.exe -m unittest discover -s tests -p "test_[rz][uz]*.py" -v   # cwd=O:\navitas\.claude\worktrees\wf_604a2e17-bf9-5
+test_T1_hicbir_runbook_komutu_argparse_tarafindan_REDDEDILMIYOR (test_runbook_komutlari_kosuyor.RunbookKomutlari.test_T1_hicbir_runbook_komutu_argparse_tarafindan_REDDEDILMIYOR) ... ok
+test_T2_kapi_bos_degil_en_az_uc_komut_sinaniyor (test_runbook_komutlari_kosuyor.RunbookKomutlari.test_T2_kapi_bos_degil_en_az_uc_komut_sinaniyor)
+Vakumluluk: blok ayrıştırıcı bozulursa kapı sessizce boşalmasın. ... ok
+test_T3_yer_tutucular_kapsamli (test_runbook_komutlari_kosuyor.RunbookKomutlari.test_T3_yer_tutucular_kapsamli)
+Runbook'ta çözülemeyen `<...>` yer tutucusu kalmamalı. ... ok
+test_T4_kosum_sonrasi_nobet_portlarinda_YENI_dinleyici_YOK (test_runbook_komutlari_kosuyor.RunbookKomutlari.test_T4_kosum_sonrasi_nobet_portlarinda_YENI_dinleyici_YOK)
+T210: T1'in açtığı `yks_gui`/`ika_nav` torunları ölmüş olmalı. ... ok
+test_N1_suit_sonunda_nobet_portlarinda_YENI_dinleyici_YOK (test_zz_nobetci_surec_sizintisi.SuitSonuNobetcisi.test_N1_suit_sonunda_nobet_portlarinda_YENI_dinleyici_YOK) ... ok
+test_N2_nobet_portlari_istasyon_kartindan_turetildi (test_zz_nobetci_surec_sizintisi.SuitSonuNobetcisi.test_N2_nobet_portlari_istasyon_kartindan_turetildi) ... ok
+test_N3_bu_dosya_kesif_sirasinda_SON (test_zz_nobetci_surec_sizintisi.SuitSonuNobetcisi.test_N3_bu_dosya_kesif_sirasinda_SON)
+"Süit sonu" iddiası ada dayanır; ad kilitlenmezse iddia yalan olur. ... ok
+test_N4_olcum_aleti_acik_soketi_GORUYOR (test_zz_nobetci_surec_sizintisi.SuitSonuNobetcisi.test_N4_olcum_aleti_acik_soketi_GORUYOR)
+Pozitif kontrol: kendi açtığımız UDP soketi netstat'ta görünmeli. ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 24.724s
+
+OK
+
+EXIT=0
+
+$ netstat -ano -p udp | findstr ":5005 :5006 :5007"   (kosumdan SONRA)
+(BOS — eslesen satir yok)

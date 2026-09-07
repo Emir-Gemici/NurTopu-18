@@ -1,0 +1,13 @@
+$ O:\navitas-local-train\venv\Scripts\python.exe deney_agac.py   (7 Eyl 2026 ~02:20, Windows 11, Python 3.13.7 venv)
+# Zincir: test -> venv launcher (dogrudan cocuk) -> gercek python "EBEVEYN" -> venv launcher -> gercek python "TORUN" (60 s uyur)
+# subprocess.run(timeout=3) -> TimeoutExpired -> kill() yalniz dogrudan cocugu vurur.
+# Not: listedeki powershell.exe satiri olcum sorgusunun KENDISIDIR (komut satirinda isaret dizgileri gecer); sag kalan = ilk iki satir.
+TimeoutExpired after 3.0 s
+run() dondu; sag kalanlar (3):
+   30008 parent=33124 exe=O:\navitas-local-train\venv\Scripts\python.exe
+   37884 parent=30008 exe=C:\Users\yunus\AppData\Local\Programs\Python\Python313\python.exe
+   35712 parent=27460 exe=C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe
+temizlik sonrasi: 1
+# Okuma: 30008 = TORUN'un venv baslaticisi (ebeveyni 33124 = olu EBEVEYN gercek python), 37884 = gercek TORUN yorumlayici.
+# Dogrudan cocuk (EBEVEYN baslaticisi) ve EBEVEYN gercek python OLDU; torun cifti YASIYOR = sizinti_surecleri_0207.txt'deki desen
+# (29312 parent=7096(YOK) + 34632 parent=29312). "temizlik sonrasi: 1" = yalniz sorgu powershell'i (oz-eslesme).
