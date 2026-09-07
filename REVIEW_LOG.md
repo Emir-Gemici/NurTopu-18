@@ -30365,3 +30365,5 @@ vernik kokusu, iki faz kısa devre edilip elle çevirme (üç çift de eşit ve 
 ya da eşitsiz = sargı/mıknatıs hasarı), dört motor birbiriyle karşılaştırılır; (4) güçlü: aynı
 PWM'de pervane geçiş frekansı ±%3, 30 s %50 sonrası sıcaklık eşit. Hasarlı motor tek tek değil
 **set** değişir (eşleşmeyen itki = D-434 (a)).
+
+> ⬆ **D-435 EK (7 Eylül 2026, 11:3x, kullanıcı):** motor modeli netleşti — **SunnySky X2220 980KV V3** ×4 (BEYAN; etiket fotoğrafı hâlâ yok). "2207 / x220-7" tahminleri geçersiz; 6 Eylül devrilmeleri bu motorlarla yapıldı. Veri sayfası araştırması ve T211 künye düzeltmesi bu modele göre koşuyor (iş akışı `motor-kunye-t211`).
