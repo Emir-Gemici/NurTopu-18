@@ -193,7 +193,7 @@ Aviyonik entegrasyonu **5 Eylül 2026** günü yapılacaktır. Yordam önceden y
 |---|---|
 | Kutu açılır; künye tablosu (§0.2) ile karşılaştırılır | eksik/fark listesi (tutanak) |
 | **Her parça tartılır**, fotoğraflanır | tartı listesi — UHDR "gerçek kütle" sütununun kaynağı |
-| Gövde kontrolü: kollar sıkı, ayaklar, kubbe, GPS çubuğu; motor delikleri 5008 ile uyumlu | fotoğraf; uyumsuzluk varsa **§5.5.1 kol reçetesi sorusu burada kapanır** |
+| Gövde kontrolü: kollar sıkı, ayaklar, kubbe, GPS çubuğu; motor delikleri ~~5008~~ → SunnySky X2220 980KV V3 (7 Eylül beyanı, D-435) ile uyumlu — kol delik deseni 5008 için tasarlandı, X2220 ile uyum DOĞRULANMADI | fotoğraf; uyumsuzluk varsa **§5.5.1 kol reçetesi sorusu burada kapanır** |
 
 ### 5.2.3 Montaj planı B — mekanik yerleşim (09:30–11:00), pervanesiz
 
@@ -556,7 +556,7 @@ girdisidir: düzeltici işlemle yapılan her değişikliğin gerekçesi de kayda
 | H1 | Dilimleyici **3. seviye uyarısı** `bed_temperature_too_high_than_filament` (hata kodu `1000C001`) | `Plaka4_Ust_Cerceve_plate_1.gcode.3mf` → `slice_info.config` | tabla sıcaklığı seçilen filament profiline göre yüksek → **yapıştırma/çarpılma riski** | **BEYAN GEREKLİ (insan)** |
 | H2 | Üç plakada `support` = **var** (kubbe, ayak, GPS tutucu) | §5.1.4 reçete tablosu | destek izi, yüzey bozulması, destek temizleme hasarı | **BEYAN GEREKLİ (insan)** |
 | H3 | Kol 1–2 ile kol 3–4 **farklı reçete** | §5.1.4 ve §5.5.1 | dört kolun yapısal olarak eşdeğer olmaması | **BEYAN GEREKLİ (insan)** — §5.5.1 |
-| H4 | Montaj kabul ölçütü: "motor delikleri 5008 ile uyumlu" | `SAHA_HAZIRLIK_PLANI_20260903.md` §2.1 | boyutsal sapma / delik uyumsuzluğu | **BEYAN GEREKLİ (insan)** — uyumsuzlukta rayba mı, yeniden basım mı |
+| H4 | Montaj kabul ölçütü: "motor delikleri ~~5008~~ ile uyumlu" → motor 7 Eylül'de SunnySky X2220 980KV V3 oldu (BEYAN, D-435); ölçüt X2220 delik desenine göre yeniden yazılmalı | `SAHA_HAZIRLIK_PLANI_20260903.md` §2.1 | boyutsal sapma / delik uyumsuzluğu (5008 için tasarlanan delik ↔ X2220) | **BEYAN GEREKLİ (insan)** — uyumsuzlukta rayba mı, yeniden basım mı; X2220 montaj uyumu DOĞRULANMADI |
 | H5 | Fire / yeniden basım kaydı **yok** | §5.3.4 | başarısız baskıların izlenmemesi | **BEYAN GEREKLİ (insan)** |
 
 H1 için ek not: uyarı, baskının yapılmadığı anlamına gelmez; **yapıştırma/çarpılma riski**

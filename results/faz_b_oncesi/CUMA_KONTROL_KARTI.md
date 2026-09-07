@@ -1,4 +1,5 @@
 # CUMA AKŞAMI KONTROL KARTI — 4 Eylül (yazdırılacak)
+> **7 Eylül 2026 notu (D-435 · T211):** bu kart 5008 340KV / 12×10 dönemine aittir (satır «Yedek pervane seti (12×10, CW+CCW)»); 7 Eylül beyanıyla motor ~~5008 340KV~~ → SunnySky X2220 980KV V3 ×4 (BEYAN, etiket fotoğrafı yok), pervane ~~12×10~~ → 10×4,5 (1045) — yedek set de 1045 olmalı; itki bütçesi ÖLÇÜLEMEDİ (`FDR/BOLUM_3_SISTEM_SPESIFIKASYONLARI.md` §3.2.1.1.1). Kartın geri kalanı tarihli kayıttır, değiştirilmedi.
 
 > Cumartesi sabahı kutu açılmadan önce bu kartın **tamamı** işaretli olmalı.
 > Kaynak: `SAHA_HAZIRLIK_PLANI_20260903.md` §1 · ölçüm çıktıları:

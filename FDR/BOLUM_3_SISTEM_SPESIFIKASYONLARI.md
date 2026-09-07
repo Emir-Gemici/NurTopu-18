@@ -256,8 +256,8 @@ Kaynak: kullanıcı beyanı 3 Eylül 2026, `SAHA_HAZIRLIK_PLANI_20260903.md` §0
 | kalem | değer | durum |
 |---|---|---|
 | Gövde | Quadcopter, **3B baskı** (`dronesolid/`: kol, gövde, alt gövde, bacak, dome, GPS tutucu). GPS çubuğu + ayaklar ABS beyaz, kalanı **ABS-CF** siyah | **basıldı ve monte** |
-| Motor | **5008 340 KV × 4** | kutuda |
-| Pervane | **12 × 10** | kutuda |
+| Motor | ~~**5008 340 KV × 4**~~ → **SunnySky X2220 980KV V3 × 4** (BEYAN — kullanıcı bildirdi, etiket fotoğrafı yok; 7 Eylül beyanı, D-435). 5008'ler iade edildi; X2220'ler 2 yıl önce kullanılmış eski motorlar (BEYAN) | ~~kutuda~~ → araçta takılı; 6 Eylül devrilmeleri (D-429) bu motorlarla (BEYAN, D-435). İtki bütçesi §3.2.1.1.1 — **ÖLÇÜLEMEDİ** |
+| Pervane | ~~**12 × 10**~~ → **10 × 4,5 (1045)** (7 Eylül beyanı, D-435) | ~~kutuda~~ → araçta takılı (BEYAN); veri sayfasında 10×4,5 satırı YOK, en yakın resmi ölçüm APC1047 (10×4,7) — §3.2.1.1.1 |
 | ESC | **80 A, DShot destekli × 4** — ilk uçuşlarda **PWM 400 Hz** (MAIN 1–4) | kutuda. **7 Eylül notu:** kutudan Hobbywing Skywalker **60A V2** çıktı (D-428 §1, etiket BEYAN); ESC'ler **AUX 1–4**'te (`SERVO9–12` = M4, M2, M1, M3; D-428 §5d, 6 Eylül dökümü); kartta `RC_SPEED` **490** ölçüldü (`config/pixhawk/arducopter_fda_20260906.param` satır 659 — Copter-4.5 varsayılanı, ESC spec 50–432 Hz **dışı**) → şablona `RC_SPEED,400` girdi (D-429 §4; `tests/test_faz_b_pixhawk_sablon.py` P9, 16/16) |
 | Güç dağıtımı | **Matek XCLASS FCHUB-12S V2** (PDB + akım sensörü) | kutuda |
 | Uçuş kontrolcüsü | **Pixhawk 6C** + **PM02** güç modülü (POWER1, fabrika kalibreli V/I) | kutuda |
@@ -269,10 +269,8 @@ Kaynak: kullanıcı beyanı 3 Eylül 2026, `SAHA_HAZIRLIK_PLANI_20260903.md` §0
 | Pil / şarj | **1 × 4S 10 Ah 25C** · iMAX B6 (50 W → ~3 A → ~3 saat dolum) | **günde en çok 2 uçuş** |
 | Güç kesme | anahtar yok — **pil fişi çekilir** (XT60/XT90) | yordam: pervane en son, pil en son |
 
-**Elektriksel kaba hesap (beyan, ölçüm değil):** 4S'te asılı uçuşta yaklaşık
-10–12 A/motor, tepe 30+ A/motor. PM02'nin sürekli akım sınırı nedeniyle **sürekli tam gaz
-yapılmaz**. Bu satır bir **tahmindir**; gerçek akım 5 Eylül'de PM02'nin kendi telemetrisiyle
-ölçülecektir.
+~~**Elektriksel kaba hesap (beyan, ölçüm değil):** 4S'te asılı uçuşta yaklaşık 10–12 A/motor, tepe 30+ A/motor. PM02'nin sürekli akım sınırı nedeniyle **sürekli tam gaz yapılmaz**. Bu satır bir **tahmindir**; gerçek akım 5 Eylül'de PM02'nin kendi telemetrisiyle ölçülecektir.~~
+**GEÇERSİZ (7 Eylül, D-435):** yukarıdaki tahmin 5008 340KV / 12×10 için yazılmıştı; motor 7 Eylül beyanıyla X2220 980KV V3 + 10×4,5 oldu. Yerine geçen veri sayfası bütçesi §3.2.1.1.1'dedir; gerçek akım hâlâ **ÖLÇÜLEMEDİ**.
 
 **Jetson beslemesi — karar ve gerekçesi:** FCHUB'ın 2 A BEC'i Nano için **yetmez**; ayrı bir
 **5 V / 5 A UBEC** FCHUB pil pad'lerinden beslenir, Nano'nun barrel jack'ine (J25) girer ve
@@ -286,6 +284,55 @@ Yedek: micro-USB → `/dev/ttyACM0`. Tek kablo, USB hub yok.
 FOV yaklaşık 55–63°; 30 m irtifada kare genişliği ≈ 31–37 m olur ve **20 × 20 m alan tek
 karede sığar**. 16 mm lensle ≈ 12 m olurdu ve sığmazdı. ⚠ Bu bir **hesaptır**; `--fov`
 değeri 5 Eylül'de `kamera_dogrula` ile **ölçülecek** ve beyan ölçümle değiştirilecektir.
+
+
+##### 3.2.1.1.1 İtki bütçesi — 7 Eylül (D-435 · T211)
+
+**Neden var:** 7 Eylül beyanıyla motor künyesi değişti — ~~5008 340KV ×4 / 12×10~~ →
+**SunnySky X2220 980KV V3 ×4** (kullanıcı bildirdi; **etiket fotoğrafı yok → BEYAN**) +
+**10×4,5 (1045)** pervane + 4S 10 Ah (7 Eylül beyanı, D-435). `REVIEW_LOG.md` D-435 metni aynı günün
+ilk beyanını "Skywalker 2207 980KV" diye kaydeder; sonraki beyan X2220 980KV V3'tür — ikisi de
+BEYAN, etiket okunana kadar hangisi olduğu ÖLÇÜLMEDİ. 5008'ler iade edildi; X2220'ler **2 yıl önce
+kullanılmış eski motorlar** (BEYAN). 6 Eylül devrilmeleri (D-429) bu motorlarla yapıldı (BEYAN).
+Depoda o güne kadar **hiç itki bütçesi yoktu** (D-435 ölçüm 2). Aşağıdaki tablo yalnız üretici veri
+sayfasına dayanır; **hiçbir satırı ölçüm değildir** ve kütle tartılmadan (T10) kapı kapanamaz.
+
+**Veri sayfası kaynağı:** üretici http://en.rcsunnysky.com/x-fixedwingseries/53.html ("X2220-III / KV980";
+aynı satırlar https://sunnyskyusa.com/products/sunnysky-x2220 ve
+https://www.buddyrc.com/products/sunnysky-x2220). Künye (veri sayfası): 85 g (kablo dâhil), 3–4S,
+**maks. sürekli akım 38 A / 30 s** (süresiz bir sürekli değer yayımlanmamış), maks. sürekli güç 638 W,
+önerilen ESC 40 A, iç direnç 51 mΩ, yüksüz 0,7 A/10 V, stator 22 × 20 mm, mil 4,0 mm, 12N14P.
+⚠ **10×4,5 (1045) satırı hiçbir resmî/bayi sayfada YOK** — en yakın resmi ölçüm 4S 14,8 V +
+**APC1047 (10×4,7)**; aşağıdaki sayılar o satırlardır ve 10×4,5 için **DOĞRULANMADI**. Üreticinin
+4S çoklu-rotor önerisi 8–9 inç pervanedir (APC8038/8043/8045/9047); 10 inç yalnız 3S çoklu-rotor ve
+4S akrobasi-uçak listesinde geçer (sunnyskyusa.com). Bağımsız (üretici dışı) ölçüm bulunamadı.
+
+| büyüklük | değer | kaynak / etiket |
+|---|---|---|
+| Kalkış kütlesi (pilli) | **ÖLÇÜLEMEDİ** | T10 — tartı yapılmadı (§3.2.1.3) |
+| Motor başına tam gaz itki `T_max` | **2130 g** @ 38,4 A · 568,3 W · 10 476 rpm (yük sıcaklığı "90 ℃ 1 min") | veri sayfası (http://en.rcsunnysky.com/x-fixedwingseries/53.html), 4S 14,8 V + APC1047 (10×4,7); 10×4,5 için DOĞRULANMADI |
+| Motor başına tam gaz akımı | **38,4 A** | veri sayfası; sınır 38 A/30 s → tam gazda **SINIRDA/AŞIYOR** (0,4 A marj; sınırın kendisi 30 s'lik değer) |
+| Motor sürekli akım sınırı `I_sürekli` | **38 A / 30 s** | veri sayfası (üç kaynakta aynı); süresiz değer yayımlanmamış |
+| 4 × `T_max` | **8520 g** | türetilmiş (4 × 2130 g) |
+| Hover itki oranı = kütle / (4 × `T_max`) | **ÖLÇÜLEMEDİ** (kütle yok) | ⚠ PWM gaz yüzdesi DEĞİL — itki gazla doğrusal değildir; `MOT_THST_HOVER` (öğrenilmemiş, 0,35 varsayılan — D-434 ölçüm 4) ile karşılaştırma ayrıca yapılır |
+| ÖRNEK · 2,0 kg olsaydı | %23,5 · motor başına 500 g → **4,8 A** · 4 motor **19,2 A** | ÖRNEK, ölçüm değil — veri sayfası 500 g satırı |
+| ÖRNEK · 2,5 kg olsaydı | %29,3 · motor başına 625 g → **≈6,5 A** · 4 motor **≈26 A** | ÖRNEK — 600 g (6,0 A) ile 700 g (7,9 A) satırları arası doğrusal ara değer |
+| ÖRNEK · 3,0 kg olsaydı | %35,2 · motor başına 750 g → **≈8,7 A** · 4 motor **≈35 A** | ÖRNEK — 700 g (7,9 A) ile 800 g (9,4 A) satırları arası doğrusal ara değer |
+| ÖRNEK · %50 eşiğine denk kütle | **4260 g** (= 0,5 × 8520 g) | türetilmiş; tartı bunun altında çıkmalı |
+| Hover akımı tahmini (motor başına) | **ÖLÇÜLEMEDİ** — ÖRNEK satırlarda 4,8–8,7 A | yalnız motorlar; aviyonik (Jetson/UBEC, SiK, Pixhawk) hariç. Gerçek değer güç modülü telemetrisiyle (PM06 — BEYAN, D-426 §3) ilk hover'da ölçülür |
+| ESC (Hobbywing Skywalker 60A V2 — BEYAN, D-428 §1) ↔ motor tam gaz 38,4 A | ESC sınırı motorun üstünde | ESC künyesi BEYAN; veri sayfası önerisi 40 A |
+| Pil 4S 10 Ah 25C (BEYAN) → 250 A boşalma ↔ 4 motor tam gaz 4 × 38,4 = 153,6 A | ALTINDA — BEYAN'a bağlı | pil etiketi (C değeri) DOĞRULANMADI |
+| **KAPI: hover itki oranı ≤ %50 ∧ `I_hover` ≤ `I_sürekli`** | **ÖLÇÜLEMEDİ** | kütle tartılmadı (T10), akım ölçülmedi. ÖRNEK satırlar 3,0 kg'a kadar eşiklerin altında kalır ama **ÖRNEK ≠ ölçüm**. Bütçe kapanmadan bir sonraki güç verme yok (T211 — TIKAYICI) |
+
+**Logla tutarlılık (ölçüm, D-434/D-435 — tabloyu doğrulamaz, yalnız çelişmediğini söyler):**
+P19'da ilk eğilme gaz PWM %45'te başladı (D-434 ölçüm 4); P20'de M1 25 s boyunca 1949'da doygun
+kaldı ve duman atan motor M1'di (D-435 ölçüm 3). Tam gaz 38,4 A veri sayfasının 30 s sınırının
+üstünde olduğundan 25 s doygunluk dumanı tek başına da açıklar (D-435 ölçüm 3). Eski motorların
+hasarlı olup olmadığı `SAHA_OLAY_SONRASI_MUAYENE.md` madde 1–2'deki güçsüz/güçlü muayeneyle ayrılır.
+
+**Kapanış için (İNSAN, madde 9 — T211):** (1) motor etiketi fotoğrafı (X2220 mi, KV980 mi, V3 mü);
+(2) pilli tam araç tartısı (T10); (3) ilk hover'da güç modülü telemetrisinden asılı kalma akımı.
+Üçü gelmeden bu kapı kapanmaz; bu tabloya ölçüm yazılana kadar her satır ÖLÇÜLEMEDİ ya da ÖRNEK'tir.
 
 
 #### 3.2.1.2 Yarışma günü aracı (sabit kanat + mancınık + paraşüt + İKA)
@@ -309,7 +356,7 @@ REDDEDİLİR).
 | ağırlık merkezi | **ÖLÇÜLEMEDİ** — 5 Eylül §2.2, ölçüt CG ± 1 cm |
 | titreşim (`VIBE`) | **ÖLÇÜLEMEDİ** — ölçüt uçuşta `VIBE` < 30 |
 | pusula ofseti | **ÖLÇÜLEMEDİ** — ölçüt < 300 |
-| itki / asılı kalma akımı | **ÖLÇÜLEMEDİ** — PM02 telemetrisiyle ölçülecek |
+| itki / asılı kalma akımı | **ÖLÇÜLEMEDİ** — PM02 telemetrisiyle ölçülecek (kutudan PM06 çıktı, D-426 §3); veri sayfası tabanlı bütçe §3.2.1.1.1 (7 Eylül, D-435 — motor X2220 980KV V3, BEYAN) |
 | uçuş süresi (4S 10 Ah ile) | **ÖLÇÜLEMEDİ** — hesap yapılmadı, tahmin yazılmaz |
 
 
@@ -570,7 +617,7 @@ sırasında `OPEN_ROUTE`, `IKA_GO`'dan **önce** gelir, yani YKS adresi `IKA_GO`
    └───┬────┘            │              │
        │                 │  TELEM1 ─────┼──► SiK 433 MHz  ──►  YKS (MAVLink)
        ▼                 │  TELEM2 ─────┼──► Jetson UART /dev/ttyTHS1 (MAVLink2 57600)
-  ┌─────────────┐        │  AUX 1..4  ──┼──► ESC Skywalker 60A V2 ×4  ──► motor 5008 340KV ×4   ← plan 80 A (BEYAN, tam marka/model BEYAN GEREKLİ)
+  ┌─────────────┐        │  AUX 1..4  ──┼──► ESC Skywalker 60A V2 ×4  ──► motor ~~5008 340KV~~ X2220 980KV V3 ×4 · 10×4,5   ← plan 80 A (BEYAN, tam marka/model BEYAN GEREKLİ); motor 7 Eylül beyanı, etiket yok (D-435)
   │ FCHUB-12S V2│        │  RCIN ◄──────┼─── FS-iA6B `i-BUS SERVO` portu (iBUS; CH1–CH6 DEĞİL)
   └──┬───────┬──┘        │  GPS1  ◄─────┼─── Holybro M9N
      │       │           └──────────────┘
@@ -1026,6 +1073,8 @@ Sorumlu rol: **R3 Aviyonik sorumlusu**.
 fabrika kalibreli V/I telemetrisi verir ve `BATT_MONITOR=4` şablonda yazılıdır
 (§3.3.1.1.11) — ama kart kutudadır. Kapanma: 5 Eylül montajı ve ilk hover.
 `ÖLÇÜLEMEDİ ≠ GEÇTİ`.
+
+**7 Eylül (D-435 · T211):** motor künyesi değişti (~~5008 340KV / 12×10~~ → SunnySky X2220 980KV V3 / 10×4,5 — BEYAN, etiket yok). Veri sayfası tabanlı itki ve akım bütçesi §3.2.1.1.1'dedir: tam gaz 38,4 A/motor veri sayfasının 38 A/30 s sınırında; hover akımı ve kütle **ÖLÇÜLEMEDİ**. Kapı (hover ≤ %50 ∧ `I_hover` ≤ `I_sürekli`) tartı ve ilk hover ölçümü gelmeden kapanmaz.
 
 **ÖLÇÜLEMEDİ:** Uçuş süresi. §3.2.1.3'te *"hesap yapılmadı, tahmin yazılmaz"* diye
 kayıtlıdır; teorik ↔ pratik karşılaştırma da bu yüzden bugün yapılamaz.

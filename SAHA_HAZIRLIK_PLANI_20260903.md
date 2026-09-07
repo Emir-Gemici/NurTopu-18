@@ -35,7 +35,7 @@ Sabit kanat + mancınık + paraşüt **finalin** işidir (§7), bu planın kapsa
 | kalem | değer | not |
 |---|---|---|
 | Gövde | **Quadcopter, 3B baskı** (`dronesolid/`: kol, gövde, alt gövde, bacak, dome, GPS tutucu) — **basıldı ve monte**; GPS çubuğu + ayaklar ABS beyaz, kalanı ABS-CF siyah | aviyonik **kutuda**, kutu açılmadı |
-| Motor / pervane | **5008 340KV ×4**, **12×10** pervane | 4S'te yaklaşık 10–12 A/motor havada asılı; tepe 30+ A/motor |
+| Motor / pervane | ~~**5008 340KV ×4**, **12×10** pervane~~ → **SunnySky X2220 980KV V3 ×4** (BEYAN, etiket fotoğrafı yok) + **10×4,5 (1045)** pervane (7 Eylül beyanı, D-435) | ~~4S'te yaklaşık 10–12 A/motor havada asılı; tepe 30+ A/motor~~ **GEÇERSİZ** (7 Eylül, D-435): 5008 için yazılmış tahmindi. X2220 için veri sayfası bütçesi `FDR/BOLUM_3_SISTEM_SPESIFIKASYONLARI.md` §3.2.1.1.1 — tam gaz 38,4 A/motor (veri sayfası http://en.rcsunnysky.com/x-fixedwingseries/53.html, 4S + 10×4,7; 10×4,5 satırı yok), sınır 38 A/30 s; hover akımı kütle ölçülmeden **ÖLÇÜLEMEDİ** |
 | ESC | **80 A, DShot destekli** ×4 | ilk uçuşlarda **PWM 400 Hz** (MAIN 1–4); DShot sonra, isteğe bağlı |
 | Güç dağıtımı | **Matek XCLASS FCHUB-12S V2** (PDB + akım sensörü) | ESC'ler buradan |
 | Uçuş kontrolcüsü | **Pixhawk 6C** + kutusundan çıkan **PM02** güç modülü | PM02: pil → PM02 → FCHUB; POWER1 beslemesi + V/I ölçümü (fabrika kalibreli). ⚠ PM02 sürekli akım sınırı — sürekli tam gaz yok |
@@ -93,7 +93,7 @@ Pervaneler **en son**, pil **en son**; pil fişi = tek güç kesici.
 |---|---|---|
 | ☐ | Kutuyu aç; künye tablosu (§0.2) ile karşılaştır; **PM02**, kablolar, anten, alıcı, pervaneler | eksik/fark listesi |
 | ☐ | Her parça **tartılır** (UHDR gerçek kütle), fotoğraflanır | tartı listesi |
-| ☐ | Gövde kontrolü: kollar sıkı, bacaklar, dome, GPS çubuğu; motor delikleri 5008 ile uyumlu | fotoğraf |
+| ☐ | Gövde kontrolü: kollar sıkı, bacaklar, dome, GPS çubuğu; motor delikleri ~~5008~~ → SunnySky X2220 980KV V3 (7 Eylül beyanı, D-435) ile uyumlu (delik deseni 5008 için tasarlandı; X2220 ile uyum DOĞRULANMADI) | fotoğraf |
 
 ### 2.2 Mekanik yerleşim (09:30–11:00)
 | ✓ | adım | ölçüt |
