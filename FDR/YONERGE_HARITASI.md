@@ -147,7 +147,7 @@
 
 | kimlik | alt başlık / madde | ne isteniyor | durum |
 |---|---|---|---|
-| `Y-3.3.1-M01` | **Sistem Mimarisi** | İHA ve İKA için **ayrı ayrı**; tüm elektronik bileşenlerin bağlantısı, sinyal (PWM, UART, I2C) ve güç hatları **renk kodlarıyla ayrılmış**, okunabilir bağlantı şemaları | KISMEN (İHA metin var, şema ve İKA yok) |
+| `Y-3.3.1-M01` | **Sistem Mimarisi** | İHA ve İKA için **ayrı ayrı**; tüm elektronik bileşenlerin bağlantısı, sinyal (PWM, UART, I2C) ve güç hatları **renk kodlarıyla ayrılmış**, okunabilir bağlantı şemaları | KISMEN (~~İHA metin var, şema ve İKA yok~~ → 7 Eylül: **İHA şeması çizildi** — `sekiller/iha_baglanti.svg` §3.3.1.1'e gömüldü, ölçülmeyen hatlar DOĞRULANACAK kesik çizgi, nöbetçi `tests/test_gece_baglanti_semasi.py`; **İKA şeması yok** — T217; 10 Eylül düzeltmesi) |
 | `Y-3.3.1-M02` | **Nihai Aviyonik BOM Listesi** | İHA ve İKA için ayrı: ad, marka/model, adet, birim ağırlık, toplam ağırlık, boyut, **tahmini maliyet** tablosu; **DDR ↔ FDR karşılaştırmalı**; kablo ve konnektörler dâhil nihai ağırlık ve maliyet | KISMEN |
 | `Y-3.3.1-M03` | **Entegrasyon Planı** | İHA ve İKA aviyonik entegrasyonunda izlenecek plan | KISMEN (İHA planı rapora girdi: §3.3.1.3.1 kuru koşu zinciri 9/10 + §3.3.1.3.2 kapı özeti; İKA planı §3.3.1.3.3 BEYAN GEREKLİ) |
 | `Y-3.3.2-M01` | **Nihai Kablaj Hesapları** | kablo **kesitleri (AWG)** ve uzunlukları, **akım taşıma kapasitesi ve gerilim düşümü hesapları**, **ölçülen** maksimum akıma göre güncelleme; kablo düzenlemesi, ekranlama, konnektör kilitleme **görsellerle** | YOK |
@@ -168,13 +168,13 @@
 | `Y-4-M03` | Testlerde kullanılacak **sensör gereksinimleri, sensör yerleşimleri, test takvimi ve detaylı test zaman bütçe planlaması** | KISMEN (§4.3.1 sensör tablosu + §4.3.3 takvim 3.1–3.6 + §4.3.4 yer bütçeleri var; yerleşim BEYAN GEREKLİ, uçuş süresi ÖLÇÜLEMEDİ) |
 | `Y-4-M04` | **Ekipman kabul testleri** — İHA ve İKA'da kullanılacak **tüm ekipmanların** kabul testleri yapılmış ve sonuçlar sunulmuş olmalı | KISMEN (5 Eylül tezgâh: firmware 4.5.7 / GNSS / iBUS / PM06 / motor testi ÖLÇÜM; Jetson, kamera, RF, tam yük ÖLÇÜLEMEDİ; İKA ekipmanı seçilmedi) |
 | `Y-4-M05` | **Kumanda ve telemetri menzil testleri** — sahada | YOK (5–19 Eylül) |
-| `Y-4-M06` | **IMU, pusula ve pitot tüpü kalibrasyonu** kanıtları | YOK (5 Eylül) |
+| `Y-4-M06` | **IMU, pusula ve pitot tüpü kalibrasyonu** kanıtları | ~~YOK (5 Eylül)~~ → **KISMEN** (6 Eylül 20:22 dökümü, 10 Eylül işlendi: IMU accel/gyro/level ofsetleri + Mag1/Mag2 ofsetleri < 300 §4.6'da dosya:satır ile; pitot kapsam dışı — `ARSPD_ENABLE,0`; eksik: MP ekran görüntüsü, 2. pusula kalibrasyonunun dökümü, Jetson takılı kalibrasyon; D-428 §1) |
 | `Y-4-M07` | 🔴 **Görev icra simülasyonu** (3.3.3 ile aynı) + başarı oranları + grafikler + **video linki** | YOK |
 | `Y-4-M08` | **Görüntü işleme performansı** — benzer koşullarda test sonuçları ve **doğruluk matrisleri** | KISMEN |
 | `Y-4-M09` | **Haberleşme testi** — paket yapısı, veri hızı, **iletişim gecikmesi** test sonuçları | KISMEN |
-| `Y-4-M10` | Sistem üzerinde gerçekleştirilen **tüm yer testleri** | KISMEN |
+| `Y-4-M10` | Sistem üzerinde gerçekleştirilen **tüm yer testleri** | KISMEN (10 Eylül eki: §4.10.5 — 6 Eylül pervaneli yer testi tlog ile ÖLÇÜLDÜ: üç devrilme D-429, kumandadan arm D-433, pilot kolu/seviye D-434; hover/uçuş yok) |
 | `Y-4-M11` | Entegrasyon öncesi tüm alt sistemlerin **bir arada ve yerde bütünleşik çalıştığını** gösteren kanıtlar | KISMEN (kuru koşu var) |
-| `Y-4-M12` | 🔴 **Arıza emniyet doğrulaması** — arıza durumlarında sistemin verdiği tepkilerin (**eve dönüş, motor kesme** vb.) **sahada test edildiğini** gösteren veriler | YOK (5–19 Eylül) |
+| `Y-4-M12` | 🔴 **Arıza emniyet doğrulaması** — arıza durumlarında sistemin verdiği tepkilerin (**eve dönüş, motor kesme** vb.) **sahada test edildiğini** gösteren veriler | ~~YOK (5–19 Eylül)~~ → **YOK** — RC failsafe 6 Eylül'de tezgâhta ÖLÇÜLDÜ ve **DÜŞTÜ** (alıcı son değeri tutuyor, D-428 §2); RTL/Land/geofence/motor kesme tepkisi sahada hiç tetiklenmedi → "sahada test edildiğini gösteren veri" şartı **karşılanmadı** (§4.12; 10 Eylül) |
 
 ## 5. Bölüm 5 — Üretim Faaliyetleri · **15 puan**
 
@@ -219,7 +219,7 @@
 | Bölüm 3.1 | *(40'ın içinde)* | 0 | 0 | 7 | **uçuş bilimleri hiç yok** |
 | Bölüm 3.2 | *(40'ın içinde)* | 0 | 8 | 48 | **İKA ve Mancınık yapısal; analizler** |
 | Bölüm 3.3 | *(40'ın içinde)* | 0 | 7 | 4 | **3B görev simülasyonu + video**; kablaj hesabı ve güç tüketimi ölçümü |
-| Bölüm 4 | 15 | 1 | 7 | 4 | menzil, kalibrasyon kanıtı, görev simülasyonu, **arıza emniyet** |
+| Bölüm 4 | 15 | 1 | ~~7~~ 8 | ~~4~~ 3 | menzil, ~~kalibrasyon kanıtı,~~ görev simülasyonu, **arıza emniyet** (10 Eylül: `Y-4-M06` YOK → KISMEN; sprint sonu yeniden sayım mimarın) |
 | Bölüm 5 | 15 | 0 | 3 | 1 | düzeltici prosedürler + **reçete farkı gerekçesi** |
 | Bölüm 6 | 10 | 3 | 3 | 0 | **pasta grafiği** (dizgi) + ÖDR/DDR gereksinim eşlemesi + açık kalem kapanma tarihleri |
 | Bölüm 7 | 10 | 0 | 1 | 4 | **fiyatların tamamı** |

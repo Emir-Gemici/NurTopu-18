@@ -1147,7 +1147,8 @@ açıkça yazılmalıdır; aksi hâlde simülasyon başarımı üretim başarım
 > sanal görev süresi ve sistem tepkileri grafiklerle rapora eklenmelidir."*
 
 **ÖLÇÜLEMEDİ:** Otonom karar verme başarı oranı, sanal görev süresi ve sistem tepkisi
-grafikleri. Üretici betikler depoda vardır (`simulation/scripts/score.py`,
+grafikleri. Üretici betikler depoda vardır (~~`simulation/scripts/score.py`~~
+`simulation/score.py` — yol 10 Eylül'de düzeltildi, D-438 §0 ölçümü `simulation/score.py:141`;
 `simulation/scripts/hakem_log.py`); koşum yapılmadığı için çıktı yoktur. Kapanma:
 §3.3.3.1'deki makine sağlandığında.
 
