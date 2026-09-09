@@ -100,3 +100,8 @@ paralel hatlarda koşar; H6 hemen (ekibe verilir). GPU işleri sıralı (BSOD ku
 ## 4. Kapanış kapısı (mimar)
 Her hat: tam süit OK + genel kapı 15/15 · 15/15 + FDR testleri + `push_kapisi`. Sprint sonu:
 YONERGE_HARITASI yeniden sayım; ACIK_KALEMLER güncel; PDF üretimi; pano.
+
+### H8 — Jetson geliştirici istekleri (eklendi 10 Eylül 01:5x; kaynak `JETSON_OTURUM_DURUMU_20260909.md` §5)
+T220 (K2 T66 kabul kümesi + göreli defter yolları, G4 v36 PC referans kararları, K10 çıplak `O:\` yolları,
+K1 kalan bant) ve T221 (K11 ArduPlane parametre seti + SITL). Kapı: PC tam süit yeşil; Jetson koşumu İNSAN.
+Uzak push'lar 10 Eylül 01:29'da birleştirildi (`0e788eb`: OGREN_ADIYAMAN dizisi, Jetson oturum notu).
