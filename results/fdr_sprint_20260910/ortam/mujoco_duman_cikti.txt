@@ -1,0 +1,5 @@
+mujoco 3.13.0
+render (720, 1280, 3) uint8 271 ms ilk kare; benzersiz renk 657
+yazildi O:\navitas\results\fdr_sprint_20260910\ortam\mujoco_duman.png
+10 kare 222 ms
+STL Drone_Frame_STL.STL ucgen 2104 boyut mm [183.   4. 183.] su gecirmez True

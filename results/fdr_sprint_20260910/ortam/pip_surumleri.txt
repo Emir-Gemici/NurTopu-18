@@ -1,0 +1,7 @@
+glfw==2.10.2
+ImageIO==2.37.4
+mujoco==3.13.0
+numpy==2.3.5
+python-docx==1.2.0
+torch==2.11.0+cu128
+trimesh==5.1.0
