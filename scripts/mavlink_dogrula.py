@@ -54,6 +54,11 @@ from karar_sozlesmesi import (MAVLINK_AKIS_ISTEK_HIZ_CARPANI,  # noqa: E402
 # ile ayni. Sahada farkliysa --sysid ile beyan edilir (yabanci kaynak
 # sessizce otorite olamaz — inis_kaniti ile ayni ilke).
 VARSAYILAN_BEKLENEN_SYSID = 1
+# Seri baglantida (TELEM2 /dev/ttyTHS1) pymavlink varsayilani 115200'dur; Pixhawk
+# SERIAL2_BAUD=57 (57600, config/pixhawk/arducopter_fda.param) ve cogullayici
+# PIXHAWK_BAUD=57600 (jetson_baslat.sh) ile AYNI olsun. udp/tcp'de yok sayilir.
+# Sozlesmede baud sabiti YOK (D-388; sik_rf_olc.py ile ayni kalip) — T219.
+VARSAYILAN_BAUD = 57600
 HEARTBEAT_TAVAN_S = 15.0     # ilk HEARTBEAT icin bekleme tavani
 ACK_TAVAN_S = 1.0            # COMMAND_ACK icin bekleme (en iyi caba)
 DINLEME_ADIMI_S = 0.2        # tek recv_match blok suresi (kalan sureyi asmaz)
@@ -376,10 +381,11 @@ def dogrula_baglanti(mav, adres, beklenen_sysid, sure_s,
 
 def dogrula(adres, beklenen_sysid=VARSAYILAN_BEKLENEN_SYSID,
             sure_s=MAVLINK_DOGRULAMA_SURESI_S,
-            heartbeat_tavan_s=HEARTBEAT_TAVAN_S, ack_tavan_s=ACK_TAVAN_S):
+            heartbeat_tavan_s=HEARTBEAT_TAVAN_S, ack_tavan_s=ACK_TAVAN_S,
+            baud=VARSAYILAN_BAUD):
     """Baglantiyi ac, dogrula, kapat. Acilamazsa fail-closed DUSTU raporu."""
     try:
-        mav = mavutil.mavlink_connection(adres)
+        mav = mavutil.mavlink_connection(adres, baud=baud)
     except Exception as exc:
         return {
             "arac": "mavlink_dogrula", "mavlink": adres,
@@ -457,6 +463,9 @@ def main(argv=None):
                          "/dev/ttyACM0, tcp:...)")
     ap.add_argument("--sysid", type=int, default=VARSAYILAN_BEKLENEN_SYSID,
                     help="beklenen Pixhawk sysid (varsayilan %(default)s)")
+    ap.add_argument("--baud", type=int, default=VARSAYILAN_BAUD,
+                    help="seri baglanti hizi (TELEM2 SERIAL2_BAUD=57 -> 57600; "
+                         "udp/tcp'de yok sayilir; varsayilan %(default)s)")
     ap.add_argument("--sure", type=float, default=MAVLINK_DOGRULAMA_SURESI_S,
                     help="olcum penceresi s (varsayilan sozlesme: %(default)s)")
     ap.add_argument("--heartbeat-tavan", type=float, default=HEARTBEAT_TAVAN_S,
@@ -472,11 +481,14 @@ def main(argv=None):
 
     if not 1 <= args.sysid <= 255:
         ap.error("--sysid 1..255 tamsayi olmali")
+    if args.baud <= 0:
+        ap.error("--baud pozitif tamsayi olmali")
     sure = _pozitif_sonlu(args.sure, "--sure", ap)
     hb_tavan = _pozitif_sonlu(args.heartbeat_tavan, "--heartbeat-tavan", ap)
     ack_tavan = _pozitif_sonlu(args.ack_tavan, "--ack-tavan", ap)
 
-    rapor = dogrula(args.mavlink, args.sysid, sure, hb_tavan, ack_tavan)
+    rapor = dogrula(args.mavlink, args.sysid, sure, hb_tavan, ack_tavan,
+                    baud=args.baud)
     tablo = tablo_metni(rapor)
     json_metni = json.dumps(rapor, ensure_ascii=False, indent=2)
     if args.json == "-":
