@@ -4,9 +4,17 @@ NEDEN: SAHA_KOSUM_KAGIDI_20260910.md ekibin mimar olmadan kosacagi TEK sayfadir.
 komut satiri olu ise (betik yok, bayrak degismis) ekip sahada durur ve "olmadi"
 der — D-421 sinifi kusur. Bu kapi belgeyi degil KOMUTU olcer:
 
-  K1  8 bolum basligi (## 1. … ## 8.) tam ve sirali; her adimin sonunda
-      OLCULDU / OLCULEMEDI kutusu var; kagit <= 120 satir (2 sayfa A4 esdegeri)
+  K1  TAM 7 bolum basligi (## 1. … ## 7.; tarti bolumu D-439 ile dustu) — 8.
+      bolum eklenince ya da numara atlaninca DUSER; her bolumde 'Eşik:' etiketi,
+      bir 'results/' ciktisi ve TEK OLCULDU / OLCULEMEDI kutusu; 'adım N' capraz
+      atiflari 1..7 icinde; kagit <= 120 satir ve <= 12 000 karakter
   K2  kagitta gecen her depo betigi/belgesi diskte VAR (results/ ciktilari haric)
+      VE git ile izleniyor (`git ls-files --error-unmatch`); backtick'li kok/genel
+      .md atiflari (`DEVAM.md`, `FDR/ACIK_KALEMLER.md`) ayrica taranir — olu
+      `GERI_AKTARIM.md` sinifi atif burada dusuyor
+  K10 Pixhawk fiziksel hatti: bolum 1'de "KARAR (insan): [ ] TELEM2 [ ] USB"
+      kutusu, iki aygit (/dev/ttyTHS1, /dev/ttyACM0) ve kapi adiminda
+      PIXHAWK_SERI=<HAT> (hat sabitlenmez, karar insanin)
   K3  her .py betigi `--help` ile 0 doner; .sh betikleri `bash -n` ve `--help` ile 0
       (vakumluluk: en az 5 farkli .py sinanir)
   K4  FDR/ACIK_KALEMLER.md kagida isaret ediyor; kagit sonuc klasorunu anıyor
@@ -53,8 +61,14 @@ import kamera_fov_hesapla as kfh  # noqa: E402
 import mavlink_dogrula as md  # noqa: E402
 import tlog_akim_ozet as tao  # noqa: E402
 
-BASLIK = re.compile(r"^## ([1-8])\. ", re.M)
+#: Rakam sinifi bilerek \d+: "## 8." eklenince liste ["1".."8"] olur ve esitlik duser.
+BASLIK = re.compile(r"^## (\d+)\.", re.M)
+BOLUM_SAYISI = 7
 KUTU = re.compile(r"\[ \] ÖLÇÜLDÜ\s+\[ \] ÖLÇÜLEMEDİ — neden:")
+KARAR_KUTUSU = "KARAR (insan): [ ] TELEM2 [ ] USB"
+ADIM_ATFI = re.compile(r"adım (\d+)(?:–(\d+))?")
+#: Backtick'li .md atiflari (kokteki DEVAM.md gibi dizinsiz olanlar dahil).
+BELGE_ATFI = re.compile(r"`([A-Za-z_0-9/]+\.md)`")
 # results/ altindaki yollar CIKTIDIR (henuz yok); depo betik/belge yollari sinanir.
 DEPO_YOLU = re.compile(
     r"(?<![\w/\\])((?:scripts|codes|jetson_paket|tests|config/pixhawk|FDR)/"
@@ -70,12 +84,53 @@ def _depo_yollari():
     return sorted(set(DEPO_YOLU.findall(_metin())))
 
 
-class K1_Bicim(unittest.TestCase):
-    def test_sekiz_baslik_sirali(self):
-        self.assertEqual(BASLIK.findall(_metin()), [str(i) for i in range(1, 9)])
+def _belge_atiflari():
+    return sorted(set(BELGE_ATFI.findall(_metin())))
 
-    def test_her_adimda_kutu(self):
-        self.assertGreaterEqual(len(KUTU.findall(_metin())), 8)
+
+def _bolumler():
+    """[(no, metin)]: her '## N.' basligindan bir sonrakine; son bolum '---'
+    altbilgisinde biter (altbilgideki results/ yolu bolume sayilmasin)."""
+    m = _metin()
+    baslar = list(BASLIK.finditer(m))
+    out = []
+    for i, b in enumerate(baslar):
+        if i + 1 < len(baslar):
+            son = baslar[i + 1].start()
+        else:
+            son = m.find("\n---", b.end())
+            son = len(m) if son < 0 else son
+        out.append((int(b.group(1)), m[b.start():son]))
+    return out
+
+
+class K1_Bicim(unittest.TestCase):
+    def test_bolum_sayisi_kilidi(self):
+        self.assertEqual([str(i) for i in range(1, BOLUM_SAYISI + 1)],
+                         BASLIK.findall(_metin()))
+
+    def test_tarti_bolumu_yok_notu_var(self):
+        m = _metin()
+        self.assertNotRegex(m, r"(?m)^## \d+\. Tartı")
+        self.assertIn("D-439", m.splitlines()[2])
+
+    def test_adim_atiflari_bolum_araliginda(self):
+        nolar = set()
+        for a, b in ADIM_ATFI.findall(_metin()):
+            nolar.add(int(a))
+            if b:
+                nolar.add(int(b))
+        self.assertTrue(nolar, "kagitta hic 'adım N' capraz atfi yok")
+        self.assertEqual([], sorted(n for n in nolar if not 1 <= n <= BOLUM_SAYISI))
+
+    def test_her_bolumde_esik_results_kutu(self):
+        bolumler = _bolumler()
+        self.assertEqual(BOLUM_SAYISI, len(bolumler))
+        for no, b in bolumler:
+            with self.subTest(bolum=no):
+                self.assertIn("Eşik:", b)
+                self.assertIn("results/", b)
+                self.assertEqual(1, len(KUTU.findall(b)))
 
     def test_iki_sayfa(self):
         satirlar = _metin().splitlines()
@@ -93,6 +148,22 @@ class K2_K3_Komutlar(unittest.TestCase):
         self.assertTrue(yollar, "kagitta hic depo yolu bulunamadi (regex mi bozuk?)")
         eksik = [y for y in yollar if not (KOK / y).is_file()]
         self.assertEqual([], eksik)
+
+    def test_K2_belge_atiflari_diskte(self):
+        belgeler = _belge_atiflari()
+        self.assertGreaterEqual(len(belgeler), 3, belgeler)
+        for b in belgeler:
+            with self.subTest(belge=b):
+                self.assertTrue((KOK / b).is_file(), f"olu belge atfi: {b}")
+
+    def test_K2_atiflar_git_ile_izleniyor(self):
+        git = shutil.which("git")
+        if git is None:
+            self.skipTest("git yok")
+        yollar = sorted(set(_depo_yollari()) | set(_belge_atiflari()))
+        r = subprocess.run([git, "ls-files", "--error-unmatch", "--", *yollar],
+                           cwd=str(KOK), capture_output=True, text=True, timeout=60)
+        self.assertEqual(0, r.returncode, r.stderr[-600:])
 
     def test_K3_py_help_sifir(self):
         pyler = [y for y in _depo_yollari() if y.endswith(".py")]
@@ -277,6 +348,19 @@ class K8_MavlinkDogrulaBaud(unittest.TestCase):
             md.main(["--mavlink", "udpin:127.0.0.1:0", "--baud", "0"])
         self.assertEqual(2, cm.exception.code)
         self.assertIn("--baud", err.getvalue())
+
+
+class K10_PixhawkHatKarari(unittest.TestCase):
+    def test_karar_kutusu_ve_iki_secenek(self):
+        b = dict(_bolumler())
+        self.assertIn(KARAR_KUTUSU, b[1])
+        self.assertIn("/dev/ttyTHS1", b[1])
+        self.assertIn("/dev/ttyACM0", b[1])
+
+    def test_kapi_adiminda_hat_sabitlenmemis(self):
+        b = dict(_bolumler())
+        self.assertIn("PIXHAWK_SERI=<HAT>", b[3])
+        self.assertNotIn("PIXHAWK_SERI=/dev/", b[3])
 
 
 if __name__ == "__main__":
