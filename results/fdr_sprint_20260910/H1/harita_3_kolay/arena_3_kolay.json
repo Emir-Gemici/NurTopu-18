@@ -1,0 +1,108 @@
+{
+ "harita": 3,
+ "senaryo": "kolay",
+ "seed": 42,
+ "acik_yol": 3,
+ "acik_yol_etiket": "sag",
+ "kb_xy": [
+  -0.119,
+  -23.0
+ ],
+ "hb_xy": [
+  10.69,
+  21.0
+ ],
+ "htab_merkez_dunya": [
+  0.0,
+  0.0
+ ],
+ "iha_ib_merkez": [
+  42.0,
+  0.0
+ ],
+ "iha_ib_kenar_m": 30.0,
+ "mancinik_xy": [
+  -26.0,
+  0.0
+ ],
+ "mjcf_kanonik_sha256": "99a49057fdec7bfac90ddf48a27a2d3bf578da48dfe47c654bd6894562597356",
+ "mjcf_bayt": 30566,
+ "htab_doku_sha256": "71760e5b934469441fc10e0d4f9582e93327fea3603907608007b1df5bb88dca",
+ "mjcf_uretim_ms": 18.9,
+ "mjcf_yukleme_ms": 102.2,
+ "ngeom": 207,
+ "nbody": 8,
+ "ncam": 5,
+ "nu": 4,
+ "yonerge": {
+  "iha_ib_30x30_mavi": {
+   "ok": true,
+   "deger": {
+    "kenar_m": [
+     30.0,
+     30.0
+    ],
+    "rgba": [
+     0.15000000596046448,
+     0.3499999940395355,
+     0.8500000238418579,
+     1.0
+    ]
+   }
+  },
+  "hb_kirmizi_H_2x2": {
+   "ok": true,
+   "deger": {
+    "kirmizi": true,
+    "genislik_m": 2.0,
+    "yukseklik_m": 2.0
+   }
+  },
+  "acik_yol_tek_bariyersiz": {
+   "ok": true,
+   "deger": {
+    "bariyerli_yollar": [
+     1,
+     2
+    ],
+    "acik": 3
+   }
+  },
+  "moloz_dagilmis": {
+   "ok": true,
+   "deger": {
+    "moloz": 130,
+    "tikama": 36,
+    "chicane": 5
+   }
+  },
+  "ika_ddr_fizik": {
+   "ok": true,
+   "deger": {
+    "kutle_kg": 9.4,
+    "teker_eklemi": 4,
+    "aktuator": 4
+   }
+  },
+  "iha_mocap_scan_camera": {
+   "ok": true,
+   "deger": {
+    "fovy_derece": 74.485,
+    "hfov_rad": 1.3
+   }
+  },
+  "htab_50x50_dokulu": {
+   "ok": true,
+   "deger": {
+    "kenar_m": 50.0
+   }
+  },
+  "mancinik_iha_fb": {
+   "ok": true,
+   "deger": {
+    "x": -25.8
+   }
+  }
+ },
+ "sinir": "İHA uçuşu KİNEMATİK (mocap); aerodinamik yok. Modeller basitleştirilmiş (D-438 ek)."
+}

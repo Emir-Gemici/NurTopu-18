@@ -1,0 +1,166 @@
+{
+ "kapi": "H1-K3 ÖN-ÖLÇÜM (3 harita; asıl kapı 15 harita ≥ 12/15)",
+ "tarih": "2026-09-10 02:16",
+ "model": {
+  "model_id": "navitas-seg-v36-512",
+  "path": "O:\\navitas\\models\\navitas_seg_v36_best.pt",
+  "kayit_path": "models/navitas_seg_v36_best.pt",
+  "sha256_dosya": "1d1caca6f6da19ea35e69186a048da960ca5188be6ee6d49d6106457cac46911",
+  "sha256_kayit": "1d1caca6f6da19ea35e69186a048da960ca5188be6ee6d49d6106457cac46911",
+  "eslesti": true,
+  "imgsz_kayit": 512
+ },
+ "gpu": {
+  "cuda": true,
+  "cihaz": "NVIDIA GeForce RTX 5080 Laptop GPU",
+  "torch": "2.11.0+cu128"
+ },
+ "conf": 0.15,
+ "obb_arac_maskesi": "KAPALI (sim'de araç yok)",
+ "yol_dokusu": "stabilize",
+ "kok": "O:\\navitas\\.claude\\worktrees\\wf_d9aace72-087-1\\results\\fdr_sprint_20260910\\H1",
+ "sim_sinir": "İHA uçuşu kinematik; render MuJoCo; dokular gerçek kare kırpması (dokular/KAYNAK.md)",
+ "ozet": {
+  "harita_n": 3,
+  "rota_bulunan": 0,
+  "dogru_etiket": 0,
+  "dogru_orani": 0.0
+ },
+ "haritalar": [
+  {
+   "harita": 1,
+   "senaryo": "kolay",
+   "yol_dokusu": "stabilize",
+   "tarama": {
+    "kare_n": 39,
+    "kabul": 15,
+    "htab_kapsama_orani": 1.0,
+    "res": 1280
+   },
+   "mozaik_kare_n": 15,
+   "gercek_acik_yol": 1,
+   "gercek_etiket": "sol",
+   "model_yol": null,
+   "model_etiket": "yok",
+   "model_guven": 0.0,
+   "rota_durum": "BELIRSIZ_TEK_KAPI",
+   "rota_sebep": "Yalniz bir kapi tespit edildi — 3 guzergah ayirt edilemedi.",
+   "wp_n": 0,
+   "darbogaz_m": null,
+   "rota_bulundu": false,
+   "dogru": false,
+   "trav_px": 108189,
+   "moloz_px": 200224,
+   "arac_px": 0,
+   "arac_model": null,
+   "teshis": {
+    "mozaik_gecilebilir_orani": 0.1051,
+    "mozaik_engel_orani": 0.1876,
+    "htab_gecilebilir_orani": 0.0842,
+    "htab_engel_orani": 0.1967,
+    "acik_yol_seridinde_gecilebilir": 0.102,
+    "acik_yol_seridinde_engel": 0.2654,
+    "kapali_yol_seridinde_gecilebilir": 0.082,
+    "kapali_yol_seridinde_engel": 0.1374,
+    "yol_disi_zeminde_gecilebilir": 0.0931,
+    "yol_disi_zeminde_engel": 0.2163
+   },
+   "haritala_sure_s": 2.59,
+   "dosyalar": {
+    "ortomozaik.jpg": "results\\fdr_sprint_20260910\\H1\\harita_1_kolay\\iha_scan\\ortomozaik.jpg",
+    "algi.jpg": "results\\fdr_sprint_20260910\\H1\\harita_1_kolay\\iha_scan\\algi.jpg",
+    "detection.json": "results\\fdr_sprint_20260910\\H1\\harita_1_kolay\\iha_scan\\detection.json"
+   }
+  },
+  {
+   "harita": 1,
+   "senaryo": "orta",
+   "yol_dokusu": "stabilize",
+   "tarama": {
+    "kare_n": 39,
+    "kabul": 15,
+    "htab_kapsama_orani": 1.0,
+    "res": 1280
+   },
+   "mozaik_kare_n": 15,
+   "gercek_acik_yol": 2,
+   "gercek_etiket": "orta",
+   "model_yol": null,
+   "model_etiket": "yok",
+   "model_guven": 0.0,
+   "rota_durum": "KAPALI_DAR",
+   "rota_sebep": "Hicbir koridor gerekli aciklikta gecilebilir degil.",
+   "wp_n": 0,
+   "darbogaz_m": null,
+   "rota_bulundu": false,
+   "dogru": false,
+   "trav_px": 197193,
+   "moloz_px": 278784,
+   "arac_px": 0,
+   "arac_model": null,
+   "teshis": {
+    "mozaik_gecilebilir_orani": 0.0063,
+    "mozaik_engel_orani": 0.2472,
+    "htab_gecilebilir_orani": 0.0,
+    "htab_engel_orani": 0.2598,
+    "acik_yol_seridinde_gecilebilir": 0.0,
+    "acik_yol_seridinde_engel": 0.3209,
+    "kapali_yol_seridinde_gecilebilir": 0.0,
+    "kapali_yol_seridinde_engel": 0.2051,
+    "yol_disi_zeminde_gecilebilir": 0.0,
+    "yol_disi_zeminde_engel": 0.2784
+   },
+   "haritala_sure_s": 0.77,
+   "dosyalar": {
+    "ortomozaik.jpg": "results\\fdr_sprint_20260910\\H1\\harita_1_orta\\iha_scan\\ortomozaik.jpg",
+    "algi.jpg": "results\\fdr_sprint_20260910\\H1\\harita_1_orta\\iha_scan\\algi.jpg",
+    "detection.json": "results\\fdr_sprint_20260910\\H1\\harita_1_orta\\iha_scan\\detection.json"
+   }
+  },
+  {
+   "harita": 1,
+   "senaryo": "zor",
+   "yol_dokusu": "stabilize",
+   "tarama": {
+    "kare_n": 39,
+    "kabul": 15,
+    "htab_kapsama_orani": 1.0,
+    "res": 1280
+   },
+   "mozaik_kare_n": 15,
+   "gercek_acik_yol": 3,
+   "gercek_etiket": "sag",
+   "model_yol": null,
+   "model_etiket": "yok",
+   "model_guven": 0.0,
+   "rota_durum": "BELIRSIZ_TEK_KAPI",
+   "rota_sebep": "Yalniz bir kapi tespit edildi — 3 guzergah ayirt edilemedi.",
+   "wp_n": 0,
+   "darbogaz_m": null,
+   "rota_bulundu": false,
+   "dogru": false,
+   "trav_px": 206060,
+   "moloz_px": 232947,
+   "arac_px": 0,
+   "arac_model": null,
+   "teshis": {
+    "mozaik_gecilebilir_orani": 0.1047,
+    "mozaik_engel_orani": 0.2249,
+    "htab_gecilebilir_orani": 0.1137,
+    "htab_engel_orani": 0.248,
+    "acik_yol_seridinde_gecilebilir": 0.0,
+    "acik_yol_seridinde_engel": 0.1211,
+    "kapali_yol_seridinde_gecilebilir": 0.1559,
+    "kapali_yol_seridinde_engel": 0.4128,
+    "yol_disi_zeminde_gecilebilir": 0.122,
+    "yol_disi_zeminde_engel": 0.224
+   },
+   "haritala_sure_s": 0.81,
+   "dosyalar": {
+    "ortomozaik.jpg": "results\\fdr_sprint_20260910\\H1\\harita_1_zor\\iha_scan\\ortomozaik.jpg",
+    "algi.jpg": "results\\fdr_sprint_20260910\\H1\\harita_1_zor\\iha_scan\\algi.jpg",
+    "detection.json": "results\\fdr_sprint_20260910\\H1\\harita_1_zor\\iha_scan\\detection.json"
+   }
+  }
+ ]
+}

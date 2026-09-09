@@ -1,0 +1,121 @@
+{
+ "gorev": "T212 SIM-1 (MuJoCo arena + araçlar + İHA uçuşu + tarama)",
+ "tarih": "2026-09-10 02:16",
+ "sinir": "İHA uçuşu KİNEMATİK (mocap, aerodinamik yok); modeller basitleştirilmiş (D-438 ek); OBB araç maskesi sim'de KAPALI; hakem onayı bu görevde yok.",
+ "H1_K1": {
+  "kapi": "arena MJCF deterministik, 15 harita, yönerge geometrisi",
+  "harita_n": 15,
+  "yonerge_hepsi_ok": true,
+  "mjcf_uretim_ms_ort": 21.8,
+  "mjcf_yukleme_ms_ort": 115.8,
+  "ngeom_min_maks": [
+   207,
+   287
+  ],
+  "sonuc": "GEÇTİ 15/15"
+ },
+ "H1_K2_on_olcum": {
+  "kapi": "kamera taraması gerçek renderdan; mozaik kurulur; kapsama ≥ HTAB",
+  "harita_n": 15,
+  "kare_n_her_harita": [
+   39
+  ],
+  "kabul_edilen_kare": [
+   15
+  ],
+  "htab_kapsama_min": 1.0,
+  "htab_kapsama_maks": 1.0,
+  "render_ms_kare_ort": 38.6,
+  "render_ms_kare_maks": 62.8,
+  "res": [
+   1280
+  ],
+  "sim_sure_s": [
+   38.98
+  ],
+  "duvar_saati_s_toplam": 33.4,
+  "mozaik_kurulan_harita": 15,
+  "sonuc": "GEÇTİ 15/15 (kapsama)"
+ },
+ "H1_K3_on_olcum": {
+  "kapi": "üretim modeli v36 mozaikte açık yolu doğru etiketler (asıl eşik ≥ 12/15)",
+  "model": "navitas-seg-v36-512",
+  "model_sha_eslesti": true,
+  "gpu": "NVIDIA GeForce RTX 5080 Laptop GPU",
+  "yol_dokusu": "stabilize",
+  "ozet": {
+   "harita_n": 3,
+   "rota_bulunan": 0,
+   "dogru_etiket": 0,
+   "dogru_orani": 0.0
+  },
+  "haritalar": [
+   {
+    "harita": 1,
+    "senaryo": "kolay",
+    "gercek": "sol",
+    "model": "yok",
+    "rota_durum": "BELIRSIZ_TEK_KAPI",
+    "dogru": false,
+    "htab_gecilebilir": 0.0842,
+    "htab_engel": 0.1967,
+    "acik_yol_seridinde_gecilebilir": 0.102,
+    "yol_disi_gecilebilir": 0.0931
+   },
+   {
+    "harita": 1,
+    "senaryo": "orta",
+    "gercek": "orta",
+    "model": "yok",
+    "rota_durum": "KAPALI_DAR",
+    "dogru": false,
+    "htab_gecilebilir": 0.0,
+    "htab_engel": 0.2598,
+    "acik_yol_seridinde_gecilebilir": 0.0,
+    "yol_disi_gecilebilir": 0.0
+   },
+   {
+    "harita": 1,
+    "senaryo": "zor",
+    "gercek": "sag",
+    "model": "yok",
+    "rota_durum": "BELIRSIZ_TEK_KAPI",
+    "dogru": false,
+    "htab_gecilebilir": 0.1137,
+    "htab_engel": 0.248,
+    "acik_yol_seridinde_gecilebilir": 0.0,
+    "yol_disi_gecilebilir": 0.122
+   }
+  ],
+  "sonuc": "DÜŞTÜ 0/3"
+ },
+ "H1_K3_15harita": {
+  "ozet": {
+   "harita_n": 15,
+   "rota_bulunan": 0,
+   "dogru_etiket": 0,
+   "dogru_orani": 0.0
+  },
+  "yol_dokusu": "stabilize",
+  "rota_durumlari": [
+   "BELIRSIZ_TEK_KAPI",
+   "KAPALI_DAR",
+   "KAPI_YOK"
+  ],
+  "sonuc": "0/15 (eşik ≥ 12/15)"
+ },
+ "H1_K3_teshis_asfalt": {
+  "not": "TEŞHİS varyantı — asıl ölçüm değil",
+  "ozet": {
+   "harita_n": 3,
+   "rota_bulunan": 0,
+   "dogru_etiket": 0,
+   "dogru_orani": 0.0
+  },
+  "htab_gecilebilir": [
+   0.1323,
+   0.2166,
+   0.1584
+  ]
+ }
+}

@@ -194,3 +194,7 @@ firmware/
 # D-431: TensorRT engine dosyalari karta ozel ikili (57 MB), depoya girmez; Jetson
 # uretir, kayit defteri sha256 tasir.
 *.engine
+
+# T212 MuJoCo: harita basina uretilen dokular ve tarama kareleri (buyuk, yeniden uretilebilir)
+simulation/mujoco/dokular/uretilen/
+results/fdr_sprint_20260910/H1/**/kareler/

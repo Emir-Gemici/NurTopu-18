@@ -1,0 +1,18 @@
+{
+  "road": null,
+  "label": "yok",
+  "conf": 0.0,
+  "image": "ortomozaik.jpg",
+  "kaynak": "sim-tarama",
+  "kare_n": 15,
+  "trav_px": 181952,
+  "moloz_px": 151067,
+  "arac_px": 0,
+  "engel_px": 151067,
+  "arac_model": null,
+  "wp_n": 0,
+  "rota_durum": "BELIRSIZ_TEK_KAPI",
+  "rota_sebep": "Yalniz bir kapi tespit edildi — 3 guzergah ayirt edilemedi.",
+  "darbogaz_m": null,
+  "rota_ihlalleri": []
+}
