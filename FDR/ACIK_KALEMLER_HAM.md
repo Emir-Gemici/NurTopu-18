@@ -181,48 +181,48 @@
 - `:1079` ÖLÇÜLEMEDİ:** Uçuş süresi. §3.2.1.3'te *"hesap yapılmadı, tahmin yazılmaz"* diye
 - `:1122` ÖLÇÜLEMEDİ:** CAD modelli sanal görev icrası. Ortam iskeleti vardır, **CAD ve koşum
 - `:1149` ÖLÇÜLEMEDİ:** Otonom karar verme başarı oranı, sanal görev süresi ve sistem tepkisi
-- `:1164` ÖLÇÜLEMEDİ:** Ekran kaydı videosu ve linki. Üretim yolu depoda yazılıdır
-- `:1168` BEYAN GEREKLİ (insan):** Video üretildikten sonra yükleneceği platform ve **erişilebilir
-- `:1496` ölçüm alt betiği çöktü | kapı `OLCULEMEDI` → terfi **bloklanır** | `65_kabul_denetcisi.py` |
-- `:1571` ⚠ Gazebo **fiziksel temas** koşusu geliştirme makinesinde **ÖLÇÜLEMEDİ** (gz yok);
-- `:1572` Gazebo'lu makinede koşulacaktır. `ÖLÇÜLEMEDİ ≠ GEÇTİ`.
-- `:1844` BEYAN GEREKLİ (insan):** Arena benzeri gerçek saha görüntüsü (kırmızı H brandası + moloz +
-- `:1870` ÖLÇÜLEMEDİ:** Farklı ışık açısı ve gölge koşullarında doğruluk. Bunun için arena
-- `:1956` ÖLÇÜLEMEDİ:** SiK 433 MHz hattında fiilî veri hızı (bit/s) ve paket/s. §3.3.4.3.3'teki
-- `:2160` turu **ÖLÇÜLEMEDİ** (§3.3.4.3.4).
-- `:2214` 3.3.4.3.4 🔴 ÖLÇÜLEMEDİ — haberleşmede kapatılmamış sayılar
-- `:2218` Gerçek SiK 433 MHz RF üzerinde RTT / paket kaybı** | **ÖLÇÜLEMEDİ.** Araç `scripts/sik_rf_olc.py` **yazıldı** (`--rol yanki` / `--rol olc --n 50`), hedef **RTT p95 < 0,20 s** (`PARASUT_TEKRAR_ARALIGI_S`) ve < 0,25 s (`IKA_GO_TEKRAR_ARALIGI_S`); çıkış kodları UYUMLU 0 / UYARI 1 / ÖLÇÜLEMEDİ 2; kayıp için eşik yok, yalnız raporlanır. **3 Eylül:** radyolar kutuda. **5 Eylül:** hat sahada bağlandı (BEYAN, D-426 §1 "~18:45 SiK telemetri baglandi"), betik koşulmadı; `results/` altında ölçüm dosyası **yoktur** (5 Eylül sayımı). |
-- `:2219` Veri hızı (bit/s, paket/s)** | **ÖLÇÜLEMEDİ.** Hiçbir betik ölçmez (`sik_rf_olc.py` RTT ve kayıp verir); §3.3.4.3.2'deki 4 pkt/s (`IKA_GO`) ve 5 pkt/s (`PARACHUTE`) tasarım oranlarıdır (`codes/karar_sozlesmesi.py:2076,2098` yorumları), "57600 baud'da ~200 B çerçeve + ACK < 100 ms" da tasarım tahminidir (`:2075-2076`), ölçüm değil |
-- `:2220` Menzil** | **ÖLÇÜLEMEDİ.** DDR'deki *">%98, 300 m"* iddiasının repoda kanıtı **yoktur**; 5 Eylül tutanağında (D-426) menzil satırı yok |
-- `:2221` SiK telsiz firmware / baud** | **ÖLÇÜLEMEDİ.** Parametre dosyası fabrika 57600 baud bekler; telsizin üzerindeki firmware doğrulanmadı (D-424 §5: "kutusu açılmamış donanım" örüntüsünün açık kalemi) |
-- `:2222` Gerçek Pixhawk'ta `COMMAND_ACK` turu** | **ÖLÇÜLEMEDİ.** D-419/D-422 ölçümleri `scripts/sahte_pixhawk.py` iledir; 5 Eylül'de Pixhawk 6C Mission Planner'a bağlıydı, Jetson takılı değildi (D-426 §4); `iha_komut_alici` gerçek karta karşı koşulmadı |
-- `:2224` Gerçek kamera yakalama gecikmesi** | **ÖLÇÜLEMEDİ** (CSI köprüsü Nano'da koşulmadı) |
-- `:2242` A2 | **Gazebo fiziksel temas koşusu** (§7.3 İKA yarısı) | Geliştirme makinesinde `gz` yok — **ÖLÇÜLEMEDİ** |
-- `:2243` A3 | **TensorRT `.engine` denkliği** | Nano venv38'de `tensorrt` modülü yok; `.engine` bu kart için **ÖLÇÜLEMEDİ** |
-- `:2249` 3.4.2 BEYAN GEREKLİ (insan) — bu bölüme eklenecek ölçümler
-- `:2252` BEYAN GEREKLI (insan): Kalkis kutlesi, agirlik merkezi ve her parcanin gercek
-- `:2255` BEYAN GEREKLI (insan): PM02 telemetrisinden okunan asili kalma akimi, tepe akim
-- `:2258` BEYAN GEREKLI (insan): Kamera yatay FOV'unun `kamera_dogrula` ile OLCULEN degeri
-- `:2262` BEYAN GEREKLI (insan): Gercek Pixhawk 6C uzerinde `scripts/mavlink_dogrula.py`
-- `:2266` BEYAN GEREKLI (insan): Gercek SiK 433 MHz cifti uzerinde `scripts/sik_rf_olc.py`
-- `:2278` BEYAN GEREKLI (insan): ArduCopter surum numarasi, kalibrasyon ciktilari (accel,
-- `:2283` BEYAN GEREKLI (insan): Adiyaman test alaninin gercek kose koordinatlari
-- `:2286` BEYAN GEREKLI (insan): Arena benzeri gercek saha goruntusu (kirmizi H brandasi +
-- `:2290` BEYAN GEREKLI (insan): Yarisma gunu araci (sabit kanat + mancinik + parasut) ve
-- `:2298` BEYAN GEREKLI (insan): Ucus bilimleri (3.1) ve yapisal analiz (3.2) icin
-- `:2302` BEYAN GEREKLI (insan): Sabit kanat IHA icin agirlik-denge, boyut, kontrol
-- `:2306` BEYAN GEREKLI (insan): IKA icin RENK KODLU baglanti semasi — IKA
-- `:2310` BEYAN GEREKLI (insan): Aviyonik BOM'un birim agirlik, boyut ve fiyat
-- `:2313` BEYAN GEREKLI (insan): Kablo/konnektor tablosu (AWG kesit, uzunluk) ve
-- `:2316` OLCULEMEDI: Gorev icra simulasyonu (3.3.3) — Gazebo Classic 11 kosumu,
-- `:2328` OLCULEMEDI: Farkli isik acisi / golge kesitlerinde goruntu isleme
-- `:2331` OLCULEMEDI: SiK 433 MHz hattinda fiili veri hizi (bit/s, paket/s).
-- `:2335` BEYAN GEREKLI (insan): Simulasyon videosunun yuklenecegi platform ve
-- `:2346` 2. **`ÖLÇÜLEMEDİ ≠ GEÇTİ`.** Ölçülemeyen şey geçmiş sayılmaz; paydası olmayan oran rapora
-- `:2378` Künye farkı 5 Eylül: ESC "60 A V2" ×4 (plan 80 A) · güç modülü PM06 (plan PM02) · FS-iA6B teyit (B harfi) | `REVIEW_LOG.md` D-426 §3 (satır 29852–29854) | takım üyesi beyanı, kutu açılınca (ölçüm değil); tam marka/model ve etiket BEYAN GEREKLİ | 2026-09-05 |
-- `:2383` 5 Eylül açık kalemler: RC failsafe ÖLÇÜLEMEDİ · ESC kalibrasyonu YAPILMADI · parametre dökümü dosya YOK (6 Eylül'de alındı: `arducopter_fda_20260906.param`, D-428 §5g) · pil gerilimi ÖLÇÜLEMEDİ · pusula YAPILMADI (Jetson takılı değil) · accel BEYAN teyitsiz | `REVIEW_LOG.md` D-426 §4 (satır 29863–29868) | — | 2026-09-05 |
-- `:2396` SiK RF RTT / paket kaybı / veri hızı / menzil: **ÖLÇÜLEMEDİ**; 5 Eylül hat bağlandı (BEYAN), betik koşulmadı | `REVIEW_LOG.md` D-426 §1 · `scripts/sik_rf_olc.py` (koşulmadı) | `results/` altında SiK ölçüm dosyası 0 (`ls results`, 5 Eylül) | 2026-09-05 |
-- `:2462` Akış diyagramları (a)–(e): 5 Mermaid çizimi · düğüm = fonksiyon + dosya:satır · yerel lint 5 blok / 0 hata (pozitif kontrol 6 hata) · SVG render ÖLÇÜLEMEDİ (mmdc/pandoc yok) — **7 Eylül'de kapandı, sonraki satır** | §3.3.4.1.17 · `codes/rpi_inference.py:2298-2430` · `comms/iha_komut_alici.py:630-779, 879-926` · `comms/iha_inis_yayinci.py:361-419, 467-561` · `comms/inis_kaniti.py:925-1065` · `comms/yks_gui.py:1436-1503, 1521-1697, 1842-2101` · `simulation/scripts/ika_nav.py:203-413, 437-618` · `comms/ika_receiver.py:69-158, 231-306` | koddan elle türetim, commit `64cd543` (`git status` temiz) | 2026-09-05 |
+- `:1165` ÖLÇÜLEMEDİ:** Ekran kaydı videosu ve linki. Üretim yolu depoda yazılıdır
+- `:1169` BEYAN GEREKLİ (insan):** Video üretildikten sonra yükleneceği platform ve **erişilebilir
+- `:1497` ölçüm alt betiği çöktü | kapı `OLCULEMEDI` → terfi **bloklanır** | `65_kabul_denetcisi.py` |
+- `:1572` ⚠ Gazebo **fiziksel temas** koşusu geliştirme makinesinde **ÖLÇÜLEMEDİ** (gz yok);
+- `:1573` Gazebo'lu makinede koşulacaktır. `ÖLÇÜLEMEDİ ≠ GEÇTİ`.
+- `:1845` BEYAN GEREKLİ (insan):** Arena benzeri gerçek saha görüntüsü (kırmızı H brandası + moloz +
+- `:1871` ÖLÇÜLEMEDİ:** Farklı ışık açısı ve gölge koşullarında doğruluk. Bunun için arena
+- `:1957` ÖLÇÜLEMEDİ:** SiK 433 MHz hattında fiilî veri hızı (bit/s) ve paket/s. §3.3.4.3.3'teki
+- `:2161` turu **ÖLÇÜLEMEDİ** (§3.3.4.3.4).
+- `:2215` 3.3.4.3.4 🔴 ÖLÇÜLEMEDİ — haberleşmede kapatılmamış sayılar
+- `:2219` Gerçek SiK 433 MHz RF üzerinde RTT / paket kaybı** | **ÖLÇÜLEMEDİ.** Araç `scripts/sik_rf_olc.py` **yazıldı** (`--rol yanki` / `--rol olc --n 50`), hedef **RTT p95 < 0,20 s** (`PARASUT_TEKRAR_ARALIGI_S`) ve < 0,25 s (`IKA_GO_TEKRAR_ARALIGI_S`); çıkış kodları UYUMLU 0 / UYARI 1 / ÖLÇÜLEMEDİ 2; kayıp için eşik yok, yalnız raporlanır. **3 Eylül:** radyolar kutuda. **5 Eylül:** hat sahada bağlandı (BEYAN, D-426 §1 "~18:45 SiK telemetri baglandi"), betik koşulmadı; `results/` altında ölçüm dosyası **yoktur** (5 Eylül sayımı). |
+- `:2220` Veri hızı (bit/s, paket/s)** | **ÖLÇÜLEMEDİ.** Hiçbir betik ölçmez (`sik_rf_olc.py` RTT ve kayıp verir); §3.3.4.3.2'deki 4 pkt/s (`IKA_GO`) ve 5 pkt/s (`PARACHUTE`) tasarım oranlarıdır (`codes/karar_sozlesmesi.py:2076,2098` yorumları), "57600 baud'da ~200 B çerçeve + ACK < 100 ms" da tasarım tahminidir (`:2075-2076`), ölçüm değil |
+- `:2221` Menzil** | **ÖLÇÜLEMEDİ.** DDR'deki *">%98, 300 m"* iddiasının repoda kanıtı **yoktur**; 5 Eylül tutanağında (D-426) menzil satırı yok |
+- `:2222` SiK telsiz firmware / baud** | **ÖLÇÜLEMEDİ.** Parametre dosyası fabrika 57600 baud bekler; telsizin üzerindeki firmware doğrulanmadı (D-424 §5: "kutusu açılmamış donanım" örüntüsünün açık kalemi) |
+- `:2223` Gerçek Pixhawk'ta `COMMAND_ACK` turu** | **ÖLÇÜLEMEDİ.** D-419/D-422 ölçümleri `scripts/sahte_pixhawk.py` iledir; 5 Eylül'de Pixhawk 6C Mission Planner'a bağlıydı, Jetson takılı değildi (D-426 §4); `iha_komut_alici` gerçek karta karşı koşulmadı |
+- `:2225` Gerçek kamera yakalama gecikmesi** | **ÖLÇÜLEMEDİ** (CSI köprüsü Nano'da koşulmadı) |
+- `:2243` A2 | **Gazebo fiziksel temas koşusu** (§7.3 İKA yarısı) | Geliştirme makinesinde `gz` yok — **ÖLÇÜLEMEDİ** |
+- `:2244` A3 | **TensorRT `.engine` denkliği** | Nano venv38'de `tensorrt` modülü yok; `.engine` bu kart için **ÖLÇÜLEMEDİ** |
+- `:2250` 3.4.2 BEYAN GEREKLİ (insan) — bu bölüme eklenecek ölçümler
+- `:2253` BEYAN GEREKLI (insan): Kalkis kutlesi, agirlik merkezi ve her parcanin gercek
+- `:2256` BEYAN GEREKLI (insan): PM02 telemetrisinden okunan asili kalma akimi, tepe akim
+- `:2259` BEYAN GEREKLI (insan): Kamera yatay FOV'unun `kamera_dogrula` ile OLCULEN degeri
+- `:2263` BEYAN GEREKLI (insan): Gercek Pixhawk 6C uzerinde `scripts/mavlink_dogrula.py`
+- `:2267` BEYAN GEREKLI (insan): Gercek SiK 433 MHz cifti uzerinde `scripts/sik_rf_olc.py`
+- `:2279` BEYAN GEREKLI (insan): ArduCopter surum numarasi, kalibrasyon ciktilari (accel,
+- `:2284` BEYAN GEREKLI (insan): Adiyaman test alaninin gercek kose koordinatlari
+- `:2287` BEYAN GEREKLI (insan): Arena benzeri gercek saha goruntusu (kirmizi H brandasi +
+- `:2291` BEYAN GEREKLI (insan): Yarisma gunu araci (sabit kanat + mancinik + parasut) ve
+- `:2299` BEYAN GEREKLI (insan): Ucus bilimleri (3.1) ve yapisal analiz (3.2) icin
+- `:2303` BEYAN GEREKLI (insan): Sabit kanat IHA icin agirlik-denge, boyut, kontrol
+- `:2307` BEYAN GEREKLI (insan): IKA icin RENK KODLU baglanti semasi — IKA
+- `:2311` BEYAN GEREKLI (insan): Aviyonik BOM'un birim agirlik, boyut ve fiyat
+- `:2314` BEYAN GEREKLI (insan): Kablo/konnektor tablosu (AWG kesit, uzunluk) ve
+- `:2317` OLCULEMEDI: Gorev icra simulasyonu (3.3.3) — Gazebo Classic 11 kosumu,
+- `:2329` OLCULEMEDI: Farkli isik acisi / golge kesitlerinde goruntu isleme
+- `:2332` OLCULEMEDI: SiK 433 MHz hattinda fiili veri hizi (bit/s, paket/s).
+- `:2336` BEYAN GEREKLI (insan): Simulasyon videosunun yuklenecegi platform ve
+- `:2347` 2. **`ÖLÇÜLEMEDİ ≠ GEÇTİ`.** Ölçülemeyen şey geçmiş sayılmaz; paydası olmayan oran rapora
+- `:2379` Künye farkı 5 Eylül: ESC "60 A V2" ×4 (plan 80 A) · güç modülü PM06 (plan PM02) · FS-iA6B teyit (B harfi) | `REVIEW_LOG.md` D-426 §3 (satır 29852–29854) | takım üyesi beyanı, kutu açılınca (ölçüm değil); tam marka/model ve etiket BEYAN GEREKLİ | 2026-09-05 |
+- `:2384` 5 Eylül açık kalemler: RC failsafe ÖLÇÜLEMEDİ · ESC kalibrasyonu YAPILMADI · parametre dökümü dosya YOK (6 Eylül'de alındı: `arducopter_fda_20260906.param`, D-428 §5g) · pil gerilimi ÖLÇÜLEMEDİ · pusula YAPILMADI (Jetson takılı değil) · accel BEYAN teyitsiz | `REVIEW_LOG.md` D-426 §4 (satır 29863–29868) | — | 2026-09-05 |
+- `:2397` SiK RF RTT / paket kaybı / veri hızı / menzil: **ÖLÇÜLEMEDİ**; 5 Eylül hat bağlandı (BEYAN), betik koşulmadı | `REVIEW_LOG.md` D-426 §1 · `scripts/sik_rf_olc.py` (koşulmadı) | `results/` altında SiK ölçüm dosyası 0 (`ls results`, 5 Eylül) | 2026-09-05 |
+- `:2463` Akış diyagramları (a)–(e): 5 Mermaid çizimi · düğüm = fonksiyon + dosya:satır · yerel lint 5 blok / 0 hata (pozitif kontrol 6 hata) · SVG render ÖLÇÜLEMEDİ (mmdc/pandoc yok) — **7 Eylül'de kapandı, sonraki satır** | §3.3.4.1.17 · `codes/rpi_inference.py:2298-2430` · `comms/iha_komut_alici.py:630-779, 879-926` · `comms/iha_inis_yayinci.py:361-419, 467-561` · `comms/inis_kaniti.py:925-1065` · `comms/yks_gui.py:1436-1503, 1521-1697, 1842-2101` · `simulation/scripts/ika_nav.py:203-413, 437-618` · `comms/ika_receiver.py:69-158, 231-306` | koddan elle türetim, commit `64cd543` (`git status` temiz) | 2026-09-05 |
 
 ## BOLUM_4_TEST_FAALIYETLERI.md  (51 satır)
 - `:150` `jetson_baslat.sh --kur` / `--kapi` / `--dogrudan` (systemd) | Windows'ta koşulamaz; **Jetson'daki ilk koşum ilk kanıt olacak** (5 Eylül). **5 Eylül güncellemesi:** Jetson o gün araca takılmadı (D-426 §4: *"Jetson takili DEGIL"*); ilk koşum hâlâ **ÖLÇÜLEMEDİ** |
@@ -230,52 +230,52 @@
 - `:306` `_dtype_dogrula`; tutmazsa betik `OLCULEMEDI` deyip `exit 1`). Gerçek ölçüm
 - `:383` 2 | `ÖLÇÜLEMEDİ ≠ GEÇTİ` | §4.13 Kalan test borcu |
 - `:432` BEYAN GEREKLİ (insan):** her sensörün araç üzerindeki fiziksel yerleşimi —
-- `:453` 🔴 **ÖLÇÜLEMEDİ: uçuş başına gerçek görev süresi (kalkış → tarama → tespit →
-- `:477` 🔴 **ÖLÇÜLEMEDİ: hiçbir ekipmanın fiziksel kabul testi yapılmadı. Donanım kutusu
-- `:487` ~~Jetson Nano 4GB~~ **Jetson Orin Nano Developer Kit 4 GB** (6 Eylül'de kartla ölçüldü — D-431) | PT ve ONNX için p50 **ve** p95 FPS ≥ 0,61 (türetimi §4.8.2.3) | ~~**ÖLÇÜLEMEDİ** — 5 Eylül'de Jetson araca takılmadı (D-426 §4)~~ → **6 Eylül ÖLÇÜM (D-431):** genel kapı kartta **15/15 · 15/15**; `jetson_fps.py` 120 örnek: **PT 1,35/1,06 FPS · engine 1,58/1,33 FPS** ≥ 0,61 → **GEÇTİ**; 10 dk sürekli 900 örnek, gpu ≤ 56,3 °C; **ONNX HATA** (`cudaErrorNoKernelImageForDevice`) → ONNX kolu bu kartta geçmedi, ölçülemedi; engine↔pt denkliği D-303 oransal **DÜŞTÜ** → uçuş `.pt`; kamera köprüsü dosya kaynağıyla açıldı. **ÖLÇÜLEMEDİ:** CSI kamera (bağlı değil), Pixhawk MAVLink kapısı (`--kuru`: `[YOK]` `/dev/ttyACM0`). Kanıt `results/jetson_20260906/` |
-- `:488` Pixhawk 6C + güç modülü (plan PM02; sahada **PM06** — BEYAN, §4.13.4) | `scripts/mavlink_dogrula.py` 3/3 · `EXTENDED_SYS_STATE` akışı (§4.9.4) | **KISMEN**: firmware 4.5.7 + parametre yükleme OLCUM (tutanak 15:08); PM06 → `POWER1` OLCUM (18:03). `mavlink_dogrula.py` kapısı **koşulmadı** → ÖLÇÜLEMEDİ (§4.13.1 #6); parametre dökümü yok (#9) |
-- `:489` Holybro M9N GNSS | 3B fix ve `GLOBAL_POSITION_INT` canlı akışı (§4.9.1 G1 ölçütleri) | **KISMEN**: alıcı tanındı — OLCUM `u-blox 1 HW: 000A0000 SW: ROM SPG 5.10` (15:38). 3B fix ve akış kaydı yok → ÖLÇÜLEMEDİ |
-- `:490` Raspberry Pi HQ (IMX477) | `nvarguscamerasrc` üzerinden köprü kare akışı (§4.10.1 ölçütleri) | **ÖLÇÜLEMEDİ** — 5 Eylül'de Jetson takılmadı; 6 Eylül'de köprü kartta **dosya kaynağıyla** açıldı (ÖLÇÜM, D-431) ama CSI kamera **bağlı değildi** → `nvarguscamerasrc` yolu ölçülmedi |
-- `:491` 2 × SiK 433 MHz telsiz | RTT p95 < 0,2 s ve menzil (§4.5) | **KISMEN**: bağlantı BEYAN (~18:45, "tamam oldu"); RTT, kayıp ve menzil ÖLÇÜLEMEDİ (§4.5) |
-- `:492` FCHUB-12S V2 · ~~5008 340KV × 4 · 12×10 pervane~~ → SunnySky X2220 980KV V3 × 4 · 10×4,5 (BEYAN, etiket yok — 7 Eylül beyanı, D-435; 5 Eylül motor testinin hangi motorla koştuğu BEYAN GEREKLİ) | tam yükte akım ve `VIBE` titreşim kaydı (§4.3.3 adım 3.1) | **KISMEN**: pervanesiz motor testi OLCUM (18:06); sıra/yön 4/4 BEYAN, video yok; ESC kalibrasyonu YAPILMADI; tam yükte akım ve `VIBE` ÖLÇÜLEMEDİ (pervane takılmadı). ESC künyesi sahada **"60 A V2"** ×4 (plan 80 A) — BEYAN, §4.13.4 |
-- `:493` 4S 10 Ah 25C pil + iMAX B6 şarj | kapasite ve şarj çevrimi; günde 2 uçuş kısıtının doğrulanması | **KISMEN**: pil takıldı, `PreArm: Battery 1 low voltage failsafe` kayboldu — OLCUM (18:03). MP gerilimi ↔ multimetre (±0,1 V), kapasite ve şarj çevrimi ÖLÇÜLEMEDİ |
-- `:494` FS-i6 kumanda + FS-iA6B alıcı | menzil ve failsafe davranışı (§4.5, §4.12) | **KISMEN**: bind BEYAN (16:18); `RCInput: decoding IBUS(1)` OLCUM (18:03); alıcı FS-iA6B teyit (B harfi, BEYAN). Menzil ve RC failsafe ÖLÇÜLEMEDİ (§4.5, §4.12) |
-- `:497` Fiziksel künye teyidi §4.13.4 madde 1'de **BEYAN GEREKLİ** olarak durur; 5
-- `:508` 🔴 **ÖLÇÜLEMEDİ: menzil (metre), paket kaybı ve RTT ölçülmedi. Kapı RTT
-- `:538` 🔴 **ÖLÇÜLEMEDİ: 5 Eylül 2026'da Pixhawk 6C ele alındı (§4.4) ama kalibrasyon
-- `:544` Teyit yok → ÖLÇÜLEMEDİ.** Kart sabitlendikten sonra yeniden yapılır.
-- `:552` IMU (ivmeölçer + jiroskop) | FDA görev test aracı (çoklu rotor) | 5 Eylül: BEYAN "yapıldı", kart sabit değildi, döküm yok → **ÖLÇÜLEMEDİ** (D-426 §4) |
-- `:564` BEYAN GEREKLİ (insan):** kalibrasyonun yapıldığı tarih, kullanılan yer
-- `:659` ⚠ **K5 alt ölçümü ÖLÇÜLEMEDİ:** `K5_figur_bilgi_px = null`,
-- `:660` `K5_figur_bilgi_durum = "OLCULEMEDI"`. Bu satır verdikt JSON'ında böyle durur ve
-- `:753` `1 / (5 × 0,326) = 0,61 FPS`. **Saha `p`'si ÖLÇÜLEMEDİ** — gerçek arena
-- `:808` moloz, fiziki bariyer yok) ve ışık/gölge kesiti içermez — o satır **ÖLÇÜLEMEDİ** kalır. Gerçek
-- `:970` 🔴 **ÖLÇÜLEMEDİ: SiK telsiz hattının gerçek etkin veri hızı, paket kaybı ve
-- `:977` 🔴 **ÖLÇÜLEMEDİ: seri telsiz hattı üzerinden uçtan uca gecikme ölçülmedi.
-- `:981` 🔴 **ÖLÇÜLEMEDİ: İHA↔İKA hattı iki gerçek araç arasında hiç koşulmadı. Bugünkü
-- `:1080` `COMMAND_ACK` bileşen kimliği ve Jetson'un RTC'siz açılış saati **ÖLÇÜLEMEDİ**.
-- `:1102` Python 3.6 uyumlu — 6 Eylül'de kartın sistem Python'u **3.12** çıktı, uyum kısıtı fiilen gerekmedi; köprü kartta sistem Python 3.12 + cv2 4.6 ile dosya kaynağında açıldı, CSI kamera bağlı değildi → ÖLÇÜLEMEDİ, D-431) MJPEG olarak servis eder.
-- `:1201` ~18:30 | motor sırası ve yönleri 4/4 (kablo taşıma + faz değişimi sonrası) | BEYAN | video yok — **BEYAN GEREKLİ (insan)** |
-- `:1202` ~18:45 | SiK telemetri bağlandı | BEYAN | "tamam oldu" — RTT/kayıp ÖLÇÜLEMEDİ (§4.9.6) |
-- `:1233` FS-iA6B **teyit** (B harfi görüldü). Marka/model için **BEYAN GEREKLİ (insan)**;
-- `:1236` Yapılmadı / ÖLÇÜLEMEDİ — uçuştan önce açık (D-426 §4, `REVIEW_LOG.md:29859-29870`):**
-- `:1240` RC failsafe testi (kumanda kapat → CH3 < 975? `Radio Failsafe`?) | **ÖLÇÜLEMEDİ** — iki kez istendi, sonuç gelmedi; `.param` yorumundaki "iBUS alıcısı çerçeve basmayı keser" **varsayımdır** | R3 / R2 |
-- `:1243` pil gerilimi MP ↔ multimetre (±0,1 V) | ÖLÇÜLEMEDİ | — |
-- `:1374` 🔴 **ÖLÇÜLEMEDİ: hiçbir arıza emniyet tepkisi sahada test edilmedi. Eve dönüş
-- `:1383` RC kaybı (kumanda kapatma) | `FS_THR_ENABLE,1` (satır 129) | **ÖLÇÜLEMEDİ** — test iki kez istendi, sonuç gelmedi. Dosyadaki yorum *"iBUS alıcısı sinyal kaybında çerçeve basmayı keser"* (satır 128) **varsayımdır**, ölçülmedi; alıcının failsafe'de ne yaptığı bilinmiyor |
-- `:1412` BEYAN GEREKLİ (insan):** her arıza emniyet senaryosu için tetikleme yöntemi
-- `:1435` 7 | **`jetson_baslat.sh` systemd / `--kur` / `--kapi` / `--dogrudan`** | Windows'ta koşulamaz → 6 Eylül kartta `--kuru`: dosya/yorumlayıcı `[VAR]`, `[YOK]` yalnız `/dev/ttyACM0`, çıkış 3 (D-431); `--kapi` Pixhawk bağlı olmadığı için **ÖLÇÜLEMEDİ** | Pixhawk Jetson'a bağlanınca | kuru çıktı == gerçek `ExecStart`; `--kapi` 3/3 |
-- `:1438` 10 | **K5 figür bilgi px** | verdikt JSON'ında `OLCULEMEDI` | — | — |
-- `:1496` 4.13.4 BEYAN GEREKLİ (insan)
-- `:1498` 1. **BEYAN GEREKLİ (insan):** donanım künyesinin fiziksel teyidi. 5 Eylül kutu
-- `:1506` 2. ~~**BEYAN GEREKLİ (insan):** Jetson Nano üzerinde ölçülen p50/p95 FPS değerleri (PT ve ONNX; `--cihaz` beyanıyla)~~ → **ÖLÇÜLDÜ 6 Eylül (D-431):** `--cihaz 0` (Orin GPU); PT **1,35/1,06** · engine **1,58/1,33** FPS; ONNX **HATA** (sm_87 çekirdeği yok) — `results/jetson_20260906/jetson_fps_20260906_orin_nano/ozet.json`.
-- `:1507` 3. **BEYAN GEREKLİ (insan):** SiK 433 MHz çift üzerinde ölçülen RTT p50/p95,
-- `:1509` 4. **BEYAN GEREKLİ (insan):** 6–19 Eylül uçuş testlerinin her biri için tarih,
-- `:1511` 5. **BEYAN GEREKLİ (insan):** 21 Eylül Adıyaman uçuş alanı izni ve alan
-- `:1513` 6. **BEYAN GEREKLİ (insan):** sürüm mührünün basıldığı tarih ve künye commit'i
-- `:1515` 7. **BEYAN GEREKLİ (insan):** 5 Eylül motor testinin sıra/yön videosu (D-426 §1,
-- `:1516` ~18:30 satırı "video: BEYAN GEREKLİ") ve ESC sinyal kablosundaki kırmızı
-- `:1591` 67 | 5 Eylül ÖLÇÜLEMEDİ/yapılmadı: RC failsafe, ESC kalibrasyonu, param dökümü (dosya yok), pil gerilimi, pusula (Jetson takılı değil), accel teyit, BEC teli; künye farkı ESC 60 A V2 / PM06 (BEYAN) | `REVIEW_LOG.md:29848-29870` (D-426 §3–§4) | — (insan girdisi bekliyor) | 2026-09-05 |
+- `:473` 🔴 **ÖLÇÜLEMEDİ: uçuş başına gerçek görev süresi (kalkış → tarama → tespit →
+- `:499` 🔴 **ÖLÇÜLEMEDİ: hiçbir ekipmanın fiziksel kabul testi yapılmadı. Donanım kutusu
+- `:509` ~~Jetson Nano 4GB~~ **Jetson Orin Nano Developer Kit 4 GB** (6 Eylül'de kartla ölçüldü — D-431) | PT ve ONNX için p50 **ve** p95 FPS ≥ 0,61 (türetimi §4.8.2.3) | ~~**ÖLÇÜLEMEDİ** — 5 Eylül'de Jetson araca takılmadı (D-426 §4)~~ → **6 Eylül ÖLÇÜM (D-431):** genel kapı kartta **15/15 · 15/15**; `jetson_fps.py` 120 örnek: **PT 1,35/1,06 FPS · engine 1,58/1,33 FPS** ≥ 0,61 → **GEÇTİ**; 10 dk sürekli 900 örnek, gpu ≤ 56,3 °C; **ONNX HATA** (`cudaErrorNoKernelImageForDevice`) → ONNX kolu bu kartta geçmedi, ölçülemedi; engine↔pt denkliği D-303 oransal **DÜŞTÜ** → uçuş `.pt`; kamera köprüsü dosya kaynağıyla açıldı. **ÖLÇÜLEMEDİ:** CSI kamera (bağlı değil), Pixhawk MAVLink kapısı (`--kuru`: `[YOK]` `/dev/ttyACM0`). Kanıt `results/jetson_20260906/` |
+- `:510` Pixhawk 6C + güç modülü (plan PM02; sahada **PM06** — BEYAN, §4.13.4) | `scripts/mavlink_dogrula.py` 3/3 · `EXTENDED_SYS_STATE` akışı (§4.9.4) | **KISMEN**: firmware 4.5.7 + parametre yükleme OLCUM (tutanak 15:08); PM06 → `POWER1` OLCUM (18:03). `mavlink_dogrula.py` kapısı **koşulmadı** → ÖLÇÜLEMEDİ (§4.13.1 #6); parametre dökümü yok (#9) |
+- `:511` Holybro M9N GNSS | 3B fix ve `GLOBAL_POSITION_INT` canlı akışı (§4.9.1 G1 ölçütleri) | **KISMEN**: alıcı tanındı — OLCUM `u-blox 1 HW: 000A0000 SW: ROM SPG 5.10` (15:38). 3B fix ve akış kaydı yok → ÖLÇÜLEMEDİ |
+- `:512` Raspberry Pi HQ (IMX477) | `nvarguscamerasrc` üzerinden köprü kare akışı (§4.10.1 ölçütleri) | **ÖLÇÜLEMEDİ** — 5 Eylül'de Jetson takılmadı; 6 Eylül'de köprü kartta **dosya kaynağıyla** açıldı (ÖLÇÜM, D-431) ama CSI kamera **bağlı değildi** → `nvarguscamerasrc` yolu ölçülmedi |
+- `:513` 2 × SiK 433 MHz telsiz | RTT p95 < 0,2 s ve menzil (§4.5) | **KISMEN**: bağlantı BEYAN (~18:45, "tamam oldu"); RTT, kayıp ve menzil ÖLÇÜLEMEDİ (§4.5) |
+- `:514` FCHUB-12S V2 · ~~5008 340KV × 4 · 12×10 pervane~~ → SunnySky X2220 980KV V3 × 4 · 10×4,5 (BEYAN, etiket yok — 7 Eylül beyanı, D-435; 5 Eylül motor testinin hangi motorla koştuğu BEYAN GEREKLİ) | tam yükte akım ve `VIBE` titreşim kaydı (§4.3.3 adım 3.1) | **KISMEN**: pervanesiz motor testi OLCUM (18:06); sıra/yön 4/4 BEYAN, video yok; ESC kalibrasyonu YAPILMADI; tam yükte akım ve `VIBE` ÖLÇÜLEMEDİ (pervane takılmadı). ESC künyesi sahada **"60 A V2"** ×4 (plan 80 A) — BEYAN, §4.13.4 |
+- `:515` 4S 10 Ah 25C pil + iMAX B6 şarj | kapasite ve şarj çevrimi; günde 2 uçuş kısıtının doğrulanması | **KISMEN**: pil takıldı, `PreArm: Battery 1 low voltage failsafe` kayboldu — OLCUM (18:03). MP gerilimi ↔ multimetre (±0,1 V), kapasite ve şarj çevrimi ÖLÇÜLEMEDİ |
+- `:516` FS-i6 kumanda + FS-iA6B alıcı | menzil ve failsafe davranışı (§4.5, §4.12) | **KISMEN**: bind BEYAN (16:18); `RCInput: decoding IBUS(1)` OLCUM (18:03); alıcı FS-iA6B teyit (B harfi, BEYAN). Menzil ve RC failsafe ÖLÇÜLEMEDİ (§4.5, §4.12) |
+- `:519` Fiziksel künye teyidi §4.13.4 madde 1'de **BEYAN GEREKLİ** olarak durur; 5
+- `:530` 🔴 **ÖLÇÜLEMEDİ: menzil (metre), paket kaybı ve RTT ölçülmedi. Kapı RTT
+- `:560` ~~🔴 **ÖLÇÜLEMEDİ: 5 Eylül 2026'da Pixhawk 6C ele alındı (§4.4) ama kalibrasyon
+- `:574` Teyit yok → ÖLÇÜLEMEDİ.** Kart sabitlendikten sonra yeniden yapılır.~~
+- `:623` IMU (ivmeölçer + jiroskop) | FDA görev test aracı (çoklu rotor) | ~~5 Eylül: BEYAN "yapıldı", kart sabit değildi, döküm yok → **ÖLÇÜLEMEDİ** (D-426 §4)~~ → **6 Eylül ÖLÇÜLDÜ**: `INS_ACCOFFS` / `INS_ACCSCAL` / `INS_GYROFFS` + `AHRS_TRIM` dökümde (yukarıdaki tablo; D-428 §1). MP kalibrasyon ekran görüntüsü **yok** (`Calibration successful` / `level completed` BEYAN) |
+- `:637` BEYAN GEREKLİ (insan):** ~~kalibrasyonun yapıldığı tarih, kullanılan yer
+- `:737` ⚠ **K5 alt ölçümü ÖLÇÜLEMEDİ:** `K5_figur_bilgi_px = null`,
+- `:738` `K5_figur_bilgi_durum = "OLCULEMEDI"`. Bu satır verdikt JSON'ında böyle durur ve
+- `:831` `1 / (5 × 0,326) = 0,61 FPS`. **Saha `p`'si ÖLÇÜLEMEDİ** — gerçek arena
+- `:886` moloz, fiziki bariyer yok) ve ışık/gölge kesiti içermez — o satır **ÖLÇÜLEMEDİ** kalır. Gerçek
+- `:1048` 🔴 **ÖLÇÜLEMEDİ: SiK telsiz hattının gerçek etkin veri hızı, paket kaybı ve
+- `:1055` 🔴 **ÖLÇÜLEMEDİ: seri telsiz hattı üzerinden uçtan uca gecikme ölçülmedi.
+- `:1059` 🔴 **ÖLÇÜLEMEDİ: İHA↔İKA hattı iki gerçek araç arasında hiç koşulmadı. Bugünkü
+- `:1158` `COMMAND_ACK` bileşen kimliği ve Jetson'un RTC'siz açılış saati **ÖLÇÜLEMEDİ**.
+- `:1184` Python 3.6 uyumlu — 6 Eylül'de kartın sistem Python'u **3.12** çıktı, uyum kısıtı fiilen gerekmedi; köprü kartta sistem Python 3.12 + cv2 4.6 ile dosya kaynağında açıldı, CSI kamera bağlı değildi → ÖLÇÜLEMEDİ, D-431) MJPEG olarak servis eder.
+- `:1283` ~18:30 | motor sırası ve yönleri 4/4 (kablo taşıma + faz değişimi sonrası) | BEYAN | video yok — **BEYAN GEREKLİ (insan)** |
+- `:1284` ~18:45 | SiK telemetri bağlandı | BEYAN | "tamam oldu" — RTT/kayıp ÖLÇÜLEMEDİ (§4.9.6) |
+- `:1315` FS-iA6B **teyit** (B harfi görüldü). Marka/model için **BEYAN GEREKLİ (insan)**;
+- `:1318` Yapılmadı / ÖLÇÜLEMEDİ — uçuştan önce açık (D-426 §4, `REVIEW_LOG.md:29859-29870`):**
+- `:1322` RC failsafe testi (kumanda kapat → CH3 < 975? `Radio Failsafe`?) | **ÖLÇÜLEMEDİ** — iki kez istendi, sonuç gelmedi; `.param` yorumundaki "iBUS alıcısı çerçeve basmayı keser" **varsayımdır** → **6 Eylül ÖLÇÜLDÜ ve DÜŞTÜ** — varsayım yanlışlandı (§4.10.5 (a), §4.12; D-428 §2) | R3 / R2 |
+- `:1325` pil gerilimi MP ↔ multimetre (±0,1 V) | ÖLÇÜLEMEDİ → 6 Eylül **ÖLÇÜLDÜ**: multimetre 15,8 V ↔ MP 15,8 (D-428 §1) | — |
+- `:1541` 🔴 **ÖLÇÜLEMEDİ: ~~hiçbir arıza emniyet tepkisi sahada test edilmedi.~~ Eve dönüş
+- `:1569` RC kaybı (kumanda kapatma) | `FS_THR_ENABLE,1` (satır 129) | **ÖLÇÜLEMEDİ** — test iki kez istendi, sonuç gelmedi. Dosyadaki yorum *"iBUS alıcısı sinyal kaybında çerçeve basmayı keser"* (satır 128) **varsayımdır**, ölçülmedi; alıcının failsafe'de ne yaptığı bilinmiyor | **ÖLÇÜLDÜ — DÜŞTÜ** (D-428 §2): alıcı son değeri tutuyor, `Radio Failsafe` gelmedi; **düzeltme: kumanda failsafe ayarı** (yukarıda), tekrar ölçümü yok. Kart: `FS_THR_ENABLE,3` (Land; `:411` — şablon 1'den bilinçsiz değişmiş, D-428 §5b) · `FS_THR_VALUE,975` (`:412`) |
+- `:1600` BEYAN GEREKLİ (insan):** her arıza emniyet senaryosu için tetikleme yöntemi
+- `:1625` 7 | **`jetson_baslat.sh` systemd / `--kur` / `--kapi` / `--dogrudan`** | Windows'ta koşulamaz → 6 Eylül kartta `--kuru`: dosya/yorumlayıcı `[VAR]`, `[YOK]` yalnız `/dev/ttyACM0`, çıkış 3 (D-431); `--kapi` Pixhawk bağlı olmadığı için **ÖLÇÜLEMEDİ** | Pixhawk Jetson'a bağlanınca | kuru çıktı == gerçek `ExecStart`; `--kapi` 3/3 |
+- `:1628` 10 | **K5 figür bilgi px** | verdikt JSON'ında `OLCULEMEDI` | — | — |
+- `:1686` 4.13.4 BEYAN GEREKLİ (insan)
+- `:1688` 1. **BEYAN GEREKLİ (insan):** donanım künyesinin fiziksel teyidi. 5 Eylül kutu
+- `:1696` 2. ~~**BEYAN GEREKLİ (insan):** Jetson Nano üzerinde ölçülen p50/p95 FPS değerleri (PT ve ONNX; `--cihaz` beyanıyla)~~ → **ÖLÇÜLDÜ 6 Eylül (D-431):** `--cihaz 0` (Orin GPU); PT **1,35/1,06** · engine **1,58/1,33** FPS; ONNX **HATA** (sm_87 çekirdeği yok) — `results/jetson_20260906/jetson_fps_20260906_orin_nano/ozet.json`.
+- `:1697` 3. **BEYAN GEREKLİ (insan):** SiK 433 MHz çift üzerinde ölçülen RTT p50/p95,
+- `:1699` 4. **BEYAN GEREKLİ (insan):** 6–19 Eylül uçuş testlerinin her biri için tarih,
+- `:1701` 5. **BEYAN GEREKLİ (insan):** 21 Eylül Adıyaman uçuş alanı izni ve alan
+- `:1703` 6. **BEYAN GEREKLİ (insan):** sürüm mührünün basıldığı tarih ve künye commit'i
+- `:1705` 7. **BEYAN GEREKLİ (insan):** 5 Eylül motor testinin sıra/yön videosu (D-426 §1,
+- `:1706` ~18:30 satırı "video: BEYAN GEREKLİ") ve ESC sinyal kablosundaki kırmızı
+- `:1781` 67 | 5 Eylül ÖLÇÜLEMEDİ/yapılmadı: RC failsafe, ESC kalibrasyonu, param dökümü (dosya yok), pil gerilimi, pusula (Jetson takılı değil), accel teyit, BEC teli; künye farkı ESC 60 A V2 / PM06 (BEYAN) | `REVIEW_LOG.md:29848-29870` (D-426 §3–§4) | — (insan girdisi bekliyor) | 2026-09-05 |
 
 ## BOLUM_5_URETIM_FAALIYETLERI.md  (78 satır)
 - `:6` Ölçülmemiş hiçbir üretim değeri tahmin edilmemiştir**; ölçülmemiş olan "ÖLÇÜLEMEDİ" ya da

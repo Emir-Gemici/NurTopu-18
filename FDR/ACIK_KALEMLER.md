@@ -1,6 +1,6 @@
 # FDR — AÇIK KALEMLER (kim · ne zaman · nasıl kapanır)
 
-> Taslakta **197 satır** "BEYAN GEREKLİ" ya da "ÖLÇÜLEMEDİ" ile işaretli
+> Taslakta ~~**197 satır**~~ **530 satır** (10 Eylül 2026, `scripts/fdr_acik_kalem_cikar.py` sayımı) "BEYAN GEREKLİ" ya da "ÖLÇÜLEMEDİ" ile işaretli
 > (ham liste: `ACIK_KALEMLER_HAM.md`). Bunlar eksiklik değil, **dürüstlük
 > işaretidir**: rapor ölçülmemiş bir şeyi ölçülmüş gibi yazmaz. Aşağıda
 > sahibine ve kapanma tarihine göre gruplanmış hâli var.
@@ -29,14 +29,14 @@ Bu üç kalem için doğru okuma: **"Jetson açılırsa cumartesi kapanır; aç�
 | ~~4~~ | ~~**Jetson Nano gerçek FPS** (p50/p95)~~ → **ÖLÇÜLDÜ 6 Eylül (D-431)** — kart Orin Nano Developer Kit 4 GB; `scripts/jetson_fps.py` 120 örnek, imgsz 512, `data/raw_frames`, mpp=None: **pt p50/p95 1,35/1,06 FPS** (739/942 ms) · **engine 1,58/1,33 FPS** (635/751 ms) · eşik **0,61** → **GEÇTİ**; 10 dk sürekli (900 örnek): pt 770/922 ms · engine 649/765 ms, tegrastats gpu ≤ 56,3 °C. ONNX kolu **HATA** (`cudaErrorNoKernelImageForDevice`). Sınır: mpp=None ölçeksiz Katman-A kipidir; kamera bağlı değildi | `results/jetson_20260906/jetson_fps_20260906_orin_nano/ozet.json` · `results/jetson_20260906/jetson_fps_20260906_orin_nano_10dk/ozet.json` · `results/jetson_20260906/jetson_fps_20260906_orin_nano_10dk/tegrastats.log` | 3, 4 |
 | ~~5~~ | ~~Çıkarım arka ucu kararı~~ → **ÖLÇÜLDÜ 6 Eylül (D-431)**: `torch.cuda.is_available()` **True** (`cuda_adi: Orin`, torch 2.11.0+cu130); **uçuş `.pt` GPU ile** (kayıt defteri `path` `.pt`, FPS kapısı geçiyor). TensorRT `.engine` derlendi ve deftere kaydedildi ama engine↔pt denkliği D-303 oransal **3/126 DÜŞTÜ** → üretime alınmadı (§3 kalem 15). ONNX GPU: `onnxruntime-gpu` 1.29 sm_87 çekirdeği yok (**HATA**) → ONNX yolu bu kartta **DOĞRULANMAMIŞ** | `results/jetson_20260906/jetson_fps_20260906_orin_nano/ozet.json` (`ortam`, `vakalar[onnx].sebep`) | 3 |
 | 6 | SiK 433 MHz RTT ve paket kaybı | `scripts/sik_rf_olc.py`; DDR'deki ">%98, 300 m" iddiasının kanıtı **yok** | 3, 4, 7 |
-| 7 | ArduCopter sürümü, kalibrasyon çıktıları, pervanesiz motor testi | Mission Planner; sahada okunan parametre dökümü repoya işlenir → **KISMEN KAPANDI:** sürüm `ArduCopter V4.5.7 (2a3dc4b7)` ÖLÇÜM (D-426 §1); accel/level ve pusula ofsetleri 6 Eylül dökümünde (D-428 §1); ESC kalibrasyonu 6 Eylül'de başarılı yordamla yapıldı (D-428 §3, beyan); motor testi 4/4 **BEYAN**, video yok; döküm `config/pixhawk/arducopter_fda_20260906.param` (D-428 §5g) | 3, 5, 6 |
-| 8 | Uçuş kontrolcüsü parametrelerinin **sahada okunan** hâli | `config/pixhawk/arducopter_fda_20260905.param` (bugün yok, cumartesi üretilir) → **AÇIK (5 Eylül akşamı, D-426 §4): dosya YOK** — `config/pixhawk/README.md` §1 adım 6 (`Full Parameter List` → `Save to file`) sahada yapılmadı. Döküm alındığında bakılacak: `RC_PROTOCOLS` sahada 4 → 1 yapıldı ve geri alınmadı (D-426 §2); `BRD_SAFETY_DEFOFF` değiştirilmedi. Bu satır kapanmadan Bölüm 2/5/6'daki döküm atıfları açık kalır | 2, 5, 6 |
+| 7 | ArduCopter sürümü, kalibrasyon çıktıları, pervanesiz motor testi | Mission Planner; sahada okunan parametre dökümü repoya işlenir → **KISMEN KAPANDI:** sürüm `ArduCopter V4.5.7 (2a3dc4b7)` ÖLÇÜM (D-426 §1); accel/level ve pusula ofsetleri 6 Eylül dökümünde (D-428 §1); ESC kalibrasyonu 6 Eylül'de başarılı yordamla yapıldı (D-428 §3, beyan); motor testi 4/4 **BEYAN**, video yok; döküm `config/pixhawk/arducopter_fda_20260906.param` (D-428 §5g); **10 Eylül:** kalibrasyon çıktıları §4.6'da dosya:satır tablosu (accel/gyro/level/Mag1/Mag2), 2. pusula kalibrasyonu dökümü ve MP ekran görüntüsü açık; RC failsafe ÖLÇÜLDÜ ve **DÜŞTÜ** (D-428 §2, §4.12) | 3, 5, 6 |
+| 8 | Uçuş kontrolcüsü parametrelerinin **sahada okunan** hâli | `config/pixhawk/arducopter_fda_20260905.param` (bugün yok, cumartesi üretilir) → **AÇIK (5 Eylül akşamı, D-426 §4): dosya YOK** — `config/pixhawk/README.md` §1 adım 6 (`Full Parameter List` → `Save to file`) sahada yapılmadı. Döküm alındığında bakılacak: `RC_PROTOCOLS` sahada 4 → 1 yapıldı ve geri alınmadı (D-426 §2); `BRD_SAFETY_DEFOFF` değiştirilmedi. Bu satır kapanmadan Bölüm 2/5/6'daki döküm atıfları açık kalır → **KISMEN KAPANDI (6 Eylül 20:22, D-428 §5g; 10 Eylül işlendi):** `config/pixhawk/arducopter_fda_20260906.param` repoda (5 Eylül dökümü hiç alınmadı, ad bu yüzden 06); `RC_PROTOCOLS,1` (:658), `FS_THR_ENABLE,3` (:411) ve `BATT_FS_LOW_ACT,1` (:134) şablondan sapmış (D-428 §5b), `RC_SPEED,490` (:659), boş çıkışlarda motor fonksiyonu (D-428 §5d); 2. pusula kalibrasyonu ve `FS_GCS_ENABLE` (tlog sonu 5) dökümde yok → **üçüncü döküm açık** | 2, 5, 6 |
 
 ## 2. 6–19 Eylül uçuş testleri — ölçümle kapanır
 
 | # | kalem | nasıl kapanır |
 |---|---|---|
-| 9 | Titreşim, pusula ofseti, GPS kalitesi | ilk hover logu (`VIBE`, EKF, HDOP) |
+| 9 | Titreşim, ~~pusula ofseti, GPS kalitesi~~ | ilk hover logu (`VIBE`, EKF, HDOP) → **10 Eylül:** pusula ofseti 6 Eylül dökümünde **ÖLÇÜLDÜ** (Mag1 15,4 / Mag2 129,5 < 300, §4.6); GPS 18 uydu + `EKF3 IMU0/IMU1 is using GPS` (D-428 §1, yapıştırılan satır; HDOP kaydı yok); **titreşim (`VIBE`) hâlâ açık** — hover yok, DataFlash `.bin` indirilmedi (D-429 §5) |
 | 10 | İniş kanıtı canlı zinciri | `iha_inis_yayinci` → YKS'de IHA_LANDED ACK'li |
 | 11 | Uçtan uca görev süresi (≤ 10 dk) | üç tam prova, video + hakem log |
 | 12 | Asılı kalma akımı, tepe akım, gerçek uçuş süresi | PM02 telemetrisi (Bölüm 7 batarya hesabı bunu ister) |
@@ -109,8 +109,8 @@ Bu üç kalem için doğru okuma: **"Jetson açılırsa cumartesi kapanır; aç�
 | 33 | **Güç tüketimi doğrulaması** — tam yükte ölçülen akım ↔ batarya kapasitesi; teorik ↔ pratik karşılaştırma | `Y-3.3.2-M02` | aviyonik (5 Eylül) | 3 |
 | 34 | **Ekipman kabul testleri** — İHA ve İKA'daki **tüm** ekipmanlar | `Y-4-M04` | aviyonik (5 Eylül) | 4 |
 | 35 | **Kumanda ve telemetri menzil testleri** — sahada | `Y-4-M05` | pilot + aviyonik | 4 |
-| 36 | **IMU / pusula / pitot kalibrasyon kanıtları** | `Y-4-M06` | aviyonik (5 Eylül) | 4 |
-| 37 | 🔴 **Arıza emniyet doğrulaması sahada** — eve dönüş, motor kesme tepkilerinin gerçek test verisi | `Y-4-M12` | pilot (6–19 Eylül) | 4 |
+| 36 | **IMU / pusula / pitot kalibrasyon kanıtları** → **KISMEN KAPANDI (6 Eylül dökümü, 10 Eylül işlendi):** §4.6 ofset tablosu dosya:satır ile; pitot kapsam dışı (`ARSPD_ENABLE,0`); kalan: MP ekran görüntüsü, 2. pusula kalibrasyonu dökümü, Jetson takılı kalibrasyon | `Y-4-M06` | ~~aviyonik (5 Eylül)~~ aviyonik (6 Eylül ÖLÇÜLDÜ; üçüncü döküm bekliyor) | 4 |
+| 37 | 🔴 **Arıza emniyet doğrulaması sahada** — eve dönüş, motor kesme tepkilerinin gerçek test verisi → **AÇIK (10 Eylül):** RC failsafe 6 Eylül'de tezgâhta ÖLÇÜLDÜ ve **DÜŞTÜ** (alıcı son değeri tutuyor, D-428 §2); düzeltme kumanda failsafe ayarı + tekrar ölçüm (kayıt yok); RTL/Land/geofence/motor kesme sahada hiç tetiklenmedi → "sahada" şartı **karşılanmadı** (§4.12) | `Y-4-M12` | ~~pilot (6–19 Eylül)~~ pilot (uçuş öncesi; ilk hover D-429 §5 muayenesi sonrası) | 4 |
 | 38 | **Sensör gereksinimleri, yerleşimleri, test takvimi, test zaman bütçesi** | `Y-4-M03` | yazılım + aviyonik | 4 |
 | 39 | **Üretim hataları ve düzeltici işlem prosedürleri** | `Y-5-M04` | üretim | 5 |
 | 40 | 🔴 **Kol 1–2 / kol 3–4 reçete farkının gerekçesi** — yönerge: *"gerekliliği ispatlanmamış değişiklikler **diskalifiye sebebi** sayılabilecektir"* (SGGS tutarlılık kontrolü, Şubat 2027) | `Y-5-M05` | üretim | 5 |

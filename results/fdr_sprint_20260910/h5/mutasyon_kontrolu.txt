@@ -1,0 +1,8 @@
+M-A §4.6 INS_ACCOFFS_X degeri 0.01807415 -> 0.01807416 [dosyada 2 kez, ilki değiştirildi]: YAKALANDI (FAILED (failures=1))
+M-B §4.6 COMPASS_OFS2 satir atfi :249-251 -> :250-251 [dosyada 1 kez, ilki değiştirildi]: YAKALANDI (FAILED (failures=1))
+M-C §4.10.5 P19 pitch -43,8 -> -43,9 [dosyada 1 kez, ilki değiştirildi]: YAKALANDI (FAILED (failures=1))
+M-D §4.10.5 arm penceresi 41 -> 40 [dosyada 2 kez, ilki değiştirildi]: YAKALANDI (FAILED (failures=1))
+M-E §4.12 RC satirindan DUSTU silindi [dosyada 1 kez, ilki değiştirildi]: YAKALANDI (FAILED (failures=1))
+M-F §4.6 tlog son COMPASS_OFS_Z 16.3172 -> 16.3173 [dosyada 1 kez, ilki değiştirildi]: YAKALANDI (FAILED (failures=1))
+dosya geri yuklendi: EVET (sha256 9127c1112a7d8b90)
+MUTASYON: 6/6 yakalandi

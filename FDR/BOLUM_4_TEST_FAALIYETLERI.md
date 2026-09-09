@@ -434,16 +434,36 @@ GNSS direği yüksekliği, pusula ile güç kablosu arasındaki ayrım, kamera b
 açısı ve titreşim yalıtımı, telsiz anten yönelimi. Montaj 5–19 Eylül'de
 yapılacak; yerleşim ölçüsü ve fotoğrafı bu alt bölüme girecektir.
 
-### 4.3.3 Test takvimi — planlanan uçuş test kapıları (6–19 Eylül)
+### 4.3.3 Test takvimi — planlanan uçuş test kapıları (6–19 Eylül) ve gerçekleşen olaylar (5–10 Eylül)
 
-| adım | ne | kapı |
-|---|---|---|
-| 3.1 | İlk hover (Stabilize/AltHold, 2–3 m, 2 dk) — pervaneler ilk kez takılır | log `VIBE`, EKF yeşil, kırım yok |
-| 3.2 | Loiter + kısa Auto (30 m) + geofence; **iniş kanıtı canlı** | YKS'de "İNİŞ" (IHA_LANDED ACK'li) |
-| 3.3 | Algı canlı: 30 m'de OPEN_ROUTE YKS'de | yanlış güzergâh **0** |
-| 3.4 | Tam prova ×3 (kalkış → tarama → tespit → hakem onayı → iniş) | **≤ 10 dk**, 3 temiz prova |
-| 3.5 | Sıkı prova: kapalı kutudan, kronometre, hands-off | **0 müdahale** |
-| 3.6 | Sürüm dondurma (türev kaydı → commit → `--dondur` → künye commit) | künye repoda, `--dogrula` **0** |
+**Gerçekleşen olaylar** (10 Eylül 2026'da ölçülen kayıtlarla yeniden yazıldı; kaynak
+`REVIEW_LOG.md` kayıtları ve `results/` altındaki ham dosyalar — plan tablosu aşağıda
+olduğu gibi durur, sağına "durum" sütunu eklendi):
+
+| tarih · saat | olay | tür | kanıt |
+|---|---|---|---|
+| 5 Eylül 14:52–18:45 | Pixhawk 6C tezgâh yer testi: PX4 → ArduCopter 4.7.1 → **4.5.7** flash, parametre yükleme, GNSS, iBUS, PM06, emniyet düğmesi, **pervanesiz** motor testi — uçuş **yok** | ÖLÇÜM (MP `Messages` satırları) + BEYAN (motor yönü, SiK) | §4.10.4 · `REVIEW_LOG.md` D-424 (:29624) · D-425 (:29713) · D-426 (:29811–29829) |
+| 6 Eylül 17:05–19:30 | Jetson kurulumu — kart **Orin Nano Developer Kit 4 GB / JetPack 7.2.1** çıktı (Nano varsayımı yanlış); FPS kapısı GEÇTİ, engine↔pt denkliği DÜŞTÜ; Pixhawk Jetson'a bağlı **değil** | ÖLÇÜM | §4.4 · D-431 (:30182–30186) · `results/jetson_20260906/` |
+| 6 Eylül 18:30–20:50 | Saha tutanağı: accel/level + pusula kalibrasyonu (döküm 20:22), pil gerilimi 15,8 V, ESC kalibrasyonu (beyan), **RC failsafe ÖLÇÜLDÜ ve DÜŞTÜ**, kumanda pili bitti — uçuş **yok** (üç kez istendi, reddedildi) | ÖLÇÜM (döküm) + BEYAN | §4.6 · §4.12 · D-428 (:29939–30060) · `config/pixhawk/arducopter_fda_20260906.param` |
+| 6 Eylül 20:45–21:45 | **Pervaneli üç devrilme** (arm pencereleri 19, 20, 26), M1 hasarlı; 21:44 rampa ile tam gazda düz (pencere 37) — tutanak oturumunun bilgisi dışında; tlog ile 7 Eylül'de ölçüldü | ÖLÇÜM (tlog) | §4.10.5 · D-429 (:30061–30150) · `results/ucus_loglari/20260906/2026-09-06 19-52-44.tlog` |
+| 7 Eylül | Tlog analizleri: devrilme pencereleri (D-429), kumandadan arm bulgusu `RC6_OPTION=0` (D-433), pilot kolu merkezde / seviye temiz (D-434); motor künyesi değişimi (D-435/436/437) | ÖLÇÜM (tlog + döküm) | §4.10.5 · `results/ucus_loglari/20260906/*_devrilme.txt`, `arm_analizi*.txt`, `pitch_kolu_analizi.txt` |
+| 10 Eylül 00:3x → | FDR yazılım sprinti açıldı (ön kayıt H1–H8); simülasyon ortamı MuJoCo; bu bölümün 6 Eylül güncellemeleri (H5) | plan + ölçüm | D-438 · `results/fdr_sprint_20260910/ON_KAYIT.md` |
+| tarihsiz | *"şu an başarıyla hover yapabiliyoruz"* | **BEYAN** — tarih, log (`.bin`) ve video **yok**; ölçülen olay değildir | D-439 §4 · T223 (insan) |
+
+⚠ **10 Eylül itibarıyla aşağıdaki planlı adımların hiçbiri koşulmadı.** İlk hover
+(3.1) için ölçülmüş bir log yoktur; 6 Eylül'deki pervaneli denemeler hover değil,
+**yerde devrilmedir** (§4.10.5). Adım 3.1'in ön koşulu D-429 §5 muayenesidir (M1
+değişimi, ESC/pervane/kol kontrolü) ve D-429 §6 rampa kuralıdır (`MOT_SLEW_UP_TIME`
+0 → 1,0 s; dökümde **0** — `config/pixhawk/arducopter_fda_20260906.param:573`).
+
+| adım | ne | kapı | durum (10 Eylül) |
+|---|---|---|---|
+| 3.1 | İlk hover (Stabilize/AltHold, 2–3 m, 2 dk) — pervaneler ilk kez takılır | log `VIBE`, EKF yeşil, kırım yok | **YAPILMADI** — pervaneler 6 Eylül'de takıldı, sonuç 3 devrilme (§4.10.5); hover BEYAN, log yok (D-439 §4) |
+| 3.2 | Loiter + kısa Auto (30 m) + geofence; **iniş kanıtı canlı** | YKS'de "İNİŞ" (IHA_LANDED ACK'li) | YAPILMADI |
+| 3.3 | Algı canlı: 30 m'de OPEN_ROUTE YKS'de | yanlış güzergâh **0** | YAPILMADI |
+| 3.4 | Tam prova ×3 (kalkış → tarama → tespit → hakem onayı → iniş) | **≤ 10 dk**, 3 temiz prova | YAPILMADI |
+| 3.5 | Sıkı prova: kapalı kutudan, kronometre, hands-off | **0 müdahale** | YAPILMADI |
+| 3.6 | Sürüm dondurma (türev kaydı → commit → `--dondur` → künye commit) | künye repoda, `--dogrula` **0** | YAPILMADI (4 Eylül `--dogrula`: `DONDURULMADI`, §4.14 #58) |
 
 ⚠ **Tek pil (4S 10 Ah) + iMAX B6 ⇒ günde en fazla 2 uçuş.** Bu, prova sayısının
 en sert kısıtıdır ve planın kendisinde yazılıdır.
@@ -451,8 +471,10 @@ en sert kısıtıdır ve planın kendisinde yazılıdır.
 ### 4.3.4 Detaylı test zaman bütçe planlaması
 
 🔴 **ÖLÇÜLEMEDİ: uçuş başına gerçek görev süresi (kalkış → tarama → tespit →
-hakem onayı → iniş) ölçülmedi; ilk gerçek sayı 6–19 Eylül prova uçuşlarından
-gelecektir.** Bugün elde olan tek uçuş bütçesi kısıtı yukarıdaki pil kısıtıdır
+hakem onayı → iniş) ölçülmedi; ~~ilk gerçek sayı 6–19 Eylül prova uçuşlarından
+gelecektir.~~** → 10 Eylül itibarıyla **hiç uçuş yok** (6 Eylül: yerde üç devrilme,
+§4.10.5; hover BEYAN, D-439 §4); ilk gerçek sayı D-429 §5 muayenesi sonrası ilk
+provadan gelecektir. Bugün elde olan tek uçuş bütçesi kısıtı yukarıdaki pil kısıtıdır
 (günde en fazla 2 uçuş) ve prova kapısı **≤ 10 dk**'dır (§4.3.3, adım 3.4).
 
 Yer tarafında **ölçülmüş** zaman bütçeleri şunlardır; karar zincirinin tazelik
@@ -535,36 +557,92 @@ kanıtı yoktur** (R20, `results/sartname_bosluk/rapor.md`). Bu iddia menzil
 > kalibrasyonlarının gerçekleştirildiğini gösteren kanıtların raporda yer alması
 > beklenmektedir."*
 
-🔴 **ÖLÇÜLEMEDİ: 5 Eylül 2026'da Pixhawk 6C ele alındı (§4.4) ama kalibrasyon
-kanıtı (ekran çıktısı, `INS_*` / `COMPASS_*` parametre dökümü) yoktur.**
-Yönergenin üç kalemine cevap (`REVIEW_LOG.md` D-426 §4):
+~~🔴 **ÖLÇÜLEMEDİ: 5 Eylül 2026'da Pixhawk 6C ele alındı (§4.4) ama kalibrasyon
+kanıtı (ekran çıktısı, `INS_*` / `COMPASS_*` parametre dökümü) yoktur.**~~
+→ **6 Eylül 2026 20:22 parametre dökümü ile ÖLÇÜLDÜ** (10 Eylül'de işlendi):
+`config/pixhawk/arducopter_fda_20260906.param`, 1025 parametre, sha256 `4acc4476…28e9`
+(`REVIEW_LOG.md` D-428 §1, :29954–29967). 18:37'deki "önce" dökümünde `INS_ACCOFFS` = 0/0/0,
+`INS_ACCSCAL` = 1/1/1, `AHRS_TRIM` = 0/0 idi (5 Eylül flash'ı sıfırlamıştı; D-426'daki
+"yapıldı" beyanı **yanlıştı**); 20:22 dökümünde üçü de doludur — kalibrasyon o akşam
+**gerçekten** yapıldı. Yer istasyonu: **Mission Planner 1.3.83** (tlog STATUSTEXT,
+`results/ucus_loglari/20260906/2026-09-06 19-52-44_devrilme.txt:41`). Ekran görüntüsü
+**alınmadı**; kanıt parametre dökümüdür. Yönergenin üç kalemine cevap — eski cevap (D-426 §4'e
+dayanan, 5 Eylül hâli) üstü çizili durur, yenisi altındadır:
 
-- **IMU (accel + level):** BEYAN "yapıldı" — kartın gövdeye sabitlenip
+- ~~**IMU (accel + level):** BEYAN "yapıldı" — kartın gövdeye sabitlenip
   sabitlenmediği belirsiz ("bantlanmadı"); parametre dökümü alınmadı.
-  **Teyit yok → ÖLÇÜLEMEDİ.** Kart sabitlendikten sonra yeniden yapılır.
-- **Pusula:** **YAPILMADI.** Jetson araca takılı değildi; kalibrasyon her şey
-  takılıyken, dışarıda yapılır ve Jetson takılınca **yeniden** gerekir.
-- **Pitot tüpü:** **KAPSAM DIŞI** — FDA görev test aracı çoklu rotordur, hava
-  hızı sensörü taşımaz (aşağıdaki tablo).
+  **Teyit yok → ÖLÇÜLEMEDİ.** Kart sabitlendikten sonra yeniden yapılır.~~
+- ~~**Pusula:** **YAPILMADI.** Jetson araca takılı değildi; kalibrasyon her şey
+  takılıyken, dışarıda yapılır ve Jetson takılınca **yeniden** gerekir.~~
+- ~~**Pitot tüpü:** **KAPSAM DIŞI** — FDA görev test aracı çoklu rotordur, hava
+  hızı sensörü taşımaz (aşağıdaki tablo).~~ (6 Eylül sonrası da aynı: kapsam dışı.)
+- **IMU (ivmeölçer + jiroskop + seviye):** **ÖLÇÜLDÜ** — aşağıdaki ofset tablosu. Kart
+  çift taraflı bantla sabitlendi (BEYAN, D-428 §1). Seviye: `AHRS_TRIM_Y` −0,0257 rad =
+  **−1,47°**, `AHRS_TRIM_X` ≈ 0; yerde duran araç −0,6…−1,1° / +1,5° okuyor (D-434 ölçüm 2)
+  — "kontrolcü seviyesi yanlış" devrilme adayı bununla **kapandı**. Jiroskop ofseti her
+  açılışta hesaplanır (`INS_GYR_CAL,1`, `:485`).
+- **Pusula:** **ÖLÇÜLDÜ, KISMEN** — 1. kalibrasyon (Mag1 + Mag2; Mag3 yok,
+  `COMPASS_DEV_ID3,0`) dökümdedir: ofset büyüklüğü Mag1 **15,4**, Mag2 **129,5** — ikisi de
+  < 300 → kapı **GEÇTİ** (`SAHA_HAZIRLIK_PLANI_20260903.md` §2.4, :129). Sonra
+  `PreArm: Check mag field` → metalden ≥ 5 m uzakta **2. kalibrasyon** (PreArm temiz,
+  beyan); onun tam dökümü **yoktur** — yalnız tlog'daki son `PARAM_VALUE` Mag1 ofsetlerini
+  taşır (tabloda son satır; D-428 §1 "ikinci kalibrasyonun ofsetleri sabah dökümünde" —
+  o döküm alınmadı). Jetson araca takılı **değildi** (aynı gün ayrı yerde kuruldu, D-431);
+  Jetson takılınca kalibrasyon **yeniden** gerekir (D-426 §4 şartı sürüyor).
+- **Pitot tüpü:** **KAPSAM DIŞI** — FDA görev test aracı çoklu rotordur; dökümde
+  `ARSPD_ENABLE,0` (`:34`), hava hızı sensörü yoktur (aşağıdaki tablo).
+
+**Kalibrasyon ofsetleri — 6 Eylül 20:22 dökümü.** Değerler
+`config/pixhawk/arducopter_fda_20260906.param` dosyasından **birebir** (nokta ondalık, dosya
+biçimi), `:satır` dosya satırıdır; nöbetçi `tests/test_fdr_bolum4_6eylul_kaniti.py` her değeri
+ve satırı dosyadan yeniden okur (bayat sayı sessizce kalamaz).
+
+| parametre | X | Y | Z | satır | not |
+|---|---|---|---|---|---|
+| `INS_ACCOFFS_*` (IMU0 ivmeölçer ofseti, m/s²) | `0.01807415` | `0.002790652` | `-0.2912262` | :477–479 | 18:37'de 0/0/0 idi |
+| `INS_ACCSCAL_*` (IMU0 ivmeölçer ölçeği) | `1.000929` | `0.9987385` | `1.002444` | :480–482 | sapma +0,09 / −0,13 / +0,24 % |
+| `INS_ACC2OFFS_*` (IMU1 ofset) | `0.04864864` | `-0.05100591` | `0.007118146` | :462–464 | ikinci IMU da kalibre |
+| `INS_ACC2SCAL_*` (IMU1 ölçek) | `0.9947703` | `0.9925943` | `0.9999543` | :465–467 | — |
+| `INS_GYROFFS_*` (IMU0 jiroskop ofseti, rad/s) | `-0.01052934` | `-0.03704018` | `0.003532802` | :500–502 | açılışta hesaplanır (`INS_GYR_CAL,1`) |
+| `INS_GYR2OFFS_*` (IMU1) | `-0.000505058` | `-0.01004735` | `-0.002424948` | :490–492 | — |
+| `AHRS_TRIM_*` (seviye, rad) | `-0.001765323` | `-0.02569767` | `0` | :21–23 | −0,10° / −1,47° / — |
+| `COMPASS_OFS_*` (Mag1, 1. kalibrasyon) | `6.960523` | `8.688463` | `10.66457` | :246–248 | büyüklük **15,4** < 300 |
+| `COMPASS_OFS2_*` (Mag2, 1. kalibrasyon) | `19.42854` | `-126.0526` | `-22.47731` | :249–251 | büyüklük **129,5** < 300 |
+| `COMPASS_DIA_*` / `COMPASS_ODI_*` (Mag1 elipsoid) | `1.139482` / `0.009360546` | `1.043267` / `0.03608484` | `1.162825` / `-0.005542791` | :210–212 / :236–238 | `COMPASS_CAL_FIT,16` (:200) |
+| `COMPASS_DIA2_*` / `COMPASS_ODI2_*` (Mag2 elipsoid) | `1` / `0` | `1` / `0` | `1` / `0` | :213–215 / :239–241 | Mag2 için elipsoid düzeltmesi **yok** (yalnız ofset) |
+| `COMPASS_SCALE` / `COMPASS_SCALE2` | `0.9689797` | `1.129866` | — | :263 / :264 | — |
+| `COMPASS_OFS_*` (Mag1, **tlog son `PARAM_VALUE`**, döküm sonrası) | `-1.14309` | `-3.03732` | `16.3172` | `…_devrilme.txt:31–33` | büyüklük 16,6; 20:22 değerinden **farklı** → 2. kalibrasyonun izi (**çıkarım**, D-428 §1 ile tutarlı); Mag2/DIA/ODI için kayıt **yok** |
+
+Kimlikler: `INS_ACC_ID` = `INS_GYR_ID` = `3408650` (:458, :486); `COMPASS_DEV_ID` 658953 ·
+`COMPASS_DEV_ID2` 658433 · `COMPASS_DEV_ID3` 0 (:202–204); `COMPASS_EXTERNAL,1` ·
+`COMPASS_ORIENT,6` (Yaw270 — M9N direkte 90° dönük monte, otomatik; :223, :256; D-429 §4) ·
+`COMPASS_USE` / `COMPASS_USE2` 1 (:266–267).
 
 | kalibrasyon | hangi araçta | bugünkü kanıt |
 |---|---|---|
-| IMU (ivmeölçer + jiroskop) | FDA görev test aracı (çoklu rotor) | 5 Eylül: BEYAN "yapıldı", kart sabit değildi, döküm yok → **ÖLÇÜLEMEDİ** (D-426 §4) |
-| Pusula (manyetometre) | FDA görev test aracı (çoklu rotor) | 5 Eylül: **YAPILMADI** (Jetson takılı değil; D-426 §4). Kapı: ofset < 300 (`SAHA_HAZIRLIK_PLANI_20260903.md` §2.4) |
-| Pitot tüpü | 🔴 FDA görev test aracında **pitot tüpü yoktur** — çoklu rotor hava hızı sensörü taşımaz. Pitot, yarışma final aracının (sabit kanat + mancınık) kalemidir ve o araç **henüz üretilmemiştir**. | kapsam dışı (bu araçta) |
+| IMU (ivmeölçer + jiroskop) | FDA görev test aracı (çoklu rotor) | ~~5 Eylül: BEYAN "yapıldı", kart sabit değildi, döküm yok → **ÖLÇÜLEMEDİ** (D-426 §4)~~ → **6 Eylül ÖLÇÜLDÜ**: `INS_ACCOFFS` / `INS_ACCSCAL` / `INS_GYROFFS` + `AHRS_TRIM` dökümde (yukarıdaki tablo; D-428 §1). MP kalibrasyon ekran görüntüsü **yok** (`Calibration successful` / `level completed` BEYAN) |
+| Pusula (manyetometre) | FDA görev test aracı (çoklu rotor) | ~~5 Eylül: **YAPILMADI** (Jetson takılı değil; D-426 §4). Kapı: ofset < 300 (`SAHA_HAZIRLIK_PLANI_20260903.md` §2.4)~~ → **6 Eylül ÖLÇÜLDÜ, KISMEN**: 1. kalibrasyon Mag1 **15,4** / Mag2 **129,5** < 300 → kapı **GEÇTİ**; 2. kalibrasyonun tam dökümü **yok** (tlog son Mag1 16,6); Jetson takılı değildi → Jetson takılınca **yeniden** |
+| Pitot tüpü | 🔴 FDA görev test aracında **pitot tüpü yoktur** — çoklu rotor hava hızı sensörü taşımaz. Pitot, yarışma final aracının (sabit kanat + mancınık) kalemidir ve o araç **henüz üretilmemiştir**. | kapsam dışı (bu araçta); dökümde `ARSPD_ENABLE,0` (:34) |
 
-⚠ Pixhawk parametrelerinin kendisi **repo dışıdır** (R17). Kalibrasyon sonrası
+⚠ Pixhawk parametrelerinin kendisi **repo dışıdır** (R17). ~~Kalibrasyon sonrası
 parametre dökümü `config/pixhawk/` altına kanıt olarak alınacaktır
-(§4.13.1 kalem 9). 5 Eylül'de döküm **alınmadı** (D-426 §4); 6 Eylül 20:22 dökümü
+(§4.13.1 kalem 9).~~ 5 Eylül'de döküm **alınmadı** (D-426 §4); 6 Eylül 20:22 dökümü
 `config/pixhawk/arducopter_fda_20260906.param` repodadır ve accel/pusula ofsetlerini taşır (D-428 §1, §5g;
 `config/pixhawk/README.md` §1 adım 6). Şablon dosyası
 `config/pixhawk/arducopter_fda.param` kalibrasyon değeri **içermez**
 (README §2: kalibrasyonlar parametre dosyasında yoktur, dosya bunları ezmez).
+Bu döküm 2. pusula kalibrasyonunu ve `FS_GCS_ENABLE` değişikliğini (dökümde 1, tlog sonunda
+5 — §4.12) **içermez** → **üçüncü döküm** hâlâ şarttır (D-428 §5g).
 
-**BEYAN GEREKLİ (insan):** kalibrasyonun yapıldığı tarih, kullanılan yer
+**BEYAN GEREKLİ (insan):** ~~kalibrasyonun yapıldığı tarih, kullanılan yer
 istasyonu yazılımının adı ve sürümü, kalibrasyon sonrası `COMPASS_*` ve `INS_*`
-parametre dökümü. 5 Eylül accel kalibrasyonu için: kartın o anda sabit olup
-olmadığı (D-426 §4 "bantlanmadı") — sabit değildiyse kalibrasyon yeniden.
+parametre dökümü.~~ (→ 6 Eylül 2026, Mission Planner 1.3.83, döküm 20:22 — **ÖLÇÜLDÜ**,
+yukarıda.) Kalan: (1) MP kalibrasyon ekran görüntüsü (accel 6 yön / level / compass
+fitness) — yok; (2) 2. pusula kalibrasyonu sonrası **üçüncü parametre dökümü**;
+(3) Jetson takılı hâlde pusula kalibrasyonu ve dökümü; (4) kartın sabitlenme biçimi
+(çift taraflı bant — BEYAN). ~~5 Eylül accel kalibrasyonu için: kartın o anda sabit olup
+olmadığı (D-426 §4 "bantlanmadı") — sabit değildiyse kalibrasyon yeniden.~~ (5 Eylül
+kalibrasyonu zaten flash ile sıfırlanmıştı; 6 Eylül'de yeniden yapıldı — D-428 §1.)
 
 ---
 
@@ -1094,6 +1172,10 @@ koşuldu (`starting motor test` → `finished motor test`, ÖLÇÜM). O tutanakt
 uçuş yapılandırmasında monte değildir ve Jetson takılı değildir (§4.13.1 kalem
 4; `REVIEW_LOG.md:29867`). Donanım-öncesi ölçümlerin ortak sınıfı
 (`KOD_VAR ≠ KOŞUYOR`) §4.9'da yazılıdır ve §4.10.1–§4.10.3 için geçerlidir.
+**§4.10.5 (10 Eylül'de eklendi)** 6 Eylül'ün ikinci donanım yer testidir: kalibrasyon
+dökümü, RC failsafe ölçümü (DÜŞTÜ) ve **pervaneli** üç devrilme; kanıt telemetri logu
+(tlog) ve 20:22 parametre dökümüdür; ARM denemeleri **vardır** (41 arm penceresi).
+Hover ya da uçuş **yoktur**.
 
 ### 4.10.1 Kamera köprüsü — dayanıklılık (D-407 §2)
 
@@ -1237,13 +1319,13 @@ Bölüm 3/5/7 künyesi düzeltilecek.
 
 | ne | durum | rol |
 |---|---|---|
-| RC failsafe testi (kumanda kapat → CH3 < 975? `Radio Failsafe`?) | **ÖLÇÜLEMEDİ** — iki kez istendi, sonuç gelmedi; `.param` yorumundaki "iBUS alıcısı çerçeve basmayı keser" **varsayımdır** | R3 / R2 |
-| ESC kalibrasyonu | **YAPILMADI** ("hepsi birden" yordamı verildi; ESC markası bilinmiyor) | R3 |
+| RC failsafe testi (kumanda kapat → CH3 < 975? `Radio Failsafe`?) | **ÖLÇÜLEMEDİ** — iki kez istendi, sonuç gelmedi; `.param` yorumundaki "iBUS alıcısı çerçeve basmayı keser" **varsayımdır** → **6 Eylül ÖLÇÜLDÜ ve DÜŞTÜ** — varsayım yanlışlandı (§4.10.5 (a), §4.12; D-428 §2) | R3 / R2 |
+| ESC kalibrasyonu | **YAPILMADI** ("hepsi birden" yordamı verildi; ESC markası bilinmiyor) → 6 Eylül: yapıldı (BEYAN; başarılı yordam D-428 §3), marka Hobbywing Skywalker 60A V2 (etiket, BEYAN) | R3 |
 | parametre dökümü (5 Eylül) | **dosya YOK** (kontrol edildi) → 6 Eylül 20:22 dökümü `config/pixhawk/arducopter_fda_20260906.param` repoda (D-428 §5g) | R3 |
-| pil gerilimi MP ↔ multimetre (±0,1 V) | ÖLÇÜLEMEDİ | — |
-| pusula kalibrasyonu | dışarıda, her şey takılıyken — **Jetson takılı DEĞİL**; Jetson takılınca yeniden | R3 |
-| accel + level | BEYAN "yapıldı" — kart sabitlenmiş miydi belirsiz; **teyit yok** | R3 |
-| ESC sinyal kablosu kırmızı tel (BEC) | soruldu, cevap gelmedi | R3 |
+| pil gerilimi MP ↔ multimetre (±0,1 V) | ÖLÇÜLEMEDİ → 6 Eylül **ÖLÇÜLDÜ**: multimetre 15,8 V ↔ MP 15,8 (D-428 §1) | — |
+| pusula kalibrasyonu | dışarıda, her şey takılıyken — **Jetson takılı DEĞİL**; Jetson takılınca yeniden → 6 Eylül: 2 kalibrasyon, ofsetler §4.6 (Jetson yine takılı değildi) | R3 |
+| accel + level | BEYAN "yapıldı" — kart sabitlenmiş miydi belirsiz; **teyit yok** → 6 Eylül: 18:37 dökümünde 0/1/0 (beyan **yanlıştı**, flash sıfırlamıştı) → 20:22'de **ÖLÇÜLDÜ** (§4.6) | R3 |
+| ESC sinyal kablosu kırmızı tel (BEC) | soruldu, cevap gelmedi → 6 Eylül: 4 kırmızı tel rayda paralel (BEYAN), 3'ünün çıkarılması **ertelendi** (D-428 §5f, D-429 §4) | R3 |
 
 **Uçuş kararı:** 18:5x'te gelen "uçalım" **reddedildi** (`REVIEW_LOG.md:29871-29878`):
 plan "Paz 6 sabah: pusula dışarıda + ilk hover 3.1"; ESC kalibrasyonu yok;
@@ -1254,6 +1336,91 @@ ilk kez o zaman takılır.
 ⚠ **Bu alt bölümün KANITLAMADIĞI:** Jetson, kamera ve NAVITAS yazılımı bu
 tezgâha **bağlı değildi**; `mavlink_dogrula --kapi` gerçek Pixhawk'ta koşmadı
 (§4.13.1 kalem 6 açık). Motor yön/sıra doğruluğu ve SiK bağlantısı **BEYAN**dır.
+
+### 4.10.5 6 Eylül — kalibrasyon, RC failsafe ölçümü ve pervaneli üç devrilme (D-428 / D-429 / D-433 / D-434)
+
+İki oturum aynı kartı aynı akşam yönetti ve birbirinden habersizdi (D-429 §0): 18:30–20:50
+tutanağı (D-428) "uçuş yok, pervane takılmadı, arm edilmedi" derken 20:45–21:45 arasında
+**pervaneli 26 gerçek arm** ve üç devrilme yaşandı; bunlar Mission Planner'ın kendi yazdığı
+telemetri logundan 7 Eylül'de ölçüldü. **ÖLÇÜM** = tlog
+(`results/ucus_loglari/20260906/2026-09-06 19-52-44.tlog`, 17,98 MB, 19:52–21:56) ve
+20:22 parametre dökümü; **BEYAN** = sözlü bildirim. Çözümleyiciler
+`scripts/ucus_tlog_devrilme.py`, `ucus_tlog_arm.py`, `ucus_tlog_arm_detay.py`,
+`ucus_tlog_pitch_kolu.py`; ham çıktılar aynı klasörde (`*_devrilme.txt`, `arm_analizi.txt`,
+`arm_analizi_detay.txt`, `pitch_kolu_analizi.txt`). Bu alt bölüm 10 Eylül'de yazıldı.
+
+**(a) Tezgâh — 18:30–20:50** (D-428 §1–4, `REVIEW_LOG.md:29954–30007`):
+
+| kalem | sonuç | tür |
+|---|---|---|
+| Firmware | `ArduCopter V4.5.7 (2a3dc4b7)` · `Frame: QUAD/X` (tlog STATUSTEXT t=4,3 s; `…_devrilme.txt:44` ve devamı) | ÖLÇÜM |
+| "Önce" dökümü 18:37 | 1025 parametre, şablonla 28/31 uyan, 0 eksik; sapan `RC_PROTOCOLS=1`, `SR1_POSITION=2`, `SR1_EXTRA3=2` — dosya operatörce aynı adla **üzerine yazıldı** (D-428 §5g) | ÖLÇÜM (grep çıktısı, dosya yok) |
+| Pil gerilimi | multimetre **15,8 V** (balans dış pinler) ↔ MP 15,8; `BATT_VOLT_MULT,18.18` değişmedi (`:143`) | ÖLÇÜM (±0,1 V kapısı geçti) |
+| Accel + level, pusula | 20:22 dökümü — §4.6 tablosu | ÖLÇÜM |
+| ESC kalibrasyonu | "hepsi birden" 2 deneme başarısız; 3. deneme: `POWER1` çıkarılmış + USB'de ESC-kal passthrough + **sonra** pil → dördü birlikte döndü (Skywalker V2 kararı açılış anında verir) | BEYAN (yordam D-428 §3) |
+| Motor testi (%10, pervanesiz) | "motorlar doğru" — A/B/C/D konum+yön listesi ve video **gelmedi** | BEYAN |
+| GPS / EKF | 18 uydu; `EKF3 IMU0/IMU1 is using GPS` | ÖLÇÜM (yapıştırılan satır) |
+| **RC failsafe** | **ÖLÇÜLDÜ — DÜŞTÜ**: `Setup → FailSafe` açıkken kumanda kapatıldı, barlar **sabit kaldı**, `Radio Failsafe` gelmedi → §4.12 | ÖLÇÜM (D-428 §2) |
+| Kumanda pili | "TX pili bitti gösteriyor, RX full" — akşam iki kez RC kaybı; `RC_PROTOCOLS` 4→1 denemesi ve `RC IN` fişiyle karıştı, üç değişken **ayrışmadı** (D-428 §4, §5a) | BEYAN |
+
+**(b) Pervaneli üç devrilme — 20:56 / 21:00 / 21:34** (D-429 §1–2, `REVIEW_LOG.md:30078–30112`):
+tlog'da **41** arm penceresi (`…_devrilme.txt:348`); ilk 15'i 2 s'lik motor testleri, 16–41
+gerçek arm. Pilotun roll/pitch kolu üç devrilmenin başında **merkezde** (roll 1500, pitch 1502
+= `RC2_TRIM`; `pitch_kolu_analizi.txt:3–10, 115–122`). Motor eşlemi AUX1=M4 (sağ arka) ·
+AUX2=M2 (sol arka) · AUX3=M1 (sağ ön) · AUX4=M3 (sol ön) (D-428 §5d).
+
+| pencere | saat | süre | gaz adımı (CH3, PWM) | ölçülen pitch | FC komutu (SERVO çıkışı, PWM) | kaynak satırı |
+|---|---|---|---|---|---|---|
+| **19** | 20:56 | 12 s | 1002 → **1446** (0,2 s) → **1656** (0,6 s) | −0,7 → −4,2 → **−43,8°** (pencere min; `pitch_kolu_analizi.txt:37`) | dört komut 1517–1559 iken burun düşmeye başladı; sonra ön **M1 1766 · M3 1809** vs arka M4 1604 · M2 1598 → ön +200 komutla burun **daha da** düştü | `…_devrilme.txt:1425` · D-429 §1 |
+| **20** | 21:00 | 32 s | 1095 → 1185 → 1305 → 1344 → **1821** (0,2 s) | −10 → −15,2 (D-429 tablosu); pencere min **−19,3°** / maks +19,1° (`pitch_kolu_analizi.txt:112`); 32 s burun-aşağı + sağ-aşağı | **M1 1949 (doygun) ~25 s**, M2 1150 (taban) — sağ-ön köşe yerde kaldı | `…_devrilme.txt:1569` · D-429 §1 |
+| **26** | 21:34 | 8 s | 1079 → **2000** (0,5 s) | −1,1 → −8,5 → **−38,8°** (pencere min; `pitch_kolu_analizi.txt:141`; D-429 tablosu −36,9) | M1 1949 · M2 1757 · M3 1728 · M4 1470 | `…_devrilme.txt:2262` · D-429 §1 |
+| 37 | 21:44 | 23 s | 1057 → 1174 → 1340 → 1480 → 1818 → 2000 (**2,5 s**'de) | **+1,4 … +1,9°** sabit (`pitch_kolu_analizi.txt:238`) | dördü 1889–1949, 3,5 s tam gazda **düz** — devrilme YOK; pervanesiz motor koşusu olduğu **çıkarımdır** (D-434 ölçüm 3) | `…_devrilme.txt:3244` |
+
+Logun hükmü (D-429 §2): (1) FC **doğru yönde** düzeltti — her devrilmede ön motorlara daha
+yüksek komut; mixer/yönelim ters değil; FC çerçevesi = fiziksel çerçeve (180° hipotezi
+elendi: öyle olsa FC pozitif pitch ölçerdi). (2) Fiziksel ön, komut edilen itkiyi üretmedi.
+(3) İlk asimetri komut **eşitken** oluştu (pencere 19, t+2,8 s, 1517–1559) → kaynak FC değil.
+(4) **M1 (sağ ön) hasarlı**: pencere 20'den itibaren 1949'da tutuluyor; duman atan motor bu.
+(5) Gaz **adımla** verildi: 0,2–0,6 s'de 1000 → 1446/1656/1821/2000; `MOT_THST_HOVER,0.35`
+(varsayılan, öğrenilmemiş; `arducopter_fda_20260906.param:580`), `MOT_SLEW_UP_TIME,0` (`:573`).
+Roll bütün devrilmelerde küçük (|roll| < 6° pencere 19); olay **pitch** eksenindedir.
+
+**(c) Kumandadan arm/disarm neden olmuyor** (D-433, `REVIEW_LOG.md:30245–30291`):
+
+| bulgu | ölçüm | kaynak |
+|---|---|---|
+| Anahtar sinyali kontrolcüye ulaşıyor | CH6 iki değer {1000, 2000}; akşam boyunca **56** çevirme, ±3 s içinde arm geçişi **0/56** | `arm_analizi.txt:10` · `arm_analizi_detay.txt:57–113` |
+| Kontrolcü CH6'ya işlev bağlamamış | `RC6_OPTION,0` (`arducopter_fda_20260906.param:735`); şablon da hiçbir `RCx_OPTION` içermiyor → anahtarla arm hiç **planlanmamıştı**, saha bunu varsaydı | döküm |
+| Dümenle arm ÇALIŞIYOR | `ARMING_RUDDER,2` (`:33`); 21:36:10–25 yaw 2000 iken gaz 1233 → 1107 → 1043 (eşik `RC3_MIN` 1000 + `RC3_DZ` 30 = **≤ 1030**; `:716`, `:714`) → arm yok; gaz 1003'e inince **2 s sonra 21:36:27 (t=6222,1) ARMED** — o anda GCS arm komutu yok (400'ler 6178,1 ve 6292,9 s'de) | `arm_analizi_detay.txt:4–26, 50` · `arm_analizi.txt:116–118, 125` |
+| Disarm kendiliğinden | 21:36:43 DISARMED — `DISARM_DELAY,10` (`:271`): yerde gaz sıfırda 10 s; akşam boyunca hiç yaw-sol disarm denemesi yok | `arm_analizi_detay.txt:51` · `arm_analizi.txt:128` |
+| Uçuş modu anahtarı (yan bulgu) | `FLTMODE1–3,0` Stabilize · `FLTMODE4,5` Loiter · **`FLTMODE6,9` Land** (`:387–392`) → CH5 üst konum **LAND**; Bölüm 3 §3.3.1.1.10 "Stabilize / Loiter / RTL" beyanıyla **uyuşmuyor** — karar kullanıcının | döküm |
+
+Hüküm (D-433): kumandadan arm "bozuk" değil — anahtar için `RC6_OPTION=153` atanmamış; dümenle
+arm gaz ≤ 1030 + yaw ≥ ~1947 **2 s** ister. Şablona ekleme **ÖNERİ**, uygulanmadı (mimar kararı).
+
+**(d) Pilot kolu ve seviye — devrilme adayları** (D-434, `REVIEW_LOG.md:30292–30331`):
+
+| aday | ölçüm | sonuç |
+|---|---|---|
+| "Pilot burnu bastırdı" | Üç devrilmenin başında roll 1500 / pitch 1502; pitch kolu yalnız P20'de 21:00:40–46'da (araç yerde, gaz 1569–1745) 1113/1988 uçlarına gitti — ilk eğilmeden **~10 s sonra** (`pitch_kolu_analizi.txt:75–78, 85–86`) | **KAPANDI** |
+| "Kontrolcü seviyesi yanlış" | `AHRS_TRIM_Y` −0,0257 rad (−1,47°), `AHRS_TRIM_X` ≈ 0 (`:21–22`); yerde −0,6…−1,1° (P19/P26) ve +1,5° (P37) okuyor; `RC1_REVERSED` = `RC2_REVERSED` = 0 (`:664`, `:712`) | **KAPANDI** (yanlış olsa yerde ±10° okurdu) |
+| Arka, hover altında kalkıyor | P19'da ilk eğilme gaz **1446** (%45) iken; `MOT_THST_HOVER` 0,35 öğrenilmemiş; dört komut eşitken arkanın önce kalkması → arka itki > ön **ya da** CG önde — log ayıramaz | **AÇIK** |
+| Motor yönü / pervane eli | kullanıcı BEYANI ile elendi; **video yok** (D-429 §6 kuralı: videosuz "doğru" sayılmaz) | BEYAN |
+
+Kalan iki aile (D-434 hüküm): **(a)** komut başına itki asimetrisi — ESC uç noktaları, ön
+motor/ESC zayıflığı, ani gazda senkron kaybı; tezgâh ölçümü: aynı PWM'de dört motorun pervane
+geçiş frekansı ±%3. **(b)** ağırlık-geometri — CG önde (askı testi), ön ayak pivotu, kol/ayak
+eşitliği. Motor künyesi 7 Eylül'de değişti (5008 340KV iade; SunnySky X2220 980KV V3 **BEYAN**,
+D-435; veri sayfası tam gaz 38,4 A > 38 A/30 s sınırı, D-435 ek 2 — P20'de M1 ≈25 s tam gazda:
+duman veri sayfası rejiminde **beklenen** sonuç). Kural (D-429 §6): kalkış = ≥ 2 s rampa,
+`MOT_SLEW_UP_TIME` 1,0 s; motor yönü videosuz sayılmaz; tek aktif saha oturumu; olay = önce log.
+Tekrar güç vermeden `SAHA_OLAY_SONRASI_MUAYENE.md` (15 madde; M1 değişimi).
+
+⚠ **Bu alt bölümün KANITLAMADIĞI:** hover ya da uçuş yok — üç pencere yerde devrilmedir; tlog
+irtifa/akım taşımaz, `VIBE` titreşim kaydı için DataFlash `.bin` gerekir — **indirilmedi** (D-429 §5);
+motor yönü ve pervane eli **BEYAN**; P37'nin pervanesiz olduğu **çıkarım**; 10 Eylül'deki "hover
+yapabiliyoruz" **BEYAN** (D-439 §4 — tarih/log/video yok; T223). Jetson ve NAVITAS yazılımı bu
+akşam da Pixhawk'a bağlı **değildi**.
 
 ---
 
@@ -1371,21 +1538,40 @@ gerçek Pixhawk ve gerçek telsizle **aynı anda** koşulan bir yer entegrasyonu
 > **sahada test edildiğini** gösteren verilerin raporda sunulması
 > gerekmektedir."*
 
-🔴 **ÖLÇÜLEMEDİ: hiçbir arıza emniyet tepkisi sahada test edilmedi. Eve dönüş
+🔴 **ÖLÇÜLEMEDİ: ~~hiçbir arıza emniyet tepkisi sahada test edilmedi.~~ Eve dönüş
 (RTL), motor kesme (DISARM), geofence ihlali ve telemetri kaybı davranışları
-gerçek araçta hiç tetiklenmedi; 5 Eylül'de uçuş yapılmadı. Ölçüm uçuş
-testlerindedir (§4.3.3).**
+gerçek araçta hiç tetiklenmedi; 5 Eylül'de uçuş yapılmadı, 6 Eylül'de de uçuş yok.
+Ölçüm uçuş testlerindedir (§4.3.3).** → **6 Eylül'de tek satır ÖLÇÜLDÜ — ve DÜŞTÜ**
+(10 Eylül'de işlendi): RC kaybı (kumanda kapatma) tezgâhta, pervanesiz, `Setup → FailSafe`
+sayfası açıkken denendi; barlar **sabit kaldı**, `Radio Failsafe` gelmedi (D-428 §2,
+`REVIEW_LOG.md:29968–29983`). Yani FS-iA6B alıcı iBUS'ta link kopunca **son değerleri
+tutuyor**; ne "pulse yok" yolu ne `FS_THR_VALUE=975` yolu tetikleniyor — kontrolcü arızayı
+**görmez**, dolayısıyla RTL/Land tepkisi hiç başlamaz. Havada link kopması = son çubuk
+konumuyla uçmaya devam eden araç. **Düzeltme kumandadadır**, kartta değil: FS-i6
+`RX Setup → Failsafe`, CH5 → SwC **Land** konumu, CH3 → gaz altta; test ölçütü: kumanda
+kapanınca CH5 barı Land'e zıplar, HUD modu `Land` olur. 6 Eylül'de operatörün menüsünde yalnız
+CH11–16 + "All channels" görüldü, deneme "olmadı"; "sabah pilli kumandayla tekrar" planlandı —
+**10 Eylül itibarıyla tekrar kaydı yok** (`REVIEW_LOG.md` D-429…D-439 arasında failsafe
+ölçümü geçmiyor).
 
-**5 Eylül 2026 durumu** (`REVIEW_LOG.md` D-426 §4; kart masa üstünde, pervanesiz):
+🔴 **`Y-4-M12` "sahada test edildiğini gösteren veri" şartı KARŞILANMADI.** Elde olan tek
+ölçüm bir **tezgâh alıcı testidir** ve sonucu olumsuzdur: tepkinin (eve dönüş / motor kesme)
+kendisi hiçbir senaryoda tetiklenmedi. Bu bölüm bunu ölçülmüş bir başarı gibi **sunmaz**.
 
-| arıza senaryosu | şablon parametresi (`config/pixhawk/arducopter_fda.param`) | 5 Eylül |
-|---|---|---|
-| RC kaybı (kumanda kapatma) | `FS_THR_ENABLE,1` (satır 129) | **ÖLÇÜLEMEDİ** — test iki kez istendi, sonuç gelmedi. Dosyadaki yorum *"iBUS alıcısı sinyal kaybında çerçeve basmayı keser"* (satır 128) **varsayımdır**, ölçülmedi; alıcının failsafe'de ne yaptığı bilinmiyor |
-| YKS/Jetson bağlantı kaybı | `FS_GCS_ENABLE,1` (satır 134) | tetiklenmedi |
-| Düşük pil | `BATT_FS_LOW_ACT,2` / `BATT_FS_CRT_ACT,1` (satır 120 / 123) | tetiklenmedi; pil takılı, PreArm pil uyarısı kayboldu (OLCUM, §4.4) |
-| Geofence | `FENCE_ENABLE,1` / `FENCE_ACTION,1` (satır 140 / 154) | tetiklenmedi; karttaki değer dökümsüz (§4.13.1 #9) |
-| Motor kesme (DISARM) | — | uçuş yok |
-| Emniyet düğmesi | `BRD_SAFETY_DEFOFF` değiştirilmedi | fiziksel düğme çözüldü, OLCUM `PreArm: Hardware safety switch` kayboldu — bu bir **arm ön koşuludur**, arıza tepkisi değil |
+~~**5 Eylül 2026 durumu** (`REVIEW_LOG.md` D-426 §4; kart masa üstünde, pervanesiz):~~
+**5 ve 6 Eylül 2026 durumu** (`REVIEW_LOG.md` D-426 §4, D-428 §2/§5; kart masa üstünde,
+pervanesiz; 6 Eylül sütunu 10 Eylül'de eklendi — kart değeri 20:22 dökümü
+`config/pixhawk/arducopter_fda_20260906.param` ve tlog son `PARAM_VALUE`,
+`results/ucus_loglari/20260906/2026-09-06 19-52-44_devrilme.txt`):
+
+| arıza senaryosu | şablon parametresi (`config/pixhawk/arducopter_fda.param`) | 5 Eylül | 6 Eylül (ÖLÇÜM) |
+|---|---|---|---|
+| RC kaybı (kumanda kapatma) | `FS_THR_ENABLE,1` (satır 129) | **ÖLÇÜLEMEDİ** — test iki kez istendi, sonuç gelmedi. Dosyadaki yorum *"iBUS alıcısı sinyal kaybında çerçeve basmayı keser"* (satır 128) **varsayımdır**, ölçülmedi; alıcının failsafe'de ne yaptığı bilinmiyor | **ÖLÇÜLDÜ — DÜŞTÜ** (D-428 §2): alıcı son değeri tutuyor, `Radio Failsafe` gelmedi; **düzeltme: kumanda failsafe ayarı** (yukarıda), tekrar ölçümü yok. Kart: `FS_THR_ENABLE,3` (Land; `:411` — şablon 1'den bilinçsiz değişmiş, D-428 §5b) · `FS_THR_VALUE,975` (`:412`) |
+| YKS/Jetson bağlantı kaybı | `FS_GCS_ENABLE,1` (satır 134) | tetiklenmedi | tetiklenmedi. Kart: dökümde `FS_GCS_ENABLE,1` (`:408`), tlog son değeri **5** (Land; `…_devrilme.txt:28`) — hop için 5 istenmişti (D-428 §5c), döküm sonrası yazılmış (**çıkarım**) |
+| Düşük pil | `BATT_FS_LOW_ACT,2` / `BATT_FS_CRT_ACT,1` (satır 120 / 123) | tetiklenmedi; pil takılı, PreArm pil uyarısı kayboldu (OLCUM, §4.4) | tetiklenmedi. Kart: `BATT_FS_LOW_ACT,1` (Land; `:134` — şablon 2'den bilinçsiz değişmiş, D-428 §5b); pil gerilimi 15,8 V ölçüldü (D-428 §1) |
+| Geofence | `FENCE_ENABLE,1` / `FENCE_ACTION,1` (satır 140 / 154) | tetiklenmedi; karttaki değer dökümsüz (§4.13.1 #9) | tetiklenmedi. Kart: `FENCE_ENABLE,1` (`:361`) · `FENCE_ACTION,1` (`:358`) · `FENCE_ALT_MAX,50` (`:359`) — döküm var, ihlal denemesi **yok** |
+| Motor kesme (DISARM) | — | uçuş yok | arıza tepkisi olarak tetiklenmedi. Yerde otomatik disarm ÖLÇÜLDÜ: `DISARM_DELAY,10` (`:271`), 21:36:43 gaz sıfırda ~11 s sonra DISARMED (D-433 ölçüm 4; `arm_analizi_detay.txt:51`) — bu bir **yer zamanlayıcısıdır**, arıza tepkisi değil |
+| Emniyet düğmesi | `BRD_SAFETY_DEFOFF` değiştirilmedi | fiziksel düğme çözüldü, OLCUM `PreArm: Hardware safety switch` kayboldu — bu bir **arm ön koşuludur**, arıza tepkisi değil | her güç kesmede yeniden kilitlendi (`Motor Test: Safety switch` 20:19:13; `arm_analizi_detay.txt:54`); `BRD_SAFETY_DEFOFF` değiştirilmedi |
 
 ⚠ Parametrelerin **kartta** hangi değerde olduğu 5 Eylül'de ölçülmedi: döküm
 alınmadı; `RC_PROTOCOLS` sahada 4 → 1 yapılıp geri alınmadı (D-426 §2), dolayısıyla
@@ -1405,13 +1591,17 @@ komutlarının **yazılım yolunun** kapı altında olmasıdır:
 ⚠ **Bu tablo bir arıza emniyet kanıtı DEĞİLDİR.** Gösterdiği şey, komutun doğru
 `MAV_CMD`'ye çevrildiği ve reddedilmesi gerekenin reddedildiğidir; **gerçek
 Pixhawk'ın gerçek arızada ne yaptığını göstermez**. Yönergenin istediği "sahada
-test edilmiş veri" 6–19 Eylül'de üretilecektir; ilgili kapılar §4.3.3'te adım
+test edilmiş veri" ~~6–19 Eylül'de üretilecektir~~ → 10 Eylül itibarıyla **üretilmedi**
+(uçuş yok; §4.3.3); ilgili kapılar §4.3.3'te adım
 3.2 (geofence + iniş kanıtı canlı) ve adım 3.5 (hands-off, 0 müdahale) olarak
-önceden yazılıdır.
+önceden yazılıdır. RC failsafe düzeltmesi (kumanda ayarı) ve **tekrar ölçümü** adım 3.1'in
+ön koşuludur (D-428 §2: "bench'te ölen kumanda + çalışmayan failsafe = pervane yok").
 
 **BEYAN GEREKLİ (insan):** her arıza emniyet senaryosu için tetikleme yöntemi
 (telemetri kablosunu çekme, geofence sınırını aşma, kumandayı kapatma), tarih,
-pilot rol kodu ve uçuş log dosyasının adı.
+pilot rol kodu ve uçuş log dosyasının adı. RC failsafe tekrarı için ayrıca: kumanda
+failsafe ayarının yapıldığı tarih, CH5/CH3 failsafe değerleri ve `Radio Failsafe` satırının
+ekran görüntüsü.
 
 ---
 
@@ -1437,13 +1627,13 @@ pilot rol kodu ve uçuş log dosyasının adı.
 | 9 | **Pixhawk geofence parametrelerinin kendisi** | Repo dışı (R17) → 5 Eylül: şablon yüklendi (OLCUM, §4.4 15:08) ama döküm **alınmadı** (D-426 §4) → 6 Eylül 20:22 dökümü `config/pixhawk/arducopter_fda_20260906.param` repoda: `FENCE_ENABLE,1` · `FENCE_ALT_MAX,50` (D-428 §5g); üçüncü döküm bekleniyor | uçuş öncesi | `config/pixhawk/` kanıt olarak |
 | 10 | **K5 figür bilgi px** | verdikt JSON'ında `OLCULEMEDI` | — | — |
 | ~~11~~ | ~~**Nano kurulum belgesinin dış iddiaları**~~ (bionic `python3.8`, `jetson-io` IMX477 menüsü, Qengineering CUDA wheel) → **6 Eylül'de KONUSUZ KALDI (D-431):** kart Nano değil Orin Nano Developer Kit 4 GB (JetPack 7.2.1, Python 3.12); belge bu kart için GEÇERSİZ bandı alır | Kaynakla doğrulanmadı; 14/14 aarch64 wheel bu kartta kullanılmadı | — | — |
-| 12 | **RC failsafe** (kumanda kapatma → `Radio Failsafe`, CH3 değeri) — 5 Eylül eklendi | İki kez istendi, sonuç gelmedi (D-426 §4); `config/pixhawk/arducopter_fda.param:128` yorumu **varsayım** | uçuş öncesi (§4.3.3 adım 3.1 öncesi) | `Radio Failsafe` mesajı görülür ve `FS_THR_ENABLE=1` tepkisi (RTL) — §4.12 |
-| 13 | **ESC kalibrasyonu** — 5 Eylül eklendi | YAPILMADI; ESC markası bilinmiyor ("60 A V2" etiketi, BEYAN) | uçuş öncesi | ArduPilot "hepsi birden" yordamı ya da marka belgesiyle gereksizlik kanıtı (D-426 §4) |
-| 14 | **Pusula kalibrasyonu** — 5 Eylül eklendi | YAPILMADI — Jetson takılı değil; takılınca yeniden gerekir (D-426 §4) | Jetson takılı, dışarıda | ofset < 300 (`SAHA_HAZIRLIK_PLANI_20260903.md` §2.4) |
-| 15 | **Accel + level teyidi** — 5 Eylül eklendi | BEYAN "yapıldı"; kart sabit değildi, döküm yok (D-426 §4) | kart sabitlenince | `INS_*` dökümü |
+| 12 | **RC failsafe** (kumanda kapatma → `Radio Failsafe`, CH3 değeri) — 5 Eylül eklendi | İki kez istendi, sonuç gelmedi (D-426 §4); `config/pixhawk/arducopter_fda.param:128` yorumu **varsayım** → **6 Eylül ÖLÇÜLDÜ ve DÜŞTÜ** (D-428 §2): barlar sabit kaldı, `Radio Failsafe` gelmedi; varsayım **yanlışlandı**; düzeltme kumanda failsafe ayarı, tekrar ölçümü 10 Eylül itibarıyla **yok** (§4.12) | uçuş öncesi (§4.3.3 adım 3.1 öncesi) | `Radio Failsafe` mesajı görülür ve tepki (kartta `FS_THR_ENABLE,3` Land, `arducopter_fda_20260906.param:411`) — §4.12 |
+| 13 | **ESC kalibrasyonu** — 5 Eylül eklendi | YAPILMADI; ESC markası bilinmiyor ("60 A V2" etiketi, BEYAN) → 6 Eylül: yapıldı (BEYAN, yordam D-428 §3); marka Hobbywing Skywalker 60A V2 (etiket, BEYAN); ESC uç noktaları tezgâhta ölçülmedi (D-434 (a) ailesi açık) | uçuş öncesi | ArduPilot "hepsi birden" yordamı ya da marka belgesiyle gereksizlik kanıtı (D-426 §4) |
+| 14 | **Pusula kalibrasyonu** — 5 Eylül eklendi | YAPILMADI — Jetson takılı değil; takılınca yeniden gerekir (D-426 §4) → 6 Eylül: 2 kalibrasyon; 1.'nin ofsetleri dökümde Mag1 15,4 / Mag2 129,5 < 300 → **GEÇTİ** (§4.6); 2.'nin tam dökümü **yok**; Jetson yine takılı değildi → Jetson takılınca yeniden | Jetson takılı, dışarıda | ofset < 300 (`SAHA_HAZIRLIK_PLANI_20260903.md` §2.4) |
+| 15 | **Accel + level teyidi** — 5 Eylül eklendi | BEYAN "yapıldı"; kart sabit değildi, döküm yok (D-426 §4) → 6 Eylül **ÖLÇÜLDÜ**: 18:37 dökümünde 0/1/0 (beyan yanlıştı, flash sıfırlamıştı) → 20:22'de `INS_ACCOFFS` `0.01807415` / `0.002790652` / `-0.2912262`, `AHRS_TRIM_Y` `-0.02569767` rad (§4.6, D-428 §1); kart çift taraflı bantla sabit (BEYAN) | kart sabitlenince | `INS_*` dökümü |
 | 16 | **Parametre dökümü** — 5 Eylül eklendi | 5 Eylül: dosya yok (D-426 §4) → **6 Eylül 20:22:** `config/pixhawk/arducopter_fda_20260906.param` repoda (D-428 §5g); `RC_PROTOCOLS=1` (şablon 4), `FS_THR_ENABLE`/`BATT_FS_LOW_ACT` sapması (D-428 §5b); ikinci pusula kalibrasyonu ve `FS_GCS_ENABLE` bu dökümde yok | uçuş öncesi (üçüncü döküm) | döküm repoda, şablonla `Compare Params` farkı listeli |
-| 17 | **Pil gerilimi MP ↔ multimetre** — 5 Eylül eklendi | ölçülmedi (D-426 §4) | uçuş öncesi | ±0,1 V |
-| 18 | **Motor sırası/yönü** — 5 Eylül eklendi | BEYAN 4/4, video yok (D-426 §1) | pervane takılmadan önce | video — §4.13.4 madde 7 |
+| 17 | **Pil gerilimi MP ↔ multimetre** — 5 Eylül eklendi | ölçülmedi (D-426 §4) → 6 Eylül **ÖLÇÜLDÜ**: multimetre 15,8 V ↔ MP 15,8 (D-428 §1); `BATT_VOLT_MULT,18.18` (`arducopter_fda_20260906.param:143`) | uçuş öncesi | ±0,1 V |
+| 18 | **Motor sırası/yönü** — 5 Eylül eklendi | BEYAN 4/4, video yok (D-426 §1) → 6 Eylül yine BEYAN (liste ve video gelmedi, D-428 §1); tlog: FC çerçevesi = fiziksel çerçeve, mixer ters değil (D-429 §2) — bu motor **yönünü** kanıtlamaz | pervane takılmadan önce | video — §4.13.4 madde 7 |
 
 ### 4.13.2 Kapı/test boşlukları — **3'ü kapandı, 3'ü açık**
 
@@ -1593,6 +1783,11 @@ Bu maddeler kapanmadan ilgili kayıtlar "tamamlanmış" sayılmaz ve bu raporda 
 | 69 | Eğitim-val karışıklık matrisi (örnek düzeyi, conf 0,25 · IoU 0,45, n=73): 68/0/22 · 0/108/55 · 70/132/— | `codes/runs/segment/gece_v7a_v35taban/confusion_matrix.png` (+`_normalized.png`; depo dışı, `.gitignore` `runs/`) | Ultralytics 8.4.92 eğitim sonu doğrulaması (`best.pt` = üretim `.pt`, SHA-256 eş; D-115) | 2026-08-26 |
 | 70 | Eğitim-val maske P 0,6236 · R 0,4168 (toplam, sınıf bazlı değil) | `codes/runs/segment/gece_v7a_v35taban/results.csv` satır 3 (epoch 2) | Ultralytics eğitim (`scripts/olcum/139_gece_egitim.py`) | 2026-08-26 |
 | 71 | v36 sınıf bazlı artefakt YOK; `sinif_bazli` en son v15 | `results/capraz_dogrulama_v15_ft2sinif_20260812/capraz_dogrulama.json` | `scripts/olcum/11_capraz_dogrulama.py` | 2026-08-12 |
+| 72 | 6 Eylül 20:22 parametre dökümü: 1025 parametre; `INS_ACCOFFS` 0.01807415 / 0.002790652 / −0.2912262 · `INS_ACCSCAL` 1.000929 / 0.9987385 / 1.002444 · `INS_GYROFFS` −0.01052934 / −0.03704018 / 0.003532802 · `AHRS_TRIM` −0.001765323 / −0.02569767 · `COMPASS_OFS` 6.960523 / 8.688463 / 10.66457 · `COMPASS_OFS2` 19.42854 / −126.0526 / −22.47731 · `ARSPD_ENABLE,0` · `RC6_OPTION,0` · `FS_THR_ENABLE,3` · `MOT_SLEW_UP_TIME,0` | `config/pixhawk/arducopter_fda_20260906.param` (sha256 `4acc4476…28e9`; satırlar §4.6 tablosunda) | Mission Planner 1.3.83 `Full Parameter List → Save to file` (README §1 adım 6); nöbetçi `tests/test_fdr_bolum4_6eylul_kaniti.py` | 2026-09-06 |
+| 73 | Tlog: **41** arm penceresi; devrilme pencereleri 19/20/26 pitch min −43,8 / −19,3 / −38,8°, pencere 37 +1,4…+1,9°; tlog son `COMPASS_OFS` −1.14309 / −3.03732 / 16.3172, `FS_GCS_ENABLE` 5 | `results/ucus_loglari/20260906/2026-09-06 19-52-44.tlog` (17,98 MB) · `…_devrilme.txt` (:28, :31–33, :348, :1425, :1569, :2262, :3244) · `pitch_kolu_analizi.txt` (:37, :112, :141, :238) | `scripts/ucus_tlog_devrilme.py` · `scripts/ucus_tlog_pitch_kolu.py` (D-429 / D-434) | 2026-09-06 (olay) / 2026-09-07 (analiz) |
+| 74 | CH6 **56** çevirme, arm geçişi 0/56; dümenle arm 21:36:27 (t=6222,1) gaz 1003 · yaw 2000; otomatik disarm 21:36:43; `Motor Test: Safety switch` 20:19:13 | `results/ucus_loglari/20260906/arm_analizi.txt` (:10, :125) · `arm_analizi_detay.txt` (:22–26, :50–51, :54, :113) | `scripts/ucus_tlog_arm.py` · `scripts/ucus_tlog_arm_detay.py` (D-433) | 2026-09-07 |
+| 75 | RC failsafe ÖLÇÜLDÜ ve **DÜŞTÜ**: kumanda kapatıldı, barlar sabit, `Radio Failsafe` yok; pil 15,8 V ↔ 15,8; 18:37 "önce" dökümü 0/1/0 (üzerine yazıldı) | `REVIEW_LOG.md:29954–29983` (D-428 §1–2) — ham dosya **yok** (MP ekran görüntüsü alınmadı) | oturum tutanağı (operatör beyanı + yapıştırılan satırlar) | 2026-09-06 |
+| 76 | Takvim gerçekleşmesi: 5 Eyl tezgâh · 6 Eyl Jetson 17:05–19:30 + saha 18:30–20:50 + devrilme 20:45–21:45 · 7 Eyl analiz · 10 Eyl sprint; hover **BEYAN** (tarih/log/video yok) | `REVIEW_LOG.md` D-426 (:29811), D-431 (:30186), D-428 (:29939), D-429 (:30061), D-433/D-434 (:30245, :30292), D-438/D-439 | — (kayıt tarihleri) | 2026-09-05…10 |
 
 ---
 

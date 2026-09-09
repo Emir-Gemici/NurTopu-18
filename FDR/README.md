@@ -131,7 +131,9 @@ Bölüm 2'de tarihli olarak izlenir — bu bir tutarsızlık değil, ölçüm zi
 
 ## Açık kalemler (rapor teslimden önce kapanacak)
 
-- **BEYAN GEREKLİ (insan):** ekip isimleri ve rol ataması, birim fiyatlar ve
+- **BEYAN GEREKLİ (insan):** ~~ekip isimleri ve rol ataması~~ (kalem #17 **düştü** —
+  yönerge Bölüm 2.1 kişisel veriyi yasaklar, rapor rol bazlıdır; D-417, 10 Eylül
+  düzeltmesi), birim fiyatlar ve
   tedarik durumu, 3B baskı süreleri, ölçülen gerçek kütleler.
 - **ÖLÇÜLECEK (cumartesi ve sonrası):** ~~Jetson Nano gerçek FPS~~ (6 Eylül'de Orin Nano üzerinde ÖLÇÜLDÜ, GEÇTİ — D-431), SiK RF menzili,
   uçuş testleri, gerçek arena/HTAB karesi.
