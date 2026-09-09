@@ -8,7 +8,7 @@ from link import UDPLink
 from iha_sender import IhaSender
 from ika_receiver import IkaReceiver
 from yks_monitor import FrameReader  # noqa (paket içi tutarlılık)
-from protocol import encode, ack, FrameReader as FR
+from protocol import encode, ack, FrameReader as FR, MESAJ_OPEN_ROUTE, MESAJ_NO_ROUTE
 
 
 def _make_acker(link, node):
@@ -19,9 +19,9 @@ def _make_acker(link, node):
     def poll():
         d, addr = link.recv()
         for m in reader.feed(d) if d else []:
-            if m.get("type") == "OPEN_ROUTE":
+            if m.get("type") == MESAJ_OPEN_ROUTE:
                 box["latest"] = m
-            elif m.get("type") == "NO_ROUTE":
+            elif m.get("type") == MESAJ_NO_ROUTE:
                 box["no_route"] = m
             else:
                 continue

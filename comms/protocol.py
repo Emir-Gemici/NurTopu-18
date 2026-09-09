@@ -25,6 +25,19 @@ ROAD_LABEL = {1: "sol", 2: "orta", 3: "sag"}     # şartname yön kuralı
 LABEL_ROAD = {v: k for k, v in ROAD_LABEL.items()}
 ACK_SONUC_KABUL = "ACCEPTED"
 
+# ── Mesaj tipi sabitleri (T208 · CONTRACTS §6 tablosu) ───────────────────────
+# NEDEN: "OPEN_ROUTE" gibi ciplak dizgiler alicilarda (yks_gui, ika_receiver,
+# komut_tekrar, sim betikleri) dagitik yaziliyordu (madde 16). Tel uzerindeki
+# deger DEGISMEZ; adi tek yerde durur, uretici ve alicilar buradan okur.
+MESAJ_OPEN_ROUTE = "OPEN_ROUTE"
+MESAJ_NO_ROUTE = "NO_ROUTE"
+MESAJ_HEARTBEAT = "HEARTBEAT"
+MESAJ_ACK = "ACK"
+MESAJ_CMD = "CMD"
+MESAJ_IHA_LANDED = "IHA_LANDED"
+MESAJ_TIPLERI = (MESAJ_OPEN_ROUTE, MESAJ_NO_ROUTE, MESAJ_HEARTBEAT, MESAJ_ACK,
+                 MESAJ_CMD, MESAJ_IHA_LANDED)
+
 # Kritik komut oturumu bir kimlik/yeniden-oynatma alanidir. Rastgeleligi bu
 # modul URETMEZ (sahip YKS'dir), fakat tel uzerindeki bicimi burada tek yerde
 # kilitler: UUID/hex/token-safe ASCII, bosluk ve ayirici JSON karakterleri yok.
@@ -57,7 +70,7 @@ def open_route(road, conf, waypoints=None, ref_xy=None, seq=None):
     if not math.isfinite(conf) or not 0.0 <= conf <= 1.0:
         raise ValueError("conf sonlu ve 0..1 aralığında olmalı")
     return {
-        "v": PROTOCOL_VERSION, "type": "OPEN_ROUTE",
+        "v": PROTOCOL_VERSION, "type": MESAJ_OPEN_ROUTE,
         "road": int(road), "label": ROAD_LABEL[road],
         # Guven kapisi esigin hemen altini ayirt edebilmelidir. Burada sabit
         # ondaliga yuvarlamak esik-altini esigin kendisine tasiyabiliyordu.
@@ -81,7 +94,7 @@ def rota_yok(sebep, detay=None, seq=None):
     if not sebep:
         raise ValueError("NO_ROUTE için sebep gerekli")
     msg = {
-        "v": PROTOCOL_VERSION, "type": "NO_ROUTE", "sebep": sebep,
+        "v": PROTOCOL_VERSION, "type": MESAJ_NO_ROUTE, "sebep": sebep,
         "seq": next(_seq) if seq is None else int(seq),
         "t": round(time.time(), 3),
     }
@@ -111,7 +124,7 @@ HEARTBEAT_TELEMETRI_ALANLARI = (
 
 
 def heartbeat(node, seq=None, **telemetri):
-    msg = {"v": PROTOCOL_VERSION, "type": "HEARTBEAT", "node": node,
+    msg = {"v": PROTOCOL_VERSION, "type": MESAJ_HEARTBEAT, "node": node,
            "seq": next(_seq) if seq is None else int(seq),
            "t": round(time.time(), 3)}
     for ad in HEARTBEAT_TELEMETRI_ALANLARI:
@@ -136,7 +149,7 @@ def ack(ref_seq, node, ref_tip=None, *, ref_cmd=None, sonuc=None):
     :func:`kritik_komut_ack_gecerli_mi` ile doğrulanan güçlü ACK'e dayanır.
     Alan yoksa genel alıcı yalnız `ref` ile eşler (geriye uyumlu,
     CONTRACTS §6.6)."""
-    msg = {"v": PROTOCOL_VERSION, "type": "ACK", "ref": int(ref_seq),
+    msg = {"v": PROTOCOL_VERSION, "type": MESAJ_ACK, "ref": int(ref_seq),
            "node": node, "t": round(time.time(), 3)}
     if ref_tip is not None:
         msg["ref_tip"] = str(ref_tip)
@@ -155,7 +168,7 @@ def kritik_komut_ack_gecerli_mi(mesaj, ref_seq, ref_cmd, node="iha"):
     olamaz. Kritik komutta düğüm, mesaj tipi, komut adı ve Pixhawk kabul
     sonucu birlikte eşleşmezse fail-closed ``False`` döner.
     """
-    if not isinstance(mesaj, dict) or mesaj.get("type") != "ACK":
+    if not isinstance(mesaj, dict) or mesaj.get("type") != MESAJ_ACK:
         return False
     if isinstance(ref_seq, bool) or not isinstance(ref_seq, int):
         return False
@@ -165,7 +178,7 @@ def kritik_komut_ack_gecerli_mi(mesaj, ref_seq, ref_cmd, node="iha"):
     return (
         mesaj_ref == ref_seq
         and mesaj.get("node") == node
-        and mesaj.get("ref_tip") == "CMD"
+        and mesaj.get("ref_tip") == MESAJ_CMD
         and mesaj.get("ref_cmd") == ref_cmd
         and mesaj.get("sonuc") == ACK_SONUC_KABUL
     )
@@ -187,7 +200,7 @@ def command(cmd, hedef, seq=None, *, oturum=None):
     Şartname §2.2.5: İKA intikali YKS'deki takım üyesince manuel tetiklenir —
     IKA_GO bu tetik içindir. Alıcılar bilmedikleri tipi yok sayar (geriye uyumlu).
     """
-    mesaj = {"v": PROTOCOL_VERSION, "type": "CMD", "cmd": str(cmd),
+    mesaj = {"v": PROTOCOL_VERSION, "type": MESAJ_CMD, "cmd": str(cmd),
              "hedef": hedef, "seq": next(_seq) if seq is None else int(seq),
              "t": round(time.time(), 3)}
     if oturum is not None:
@@ -204,7 +217,7 @@ def iha_landed(seq=None):
     """
     return {
         "v": PROTOCOL_VERSION,
-        "type": "IHA_LANDED",
+        "type": MESAJ_IHA_LANDED,
         "node": "iha",
         "seq": next(_seq) if seq is None else int(seq),
         "t": round(time.time(), 3),

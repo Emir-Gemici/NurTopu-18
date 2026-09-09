@@ -71,7 +71,7 @@ from karar_sozlesmesi import (ARM_TEKRAR_ARALIGI_S,  # noqa: E402
                               PARASUT_TEKRAR_UST_SINIRI)
 from link import SerialLink, UDPLink  # noqa: E402
 from protocol import (ACK_SONUC_KABUL, FrameReader, ack, encode,  # noqa: E402
-                      oturum_dogrula)
+                      oturum_dogrula, MESAJ_CMD)
 
 for _akim in (sys.stdout, sys.stderr):
     try:
@@ -81,7 +81,7 @@ for _akim in (sys.stdout, sys.stderr):
 
 
 # ── Protokol adlari (CONTRACTS §6 mesaj tablosu + §6.6) ──────────────────────
-MESAJ_TIPI_CMD = "CMD"
+MESAJ_TIPI_CMD = MESAJ_CMD        # T208: ad protocol.py'de tek yerde
 CMD_PARACHUTE = "PARACHUTE"       # CONTRACTS §6.6 · D-393 · sartname §2.2.4
 CMD_ARM = "ARM"                   # CONTRACTS §6 tablo: "IKA_GO, ARM, ..."
 CMD_DISARM = "DISARM"
