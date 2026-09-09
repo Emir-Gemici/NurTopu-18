@@ -1,6 +1,6 @@
 # Akış diyagramı (d) — düğüm → dosya:satır tablosu
 
-Kaynak: `FDR/sekiller/akis_d.mmd` · koddan türetildi: commit `f3441b4`, 2026-09-07 · üretici: `scripts/akis_diyagram_dogrula.py --tablo`
+Kaynak: `FDR/sekiller/akis_d.mmd` · koddan türetildi: commit `1792856`, 2026-09-10 · üretici: `scripts/akis_diyagram_dogrula.py --tablo`
 
 Düğüm kuralı: **fonksiyon** = `def ad()` ve satır o tanımın başı; **karar** = koşul metni koddan birebir; **blok** = deyim koddan birebir. Doğrulama sütunu: `tam` = tam satır, `±n` = n satır sapma (tolerans 3). Başka düğüm tipi yoktur.
 
@@ -34,20 +34,20 @@ Düğüm kuralı: **fonksiyon** = `def ad()` ve satır o tanımın başı; **kar
 | 26 | `d40` | karar | sD4 | `if getattr(self, "protokol_kilidi", False):` | `comms/yks_gui.py:1522` | tam |
 | 27 | `d41` | karar | sD4 | `if getattr(self, "kaynak_kilidi", False):` | `comms/yks_gui.py:1531` | tam |
 | 28 | `d42` | fonksiyon | sD4 | `def mesaj_kaynagi_dogrula()` | `comms/yks_gui.py:632` | tam |
-| 29 | `d43` | karar | sD4 | `if tip == "OPEN_ROUTE":` | `comms/yks_gui.py:1543` | tam |
+| 29 | `d43` | karar | sD4 | `if tip == MESAJ_OPEN_ROUTE:` | `comms/yks_gui.py:1543` | tam |
 | 30 | `d44` | karar | sD4 | `if guven_reddi is not None:` | `comms/yks_gui.py:1545` | tam |
 | 31 | `d45` | fonksiyon | sD4 | `def YksArayuz._open_route_guven_reddini_goster()` | `comms/yks_gui.py:1787` | tam |
 | 32 | `d46` | blok | sD4 | `self.rota, self.rota_adr = m, adr` | `comms/yks_gui.py:1550` | tam |
 | 33 | `d47` | karar | sD4 | `if yeni:` | `comms/yks_gui.py:1563` | tam |
 | 34 | `d48` | blok | sD4 | `self._kanit_yaz("ROTA_ALINDI", seq=m.get("seq"),` | `comms/yks_gui.py:1569` | tam |
-| 35 | `d49` | karar | sD4 | `elif tip == "NO_ROUTE":` | `comms/yks_gui.py:1620` | tam |
+| 35 | `d49` | karar | sD4 | `elif tip == MESAJ_NO_ROUTE:` | `comms/yks_gui.py:1620` | tam |
 | 36 | `d50` | blok | sD4 | `self._kanit_yaz("ROTA_YOK", seq=m.get("seq"), sebep=sebep,` | `comms/yks_gui.py:1643` | tam |
-| 37 | `d51` | karar | sD4 | `elif tip == "ACK":` | `comms/yks_gui.py:1660` | tam |
-| 38 | `d52` | karar | sD4 | `elif tip == "IHA_LANDED":` | `comms/yks_gui.py:1662` | tam |
+| 37 | `d51` | karar | sD4 | `elif tip == MESAJ_ACK:` | `comms/yks_gui.py:1660` | tam |
+| 38 | `d52` | karar | sD4 | `elif tip == MESAJ_IHA_LANDED:` | `comms/yks_gui.py:1662` | tam |
 | 39 | `d53` | karar | sD4 | `if seq != self.iha_landed_seq:` | `comms/yks_gui.py:1674` | tam |
 | 40 | `d54` | blok | sD4 | `self.iha_landed_seq = seq` | `comms/yks_gui.py:1675` | tam |
 | 41 | `d55` | fonksiyon | sD4 | `def YksArayuz.iha_indi()` | `comms/yks_gui.py:3470` | tam |
-| 42 | `d56` | karar | sD4 | `elif tip == "HEARTBEAT":` | `comms/yks_gui.py:1697` | tam |
+| 42 | `d56` | karar | sD4 | `elif tip == MESAJ_HEARTBEAT:` | `comms/yks_gui.py:1697` | tam |
 | 43 | `d57` | blok | sD4 | `self._kanit_yaz( ⏎ "IHA_INIS_KANITI", seq=seq,` | `comms/yks_gui.py:1679` | tam |
 | 44 | `sD5` | fonksiyon | — | `def YksArayuz._ack_isle()` | `comms/yks_gui.py:2002` | tam |
 | 45 | `d60` | blok | sD5 | `self._kanit_yaz("ACK_ALINDI", node=m.get("node"), ref=ref,` | `comms/yks_gui.py:2012` | tam |

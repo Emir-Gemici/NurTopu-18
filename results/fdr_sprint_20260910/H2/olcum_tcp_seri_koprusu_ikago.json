@@ -1,0 +1,42 @@
+{
+  "rol": "olc",
+  "n": 200,
+  "aralik_s": 0.25,
+  "zaman_asimi_s": 0.5,
+  "gonderilen": 200,
+  "ack_alinan": 200,
+  "kayip": 0,
+  "kayip_yuzde": 0.0,
+  "gec_ack": 0,
+  "rtt_ms": {
+    "ornek": 200,
+    "p50": 1.3252999997348525,
+    "p95": 1.8318999937037006,
+    "min": 0.7789000010234304,
+    "maks": 2.1643000000040047
+  },
+  "veri_hizi": {
+    "sure_s": 49.826176399998076,
+    "gonderilen_bayt": 16070,
+    "alinan_bayt": 15668,
+    "gonderilen_paket": 200,
+    "alinan_paket": 200,
+    "gonderilen_bayt_s": 322.5212360465336,
+    "alinan_bayt_s": 314.45318770237014,
+    "gonderilen_bit_s": 2580.169888372269,
+    "alinan_bit_s": 2515.625501618961,
+    "gonderilen_paket_s": 4.013954400081314,
+    "alinan_paket_s": 4.013954400081314,
+    "not": "Prob kadansindaki (aralik_s) FIILI akis; hat kapasitesi degil. sure_s = ilk prob gonderimi -> son prob ACK/zaman asimi. alinan_paket = cozulen cerceve sayisi (ACK + diger trafik)."
+  },
+  "esik_s": {
+    "IKA_GO_TEKRAR_ARALIGI_S": 0.25,
+    "PARASUT_TEKRAR_ARALIGI_S": 0.2
+  },
+  "verdikt": "tekrar tasarimiyla UYUMLU",
+  "cikis_kodu": 0,
+  "not": "RTT yuzdelikleri yalniz ACK alinan problar uzerindendir; kayip icin esik yok, birlikte okunur.",
+  "tasiyici": "seri",
+  "port": "socket://127.0.0.1:55914",
+  "baud": 57600
+}

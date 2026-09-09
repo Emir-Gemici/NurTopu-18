@@ -237,7 +237,8 @@ class Mutasyon(unittest.TestCase):
                       "GUI sozlesme fonksiyonunu cagirmiyor")
         # Denetim HEARTBEAT dalinda olmali (mini-saha ciziminde degil).
         bas = kaynak.index("_ihlal = iha_ub_ihlali(")
-        onceki = kaynak.rfind('elif tip == "HEARTBEAT":', 0, bas)
+        # T208: tip adi protocol.MESAJ_HEARTBEAT sabitinden okunur (ciplak dizgi yok).
+        onceki = kaynak.rfind("elif tip == MESAJ_HEARTBEAT:", 0, bas)
         self.assertNotEqual(-1, onceki,
                             "alan ihlali denetimi HEARTBEAT dalinda degil")
 
