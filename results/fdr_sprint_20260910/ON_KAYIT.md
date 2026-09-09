@@ -105,3 +105,7 @@ YONERGE_HARITASI yeniden sayım; ACIK_KALEMLER güncel; PDF üretimi; pano.
 T220 (K2 T66 kabul kümesi + göreli defter yolları, G4 v36 PC referans kararları, K10 çıplak `O:\` yolları,
 K1 kalan bant) ve T221 (K11 ArduPlane parametre seti + SITL). Kapı: PC tam süit yeşil; Jetson koşumu İNSAN.
 Uzak push'lar 10 Eylül 01:29'da birleştirildi (`0e788eb`: OGREN_ADIYAMAN dizisi, Jetson oturum notu).
+
+### Kapsam düzeltmesi (10 Eylül 01:5x, kullanıcı — D-439)
+FDR'de **yalnız yazılım kısmı** bizim: H4 (DDR → §3.2.2 İKA mekanik) **kapsam dışı**, T215 sonucu master'a alınmaz (taslak dal devredilir).
+H6 saha kâğıdından tartı düşer (kullanıcı: gerek yok, hover başarılı — BEYAN). Video: kullanıcı yükler (T222). İKA hattı beyanı: kod neyse o.
