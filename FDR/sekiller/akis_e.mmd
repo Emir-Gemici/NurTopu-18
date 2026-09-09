@@ -1,4 +1,4 @@
-%% koddan turetildi f3441b4 2026-09-07
+%% koddan turetildi 1792856 2026-09-10
 %% (e) IKA otonom surus — simulation/scripts/ika_nav.py (ika_gorevi -> rota bekle -> surus izni -> navigate) + comms/ika_receiver.py kapilari
 %% Halka 10 (motor surucusu) SAHIPSIZDIR: surucu() varsayilani Gazebo'dur (gercek motor surucusu yok — FDR §3.3.1.3.1); dugum e76 bunu koddan gosterir.
 %% Dugum kurali: [ ] fonksiyon/blok (dosya:satir = tanim ya da deyim satiri), { } karar (kosul koddan birebir).
@@ -8,7 +8,7 @@ flowchart TD
     e01["bekleme_deadline = saat() + bekleme_suresi<br/>simulation/scripts/ika_nav.py:460"]
     e03{"if alindi is None:<br/>simulation/scripts/ika_nav.py:468"}
     e04["return 1<br/>simulation/scripts/ika_nav.py:471"]
-    e05{"if isinstance(alindi, dict) and alindi.get(#quot;type#quot;) == #quot;NO_ROUTE#quot;:<br/>simulation/scripts/ika_nav.py:472"}
+    e05{"if isinstance(alindi, dict) and alindi.get(#quot;type#quot;) == MESAJ_NO_ROUTE:<br/>simulation/scripts/ika_nav.py:472"}
     e06["return 2<br/>simulation/scripts/ika_nav.py:474"]
     e08{"if not izin_bekle(receiver, kalan, deadline_monotonic=bekleme_deadline):<br/>simulation/scripts/ika_nav.py:478"}
     e09["return 3<br/>simulation/scripts/ika_nav.py:479"]

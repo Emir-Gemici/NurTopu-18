@@ -1,6 +1,6 @@
 # Akış diyagramı (b) — düğüm → dosya:satır tablosu
 
-Kaynak: `FDR/sekiller/akis_b.mmd` · koddan türetildi: commit `f3441b4`, 2026-09-07 · üretici: `scripts/akis_diyagram_dogrula.py --tablo`
+Kaynak: `FDR/sekiller/akis_b.mmd` · koddan türetildi: commit `1792856`, 2026-09-10 · üretici: `scripts/akis_diyagram_dogrula.py --tablo`
 
 Düğüm kuralı: **fonksiyon** = `def ad()` ve satır o tanımın başı; **karar** = koşul metni koddan birebir; **blok** = deyim koddan birebir. Doğrulama sütunu: `tam` = tam satır, `±n` = n satır sapma (tolerans 3). Başka düğüm tipi yoktur.
 
@@ -39,7 +39,7 @@ Düğüm kuralı: **fonksiyon** = `def ad()` ve satır o tanımın başı; **kar
 | 31 | `b34` | karar | sB3 | `if not zaman_kabul:` | `comms/iha_komut_alici.py:697` | tam |
 | 32 | `b35` | blok | sB3 | `self.sayac["zaman_red"] += 1` | `comms/iha_komut_alici.py:698` | tam |
 | 33 | `b36` | karar | sB3 | `if oturum is not None:` | `comms/iha_komut_alici.py:707` | tam |
-| 34 | `b37` | fonksiyon | sB3 | `def oturum_dogrula()` | `comms/protocol.py:174` | tam |
+| 34 | `b37` | fonksiyon | sB3 | `def oturum_dogrula()` | `comms/protocol.py:187` | tam |
 | 35 | `b38` | blok | sB3 | `anahtar = (oturum, seq, cmd)` | `comms/iha_komut_alici.py:715` | tam |
 | 36 | `b39` | karar | sB3 | `if anahtar in self._komut_sonuclari:` | `comms/iha_komut_alici.py:716` | tam |
 | 37 | `b40` | karar | sB3 | `if self._komut_sonuclari[anahtar]:` | `comms/iha_komut_alici.py:718` | tam |
