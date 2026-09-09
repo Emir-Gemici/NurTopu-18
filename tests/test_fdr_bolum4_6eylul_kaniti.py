@@ -10,8 +10,10 @@ parametre dökümünün ofsetleri, §4.10.5'e tlog analizlerinin pitch/arm sayı
   T2  §4.10.5 devrilme tablosundaki pencere pitch min/max değerleri
       `results/ucus_loglari/20260906/pitch_kolu_analizi.txt` ile aynı
   T3  §4.10.5 arm sayıları (41 pencere, 56 CH6 çevirme) ham çıktıyla aynı
-  T4  §4.12 RC kaybı satırı "ÖLÇÜLDÜ" + "DÜŞTÜ" + D-428 taşıyor; Y-4-M12
-      "karşılanmadı" açıkça yazılı; ÖLÇÜLEMEDİ ≠ GEÇTİ (RC satırında "GEÇTİ" yok)
+  T4  §4.12 RC kaybı satırının 6 EYLÜL HÜCRESİ "ÖLÇÜLDÜ" + "DÜŞTÜ" + D-428
+      taşıyor; Y-4-M12 "karşılanmadı" açıkça yazılı; ÖLÇÜLEMEDİ ≠ GEÇTİ (RC
+      satırında "GEÇTİ" yok). T4c: öteki senaryoların 6 Eylül HÜCRESİ
+      "tetiklenmedi" — satırın tamamı değil; 5 Eylül hücresi doyuramaz (M4)
   T5  bayat satırlar: `simulation/scripts/score.py` yalnız üstü çizili;
       README "ekip isimleri" üstü çizili; YONERGE Y-4-M06 artık "YOK" değil
   T6  §4.3.3 takvimi ölçülen olayları ve D-kayıtlarını taşıyor; hover BEYAN
@@ -96,6 +98,32 @@ def eksik_degerler(rapor_metni, params, adlar):
     return eksik
 
 
+def hucreler(satir):
+    """Markdown tablo satırı → hücre listesi. `| a | b | c |` → ['a', 'b', 'c']."""
+    return [h.strip() for h in satir.strip().strip("|").split("|")]
+
+
+def son_hucre_kusurlari(satir, gerekli=(), yasak=()):
+    """Satırın SON hücresi (§4.12'de 6 Eylül ÖLÇÜM sütunu) için eksik/yasak metinler.
+
+    Neden hücre: satırın tamamına `assertIn` uygulanınca 5 Eylül sütunundaki
+    eski "tetiklenmedi" / "ÖLÇÜLEMEDİ" eşleşmeyi doyurur ve 6 Eylül hücresi
+    "GEÇTİ" yapılsa da kapı sessiz kalır (T218 çürütücü bulgusu, madde 7).
+    """
+    h = hucreler(satir)[-1]
+    kusur = [f"'{g}' son hücrede yok" for g in gerekli if g not in h]
+    kusur += [f"'{y}' son hücrede VAR" for y in yasak if y in h]
+    return kusur
+
+
+# §4.12 tablosunda "tetiklenmedi" satırları için 6 Eylül hücresi kuralı
+TETIKLENMEDI_GEREKLI = ("tetiklenmedi",)
+TETIKLENMEDI_YASAK = ("GEÇTİ", "ÖLÇÜLDÜ —")
+# RC kaybı satırı için 6 Eylül hücresi kuralı
+RC_GEREKLI = ("ÖLÇÜLDÜ", "DÜŞTÜ", "D-428", "kumanda failsafe ayarı")
+RC_YASAK = ("GEÇTİ",)
+
+
 def pencere_pitch(metin):
     """pitch_kolu_analizi.txt → {'P19': (min, max), ...}."""
     sonuc, p = {}, None
@@ -169,16 +197,27 @@ class T2_T3_TlogSayilari(unittest.TestCase):
 
 
 class T4_RcFailsafeHukmu(unittest.TestCase):
-    def test_T4_rc_kaybi_satiri_olculdu_ve_dustu(self):
+    def _b412(self):
         b412 = bolum(_oku(B4), "4.12", "4.13")
+        # "son hücre = 6 Eylül (ÖLÇÜM)" varsayımı tablo başlığına bağlanır:
+        # sütun eklenir/yer değiştirirse kapı sessizce yanlış hücreye bakmasın
+        baslik = [s for s in b412.splitlines() if s.startswith("| arıza senaryosu |")]
+        self.assertEqual(1, len(baslik), "§4.12 arıza tablosu başlığı tek olmalı")
+        self.assertIn("6 Eylül", hucreler(baslik[0])[-1],
+                      "§4.12 tablosunun son sütunu 6 Eylül (ÖLÇÜM) değil")
+        self.assertIn("5 Eylül", hucreler(baslik[0])[-2])
+        return b412
+
+    def test_T4_rc_kaybi_satiri_olculdu_ve_dustu(self):
+        b412 = self._b412()
         satir = [s for s in b412.splitlines()
                  if s.startswith("| RC kaybı (kumanda kapatma)")]
         self.assertEqual(1, len(satir), "RC kaybı satırı tek olmalı")
         s = satir[0]
-        self.assertIn("ÖLÇÜLDÜ", s)
-        self.assertIn("DÜŞTÜ", s)
-        self.assertIn("D-428", s)
-        self.assertIn("kumanda failsafe ayarı", s)
+        # 6 Eylül (ÖLÇÜM) hücresi: ÖLÇÜLDÜ + DÜŞTÜ + D-428 + düzeltme; GEÇTİ yok
+        self.assertEqual([], son_hucre_kusurlari(s, RC_GEREKLI, RC_YASAK))
+        # 5 Eylül hücresindeki eski ÖLÇÜLEMEDİ korunmuş (T7 ile tutarlı)
+        self.assertIn("ÖLÇÜLEMEDİ", hucreler(s)[-2])
         self.assertNotIn("GEÇTİ", s, "ÖLÇÜLEMEDİ/DÜŞTÜ satırında GEÇTİ olamaz")
 
     def test_T4b_y4m12_sahada_sarti_karsilanmadi(self):
@@ -186,13 +225,17 @@ class T4_RcFailsafeHukmu(unittest.TestCase):
         self.assertRegex(b412, r"Y-4-M12`?[^\n]{0,80}KARŞILANMADI")
 
     def test_T4c_diger_senaryolar_tetiklenmedi(self):
-        b412 = bolum(_oku(B4), "4.12", "4.13")
+        b412 = self._b412()
         for sen in ("YKS/Jetson bağlantı kaybı", "Düşük pil", "Geofence"):
             # hücre TAM eşleşir: "| Geofence |" — yazılım yolu tablosundaki
             # "| Geofence ihlali |" satırı bu kapının konusu değil
             satir = [s for s in b412.splitlines() if s.startswith(f"| {sen} |")]
             self.assertEqual(1, len(satir), sen)
-            self.assertIn("tetiklenmedi", satir[0], sen)
+            # 6 Eylül (ÖLÇÜM) hücresine bakılır — satırın tamamına değil;
+            # 5 Eylül hücresindeki "tetiklenmedi" 6 Eylül'ü doyuramaz
+            self.assertEqual([], son_hucre_kusurlari(
+                satir[0], TETIKLENMEDI_GEREKLI, TETIKLENMEDI_YASAK), sen)
+            self.assertIn("tetiklenmedi", hucreler(satir[0])[-2], f"{sen} 5 Eylül")
 
 
 class T5_BayatSatirlar(unittest.TestCase):
@@ -268,6 +311,34 @@ class MutasyonKontrolu(unittest.TestCase):
             b = bolum(m, bas, son)
             self.assertTrue(b.startswith(f"\n## {bas} "))
             self.assertNotIn(f"\n## {son} ", b)
+
+    def test_M4_6eylul_hucresi_GECTI_YAKALANIR_5eylul_doyuramaz(self):
+        """T218 çürütücü bulgusu (madde 7): 5 Eylül 'tetiklenmedi', 6 Eylül 'GEÇTİ'."""
+        dogru = ("| Geofence | `FENCE_ENABLE,1` | tetiklenmedi; dökümsüz "
+                 "| tetiklenmedi. Kart: `FENCE_ENABLE,1` (`:361`) |")
+        self.assertEqual(["Geofence", "`FENCE_ENABLE,1`", "tetiklenmedi; dökümsüz",
+                          "tetiklenmedi. Kart: `FENCE_ENABLE,1` (`:361`)"], hucreler(dogru))
+        self.assertEqual([], son_hucre_kusurlari(dogru, TETIKLENMEDI_GEREKLI, TETIKLENMEDI_YASAK))
+        mutant = dogru.replace("| tetiklenmedi. Kart:", "| GEÇTİ. Kart:")
+        self.assertNotEqual(dogru, mutant, "MUTASYON UYGULANMADI")
+        # eski yöntem (satırın tamamı) mutanta KÖRDÜR — 5 Eylül hücresi doyurur
+        self.assertIn("tetiklenmedi", mutant)
+        # yeni yöntem (son hücre) YAKALAR: tetiklenmedi yok + GEÇTİ var
+        self.assertEqual(["'tetiklenmedi' son hücrede yok", "'GEÇTİ' son hücrede VAR"],
+                         son_hucre_kusurlari(mutant, TETIKLENMEDI_GEREKLI, TETIKLENMEDI_YASAK))
+        # "ÖLÇÜLDÜ — GEÇTİ" biçimi de yakalanır
+        mutant2 = dogru.replace("| tetiklenmedi. Kart:", "| tetiklenmedi; ÖLÇÜLDÜ — GEÇTİ. Kart:")
+        self.assertEqual(2, len(son_hucre_kusurlari(mutant2, TETIKLENMEDI_GEREKLI, TETIKLENMEDI_YASAK)))
+        # RC satırı: 5 Eylül ÖLÇÜLEMEDİ, 6 Eylül GEÇTİ → YAKALANIR; doğru → YAKALANMAZ
+        rc_dogru = ("| RC kaybı (kumanda kapatma) | `FS_THR_ENABLE,1` | **ÖLÇÜLEMEDİ** — gelmedi "
+                    "| **ÖLÇÜLDÜ — DÜŞTÜ** (D-428 §2); **düzeltme: kumanda failsafe ayarı** |")
+        self.assertEqual([], son_hucre_kusurlari(rc_dogru, RC_GEREKLI, RC_YASAK))
+        self.assertIn("ÖLÇÜLEMEDİ", hucreler(rc_dogru)[-2])
+        rc_mutant = rc_dogru.replace("**ÖLÇÜLDÜ — DÜŞTÜ** (D-428 §2)", "**GEÇTİ** (D-428 §2)")
+        self.assertNotEqual(rc_dogru, rc_mutant, "MUTASYON UYGULANMADI")
+        self.assertEqual(["'ÖLÇÜLDÜ' son hücrede yok", "'DÜŞTÜ' son hücrede yok",
+                          "'GEÇTİ' son hücrede VAR"],
+                         son_hucre_kusurlari(rc_mutant, RC_GEREKLI, RC_YASAK))
 
 
 if __name__ == "__main__":

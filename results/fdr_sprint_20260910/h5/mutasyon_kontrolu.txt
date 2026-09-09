@@ -6,3 +6,20 @@ M-E §4.12 RC satirindan DUSTU silindi [dosyada 1 kez, ilki değiştirildi]: YAK
 M-F §4.6 tlog son COMPASS_OFS_Z 16.3172 -> 16.3173 [dosyada 1 kez, ilki değiştirildi]: YAKALANDI (FAILED (failures=1))
 dosya geri yuklendi: EVET (sha256 9127c1112a7d8b90)
 MUTASYON: 6/6 yakalandi
+
+--- 2026-09-10 T218 çürütücü bulgusu (madde 7): §4.12 test_T4c satırın TAMAMINA bakıyordu ---
+ESKİ test (dece10b) ile: M-G Geofence 6 Eylül hücresi "tetiklenmedi. Kart:" -> "GEÇTİ. Kart:" [dosyada 1 kez]: KAÇTI (Ran 16 tests · OK)
+ESKİ test (dece10b) ile: M-Y YKS/Jetson 6 Eylül hücresi "tetiklenmedi. Kart: dökümde" -> "GEÇTİ. Kart: dökümde" [dosyada 1 kez]: KAÇTI (Ran 16 tests · OK)
+  neden: 5 Eylül sütunundaki eski "tetiklenmedi" satır-düzeyi assertIn'i doyuruyor; assertNotIn("GEÇTİ") yoktu.
+düzeltme: T4/T4c artık satırın SON hücresine (tablo başlığı "6 Eylül (ÖLÇÜM)" olduğu doğrulanarak) bakar:
+  son_hucre_kusurlari(satir, gerekli, yasak) · tetiklenmedi satırları: gerekli "tetiklenmedi", yasak "GEÇTİ" / "ÖLÇÜLDÜ —"
+  RC satırı: gerekli ÖLÇÜLDÜ / DÜŞTÜ / D-428 / "kumanda failsafe ayarı", yasak GEÇTİ; 5 Eylül hücresinde ÖLÇÜLEMEDİ korunur
+  sentetik: M4 (test_M4_6eylul_hucresi_GECTI_YAKALANIR_5eylul_doyuramaz) — doğru satır YAKALANMAZ, 6 Eylül GEÇTİ YAKALANIR
+YENİ test ile (gerçek dosya mutantları, bayt düzeyinde tek eşleşme, sonra git checkout):
+M-G §4.12 Geofence 6 Eylül hücresi tetiklenmedi -> GEÇTİ [dosyada 1 kez, ilki değiştirildi]: YAKALANDI (FAILED (failures=1)) — test_T4c: ["'tetiklenmedi' son hücrede yok", "'GEÇTİ' son hücrede VAR"]
+M-Y §4.12 YKS/Jetson bağlantı kaybı 6 Eylül hücresi tetiklenmedi -> GEÇTİ [dosyada 1 kez, ilki değiştirildi]: YAKALANDI (FAILED (failures=1)) — test_T4c
+M-P §4.12 Düşük pil 6 Eylül hücresi tetiklenmedi -> GEÇTİ [dosyada 1 kez, ilki değiştirildi]: YAKALANDI (FAILED (failures=1)) — test_T4c
+M-R §4.12 RC kaybı 6 Eylül hücresi "ÖLÇÜLDÜ — DÜŞTÜ" -> "GEÇTİ" [dosyada 1 kez, ilki değiştirildi]: YAKALANDI (FAILED (failures=1)) — test_T4: ["'ÖLÇÜLDÜ' son hücrede yok", "'DÜŞTÜ' son hücrede yok", "'GEÇTİ' son hücrede VAR"]
+dosya geri yuklendi: EVET (her mutant sonrası sha256 9127c1112a7d8b90; git status'ta FDR/ değişikliği yok)
+temiz dosyada yeni test: Ran 17 tests · OK
+MUTASYON: 10/10 yakalandi (6 eski + 4 yeni)
