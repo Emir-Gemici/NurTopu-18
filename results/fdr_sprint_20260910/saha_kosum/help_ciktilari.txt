@@ -1,0 +1,66 @@
+# T219 — kagittaki betiklerin --help kosumu (PC, 2026-09-10 01:48)
+# yorumlayici: O:/navitas-local-train/venv/Scripts/python.exe
+
+=== scripts/mavlink_dogrula.py --help
+usage: mavlink_dogrula.py [-h] --mavlink MAVLINK [--sysid SYSID] [--baud BAUD]
+                          [--sure SURE] [--heartbeat-tavan HEARTBEAT_TAVAN]
+                          [--ack-tavan ACK_TAVAN] [--json DOSYA]
+
+FAZ B — PIXHAWK ON-UCUS DOGRULAYICISI: "Pixhawk konusuyor mu?" MEKANIK
+verdikt.
+EXIT=0
+
+=== codes/kamera_dogrula.py --help
+usage: kamera_dogrula.py [-h] [--kaynak KAYNAK] [--kare KARE]
+                         [--isinma ISINMA] [--kaydet KAYDET] [--listele]
+                         [--zincir] [--model MODEL] [--imgsz IMGSZ]
+                         [--conf CONF]
+
+Kamera/DroidCam kaynagini dogrula ve olc
+EXIT=0
+
+=== scripts/kamera_koprusu.py --help
+usage: kamera_koprusu.py [-h] [--kaynak KAYNAK] [--port PORT] [--host HOST]
+                         [--kalite KALITE] [--fps FPS] [--genislik GENISLIK]
+                         [--yukseklik YUKSEKLIK] [--kamera-fps KAMERA_FPS]
+                         [--sensor-id SENSOR_ID] [--log-aralik LOG_ARALIK]
+                         [--istek-logu]
+
+EXIT=0
+
+=== scripts/kamera_fov_hesapla.py --help
+usage: kamera_fov_hesapla.py [-h] --genislik-px GENISLIK_PX
+                             --isaret-px ISARET_PX --isaret-m ISARET_M
+                             --mesafe-m MESAFE_M [--yukseklik-px YUKSEKLIK_PX]
+                             [--json]
+
+KAMERA YATAY GORUS ACISI (FOV) — kaydedilmis kareden OLCUM ile hesap.
+EXIT=0
+
+=== scripts/sik_rf_olc.py --help
+usage: sik_rf_olc.py [-h] --rol {yanki,olc} --port PORT [--baud BAUD] [--n N]
+                     [--aralik ARALIK] [--zaman-asimi ZAMAN_ASIMI] [--json]
+                     [--cikti CIKTI] [--sessiz]
+
+SiK 433 MHz RF OLCUM ARACI — ACK gidis-donusu (RTT) ve kayip.
+
+EXIT=0
+
+=== scripts/tlog_akim_ozet.py --help
+usage: tlog_akim_ozet.py [-h] [--pencere PENCERE] [--kanallar KANALLAR]
+                         [--saat-ofseti SAAT_OFSETI] [--json DOSYA]
+                         dosya
+
+TLOG / DATAFLASH AKIM OZETI — guc modulu (PM06) akim/gerilimini motor PWM'iyle
+YAN YANA koyar.
+EXIT=0
+
+=== bash -n jetson_paket/jetson_baslat.sh
+EXIT=0
+
+=== bash jetson_paket/jetson_baslat.sh --help
+KULLANIM
+  bash jetson_baslat.sh --kuru        HICBIR SEY baslatmaz; kosacagi komutlari basar
+  sudo -E bash jetson_baslat.sh       systemd birimlerini kurar (enable + restart; acilista da kalkar)
+  sudo -E bash jetson_baslat.sh --kapi  kurar, YALNIZ cogullayiciyi kaldirir, 3 ucta AYNI ANDA
+EXIT=0

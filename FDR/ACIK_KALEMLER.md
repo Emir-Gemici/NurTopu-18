@@ -9,6 +9,8 @@
 
 ## 1. Cumartesi 5 Eylül — donanım geldiği gün kapanır (ÖLÇÜM)
 
+> 🧾 **Saha koşum kâğıdı (10 Eylül, T219 · ON_KAYIT H6):** kalem 1, 2, 3, 6 ve 12 ekibin mimar olmadan koşacağı tek sayfa `SAHA_KOSUM_KAGIDI_20260910.md` ile kapanır; sonuçlar `results/fdr_sprint_20260910/saha_kosum/` altına yazılır (kapı `tests/test_saha_kosum_kagidi.py`). ⚠ 6 Eylül tlog'unda PM06 akım kanalı motorlar 1949 PWM'deyken en fazla 0,44 A okudu (`scripts/tlog_akim_ozet.py`; kanıt `results/fdr_sprint_20260910/saha_kosum/tlog_akim_ozet_20260906.txt`) — kalem 12 için önce akım hattı doğrulanır.
+
 ⚠ **KOŞULSUZ DEĞİL.** Aşağıdaki kalemlerden **3, 4 ve 5 açılmış bir Jetson
 gerektirir**. D-413'e göre kartta microSD yuvası yoktur (eMMC modül + M.2) ve
 eMMC'nin **boş çıkma ihtimali vardır**; o durumda Ubuntu x86_64 host + SDK
