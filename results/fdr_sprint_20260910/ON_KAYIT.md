@@ -109,3 +109,15 @@ Uzak push'lar 10 Eylül 01:29'da birleştirildi (`0e788eb`: OGREN_ADIYAMAN dizis
 ### Kapsam düzeltmesi (10 Eylül 01:5x, kullanıcı — D-439)
 FDR'de **yalnız yazılım kısmı** bizim: H4 (DDR → §3.2.2 İKA mekanik) **kapsam dışı**, T215 sonucu master'a alınmaz (taslak dal devredilir).
 H6 saha kâğıdından tartı düşer (kullanıcı: gerek yok, hover başarılı — BEYAN). Video: kullanıcı yükler (T222). İKA hattı beyanı: kod neyse o.
+
+## 5. Eleştirmen sonuçları (10 Eylül 02:1x, iş akışı `fdr-sprint-harita` eleştirmeni) → plana işlenen kararlar
+1. **Arena geometrisi teyit (şartname özeti `OGREN_ADIYAMAN/ozet/H_sartname.md` :30-36, ŞART s.8):** HTAB 50×50 m; İHA-UB 300×300 m; HB 2×2 m üzerinde **kırmızı H**; İHA-İB **30×30 m mavi**; HTAB içinde İKA-KB→HB 3 güzergâh, 1'i açık; asgari irtifa 30 m (`karar_sozlesmesi.py:339`). T212 prompt'u doğru.
+2. **H1-K3 düşerse (üretim modeli MuJoCo mozaiğinde < 12/15):** eşik değişmez, sonuç olduğu gibi yazılır; İKA sürüş halkası **GT rotayla ayrıca** 45 koşum ölçülür; iki oran **ayrı etiketle** (ÜRETİM MODELİ / YER GERÇEĞİ) raporlanır. Sim'e özel eğitim yok.
+3. **Sim saati:** `ika_nav` deadline'ları ve 10 Hz döngü duvar saatiyle; MuJoCo zincirinde **sim saati enjeksiyonu** (saat kaynağı parametresi) zorunlu — T213 kapsamı; "sanal görev süresi" sim saatiyle raporlanır, İHA kolu için "kinematik profil süresi" diye etiketlenir.
+4. **IHA_LANDED / IKA_GO sim üreticisi:** CONTRACTS'ta tek üretici `iha_inis_yayinci` (Pixhawk kanıtlı). Sim için **CONTRACTS §6.7'ye sözleşme istisnası** yazılır: `sim_hakem` yalnız `simulation/mujoco/` altında, çıktıları `SIM` alanı taşır, saha kanıtı sayılmaz — T213.
+5. **Port planı:** 45 koşum ephemeral portlarla (127.0.0.1:0), üretim 5005/5006/5007'ye bağlanmaz; `mission_demo` T216'da düzeltiliyor — T213/T214 aynı kalıp.
+6. **GPU sırası:** render → çıkarım → render aynı süreçte sıralı; tur işleri GPU'yu paylaşmaz (BSOD kuralı). K3 çıkarımı tek süreçte.
+7. **Gazebo ağacı:** silinmez, `test_p8` kapıları kalır; FDR §3.3.3 **MuJoCo koşumunu** ölçüm olarak anlatır, Gazebo iskeletini "önceki tasarım, koşulmadı" diye tek paragrafla bırakır.
+8. **PDF provası:** en geç **19 Eylül** tam PDF (`scripts/fdr_pdf_uret.py`) yeni şekil/tablolarla; kırık varsa 20 Eylül düzeltme.
+9. **Güç ayarı:** gece koşumu için AC'de uyku ve hazırda bekletme zamanlayıcıları **0 (asla)** yapıldı (`powercfg /change standby-timeout-ac 0`, `hibernate-timeout-ac 0`; önceki değerler D-440). Ekran kilidi engel değil; oturum açık.
+10. **T219 prompt yolları düzeltilecek:** `codes/kamera_dogrula.py` (scripts/ değil), `GERI_AKTARIM.md` yalnız `GELISTIRICIYE_20260906/` altında; Pixhawk fiziksel hattı (USB `/dev/ttyACM0` vs TELEM2 UART) **çelişkili → kâğıtta iki seçenek + insan kararı**; kurulum betiklerindeki cv2 GStreamer denetimi her zaman True (kusur → T220).
