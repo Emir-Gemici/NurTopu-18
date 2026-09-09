@@ -1,0 +1,27 @@
+{
+ "harita_n": 15,
+ "yonerge_hepsi_ok": true,
+ "mjcf_uretim_ms_ort": 21.8,
+ "mjcf_yukleme_ms_ort": 115.8,
+ "ngeom_min_maks": [
+  207,
+  287
+ ],
+ "sha256": {
+  "1_kolay": "941c7b84d490422883afaa39868e4a2604a330bd8b372d1680352bb5e5e56ee3",
+  "1_orta": "58b408ecfe09b68ec9e711f83eba0da6995623578696054f890ba501dc477bdc",
+  "1_zor": "778c57c957e853a9f4bca4346f9da40bdcdedc2aac7c981f323dc370237e6a05",
+  "2_kolay": "40a90330d8850bf4014e21d556d89aa2f5d15a5502794124dc1b7b02fa4e36e4",
+  "2_orta": "e1a0ef6aace5d2e73560d6c2a1486ac982167c6bd26d88eb51208d9aa95b6163",
+  "2_zor": "b8b8dfb1ca1eb3a24f4ddb0e7cf8aef3d43872f1dbd7f9df2b79d5a41872afc5",
+  "3_kolay": "99a49057fdec7bfac90ddf48a27a2d3bf578da48dfe47c654bd6894562597356",
+  "3_orta": "68b6435866b53026b0e913f5837a28e5a48091a31efa56af2b8707d0ebaa4641",
+  "3_zor": "079439ee5fba67d01145348e9bee72625830abab400cdab46b5d78c523fdf82b",
+  "4_kolay": "4bdb89a86b0729a1f0628f65f9a1ed28f534ab3bbde1e2a280da093d5e38be96",
+  "4_orta": "0730ec82214d247c291666c5b4e280ab09a776c49ede8258339f4d0c1950c120",
+  "4_zor": "0d4f2ac21f9bdc048607f61b0122fef17dc1d96ae31b522fd5673afa8c587924",
+  "5_kolay": "83b01a12ed276d564a99c5abe6fb004df06b4812ae2dc714c582ceb63d86fdee",
+  "5_orta": "e69348c29a0a103fef6f0ee3babaa166e86dd664b42abbefd231bba11dfa2802",
+  "5_zor": "ac957038f729a7d8ee9e26b0ed135b91440f699457f78170456a252bec839556"
+ }
+}

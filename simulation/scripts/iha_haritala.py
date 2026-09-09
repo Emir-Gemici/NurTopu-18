@@ -485,13 +485,19 @@ def main():
     ap.add_argument("--rot-isaret", type=float, default=1.0, choices=[1.0, -1.0],
                     help="yaw→görüntü dönüş işareti (kalibrasyon, vars. +1)")
     ap.add_argument("--debug", action="store_true", help="kare yerleşimini satır satır bas")
+    ap.add_argument("--arac-kapali", action="store_true",
+                    help="OBB araç maskesini KAPAT (T212 sim: sahnede araç yok; boş maske "
+                         "serbest alanı büyütmez, yalnız ek çıkarma yapılmaz — madde 15). "
+                         "detection.json'da arac_model=null olarak GÖRÜNÜR.")
     args = ap.parse_args()
 
     arac_model_path = Path(args.arac_model)
-    if not arac_model_path.is_file():
+    if not args.arac_kapali and not arac_model_path.is_file():
         ap.error(f"araç modeli bulunamadı: {arac_model_path}")
 
     if args.watch:
+        if args.arac_kapali:
+            ap.error("--arac-kapali yalnız --once ile (canlı izleme üretim yoludur)")
         watch(args.watch, args.levels, args.model, arac_model_path,
               args.conf, args.arac_conf, args.kare_ofset, args.rot_isaret)
         return
@@ -501,7 +507,7 @@ def main():
     meta = _meta_oku(ldir)
     cx, cy = _htab_merkez(meta, args.htab)
     model = YOLO(str(args.model), task="segment")
-    arac_model = YOLO(str(arac_model_path), task="obb")
+    arac_model = None if args.arac_kapali else YOLO(str(arac_model_path), task="obb")
     det = haritala(ldir, model, cx, cy, conf=args.conf,
                    kare_ofset=args.kare_ofset, rot_isaret=args.rot_isaret, debug=args.debug,
                    kb_xy=_meta_xy(meta, "KB_XY"), hb_xy=_meta_xy(meta, "HB_XY"),
