@@ -1,6 +1,6 @@
 {
- "kapi": "H1-K3 ÖN-ÖLÇÜM (3 harita; asıl kapı 15 harita ≥ 12/15)",
- "tarih": "2026-09-10 10:33",
+ "kapi": "H1-K3 15 harita (eşik ≥ 12/15)",
+ "tarih": "2026-09-10 11:34",
  "model": {
   "model_id": "navitas-seg-v36-512",
   "path": "O:\\navitas\\models\\navitas_seg_v36_best.pt",
@@ -24,6 +24,7 @@
  "mozaik": "son_yazar",
  "hb_yaricap_m": 0.0,
  "kok": "results/fdr_sprint_20260910/H1/k3b/taban",
+ "tarama_kaynak": null,
  "sim_sinir": "İHA uçuşu kinematik; render MuJoCo; dokular gerçek kare kırpması (dokular/KAYNAK.md)",
  "ozet": {
   "harita_n": 15,
@@ -55,6 +56,7 @@
    "varyant": "taban",
    "mozaik": "son_yazar",
    "hb_yaricap_m": 0.0,
+   "tarama_kaynak": null,
    "zemin_dokusu": null,
    "tarama": {
     "kare_n": 39,
@@ -108,7 +110,7 @@
     "wp_n": 0,
     "dogru": false
    },
-   "haritala_sure_s": 2.14,
+   "haritala_sure_s": 2.39,
    "dosyalar": {
     "ortomozaik.jpg": "results\\fdr_sprint_20260910\\H1\\k3b\\taban\\harita_1_kolay\\iha_scan\\ortomozaik.jpg",
     "algi.jpg": "results\\fdr_sprint_20260910\\H1\\k3b\\taban\\harita_1_kolay\\iha_scan\\algi.jpg",
@@ -122,6 +124,7 @@
    "varyant": "taban",
    "mozaik": "son_yazar",
    "hb_yaricap_m": 0.0,
+   "tarama_kaynak": null,
    "zemin_dokusu": null,
    "tarama": {
     "kare_n": 39,
@@ -175,7 +178,7 @@
     "wp_n": 0,
     "dogru": false
    },
-   "haritala_sure_s": 0.49,
+   "haritala_sure_s": 0.57,
    "dosyalar": {
     "ortomozaik.jpg": "results\\fdr_sprint_20260910\\H1\\k3b\\taban\\harita_1_orta\\iha_scan\\ortomozaik.jpg",
     "algi.jpg": "results\\fdr_sprint_20260910\\H1\\k3b\\taban\\harita_1_orta\\iha_scan\\algi.jpg",
@@ -189,6 +192,7 @@
    "varyant": "taban",
    "mozaik": "son_yazar",
    "hb_yaricap_m": 0.0,
+   "tarama_kaynak": null,
    "zemin_dokusu": null,
    "tarama": {
     "kare_n": 39,
@@ -242,7 +246,7 @@
     "wp_n": 0,
     "dogru": false
    },
-   "haritala_sure_s": 0.5,
+   "haritala_sure_s": 0.59,
    "dosyalar": {
     "ortomozaik.jpg": "results\\fdr_sprint_20260910\\H1\\k3b\\taban\\harita_1_zor\\iha_scan\\ortomozaik.jpg",
     "algi.jpg": "results\\fdr_sprint_20260910\\H1\\k3b\\taban\\harita_1_zor\\iha_scan\\algi.jpg",
@@ -256,6 +260,7 @@
    "varyant": "taban",
    "mozaik": "son_yazar",
    "hb_yaricap_m": 0.0,
+   "tarama_kaynak": null,
    "zemin_dokusu": null,
    "tarama": {
     "kare_n": 39,
@@ -309,7 +314,7 @@
     "wp_n": 0,
     "dogru": false
    },
-   "haritala_sure_s": 0.48,
+   "haritala_sure_s": 0.6,
    "dosyalar": {
     "ortomozaik.jpg": "results\\fdr_sprint_20260910\\H1\\k3b\\taban\\harita_2_kolay\\iha_scan\\ortomozaik.jpg",
     "algi.jpg": "results\\fdr_sprint_20260910\\H1\\k3b\\taban\\harita_2_kolay\\iha_scan\\algi.jpg",
@@ -323,6 +328,7 @@
    "varyant": "taban",
    "mozaik": "son_yazar",
    "hb_yaricap_m": 0.0,
+   "tarama_kaynak": null,
    "zemin_dokusu": null,
    "tarama": {
     "kare_n": 39,
@@ -376,7 +382,7 @@
     "wp_n": 0,
     "dogru": false
    },
-   "haritala_sure_s": 0.51,
+   "haritala_sure_s": 0.57,
    "dosyalar": {
     "ortomozaik.jpg": "results\\fdr_sprint_20260910\\H1\\k3b\\taban\\harita_2_orta\\iha_scan\\ortomozaik.jpg",
     "algi.jpg": "results\\fdr_sprint_20260910\\H1\\k3b\\taban\\harita_2_orta\\iha_scan\\algi.jpg",
@@ -390,6 +396,7 @@
    "varyant": "taban",
    "mozaik": "son_yazar",
    "hb_yaricap_m": 0.0,
+   "tarama_kaynak": null,
    "zemin_dokusu": null,
    "tarama": {
     "kare_n": 39,
@@ -443,7 +450,7 @@
     "wp_n": 0,
     "dogru": false
    },
-   "haritala_sure_s": 0.58,
+   "haritala_sure_s": 0.52,
    "dosyalar": {
     "ortomozaik.jpg": "results\\fdr_sprint_20260910\\H1\\k3b\\taban\\harita_2_zor\\iha_scan\\ortomozaik.jpg",
     "algi.jpg": "results\\fdr_sprint_20260910\\H1\\k3b\\taban\\harita_2_zor\\iha_scan\\algi.jpg",
@@ -457,6 +464,7 @@
    "varyant": "taban",
    "mozaik": "son_yazar",
    "hb_yaricap_m": 0.0,
+   "tarama_kaynak": null,
    "zemin_dokusu": null,
    "tarama": {
     "kare_n": 39,
@@ -510,7 +518,7 @@
     "wp_n": 0,
     "dogru": false
    },
-   "haritala_sure_s": 0.57,
+   "haritala_sure_s": 0.49,
    "dosyalar": {
     "ortomozaik.jpg": "results\\fdr_sprint_20260910\\H1\\k3b\\taban\\harita_3_kolay\\iha_scan\\ortomozaik.jpg",
     "algi.jpg": "results\\fdr_sprint_20260910\\H1\\k3b\\taban\\harita_3_kolay\\iha_scan\\algi.jpg",
@@ -524,6 +532,7 @@
    "varyant": "taban",
    "mozaik": "son_yazar",
    "hb_yaricap_m": 0.0,
+   "tarama_kaynak": null,
    "zemin_dokusu": null,
    "tarama": {
     "kare_n": 39,
@@ -577,7 +586,7 @@
     "wp_n": 0,
     "dogru": false
    },
-   "haritala_sure_s": 0.58,
+   "haritala_sure_s": 0.49,
    "dosyalar": {
     "ortomozaik.jpg": "results\\fdr_sprint_20260910\\H1\\k3b\\taban\\harita_3_orta\\iha_scan\\ortomozaik.jpg",
     "algi.jpg": "results\\fdr_sprint_20260910\\H1\\k3b\\taban\\harita_3_orta\\iha_scan\\algi.jpg",
@@ -591,6 +600,7 @@
    "varyant": "taban",
    "mozaik": "son_yazar",
    "hb_yaricap_m": 0.0,
+   "tarama_kaynak": null,
    "zemin_dokusu": null,
    "tarama": {
     "kare_n": 39,
@@ -644,7 +654,7 @@
     "wp_n": 0,
     "dogru": false
    },
-   "haritala_sure_s": 0.54,
+   "haritala_sure_s": 0.51,
    "dosyalar": {
     "ortomozaik.jpg": "results\\fdr_sprint_20260910\\H1\\k3b\\taban\\harita_3_zor\\iha_scan\\ortomozaik.jpg",
     "algi.jpg": "results\\fdr_sprint_20260910\\H1\\k3b\\taban\\harita_3_zor\\iha_scan\\algi.jpg",
@@ -658,6 +668,7 @@
    "varyant": "taban",
    "mozaik": "son_yazar",
    "hb_yaricap_m": 0.0,
+   "tarama_kaynak": null,
    "zemin_dokusu": null,
    "tarama": {
     "kare_n": 39,
@@ -711,7 +722,7 @@
     "wp_n": 0,
     "dogru": false
    },
-   "haritala_sure_s": 0.51,
+   "haritala_sure_s": 0.49,
    "dosyalar": {
     "ortomozaik.jpg": "results\\fdr_sprint_20260910\\H1\\k3b\\taban\\harita_4_kolay\\iha_scan\\ortomozaik.jpg",
     "algi.jpg": "results\\fdr_sprint_20260910\\H1\\k3b\\taban\\harita_4_kolay\\iha_scan\\algi.jpg",
@@ -725,6 +736,7 @@
    "varyant": "taban",
    "mozaik": "son_yazar",
    "hb_yaricap_m": 0.0,
+   "tarama_kaynak": null,
    "zemin_dokusu": null,
    "tarama": {
     "kare_n": 39,
@@ -778,7 +790,7 @@
     "wp_n": 0,
     "dogru": false
    },
-   "haritala_sure_s": 0.5,
+   "haritala_sure_s": 0.48,
    "dosyalar": {
     "ortomozaik.jpg": "results\\fdr_sprint_20260910\\H1\\k3b\\taban\\harita_4_orta\\iha_scan\\ortomozaik.jpg",
     "algi.jpg": "results\\fdr_sprint_20260910\\H1\\k3b\\taban\\harita_4_orta\\iha_scan\\algi.jpg",
@@ -792,6 +804,7 @@
    "varyant": "taban",
    "mozaik": "son_yazar",
    "hb_yaricap_m": 0.0,
+   "tarama_kaynak": null,
    "zemin_dokusu": null,
    "tarama": {
     "kare_n": 39,
@@ -859,6 +872,7 @@
    "varyant": "taban",
    "mozaik": "son_yazar",
    "hb_yaricap_m": 0.0,
+   "tarama_kaynak": null,
    "zemin_dokusu": null,
    "tarama": {
     "kare_n": 39,
@@ -926,6 +940,7 @@
    "varyant": "taban",
    "mozaik": "son_yazar",
    "hb_yaricap_m": 0.0,
+   "tarama_kaynak": null,
    "zemin_dokusu": null,
    "tarama": {
     "kare_n": 39,
@@ -979,7 +994,7 @@
     "wp_n": 0,
     "dogru": false
    },
-   "haritala_sure_s": 0.52,
+   "haritala_sure_s": 0.51,
    "dosyalar": {
     "ortomozaik.jpg": "results\\fdr_sprint_20260910\\H1\\k3b\\taban\\harita_5_orta\\iha_scan\\ortomozaik.jpg",
     "algi.jpg": "results\\fdr_sprint_20260910\\H1\\k3b\\taban\\harita_5_orta\\iha_scan\\algi.jpg",
@@ -993,6 +1008,7 @@
    "varyant": "taban",
    "mozaik": "son_yazar",
    "hb_yaricap_m": 0.0,
+   "tarama_kaynak": null,
    "zemin_dokusu": null,
    "tarama": {
     "kare_n": 39,
@@ -1046,7 +1062,7 @@
     "wp_n": 0,
     "dogru": false
    },
-   "haritala_sure_s": 0.54,
+   "haritala_sure_s": 0.53,
    "dosyalar": {
     "ortomozaik.jpg": "results\\fdr_sprint_20260910\\H1\\k3b\\taban\\harita_5_zor\\iha_scan\\ortomozaik.jpg",
     "algi.jpg": "results\\fdr_sprint_20260910\\H1\\k3b\\taban\\harita_5_zor\\iha_scan\\algi.jpg",

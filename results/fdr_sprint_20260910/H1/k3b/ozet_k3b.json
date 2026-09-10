@@ -38,11 +38,15 @@
      "KAPI_YOK",
      "MASKE_YOK"
     ],
-    "hb_yaricap_m": 2.5
+    "hb_yaricap_m": 2.5,
+    "kok": "results/fdr_sprint_20260910/H1/k3b/taban_hb2.5",
+    "tarama_kaynak": "results/fdr_sprint_20260910/H1/k3b/taban"
    },
    "mozaik": "son_yazar",
    "zemin_dokusu": null,
-   "tarih": "2026-09-10 10:33"
+   "tarih": "2026-09-10 11:34",
+   "kok": "results/fdr_sprint_20260910/H1/k3b/taban",
+   "kapi": "H1-K3 15 harita (eşik ≥ 12/15)"
   },
   {
    "varyant": "v1",
@@ -71,11 +75,15 @@
      "DOGRULAMA_BASARISIZ",
      "KAPALI_DAR"
     ],
-    "hb_yaricap_m": 2.5
+    "hb_yaricap_m": 2.5,
+    "kok": "results/fdr_sprint_20260910/H1/k3b/v1_hb2.5",
+    "tarama_kaynak": "results/fdr_sprint_20260910/H1/k3b/v1"
    },
    "mozaik": "son_yazar",
    "zemin_dokusu": "zemin_surulmus",
-   "tarih": "2026-09-10 10:43"
+   "tarih": "2026-09-10 11:35",
+   "kok": "results/fdr_sprint_20260910/H1/k3b/v1",
+   "kapi": "H1-K3 15 harita (eşik ≥ 12/15)"
   },
   {
    "varyant": "v2",
@@ -102,11 +110,15 @@
      "DOGRULAMA_BASARISIZ",
      "KAPALI_DAR"
     ],
-    "hb_yaricap_m": 2.5
+    "hb_yaricap_m": 2.5,
+    "kok": "results/fdr_sprint_20260910/H1/k3b/v2_hb2.5",
+    "tarama_kaynak": "results/fdr_sprint_20260910/H1/k3b/v2"
    },
    "mozaik": "son_yazar",
    "zemin_dokusu": "zemin_surulmus",
-   "tarih": "2026-09-10 10:44"
+   "tarih": "2026-09-10 11:35",
+   "kok": "results/fdr_sprint_20260910/H1/k3b/v2",
+   "kapi": "H1-K3 15 harita (eşik ≥ 12/15)"
   },
   {
    "varyant": "v3",
@@ -133,11 +145,54 @@
      "DOGRULAMA_BASARISIZ",
      "KAPALI_DAR"
     ],
-    "hb_yaricap_m": 2.5
+    "hb_yaricap_m": 2.5,
+    "kok": "results/fdr_sprint_20260910/H1/k3b/v3_hb2.5",
+    "tarama_kaynak": "results/fdr_sprint_20260910/H1/k3b/v3"
    },
    "mozaik": "son_yazar",
    "zemin_dokusu": "zemin_surulmus",
-   "tarih": "2026-09-10 10:45"
+   "tarih": "2026-09-10 11:36",
+   "kok": "results/fdr_sprint_20260910/H1/k3b/v3",
+   "kapi": "H1-K3 15 harita (eşik ≥ 12/15)"
+  },
+  {
+   "varyant": "v1 · yerleşim D-441 (açık yol koridoru engelsiz)",
+   "harita_n": 15,
+   "rota_bulunan": 7,
+   "dogru_etiket": 7,
+   "rota_durumlari": [
+    "ACIK",
+    "BELIRSIZ_COKLU",
+    "KAPALI_DAR"
+   ],
+   "htab_gecilebilir_ort": 0.3448,
+   "htab_engel_ort": 0.1239,
+   "acik_yol_gecilebilir_ort": 0.9877,
+   "kapali_yol_gecilebilir_ort": 0.7088,
+   "yol_disi_gecilebilir_ort": 0.1459,
+   "yol_disi_engel_ort": 0.1387,
+   "teshis_imgsz512": {
+    "rota_bulunan": 6,
+    "dogru_etiket": 6
+   },
+   "teshis_hb2_5": {
+    "rota_bulunan": 7,
+    "dogru_etiket": 7,
+    "rota_durumlari": [
+     "ACIK",
+     "BELIRSIZ_COKLU",
+     "DOGRULAMA_BASARISIZ",
+     "KAPALI_DAR"
+    ],
+    "hb_yaricap_m": 2.5,
+    "kok": "results/fdr_sprint_20260910/H1/k3b/v1_yerlesim_d441_hb2.5",
+    "tarama_kaynak": "results/fdr_sprint_20260910/H1/k3b/v1_yerlesim_d441"
+   },
+   "mozaik": "son_yazar",
+   "zemin_dokusu": "zemin_surulmus",
+   "tarih": "2026-09-10 11:37",
+   "kok": "results/fdr_sprint_20260910/H1/k3b/v1_yerlesim_d441",
+   "kapi": "H1-K3 15 harita (eşik ≥ 12/15)"
   }
  ],
  "ek_olcumler": {

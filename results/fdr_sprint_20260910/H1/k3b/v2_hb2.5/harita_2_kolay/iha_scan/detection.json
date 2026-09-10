@@ -1,0 +1,21 @@
+{
+  "road": null,
+  "label": "yok",
+  "conf": 0.0,
+  "image": "ortomozaik.jpg",
+  "kaynak": "sim-tarama",
+  "kare_n": 15,
+  "hb_yaricap_m": 2.5,
+  "birlestirme": "son_yazar",
+  "girdi_dir": "O:\\navitas\\.claude\\worktrees\\wf_e7381c6f-ab1-1\\results\\fdr_sprint_20260910\\H1\\k3b\\v2\\harita_2_kolay\\iha_scan",
+  "trav_px": 300450,
+  "moloz_px": 180712,
+  "arac_px": 0,
+  "engel_px": 180712,
+  "arac_model": null,
+  "wp_n": 0,
+  "rota_durum": "KAPALI_DAR",
+  "rota_sebep": "Hicbir koridor gerekli aciklikta gecilebilir degil.",
+  "darbogaz_m": null,
+  "rota_ihlalleri": []
+}

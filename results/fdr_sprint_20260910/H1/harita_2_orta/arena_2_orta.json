@@ -2,6 +2,7 @@
  "harita": 2,
  "senaryo": "orta",
  "seed": 42,
+ "varyant": "taban",
  "acik_yol": 1,
  "acik_yol_etiket": "sol",
  "kb_xy": [
@@ -25,16 +26,24 @@
   -26.0,
   0.0
  ],
- "mjcf_kanonik_sha256": "e1a0ef6aace5d2e73560d6c2a1486ac982167c6bd26d88eb51208d9aa95b6163",
- "mjcf_bayt": 37341,
+ "mjcf_kanonik_sha256": "5b7136c45fa7afa983377793f98d6aea4979d35938ca293fbc242132da767d65",
+ "mjcf_bayt": 37410,
  "htab_doku_sha256": "d9611451ca73da021cd9f8b0f847989ecf9d0640660429c6059cdf0f07aa33fe",
- "mjcf_uretim_ms": 25.2,
- "mjcf_yukleme_ms": 128.8,
+ "mjcf_uretim_ms": 26.3,
+ "mjcf_yukleme_ms": 110.7,
  "ngeom": 259,
  "nbody": 8,
  "ncam": 5,
  "nu": 4,
  "yonerge": {
+  "acik_yol_koridoru_engelsiz": {
+   "ok": true,
+   "deger": {
+    "aciklik_m": 2.0483,
+    "geom": "bariyer_2",
+    "pay_m": 1.45
+   }
+  },
   "iha_ib_30x30_mavi": {
    "ok": true,
    "deger": {

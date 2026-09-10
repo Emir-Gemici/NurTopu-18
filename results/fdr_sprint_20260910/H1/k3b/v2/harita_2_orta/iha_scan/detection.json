@@ -5,6 +5,8 @@
   "image": "ortomozaik.jpg",
   "kaynak": "sim-tarama",
   "kare_n": 15,
+  "hb_yaricap_m": 0.0,
+  "birlestirme": "son_yazar",
   "trav_px": 315372,
   "moloz_px": 178639,
   "arac_px": 0,

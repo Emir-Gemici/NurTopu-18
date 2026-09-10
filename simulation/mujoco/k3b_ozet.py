@@ -20,7 +20,9 @@ for _akim in (sys.stdout, sys.stderr):
 
 KOK = Path(__file__).resolve().parents[2]
 K3B = KOK / "results" / "fdr_sprint_20260910" / "H1" / "k3b"
-VARYANTLAR = ("taban", "v1", "v2", "v3")
+# (etiket, dosya kökü): <dosya>.json üretim (hb 0), <dosya>_hb2.5.json TEŞHİS (ayrı --kok, tarama_kaynak)
+VARYANTLAR = (("taban", "taban_15harita"), ("v1", "v1_15harita"), ("v2", "v2_15harita"), ("v3", "v3_15harita"),
+              ("v1 · yerleşim D-441 (açık yol koridoru engelsiz)", "v1_15harita_yerlesim_d441"))
 
 
 def _oku(ad: str):
@@ -50,21 +52,23 @@ def _satir(v: str, d: dict, hb: dict | None) -> dict:
         "teshis_imgsz512": {"rota_bulunan": ti.get("rota_bulunan"), "dogru_etiket": ti.get("dogru_etiket")} if ti else None,
         "teshis_hb2_5": None,
         "mozaik": d.get("mozaik"), "zemin_dokusu": d.get("zemin_dokusu"), "tarih": d.get("tarih"),
+        "kok": d.get("kok"), "kapi": d.get("kapi"),
     }
     if hb:
         out["teshis_hb2_5"] = {"rota_bulunan": hb["ozet"]["rota_bulunan"], "dogru_etiket": hb["ozet"]["dogru_etiket"],
                                "rota_durumlari": sorted({r["rota_durum"] for r in hb["haritalar"]}),
-                               "hb_yaricap_m": hb.get("hb_yaricap_m")}
+                               "hb_yaricap_m": hb.get("hb_yaricap_m"),
+                               "kok": hb.get("kok"), "tarama_kaynak": hb.get("tarama_kaynak")}
     return out
 
 
 def main():
     satirlar = []
-    for v in VARYANTLAR:
-        d = _oku(f"{v}_15harita.json")
+    for v, dosya in VARYANTLAR:
+        d = _oku(f"{dosya}.json")
         if d is None:
             continue
-        satirlar.append(_satir(v, d, _oku(f"{v}_15harita_hb2.5.json")))
+        satirlar.append(_satir(v, d, _oku(f"{dosya}_hb2.5.json")))
     ek = {}
     for ad in ("v1_asfalt_3harita.json", "v1_15harita_nadir_yakin.json", "v2_15harita_nadir_yakin.json",
                "v1_zemin_toprak_3harita.json"):

@@ -52,9 +52,14 @@ if str(SCRIPTS) not in sys.path:
 if str(BURASI) not in sys.path:
     sys.path.insert(0, str(BURASI))
 
+CODES = BURASI.parents[1] / "codes"
+if str(CODES) not in sys.path:
+    sys.path.append(str(CODES))
+
 import arena                      # noqa: E402  (TEK KAYNAK harita geometrisi)
 import araclar                    # noqa: E402
 from world_generator import DIFF, SCAN_Z   # noqa: E402  (şerit genişliği, tarama irtifası)
+from costmap_path_finder import IKA_GENISLIK_M, R_GEREKLI_M   # noqa: E402  (CONTRACTS §4, tek kaynak)
 
 DOKU_DIR = BURASI / "dokular"
 URETILEN_DIR = DOKU_DIR / "uretilen"       # harita başına HTAB dokusu (git dışı)
@@ -78,6 +83,20 @@ Z_IB, Z_KB, Z_PED, Z_H = 0.03, 0.04, 0.05, 0.07   # yassı işaretler katmanlı 
 LEVEL_RGBA = {"kolay": (0.10, 0.75, 0.20, 1), "orta": (0.90, 0.70, 0.10, 1),
               "zor": (0.85, 0.15, 0.15, 1)}
 MOLOZ_MATERYALLER = ("moloz_a", "moloz_b", "moloz_a_koyu")
+
+# ── Açık yol koridoru kuralı (D-441, 10 Eyl 2026) ────────────────────────────
+# T213-B GT sürüşü (15 harita × 3 tohum = 45 koşum): 12'sinde temas, 10'unda açık yolun MERKEZ
+# HATTI bir engelle kesişiyordu (açıklık < 0,22 m). Neden: kapalı yol tıkamaları (t 0,30–0,80,
+# u ±(lane_w/2+0,5), v ±1,8) ve 1,4× büyütülmüş chicane plakaları yolların yakınlaştığı yerde
+# (KB/HB ucu, meander) açık yolun hattına giriyordu; bariyer de (lane_w+1 m, t=0,12) KB
+# yakınında 0,84 m'ye kadar sokuluyordu. Kural: açık yol merkez hattından ± ACIK_YOL_PAY_M
+# içinde HİÇBİR engel geom'u (OBB) olamaz. Pay = İKA yarı genişliği + geçilebilirlik yarıçapı
+# (CONTRACTS §4; `costmap_path_finder` tek kaynak) = 0,35 + 1,10 = 1,45 m.
+ACIK_YOL_PAY_M = IKA_GENISLIK_M / 2.0 + R_GEREKLI_M
+ENGEL_ONEKLERI_YERLESIM = ("bariyer_", "tikama_", "moloz_", "chicane_")
+YOL_ORNEK_ADIM_M = 0.10                     # açıklık hesabı için merkez hattı örnekleme adımı
+YERLESIM_DENEME_N = 80                      # tıkama parçası: pay sağlanana dek yeniden örnekleme
+BARIYER_T_ADAYLARI = tuple(round(0.12 + 0.01 * i, 2) for i in range(29))   # 0,12 → 0,40
 
 
 def _f(v: float, n: int = 3) -> str:
@@ -434,35 +453,98 @@ def _moloz(rng, ad, x, y, buyuk=False):
             "yaw": rng.uniform(0, 3.14), "mat": rng.choice(MOLOZ_MATERYALLER)}
 
 
+def _yol_ornekle(path, adim_m: float = YOL_ORNEK_ADIM_M) -> np.ndarray:
+    """Polyline'ı `adim_m` aralıkla örnekle → N×2 (açıklık hesabı için)."""
+    pts = [np.asarray(path[0], float)]
+    for a, b in zip(path, path[1:]):
+        a, b = np.asarray(a, float), np.asarray(b, float)
+        n = max(1, int(math.ceil(float(np.hypot(*(b - a))) / adim_m)))
+        for k in range(1, n + 1):
+            pts.append(a + (b - a) * (k / n))
+    return np.asarray(pts, float)
+
+
+def _kutu_aciklik(P: np.ndarray, x: float, y: float, sx: float, sy: float, yaw: float) -> float:
+    """Tam kenarları sx×sy, `yaw`'lı dik kutunun (OBB) örneklenmiş hatta en küçük XY uzaklığı;
+    hat kutunun içinden geçiyorsa 0. (gorev_kosumu.rota_engel_acikligi ile aynı formül.)"""
+    c, s = math.cos(yaw), math.sin(yaw)
+    dx, dy = P[:, 0] - x, P[:, 1] - y
+    xl = dx * c + dy * s
+    yl = -dx * s + dy * c
+    d = np.hypot(np.maximum(np.abs(xl) - sx / 2.0, 0.0), np.maximum(np.abs(yl) - sy / 2.0, 0.0))
+    return float(d.min())
+
+
+def _moloz_aciklik(P: np.ndarray, mz: dict) -> float:
+    return _kutu_aciklik(P, mz["x"], mz["y"], mz["sx"], mz["sy"], mz["yaw"])
+
+
+def yerlesim_acikligi(H: dict, Y: dict) -> tuple[float, str]:
+    """Tasarım (yerleşim sözlüğü) düzeyinde: açık yol merkez hattı ↔ her engel OBB'si en küçük
+    açıklık (m) ve o geom'un adı. Bariyer kutusu w×0,5 m."""
+    P = _yol_ornekle(H["paths"][H["open"]])
+    en_kucuk, ad = math.inf, None
+    for b in Y["bariyer"]:
+        a = _kutu_aciklik(P, b["x"], b["y"], b["w"], 0.5, b["yaw"])
+        if a < en_kucuk:
+            en_kucuk, ad = a, f"bariyer_{b['road']}"
+    for grup in ("tikama", "moloz", "chicane"):
+        for mz in Y[grup]:
+            a = _moloz_aciklik(P, mz)
+            if a < en_kucuk:
+                en_kucuk, ad = a, mz["ad"]
+    return en_kucuk, ad
+
+
 def yerlesim(H: dict, lv: str, seed: int, layout: str = "field") -> dict:
-    """Deterministik yerleşim: {'bariyer': [...], 'tikama': [...], 'moloz': [...], 'chicane': [...]}."""
+    """Deterministik yerleşim: {'bariyer': [...], 'tikama': [...], 'moloz': [...], 'chicane': [...],
+    'atlanan': [...], 'acik_yol_pay_m': float}.
+
+    Açık yol koridoru kuralı (D-441): açık yol merkez hattına OBB açıklığı < ACIK_YOL_PAY_M olan
+    hiçbir engel yerleşmez — bariyer pay sağlanan ilk t'ye (0,12 → 0,40) kayar; tıkama parçası
+    ve dağınık moloz yeniden örneklenir (ek rng çekilişi YALNIZ ret hâlinde → pay 0 iken T212
+    yerleşimi bayt-eş geri gelir; test kilidi); chicane plakası da yeniden örneklenir (bant her
+    10 denemede 0,5 m dışa kayar). Tıkama/chicane parçası YERLESIM_DENEME_N denemede pay
+    bulamazsa atlanır ('atlanan' listesi)."""
     rng = random.Random(f"navitas-mjcf-{H['id']}-{lv}-{seed}")
     lane_w = DIFF[lv]["lane_w"]
     clear = lane_w / 2.0 + 1.2
     kb, hb = H["kb"], H["hb"]
     acik = H["open"]
-    out = {"bariyer": [], "tikama": [], "moloz": [], "chicane": []}
+    pay = ACIK_YOL_PAY_M
+    P = _yol_ornekle(H["paths"][acik])
+    out = {"bariyer": [], "tikama": [], "moloz": [], "chicane": [], "atlanan": [], "acik_yol_pay_m": pay}
 
     tikama_n = DIFF[lv]["tikama_n"]
     for road in (1, 2, 3):
         if road == acik:
             continue
         path = H["paths"][road]
-        bi = int(len(path) * 0.12)
-        (bx, by), (nx2, ny2) = path[bi], path[bi + 1]
-        byaw = math.atan2(ny2 - by, nx2 - bx) + math.pi / 2
-        out["bariyer"].append({"road": road, "x": bx, "y": by, "yaw": byaw, "w": lane_w + 1.0})
+        for bt in BARIYER_T_ADAYLARI:
+            bi = int(len(path) * bt)
+            (bx, by), (nx2, ny2) = path[bi], path[bi + 1]
+            byaw = math.atan2(ny2 - by, nx2 - bx) + math.pi / 2
+            if _kutu_aciklik(P, bx, by, lane_w + 1.0, 0.5, byaw) >= pay:
+                break
+        out["bariyer"].append({"road": road, "x": bx, "y": by, "yaw": byaw, "w": lane_w + 1.0, "t": bt})
         for k in range(tikama_n):
             t = 0.30 + 0.50 * (k / max(1, tikama_n - 1)) + rng.uniform(-0.05, 0.05)
             ti = max(1, min(len(path) - 2, int(len(path) * t)))
             (px, py), (qx, qy) = path[ti], path[ti + 1]
             tyaw = math.atan2(qy - py, qx - px)
             for j in range(max(6, int(lane_w * 1.6))):
-                u = rng.uniform(-lane_w / 2 - 0.5, lane_w / 2 + 0.5)
-                v = rng.uniform(-1.8, 1.8)
-                ox = px + v * math.cos(tyaw) - u * math.sin(tyaw)
-                oy = py + v * math.sin(tyaw) + u * math.cos(tyaw)
-                out["tikama"].append(_moloz(rng, f"tikama_{road}_{k}_{j}", ox, oy, buyuk=True))
+                ad = f"tikama_{road}_{k}_{j}"
+                for _deneme in range(YERLESIM_DENEME_N):
+                    u = rng.uniform(-lane_w / 2 - 0.5, lane_w / 2 + 0.5)
+                    v = rng.uniform(-1.8, 1.8)
+                    ox = px + v * math.cos(tyaw) - u * math.sin(tyaw)
+                    oy = py + v * math.sin(tyaw) + u * math.cos(tyaw)
+                    mz = _moloz(rng, ad, ox, oy, buyuk=True)
+                    if _moloz_aciklik(P, mz) >= pay:
+                        out["tikama"].append(mz)
+                        break
+                else:
+                    out["atlanan"].append(ad)
 
     n = DIFF[lv]["debris_n"]
     if layout == "clean":
@@ -478,7 +560,10 @@ def yerlesim(H: dict, lv: str, seed: int, layout: str = "field") -> dict:
             continue
         if math.hypot(lx - hb[0], ly - hb[1]) < 4.0:
             continue
-        out["moloz"].append(_moloz(rng, f"moloz_{placed}", lx, ly))
+        mz = _moloz(rng, f"moloz_{placed}", lx, ly)
+        if _moloz_aciklik(P, mz) < pay:        # merkez uzak ama OBB açık yol şeridine sarkıyor
+            continue
+        out["moloz"].append(mz)
         placed += 1
 
     op = H["paths"][acik]
@@ -487,9 +572,22 @@ def yerlesim(H: dict, lv: str, seed: int, layout: str = "field") -> dict:
         (px, py), (qx, qy) = op[ti], op[ti + 1]
         tyaw = math.atan2(qy - py, qx - px)
         side = 1.0 if wi % 2 == 0 else -1.0
-        off = side * (clear + rng.uniform(0.4, 1.1))
-        out["chicane"].append(_moloz(rng, f"chicane_{wi}", px - off * math.sin(tyaw),
-                                     py + off * math.cos(tyaw), buyuk=True))
+        ad = f"chicane_{wi}"
+        for deneme in range(YERLESIM_DENEME_N):
+            # Plaka açık yol hattına (bu segment YA DA yolun başka bir kısmı: KB/HB ucu, meander)
+            # sarkıyorsa yeniden örneklenir; her 10 denemede bant 0,5 m dışa kayar, denemelerin
+            # ikinci yarısında karşı yana geçilir. Normal boyunca itme kullanılmaz: itme plakayı
+            # yolun başka bir parçasının üstüne taşıyordu (ölçüldü, 10 Eyl).
+            yarim = YERLESIM_DENEME_N // 2
+            ek = 0.5 * ((deneme % yarim) // 10)
+            s = side if deneme < yarim else -side
+            off = s * (clear + ek + rng.uniform(0.4, 1.1))
+            mz = _moloz(rng, ad, px - off * math.sin(tyaw), py + off * math.cos(tyaw), buyuk=True)
+            if _moloz_aciklik(P, mz) >= pay:
+                out["chicane"].append(mz)
+                break
+        else:
+            out["atlanan"].append(ad)
     return out
 
 
@@ -746,11 +844,101 @@ def _geom(m, ad):
     return None if gid < 0 else gid
 
 
+def _geom_xy_noktalari(m, g) -> np.ndarray:
+    """Geomun XY ayak izini kapsayan dünya noktaları: kutu → 8 köşe; mesh → tüm köşeler
+    (MuJoCo mesh'i eylemsizlik eksenlerine döndürüp geom_pos/quat'ı buna göre ayarlar; köşeler
+    o çerçevededir); diğer → yarıçaplı 16-gen."""
+    import mujoco
+    R9 = np.zeros(9)
+    mujoco.mju_quat2Mat(R9, m.geom_quat[g])
+    R = R9.reshape(3, 3)
+    tip = int(m.geom_type[g])
+    if tip == int(mujoco.mjtGeom.mjGEOM_BOX):
+        sx, sy, sz = (float(v) for v in m.geom_size[g])
+        yerel = np.array([[i * sx, j * sy, k * sz] for i in (-1, 1) for j in (-1, 1) for k in (-1, 1)])
+    elif tip == int(mujoco.mjtGeom.mjGEOM_MESH):
+        mid = int(m.geom_dataid[g])
+        adr, n = int(m.mesh_vertadr[mid]), int(m.mesh_vertnum[mid])
+        yerel = np.asarray(m.mesh_vert[adr:adr + n], float)
+    else:
+        r = float(m.geom_size[g][0])
+        ang = np.linspace(0, 2 * math.pi, 16, endpoint=False)
+        yerel = np.stack([r * np.cos(ang), r * np.sin(ang), np.zeros(16)], 1)
+    return (yerel @ R.T + np.asarray(m.geom_pos[g], float))[:, :2]
+
+
+def _bukey_kabuk(P: np.ndarray) -> np.ndarray:
+    """2B dışbükey kabuk (Andrew monoton zincir, saat yönünün tersi). SciPy YOK."""
+    pts = sorted({(float(x), float(y)) for x, y in P})
+    if len(pts) <= 2:
+        return np.asarray(pts, float)
+
+    def carpim(o, a, b):
+        return (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0])
+    alt, ust = [], []
+    for p in pts:
+        while len(alt) >= 2 and carpim(alt[-2], alt[-1], p) <= 0:
+            alt.pop()
+        alt.append(p)
+    for p in reversed(pts):
+        while len(ust) >= 2 and carpim(ust[-2], ust[-1], p) <= 0:
+            ust.pop()
+        ust.append(p)
+    return np.asarray(alt[:-1] + ust[:-1], float)
+
+
+def _cokgen_aciklik(P: np.ndarray, kabuk: np.ndarray) -> float:
+    """Örneklenmiş hattın (N×2) dışbükey çokgene en küçük uzaklığı (içeride 0)."""
+    K = len(kabuk)
+    if K == 0:
+        return math.inf
+    if K == 1:
+        return float(np.hypot(*(P - kabuk[0]).T).min())
+    A = kabuk
+    B = np.roll(kabuk, -1, axis=0)
+    E = B - A                                          # K×2
+    L2 = np.maximum((E ** 2).sum(1), 1e-12)
+    D = P[:, None, :] - A[None, :, :]                  # N×K×2
+    t = np.clip((D * E[None]).sum(2) / L2[None], 0.0, 1.0)
+    yakin = A[None] + t[..., None] * E[None]
+    fark = P[:, None, :] - yakin
+    uzak = np.hypot(fark[..., 0], fark[..., 1]).min(1)                    # N
+    if K >= 3:
+        capraz = E[None, :, 0] * D[..., 1] - E[None, :, 1] * D[..., 0]     # N×K
+        icerde = (capraz >= -1e-9).all(1)
+        uzak = np.where(icerde, 0.0, uzak)
+    return float(uzak.min())
+
+
+def acik_yol_engel_acikligi(m, harita_id: int, lv: str,
+                            onekler=ENGEL_ONEKLERI_YERLESIM) -> tuple[float | None, str | None]:
+    """YÜKLENEN modelde: açık yol merkez hattı ↔ her engel geomunun XY dışbükey kabuğu arasındaki
+    en küçük açıklık (m) ve geom adı. Kutu için OBB ile eş; v3 mesh için köşe kabuğu (mesh
+    tasarım kutusunun içindedir → tasarım payı sağlanınca bu da sağlanır)."""
+    import mujoco
+    H = arena.harita(harita_id, lv)
+    P = _yol_ornekle(H["paths"][H["open"]])
+    en_kucuk, ad = None, None
+    for g in range(m.ngeom):
+        gad = mujoco.mj_id2name(m, mujoco.mjtObj.mjOBJ_GEOM, g) or ""
+        if not gad.startswith(onekler):
+            continue
+        a = _cokgen_aciklik(P, _bukey_kabuk(_geom_xy_noktalari(m, g)))
+        if en_kucuk is None or a < en_kucuk:
+            en_kucuk, ad = a, gad
+    return (None if en_kucuk is None else round(en_kucuk, 4)), ad
+
+
 def yonerge_kontrol(m, harita_id: int, lv: str) -> dict:
     """Her madde: {'ok': bool, 'deger': ...}. Test ve kanıt JSON'u bunu kullanır."""
     import mujoco
     H = arena.harita(harita_id, lv)
     out = {}
+
+    aciklik, gad = acik_yol_engel_acikligi(m, harita_id, lv)
+    out["acik_yol_koridoru_engelsiz"] = {                      # D-441 kuralı (ACIK_YOL_PAY_M)
+        "ok": bool(aciklik is not None and aciklik >= ACIK_YOL_PAY_M - 5e-3),
+        "deger": {"aciklik_m": aciklik, "geom": gad, "pay_m": round(ACIK_YOL_PAY_M, 3)}}
 
     g = _geom(m, "iha_ib")
     if g is None:

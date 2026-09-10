@@ -5,6 +5,8 @@ Kapılar (ON_KAYIT H1-K1/K2/K8): determinizm (aynı girdi → bayt-eş), 15 hari
 30×30 mavi, HB kırmızı H 2×2, tek açık yol), tarama çıktı sözleşmesi (poses.csv
 n,t,x,y,z,yaw; kare sayısı > 0; kare boyu), kamera yön sözleşmesi (görüntü sağı =
 burun, mozaik kuzey-yukarı), 3 mutasyon (H rengi, İB kenarı, seed).
+T213-A ek: açık yol koridoru kuralı (D-441; `AcikYolKoridoru`: 15 harita + 45 yerleşim açıklık ≥ pay,
+pay=0 mutasyonunda T212 yerleşimi geri gelir ve test düşer).
 GPU gerekmez; küçük çözünürlük; hedef < 60 s.
 """
 import hashlib
@@ -32,6 +34,13 @@ import iha_ucus                                 # noqa: E402
 import iha_haritala                             # noqa: E402
 
 HARITALAR = [(h, lv) for h in range(1, arena.HARITA_N + 1) for lv in arena.SCENARIOS]
+# T212 kaydı (arena_ozeti_15.json, 9 Eyl): 1_kolay taban XML sha'sı — yerleşim düzeltmesi ÖNCESİ.
+T212_SHA_1_KOLAY = "941c7b84d490422883afaa39868e4a2604a330bd8b372d1680352bb5e5e56ee3"
+# Aynı XML, T213-B'nin 4 teker `armature="0.0100"` satırıyla (master, araclar.py) — pay=0 mutasyonu
+# bunu bayt-eş üretir (10 Eyl ölçümü: difflib, T212 XML'inden yalnız o 4 satır farklı). 1 kolay'da T212
+# yerleşimi payı zaten sağlıyordu (en küçük açıklık 2,748 m, ret yok) → kilit listesindeki 1_kolay sha'sı
+# da budur; yerleşimin gerçekten değiştiği harita 3 orta'dır (pay=0 ↔ kilit sha farkı orada denetlenir).
+PAY0_SHA_1_KOLAY = "d2c3127b305f00630fda7bd26b1198028bf3bd920dd395435e27b21df57a2f44"
 
 
 class Determinizm(unittest.TestCase):
@@ -282,15 +291,22 @@ class KameraYonSozlesmesi(unittest.TestCase):
 class Varyantlar(unittest.TestCase):
     """T213-A (K3-b) render varyantları: taban bayt-eş, v1 yalnız doku, v2 ışık, v3 moloz mesh."""
 
-    def test_varsayilan_v1_ve_taban_t212_sha_es(self):
-        """Karar (RAPOR_K3B §5): varsayılan v1; taban varyantı T212 XML'iyle bayt-eş kalır."""
+    def test_varsayilan_v1_ve_taban_kilit_sha_es(self):
+        """Karar (RAPOR_K3B §5): varsayılan v1; taban varyantı kilit listesindeki XML'le 15 haritada
+        bayt-eş (`arena_ozeti_15.json`; T212 kaydı 10 Eyl'de yenilendi: T213-B teker armature +
+        D-441 açık yol koridoru — RAPOR_K3B §7). T212'nin özgün yerleşimi pay=0 mutasyonunda geri
+        gelir (`AcikYolKoridoru.test_mutasyon_pay_sifir_olunca_duser`)."""
         self.assertEqual(arena_mjcf.VARYANT_VARSAYILAN, "v1")
         self.assertEqual(arena_mjcf.uret(1, "kolay"), arena_mjcf.uret(1, "kolay", varyant="v1"))
         self.assertNotEqual(arena_mjcf.uret(1, "kolay"), arena_mjcf.uret(1, "kolay", varyant="taban"))
         ozet = KOK / "results" / "fdr_sprint_20260910" / "H1" / "arena_ozeti_15.json"
-        if ozet.is_file():   # T212 kanıtı: taban varyantı o günkü XML'le bayt-eş kalmalı
-            sha = json.loads(ozet.read_text(encoding="utf-8"))["sha256"]["1_kolay"]
-            self.assertEqual(hashlib.sha256(arena_mjcf.uret(1, "kolay", varyant="taban").encode()).hexdigest(), sha)
+        if ozet.is_file():
+            sha = json.loads(ozet.read_text(encoding="utf-8"))["sha256"]
+            self.assertNotEqual(sha["1_kolay"], T212_SHA_1_KOLAY, "kilit listesi yenilenmemiş (T212 sha'sı)")
+            for h, lv in HARITALAR:
+                self.assertEqual(hashlib.sha256(arena_mjcf.uret(h, lv, varyant="taban").encode()).hexdigest(),
+                                 sha[f"{h}_{lv}"],
+                                 f"{h} {lv}: kilit sha ≠ üretilen (arena_mjcf --hepsi --kanit-kok --varyant taban ile yenile)")
 
     def test_v1_yalniz_doku_dosyalari_degisir(self):
         import difflib
@@ -375,6 +391,100 @@ class Varyantlar(unittest.TestCase):
             arena_mjcf.uret(1, "kolay", varyant="v9")
         with self.assertRaises(ValueError):
             arena_mjcf.htab_dokusu(arena.harita(1, "kolay"), 6.0, varyant="v1", zemin_dokusu="cim")
+
+
+class AcikYolKoridoru(unittest.TestCase):
+    """D-441: açık yol merkez hattı ± ACIK_YOL_PAY_M (1,45 m = İKA/2 + R_GEREKLI, CONTRACTS §4) içinde
+    HİÇBİR engel geom'u yok. T213-B GT sürüşünde (15 harita × 3 tohum) 45 koşumun 12'sinde temas,
+    10'unda hat engelle kesişiyordu (açıklık < 0,22 m): kapalı yol tıkamaları ve 1,4× chicane
+    plakaları açık yol hattına giriyordu; bariyer de 0,84 m'ye sokuluyordu (10 Eyl ölçümü)."""
+
+    def test_pay_sozlesmeden(self):
+        from costmap_path_finder import IKA_GENISLIK_M, R_GEREKLI_M
+        self.assertAlmostEqual(arena_mjcf.ACIK_YOL_PAY_M, IKA_GENISLIK_M / 2 + R_GEREKLI_M, places=9)
+        self.assertGreaterEqual(arena_mjcf.ACIK_YOL_PAY_M, 1.1)
+
+    def test_15_haritada_acik_yol_hatti_engel_obb_acikligi(self):
+        """YÜKLENEN modelde (varsayılan varyant, seed 42): her engel geomunun XY kabuğu ile açık yol
+        merkez hattı arasındaki en küçük açıklık ≥ 0,5 m (görev kapısı) ve ≥ pay − 5 mm (tasarım)."""
+        enk = []
+        for h, lv in HARITALAR:
+            m = arena_mjcf.yukle(h, lv, kam_res=64)
+            a, ad = arena_mjcf.acik_yol_engel_acikligi(m, h, lv)
+            enk.append((a, h, lv, ad))
+            self.assertGreaterEqual(a, 0.5, f"{h} {lv}: {ad} açık yol hattına {a} m")
+            self.assertGreaterEqual(a, arena_mjcf.ACIK_YOL_PAY_M - 5e-3, f"{h} {lv}: {ad} {a} m < pay")
+        print(f"[AcikYol] 15 harita en küçük açıklık {min(enk)}")
+
+    def test_45_yerlesimde_tasarim_acikligi_3_tohum(self):
+        """T213-B'nin 45 koşumu (15 harita × tohum 42/43/44): tasarım düzeyinde OBB açıklığı ≥ pay;
+        hiçbir tıkama parçası atlanmaz (kapalı yol tıkaması eksiksiz), chicane 5/5."""
+        for seed in (42, 43, 44):
+            for h, lv in HARITALAR:
+                H = arena.harita(h, lv)
+                Y = arena_mjcf.yerlesim(H, lv, seed)
+                a, ad = arena_mjcf.yerlesim_acikligi(H, Y)
+                self.assertGreaterEqual(a, arena_mjcf.ACIK_YOL_PAY_M - 1e-9, f"{h} {lv} s{seed}: {ad} {a}")
+                self.assertEqual(Y["atlanan"], [], f"{h} {lv} s{seed}")
+                self.assertGreaterEqual(len(Y["tikama"]), 12)
+                self.assertEqual(len(Y["chicane"]), 5)
+
+    def test_mutasyon_pay_sifir_olunca_duser(self):
+        """Pay 0 → T212 yerleşimi bayt-eş geri gelir (3 orta: tikama_1_2_0 hattın ÜSTÜNDE, açıklık 0)
+        ve açıklık testi/yönerge maddesi düşer. pay=0 XML'i T212 XML'inden yalnız T213-B'nin 4 teker
+        armature satırıyla ayrılır (PAY0_SHA_1_KOLAY)."""
+        pay = arena_mjcf.ACIK_YOL_PAY_M
+        try:
+            arena_mjcf.ACIK_YOL_PAY_M = 0.0
+            H = arena.harita(3, "orta")
+            a, ad = arena_mjcf.yerlesim_acikligi(H, arena_mjcf.yerlesim(H, "orta", 42))
+            self.assertLess(a, 0.5)
+            self.assertEqual(ad, "tikama_1_2_0")
+            sha0 = hashlib.sha256(arena_mjcf.uret(1, "kolay", varyant="taban").encode()).hexdigest()
+            self.assertEqual(sha0, PAY0_SHA_1_KOLAY)
+            self.assertNotEqual(sha0, T212_SHA_1_KOLAY)
+            xml3_pay0 = arena_mjcf.uret(3, "orta", varyant="taban")
+            m = arena_mjcf.yukle(3, "orta", kam_res=64)      # T212 yerleşimiyle kurulmuş model
+        finally:
+            arena_mjcf.ACIK_YOL_PAY_M = pay
+        self.assertNotEqual(xml3_pay0, arena_mjcf.uret(3, "orta", varyant="taban"), "3 orta: pay yerleşimi değiştirmeli")
+        ozet = KOK / "results" / "fdr_sprint_20260910" / "H1" / "arena_ozeti_15.json"
+        if ozet.is_file():
+            self.assertNotEqual(hashlib.sha256(xml3_pay0.encode()).hexdigest(),
+                                json.loads(ozet.read_text(encoding="utf-8"))["sha256"]["3_orta"])
+        k = arena_mjcf.yonerge_kontrol(m, 3, "orta")["acik_yol_koridoru_engelsiz"]   # pay geri yüklü
+        self.assertFalse(k["ok"], k)
+        self.assertLess(k["deger"]["aciklik_m"], 0.5)
+        a2, ad2 = arena_mjcf.acik_yol_engel_acikligi(m, 3, "orta")
+        self.assertLess(a2, 0.5, (a2, ad2))
+        H = arena.harita(3, "orta")
+        a, _ = arena_mjcf.yerlesim_acikligi(H, arena_mjcf.yerlesim(H, "orta", 42))
+        self.assertGreaterEqual(a, pay - 1e-9)
+
+    def test_v3_mesh_kabugu_tasarim_kutusunun_icinde(self):
+        """v3 mesh geomunun köşe kabuğu tasarım kutusunun içinde → açıklığı kutununkinden küçük değil."""
+        for h, lv in ((1, "kolay"), (3, "orta")):
+            H = arena.harita(h, lv)
+            ay, _ = arena_mjcf.yerlesim_acikligi(H, arena_mjcf.yerlesim(H, lv, 42))
+            m3 = arena_mjcf.yukle(h, lv, varyant="v3", kam_res=64)
+            a3, _ = arena_mjcf.acik_yol_engel_acikligi(m3, h, lv)
+            self.assertGreaterEqual(a3, ay - 5e-3)
+
+    def test_kabuk_ve_cokgen_uzakligi(self):
+        """Yapay kutu: (0,0) merkez, yarı kenar 0,4, yaw 0 → y=0,7 hattı 0,30 m; hat içinden geçince 0."""
+        yerel_m = mujoco.MjModel.from_xml_string(
+            '<mujoco><worldbody><geom name="moloz_x" type="box" size="0.4 0.4 0.3" pos="0 0 0.3"/>'
+            '</worldbody></mujoco>')
+        kabuk = arena_mjcf._bukey_kabuk(arena_mjcf._geom_xy_noktalari(yerel_m, 0))
+        self.assertEqual(len(kabuk), 4)
+        P = arena_mjcf._yol_ornekle([(-2.0, 0.7), (2.0, 0.7)])
+        self.assertAlmostEqual(arena_mjcf._cokgen_aciklik(P, kabuk), 0.30, places=3)
+        self.assertAlmostEqual(arena_mjcf._kutu_aciklik(P, 0, 0, 0.8, 0.8, 0.0), 0.30, places=3)
+        P0 = arena_mjcf._yol_ornekle([(-2.0, 0.1), (2.0, 0.1)])
+        self.assertEqual(arena_mjcf._cokgen_aciklik(P0, kabuk), 0.0)
+        a, ad = arena_mjcf.acik_yol_engel_acikligi(arena_mjcf.yukle(1, "kolay", kam_res=64), 1, "kolay",
+                                                   onekler=("chicane_",))
+        self.assertTrue(ad.startswith("chicane_"))
 
 
 class MeshVarliklari(unittest.TestCase):

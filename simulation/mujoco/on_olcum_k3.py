@@ -140,12 +140,25 @@ def harita_olc(h: int, lv: str, model, conf: float, res: int, yeniden: bool, fiz
                varyant: str = arena_mjcf.VARYANT_VARSAYILAN,
                zemin_dokusu: str = arena_mjcf.ZEMIN_DOKUSU_VARSAYILAN,
                teshis_imgsz: int | None = None, mozaik: str = "son_yazar",
-               hb_yaricap_m: float = 0.0) -> dict:
+               hb_yaricap_m: float = 0.0, tarama_kaynak: Path | None = None) -> dict:
+    """`tarama_kaynak` (TEŞHİS geçişleri): tarama (kareler/poses/meta/tarama_ozeti) o kökün
+    harita_<h>_<lv>/iha_scan/ dizininden okunur; mozaik/algı/detection.json `kok` altına yazılır.
+    Üretim (hb 0) kanıtı teşhis geçişiyle ÜZERİNE YAZILMAZ (T213-A çürütücü bulgusu)."""
     import cv2
     H = arena.harita(h, lv)
     hdir = Path(kok).resolve() / f"harita_{h}_{lv}"
     ldir = hdir / "iha_scan"
-    if yeniden or not (ldir / "poses.csv").is_file():
+    girdi = ldir
+    if tarama_kaynak is not None:
+        girdi = Path(tarama_kaynak).resolve() / f"harita_{h}_{lv}" / "iha_scan"
+        if yeniden or not (girdi / "poses.csv").is_file():
+            raise SystemExit(f"--tarama-kaynak {girdi}: poses.csv yok ya da --yeniden-tara ile birlikte "
+                             "verildi (kaynak önce üretim geçişiyle taranır)")
+        if girdi == ldir:
+            raise SystemExit("--tarama-kaynak ile --kok aynı dizin: teşhis çıktısı üretim kanıtının üstüne yazılır")
+        ldir.mkdir(parents=True, exist_ok=True)
+        tarama = json.loads((girdi / "tarama_ozeti.json").read_text(encoding="utf-8"))
+    elif yeniden or not (ldir / "poses.csv").is_file():
         tarama = iha_ucus.tara(h, lv, out=ldir, res=res, fizik=fizik, yol_dokusu=yol_dokusu,
                                varyant=varyant, zemin_dokusu=zemin_dokusu)
     else:
@@ -158,12 +171,13 @@ def harita_olc(h: int, lv: str, model, conf: float, res: int, yeniden: bool, fiz
             raise SystemExit(f"{ldir}: tarama {k} {tarama.get(k, vars_[k])} ≠ istenen {v} "
                              "(--yeniden-tara ya da ayrı --kok kullan)")
     serit_w = None if varyant == "taban" else arena_mjcf.YOL_GENISLIK_M
-    meta = ih._meta_oku(ldir)
+    meta = ih._meta_oku(girdi)
     cx, cy = ih._htab_merkez(meta, None)
     kb, hb = ih._meta_xy(meta, "KB_XY"), ih._meta_xy(meta, "HB_XY")
     t0 = time.perf_counter()
     det = ih.haritala(ldir, model, cx, cy, conf=conf, kb_xy=kb, hb_xy=hb, arac_model=None,
-                      birlestirme=mozaik, hb_yaricap_m=hb_yaricap_m)
+                      birlestirme=mozaik, hb_yaricap_m=hb_yaricap_m,
+                      girdi_dir=None if girdi == ldir else girdi)
     t_harita = time.perf_counter() - t0
     moz = cv2.imread(str(ldir / "ortomozaik.jpg"))
     th = teshis(moz, model, conf, H, lv, serit_w) if moz is not None else {}
@@ -174,6 +188,8 @@ def harita_olc(h: int, lv: str, model, conf: float, res: int, yeniden: bool, fiz
     return {
         "harita": h, "senaryo": lv, "yol_dokusu": yol_dokusu, "varyant": varyant, "mozaik": mozaik,
         "hb_yaricap_m": hb_yaricap_m,
+        "tarama_kaynak": ((str(girdi.relative_to(KOK)) if girdi.is_relative_to(KOK) else str(girdi))
+                          if girdi != ldir else None),
         "zemin_dokusu": zemin_dokusu if varyant != "taban" else None,
         "tarama": {"kare_n": tarama["kare_n"], "kabul": tarama["kabul_edilen_kare"],
                    "htab_kapsama_orani": tarama["htab_kapsama_orani"], "res": tarama["res"]},
@@ -218,7 +234,12 @@ def main():
                     help="TEŞHİS: HB hedef tohumu yarıçapı (m); 0 = üretim (tek piksel HB merkezi)")
     ap.add_argument("--teshis-imgsz", type=int, default=0,
                     help="TEŞHİS: aynı mozaiği bu imgsz ile de koş (0 = kapalı); karar zinciri değişmez")
+    ap.add_argument("--tarama-kaynak", default=None,
+                    help="TEŞHİS geçişleri: taramayı (kareler/poses/meta) bu kökten oku, çıktıları --kok "
+                         "altına yaz — üretim kanıtı (detection.json) üstüne yazılmaz")
     a = ap.parse_args()
+    if a.tarama_kaynak and Path(a.tarama_kaynak).resolve() == Path(a.kok).resolve():
+        raise SystemExit("--tarama-kaynak ile --kok aynı: teşhis çıktısı üretim kanıtının üstüne yazılır")
 
     import torch
     from ultralytics import YOLO
@@ -234,7 +255,8 @@ def main():
         r = harita_olc(int(h), lv, model, a.conf, a.res, a.yeniden_tara, not a.hizli,
                        kok=Path(a.kok), yol_dokusu=a.yol_dokusu, varyant=a.varyant,
                        zemin_dokusu=a.zemin_dokusu, teshis_imgsz=a.teshis_imgsz or None, mozaik=a.mozaik,
-                       hb_yaricap_m=a.hb_yaricap)
+                       hb_yaricap_m=a.hb_yaricap,
+                       tarama_kaynak=Path(a.tarama_kaynak) if a.tarama_kaynak else None)
         ek = ""
         if r.get("teshis_imgsz"):
             ti = r["teshis_imgsz"]
@@ -256,14 +278,16 @@ def main():
 
     def _t(r, k):
         return r["teshis"].get(k) or 0.0
+    n_harita = len(sonuclar)
     cikti = {
-        "kapi": "H1-K3 ÖN-ÖLÇÜM (3 harita; asıl kapı 15 harita ≥ 12/15)",
+        "kapi": ("H1-K3 15 harita (eşik ≥ 12/15)" if n_harita == 15
+                 else f"ÖN-ÖLÇÜM {n_harita} harita (asıl kapı 15 harita ≥ 12/15)"),
         "tarih": time.strftime("%Y-%m-%d %H:%M"),
         "model": mk, "gpu": gpu, "conf": a.conf, "obb_arac_maskesi": "KAPALI (sim'de araç yok)",
         "yol_dokusu": a.yol_dokusu, "varyant": a.varyant,
         "zemin_dokusu": a.zemin_dokusu if a.varyant != "taban" else None,
         "teshis_imgsz": a.teshis_imgsz or None, "mozaik": a.mozaik, "hb_yaricap_m": a.hb_yaricap,
-        "kok": str(a.kok),
+        "kok": str(a.kok), "tarama_kaynak": a.tarama_kaynak,
         "sim_sinir": "İHA uçuşu kinematik; render MuJoCo; dokular gerçek kare kırpması (dokular/KAYNAK.md)",
         "ozet": {"harita_n": len(sonuclar), "rota_bulunan": rota, "dogru_etiket": dogru,
                  "dogru_orani": round(dogru / max(1, len(sonuclar)), 3),

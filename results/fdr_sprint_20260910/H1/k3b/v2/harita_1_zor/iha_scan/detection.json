@@ -1,10 +1,12 @@
 {
   "road": null,
   "label": "yok",
-  "conf": 0.187,
+  "conf": 0.0,
   "image": "ortomozaik.jpg",
   "kaynak": "sim-tarama",
   "kare_n": 15,
+  "hb_yaricap_m": 0.0,
+  "birlestirme": "son_yazar",
   "trav_px": 298759,
   "moloz_px": 190528,
   "arac_px": 0,
@@ -12,7 +14,7 @@
   "arac_model": null,
   "wp_n": 0,
   "rota_durum": "KAPALI_DAR",
-  "rota_sebep": "Karar 'ACIK' ama A* plan izgarasinda yol bulamadi (tutarsizlik).",
-  "darbogaz_m": 1.306,
+  "rota_sebep": "Hicbir koridor gerekli aciklikta gecilebilir degil.",
+  "darbogaz_m": null,
   "rota_ihlalleri": []
 }

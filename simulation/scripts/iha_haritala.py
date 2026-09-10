@@ -263,18 +263,26 @@ def _arac_maskesi(bgr, arac_model, conf=0.25):
 
 def haritala(level_dir, model, htab_cx, htab_cy, conf=0.15,
              kare_ofset=0, rot_isaret=1.0, debug=False, kb_xy=None, hb_xy=None,
-             arac_model=None, arac_conf=0.25, birlestirme="son_yazar", hb_yaricap_m=0.0):
+             arac_model=None, arac_conf=0.25, birlestirme="son_yazar", hb_yaricap_m=0.0,
+             girdi_dir=None):
     """Bir seviyenin tarama klasörünü işle: mozaik → algı → costmap → rota.
     kb_xy = İKA başlangıç REFERANS noktası (dünya), hb_xy = HB (dünya, önceden bilinir).
     Çıktılar level_dir'e: ortomozaik/algi jpg + route.txt (plugin) + rota.json (İKA'ya
-    JSON aktarım formatı: referans + yerel koordinatlar). Döner: detection dict."""
+    JSON aktarım formatı: referans + yerel koordinatlar). Döner: detection dict.
+    `girdi_dir` (TEŞHİS geçişleri): kareler/ + poses.csv bu klasörden okunur, çıktılar yine
+    level_dir'e yazılır — üretim kanıtının (detection.json) üstüne yazılmaz (T213-A çürütücü).
+    detection.json `hb_yaricap_m` ve `birlestirme` alanlarını taşır: kanıt kendini etiketler."""
     import cv2
 
     level_dir = Path(level_dir)
-    kare_dir = level_dir / "kareler"
-    poses = level_dir / "poses.csv"
+    girdi_dir = Path(girdi_dir) if girdi_dir is not None else level_dir
+    kare_dir = girdi_dir / "kareler"
+    poses = girdi_dir / "poses.csv"
     det = {"road": None, "label": "yok", "conf": 0.0, "image": "ortomozaik.jpg",
-           "kaynak": "sim-tarama", "kare_n": 0}
+           "kaynak": "sim-tarama", "kare_n": 0,
+           "hb_yaricap_m": float(hb_yaricap_m), "birlestirme": birlestirme}
+    if girdi_dir != level_dir:
+        det["girdi_dir"] = str(girdi_dir)
 
     if not kare_dir.is_dir() or not poses.is_file():
         _rota_artiklarini_sil(level_dir)

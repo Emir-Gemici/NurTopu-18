@@ -2,6 +2,7 @@
  "harita": 5,
  "senaryo": "zor",
  "seed": 42,
+ "varyant": "taban",
  "acik_yol": 2,
  "acik_yol_etiket": "orta",
  "kb_xy": [
@@ -25,16 +26,24 @@
   -26.0,
   0.0
  ],
- "mjcf_kanonik_sha256": "ac957038f729a7d8ee9e26b0ed135b91440f699457f78170456a252bec839556",
- "mjcf_bayt": 41009,
+ "mjcf_kanonik_sha256": "dbaecf71bc20e513c0ca6daa117cc8fb79b3041d57608bd2cfe0808f7f900812",
+ "mjcf_bayt": 41081,
  "htab_doku_sha256": "cd9fe08aa17263d7d386d025f6a105111ff713e7ae26dba9f6c847ce8649578e",
- "mjcf_uretim_ms": 29.8,
- "mjcf_yukleme_ms": 122.9,
+ "mjcf_uretim_ms": 27.3,
+ "mjcf_yukleme_ms": 115.1,
  "ngeom": 287,
  "nbody": 8,
  "ncam": 5,
  "nu": 4,
  "yonerge": {
+  "acik_yol_koridoru_engelsiz": {
+   "ok": true,
+   "deger": {
+    "aciklik_m": 1.8806,
+    "geom": "chicane_2",
+    "pay_m": 1.45
+   }
+  },
   "iha_ib_30x30_mavi": {
    "ok": true,
    "deger": {

@@ -320,6 +320,12 @@ def tara(harita_id: int, lv: str, seed: int = arena_mjcf.SEED_VARSAYILAN, *,
         "render_ms_kare_maks": round(float(np.max(render_ms)), 1) if render_ms else None,
         "duvar_saati_s": round(sure, 2), "mjcf_yukleme_ms": round(t_yukle * 1000, 1),
         "poses_sha256": hashlib.sha256((out / "poses.csv").read_bytes()).hexdigest(),
+        # Taranan arenanın kanonik MJCF sha'sı (varyant dâhil): yerleşim kuralı (D-441) öncesi/sonrası
+        # taramalar birbirinden ayrılsın (T213-A tur 1/2 taramalarında bu alan yok = eski yerleşim).
+        "mjcf_kanonik_sha256": hashlib.sha256(arena_mjcf.uret(
+            harita_id, lv, seed, yol_dokusu=yol_dokusu, varyant=varyant,
+            zemin_dokusu=zemin_dokusu).encode("utf-8")).hexdigest(),
+        "acik_yol_pay_m": round(arena_mjcf.ACIK_YOL_PAY_M, 3),
         "onizleme": onizlemeler,
         "sinir": "İHA uçuşu KİNEMATİK (mocap); aerodinamik yok. Kamera renderi gerçek (MuJoCo).",
     }

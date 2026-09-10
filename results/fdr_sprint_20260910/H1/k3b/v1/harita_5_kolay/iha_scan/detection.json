@@ -5,12 +5,14 @@
   "image": "ortomozaik.jpg",
   "kaynak": "sim-tarama",
   "kare_n": 15,
+  "hb_yaricap_m": 0.0,
+  "birlestirme": "son_yazar",
   "trav_px": 311989,
   "moloz_px": 83104,
   "arac_px": 0,
   "engel_px": 83104,
   "arac_model": null,
-  "wp_n": 56,
+  "wp_n": 57,
   "rota_durum": "ACIK",
   "rota_sebep": "",
   "darbogaz_m": 2.028,
@@ -218,23 +220,27 @@
     ],
     [
       -3.01,
-      19.52
+      19.58
     ],
     [
       -4.38,
-      19.69
-    ],
-    [
-      -5.74,
       19.8
     ],
     [
-      -6.07,
-      19.85
+      -5.74,
+      20.02
     ],
     [
-      -7.44,
-      20.45
+      -7.11,
+      20.29
+    ],
+    [
+      -8.48,
+      20.51
+    ],
+    [
+      -8.59,
+      20.51
     ],
     [
       -8.75,

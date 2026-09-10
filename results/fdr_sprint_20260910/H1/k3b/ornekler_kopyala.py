@@ -15,7 +15,7 @@ K3B = Path(__file__).resolve().parent
 OUT = K3B / "ornekler"
 OUT.mkdir(exist_ok=True)
 n = 0
-for v in ("taban", "v1", "v2", "v3", "v1_nadir", "v1_asfalt", "v1_zemin_toprak"):
+for v in ("taban", "v1", "v2", "v3", "v1_nadir", "v1_asfalt", "v1_zemin_toprak", "v1_yerlesim_d441"):
     for lv in ("kolay", "orta", "zor"):
         for ad, kisa in (("ortomozaik.jpg", "mozaik"), ("algi.jpg", "algi")):
             p = K3B / v / f"harita_1_{lv}" / "iha_scan" / ad
