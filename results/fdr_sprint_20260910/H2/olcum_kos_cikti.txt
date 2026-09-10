@@ -1,0 +1,15 @@
+[udp_loopback_ikago] n=200 aralik=0.25 s ... 
+   udp_loopback_ikago               ACK 200/200 kayip %0.0 RTT p50 0.27 p95 0.38 maks 0.41 ms | TX 322.5 B/s 4.01 pkt/s · RX 314.5 B/s 4.01 pkt/s · sure 49.8 s · tekrar tasarimiyla UYUMLU
+[udp_loopback_parasut] n=200 aralik=0.2 s ... 
+   udp_loopback_parasut             ACK 200/200 kayip %0.0 RTT p50 0.30 p95 0.40 maks 1.31 ms | TX 403.1 B/s 5.02 pkt/s · RX 393.0 B/s 5.02 pkt/s · sure 39.9 s · tekrar tasarimiyla UYUMLU
+[tcp_seri_koprusu_ikago] n=200 aralik=0.25 s ... 
+   tcp_seri_koprusu_ikago           ACK 200/200 kayip %0.0 RTT p50 1.33 p95 1.83 maks 2.16 ms | TX 322.5 B/s 4.01 pkt/s · RX 314.5 B/s 4.01 pkt/s · sure 49.8 s · tekrar tasarimiyla UYUMLU
+[tcp_seri_koprusu_parasut] n=200 aralik=0.2 s ... 
+   tcp_seri_koprusu_parasut         ACK 200/200 kayip %0.0 RTT p50 1.07 p95 1.89 maks 2.22 ms | TX 403.0 B/s 5.02 pkt/s · RX 393.1 B/s 5.02 pkt/s · sure 39.9 s · tekrar tasarimiyla UYUMLU
+
+OZET
+udp_loopback_ikago               ACK 200/200 kayip %0.0 RTT p50 0.27 p95 0.38 maks 0.41 ms | TX 322.5 B/s 4.01 pkt/s · RX 314.5 B/s 4.01 pkt/s · sure 49.8 s · tekrar tasarimiyla UYUMLU
+udp_loopback_parasut             ACK 200/200 kayip %0.0 RTT p50 0.30 p95 0.40 maks 1.31 ms | TX 403.1 B/s 5.02 pkt/s · RX 393.0 B/s 5.02 pkt/s · sure 39.9 s · tekrar tasarimiyla UYUMLU
+tcp_seri_koprusu_ikago           ACK 200/200 kayip %0.0 RTT p50 1.33 p95 1.83 maks 2.16 ms | TX 322.5 B/s 4.01 pkt/s · RX 314.5 B/s 4.01 pkt/s · sure 49.8 s · tekrar tasarimiyla UYUMLU
+tcp_seri_koprusu_parasut         ACK 200/200 kayip %0.0 RTT p50 1.07 p95 1.89 maks 2.22 ms | TX 403.0 B/s 5.02 pkt/s · RX 393.1 B/s 5.02 pkt/s · sure 39.9 s · tekrar tasarimiyla UYUMLU
+yazildi: O:\navitas\.claude\worktrees\wf_d9aace72-087-3\results\fdr_sprint_20260910\H2\ozet.json

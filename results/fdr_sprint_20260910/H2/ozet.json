@@ -1,0 +1,200 @@
+{
+  "tarih": "2026-09-10T01:52:29",
+  "makine": "Windows-11-10.0.26200-SP0",
+  "python": "3.13.7",
+  "pyserial": "3.5",
+  "arac": "scripts/sik_rf_olc.py",
+  "n_prob": 200,
+  "zaman_asimi_s": 0.5,
+  "kadans_s": {
+    "ikago": 0.25,
+    "parasut": 0.2
+  },
+  "uyari": "GERCEK RF YOK: udp_loopback = 127.0.0.1 tabani; tcp_seri_koprusu = iki gercek pyserial socket:// ucu (D-388 kalibi). SiK 433 MHz satirlari OLCULEMEDI.",
+  "kosumlar": {
+    "udp_loopback_ikago": {
+      "komut": "-B O:\\navitas\\.claude\\worktrees\\wf_d9aace72-087-3\\scripts\\sik_rf_olc.py --rol olc --json --sessiz --n 200 --zaman-asimi 0.5 --cikti O:\\navitas\\.claude\\worktrees\\wf_d9aace72-087-3\\results\\fdr_sprint_20260910\\H2\\olcum_udp_loopback_ikago.json --tasiyici udp --peer 127.0.0.1:58209 --aralik 0.25",
+      "cikis": 0,
+      "duvar_saati_s": 49.9,
+      "yanki": {
+        "cevaplanan": 200,
+        "veri_hizi": {
+          "sure_s": 49.81744520000211,
+          "gonderilen_bayt": 15666,
+          "alinan_bayt": 16067,
+          "gonderilen_paket": 200,
+          "alinan_paket": 200,
+          "gonderilen_bayt_s": 314.46815341705513,
+          "alinan_bayt_s": 322.51754250937216,
+          "gonderilen_bit_s": 2515.745227336441,
+          "alinan_bit_s": 2580.1403400749773,
+          "gonderilen_paket_s": 4.014657901405019,
+          "alinan_paket_s": 4.014657901405019,
+          "not": "Prob kadansindaki (aralik_s) FIILI akis; hat kapasitesi degil. sure_s = ilk prob gonderimi -> son prob ACK/zaman asimi. alinan_paket = cozulen cerceve sayisi (ACK + diger trafik)."
+        }
+      },
+      "dosya": "olcum_udp_loopback_ikago.json",
+      "rtt_ms": {
+        "ornek": 200,
+        "p50": 0.2725000013015233,
+        "p95": 0.37819999852217734,
+        "min": 0.1627000019652769,
+        "maks": 0.41169999894918874
+      },
+      "kayip_yuzde": 0.0,
+      "veri_hizi": {
+        "sure_s": 49.81768020000163,
+        "gonderilen_bayt": 16067,
+        "alinan_bayt": 15666,
+        "gonderilen_paket": 200,
+        "alinan_paket": 200,
+        "gonderilen_bayt_s": 322.51602112937155,
+        "alinan_bayt_s": 314.4666700076389,
+        "gonderilen_bit_s": 2580.1281690349724,
+        "alinan_bit_s": 2515.7333600611114,
+        "gonderilen_paket_s": 4.014638963457665,
+        "alinan_paket_s": 4.014638963457665,
+        "not": "Prob kadansindaki (aralik_s) FIILI akis; hat kapasitesi degil. sure_s = ilk prob gonderimi -> son prob ACK/zaman asimi. alinan_paket = cozulen cerceve sayisi (ACK + diger trafik)."
+      },
+      "verdikt": "tekrar tasarimiyla UYUMLU"
+    },
+    "udp_loopback_parasut": {
+      "komut": "-B O:\\navitas\\.claude\\worktrees\\wf_d9aace72-087-3\\scripts\\sik_rf_olc.py --rol olc --json --sessiz --n 200 --zaman-asimi 0.5 --cikti O:\\navitas\\.claude\\worktrees\\wf_d9aace72-087-3\\results\\fdr_sprint_20260910\\H2\\olcum_udp_loopback_parasut.json --tasiyici udp --peer 127.0.0.1:63632 --aralik 0.2",
+      "cikis": 0,
+      "duvar_saati_s": 39.95,
+      "yanki": {
+        "cevaplanan": 200,
+        "veri_hizi": {
+          "sure_s": 39.871255400001246,
+          "gonderilen_bayt": 15671,
+          "alinan_bayt": 16072,
+          "gonderilen_paket": 200,
+          "alinan_paket": 200,
+          "gonderilen_bayt_s": 393.04004458308356,
+          "alinan_bayt_s": 403.09741538761523,
+          "gonderilen_bit_s": 3144.3203566646685,
+          "alinan_bit_s": 3224.779323100922,
+          "gonderilen_paket_s": 5.01614503966669,
+          "alinan_paket_s": 5.01614503966669,
+          "not": "Prob kadansindaki (aralik_s) FIILI akis; hat kapasitesi degil. sure_s = ilk prob gonderimi -> son prob ACK/zaman asimi. alinan_paket = cozulen cerceve sayisi (ACK + diger trafik)."
+        }
+      },
+      "dosya": "olcum_udp_loopback_parasut.json",
+      "rtt_ms": {
+        "ornek": 200,
+        "p50": 0.30110000079730526,
+        "p95": 0.4016999955638312,
+        "min": 0.15560000611003488,
+        "maks": 1.3065999955870211
+      },
+      "kayip_yuzde": 0.0,
+      "veri_hizi": {
+        "sure_s": 39.871519699998316,
+        "gonderilen_bayt": 16072,
+        "alinan_bayt": 15671,
+        "gonderilen_paket": 200,
+        "alinan_paket": 200,
+        "gonderilen_bayt_s": 403.09474333883185,
+        "alinan_bayt_s": 393.0374392025158,
+        "gonderilen_bit_s": 3224.757946710655,
+        "alinan_bit_s": 3144.2995136201266,
+        "gonderilen_paket_s": 5.01611178868631,
+        "alinan_paket_s": 5.01611178868631,
+        "not": "Prob kadansindaki (aralik_s) FIILI akis; hat kapasitesi degil. sure_s = ilk prob gonderimi -> son prob ACK/zaman asimi. alinan_paket = cozulen cerceve sayisi (ACK + diger trafik)."
+      },
+      "verdikt": "tekrar tasarimiyla UYUMLU"
+    },
+    "tcp_seri_koprusu_ikago": {
+      "komut": "-B O:\\navitas\\.claude\\worktrees\\wf_d9aace72-087-3\\scripts\\sik_rf_olc.py --rol olc --json --sessiz --n 200 --zaman-asimi 0.5 --cikti O:\\navitas\\.claude\\worktrees\\wf_d9aace72-087-3\\results\\fdr_sprint_20260910\\H2\\olcum_tcp_seri_koprusu_ikago.json --port socket://127.0.0.1:55914 --aralik 0.25",
+      "cikis": 0,
+      "duvar_saati_s": 50.21,
+      "yanki": {
+        "cevaplanan": 200,
+        "veri_hizi": {
+          "sure_s": 49.82502280000335,
+          "gonderilen_bayt": 15668,
+          "alinan_bayt": 16070,
+          "gonderilen_paket": 200,
+          "alinan_paket": 200,
+          "gonderilen_bayt_s": 314.4604682448624,
+          "alinan_bayt_s": 322.5287033887503,
+          "gonderilen_bit_s": 2515.683745958899,
+          "alinan_bit_s": 2580.229627110002,
+          "gonderilen_paket_s": 4.014047335267582,
+          "alinan_paket_s": 4.014047335267582,
+          "not": "Prob kadansindaki (aralik_s) FIILI akis; hat kapasitesi degil. sure_s = ilk prob gonderimi -> son prob ACK/zaman asimi. alinan_paket = cozulen cerceve sayisi (ACK + diger trafik)."
+        }
+      },
+      "dosya": "olcum_tcp_seri_koprusu_ikago.json",
+      "rtt_ms": {
+        "ornek": 200,
+        "p50": 1.3252999997348525,
+        "p95": 1.8318999937037006,
+        "min": 0.7789000010234304,
+        "maks": 2.1643000000040047
+      },
+      "kayip_yuzde": 0.0,
+      "veri_hizi": {
+        "sure_s": 49.826176399998076,
+        "gonderilen_bayt": 16070,
+        "alinan_bayt": 15668,
+        "gonderilen_paket": 200,
+        "alinan_paket": 200,
+        "gonderilen_bayt_s": 322.5212360465336,
+        "alinan_bayt_s": 314.45318770237014,
+        "gonderilen_bit_s": 2580.169888372269,
+        "alinan_bit_s": 2515.625501618961,
+        "gonderilen_paket_s": 4.013954400081314,
+        "alinan_paket_s": 4.013954400081314,
+        "not": "Prob kadansindaki (aralik_s) FIILI akis; hat kapasitesi degil. sure_s = ilk prob gonderimi -> son prob ACK/zaman asimi. alinan_paket = cozulen cerceve sayisi (ACK + diger trafik)."
+      },
+      "verdikt": "tekrar tasarimiyla UYUMLU"
+    },
+    "tcp_seri_koprusu_parasut": {
+      "komut": "-B O:\\navitas\\.claude\\worktrees\\wf_d9aace72-087-3\\scripts\\sik_rf_olc.py --rol olc --json --sessiz --n 200 --zaman-asimi 0.5 --cikti O:\\navitas\\.claude\\worktrees\\wf_d9aace72-087-3\\results\\fdr_sprint_20260910\\H2\\olcum_tcp_seri_koprusu_parasut.json --port socket://127.0.0.1:55920 --aralik 0.2",
+      "cikis": 0,
+      "duvar_saati_s": 40.28,
+      "yanki": {
+        "cevaplanan": 200,
+        "veri_hizi": {
+          "sure_s": 39.87675560000207,
+          "gonderilen_bayt": 15674,
+          "alinan_bayt": 16072,
+          "gonderilen_paket": 200,
+          "alinan_paket": 200,
+          "gonderilen_bayt_s": 393.0610643760393,
+          "alinan_bayt_s": 403.0418161701993,
+          "gonderilen_bit_s": 3144.4885150083146,
+          "alinan_bit_s": 3224.3345293615944,
+          "gonderilen_paket_s": 5.015453162894466,
+          "alinan_paket_s": 5.015453162894466,
+          "not": "Prob kadansindaki (aralik_s) FIILI akis; hat kapasitesi degil. sure_s = ilk prob gonderimi -> son prob ACK/zaman asimi. alinan_paket = cozulen cerceve sayisi (ACK + diger trafik)."
+        }
+      },
+      "dosya": "olcum_tcp_seri_koprusu_parasut.json",
+      "rtt_ms": {
+        "ornek": 200,
+        "p50": 1.071799997589551,
+        "p95": 1.8937000058940612,
+        "min": 0.753100001020357,
+        "maks": 2.2224000058486126
+      },
+      "kayip_yuzde": 0.0,
+      "veri_hizi": {
+        "sure_s": 39.87768750000396,
+        "gonderilen_bayt": 16072,
+        "alinan_bayt": 15674,
+        "gonderilen_paket": 200,
+        "alinan_paket": 200,
+        "gonderilen_bayt_s": 403.0323975029496,
+        "alinan_bayt_s": 393.0518789485585,
+        "gonderilen_bit_s": 3224.259180023597,
+        "alinan_bit_s": 3144.415031588468,
+        "gonderilen_paket_s": 5.015335956980458,
+        "alinan_paket_s": 5.015335956980458,
+        "not": "Prob kadansindaki (aralik_s) FIILI akis; hat kapasitesi degil. sure_s = ilk prob gonderimi -> son prob ACK/zaman asimi. alinan_paket = cozulen cerceve sayisi (ACK + diger trafik)."
+      },
+      "verdikt": "tekrar tasarimiyla UYUMLU"
+    }
+  }
+}

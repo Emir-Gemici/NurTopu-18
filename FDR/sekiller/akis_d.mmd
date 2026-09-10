@@ -1,4 +1,4 @@
-%% koddan turetildi f3441b4 2026-09-07
+%% koddan turetildi 1792856 2026-09-10
 %% (d) YKS hakem ekrani — comms/yks_gui.py: acilis (--fda), dinleme ipligi, tik dongusu, mesaj isleme, ACK baglama, iki asamali onay, kanit kaydi (KANIT_OLAYLARI), firlatma ve IKA kilitleri
 %% Dugum kurali: [ ] fonksiyon/blok (dosya:satir = tanim ya da deyim satiri), { } karar (kosul koddan birebir).
 %% Dogrulayici: scripts/akis_diyagram_dogrula.py
@@ -34,20 +34,20 @@ flowchart TD
     d40{"if getattr(self, #quot;protokol_kilidi#quot;, False):<br/>comms/yks_gui.py:1522"}
     d41{"if getattr(self, #quot;kaynak_kilidi#quot;, False):<br/>comms/yks_gui.py:1531"}
     d42["def mesaj_kaynagi_dogrula()<br/>comms/yks_gui.py:632"]
-    d43{"if tip == #quot;OPEN_ROUTE#quot;:<br/>comms/yks_gui.py:1543"}
+    d43{"if tip == MESAJ_OPEN_ROUTE:<br/>comms/yks_gui.py:1543"}
     d44{"if guven_reddi is not None:<br/>comms/yks_gui.py:1545"}
     d45["def YksArayuz._open_route_guven_reddini_goster()<br/>comms/yks_gui.py:1787"]
     d46["self.rota, self.rota_adr = m, adr<br/>comms/yks_gui.py:1550"]
     d47{"if yeni:<br/>comms/yks_gui.py:1563"}
     d48["self._kanit_yaz(#quot;ROTA_ALINDI#quot;, seq=m.get(#quot;seq#quot;),<br/>comms/yks_gui.py:1569"]
-    d49{"elif tip == #quot;NO_ROUTE#quot;:<br/>comms/yks_gui.py:1620"}
+    d49{"elif tip == MESAJ_NO_ROUTE:<br/>comms/yks_gui.py:1620"}
     d50["self._kanit_yaz(#quot;ROTA_YOK#quot;, seq=m.get(#quot;seq#quot;), sebep=sebep,<br/>comms/yks_gui.py:1643"]
-    d51{"elif tip == #quot;ACK#quot;:<br/>comms/yks_gui.py:1660"}
-    d52{"elif tip == #quot;IHA_LANDED#quot;:<br/>comms/yks_gui.py:1662"}
+    d51{"elif tip == MESAJ_ACK:<br/>comms/yks_gui.py:1660"}
+    d52{"elif tip == MESAJ_IHA_LANDED:<br/>comms/yks_gui.py:1662"}
     d53{"if seq != self.iha_landed_seq:<br/>comms/yks_gui.py:1674"}
     d54["self.iha_landed_seq = seq<br/>comms/yks_gui.py:1675"]
     d55["def YksArayuz.iha_indi()<br/>comms/yks_gui.py:3470"]
-    d56{"elif tip == #quot;HEARTBEAT#quot;:<br/>comms/yks_gui.py:1697"}
+    d56{"elif tip == MESAJ_HEARTBEAT:<br/>comms/yks_gui.py:1697"}
     d57["self._kanit_yaz(<br/>#quot;IHA_INIS_KANITI#quot;, seq=seq,<br/>comms/yks_gui.py:1679"]
   end
   subgraph sD5["def YksArayuz._ack_isle()<br/>comms/yks_gui.py:2002"]

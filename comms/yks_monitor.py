@@ -18,7 +18,7 @@ import sys
 import time
 
 from link import UDPLink, SerialLink
-from protocol import encode, ack, FrameReader
+from protocol import encode, ack, FrameReader, MESAJ_OPEN_ROUTE
 
 
 def main():
@@ -50,7 +50,7 @@ def main():
         while True:
             d, addr = link.recv()
             for m in reader.feed(d) if d else []:
-                if m.get("type") == "OPEN_ROUTE":
+                if m.get("type") == MESAJ_OPEN_ROUTE:
                     print("─" * 44)
                     print(f"[YKS] AÇIK YOL TESPİTİ → {m['label'].upper()} (yol {m['road']})")
                     print(f"      güven={m['conf']}  seq={m['seq']}  t={m['t']}")

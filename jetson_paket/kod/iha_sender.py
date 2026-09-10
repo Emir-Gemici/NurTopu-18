@@ -23,8 +23,8 @@ from collections.abc import Mapping
 from pathlib import Path
 
 from link import UDPLink, SerialLink
-from protocol import (PROTOCOL_VERSION, open_route, rota_yok, heartbeat,
-                      iha_landed, encode, FrameReader)
+from protocol import (PROTOCOL_VERSION, open_route, rota_yok, heartbeat, MESAJ_ACK,
+                      iha_landed, encode, FrameReader, MESAJ_OPEN_ROUTE, MESAJ_NO_ROUTE)
 
 _KOK = Path(__file__).resolve().parents[1]
 if str(_KOK / "codes") not in sys.path:
@@ -138,7 +138,7 @@ class IhaSender:
         if (type(mesaj.get("v")) is not int
                 or mesaj.get("v") != PROTOCOL_VERSION):
             return None
-        if type(mesaj.get("type")) is not str or mesaj["type"] != "ACK":
+        if type(mesaj.get("type")) is not str or mesaj["type"] != MESAJ_ACK:
             return None
         if type(mesaj.get("ref")) is not int or mesaj["ref"] != beklenen["seq"]:
             return None
@@ -420,14 +420,14 @@ class KararYayinci:
                     karar_reddi[0], karar_reddi[1] if len(karar_reddi) > 1 else None,
                     repeat=self.repeat, interval=self.interval,
                     wait_ack=self.wait_ack)
-                self.gonderilen.append(("NO_ROUTE", karar_reddi[0], seq, acked))
+                self.gonderilen.append((MESAJ_NO_ROUTE, karar_reddi[0], seq, acked))
                 return
             if open_path is None:
                 seq, acked = self.sender.send_no_route(
                     KARAR_YOK_SEBEBI, "analyze_path yol uretmedi; sessizlik yok.",
                     repeat=self.repeat, interval=self.interval,
                     wait_ack=self.wait_ack)
-                self.gonderilen.append(("NO_ROUTE", KARAR_YOK_SEBEBI, seq, acked))
+                self.gonderilen.append((MESAJ_NO_ROUTE, KARAR_YOK_SEBEBI, seq, acked))
                 return
             try:
                 yerel = piksel_rotayi_yerele_cevir(waypoints_px, mpp)
@@ -437,14 +437,14 @@ class KararYayinci:
                     sebep, f"rota telsiz sozlesmesine cevrilemedi: {exc}",
                     repeat=self.repeat, interval=self.interval,
                     wait_ack=self.wait_ack)
-                self.gonderilen.append(("NO_ROUTE", sebep, seq, acked))
+                self.gonderilen.append((MESAJ_NO_ROUTE, sebep, seq, acked))
                 return
             # Guven kapisi send_open_route icindedir (SS6.3/K-B son savunma).
             seq, acked = self.sender.send_open_route(
                 int(open_path), conf, yerel, list(YAYIN_REF_XY),
                 repeat=self.repeat, interval=self.interval,
                 wait_ack=self.wait_ack)
-            self.gonderilen.append(("OPEN_ROUTE", int(open_path), seq, acked))
+            self.gonderilen.append((MESAJ_OPEN_ROUTE, int(open_path), seq, acked))
         except Exception as exc:  # telsiz hatasi kamera dongusunu dusurmez
             self.hata.append(f"{type(exc).__name__}: {exc}")
 
