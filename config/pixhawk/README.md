@@ -192,12 +192,12 @@ denmez.
 
 | dosya | ne | durum |
 |---|---|---|
-| `arduplane_final.param` | ArduPlane **4.5.7**, 62 parametre; her satırın üstünde NEDEN + tanımlandığı kaynak dosya; 14 `# TEYIT:`, 18 `# BEYAN:` | kaynakta 62/62 bulundu, 0 geçersiz |
+| `arduplane_final.param` | ArduPlane **4.5.7**, 62 parametre; her satırın üstünde NEDEN + tanımlandığı kaynak dosya; 14 `# TEYIT:`, 18 `# BEYAN:` | kaynakta 62/62 bulundu, 0 geçersiz · `BRD_SER2_RTSCTS` **kart koşullu** (yalnız ChibiOS hwdef'le derlenir; 4.5.7 SITL ikilisinde yok — §6.6 ölçüt 1) |
 | `arduplane_sitl_prova.waypoints` | **yalnız SITL provası** (ArduPilot SITL varsayılan konumu CMAC) — saha görevi DEĞİL | kuru prova ÖLÇÜLEMEDİ (§6.6) |
 | `results/fdr_sprint_20260910/H8/T221/plane457_param_kaynak.json` | `scripts/ardupilot_param_kaynak.py` çıktısı: her ad Plane-4.5.7 kaynağında dosya + satır numarasıyla, değer `@Values`/`@Bitmask`/`@Range` denetimiyle | çıkış 0 |
-| `results/fdr_sprint_20260910/H8/T221/sitl_yoklama.txt` | `sitl_yokla.py` çıktısı: bu makinede SITL koşulabilir mi | `HUKUM: OLCULEMEDI` |
+| `results/fdr_sprint_20260910/H8/T221/sitl_yoklama.txt` | `sitl_yokla.py` çıktısı: bu makinede SITL koşulabilir mi; §6.1 ek tarama (T221-D, `--ek`): SITL ikilisinde `SER2_RTSCTS` 0 · `SAFETY_DEFLT` 1, `features.txt` satır numaraları, kaynak satırları | `HUKUM: OLCULEMEDI` |
 
-Kilit: `tests/test_faz_b_arduplane_sablon.py` (A1–A19 + 11 mutasyon). Kanıt yenileme (ağ gerekir):
+Kilit: `tests/test_faz_b_arduplane_sablon.py` (A1–A19 + 14 mutasyon; A18 SITL kabul ölçütü 1'in sayısını `.param`'dan hesaplar). Kanıt yenileme (ağ gerekir):
 
 ```bash
 python -B scripts/ardupilot_param_kaynak.py --param config/pixhawk/arduplane_final.param --etiket Plane-4.5.7 --cikti results/fdr_sprint_20260910/H8/T221/plane457_param_kaynak.json
@@ -318,6 +318,18 @@ tablolara uyduğu kaynaktan kanıtlıdır (§6 tablo); uçuş mantığının uç
 `AP_Parachute` dizgeleri var (çalıştırılmadan bayt taraması, sha256 `639a8381…`). SITL'de `CHUTE_*`
 parametrelerinin gerçekten var olduğu ancak koşumda görülür — provanın ilk kapısı budur.
 
+**Satırlar ve oran (ölçüldü — `sitl_yoklama.txt` §6.1, 10 Eylül, T221-D):**
+`SITL_x86_64_linux_gnu/features.txt:139` `!HAL_PARACHUTE_ENABLED` der; ama o dosyanın 167 satırının
+**164'ü** `!` ile başlar (`Pixhawk6C/features.txt:196` `HAL_PARACHUTE_ENABLED`; orada 308 satırın 72'si
+`!`). Aynı SITL ikilisinde **yalnız paraşütle derlenen** iki mesaj var: `Chute has no channel` 1 kez
+(`libraries/AP_Parachute/AP_Parachute.cpp:216`; dosya `:3` `#if HAL_PARACHUTE_ENABLED` … `:273`
+`#endif` bloğunda) ve `Parachute: Too low` 1 kez (`ArduPlane/parachute.cpp:55`; `:15`
+`#if PARACHUTE == ENABLED` … `:68` `#endif`; `ArduPlane/config.h:219` `#define PARACHUTE
+HAL_PARACHUTE_ENABLED`). `CHUTE_` grup öneki `ArduPlane/Parameters.cpp:767`'dedir (`:764`
+`#if PARACHUTE == ENABLED`). İki kaynak birbirini yalanlar: dizge sayımı parametre tablosunu
+kanıtlamaz, SITL `features.txt`'i ise neredeyse her özelliği `!` yazar. **Hakem koşumdur**; sonuç
+ölçütlerin altındaki önceden yazılmış ön hükümle kaydedilir.
+
 **Linux / WSL2 yordamı** (Ubuntu; A yolu x86_64 hazır ikili, B yolu kaynaktan — Jetson aarch64 dahil):
 
 A) Hazır 4.5.7 ikilisi (`<DEPO>` = bu deponun kökü):
@@ -360,12 +372,36 @@ x ivmesini verilen ms boyunca ekler (`SIM_Aircraft.cpp` `add_shove_forces`): 46 
 = DDR mancınığı. Önce `SHOVE_X`, sonra `SHOVE_TIME` (süre yazılınca itiş başlar ve sonunda 0'a döner).
 
 **Kabul ölçütleri (önceden yazıldı; biri tutmazsa prova DÜŞER, eşik gevşetilmez):**
-1. Açılış `ArduPlane V4.5.7`; `param show CHUTE_ENABLED` 1 ve dosyadaki 62 adın 62'si yüklü.
+1. ~~Açılış `ArduPlane V4.5.7`; `param show CHUTE_ENABLED` 1 ve dosyadaki 62 adın 62'si yüklü.~~
+   *(10 Eylül, ölçümden önce, D-449: `BRD_SER2_RTSCTS` 4.5.7 SITL'de derlenmez — bu ölçüt SITL'de hiç
+   tutamazdı.)*
+   Açılış `ArduPlane V4.5.7`; `param show CHUTE_ENABLED` 1; dosyadaki **62** addan SITL'de **61**'i
+   yüklü (N − |beklenen-yok|; her ad `param show <AD>` ile sayılır). Önceden yazılmış **beklenen-yok**
+   listesi = {`BRD_SER2_RTSCTS`}. Gerekçe (Plane-4.5.7 kaynağı):
+   `libraries/AP_BoardConfig/AP_BoardConfig.cpp:124` `#ifdef HAL_HAVE_RTSCTS_SERIAL2` (tanım `:131`;
+   dış blok `:113` `#if AP_FEATURE_RTSCTS`). Bu makroyu ChibiOS hwdef üreteci yazar:
+   `libraries/AP_HAL_ChibiOS/hwdef/scripts/chibios_hwdef.py:1899-1903` UART'ın `_RTS` hattı varsa
+   `#define HAL_HAVE_RTSCTS_SERIAL<n>` (`:1929-1930` `AP_FEATURE_RTSCTS 1`); Pixhawk 6C'de
+   `libraries/AP_HAL_ChibiOS/hwdef/Pixhawk6C/hwdef.dat:57-58` `UART5_RTS`/`UART5_CTS`, `:37`
+   `SERIAL_ORDER` → SERIAL2 = UART5. Ölçüm (ikili çalıştırılmadan): 4.5.7 SITL ikilisi
+   (sha256 `639a8381c1d8805a2e252a679f22d72473232ac813c810216d99aaba55e160e9`) `SER2_RTSCTS`
+   dizgesini **0** kez içerir; aynı tablonun koşulsuz adı `SAFETY_DEFLT` (`:171`) 1 kez
+   (`sitl_yoklama.txt` §6.1). SITL bu adı **sessizce** atlar: `libraries/AP_Param/AP_Param.cpp:2313-2316`
+   uyarıyı yalnız `#if ENABLE_DEBUG` ile basar, ikilide `Ignored unknown param` 0 kez — eksik ad
+   günlükten değil `param show` ile görülür. Bu listenin dışındaki her eksik ad **DÜŞER**; liste
+   ölçümden sonra genişletilmez (test A18 README listesini testteki önceden yazılmış kümeyle kilitler).
 2. Arm öncesi mesajlarda `Chute has no channel` yok.
 3. İtiş öncesi 60 s boyunca `Triggered AUTO` yok; itişten sonra `Armed AUTO, xaccel = …` ve 0,6 s içinde `Triggered AUTO`.
 4. Bırakma noktasından (satır 4) sonra `Parachute: Released`, ardından `BANG!  Parachute deployed`.
 5. Bırakmadan sonra `.bin` RCOU'da SERVO3 gaz çıkışı minimumda (`servos.cpp` `suppress_throttle`).
 6. `.bin` + `mavlogdump.py --types MSG,RCOU,CTUN` çıktısı `results/<tarih>_sitl_plane457/` altına.
+
+**Ön hüküm — SITL'de `CHUTE_*` yoksa (10 Eylül, ölçümden önce, D-449):** koşumda `param show
+CHUTE_ENABLED` boş dönerse prova *"SITL paraşütsüz derlenmiş — paraşüt zinciri ÖLÇÜLEMEDİ"* diye
+kaydedilir. Ölçüt 1 **DÜŞER** (`CHUTE_*` beklenen-yok listesine sonradan eklenmez, eşik gevşetilmez);
+ölçüt 2'nin *"mesaj yok"* koşulu paraşütsüz ikilide kendiliğinden sağlanır → ÖLÇÜLEMEDİ; ölçüt 4 ve 5
+ÖLÇÜLEMEDİ; ölçüt 3 (kalkış kapısı) yine ölçülür. Yukarıdaki `features.txt` ↔ ikili çelişkisi bu
+kaydı değiştirmez.
 
 ⚠ SITL `plane` modeli bizim uçağın aerodinamiği değildir (`models/plane.parm` küçük model; bizim
 dosya `AIRSPEED_*`'ı ezer, `ROLL_LIMIT_DEG 65` gibi değerleri o dosyadan kalır): prova **mantığı**

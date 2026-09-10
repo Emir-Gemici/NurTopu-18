@@ -43,5 +43,71 @@ platform: Windows-11-10.0.26200-SP0 · python 3.13.7
   ArduPlane V4.5.7       2
   not: features.txt '!HAL_PARACHUTE_ENABLED' derken ikilide CHUTE_/AP_Parachute dizgeleri var -> SITL'de CHUTE_* varligi ancak KOSUMDA gorulur
 
+## 6.1 Ek tarama (T221-D · D-449 · 2026-09-10T15:04:18+00:00 · sitl_yokla.py --ek) - ikili CALISTIRILMADI: C:/Users/yunus/AppData/Local/Temp/claude/O--navitas/3e104177-9b44-4ec7-a18f-1f32ed2c3f72/scratchpad/t221/sitl_bin/arduplane_4.5.7_x86_64
+  bayt 6733568 · sha256 639a8381c1d8805a2e252a679f22d72473232ac813c810216d99aaba55e160e9 · ELF=True
+  CHUTE_                 1
+  AP_Parachute           10
+  Parachute: Released    2
+  TKOFF_THR_MINACC       1
+  TKOFF_TDRAG_ELEV       1
+  SHOVE_X                1
+  FS_LONG_ACTN           1
+  ArduPlane V4.5.7       2
+  SER2_RTSCTS            0
+  RTSCTS                 0
+  SAFETY_DEFLT           1
+  Chute has no channel   1
+  Parachute: Too low     1
+  Ignored unknown param  0
+  features.txt (https://firmware.ardupilot.org/Plane/stable-4.5.7/<kart>/features.txt; satir numarali):
+    SITL_x86_64_linux_gnu  satir 167 · '!' ile baslayan 164 · :139 !HAL_PARACHUTE_ENABLED
+    Pixhawk6C              satir 308 · '!' ile baslayan 72 · :196 HAL_PARACHUTE_ENABLED
+  kaynak satirlari (https://raw.githubusercontent.com/ArduPilot/ardupilot/Plane-4.5.7/<yol>):
+    libraries/AP_BoardConfig/AP_BoardConfig.cpp · 20772 bayt · sha256 2cb7ca48f308a7e3e3465d63634f0323bb08dc97f9112eeeb31ffdefe3ab6d96
+      :113 #if AP_FEATURE_RTSCTS
+      :124 #ifdef HAL_HAVE_RTSCTS_SERIAL2
+      :131     AP_GROUPINFO("SER2_RTSCTS",    2, AP_BoardConfig, state.ser_rtscts[2], 2),
+      :171     AP_GROUPINFO("SAFETY_DEFLT",   3, AP_BoardConfig, state.safety_enable, BOARD_SAFETY_ENABLE_DEFAULT),
+    libraries/AP_HAL_ChibiOS/hwdef/Pixhawk6C/hwdef.dat · 5742 bayt · sha256 44b2864b8836d8f4c7f3be19d6f0ee81e6a60ee3f5e1c73f9077eab03c21336a
+      :37 SERIAL_ORDER OTG1 UART7 UART5 USART1 UART8 USART2 USART3 OTG2
+      :57 PC8 UART5_RTS UART5 LOW PULLDOWN
+      :58 PC9 UART5_CTS UART5
+    libraries/AP_HAL_ChibiOS/hwdef/scripts/chibios_hwdef.py · 132152 bayt · sha256 13bc09449d96aa4e104117f301d78913a46bcabd74b2451f97e558df73054664
+      :1899             rts_line = self.make_line(dev + '_RTS')
+      :1900             cts_line = self.make_line(dev + '_CTS')
+      :1901             if rts_line != "0":
+      :1902                 have_rts_cts = True
+      :1903                 f.write('#define HAL_HAVE_RTSCTS_SERIAL%u\n' % num)
+      :1929         if have_rts_cts:
+      :1930             f.write('#define AP_FEATURE_RTSCTS 1\n')
+    libraries/AP_Param/AP_Param.cpp · 100674 bayt · sha256 87e04dd82e1ed0d33aa687f561741ac65376d938cc2150696ff13f0758565ab1
+      :2313         if (!vp) {
+      :2314             if (last_pass) {
+      :2315 #if ENABLE_DEBUG
+      :2316                 ::printf("Ignored unknown param %s in defaults file %s\n",
+    ArduPlane/config.h · 6898 bayt · sha256 072af64ec18cb7ca697f1d4257ba83f58e6060f59c997d548b6f3a4233fa6229
+      :218 #ifndef PARACHUTE
+      :219 #define PARACHUTE HAL_PARACHUTE_ENABLED
+    ArduPlane/Parameters.cpp · 83642 bayt · sha256 04536c68623dfd7ca0551760238ee8be2c8281b27990f7c268e4219d55544ffa
+      :764 #if PARACHUTE == ENABLED
+      :765 	// @Group: CHUTE_
+      :766     // @Path: ../libraries/AP_Parachute/AP_Parachute.cpp
+      :767     GOBJECT(parachute,		"CHUTE_", AP_Parachute),
+    libraries/AP_Parachute/AP_Parachute.cpp · 9134 bayt · sha256 61636447342d99ebbcf63b90ea2bd961a5e623eb56faf6c3cf77c99d83234189
+      :3 #if HAL_PARACHUTE_ENABLED
+      :216                 hal.util->snprintf(buffer, buflen, "Chute has no channel");
+      :273 #endif // HAL_PARACHUTE_ENABLED
+    ArduPlane/parachute.cpp · 1647 bayt · sha256 0e68da5ea5f99b48eeae1f6980202f4eb8933f101a03c6990c3c5826c4dfb1c3
+      :9 #if PARACHUTE == ENABLED
+      :12 #endif
+      :15 #if PARACHUTE == ENABLED
+      :34 #if AP_LANDINGGEAR_ENABLED
+      :37 #endif
+      :55         gcs().send_text(MAV_SEVERITY_WARNING, "Parachute: Too low");
+      :62 #if AP_LANDINGGEAR_ENABLED
+      :65 #endif
+      :68 #endif
+  not: dizge sayimi parametre tablosunu KANITLAMAZ; yalniz adin ikilide duz dizge olarak bulunup bulunmadigini soyler (pozitif kontrol SAFETY_DEFLT). features.txt ile ikili celisirse hakem KOSUMDUR (README SS6.6 on hukum).
+
 ## HUKUM
 HUKUM: OLCULEMEDI - bu makinede SITL ikilisi, sim_vehicle.py, WSL dagitimi, docker/podman YOK; ArduPlane SITL provasi KOSULMADI (README SS6.6 Linux/WSL yordami)

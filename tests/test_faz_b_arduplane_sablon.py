@@ -31,9 +31,13 @@ Kapilar:
   A16 README SS6: TEYIT listesi == .param TEYIT, BEYAN listesi == .param BEYAN; dosya/surum atiflari
   A17 SITL prova gorevi: QGC WPL 110; home CMAC; ilk NAV_TAKEOFF (pitch 5..20); TAM BIR DO_PARACHUTE
       (RELEASE) son WAYPOINT'ten sonra, birakma irtifasi > CHUTE_ALT_MIN; son satir LOITER_UNLIM
-  A18 SITL yoklama kaniti "HUKUM: OLCULEMEDI" ve README SS6.6 bunu yazar, GECTI yazmaz
+  A18 SITL yoklama kaniti "HUKUM: OLCULEMEDI" ve README SS6.6 bunu yazar, GECTI yazmaz; SS6.6 kabul
+      olcutu 1 (T221-D, D-449): beklenen-yok listesi onceden yazilan kumeyle AYNI ve .param'da; yuklu
+      ad sayisi .param'dan HESAPLANIR (N - |beklenen-yok|); her beklenen-yok adinin var_info adi SITL
+      ikilisinde 0 kez, pozitif kontrolu >= 1 (sitl_yoklama.txt SS6.1); README sha'si = yoklama
+      sha'si; features.txt satir atfi yoklamayla ayni; DUSER kurali + CHUTE_* on hukmu yazili
   A19 ardupilot_param_kaynak.py saf fonksiyonlari (cevrimdisi sentetik kaynak)
-  M1..M11 mutasyonlar: bozulmus kopyada ilgili denetleyici DUSER
+  M1..M14 mutasyonlar: bozulmus kopyada ilgili denetleyici DUSER
 """
 import json
 import math
@@ -181,6 +185,24 @@ README_BOLUM = "## 6. ArduPlane final"
 README_TEYIT = "### 6.3"
 README_BEYAN = "### 6.4"
 README_SITL = "### 6.6"
+# sitl_yoklama.txt'teki T221-D ek tarama blogu (sitl_yokla.py --ek)
+YOKLAMA_EK = "## 6.1"
+
+# ── SITL beklenen-yok (README SS6.6 kabul olcutu 1; D-449 · 10 Eyl, OLCUMDEN ONCE) ─────────────
+# Pixhawk 6C'de VAR, Plane 4.5.7 SITL'de DERLENMEZ: libraries/AP_BoardConfig/AP_BoardConfig.cpp:124
+# `#ifdef HAL_HAVE_RTSCTS_SERIAL2` (tanim :131). Makroyu ChibiOS hwdef ureteci yazar
+# (hwdef/scripts/chibios_hwdef.py:1899-1903, UART'in _RTS hatti varsa); Pixhawk6C hwdef.dat:57-58
+# UART5_RTS/CTS, :37 SERIAL_ORDER -> SERIAL2 = UART5. Olcum: sitl_yoklama.txt SS6.1 "SER2_RTSCTS 0".
+# Liste olcumden SONRA genisletilmez: README kumesi bu sabitten farkliysa A18 DUSER. CHUTE_* eksikse
+# README SS6.6 on hukmu isler (olcut 1 DUSER, parasut zinciri OLCULEMEDI) - listeye EKLENMEZ.
+SITL_BEKLENEN_YOK = frozenset({"BRD_SER2_RTSCTS"})
+# beklenen-yok adinin ayni var_info'daki KOSULSUZ komsusu (AP_BoardConfig.cpp:171 SAFETY_DEFLT): ikilide
+# >= 1 gorulmezse "0" tarama yonteminin korlugu olabilir, kanit sayilmaz
+SITL_POZITIF_KONTROL = {"BRD_SER2_RTSCTS": "SAFETY_DEFLT"}
+# README SS6.6'da yururlukteki (cizilmemis) metinde bulunmasi gereken on kayit cumleleri
+SITL_KURAL_IFADELERI = ("listenin dışındaki her eksik ad **DÜŞER**",
+                        "SITL paraşütsüz derlenmiş — paraşüt zinciri ÖLÇÜLEMEDİ",
+                        "ölçümden önce, D-449")
 
 
 # ════════════════════════════════════════════════════════════════════════════
@@ -525,6 +547,78 @@ def gorev_hatalari(satirlar, p):
     return hatalar
 
 
+def cizilmemis(metin):
+    """~~cizili~~ (geri cekilmis) metni cikarir: kilitler yalniz YURURLUKTEKI metni okur."""
+    return re.sub(r"~~.*?~~", "", metin, flags=re.S)
+
+
+def dizge_sayisi(blok, dizge):
+    """sitl_yokla.py ikili_tara satiri '  <dizge> <sayi>' -> sayi; satir yoksa None."""
+    m = re.search(rf"^  {re.escape(dizge)} +(\d+)[ \t]*$", blok, flags=re.M)
+    return int(m.group(1)) if m else None
+
+
+def sitl_kabul_hatalari(sitl_bolumu, p, kanit, yoklama):
+    """A18 (T221-D, D-449): README SS6.6 kabul olcutu 1 SITL'de tutabilir ve olcume bagli mi?
+
+    Yuklu ad sayisi .param'dan HESAPLANIR (README'deki elle yazilmis sayiya guvenilmez); beklenen-yok
+    listesi onceden yazilan kumeyle ayni olmali ve her adi SITL ikili taramasinda 0 kez gecmeli.
+    """
+    metin = cizilmemis(sitl_bolumu)
+    hatalar = []
+    tanim = re.findall(r"beklenen-yok\**\s+listesi\s*=\s*\{([^}]*)\}", metin)
+    if len(tanim) != 1:
+        return [f"beklenen-yok listesi tanimi {len(tanim)} kez (tam 1 olmali)"]
+    yok = frozenset(re.findall(r"`([A-Z][A-Z0-9_]*)`", tanim[0]))
+    if yok != SITL_BEKLENEN_YOK:
+        hatalar.append(f"README beklenen-yok {sorted(yok)} != onceden yazilan "
+                       f"{sorted(SITL_BEKLENEN_YOK)} (liste olcumden sonra degistirilemez)")
+    if yok - set(p):
+        hatalar.append(f"beklenen-yok adi .param'da yok: {sorted(yok - set(p))}")
+    sayilar = re.findall(r"dosyadaki\s+\**(\d+)\**\s+addan\s+SITL'de\s+\**(\d+)\**", metin)
+    if len(sayilar) != 1:
+        hatalar.append(f"olcut 1 sayi cumlesi {len(sayilar)} kez (tam 1 olmali)")
+    else:
+        n, m = map(int, sayilar[0])
+        yuklu = len(set(p) - yok)
+        if n != len(p):
+            hatalar.append(f"olcut 1: dosyadaki ad README {n} != .param {len(p)}")
+        if m != yuklu:
+            hatalar.append(f"olcut 1: SITL'de yuklu README {m} != .param {len(p)} - beklenen-yok "
+                           f"{len(yok & set(p))} = {yuklu}")
+    for ifade in SITL_KURAL_IFADELERI:
+        if ifade not in metin:
+            hatalar.append(f"README SS6.6 on kayit cumlesi eksik: {ifade!r}")
+    ek = readme_bolumu(yoklama, YOKLAMA_EK)
+    if ek is None:
+        return hatalar + [f"sitl_yoklama.txt'de {YOKLAMA_EK!r} ek tarama blogu yok"]
+    sha = re.findall(r"^  bayt \d+ · sha256 ([0-9a-f]{64})", ek, flags=re.M)
+    readme_sha = set(re.findall(r"\b[0-9a-f]{64}\b", metin))
+    if len(sha) != 1 or readme_sha != {sha[0]}:
+        hatalar.append(f"ikili sha: README {sorted(readme_sha)} != yoklama {sha}")
+    kayit = {k["ad"]: k for k in kanit.get("parametreler", [])}
+    for ad in sorted(yok):
+        goreli = (kayit.get(ad) or {}).get("goreli_ad")
+        if not goreli:
+            hatalar.append(f"{ad}: kanitta goreli_ad yok (ikilideki adi bilinmiyor)")
+            continue
+        say = dizge_sayisi(ek, goreli)
+        if say is None:
+            hatalar.append(f"{ad}: yoklama ek taramasinda {goreli!r} satiri yok")
+        elif say != 0:
+            hatalar.append(f"{ad}: SITL ikilisinde {goreli!r} {say} kez (beklenen-yok olcumle celisir)")
+        kontrol = SITL_POZITIF_KONTROL.get(ad)
+        if not kontrol or not dizge_sayisi(ek, kontrol):
+            hatalar.append(f"{ad}: pozitif kontrol {kontrol!r} ikilide gorulmedi (0 kanit sayilmaz)")
+    atiflar = re.findall(r"(SITL_x86_64_linux_gnu|Pixhawk6C)/features\.txt:(\d+)", metin)
+    if not any(kart.startswith("SITL") for kart, _ in atiflar):
+        hatalar.append("SITL features.txt satir atfi yok (HAL_PARACHUTE_ENABLED celiskisi)")
+    for kart, no in atiflar:
+        if not re.search(rf"^    {kart} .*:{no} !?HAL_PARACHUTE_ENABLED\b", ek, flags=re.M):
+            hatalar.append(f"{kart}/features.txt:{no} yoklamadaki satirla uyusmuyor")
+    return hatalar
+
+
 def _kanit():
     return json.loads(KANIT_JSON.read_text(encoding="utf-8"))
 
@@ -684,6 +778,9 @@ class SitlGorevi(unittest.TestCase):
         n = next(SERVO_FUNCTION_DESENI.match(ad).group(1)
                  for ad, f in servo_fonksiyonlari(self.p).items() if f == SERVO_PARASUT)
         self.assertIn(f"SIM_PARA_PIN {n}", sitl)
+        # T221-D (D-449): kabul olcutu 1 SITL'de tutabilir; sayi .param'dan hesaplanir
+        self.assertEqual(sitl_kabul_hatalari(sitl, self.p, _kanit(),
+                                             SITL_YOKLAMA.read_text(encoding="utf-8")), [])
 
 
 class KaynakBetigi(unittest.TestCase):
@@ -828,6 +925,46 @@ class DenetleyiciGercektenDuser(unittest.TestCase):
         _, s, hatalar = waypoint_oku(yol)
         self.assertEqual(hatalar, [])
         self.assertTrue(any("CHUTE_ALT_MIN" in h for h in gorev_hatalari(s, p)))
+
+    def _sitl_girdileri(self):
+        p, _, _, _ = param_oku(PARAM_DOSYASI)
+        return (readme_bolumu(_readme(), README_SITL), p, _kanit(),
+                SITL_YOKLAMA.read_text(encoding="utf-8"))
+
+    def test_m12_olcut1_sayisi_elle_yazilinca_yakalanir(self):
+        sitl, p, kanit, yoklama = self._sitl_girdileri()
+        self.assertEqual(sitl_kabul_hatalari(sitl, p, kanit, yoklama), [])
+        # README'deki yuklu sayi bir artirilir (61 -> 62: SITL'de hic tutamayan eski olcut)
+        bozuk = re.sub(r"(dosyadaki\s+\**\d+\**\s+addan\s+SITL'de\s+\**)(\d+)",
+                       lambda m: f"{m.group(1)}{int(m.group(2)) + 1}", cizilmemis(sitl), count=1)
+        self.assertNotEqual(bozuk, cizilmemis(sitl), "mutasyon uygulanamadi")
+        self.assertTrue(any(h.startswith("olcut 1: SITL'de yuklu")
+                            for h in sitl_kabul_hatalari(bozuk, p, kanit, yoklama)))
+        # .param'dan bir ad dusunce README'deki sayilar tutmaz: sayi .param'dan HESAPLANIR
+        eksik = {a: v for a, v in p.items() if a != "TKOFF_ACCEL_CNT"}
+        self.assertTrue(any(h.startswith("olcut 1")
+                            for h in sitl_kabul_hatalari(sitl, eksik, kanit, yoklama)))
+
+    def test_m13_beklenen_yok_bosaltilinca_ya_da_genisletilince_yakalanir(self):
+        sitl, p, kanit, yoklama = self._sitl_girdileri()
+        desen = r"(beklenen-yok\**\s+listesi\s*=\s*\{)[^}]*\}"
+        bos = re.sub(desen, r"\1}", sitl, count=1)
+        genis = re.sub(desen, r"\1`BRD_SER2_RTSCTS`, `CHUTE_ENABLED`}", sitl, count=1)
+        for bozuk in (bos, genis):
+            self.assertNotEqual(bozuk, sitl, "mutasyon uygulanamadi")
+            self.assertTrue(any("onceden yazilan" in h
+                                for h in sitl_kabul_hatalari(bozuk, p, kanit, yoklama)))
+
+    def test_m14_ikili_taramasi_adi_gosterince_yakalanir(self):
+        sitl, p, kanit, yoklama = self._sitl_girdileri()
+        goreli = {k["ad"]: k for k in kanit["parametreler"]}["BRD_SER2_RTSCTS"]["goreli_ad"]
+        ek = readme_bolumu(yoklama, YOKLAMA_EK)
+        self.assertIsNotNone(ek, f"sitl_yoklama.txt'de {YOKLAMA_EK!r} ek tarama blogu yok")
+        ek_bozuk = re.sub(rf"^(  {re.escape(goreli)} +)0", r"\g<1>1", ek, count=1, flags=re.M)
+        self.assertNotEqual(ek_bozuk, ek, "mutasyon uygulanamadi")
+        bozuk = yoklama.replace(ek, ek_bozuk)
+        self.assertTrue(any("olcumle celisir" in h
+                            for h in sitl_kabul_hatalari(sitl, p, kanit, bozuk)))
 
 
 if __name__ == "__main__":
