@@ -41,6 +41,13 @@ TUTMUYOR ile guvenli tarafta durur" diyordu — olculmemisti ve YANLISTI; curutu
 karsi-ornekte cikis 0 ve sessiz f3 baglantisi olctu.)
 
 Alt-grafik basliklari (subgraph ID["..."]) de dugumdur ve ayni kuralla tazelenir.
+TEK DESEN (AKIS-D2 EK, T226-D amelesi bulgusu): eski surumun kendi dugum deseni
+`subgraph …["def …<br/>dosya:N"]` basliklarini yakalamiyordu (T226-D'de 5 baslik elle
+AST ile tazelendi); fd65b427 `subgraph` onekini ekledi ama desen hala dogrulayicininkinden
+dardi (`ID ["` bosluklu bicim, `<br>` / `<br />` ayraci). Simdi dugum TANIMI
+akis_diyagram_dogrula.RE_DUGUM ile yapilir — iki arac yapi geregi AYNI dugum kumesini
+gorur; yalniz etiketin sonundaki dosya:satir[-satir] parcasi yerinde degistirilir, satirin
+geri kalani (bicim, bosluk, ayrac) BAYT-ES korunur.
 
 Kullanim:
   python scripts/akis_satir_tazele.py <depo_koku> <mmd...> [--taban REF] [--kuru]
@@ -70,8 +77,30 @@ D = importlib.util.module_from_spec(_sp)
 _sp.loader.exec_module(D)
 
 SATIR_TOLERANSI = D.SATIR_TOLERANSI
-DUGUM = re.compile(
-    r'^(\s*(?:subgraph\s+)?[a-zA-Z0-9_]+)([\[{(])"(.*)<br/>([^"<]+?):(\d+)(?:-(\d+))?"([\]})])\s*$')
+# Etiketin son parcasi: <br…>dosya:satir[-satir] (dosya:satir etiketin sonunda olmali).
+RE_ATIF = re.compile(r'(<br\s*/?>)([^"<]+?):(\d+)(?:-(\d+))?$')
+
+
+def dugum_ayikla(satir):
+    """.mmd satiri → (kimlik, etiket, dosya, satir, satir2|None, (bas, son)) ya da None.
+
+    Dugum tanimi akis_diyagram_dogrula.RE_DUGUM ile (TEK DESEN — AKIS-D2 EK): alt-grafik
+    basliklari, `ID ["` bosluklu bicim, `<br>`/`<br/>`/`<br />`. Acilis/kapanis uyusmayan
+    satir dogrulayicida hata, burada dugum DEGIL. etiket: dosya:satir'dan onceki metin;
+    (bas, son): satir numarasi metninin satir icindeki yeri (yerinde degisim icin).
+    """
+    m = D.RE_DUGUM.match(satir)
+    if not m:
+        return None
+    _, kimlik, sekil, etiket, kapanis = m.groups()
+    if (sekil == '["') != (kapanis == '"]'):
+        return None
+    a = RE_ATIF.search(etiket)
+    if not a:
+        return None
+    ofs = m.start(4)
+    return (kimlik, etiket[:a.start()], a.group(2), int(a.group(3)), a.group(4),
+            (ofs + a.start(3), ofs + a.end()))
 
 
 def parcalar_coz(etiket):
@@ -153,11 +182,12 @@ def dugumu_coz(kaynak, taban, dosya, eski, parcalar):
 
 
 def dugum_satirlari(satirlar):
-    """.mmd satirlari → (indeks, eslesme): yalniz dosya:satir tasiyan dugumler."""
+    """.mmd satirlari → (indeks, satir, dugum_ayikla sonucu): yalniz dosya:satir tasiyan
+    dugumler (alt-grafik basliklari dahil)."""
     for k, s in enumerate(satirlar):
-        m = DUGUM.match(s)
-        if m:
-            yield k, m
+        a = dugum_ayikla(s)
+        if a:
+            yield k, s, a
 
 
 def _sonuc_metni(sonuc):
@@ -186,18 +216,17 @@ def taban_suphesi(mmd, kok, kaynak, sha):
     W = (None, "calisma agaci (dugum satiri tabandaki .mmd'de yok)")
     taban_dugum = set()
     if mmd_taban is not None:
-        taban_dugum = {m.group(0).strip() for _, m in dugum_satirlari(D.satirlara_bol(mmd_taban))}
+        taban_dugum = {s.strip() for _, s, _ in dugum_satirlari(D.satirlara_bol(mmd_taban))}
     ham = Path(mmd).read_bytes().decode("utf-8-sig")
     supheler = []
-    for _, m in dugum_satirlari(D.satirlara_bol(ham)):
-        aday = L if m.group(0).strip() in taban_dugum else W
+    for _, s, (kimlik, etiket, dosya, eski, _, _) in dugum_satirlari(D.satirlara_bol(ham)):
+        aday = L if s.strip() in taban_dugum else W
         if aday is None:
             continue
         ref, ad = aday
-        on, _, etiket, dosya, sat, _, _ = m.groups()
         if kaynak.satirlar(dosya, ref) == kaynak.satirlar(dosya, sha):
             continue                                      # ayni kod → ayni sonuc
-        kimlik, eski, parcalar = on.split()[-1], int(sat), parcalar_coz(etiket)
+        parcalar = parcalar_coz(etiket)
         secilen = dugumu_coz(kaynak, sha, dosya, eski, parcalar)
         diger = dugumu_coz(kaynak, ref, dosya, eski, parcalar)
         if diger[0] != secilen[0]:
@@ -214,20 +243,15 @@ def mmd_tazele(mmd, kaynak, taban, kuru, head, tarih, damga=True):
     crlf = b"\r\n" in ham
     satirlar = ham.decode("utf-8").replace("\r\n", "\n").split("\n")
     degisen, hatalar = [], []
-    for k, s in enumerate(satirlar):
-        m = DUGUM.match(s)
-        if not m:
-            continue
-        on, ac, etiket, dosya, sat, sat2, kapa = m.groups()
-        kimlik, eski = on.split()[-1], int(sat)
+    for k, s, (kimlik, etiket, dosya, eski, sat2, (bas, son)) in list(dugum_satirlari(satirlar)):
         parcalar = parcalar_coz(etiket)
         yeni, kt, hata = dugumu_coz(kaynak, taban, dosya, eski, parcalar)
         if hata:
-            hatalar.append(f"{kimlik}: {dosya}:{sat} '{' / '.join(parcalar)[:60]}' — {hata}")
+            hatalar.append(f"{kimlik}: {dosya}:{eski} '{' / '.join(parcalar)[:60]}' — {hata}")
             continue
         if yeni != eski:
             yeni_sat2 = f"-{int(sat2) + yeni - eski}" if sat2 else ""
-            satirlar[k] = f'{on}{ac}"{etiket}<br/>{dosya}:{yeni}{yeni_sat2}"{kapa}'
+            satirlar[k] = s[:bas] + f"{yeni}{yeni_sat2}" + s[son:]     # yalniz sayi; bicim ayni
             degisen.append(f"{kimlik}: {dosya}:{eski} -> {yeni}  [{D.kapsam_metni(kt)}]")
     if not kuru:
         if not hatalar and damga and satirlar and satirlar[0].startswith("%% koddan turetildi"):

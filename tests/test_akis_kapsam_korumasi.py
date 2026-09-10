@@ -35,6 +35,16 @@ AKIS-D2 (curutucu RED: KUSUR-1 ve kacan N1-N4 mutasyonlari):
   K13 async def kapsamdir: tazele ve dogrula (N3).
   K14 dosya:N-M araliginin sonu da kayar (N4).
   K15 dogrula --mmd goreli yolla cokmez (D-440 EK).
+AKIS-D2 EK (T226-D amelesi bulgusu: tazeleyicinin dugum deseni `subgraph …["def …<br/>
+dosya:N"]` basliklarini yakalamiyordu; T226-D'de 5 baslik elle AST ile tazelendi):
+  K16  alt-grafik basliklari (`def Sinif.metot()`, `ID ["` bosluklu bicim, `<br>`, `<br />`)
+       iki aracta da dugumdur; tazele kaydirir ve satirin geri kalanini BAYT-ES korur;
+       dogrula --taban basligin baska metoda kaymasini yakalar.
+  K16b acilis/kapanis uyusmayan satir iki aracta da dugum DEGIL.
+  K16g GERCEK FDR/sekiller/akis_{a..e}.mmd: iki arac ayni dugum kumesini gorur, her
+       subgraph satiri tazeleyicide dugumdur.
+  K17  `def B._tik()` basligi ayni adli A._tik'e kaymaz (tazele); kayma dogrula --taban'da
+       KAPSAM DEGISTI.
 """
 import contextlib
 import importlib.util as _u
@@ -57,6 +67,9 @@ DOGRULA = KOK / "scripts" / "akis_diyagram_dogrula.py"
 _sp = _u.spec_from_file_location("akis_dogrula_kapsam_testi", DOGRULA)
 M = _u.module_from_spec(_sp)
 _sp.loader.exec_module(M)
+_st = _u.spec_from_file_location("akis_tazele_kapsam_testi", TAZELE)
+T = _u.module_from_spec(_st)
+_st.loader.exec_module(T)
 
 GIT_KIMLIK = ("-c", "user.name=akis-kapsam-test", "-c", "user.email=akis@example.invalid",
               "-c", "commit.gpgsign=false", "-c", "core.autocrlf=false")
@@ -599,6 +612,160 @@ class K15_GoreliMmdYolu(_GeciciDepo):
         rc, out = self.dogrula_main("--mmd", goreli, "--taban", "HEAD")
         self.assertEqual(rc, 0, out)
         self.assertIn("KAPSAM DEGISTI 0", out)
+
+
+# ── AKIS-D2 EK (T226-D amelesi bulgusu): alt-grafik basliklari `subgraph …["def …"]` ──────
+SINIF_KOD = (
+    "class Arayuz:\n"             # 1
+    "    def _dinle(self):\n"     # 2  <- sK1 basligi
+    "        m = oku()\n"         # 3  <- k1
+    "        return m\n"          # 4
+    "\n"                          # 5
+    "    def _tik(self):\n"       # 6  <- sK2 basligi (ID ile [ arasi bosluk, <br />)
+    "        m = oku()\n"         # 7  <- k2
+    "        return m\n"          # 8
+    "\n"                          # 9
+    "\n"                          # 10
+    "def main():\n"               # 11 <- sK3 basligi (<br>)
+    "    m = oku()\n"             # 12 <- k3
+    "    return m\n")             # 13
+BASLIK_SK1 = '  subgraph sK1["def Arayuz._dinle()<br/>pkg/mod.py:{}"]'
+BASLIK_SK2 = '  subgraph sK2 ["def Arayuz._tik()<br />pkg/mod.py:{}"]'
+BASLIK_SK3 = '  subgraph sK3["def main()<br>pkg/mod.py:{}"]'
+EK_MMD = (BASLIK
+          + BASLIK_SK1.format(2) + '\n    k1["m = oku()<br/>pkg/mod.py:3"]\n  end\n'
+          + BASLIK_SK2.format(6) + '\n    k2["m = oku()<br/>pkg/mod.py:7"]\n  end\n'
+          + BASLIK_SK3.format(11) + '\n    k3["m = oku()<br/>pkg/mod.py:12"]\n  end\n'
+          + "  k1 --> k2\n  k2 --> k3\n")
+EK_METOT = "    def _yeni(self):\n        a = 1\n        b = 2\n        return a\n\n"   # 5 satir
+EK_FONK = "def yardimci():\n    return 0\n\n\n"                                          # 4 satir
+
+
+def _iki_arac_dugumleri(metin):
+    """→ (dogrulayicinin dosya:satir + metin tasiyan dugum ID'leri, tazeleyicinin dugum
+    ID'leri, tazeleyicinin alt-grafik basligi ID'leri)."""
+    dg = {d.kimlik for d in M.ayristir(metin)[0] if d.dosya is not None and len(d.parcalar) >= 2}
+    tz, bas = set(), set()
+    for _, s, a in T.dugum_satirlari(M.satirlara_bol(metin)):
+        tz.add(a[0])
+        if s.lstrip().startswith("subgraph"):
+            bas.add(a[0])
+    return dg, tz, bas
+
+
+class K16_AltGrafikBasliklari(_GeciciDepo):
+    KOD = SINIF_KOD
+    MMD = EK_MMD
+
+    def satir(self, kimlik):
+        for s in self.mmd.read_text(encoding="utf-8").splitlines():
+            if re.match(r"\s*(?:subgraph\s+)?" + re.escape(kimlik) + r"\s*[\[{]", s):
+                return s
+        return None
+
+    def test_iki_arac_ayni_dugum_kumesini_gorur(self):
+        dg, tz, bas = _iki_arac_dugumleri(self.MMD)
+        self.assertEqual(dg, {"sK1", "k1", "sK2", "k2", "sK3", "k3"})
+        self.assertEqual(tz, dg)
+        self.assertEqual(bas, {"sK1", "sK2", "sK3"})
+        rc, out = self.dogrula_main("--mmd", str(self.mmd))        # fikstur gecerli diyagram
+        self.assertEqual(rc, 0, out)
+        self.assertIn("6 düğüm · 6 tuttu · tam satır 6 · hata 0", out)
+
+    def test_tazele_basliklari_kaydirir_bicimi_bayt_es_korur(self):
+        self.kodu_degistir("    def _dinle(self):\n", EK_METOT + "    def _dinle(self):\n")
+        self.kodu_degistir("def main():\n", EK_FONK + "def main():\n")
+        rc, out = self.tazele()
+        self.assertEqual(rc, 0, out)
+        self.assertIn("sK1: pkg/mod.py:2 -> 7  [Arayuz._dinle]", out)
+        self.assertIn("sK2: pkg/mod.py:6 -> 11  [Arayuz._tik]", out)
+        self.assertIn("sK3: pkg/mod.py:11 -> 20  [main]", out)
+        self.assertEqual(self.satir("sK1"), BASLIK_SK1.format(7))
+        self.assertEqual(self.satir("sK2"), BASLIK_SK2.format(11))  # bosluk ve <br /> ayni
+        self.assertEqual(self.satir("sK3"), BASLIK_SK3.format(20))  # <br> ayni
+        self.assertEqual([self.yer(k) for k in ("k1", "k2", "k3")],
+                         ["pkg/mod.py:8", "pkg/mod.py:12", "pkg/mod.py:21"])
+        rc, out = self.dogrula_main("--mmd", str(self.mmd))
+        self.assertEqual(rc, 0, out)
+        self.assertIn("6 düğüm · 6 tuttu · tam satır 6 · hata 0", out)
+        rc, out = self.dogrula_main("--mmd", str(self.mmd), "--taban", "HEAD")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("6 düğüm karşılaştırıldı · tabanda yok 0 · KAPSAM DEGISTI 0", out)
+
+    def test_dogrula_basligin_baska_metoda_kaymasini_yakalar(self):
+        # sK2 :6 → :4 (Arayuz._dinle'nin 'return m' satiri); 'def _tik(' 4±3 icinde → metin tuttu
+        self.yaz("sekil/akis_t.mmd", EK_MMD.replace(BASLIK_SK2.format(6), BASLIK_SK2.format(4)))
+        rc0, out0 = self.dogrula_main("--mmd", str(self.mmd))
+        self.assertEqual(rc0, 0, out0)
+        rc, out = self.dogrula_main("--mmd", str(self.mmd), "--taban", "HEAD")
+        self.assertEqual(rc, 1, out)
+        self.assertIn("KAPSAM DEGISTI: sK2: taban pkg/mod.py:6 [Arayuz._tik] → "
+                      "çalışma pkg/mod.py:4 [Arayuz._dinle]", out)
+
+
+class K16b_UyusmayanSekilIkiAractaDaDugumDegil(unittest.TestCase):
+    def test_acilis_kapanis_uyusmayan_satir(self):
+        metin = (BASLIK + '  x1["a = 1<br/>pkg/mod.py:3"}\n' + '  x2{"a = 1<br/>pkg/mod.py:3"]\n'
+                 + '  x3["a = 1<br/>pkg/mod.py:3"]\n')
+        dg, tz, _ = _iki_arac_dugumleri(metin)
+        self.assertEqual(dg, {"x3"})
+        self.assertEqual(tz, dg)
+
+
+class K16g_GercekDiyagramlar(unittest.TestCase):
+    """GERCEK FDR/sekiller/akis_{a..e}.mmd: iki arac ayni dugum kumesini gorur; her subgraph
+    satiri tazeleyicide de dugumdur (master'daki eski desen basliklarin hepsini atliyordu)."""
+
+    def test_bes_diyagramda_iki_arac_ayni_dugum_kumesi(self):
+        toplam = 0
+        for h in ("a", "b", "c", "d", "e"):
+            metin = (KOK / "FDR" / "sekiller" / f"akis_{h}.mmd").read_text(encoding="utf-8")
+            dg, tz, bas = _iki_arac_dugumleri(metin)
+            subgraph = sum(1 for s in metin.splitlines() if s.lstrip().startswith("subgraph"))
+            self.assertGreaterEqual(len(dg), 20, f"akis_{h}")
+            self.assertEqual(tz, dg, f"akis_{h}: yalniz dogrula {sorted(dg - tz)} · yalniz "
+                                     f"tazele {sorted(tz - dg)}")
+            self.assertEqual(len(bas), subgraph, f"akis_{h}: tazeleyici {len(bas)}/{subgraph} baslik")
+            toplam += len(bas)
+        self.assertGreaterEqual(toplam, 5)
+
+
+IKI_SINIF_KOD = (
+    "class A:\n"                 # 1
+    "    def _tik(self):\n"      # 2  (A._tik — ayni adli metot)
+    "        return 1\n"         # 3
+    "\n"                         # 4
+    "\n"                         # 5
+    "class B:\n"                 # 6
+    "    x = 0\n"                # 7
+    "\n"                         # 8
+    "    def _tik(self):\n"      # 9  <- sB basligi "def B._tik()"
+    "        return 2\n")        # 10
+
+
+class K17_DefBasligiAyniAdliBaskaSinifaKaymaz(_GeciciDepo):
+    KOD = IKI_SINIF_KOD
+    MMD = (BASLIK + '  subgraph sB["def B._tik()<br/>pkg/mod.py:9"]\n'
+           + '    b1["return 2<br/>pkg/mod.py:10"]\n  end\n')
+
+    def test_tazele_baslik_kendi_sinifinin_metodunda_kalir(self):
+        """B'de _tik ustune 10 satir: B._tik 19. Eski algoritma eski satir 9'a en yakin
+        'def _tik(' satirini secerdi: A'nin 2'si (|7| < |10|)."""
+        self.kodu_degistir("    x = 0\n", "    x = 0\n" + "".join(f"    y{i} = {i}\n" for i in range(10)))
+        rc, out = self.tazele()
+        self.assertEqual(rc, 0, out)
+        self.assertEqual(self.yer("sB"), "pkg/mod.py:19", out)
+        self.assertEqual(self.yer("b1"), "pkg/mod.py:20", out)
+        self.assertIn("sB: pkg/mod.py:9 -> 19  [B._tik]", out)
+
+    def test_dogrula_baslik_ayni_adli_baska_sinif_metoduna_kayma(self):
+        self.yaz("sekil/akis_t.mmd", self.MMD.replace("pkg/mod.py:9", "pkg/mod.py:2"))
+        rc0, out0 = self.dogrula_main("--mmd", str(self.mmd))
+        self.assertEqual(rc0, 0, out0)                            # metin: 'def _tik(' tam satirda
+        rc, out = self.dogrula_main("--mmd", str(self.mmd), "--taban", "HEAD")
+        self.assertEqual(rc, 1, out)
+        self.assertIn("KAPSAM DEGISTI: sB: taban pkg/mod.py:9 [B._tik] → "
+                      "çalışma pkg/mod.py:2 [A._tik]", out)
 
 
 if __name__ == "__main__":
