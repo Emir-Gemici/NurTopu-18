@@ -1,0 +1,9 @@
+$ python scripts/akis_satir_tazele.py . <5 mmd> --kuru --taban HEAD
+taban: HEAD = bc79d7deaf24 (elle verildi — taban suphesi yalniz uyarir)
+akis_a.mmd: 0 dugum tazelenecek (KURU — dosya yazilmadi); cozulemeyen 0
+akis_b.mmd: 0 dugum tazelenecek (KURU — dosya yazilmadi); cozulemeyen 0
+akis_c.mmd: 0 dugum tazelenecek (KURU — dosya yazilmadi); cozulemeyen 0
+akis_d.mmd: 0 dugum tazelenecek (KURU — dosya yazilmadi); cozulemeyen 0
+akis_e.mmd: 0 dugum tazelenecek (KURU — dosya yazilmadi); cozulemeyen 0
+SONUC: 0 dugum tazelenecek (KURU — dosya yazilmadi) · 0 hata
+cikis=0

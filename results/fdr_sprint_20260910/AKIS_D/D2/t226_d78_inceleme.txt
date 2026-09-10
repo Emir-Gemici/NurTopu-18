@@ -1,0 +1,61 @@
+# AKIS-D2 t226_gercek_karsilastirma G1 tek farki (d78) — ham git show kaniti (yorumsuz komut ciktilari)
+$ git show master:FDR/sekiller/akis_d.mmd | grep d78[
+    d78["self._kanit_yaz(#quot;HAKEM_ONAYI_REDDI#quot;, seq=self.rota.get(#quot;seq#quot;),<br/>comms/yks_gui.py:1894"]
+$ git show 9472ba47:FDR/sekiller/akis_d.mmd | grep d78[
+    d78["self._kanit_yaz(#quot;HAKEM_ONAYI_REDDI#quot;, seq=self.rota.get(#quot;seq#quot;),<br/>comms/yks_gui.py:1894"]
+$ git show 77853afb:FDR/sekiller/akis_d.mmd | grep d78[
+    d78["self._kanit_yaz(#quot;HAKEM_ONAYI_REDDI#quot;, seq=self.rota.get(#quot;seq#quot;),<br/>comms/yks_gui.py:1990"]
+$ git show 15ad56d0:FDR/sekiller/akis_d.mmd | grep d78[
+    d78["self._kanit_yaz(#quot;HAKEM_ONAYI_REDDI#quot;, seq=self.rota.get(#quot;seq#quot;),<br/>comms/yks_gui.py:2217"]
+
+$ git show 9472ba47:comms/yks_gui.py  (satir 1883-1896; d78 tabanda 1894)
+ 1883         if rota_ankor_uyarisi(self.rota):
+ 1884             self._ankor_yok_onayini_kapat(logla=True)
+ 1885             self._kanit_yaz("HAKEM_ONAYI_REDDI", seq=self.rota.get("seq"),
+ 1886                             sebep="ANKOR_YOK")
+ 1887             return
+ 1888         # T169 · §6.2 FAIL-CLOSED: dugme TEK savunma degildir. Otomatik onay
+ 1889         # (`--otomatik-onay`), klavye ya da bir zamanlayici bu yolu dugme
+ 1890         # kapaliyken de cagirabilir; BAYAT tespit icin ACK URETILMEZ.
+ 1891         if self._tespiti_yaslandir():
+ 1892             self._logla("HAKEM ONAYI REDDEDILDI: tespit BAYAT (§6.2 gercek "
+ 1893                         "zamanli aktarim) — ACK gonderilmedi", "sari")
+ 1894             self._kanit_yaz("HAKEM_ONAYI_REDDI", seq=self.rota.get("seq"),
+ 1895                             sebep="BAYAT_TESPIT")
+ 1896             return
+
+$ git show 77853afb:comms/yks_gui.py  (satir 1988-2001; hakem 1990, YENI 1999)
+ 1988         if rota_ankor_uyarisi(self.rota):
+ 1989             self._ankor_yok_onayini_kapat(logla=True)
+ 1990             self._kanit_yaz("HAKEM_ONAYI_REDDI", seq=self.rota.get("seq"),
+ 1991                             sebep="ANKOR_YOK")
+ 1992             return
+ 1993         # T169 · §6.2 FAIL-CLOSED: dugme TEK savunma degildir. Otomatik onay
+ 1994         # (`--otomatik-onay`), klavye ya da bir zamanlayici bu yolu dugme
+ 1995         # kapaliyken de cagirabilir; BAYAT tespit icin ACK URETILMEZ.
+ 1996         if self._tespiti_yaslandir():
+ 1997             self._logla("HAKEM ONAYI REDDEDILDI: tespit BAYAT (§6.2 gercek "
+ 1998                         "zamanli aktarim) — ACK gonderilmedi", "sari")
+ 1999             self._kanit_yaz("HAKEM_ONAYI_REDDI", seq=self.rota.get("seq"),
+ 2000                             sebep="BAYAT_TESPIT")
+ 2001             return
+
+$ git show 15ad56d0:comms/yks_gui.py  (satir 2213-2230; hakem d78 2217; BAYAT_TESPIT satiri 2227)
+ 2213         # A1 fail-closed: dugme durumu tek savunma degildir. Otomatik onay,
+ 2214         # klavye veya dogrudan cagri eksik ankrajli rotayi onaylayamaz.
+ 2215         if rota_ankor_uyarisi(self.rota):
+ 2216             self._ankor_yok_onayini_kapat(logla=True)
+ 2217             self._kanit_yaz("HAKEM_ONAYI_REDDI", seq=self.rota.get("seq"),
+ 2218                             sebep="ANKOR_YOK")
+ 2219             return
+ 2220         # T169 · §6.2 FAIL-CLOSED: dugme TEK savunma degildir. Otomatik onay
+ 2221         # (`--otomatik-onay`), klavye ya da bir zamanlayici bu yolu dugme
+ 2222         # kapaliyken de cagirabilir; BAYAT tespit icin ACK URETILMEZ.
+ 2223         if self._tespiti_yaslandir():
+ 2224             self._logla("HAKEM ONAYI REDDEDILDI: tespit BAYAT (§6.2 gercek "
+ 2225                         "zamanli aktarim) — ACK gonderilmedi", "sari")
+ 2226             self._kanit_yaz("HAKEM_ONAYI_REDDI", seq=self.rota.get("seq"),
+ 2227                             sebep="BAYAT_TESPIT")
+ 2228             return
+ 2229         if not self.tespit_onayli:
+ 2230             self.tespit_onayli = True
