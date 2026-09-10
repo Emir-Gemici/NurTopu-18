@@ -17,12 +17,19 @@ yoksa ilk çağrıda üretilir.
 from __future__ import annotations
 
 import math
+import sys
 from pathlib import Path
 
 import numpy as np
 
 BURASI = Path(__file__).resolve().parent
 MESH_DIR = BURASI / "mesh"
+_CODES = BURASI.parents[1] / "codes"
+if str(_CODES) not in sys.path:
+    sys.path.insert(0, str(_CODES))
+# T213 (CONTRACTS §4): İKA kinematik sabitleri TEK KAYNAK — burada yeniden yazılmaz.
+from karar_sozlesmesi import (IKA_AZAMI_HIZ_MS, IKA_IZ_GENISLIGI_M,   # noqa: E402
+                              IKA_TEKER_YARICAP_M)
 
 # ── İHA ölçüleri (m) — basitleştirilmiş ────────────────────────────────────
 IHA_ACIKLIK = 1.80        # kanat açıklığı (görev tanımı; DDR'de yok)
@@ -32,14 +39,21 @@ IHA_VETER = 0.30
 
 # ── İKA ölçüleri (DDR) ──────────────────────────────────────────────────────
 IKA_KUTLE_KG = 9.40
-IKA_TEKER_R = 0.0625      # Ø125 mm
+IKA_TEKER_R = IKA_TEKER_YARICAP_M      # Ø125 mm (karar_sozlesmesi, CONTRACTS §4)
 IKA_TEKER_W = 0.05        # teker genişliği (yarım: 0.025)
-IKA_IZ_M = 0.39           # iz genişliği (TAHMİN — insan teyidine kadar)
+IKA_IZ_M = IKA_IZ_GENISLIGI_M          # iz genişliği (TAHMİN — insan teyidine kadar)
 IKA_DINGIL_M = 0.36       # dingil mesafesi (varsayılan)
 IKA_GOVDE = (0.40, 0.32, 0.16)     # gövde kutusu L×W×H (toplam 488×440×310 içinde)
 IKA_TEKER_KUTLE = 0.25
-IKA_VMAX_MS = 1.3
+IKA_VMAX_MS = IKA_AZAMI_HIZ_MS         # DDR 1,3 m/s (karar_sozlesmesi)
 IKA_TEKER_WMAX = IKA_VMAX_MS / IKA_TEKER_R     # ≈ 20,8 rad/s
+# T213 ÖLÇÜM (10 Eyl): armature'suz teker eklemi + kv=0,6 hız servosu Euler 2 ms'de
+# KARARSIZ — mjWARN_BADQACC 1377/1500 adım, İKA hiç ilerlemedi (kv·dt/I = 2,45 > 2).
+# armature = redüktörlü motorun (KGX38, 200 rpm) tekere yansıyan rotor ataleti;
+# 0,01 kg·m² ile kararlı (0/1500 uyarı), 1,0 m/s komutta 3 s'de 2,68 m. Değer
+# TAHMİNDİR (DDR'de motor ataleti yok); fiziksel gerekçe: yüksek redüksiyonlu
+# motorda yansıyan atalet teker ataletinin (4,9e-4) onlarca katıdır.
+IKA_TEKER_ARMATURE = 0.01
 IKA_BASLANGIC_Z = IKA_TEKER_R                   # gövde orijini = aks yüksekliği
 IKA_KAM_YUKSEKLIK = 0.25
 IKA_KAM_EGIM_DERECE = 15.0
@@ -178,7 +192,8 @@ def ika_govdesi(x: float, y: float, yaw_rad: float) -> str:
                        ("on_sag", hx, -hy), ("arka_sag", -hx, -hy)):
         tekerler.append(
             f'      <body name="teker_{ad}" pos="{sx:.3f} {sy:.3f} 0">\n'
-            f'        <joint name="j_{ad}" type="hinge" axis="0 1 0" damping="0.05"/>\n'
+            f'        <joint name="j_{ad}" type="hinge" axis="0 1 0" damping="0.05" '
+            f'armature="{IKA_TEKER_ARMATURE:.4f}"/>\n'
             f'        <geom name="g_teker_{ad}" type="cylinder" size="{r:.4f} {hw:.3f}" '
             f'euler="90 0 0" rgba="0.06 0.06 0.06 1" mass="{IKA_TEKER_KUTLE:.2f}" '
             f'friction="1.2 0.005 0.0001" condim="3"/>\n'
