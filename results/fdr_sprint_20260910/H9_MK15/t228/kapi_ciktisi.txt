@@ -1,0 +1,123 @@
+# T228 kapi ciktisi · 2026-09-10 16:48:20 · O:\navitas-local-train\venv\Scripts\python.exe
+== jetson_paket_hazirla (ayna tazele) (cikis 0, 0.1 s)
+$ -B scripts/jetson_paket_hazirla.py
+  [JETSON_PAKET] scripts\orin_nano_root_kurulum.sh -> jetson_paket\orin_nano_root_kurulum.sh
+  [JETSON_PAKET] scripts\orin_nano_venv_kurulum.sh -> jetson_paket\orin_nano_venv_kurulum.sh
+  ayna bayt-es (scripts/ <-> jetson_paket/kod/ isaretli_gosterici.py): True
+== bash -n jetson_baslat.sh (LF kopya) (cikis 0, 0.0 s)
+$ C:\Program Files\Git\bin\bash.exe -n <gecici>/navitas_t228_kapi_vc1o6z8i/jetson_baslat.sh
+== bash -n jetson_baslat.sh (calisma kopyasi) (cikis 0, 0.0 s)
+$ C:\Program Files\Git\bin\bash.exe -n <depo>/jetson_paket/jetson_baslat.sh
+== test_isaretli_gosterici.py (cikis 0, 21.7 s)
+$ -B -m unittest discover -s tests -p test_isaretli_gosterici.py
+  .......s................................
+  ----------------------------------------------------------------------
+  Ran 40 tests in 21.324s
+  OK (skipped=1)
+== test_faz_b_jetson_baslat*.py (cikis 0, 88.7 s)
+$ -B -m unittest discover -s tests -p test_faz_b_jetson_baslat*.py
+  ...........s..............................
+  ----------------------------------------------------------------------
+  Ran 42 tests in 88.442s
+  OK (skipped=1)
+== test_jetson_comms_paketi.py (cikis 0, 5.6 s)
+$ -B -m unittest discover -s tests -p test_jetson_comms_paketi.py
+  .......
+  ----------------------------------------------------------------------
+  Ran 7 tests in 5.506s
+  OK
+== test_t135_kamera_dogrula_icerik.py (cikis 0, 3.6 s)
+$ -B -m unittest discover -s tests -p test_t135_kamera_dogrula_icerik.py
+  ....
+  ----------------------------------------------------------------------
+  Ran 8 tests in 0.133s
+  OK
+== test_faz_b_kamera_koprusu*.py (cikis 0, 8.2 s)
+$ -B -m unittest discover -s tests -p test_faz_b_kamera_koprusu*.py
+  ............
+  ----------------------------------------------------------------------
+  Ran 12 tests in 7.568s
+  OK
+== test_faz_b_kamera_lan.py (cikis 0, 10.3 s)
+$ -B -m unittest discover -s tests -p test_faz_b_kamera_lan.py
+  .......
+  ----------------------------------------------------------------------
+  Ran 7 tests in 10.084s
+  OK
+== test_jetson_paket_defteri.py (cikis 0, 0.1 s)
+$ -B -m unittest discover -s tests -p test_jetson_paket_defteri.py
+  ......
+  ----------------------------------------------------------------------
+  Ran 6 tests in 0.002s
+  OK
+== test_t202_jetson_paket_butunlugu.py (cikis 1, 6.5 s)
+$ -B -m unittest discover -s tests -p test_t202_jetson_paket_butunlugu.py
+  Care: ya kurulum blogun\u0430 eklensin, ya komut degistirilsin. Dosya pakette de yoksa ONCE pakete alinmali (scripts/jetson_paket_hazirla.py KOPYALAR).
+  ----------------------------------------------------------------------
+  Ran 7 tests in 6.422s
+  FAILED (failures=1)
+  DUSEN: FAIL: test_KULLANILAN_HER_YOL_KURULUYOR (test_t202_jetson_paket_butunlugu.KurulumBlogu.test_KULLANILAN_HER_YOL_KURULUYOR)
+== t202 ortam denetimi (dusen kalemler yalniz git-ignore'lu modeller mi?)
+  t202 eksik (bu agac): ['models/navitas_seg_v17_best.pt', 'models/navitas_seg_v17_best_640_fp16.onnx', 'models/navitas_seg_v35_best.pt', 'models/navitas_seg_v35_best_512_fp16.onnx', 'models/navitas_seg_v36_best.pt', 'models/navitas_seg_v36_best_512_fp16.onnx']
+  ana depo models/ adlari (20 dosya) ile ayni kapi: eksik = []
+  bu agacta dusenlerin hepsi models/: True · T228 satiri kuruluyor (scripts/isaretli_gosterici.py): True
+== test_kilavuz_kurulum_yordami.py (cikis 0, 0.1 s)
+$ -B -m unittest discover -s tests -p test_kilavuz_kurulum_yordami.py
+  ......
+  ----------------------------------------------------------------------
+  Ran 6 tests in 0.009s
+  OK
+== test_kilavuz_gecis_yordami.py (cikis 0, 4.9 s)
+$ -B -m unittest discover -s tests -p test_kilavuz_gecis_yordami.py
+  .......
+  ----------------------------------------------------------------------
+  Ran 7 tests in 4.357s
+  OK
+== test_faz_b_surum_dondurma.py (cikis 0, 39.7 s)
+$ -B -m unittest discover -s tests -p test_faz_b_surum_dondurma.py
+  ...............................................
+  ----------------------------------------------------------------------
+  Ran 49 tests in 39.593s
+  OK
+== test_t120_sahte_kapi_yasagi.py (cikis 0, 2.2 s)
+$ -B -m unittest discover -s tests -p test_t120_sahte_kapi_yasagi.py
+  ...............
+  ----------------------------------------------------------------------
+  Ran 15 tests in 2.119s
+  OK
+== test_t220_jetson_istekleri.py (cikis 0, 6.3 s)
+$ -B -m unittest discover -s tests -p test_t220_jetson_istekleri.py
+  .............................
+  ----------------------------------------------------------------------
+  Ran 29 tests in 5.809s
+  OK
+== genel kapi codes/test_rota_sentetik.py (cikis 0, 4.2 s)
+$ -B codes/test_rota_sentetik.py
+  GENEL KAPI (madde 14): GECTI — kol1 15/15 · kol2 serit 15/15
+  Rota 65 waypoint gerektiriyor (yumusak hedef: 64); azami aralik guvenligi icin seyreltilmedi.
+  Rota 67 waypoint gerektiriyor (yumusak hedef: 64); azami aralik guvenligi icin seyreltilmedi.
+== akis_diyagram_dogrula (cikis 0, 0.1 s)
+$ -B scripts/akis_diyagram_dogrula.py
+  FDR\sekiller\akis_e.mmd: 70 düğüm · 70 tuttu · tam satır 70 · hata 0
+  SONUÇ: TÜM DÜĞÜMLER TUTTU
+
+## OZET
+GECTI jetson_paket_hazirla + ayna
+GECTI bash -n jetson_baslat.sh (LF kopya)
+GECTI bash -n jetson_baslat.sh (calisma kopyasi)
+GECTI test_isaretli_gosterici.py
+GECTI test_faz_b_jetson_baslat*.py
+GECTI test_jetson_comms_paketi.py
+GECTI test_t135_kamera_dogrula_icerik.py
+GECTI test_faz_b_kamera_koprusu*.py
+GECTI test_faz_b_kamera_lan.py
+GECTI test_jetson_paket_defteri.py
+DUSTU test_t202_jetson_paket_butunlugu.py
+GECTI t202 ortam denetimi: dusus YALNIZ worktree'de olmayan models/ agirliklari, T228 satiri kuruluyor
+GECTI test_kilavuz_kurulum_yordami.py
+GECTI test_kilavuz_gecis_yordami.py
+GECTI test_faz_b_surum_dondurma.py
+GECTI test_t120_sahte_kapi_yasagi.py
+GECTI test_t220_jetson_istekleri.py
+GECTI test_rota_sentetik 15/15
+GECTI akis_diyagram_dogrula

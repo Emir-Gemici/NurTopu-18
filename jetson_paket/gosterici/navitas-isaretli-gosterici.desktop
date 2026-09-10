@@ -1,0 +1,20 @@
+# NEDEN: T228 · REVIEW_LOG D-443 · results/fdr_sprint_20260910/H9_MK15/TASARIM.md §5 — birincil
+# gosterim yolu: varsayilan X11 masaustu + otomatik oturum + tam ekran pencere (gdm KAPANMAZ).
+# Kurulum: mkdir -p ~/.config/autostart && cp gosterici/navitas-isaretli-gosterici.desktop ~/.config/autostart/
+# Exec: /etc/navitas.env'deki ISARETLI_YAYIN'i okur (jetson_baslat.sh yazar; yoksa 127.0.0.1:8081),
+#   gostericiyi SISTEM Python'uyla (GUI'li python3-opencv) kosar; cokerse 2 s sonra yeniden baslatir,
+#   cikis 0 (q/ESC, SIGTERM) ve 2 (DISPLAY yok / GUI'siz OpenCV)'de durur. Log:
+#   ~/navitas/results/jetson_log/isaretli_gosterici.log.
+# DOGRULANACAK (Jetson'da OLCULEMEDI): GNOME autostart'in Exec'teki tek tirnakli `sh -c` dizgisini
+#   GLib kurallariyla ayristirmasi (masaustu dosyasi standardi tek tirnagi tanimlamaz; GLib tanir).
+# Sozlesme kilidi: tests/test_isaretli_gosterici.py (Exec ayristirilir + `bash -n` ile sinanir).
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=NAVITAS isaretli gosterici
+Comment=T228 - isaretli kare tam ekran (DP -> HDMI -> SIYI donusturucu); KARAR URETMEZ
+Exec=sh -c 'mkdir -p "$HOME/navitas/results/jetson_log"; y=$(sed -n "s/^ISARETLI_YAYIN=//p" /etc/navitas.env 2>/dev/null); y=${y:-127.0.0.1:8081}; while :; do /usr/bin/python3 "$HOME/navitas/scripts/isaretli_gosterici.py" --kip x11 --kaynak "http://$y" >>"$HOME/navitas/results/jetson_log/isaretli_gosterici.log" 2>&1; rc=$?; case $rc in 0|2) exit $rc;; esac; sleep 2; done'
+Terminal=false
+NoDisplay=true
+X-GNOME-Autostart-enabled=true
+X-GNOME-Autostart-Delay=3
