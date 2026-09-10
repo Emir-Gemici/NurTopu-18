@@ -1,0 +1,34 @@
+# T219 mutasyon kosumu — 2026-09-10 02:45 — O:\navitas-local-train\venv\Scripts\python.exe
+komut: -m unittest discover -s tests -p test_saha_kosum_kagidi.py (cwd=O:\navitas\.claude\worktrees\wf_d9aace72-087-5)
+
+## M0 mutasyonsuz (beklenen: OK)
+Ran 25 tests in 1.389s
+
+OK
+returncode=0
+
+## M1 `## 8. Fazla` bolumu eklendi — beklenen: DUSMELI → YAKALANDI (DUSTU)
+FAIL: test_bolum_sayisi_kilidi (test_saha_kosum_kagidi.K1_Bicim.test_bolum_sayisi_kilidi)
+FAIL: test_her_bolumde_esik_results_kutu (test_saha_kosum_kagidi.K1_Bicim.test_her_bolumde_esik_results_kutu)
+Ran 25 tests in 1.701s
+
+FAILED (failures=2)
+returncode=1
+
+## M2 kagida `YOK_BELGE.md` atfi eklendi — beklenen: DUSMELI → YAKALANDI (DUSTU)
+FAIL: test_K2_atiflar_git_ile_izleniyor (test_saha_kosum_kagidi.K2_K3_Komutlar.test_K2_atiflar_git_ile_izleniyor)
+FAIL: test_K2_belge_atiflari_diskte (test_saha_kosum_kagidi.K2_K3_Komutlar.test_K2_belge_atiflari_diskte) (belge='YOK_BELGE.md')
+Ran 25 tests in 1.752s
+
+FAILED (failures=2)
+returncode=1
+
+## M3 bolum 4'ten 'Eşik:' silindi — beklenen: DUSMELI → YAKALANDI (DUSTU)
+FAIL: test_her_bolumde_esik_results_kutu (test_saha_kosum_kagidi.K1_Bicim.test_her_bolumde_esik_results_kutu) (bolum=4)
+Ran 25 tests in 1.273s
+
+FAILED (failures=1)
+returncode=1
+
+kagit geri alindi: EVET
+SONUC: 3/3 mutasyon yakalandi, M0 OK

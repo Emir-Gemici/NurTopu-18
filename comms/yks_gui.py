@@ -42,8 +42,8 @@ from ika_receiver import IkaReceiver
 from hakem_kaydi import HakemKaydi, varsayilan_hakem_log_yolu
 from komut_tekrar import AckliTekrar, BOS, ONAYLANDI, VAZGECILDI
 from protocol import (ACK_SONUC_KABUL, encode, ack, command, heartbeat, iha_landed,
-                      kritik_komut_ack_gecerli_mi,
-                      open_route,
+                      kritik_komut_ack_gecerli_mi, MESAJ_OPEN_ROUTE, MESAJ_NO_ROUTE,
+                      open_route, MESAJ_HEARTBEAT, MESAJ_ACK, MESAJ_CMD, MESAJ_IHA_LANDED,
                       FrameReader, PROTOCOL_VERSION, ROAD_LABEL)
 
 _PROJE_KOKU = Path(__file__).resolve().parents[1]
@@ -650,19 +650,19 @@ def mesaj_kaynagi_dogrula(mesaj, adr, iha_peer, ika_peer):
         return False, "bozuk mesaj veya UDP kaynak adresi"
     tip = mesaj.get("type")
     node = mesaj.get("node")
-    iha_verisi = tip in ("OPEN_ROUTE", "NO_ROUTE", "IHA_LANDED")
-    if iha_verisi or (tip == "HEARTBEAT" and node == "iha"):
+    iha_verisi = tip in (MESAJ_OPEN_ROUTE, MESAJ_NO_ROUTE, MESAJ_IHA_LANDED)
+    if iha_verisi or (tip == MESAJ_HEARTBEAT and node == "iha"):
         if not _udp_adresi_gecerli(iha_peer):
             return False, "İHA kaynağı pinlenmemiş"
         return ((adr[0] == iha_peer[0]),
                 "İHA verisi Jetson IP'sinden gelmeli")
-    if tip == "ACK" and node == "iha":
+    if tip == MESAJ_ACK and node == "iha":
         if not _udp_adresi_gecerli(iha_peer):
             return False, "İHA ACK kaynağı pinlenmemiş"
         return (adr == iha_peer,
                 "İHA eyleyici ACK'i komut alıcısının tam ucundan gelmeli")
-    if ((tip == "HEARTBEAT" and node == "ika")
-            or (tip == "ACK" and node == "ika")):
+    if ((tip == MESAJ_HEARTBEAT and node == "ika")
+            or (tip == MESAJ_ACK and node == "ika")):
         if not _udp_adresi_gecerli(ika_peer):
             return False, "İKA kaynağı pinlenmemiş"
         return (adr == ika_peer, "İKA verisi sabit ucundan gelmeli")
@@ -742,11 +742,11 @@ class YksArayuz:
             self.son_adr["iha"] = iha_peer
             self.sabit_adr["iha"] = iha_peer
         self.sayac = {
-            "OPEN_ROUTE": 0,
+            MESAJ_OPEN_ROUTE: 0,
             "OPEN_ROUTE_RED": 0,
-            "NO_ROUTE": 0,
-            "IHA_LANDED": 0,
-            "HEARTBEAT": 0,
+            MESAJ_NO_ROUTE: 0,
+            MESAJ_IHA_LANDED: 0,
+            MESAJ_HEARTBEAT: 0,
             "ACK_TX": 0,
         }
         self.iha_landed_seq = None       # üretim İHA'sından gelen son iniş olayı
@@ -1546,7 +1546,7 @@ class YksArayuz:
                                 f"(sayı={self.kaynak_ret_sayaci})", "sari")
                 return
         tip = m.get("type")
-        if tip == "OPEN_ROUTE":
+        if tip == MESAJ_OPEN_ROUTE:
             guven_reddi = rota_guven_reddi(m.get("conf"))
             if guven_reddi is not None:
                 self._open_route_guven_reddini_goster(m, guven_reddi)
@@ -1569,7 +1569,7 @@ class YksArayuz:
             if yeni:
                 self.onaylandi = False
                 self.tespit_onayli = False
-                self.sayac["OPEN_ROUTE"] += 1
+                self.sayac[MESAJ_OPEN_ROUTE] += 1
                 # CONTRACTS §6.8 — hakem onayının dayanağı olan tespit:
                 # hangi şerit, hangi güvenle, kaç waypoint ile geldi.
                 self._kanit_yaz("ROTA_ALINDI", seq=m.get("seq"),
@@ -1623,7 +1623,7 @@ class YksArayuz:
             self._kutu_yaz(
                 "protokol",
                 detay=f"{self._detay_base} · alım #{self.rx_alim[m['seq']]}")
-        elif tip == "NO_ROUTE":
+        elif tip == MESAJ_NO_ROUTE:
             self._dugum_adresini_ogren("iha", adr)
             onceki_seq = self.rota_yok.get("seq") if self.rota_yok else None
             yeni = m.get("seq") != onceki_seq
@@ -1643,7 +1643,7 @@ class YksArayuz:
                 detay = m.get("detay")
                 self.onaylandi = False
                 self.tespit_onayli = False
-                self.sayac["NO_ROUTE"] += 1
+                self.sayac[MESAJ_NO_ROUTE] += 1
                 # CONTRACTS §6.8: "rota yok" SESSİZLİKTEN farklıdır (§6.1) —
                 # kayıtta da farklı görünmek zorundadır.
                 self._kanit_yaz("ROTA_YOK", seq=m.get("seq"), sebep=sebep,
@@ -1663,9 +1663,9 @@ class YksArayuz:
                 self._logla(f"NO_ROUTE · {sebep}"
                             + (f" · {detay}" if detay else "")
                             + " → güvenli duruş ACK'i gönderildi", "sari")
-        elif tip == "ACK":
+        elif tip == MESAJ_ACK:
             self._ack_isle(m, adr)
-        elif tip == "IHA_LANDED":
+        elif tip == MESAJ_IHA_LANDED:
             seq = m.get("seq")
             if (m.get("node") != "iha" or isinstance(seq, bool)
                     or not isinstance(seq, int)):
@@ -1679,7 +1679,7 @@ class YksArayuz:
             self.sayac["ACK_TX"] += 1
             if seq != self.iha_landed_seq:
                 self.iha_landed_seq = seq
-                self.sayac["IHA_LANDED"] += 1
+                self.sayac[MESAJ_IHA_LANDED] += 1
                 # CONTRACTS §6.8 — §2.2.3 SIRA denetimi kayda da düşer:
                 # iniş kanıtı geldiğinde İKA'nın rota ACK'i var mıydı?
                 self._kanit_yaz(
@@ -1700,7 +1700,7 @@ class YksArayuz:
                 # Operatör düğmesi güvenlik sinyali üretmez; tersine gerçek
                 # protokol olayı mevcut UI/kronometre kaydını besler.
                 self.iha_indi()
-        elif tip == "HEARTBEAT":
+        elif tip == MESAJ_HEARTBEAT:
             dugum = m.get("node", "?")
             _hb_simdi = time.monotonic()
             if (getattr(self, "protokol_kilidi", False)
@@ -1788,7 +1788,7 @@ class YksArayuz:
                 if _ihlal is not None:
                     self._logla(f"⚠ ALAN İHLALİ: {_ihlal[1]} — uçuş başarısız "
                                 "sayılır (§6.4)", "sari")
-            self.sayac["HEARTBEAT"] += 1
+            self.sayac[MESAJ_HEARTBEAT] += 1
 
     def _open_route_guven_reddini_goster(self, m, guven_reddi):
         """Eşik altı OPEN_ROUTE'u hakeme görünür kıl; rota ACK'i ASLA üretme."""
@@ -1797,8 +1797,8 @@ class YksArayuz:
         onceki_seq = (self.rota_yok.get("seq") if self.rota_yok else None)
         yeni = seq != onceki_seq
         self.rota_yok = {
-            "type": "NO_ROUTE", "sebep": sebep, "detay": detay, "seq": seq,
-            "kaynak_type": "OPEN_ROUTE",
+            "type": MESAJ_NO_ROUTE, "sebep": sebep, "detay": detay, "seq": seq,
+            "kaynak_type": MESAJ_OPEN_ROUTE,
         }
         self.rx_alim[seq] = self.rx_alim.get(seq, 0) + 1
         self.onaylandi = False
@@ -1904,7 +1904,7 @@ class YksArayuz:
         # tanım gereği OPEN_ROUTE onayıdır; alan eksikse (Tk'siz fikstürler)
         # tip yine OPEN_ROUTE'tur — ref_tip'siz (zayıf) ACK üretilmez.
         rota_ack = ack(self.rota["seq"], "yks",
-                       self.rota.get("type") or "OPEN_ROUTE")
+                       self.rota.get("type") or MESAJ_OPEN_ROUTE)
         if self.rota_adr is not None:
             self.link.send(encode(rota_ack), self.rota_adr)
         else:                                   # seri hat: adres kavramı yok
@@ -2084,7 +2084,7 @@ class YksArayuz:
             if self.t_ika0 is not None and self.t_ika1 is None:
                 self.btn_hb.config(state="normal", bg=SARI)   # HB TEMAS artık anlamlı
         if (self.rota and ref == self.rota["seq"]
-                and ref_tip in (None, "OPEN_ROUTE")
+                and ref_tip in (None, MESAJ_OPEN_ROUTE)
                 and ref not in self.ika_rota_ack):
             self.ika_rota_ack[ref] = time.time()
             damga = time.strftime("%H:%M:%S", time.localtime(self.ika_rota_ack[ref]))
@@ -4185,7 +4185,7 @@ def demo_iha_komutunu_uygula(mesaj, armed, ucus_modu):
     durumunda ayrı mekanik sensöre sahip olmadığı için yalnız ACK alır; ARM ve
     acil mod durumları ise sonraki HEARTBEAT ile ayrıca doğrulanabilir.
     """
-    if (not isinstance(mesaj, dict) or mesaj.get("type") != "CMD"
+    if (not isinstance(mesaj, dict) or mesaj.get("type") != MESAJ_CMD
             or mesaj.get("hedef") != "iha"
             or mesaj.get("cmd") not in DEMO_IHA_KOMUTLARI):
         return armed, ucus_modu, False
@@ -4284,7 +4284,7 @@ def demo_besle(yks_port, durum):
                 indi = True
             d, _ = link.recv()
             for m in reader.feed(d) if d else []:
-                if m.get("type") == "ACK" and m.get("ref") == rota["seq"]:
+                if m.get("type") == MESAJ_ACK and m.get("ref") == rota["seq"]:
                     if not onay:
                         onay_t = time.time()
                     onay = True
@@ -4294,7 +4294,7 @@ def demo_besle(yks_port, durum):
                     if not kabul:
                         continue
                     link.send(encode(ack(
-                        m["seq"], "iha", "CMD", ref_cmd=m["cmd"],
+                        m["seq"], "iha", MESAJ_CMD, ref_cmd=m["cmd"],
                         sonuc=ACK_SONUC_KABUL)), hedef)
             time.sleep(0.5)
 

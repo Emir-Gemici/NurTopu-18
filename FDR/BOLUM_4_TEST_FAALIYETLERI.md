@@ -528,7 +528,9 @@ fotoğrafı gelmedi.
 > menzil testlerinin sonuçları paylaşılmalıdır."*
 
 🔴 **ÖLÇÜLEMEDİ: menzil (metre), paket kaybı ve RTT ölçülmedi. Kapı RTT
-p95 < 0,2 s; ölçüm aracı `scripts/sik_rf_olc.py`, 5 Eylül'de koşulmadı.**
+p95 < 0,2 s; ölçüm aracı `scripts/sik_rf_olc.py`, 5 Eylül'de koşulmadı** ~~.~~
+**— 10 Eylül'de de RF'te koşulmadı (araç artık veri hızını da sayar; yazılım
+düzeneklerindeki koşumu §4.9.6, RF değildir).**
 
 **5 Eylül 2026'da olan** (`REVIEW_LOG.md` D-426 §1) — menzil ölçümü **değildir**:
 
@@ -963,7 +965,8 @@ düzeltildi, **aynı eşikle** yeniden koşuldu.
 
 ⚠ **Bu ölçümün KANITLAMADIĞI:** gerçek RF yoktur — menzil, paket kaybı, SiK'in
 kendi çerçeveleme/ECC katmanı, baud uyuşmazlığı burada yoktur. **433 MHz RF
-ölçümü 5 Eylül'e ertelendi ve hâlâ ölçülmemiştir** (§4.13.1).
+ölçümü 5 Eylül'e ertelendi ve hâlâ ölçülmemiştir** (§4.13.1) — 10 Eylül itibarıyla
+da; aynı köprü düzeneğinde RTT + veri hızı 200 probla ölçüldü (§4.9.6, T216), o da RF değildir.
 
 ### 4.9.3 SiK hub — uçtan uca çoğullama ve gecikme (D-404 / D-405)
 
@@ -1045,8 +1048,28 @@ gelen komutlar **511/33 @125000 µs (8 Hz)** ve **511/245 @500000 µs (2 Hz)**
 olarak ölçüldü (§4.9.4). Jetson tarafında `--streamrate 8` systemd biriminde
 kilitlidir; silindiğinde kapı K1 düşer (mutant tablosu, §4.2.2).
 
+**10 Eylül (T216) — NAVITAS çerçeve hattında RTT ve VERİ HIZI, yazılım düzeneklerinde
+(RF DEĞİL).** `scripts/sik_rf_olc.py` gönderilen/alınan bayt ve paketi sayar (`veri_hizi`
+alanı: bayt/s, bit/s, paket/s; süre = ilk prob → son ACK/zaman aşımı) ve `--tasiyici udp`
+ile aynı yordamı UDP'de koşar. Gerçek CLI ayrı süreçte, n = 200 prob, üretim kadansları
+sözleşmeden (IKA_GO 0,25 s · PARAŞÜT 0,20 s), ACK zaman aşımı 0,5 s; üreteç
+`results/fdr_sprint_20260910/H2/olcum_kos.py`, ham `olcum_kos_cikti.txt`, özet `ozet.json`:
+
+| düzenek | kadans | ACK / kayıp | RTT p50 / p95 / maks (ms) | TX B/s · pkt/s | RX B/s · pkt/s | kaynak JSON (`…/H2/`) |
+|---|---|---|---|---|---|---|
+| UDP loopback | IKA_GO 0,25 s | 200/200 · %0 | 0,27 / 0,38 / 0,41 | 322,5 · 4,01 | 314,5 · 4,01 | `olcum_udp_loopback_ikago.json` |
+| UDP loopback | PARAŞÜT 0,20 s | 200/200 · %0 | 0,30 / 0,40 / 1,31 | 403,1 · 5,02 | 393,0 · 5,02 | `olcum_udp_loopback_parasut.json` |
+| TCP-seri köprüsü (`socket://`, D-388) | IKA_GO 0,25 s | 200/200 · %0 | 1,33 / 1,83 / 2,16 | 322,5 · 4,01 | 314,5 · 4,01 | `olcum_tcp_seri_koprusu_ikago.json` |
+| TCP-seri köprüsü | PARAŞÜT 0,20 s | 200/200 · %0 | 1,07 / 1,89 / 2,22 | 403,0 · 5,02 | 393,1 · 5,02 | `olcum_tcp_seri_koprusu_parasut.json` |
+| **SiK 433 MHz RF** | — | **ÖLÇÜLEMEDİ** | **ÖLÇÜLEMEDİ** | **ÖLÇÜLEMEDİ** | **ÖLÇÜLEMEDİ** | yok |
+
+Veri hızı sütunları **kadans yüküdür** (≈ 80 B `CMD` + ≈ 78 B `ACK`), hat kapasitesi değildir;
+iki uç bayt bayt tutarlı (yankının aldığı = ölçün gönderdiği 16 067 B). Tam tablo (bit/s, süre)
+Bölüm 3 §3.3.4.3.3. Kilit: `tests/test_faz_b_sik_rf_olc.py` (13 test; 3 sayaç mutantı yakalandı).
+
 🔴 **ÖLÇÜLEMEDİ: SiK telsiz hattının gerçek etkin veri hızı, paket kaybı ve
-menzili ölçülmedi; ölçüm 6–19 Eylül'dedir (§4.5).** 5 Eylül durumu: SiK çifti
+menzili ölçülmedi;** ~~ölçüm 6–19 Eylül'dedir (§4.5).~~ **10 Eylül itibarıyla da
+ölçülmedi; ekip radyoları taktığında aynı araç `--port COMx` ile (§4.5).** 5 Eylül durumu: SiK çifti
 Mission Planner'a **bağlandı** — BEYAN, sözlü "tamam oldu" (`REVIEW_LOG.md:29828`,
 D-426 §1). RTT, kayıp ve menzil için `scripts/sik_rf_olc.py` **koşulmadı**;
 "bağlandı" bir ölçüm değildir. Aynı gün kumanda hattı için bir ÖLÇÜM satırı
@@ -1233,7 +1256,7 @@ denetimleridir ve burada beklenen sonuçtur.
 | `paket_0904.txt` (01:01) | paket aynası **18** `[JETSON_PAKET]` satırı (`seri_hub.py`, `mavlink_dogrula.py`, `kamera_koprusu.py` dâhil) | — |
 | `bellek_0904.txt` (02:45) | saha belleği: git `7a0bdac`; `jetson_paket` 343 dosya 1011,1 MB; `wheels` 51 dosya 257,3 MB; TOPLAM ~1268,5 MB; MANIFEST **405** dosya | — |
 | `muhur_0904.txt` (01:01) | `[DONDURMA] DONDURULMADI: kunye yok` | mühür henüz basılmadı (beklenen) |
-| `kuru_kosu_0904.txt` (01:00) | §4.11.1'de ham | `exit=1` (kopuk halka varken 0 dönmez: `scripts/saha_kuru_kosu.py:1251,1256`) |
+| `kuru_kosu_0904.txt` (01:00) | §4.11.1'de ham | `exit=1` (kopuk halka varken 0 dönmez: ~~`scripts/saha_kuru_kosu.py:1251,1256`~~ `:1252,1257` — 10 Eylül T208 import satırı) |
 | `tam_suit.txt` (09:58) | `Ran 2104 tests in 390.131s` · `OK (skipped=3)` — dosya 3 Eylül'deki 1896'lık koşumun üzerine yazıldı (§4.14 satır 2 o anın sayısıdır) | `exit=0` |
 
 ⚠ 5 Eylül'de tam suit **2138** testle üç kez koşuldu (`REVIEW_LOG.md:29893-29895`,
@@ -1497,7 +1520,7 @@ exit=1
 Windows'ta açılamaz — halka bunu "kaynak VideoCapture'a besleniyor" olarak
 ölçer, kamera açılmasını değil). `surus_izni` işaretçisi 3 Eylül'de `:375`, 4
 Eylül'de `:386`: dosya değişti, halka aynı. `exit=1` kopuk halka varken tasarım
-gereğidir (`scripts/saha_kuru_kosu.py:1251,1256`). Dosya CRLF'dir ve ilk
+gereğidir (~~`scripts/saha_kuru_kosu.py:1251,1256`~~ `:1252,1257` — 10 Eylül T208 import satırı). Dosya CRLF'dir ve ilk
 satırdaki uzun tire cp1254 baytı olarak bozuk kaydedilmiştir; burada `—` ile
 yazıldı.
 
@@ -1618,7 +1641,7 @@ ekran görüntüsü.
 |---|---|---|---|---|
 | 1 | **Gerçek arena / HTAB karesi** | Arena benzeri saha + kırmızı H çekimi yok; **maket çekimi yapılmayacaktır** (kullanıcı kararı) | 21 Eylül'e kadar **açık kalır** | — |
 | ~~2~~ | ~~**Jetson Nano gerçek FPS**~~ → **ÖLÇÜLDÜ 6 Eylül (D-431)** — kart Orin Nano Developer Kit 4 GB | 5 Eylül: Jetson araca **takılmadı** (D-426 §4) → 6 Eylül kartta: pt **1,35/1,06** · engine **1,58/1,33** FPS (120 örnek), 10 dk 900 örnek, ONNX HATA | 6 Eylül | **≥ 0,61 FPS** p50 **ve** p95 → **GEÇTİ**; eşik gevşetilmedi. Sınır: kamera bağlı değil, kareler diskten (`results/jetson_20260906/jetson_fps_20260906_orin_nano/ozet.json`) |
-| 3 | **SiK 433 MHz RF menzili / kayıp oranı** | Gerçek SiK çifti yok; UDP loopback ve `socket://` köprü kanıt sayılmaz → 5 Eylül: çift bağlandı (BEYAN, ~18:45), `scripts/sik_rf_olc.py` **koşulmadı**, mesafe kaydı yok (§4.5) | uçuş testleriyle | RTT p95 < 0,2 s. DDR'deki *">%98, 300 m"* iddiasının kanıtı **yoktur** (R20) |
+| 3 | **SiK 433 MHz RF menzili / kayıp oranı / veri hızı** | Gerçek SiK çifti yok; UDP loopback ve `socket://` köprü kanıt sayılmaz → 5 Eylül: çift bağlandı (BEYAN, ~18:45), `scripts/sik_rf_olc.py` **koşulmadı**, mesafe kaydı yok (§4.5) → 10 Eylül: araç veri hızı sayacı kazandı, yazılım düzenekleri ölçüldü (§4.9.6), **RF hâlâ koşulmadı** | uçuş testleriyle | RTT p95 < 0,2 s. DDR'deki *">%98, 300 m"* iddiasının kanıtı **yoktur** (R20) |
 | 4 | **Uçuş testleri** (hover, Loiter/Auto, canlı algı, 3 tam prova, sıkı prova) | Araç monte edilmedi | **6–19 Eylül** | ≤ 10 dk, 0 müdahale, yanlış güzergâh 0 |
 | ~~5~~ | ~~**TensorRT `.engine` ↔ PT karar kıyası**~~ → **ÖLÇÜLDÜ 6 Eylül ve DÜŞTÜ (D-431)** | `tensorrt` PC'de yok → Jetson'da ölçüldü: F1 0 · F2 0,9953 · **D-303 oransal 3/126 DÜŞTÜ** (§4.8.3) | 6 Eylül | FP16 payı **kapanmadı**: engine üretime alınmadı, uçuş `.pt`; T66 ile tekrar |
 | 6 | **Gerçek Pixhawk üzerinde EXTENDED akışı ve `--kapi`** | Pixhawk yok → 5 Eylül: Pixhawk 4.5.7 ile çalışır durumda (§4.4), `scripts/mavlink_dogrula.py` **koşulmadı** (D-426'da koşum kaydı yok) | uçuş öncesi | `mavlink_dogrula` 3/3 |

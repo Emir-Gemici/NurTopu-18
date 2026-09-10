@@ -28,7 +28,7 @@ from world_generator import ZONE_POS, IKA_SPEED, SCAN_Z
 from link import UDPLink
 from iha_sender import IhaSender, rota_geometrisini_dogrula
 from ika_receiver import IkaReceiver
-from protocol import encode, ack, FrameReader
+from protocol import encode, ack, FrameReader, MESAJ_OPEN_ROUTE
 from ika_nav import route_to_world_waypoints
 
 # Seviyeye göre gerçekçi model güveni (zor sahnede daha düşük)
@@ -100,7 +100,7 @@ def _yks(link, stop, box, log):
         except OSError:      # link kapatıldı (oturum sonu) — sessiz çık
             break
         for m in reader.feed(d) if d else []:
-            if m.get("type") == "OPEN_ROUTE":
+            if m.get("type") == MESAJ_OPEN_ROUTE:
                 box["latest"] = m
                 log("YKS/HAKEM", f"tespit ekranda: {m['label'].upper()} (yol {m['road']}) "
                                  f"güven={m['conf']} → HAKEM ONAYI ✓")
