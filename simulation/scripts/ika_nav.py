@@ -14,6 +14,7 @@ Kullanım:
   sürüş    — izin geldiği andan HB'ye kadar (İKA görev süresi, 10 dk)
 """
 
+import functools
 import math
 import time
 import sys
@@ -29,11 +30,15 @@ for _akim in (sys.stdout, sys.stderr):
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "comms"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "codes"))
 from protocol import ROAD_LABEL
-from karar_sozlesmesi import IKA_BEKLEME_SURESI_S, IKA_SURUS_SURESI_S
+from karar_sozlesmesi import (IKA_AZAMI_HIZ_MS, IKA_BEKLEME_SURESI_S,
+                              IKA_SURUS_SURESI_S)
 
 # ── Kontrol parametreleri ─────────────────────────────────────────────────────
-MAX_SPEED   = 2.0   # m/s
-TURN_GAIN   = 1.8   # dönüş orantı katsayısı
+# T213 (D-438 f): 2,0 m/s DDR fiziksel tavanının (1,3 m/s) üstündeydi ve üç
+# kopya hâlinde geziyordu. Tek kaynak CONTRACTS §4 → karar_sozlesmesi.
+MAX_SPEED   = IKA_AZAMI_HIZ_MS   # m/s — DDR 200 rpm × π × Ø0,125 / 60
+TURN_GAIN   = 1.8   # dönüş orantı katsayısı (T213 MuJoCo ölçümü: 1,3 m/s tabanda
+                    # 45 GT koşumu ile ölçüldü; değer değiştirilmedi, README_T213B)
 WP_RADIUS   = 0.5   # m — costmap takip payını aşmadan sonraki waypoint'e geç
 FINAL_WP_RADIUS = 0.3  # m — HB son yaklaşım toleransı
 CTRL_HZ     = 10    # Hz
@@ -258,13 +263,39 @@ def receiver_ika_go_bekle(receiver, timeout=None):
 
 
 def receiver_surus_izni_bekle(
-        receiver, timeout=None, deadline_monotonic=None):
-    """İki izni tek sürede ve ortak mutlak son tarih içinde bekle."""
+        receiver, timeout=None, deadline_monotonic=None, *,
+        saat=None, bekle=None):
+    """İki izni tek sürede ve ortak mutlak son tarih içinde bekle.
+
+    ``saat``/``bekle`` (T213, ON_KAYIT §5.3 sim saati): verilmezse davranış
+    BAYT-EŞ eskisidir (alıcının Event.wait'i, duvar saati). ``bekle`` verilirse
+    bekleme ``bekle(dt)`` ile adım adım yapılır — simülasyonda ``bekle`` fizik
+    saatini ilerletir; alıcı da AYNI saatle kurulmuş olmalıdır
+    (``IkaReceiver(saat=...)``), yoksa deadline karşılaştırması anlamsızdır.
+    """
     send_vel(0, 0)
     print("[ika_nav] YKS IKA_GO + İHA iniş kanıtı bekleniyor — "
           "İKA güvenli duruşta")
-    if receiver.wait_surus_izni(
-            timeout, deadline_monotonic=deadline_monotonic):
+    if bekle is None:
+        izin = receiver.wait_surus_izni(
+            timeout, deadline_monotonic=deadline_monotonic)
+    else:
+        _saat = time.monotonic if saat is None else saat
+        if deadline_monotonic is None:
+            deadline = _saat() + max(0.0, float(timeout or 0.0))
+        else:
+            deadline = float(deadline_monotonic)
+        izin = False
+        while True:
+            # timeout=0: Event yalnız YOKLANIR, gerçek zaman beklenmez.
+            if receiver.wait_surus_izni(0.0, deadline_monotonic=deadline):
+                izin = True
+                break
+            kalan = deadline - _saat()
+            if kalan <= 0.0:
+                break
+            bekle(min(1.0 / CTRL_HZ, kalan))
+    if izin:
         print("[ika_nav] ✓ IKA_GO ve IHA_LANDED alındı — İKA sürüş izni açık")
         return True
     eksik = []
@@ -280,12 +311,20 @@ def receiver_surus_izni_bekle(
 def navigate(
         wps, label="rota", verbose=True, link_ok=None, rota_gecerli=None,
         rota_korumali_gonder=None, surus_deadline_monotonic=None,
-        saat=time.monotonic):
+        saat=time.monotonic, bekle=None):
     """Waypoint'leri izle. ``surus_deadline_monotonic`` (K5) dolarsa
-    İKA durur ve False döner: şartname §6.2 İKA görev süresi aşıldı."""
+    İKA durur ve False döner: şartname §6.2 İKA görev süresi aşıldı.
+
+    ``saat``/``bekle`` (T213, ON_KAYIT §5.3): 10 Hz döngü ve deadline bu saatle
+    işler. ``bekle`` None ise ``time.sleep`` (çağrı anında çözülür; testlerin
+    ``mock.patch.object(ika_nav.time, "sleep", …)`` yaması çalışmaya devam
+    eder). Simülasyonda ``bekle(dt)`` fizik adımlarını koşturur ve ``saat``
+    ``data.time`` okur — sürüş süresi SANAL saniyeyle ölçülür.
+    """
     if len(wps) < 2:
         raise ValueError("Navigate için en az iki waypoint gerekli")
     dt = 1.0 / CTRL_HZ
+    _bekle = time.sleep if bekle is None else bekle
     surus_deadline = (None if surus_deadline_monotonic is None
                       else float(surus_deadline_monotonic))
 
@@ -348,20 +387,20 @@ def navigate(
                 if not baglanti_kayip_yazildi:
                     print("[ika_nav] ⚠ İHA bağlantısı kayıp — GÜVENLİ DURMA")
                     baglanti_kayip_yazildi = True
-                time.sleep(1.0 / CTRL_HZ)
+                _bekle(1.0 / CTRL_HZ)
                 continue
             if baglanti_kayip_yazildi:
                 print("[ika_nav] ✓ İHA bağlantısı geri geldi — aynı waypoint'ten devam")
                 baglanti_kayip_yazildi = False
             if not rota_kapisi_acik():
-                time.sleep(dt)
+                _bekle(dt)
                 continue
 
             cx, cy, cz, gz_yaw = get_pose("ika")
 
             if cx is None:
                 print("[ika_nav]   Konum alınamadı, bekleniyor...")
-                time.sleep(0.5)
+                _bekle(0.5)
                 continue
 
             # Yaw güncelleme: hareket vektöründen
@@ -380,7 +419,7 @@ def navigate(
                 send_vel(0, 0)
                 print(f"[ika_nav]   ✓ Ulaşıldı (kalan: {dist:.2f}m)")
                 at_wp = True
-                time.sleep(0.3)
+                _bekle(0.3)
                 continue
 
             desired = math.atan2(dy, dx)
@@ -390,7 +429,7 @@ def navigate(
             # Pose/steer hesabı sırasında NO_ROUTE gelmiş olabilir. Sıfır
             # olmayan tek motor çıkışından hemen önce kapıyı yeniden denetle.
             if not rota_kapisi_acik():
-                time.sleep(dt)
+                _bekle(dt)
                 continue
             if rota_korumali_gonder is None:
                 send_vel(r, l)
@@ -398,7 +437,7 @@ def navigate(
                 # Son bool kontrolünden hemen sonra NO_ROUTE işlenmiş olabilir.
                 # Üretim callback'i karar kilidi altında nonzero komutu reddeder.
                 rota_gecersiz_dur()
-                time.sleep(dt)
+                _bekle(dt)
                 continue
 
             if verbose:
@@ -406,7 +445,7 @@ def navigate(
                       f"dist={dist:.1f}m err={math.degrees(err):.0f}° "
                       f"wheel=({r:.1f},{l:.1f})")
 
-            time.sleep(dt)
+            _bekle(dt)
 
     send_vel(0, 0)
     print("\n[ika_nav] ══ HEDEF BÖLGEYE (HB) ULAŞILDI! ══")
@@ -416,7 +455,7 @@ def navigate(
 def navigate_route(
         route, verbose=True, link_ok=None, rota_gecerli=None,
         rota_korumali_gonder=None, surus_deadline_monotonic=None,
-        saat=time.monotonic):
+        saat=time.monotonic, bekle=None):
     """Sadece İHA'dan gelen dinamik waypoint rotasını takip et."""
     wps = route_to_world_waypoints(route)
     road = (route.get("road", route.get("yol_no"))
@@ -431,12 +470,14 @@ def navigate_route(
         rota_korumali_gonder=rota_korumali_gonder,
         surus_deadline_monotonic=surus_deadline_monotonic,
         saat=saat,
+        bekle=bekle,
     )
 
 
 def ika_gorevi(bind, bekleme_suresi=IKA_BEKLEME_SURESI_S,
                surus_suresi=IKA_SURUS_SURESI_S, *, saat=time.monotonic,
-               rota_bekle=None, izin_bekle=None, sur=None, yks_peer=None):
+               bekle=None, rota_bekle=None, izin_bekle=None, sur=None,
+               yks_peer=None):
     """İKA görevi: BEKLE (rota + IHA_LANDED + IKA_GO) sonra SÜR (HB'ye).
 
     K5 — iki AYRI son tarih (şartname §6.2):
@@ -448,12 +489,23 @@ def ika_gorevi(bind, bekleme_suresi=IKA_BEKLEME_SURESI_S,
     (host, port). OPEN_ROUTE sahada IKA_GO'dan ÖNCE geldiği için adres IKA_GO'dan
     öğrenilemez; verilmezse hakem 2. onayı UDP akışında hiç açılmaz.
 
+    ``saat``/``bekle`` (T213): iki deadline de ``saat`` ile kurulur; ``bekle``
+    varsayılan aşamalara (rota bekleme, izin bekleme, sürüş) geçirilir.
+    Dışarıdan verilen ``rota_bekle``/``izin_bekle``/``sur`` geri çağrıları
+    ESKİ imzalarıyla çağrılır (mevcut testler dokunulmadan geçer); saat
+    enjeksiyonu isteyen çağıran bunu kendi geri çağrısına bağlar.
+
     Döner: 0 başarı · 1 rota gelmedi · 2 NO_ROUTE · 3 sürüş izni gelmedi ·
     4 sürüş süresi doldu / HB'ye ulaşılamadı.
     """
-    rota_bekle = rota_bekle or wait_open_route_from_comms
-    izin_bekle = izin_bekle or receiver_surus_izni_bekle
-    sur = sur or navigate_route
+    if rota_bekle is None:
+        rota_bekle = functools.partial(
+            wait_open_route_from_comms, saat=saat, bekle=bekle)
+    if izin_bekle is None:
+        izin_bekle = functools.partial(
+            receiver_surus_izni_bekle, saat=saat, bekle=bekle)
+    if sur is None:
+        sur = functools.partial(navigate_route, bekle=bekle)
     bekleme_suresi = max(0.0, float(bekleme_suresi))
     surus_suresi = max(0.0, float(surus_suresi))
 
@@ -523,7 +575,8 @@ def navigate_road(
 
 def wait_open_route_from_comms(
         bind="0.0.0.0:5006", timeout=60, keep_receiver=False,
-        deadline_monotonic=None, yks_peer=None):
+        deadline_monotonic=None, yks_peer=None, *, saat=None, bekle=None,
+        link=None):
     """Şartname §2.2.5: İHA'nın dinamik rota verisi gelene kadar bekle.
 
     Geometrisi olmayan, yalnızca sayısal ``road`` içeren mesaj hareketi
@@ -533,16 +586,28 @@ def wait_open_route_from_comms(
 
     ``yks_peer``: alıcıya bağlanan YKS adresi — rota ACK kopyası hakem ekranına
     (K8) buradan gider; OPEN_ROUTE IKA_GO'dan önce geldiğinden başka yol yok.
+
+    ``saat``/``bekle`` (T213, ON_KAYIT §5.3): deadline ve dinleme döngüsü bu
+    saatle işler; alıcı da AYNI saatle kurulur (``IkaReceiver(saat=…)``) —
+    karar damgaları ile deadline aynı eksende olmazsa geçerli rota sessizce
+    "deadline sonrası" sayılıp ATILIRDI (kilit: test_sim_mujoco_zincir).
+    ``link``: önceden bağlanmış taşıyıcı (ephemeral port, 127.0.0.1:0 —
+    port numarası göndericiye ancak bağlandıktan sonra söylenebilir); None ise
+    ``bind`` ile UDPLink açılır (eski davranış).
     """
     from link import UDPLink
     from ika_receiver import IkaReceiver
-    h, p = bind.split(":")
+    _saat = time.monotonic if saat is None else saat
+    _bekle = time.sleep if bekle is None else bekle
     if yks_peer is not None:
         yks_peer = (str(yks_peer[0]), int(yks_peer[1]))
-    rx = IkaReceiver(UDPLink(bind=(h, int(p))), yks_peer=yks_peer).start()
+    if link is None:
+        h, p = bind.split(":")
+        link = UDPLink(bind=(h, int(p)))
+    rx = IkaReceiver(link, yks_peer=yks_peer, saat=saat).start()
     print(f"[ika_nav] comms dinleniyor ({bind}) — İHA açık yolu gönderecek...")
     if deadline_monotonic is None:
-        deadline = time.monotonic() + max(0.0, float(timeout))
+        deadline = _saat() + max(0.0, float(timeout))
     else:
         deadline = float(deadline_monotonic)
     rx.set_decision_deadline(deadline)
@@ -551,7 +616,7 @@ def wait_open_route_from_comms(
     sahiplik_devredildi = False
     try:
         while True:
-            terminal_snapshot = time.monotonic() >= deadline
+            terminal_snapshot = _saat() >= deadline
 
             # OPEN_ROUTE ve NO_ROUTE ayrı thread'de güncellenir. İkisini tek
             # kilitli snapshot'tan okumak, doğrulama sırasında yeni durumla eski
@@ -611,8 +676,8 @@ def wait_open_route_from_comms(
             if terminal_snapshot:
                 return no_route
 
-            kalan = deadline - time.monotonic()
-            time.sleep(min(0.2, max(0.0, kalan)))
+            kalan = deadline - _saat()
+            _bekle(min(0.2, max(0.0, kalan)))
     finally:
         if not sahiplik_devredildi:
             rx.stop()
