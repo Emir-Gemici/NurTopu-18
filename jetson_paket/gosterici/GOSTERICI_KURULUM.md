@@ -10,7 +10,9 @@
 > **Kural: ÖLÇÜLEMEDİ ≠ GEÇTİ.** Bu belgedeki Jetson adımlarının **hiçbiri Jetson'da koşulmadı**
 > (10 Eylül; Jetson geliştirici PC'sinde yok). PC'de ölçülen: boru dizgileri, durum mantığı,
 > x11 penceresi (Windows), kuru koşum — `tests/test_isaretli_gosterici.py`,
-> `results/fdr_sprint_20260910/H9_MK15/t228/`.
+> `results/fdr_sprint_20260910/H9_MK15/t228/`. T228-D (10 Eylül): x11 döngüsü (sahte cv2),
+> DRM gözetmeni histerezisi + boru nabzı (sahte süreç, sahte `-v` çıktısı) —
+> `results/fdr_sprint_20260910/H9_MK15/t228d/`.
 
 ## 0. Ne yapar
 
@@ -50,13 +52,13 @@ Jetson Orin Nano DevKit ─ DisplayPort
 | konu | bilgi | kaynak |
 |---|---|---|
 | Orin Nano DevKit görüntü çıkışı | yalnız **DisplayPort**; pasif ve aktif DP→HDMI adaptör resmî destekli | docs.nvidia.com — Orin Nano DevKit "hardware layout" |
-| HDMI giriş dönüştürücü | giriş **Mini HDMI**, **12 V / 3 W**, varsayılan IP **192.168.144.25**, `rtsp://192.168.144.25:8554/main.264` (H.264); IP, SD karttaki **`setip.txt`** ile değişir | SIYI dönüştürücü kılavuzu v1.1 |
+| HDMI giriş dönüştürücü | giriş **Mini HDMI**, **12 V / 3 W**, varsayılan IP **192.168.144.25**, `rtsp://192.168.144.25:8554/main.264` (H.264 — kodek çelişkili, bkz. Kodlayıcı satırı); IP, SD karttaki **`setip.txt`** ile değişir | SIYI dönüştürücü kılavuzu v1.1 |
 | Dönüştürücü beslemesi | 12 V büyük olasılıkla hava biriminin **LAN&PWR** kablosundaki 12V pininden — **DOĞRULANACAK**; yedek: Jetson'un 12,2 V dönüştürücüsü (akım kapasitesi **BEYAN GEREKLİ**, D-443 ek) | araştırma; kullanıcı |
 | Hava birimi | **MK15 Air Unit** (100 g, 1 LAN&PWR, 16,8–75,6 V) **ya da HM30 Air Unit** (74 g, 2 LAN&PWR, 12,6–25,2 V) — hangisi olduğu etiketten okunur. 🔴 **RİSK:** MK15 Air Unit ise 4S yük altında alt sınırın altına iner (6 Eylül tlog 9,35–11,28 V okundu, D-440) | SIYI; D-440 |
 | Kumanda HDMI | yalnız **Enterprise** sürümde; ekranın aynası (ham akış değil) | MK15 kılavuzu v1.9 |
 | SIYI FPV | OSD kapatılabilir; Camera 1 tam ekran | SIYI FPV |
 | Frekans | FCC MK15TX 5745–5825 MHz, iletilen 68,1 mW ≈ **214 mW e.i.r.p.** (5 dBi) > BTK muafiyeti **25 mW e.i.r.p.** — 🔴 **RİSK AÇIK** (Link Status'tan okunur, DDK'ya sorulur) | FCC; BTK |
-| Kodlayıcı | Orin Nano'da **NVENC yok**; x264 30 fps ultrafast çekirdek başı %19–38 | NVIDIA Jetson Linux R39.2 |
+| Kodlayıcı | Orin Nano'da **NVENC yok**; x264 30 fps ultrafast çekirdek başı %19–38. Dönüştürücünün canlı kodeki **H.264/H.265 çelişkili** (TASARIM §5; SIYI dönüştürücü kılavuzu V1.1) — §4 adım 5'te VLC'de okunur (**DOĞRULANACAK**) | NVIDIA Jetson Linux R39.2; SIYI dönüştürücü kılavuzu V1.1 |
 | Kamera | JetPack 7.2.1 + IMX477: stok sürücüyle başarı raporu yok; Arducam beta 39.2.0'a bağlı — **12 Eylül ilk test**; yedek USB UVC kamera | araştırma |
 
 ## 2. IP planı (SIYI alt ağı 192.168.144.0/24)
@@ -119,6 +121,7 @@ bağlanması **gerekmez** (görüntü DP kablosundan gider).
 | 6 | MK15 kumanda Camera 1 | aynı ekran, OSD kapalı | ÖLÇÜLECEK |
 | 7 | camdan cama gecikme (TASARIM §3.4, eşik ≤ 1,0 s) | 5 ölçüm, p50/maks | ÖLÇÜLECEK |
 | 8 | Argus FPS: kamera + gösterici birlikte (drm kipinde ayrıca) | FPS düşmez | ÖLÇÜLECEK |
+| 9 | DRM nabız biçimi + zamanlaması: §5 `--nabiz-sina` komutu (DRM kipinden ÖNCE) | çıkış 0, `NABIZ_SINA: ESLESTI — … 20 nabiz …; ZAMANINDA` | ÖLÇÜLECEK |
 
 ## 5. DRM kipi (seçenek — gdm DURUR, masaüstü gider)
 
@@ -128,8 +131,10 @@ bağlanması **gerekmez** (görüntü DP kablosundan gider).
 sudo systemctl stop gdm
 sudo loginctl terminate-seat seat0
 sudo modprobe nvidia-drm modeset=1
-gst-launch-1.0 -e 'souphttpsrc location=http://127.0.0.1:8081/video is-live=true do-timestamp=true ! multipartdemux ! jpegdec ! nvvidconv ! video/x-raw(memory:NVMM),width=1280,height=720 ! nvdrmvideosink set_mode=1 sync=false'
+gst-launch-1.0 -v -e 'souphttpsrc location=http://127.0.0.1:8081/video is-live=true do-timestamp=true ! multipartdemux ! jpegdec ! identity name=nabiz silent=false ! nvvidconv ! video/x-raw(memory:NVMM),width=1280,height=720 ! nvdrmvideosink set_mode=1 sync=false'
 ```
+
+~~10 Eylül (T228): `gst-launch-1.0 -e 'souphttpsrc location=http://127.0.0.1:8081/video is-live=true do-timestamp=true ! multipartdemux ! jpegdec ! nvvidconv ! video/x-raw(memory:NVMM),width=1280,height=720 ! nvdrmvideosink set_mode=1 sync=false'`~~ → **10 Eylül (T228-D):** `-v` + `identity name=nabiz silent=false` eklendi (boru ilerlemesi izlenir).
 
 Birim (**varsayılan KAPALI**; `jetson_baslat.sh` kurmaz):
 
@@ -151,6 +156,37 @@ sudo systemctl start navitas-isaretli-gosterici-drm     # önce dene; kalıcı i
   `/kare.jpg`'yi 1 s'de bir yoklar; kare 2 s'den uzun süre yeni değilse video borusunu durdurur ve
   kırmızı GÖRÜNTÜ YOK borusunu (`videotestsrc pattern=red ! textoverlay`) açar — `nvdrmvideosink`
   son kareyi ekranda bırakamaz.
+- **Histerezis ve yeniden başlatma sıklığı (T228-D, 10 Eylül):** CANLI'dan (video borusundan) çıkış
+  **ilk** bayat / hata / donmuş yoklamada, bekleme yok (güvenli taraf). Video borusuna dönüş
+  **2 ardışık** taze yoklama **ve** son boru başlatmasından **≥ 3 s** ister — çırpınan yayın
+  `nvdrmvideosink`'i sürekli yeniden açmaz (her açılış `set_mode=1` ile kip kurar). Kendiliğinden
+  ölen video borusunun yerine GÖRÜNTÜ YOK borusu **hemen** açılır; ölen GÖRÜNTÜ YOK borusu ≥ 3 s
+  aralıkla yeniden açılır. Açılışta kırmızı ekran ~3 s görünür (bu kurala göre beklenen).
+- **Boru ilerlemesi — donmuş boru (T228-D):** video borusunda `identity name=nabiz silent=false`;
+  `gst-launch-1.0 -v` her tamponda `…/GstIdentity:nabiz: last-message = chain … (nabiz:sink) … pts: …`
+  biçiminde bir satır basar, gözetmen bunları okur. `/kare.jpg` taze olsa bile video borusu **> 3 s**
+  tampon geçirmezse (açılışta ilk tampon için de 3 s pay) video borusu durur ve GÖRÜNTÜ YOK borusu
+  açılır (sebep "video borusu ilerlemiyor"). `identity`, `jpegdec`'ten sonra sistem belleğindedir
+  (NVMM caps'li `identity` **ÖLÇÜLEMEDİ**); boruda kuyruk yok → sink takılırsa nabız da durur.
+- 🔴 **`-v` nabız satırı biçimi Jetson'da ÖLÇÜLEMEDİ — DOĞRULANACAK** (PC'de GStreamer yok;
+  ayrıştırıcı toleranslı: `nabiz` elemanı + önce `chain` kelimesi; `event` / `caps` satırları
+  sayılmaz; `pts` isteğe bağlı). Sahada DRM kipinden **önce** (§4 adım 9):
+
+  ```bash
+  stdbuf -oL gst-launch-1.0 -v videotestsrc is-live=true num-buffers=20 ! video/x-raw,framerate=5/1 \
+    ! identity name=nabiz silent=false ! fakesink \
+    | /usr/bin/python3 ~/navitas/scripts/isaretli_gosterici.py --nabiz-sina
+  ```
+
+  Beklenen (~4 s): `NABIZ_SINA: ESLESTI — … 20 nabiz …; ZAMANINDA: varis yayilimi ≈3,8 s / pts
+  yayilimi 3,80 s`, çıkış 0. **Çıkış 1** iki sebeple: `ESLESMEDI` (biçim farklı) ya da `TOPLU`
+  (satırlar tamponlu, topluca geliyor → sağlıklı boru "donmuş" sayılır). İkisinde de DRM kipi video
+  borusunu her ~3 s'de bir GÖRÜNTÜ YOK'a düşürür (fail-closed: eski kare gösterilmez ama canlı
+  görüntü de gelmez) → **x11 kipinde kal**; ekrana basılan satırları bu belgeye yapıştır. DRM
+  çalışırken gerçek satırlar journal'da `gst:` önekiyle görünür (ilk 40 satır).
+- **Satır tamponu:** `drm_kos` video borusunu `stdbuf -oL` önekiyle koşar (coreutils `stdbuf`
+  varsa; yoksa KIRMIZI uyarı, önek konmaz). Stdout boruya bağlıyken blok tampon nabız satırlarını
+  topluca getirirdi; `gst-launch`'ın kendi `fflush`'ı **ÖLÇÜLEMEDİ**.
 - **Geri alma:** `sudo systemctl disable --now navitas-isaretli-gosterici-drm; sudo modprobe -r nvidia_drm; sudo systemctl start gdm`
   (`modprobe -r` başarısızsa yeniden başlat).
 
@@ -185,6 +221,7 @@ sudo systemctl start navitas-isaretli-gosterici-drm     # önce dene; kalıcı i
 | sürekli BAYAT | `rpi_inference` yavaş ya da takılı | `jetson_baslat.sh --durum`; FPS logu |
 | gösterici hemen çıkıyor, log "DISPLAY yok" (çıkış 2) | grafik oturum yok / Wayland | otomatik oturum, `WaylandEnable=false`; ssh'ten `DISPLAY=:0` |
 | "cv2 penceresi acilamadi" (çıkış 2) | venv Python'u (opencv-python-headless) | `/usr/bin/python3` + `python3-opencv` |
+| drm kipinde sürekli kırmızı "video borusu ilerlemiyor" | `-v` nabız biçimi eşleşmiyor, satırlar tamponlu (`TOPLU`) ya da `/video` akmıyor | §5 `--nabiz-sina`; journal'da `gst:` satırları; x11 kipine dön |
 | kamera ~3 fps | `nvidia-drm` yüklü, DRM gösterici çalışmıyor (Argus) | DRM birimini çalıştır ya da `sudo modprobe -r nvidia_drm` / yeniden başlat |
 | monitörde var, MK15'te yok | dönüştürücü beslemesi / IP / Camera 1 ayarı | dönüştürücü LED'i; `ping 192.168.144.25`; VLC `rtsp://192.168.144.25:8554/main.264` |
 | hava birimi kararıyor | 4S yük altında alt sınır (MK15 Air Unit 16,8 V) | etiketi oku; ayrı BEC; D-440 |
@@ -197,3 +234,5 @@ sudo systemctl start navitas-isaretli-gosterici-drm     # önce dene; kalıcı i
 - Dönüştürücü 12 V besleme yolu; hava birimi modeli ve gerilim aralığı.
 - IMX477'nin JetPack 7.2.1'de çalışması (12 Eylül ilk test; yedek USB UVC).
 - 5,8 GHz güç / BTK 25 mW e.i.r.p. uyumu.
+- `gst-launch-1.0 -v` nabız satırı biçimi (DRM gözetmeninin boru ilerlemesi denetimi) ve `identity`'nin boruya etkisi, `-v` satırlarının zamanında gelmesi / `stdbuf -oL` (T228-D).
+- Dönüştürücünün canlı kodeki (H.264/H.265 çelişkili).
