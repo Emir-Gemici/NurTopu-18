@@ -17,10 +17,23 @@ Sim saati: sürüş MjData'sı t=0'dan başlar, görev saati = t_tarama_son + da
 (rota tarama biter bitmez yayınlanır; haritala hesap süresi sim'de modellenmez).
 "sure_sim_iha_profil" = kinematik profil süresi (fırlatma→iniş; aerodinamik yok).
 
+T214-A eklemeleri (D-441 mimar kararları):
+  · `basari_hesapla` — K5 başarı tanımının TEK saf fonksiyonu (çürütücü M9: temas kilidi).
+  · takip hatası — sürüş boyunca, İLK TEMASTAN ÖNCE, İKA konumu → arena açık yol merkez
+    hattı uzaklığı (`takip_hatasi_maks_m/ort_m`) ve komut edilen rotaya uzaklık (`plan_*`).
+  · `uretim` rota kaynağı — ÜRETİM KARE-BAZLI boru hattı (`sim_karar_toplayici`, rpi_inference
+    run_camera + KararYayinci); İKA'ya İKA ucuna ulaşan SON OPEN_ROUTE verilir, ref = İKA
+    başlangıcı (saf öteleme, CONTRACTS §3.2/§6.5). Yayın zaman çizelgesi sürüşe beslenmez.
+  · `tel_tipi` — İHA'nın TEL'e çıkardığı karar tipi (hakem kaydından). `send_open_route` güven
+    eşiği altında NO_ROUTE gönderir (CONTRACTS §6.3, K-B); `iha_gonderim.tip` ise ÇAĞRILAN yöntemi
+    yazar (T214-A ölçümü: model_2_zor_42 conf 0,141 `tip=OPEN_ROUTE` sayılıyordu, telde NO_ROUTE).
+  · varsayılan çıktı `kosum_tur3/` (T213-B `kosum/` sonuçları silinmez, üzerine yazılmaz).
+
 Kullanım:
   venv python simulation/mujoco/gorev_kosumu.py --map 1 --level kolay --seed 42 \
-      --rota-kaynak gt --res 1280 --out results/fdr_sprint_20260910/H1/kosum
+      --rota-kaynak gt --res 1280
   venv python simulation/mujoco/gorev_kosumu.py --hepsi --rota-kaynak gt --tohumlar 42,43,44
+  venv python simulation/mujoco/gorev_kosumu.py --hepsi --rota-kaynak uretim --haritalar 1_orta,4_kolay
   --kare-kaydet: sürüşte üçüncü şahıs + İKA takip kareleri (T214 videosu), varsayılan KAPALI.
 """
 from __future__ import annotations
@@ -62,9 +75,11 @@ from karar_sozlesmesi import (IKA_BEKLEME_SURESI_S,       # noqa: E402
                               IKA_SURUS_SURESI_S,
                               SARTNAME_IKA_GOREV_SURESI_S)
 
-KOSUM_KOK = KOK / "results" / "fdr_sprint_20260910" / "H1" / "kosum"
-ROTA_KAYNAKLARI = ("gt", "model")
-ROTA_KAYNAK_ETIKETI = {"gt": "YER GERÇEĞİ", "model": "ÜRETİM MODELİ"}
+KOSUM_KOK = KOK / "results" / "fdr_sprint_20260910" / "H1" / "kosum"          # T213-B (değiştirilmez)
+KOSUM_TUR3_KOK = KOK / "results" / "fdr_sprint_20260910" / "H1" / "kosum_tur3"  # T214-A (CLI varsayılanı)
+ROTA_KAYNAKLARI = ("gt", "model", "uretim")
+ROTA_KAYNAK_ETIKETI = {"gt": "YER GERÇEĞİ", "model": "ÜRETİM MODELİ",
+                       "uretim": "ÜRETİM BORU HATTI (kare-bazlı)"}
 TOHUMLAR_VARSAYILAN = (42, 43, 44)
 KARE_HZ_VIDEO = 5.0
 METRIK_ANAHTARLARI = (
@@ -73,6 +88,7 @@ METRIK_ANAHTARLARI = (
     "sure_sim_ika", "sure_sim_gorev", "varis_mesafesi_m", "hb_icinde", "temas_sayisi",
     "link_olaylari", "ack_listesi", "open_route_ack", "cikis_kodu", "basari",
     "rota_engel_aciklik_m", "rota_engel_aciklik_geom", "rota_insaat_geregi_gecilemez",
+    "takip_hatasi_maks_m", "takip_hatasi_ort_m", "tel_tipi", "guven_kapisi_reddi",
     "duvar_saati_s", "sinir",
 )
 SINIR = ("İHA uçuşu KİNEMATİK (mocap, aerodinamik yok); hakem onayı sim'de OTOMATİK "
@@ -171,6 +187,134 @@ def model_yukle():
     return YOLO(mk["path"], task="segment"), mk
 
 
+def basari_hesapla(kod, rota_bulundu, hb_icinde, temas_sayisi, sure_ika) -> bool:
+    """H1-K5 BAŞARI — TEK TANIM (saf fonksiyon; D-441 çürütücü M9: `temas == 0` kilitsizdi).
+
+    başarı ⇔ çıkış kodu 0 ∧ rota bulundu ∧ HB 2×2 m karesi içinde ∧ temas 0 ∧ sürüş süresi
+    ölçüldü ve ≤ SARTNAME_IKA_GOREV_SURESI_S (600 s, sim saati). Her koşul tek başına
+    düşürülünce False döner (tests/test_sim_mujoco_olcum.py, mutasyonlu)."""
+    if sure_ika is None:
+        return False
+    return bool(int(kod) == 0 and bool(rota_bulundu) and bool(hb_icinde)
+                and int(temas_sayisi) == 0 and float(sure_ika) <= SARTNAME_IKA_GOREV_SURESI_S)
+
+
+def _tel_tipi_hakemden(seq, hakem: dict):
+    """Hakem (YKS ucu) kaydından `seq`'in TEL tipi: OPEN_ROUTE · NO_ROUTE · None (kanıt yok)."""
+    if seq is None:
+        return None
+    if hakem.get("rota_seq") == seq:
+        return "OPEN_ROUTE"
+    if (hakem.get("no_route") or {}).get("seq") == seq:
+        return "NO_ROUTE"
+    return None
+
+
+def tel_tipi(r: dict):
+    """Koşum JSON'u → İHA'nın TEL'e çıkardığı karar tipi (bkz. modül başı `tel_tipi`).
+    Yeni koşumlar `iha_gonderim.tel_tipi` taşır; eskileri (T214-A ilk koşu gt/model) hakem
+    alanlarından (`hakem.rota_seq`, `hakem.no_route.seq`) çözülür — ölçüm dosyası değiştirilmez."""
+    g = r.get("iha_gonderim") or {}
+    if g.get("tel_tipi"):
+        return g["tel_tipi"]
+    return _tel_tipi_hakemden(g.get("seq"), r.get("hakem") or {})
+
+
+def nokta_polyline_uzakligi(x: float, y: float, hat) -> float:
+    """(x, y) → polyline'a en kısa uzaklık (m); `arena.dist_to_path` ile aynı tanım, vektörel."""
+    P = np.asarray(hat, float)
+    if len(P) == 1:
+        return float(np.hypot(x - P[0, 0], y - P[0, 1]))
+    A, AB = P[:-1], P[1:] - P[:-1]
+    L2 = np.einsum("ij,ij->i", AB, AB)
+    L2[L2 == 0.0] = 1e-12
+    t = np.clip(((x - A[:, 0]) * AB[:, 0] + (y - A[:, 1]) * AB[:, 1]) / L2, 0.0, 1.0)
+    return float(np.min(np.hypot(x - (A[:, 0] + AB[:, 0] * t), y - (A[:, 1] + AB[:, 1] * t))))
+
+
+class TakipOlcer:
+    """Sürüş takip hatası: İKA konumu → referans hattı uzaklığı, yalnız İLK TEMASTAN ÖNCE.
+
+    Temastan sonra konumu sürücü değil temas kuvvetleri belirler → ölçüm KESİLİR ve bir daha
+    açılmaz (`temasla_kesildi`). Örnek yoksa maks/ort None (ÖLÇÜLEMEDİ ≠ 0)."""
+
+    def __init__(self, hat):
+        self.hat = np.asarray(hat, float)
+        self.maks, self.toplam, self.n = 0.0, 0.0, 0
+        self.temasla_kesildi = False
+
+    def ornekle(self, x: float, y: float, temas_sayisi: int) -> None:
+        if self.temasla_kesildi:
+            return
+        if int(temas_sayisi) > 0:
+            self.temasla_kesildi = True
+            return
+        d = nokta_polyline_uzakligi(x, y, self.hat)
+        self.maks = max(self.maks, d)
+        self.toplam += d
+        self.n += 1
+
+    def ozet(self) -> dict:
+        return {"maks": (round(self.maks, 3) if self.n else None),
+                "ort": (round(self.toplam / self.n, 3) if self.n else None),
+                "n": self.n, "temasla_kesildi": self.temasla_kesildi}
+
+
+def takip_ornekle(kayit: dict, surucu, *olcerler) -> bool:
+    """`bekle()` kancası — takip hatasını YALNIZ SÜRÜŞ sırasında örnekler (`t_surus_bas` kurulu,
+    `t_surus_son` yok). Rota bekleme / IKA_GO öncesi ve sürüş sonrası adımlar sayılmaz.
+    Döner: örnek alındı mı (test ve mutasyon için)."""
+    if kayit.get("t_surus_bas") is None or kayit.get("t_surus_son") is not None:
+        return False
+    kx, ky = surucu.konum_al()[:2]
+    for o in olcerler:
+        if o is not None:
+            o.ornekle(kx, ky, surucu.temas_sayisi)
+    return True
+
+
+def uretim_rota(ldir: Path, kdir: Path, model, h: int, lv: str, seed: int, *, besleme: str = "kerteriz",
+                model_kunye=None):
+    """ÜRETİM KARE-BAZLI boru hattı (`sim_karar_toplayici`) → ((road, conf, ref_xy, yerel), det)
+    ya da (None, det).
+
+    İKA ucuna ulaşan SON OPEN_ROUTE seçilir (İKA alıcısı `latest`'i tutar). ref_xy = İKA
+    başlangıcı (KB): üretimde ref daima [0,0] ve İKA SAF ÖTELEME yapar (CONTRACTS §3.2/§6.5) —
+    rota İKA'nın bulunduğu noktadan başlar sayılır; rotanın pozdan hesaplanan gerçek ankoru
+    `ankor_kb_uzakligi_m` ile ayrıca raporlanır. Yayın zaman çizelgesi (sonraki NO_ROUTE'lar)
+    sürüşe BESLENMEZ; `son_yayin` alanında durur. Toplayıcı kaydı `kdir/karar_toplayici.json`."""
+    import sim_karar_toplayici as skt
+    H = arena.harita(h, lv)
+    sonuc = skt.topla(ldir, model, besleme=besleme, out_dir=kdir, harita=h, senaryo=lv, seed=seed,
+                      model_kunye=model_kunye)
+    sonuc["tarih"] = time.strftime("%Y-%m-%d %H:%M")
+    (Path(kdir) / "karar_toplayici.json").write_text(json.dumps(sonuc, ensure_ascii=False, indent=1),
+                                                    encoding="utf-8")
+    orl = [s for s in sonuc["kareler"] if s.get("karar") == "OPEN_ROUTE"]
+    det = {"rota_durum": None, "rota_sebep": None, "besleme": besleme,
+           "open_route_n": sonuc["open_route_n"], "open_route_yollari": sonuc["open_route_yollari"],
+           "open_route_kareleri": sonuc["open_route_kareleri"], "son_yayin": sonuc["son_yayin"],
+           "hukum": sonuc["hukum"], "hizali": sonuc["hizali"],
+           "ankor_kb_uzakligi_m": (orl[-1].get("ankor_kb_uzakligi_m") if orl else None),
+           "rota_sonu_hb_uzakligi_m": (orl[-1].get("rota_sonu_hb_uzakligi_m") if orl else None),
+           "karar_toplayici": "karar_toplayici.json",
+           # TEŞHİS (hüküm dışı): son OPEN_ROUTE'un DÜNYA yolu ↔ etiketi; KB–HB aynı karede mi
+           "son_or_dunya_yolu": (orl[-1].get("rota_dunya_yolu") if orl else None),
+           "son_or_etiket_dunya_esit": (orl[-1].get("etiket_dunya_esit") if orl else None),
+           "teshis": sonuc.get("teshis")}
+    son = sonuc["son_open_route"]
+    if son is None:
+        nr = [m for m in sonuc["ika_yayin"] if m["tip"] == "NO_ROUTE"]
+        det["rota_durum"] = nr[-1]["sebep"] if nr else "KARAR_YOK"
+        det["rota_sebep"] = nr[-1].get("detay") if nr else "üretim boru hattı karar yayımlamadı"
+        return None, det
+    det["rota_durum"] = "OPEN_ROUTE"
+    kb = H["kb"]
+    ref = [round(float(kb[0]), 2), round(float(kb[1]), 2)]
+    yerel = [[float(x), float(y)] for x, y in son["waypoints"]]
+    return (int(son["yol"]), float(son["guven"]), ref, yerel), det
+
+
 class _KareKaydedici:
     """Sürüş sırasında üçüncü şahıs + İKA takip kareleri (T214 videosu için)."""
 
@@ -203,12 +347,12 @@ class _KareKaydedici:
 def kos(h: int, lv: str, seed: int, rota_kaynak: str, *, res: int, out: Path, model=None,
         model_kunye=None, conf: float = 0.15, kare_kaydet: bool = False, fizik_tarama: bool = True,
         bekleme_suresi: float = IKA_BEKLEME_SURESI_S, surus_suresi: float = IKA_SURUS_SURESI_S,
-        verbose: bool = False) -> dict:
+        verbose: bool = False, uretim_besleme: str = "kerteriz") -> dict:
     import mujoco
     if rota_kaynak not in ROTA_KAYNAKLARI:
         raise ValueError(f"rota_kaynak {rota_kaynak!r} — {ROTA_KAYNAKLARI}")
-    if rota_kaynak == "model" and model is None:
-        raise ValueError("rota_kaynak=model için YOLO modeli gerekli")
+    if rota_kaynak in ("model", "uretim") and model is None:
+        raise ValueError(f"rota_kaynak={rota_kaynak} için YOLO modeli gerekli")
     t_duvar0 = time.perf_counter()
     H = arena.harita(h, lv)
     kdir = Path(out) / f"{rota_kaynak}_{h}_{lv}_{seed}"
@@ -223,8 +367,11 @@ def kos(h: int, lv: str, seed: int, rota_kaynak: str, *, res: int, out: Path, mo
     det = None
     if rota_kaynak == "gt":
         rota = gt_rota(h, lv)
-    else:
+    elif rota_kaynak == "model":
         rota, det = model_rota(ldir, model, conf)
+    else:   # uretim: kare-bazlı üretim boru hattı (kendi conf'u = üretim CLI varsayılanı)
+        rota, det = uretim_rota(ldir, kdir, model, h, lv, seed, besleme=uretim_besleme,
+                                model_kunye=model_kunye)
     rota_bulundu = rota is not None
     road = rota[0] if rota_bulundu else None
     wp_sayisi = len(rota[3]) if rota_bulundu else 0
@@ -238,9 +385,14 @@ def kos(h: int, lv: str, seed: int, rota_kaynak: str, *, res: int, out: Path, mo
     surucu = MuJoCoSurucu(m, d)
     t_ofset = t_tarama_son
     rota_aciklik, rota_aciklik_geom = (None, None)
+    # Takip hatası (T214-A): referans = arena AÇIK YOL merkez hattı (yoğun spline, KB→HB);
+    # `plan_takip` = İKA'ya komut edilen rota (sürücü hatasını planlayıcı sapmasından ayırır).
+    takip = TakipOlcer(H["paths"][H["open"]])
+    plan_takip = None
     if rota_bulundu:
         wps_dunya = [(rota[2][0] + x, rota[2][1] + y) for x, y in rota[3]]
         rota_aciklik, rota_aciklik_geom = rota_engel_acikligi(m, wps_dunya)
+        plan_takip = TakipOlcer(wps_dunya)
 
     def saat():
         return t_ofset + float(d.time)
@@ -273,6 +425,7 @@ def kos(h: int, lv: str, seed: int, rota_kaynak: str, *, res: int, out: Path, mo
 
     def bekle(dt):
         surucu.adimla(dt)
+        takip_ornekle(kayit, surucu, takip, plan_takip)          # yalnız sürüşte (T214-A)
         hakem.adimla(saat())
         if kaydedici is not None:
             kaydedici.tik()
@@ -323,8 +476,11 @@ def kos(h: int, lv: str, seed: int, rota_kaynak: str, *, res: int, out: Path, mo
     sure_ika = (None if kayit["t_surus_bas"] is None
                 else round(kayit["t_surus_son"] - kayit["t_surus_bas"], 2))
     hz = hakem.ozet()
-    basari = bool(kod == 0 and rota_bulundu and hb_icinde and surucu.temas_sayisi == 0
-                  and sure_ika is not None and sure_ika <= SARTNAME_IKA_GOREV_SURESI_S)
+    if gonderim.get("seq") is not None:          # TEL tipi: güven kapısı OPEN_ROUTE'u NO_ROUTE'a çevirebilir
+        gonderim["tel_tipi"] = _tel_tipi_hakemden(gonderim["seq"], hz)
+    basari = basari_hesapla(kod, rota_bulundu, hb_icinde, surucu.temas_sayisi, sure_ika)
+    to = takip.ozet()
+    po = plan_takip.ozet() if plan_takip is not None else None
     metrik = {
         "rota_kaynak": rota_kaynak, "rota_kaynak_etiketi": ROTA_KAYNAK_ETIKETI[rota_kaynak],
         "harita": h, "senaryo": lv, "seed": seed,
@@ -337,6 +493,11 @@ def kos(h: int, lv: str, seed: int, rota_kaynak: str, *, res: int, out: Path, mo
         "rota_insaat_geregi_gecilemez": (None if rota_aciklik is None
                                          else bool(rota_aciklik < IKA_YARI_GENISLIK_M)),
         "ika_yari_genislik_m": round(IKA_YARI_GENISLIK_M, 3),
+        "takip_hatasi_maks_m": to["maks"], "takip_hatasi_ort_m": to["ort"], "takip_ornek_n": to["n"],
+        "takip_temasla_kesildi": to["temasla_kesildi"],
+        "takip_referansi": "arena açık yol merkez hattı (arena.harita paths[open]); ilk temastan önce",
+        "plan_takip_hatasi_maks_m": (po["maks"] if po else None),
+        "plan_takip_hatasi_ort_m": (po["ort"] if po else None),
         "sure_sim_iha_profil": round(t_inis, 2),
         "sure_sim_ika": sure_ika,
         "sure_sim_gorev": round(saat(), 2),
@@ -356,10 +517,14 @@ def kos(h: int, lv: str, seed: int, rota_kaynak: str, *, res: int, out: Path, mo
         "hakem_olaylari": hz["olaylar"],
         "cikis_kodu": int(kod), "navigate_sonucu": kayit["surus_sonucu"],
         "basari": basari,
+        "tel_tipi": gonderim.get("tel_tipi"),
+        "guven_kapisi_reddi": bool(rota_bulundu and gonderim.get("tel_tipi") == "NO_ROUTE"),
         "tarama": {"kare_n": tarama["kare_n"], "kabul": tarama["kabul_edilen_kare"],
                    "htab_kapsama_orani": tarama["htab_kapsama_orani"], "res": res, "fizik": fizik_tarama},
-        "model_teshis": (None if det is None else {k: det.get(k) for k in (
-            "rota_durum", "rota_sebep", "label", "conf", "wp_n", "darbogaz_m", "kare_n")}),
+        "model_teshis": (None if (det is None or rota_kaynak != "model") else {k: det.get(k) for k in (
+            "rota_durum", "rota_sebep", "label", "conf", "wp_n", "darbogaz_m", "kare_n", "imgsz",
+            "mozaik_px", "hb_yaricap_m", "birlestirme")}),
+        "uretim_teshis": (det if rota_kaynak == "uretim" else None),
         "model": model_kunye,
         "isaretler_carpismasiz": surucu.isaretler_degisti,
         "kare_kaydet": bool(kare_kaydet), "kare_n_video": (kaydedici.n if kaydedici else 0),
@@ -372,8 +537,9 @@ def kos(h: int, lv: str, seed: int, rota_kaynak: str, *, res: int, out: Path, mo
     return metrik
 
 
-def ozet_kur(out: Path) -> dict:
-    """kosum/*.json → etiket başına başarı oranı + süre dağılımı (ozet_kosum.json)."""
+def ozet_hesapla(out: Path) -> dict:
+    """kosum/*.json → etiket başına başarı oranı + süre dağılımı. YAZMAZ (nöbetçi: diskteki
+    `ozet_kosum.json` ↔ yeniden hesap, `tarih` hariç — elle düzenlenmiş/bayat özet yakalanır)."""
     satirlar = []
     for p in sorted(Path(out).glob("*_*_*_*.json")):
         if p.name == "ozet_kosum.json":
@@ -387,12 +553,12 @@ def ozet_kur(out: Path) -> dict:
     ozet = {"tarih": time.strftime("%Y-%m-%d %H:%M"), "kosum_n": len(satirlar),
             "esik": "H1-K5 ≥ 12/15 harita × 3 tohum (ön kayıt; gevşetilmez)", "kaynaklar": {}}
 
-    def dagilim(v):
+    def dagilim(v, nd=1):
         v = [float(x) for x in v if x is not None]
         if not v:
             return None
-        return {"n": len(v), "min": round(min(v), 1), "medyan": round(statistics.median(v), 1),
-                "ort": round(statistics.fmean(v), 1), "maks": round(max(v), 1)}
+        return {"n": len(v), "min": round(min(v), nd), "medyan": round(statistics.median(v), nd),
+                "ort": round(statistics.fmean(v), nd), "maks": round(max(v), nd)}
 
     for kaynak in ROTA_KAYNAKLARI:
         rs = [r for r in satirlar if r["rota_kaynak"] == kaynak]
@@ -432,7 +598,35 @@ def ozet_kur(out: Path) -> dict:
             "duvar_saati_s_toplam": round(sum(r["duvar_saati_s"] for r in rs), 1),
             "senaryo": senaryo,
             "cikis_kodlari": {str(k): sum(r["cikis_kodu"] == k for r in rs) for k in range(5)},
+            # T214-A (takip hatası, toplam görev süresi, olay sayıları, harita düzeyi)
+            "takip_hatasi_maks_m": dagilim([r.get("takip_hatasi_maks_m") for r in rs], 3),
+            "takip_hatasi_maks_m_basarili": dagilim([r.get("takip_hatasi_maks_m") for r in basarili], 3),
+            "takip_hatasi_ort_m": dagilim([r.get("takip_hatasi_ort_m") for r in rs], 3),
+            "plan_takip_hatasi_maks_m": dagilim([r.get("plan_takip_hatasi_maks_m") for r in rs], 3),
+            "sure_sim_gorev_basarili": dagilim([r.get("sure_sim_gorev") for r in basarili]),
+            # Olay sayıları TEL tipinden (`tel_tipi`; güven kapısı dönüşümü doğru sayılır).
+            "olaylar": {
+                "open_route_yayini": sum(tel_tipi(r) == "OPEN_ROUTE" for r in rs),
+                "open_route_ack_ika_yks": sum(tel_tipi(r) == "OPEN_ROUTE"
+                                              and (r.get("open_route_ack") or []) == ["ika", "yks"] for r in rs),
+                "no_route_yayini": sum(tel_tipi(r) == "NO_ROUTE" for r in rs),
+                "no_route_ack_ika_yks": sum(tel_tipi(r) == "NO_ROUTE"
+                                            and (r.get("open_route_ack") or []) == ["ika", "yks"] for r in rs),
+                "guven_kapisi_reddi": sum(bool(r.get("rota_bulundu")) and tel_tipi(r) == "NO_ROUTE" for r in rs),
+                "ika_go_ack": sum(r.get("t_ika_go_ack") is not None for r in rs),
+                "temas_var": sum(r["temas_sayisi"] > 0 for r in rs),
+                "sure_asimi_kod4": sum(r["cikis_kodu"] == 4 for r in rs),
+                "hb_icinde": sum(bool(r["hb_icinde"]) for r in rs),
+                "link_kayip_var": sum((r.get("link_olaylari") or {}).get("kayip", 0) > 0 for r in rs),
+            },
+            "harita_duzeyi": {k: {"basari_n": sum(v), "n": len(v)} for k, v in sorted(harita_basari.items())},
         }
+    return ozet
+
+
+def ozet_kur(out: Path) -> dict:
+    """`ozet_hesapla` + `ozet_kosum.json` yazımı (T213-B imzası korunur)."""
+    ozet = ozet_hesapla(out)
     (Path(out) / "ozet_kosum.json").write_text(json.dumps(ozet, ensure_ascii=False, indent=1),
                                                encoding="utf-8")
     return ozet
@@ -445,12 +639,15 @@ def main(argv=None):
     ap.add_argument("--seed", type=int, default=arena_mjcf.SEED_VARSAYILAN)
     ap.add_argument("--rota-kaynak", default="gt", choices=ROTA_KAYNAKLARI)
     ap.add_argument("--res", type=int, default=arena_mjcf.KAM_RES_VARSAYILAN)
-    ap.add_argument("--out", default=str(KOSUM_KOK))
+    ap.add_argument("--out", default=str(KOSUM_TUR3_KOK))
     ap.add_argument("--conf", type=float, default=0.15)
     ap.add_argument("--kare-kaydet", action="store_true", help="T214 videosu için kareler (varsayılan kapalı)")
     ap.add_argument("--hizli", action="store_true", help="taramada fizik adımı yok (yalnız kinematik + render)")
     ap.add_argument("--hepsi", action="store_true", help="15 harita × --tohumlar")
     ap.add_argument("--tohumlar", default=",".join(str(s) for s in TOHUMLAR_VARSAYILAN))
+    ap.add_argument("--haritalar", default=None,
+                    help="--hepsi ile yalnız bu haritalar: '1_orta,4_kolay' (uretim kaynağı için K3 seçimi)")
+    ap.add_argument("--uretim-besleme", default="kerteriz", choices=("kerteriz", "ham"))
     ap.add_argument("--bekleme-suresi", type=float, default=IKA_BEKLEME_SURESI_S)
     ap.add_argument("--surus-suresi", type=float, default=IKA_SURUS_SURESI_S)
     ap.add_argument("--verbose", action="store_true")
@@ -461,14 +658,23 @@ def main(argv=None):
     if a.rota_kaynak == "model":
         model, kunye = model_yukle()
         print(f"[kosum] model {kunye['model_id']} sha eşleşti={kunye['eslesti']}")
+    elif a.rota_kaynak == "uretim":
+        import sim_karar_toplayici as skt
+        model, kunye = skt.model_yukle_uretim()     # rpi_inference.load_model (kayıt FAIL-CLOSED)
+        print(f"[kosum] üretim yükleyicisi {kunye['model_id']} sha eşleşti={kunye['eslesti']} "
+              f"kayıt={kunye['kayit_dogrulamasi']}")
     ortak = dict(res=a.res, out=out, model=model, model_kunye=kunye, conf=a.conf,
                  kare_kaydet=a.kare_kaydet, fizik_tarama=not a.hizli,
-                 bekleme_suresi=a.bekleme_suresi, surus_suresi=a.surus_suresi, verbose=a.verbose)
+                 bekleme_suresi=a.bekleme_suresi, surus_suresi=a.surus_suresi, verbose=a.verbose,
+                 uretim_besleme=a.uretim_besleme)
     if a.hepsi:
         tohumlar = [int(s) for s in a.tohumlar.split(",")]
+        secili = None if not a.haritalar else {s.strip() for s in a.haritalar.split(",") if s.strip()}
         t0 = time.perf_counter()
         for h in range(1, arena.HARITA_N + 1):
             for lv in arena.SCENARIOS:
+                if secili is not None and f"{h}_{lv}" not in secili:
+                    continue
                 for seed in tohumlar:
                     r = kos(h, lv, seed, a.rota_kaynak, **ortak)
                     print(f"[kosum] {a.rota_kaynak} {h} {lv} {seed}: rota={r['rota_bulundu']} "
