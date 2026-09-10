@@ -417,6 +417,12 @@ ekranda kanıt görmeden veriyordu.
   pasif, gerekçe metni görünür; kanıt gelince düğme açılır ve zaman damgası yazılır.
   ⚠ UDP kurulumunda İKA `--yks host:port` ile başlatılmazsa kanıt YKS'ye ulaşmaz ve 2. onay
   **hiç açılmaz** — bu bilinçli bir seçimdir (kanıtsız onay yerine görünür ret).
+  **Erken kopya (T224 · D-441):** İKA'nın `ACK(ref_tip="OPEN_ROUTE")` kopyası eşleşen `OPEN_ROUTE`'tan
+  önce gelirse (İHA `ika` ACK'ını gördüğü için İKA'ya tekrar göndermez, kopya bir daha gelmez) atılmaz:
+  `ref` ile `IKA_ROTA_ACK_ERKEN_TAMPON_S` (5 s, monotonik, `yks_gui`; İHA tekrar penceresi 8 × 0,25 s'nin
+  2,5 katı) saklanır ve o seq'li `OPEN_ROUTE` kabul edilince bağlanır — damga ve `iha_havada` ACK'ın
+  geliş anınındır, `IKA_AKTARIM_KANITI` satırına `erken=true` eklenir, süresi dolan kopya kanıt sayılmaz,
+  `ref_tip`siz ACK tamponlanmaz (kilit: `tests/test_yks_erken_ika_ack_tamponu.py`).
 - **YKS kronometresi / HB TEMAS (K4 küçük, dalga 2):** kronometre `IKA_GO` gönderildiği an başlar
   (hakem saati de komutla başlar); `VAZGECILDI`'de **her iki** damga (`t_ika0`, `t_ika1`) sıfırlanır
   (kronometre başlamamış sayılır, yeniden IKA_GO sonrası HB TEMAS kilitli kalmaz). `HB TEMAS`
