@@ -92,7 +92,7 @@
 | `Y-3.2.1-T03` | İHA'ya ait **tüm parçalar detay seviyesinde** tasarlanmış olmalı | KISMEN |
 | `Y-3.2.1-T04` | İHA tasarımında kullanılan **tasarım kriterleri** ayrıntılı | KISMEN |
 | `Y-3.2.1-T05` | Sistem yerleşimi tamamlanmış; aviyonik, itki, güç, haberleşme, faydalı yük, **paraşüt kurtarma sistemi ve fırlatma ara yüzü** dâhil **üç boyutlu model üzerinden** gösterilmeli | YOK |
-| `Y-3.2.1-T06` | **İHA–İKA–Mancınık arası fonksiyonel ve fiziksel ara yüzler TABLO** | YOK |
+| `Y-3.2.1-T06` | **İHA–İKA–Mancınık arası fonksiyonel ve fiziksel ara yüzler TABLO** | ~~YOK~~ KISMEN (10 Eylül, T217: **fonksiyonel** sütun koddan — `BOLUM_3` §3.3.1.3.4 tablosu F1–F11: mesaj · taşıyıcı · tekrar/ACK · kapı · dosya:satır · kilit testi · ölçüm; §3.2.1.4 / §3.2.2 / §3.2.3 `T06` satırları oraya işaret eder. **Fiziksel** sütun — mancınık kızağı, İKA yük yatağı, paraşüt — BEYAN GEREKLİ, üretilmiş mekanik arayüz yok) |
 | `Y-3.2.1-T07` | Tüm **bağlantı elemanları ve yapıştırıcılar** tablo | YOK |
 | `Y-3.2.1-T08` | **Tedarikçiler ve tahmini teslim süreleri** dâhil satın alınacak parça listesi | KISMEN |
 | `Y-3.2.1-T09` | **Parça numaralandırma ve revizyon sistemi** + nihai **BOM** | YOK |
@@ -147,9 +147,9 @@
 
 | kimlik | alt başlık / madde | ne isteniyor | durum |
 |---|---|---|---|
-| `Y-3.3.1-M01` | **Sistem Mimarisi** | İHA ve İKA için **ayrı ayrı**; tüm elektronik bileşenlerin bağlantısı, sinyal (PWM, UART, I2C) ve güç hatları **renk kodlarıyla ayrılmış**, okunabilir bağlantı şemaları | KISMEN (~~İHA metin var, şema ve İKA yok~~ → 7 Eylül: **İHA şeması çizildi** — `sekiller/iha_baglanti.svg` §3.3.1.1'e gömüldü, ölçülmeyen hatlar DOĞRULANACAK kesik çizgi, nöbetçi `tests/test_gece_baglanti_semasi.py`; **İKA şeması yok** — T217; 10 Eylül düzeltmesi) |
+| `Y-3.3.1-M01` | **Sistem Mimarisi** | İHA ve İKA için **ayrı ayrı**; tüm elektronik bileşenlerin bağlantısı, sinyal (PWM, UART, I2C) ve güç hatları **renk kodlarıyla ayrılmış**, okunabilir bağlantı şemaları | KISMEN (~~İHA metin var, şema ve İKA yok~~ → 7 Eylül: **İHA şeması çizildi** — `sekiller/iha_baglanti.svg` §3.3.1.1'e gömüldü, ölçülmeyen hatlar DOĞRULANACAK kesik çizgi, nöbetçi `tests/test_gece_baglanti_semasi.py`; ~~**İKA şeması yok** — T217~~ → **10 Eylül (T217): İKA şeması DDR tasarımından çizildi** — `sekiller/ika_baglanti.svg` §3.3.1.1'e gömüldü, 16 hat / 16 kesik "DDR tasarımı, tedarik yok", ölçülmüş hat **0**, DDR içi çelişkiler ⚠ ile (`sekiller/ika_baglanti_kaynaklar.md`), nöbetçi `tests/test_gece_ika_baglanti_semasi.py`; KISMEN kalır: İKA hattı ölçülmedi, İHA'da 6 hat DOĞRULANACAK) |
 | `Y-3.3.1-M02` | **Nihai Aviyonik BOM Listesi** | İHA ve İKA için ayrı: ad, marka/model, adet, birim ağırlık, toplam ağırlık, boyut, **tahmini maliyet** tablosu; **DDR ↔ FDR karşılaştırmalı**; kablo ve konnektörler dâhil nihai ağırlık ve maliyet | KISMEN |
-| `Y-3.3.1-M03` | **Entegrasyon Planı** | İHA ve İKA aviyonik entegrasyonunda izlenecek plan | KISMEN (İHA planı rapora girdi: §3.3.1.3.1 kuru koşu zinciri 9/10 + §3.3.1.3.2 kapı özeti; İKA planı §3.3.1.3.3 BEYAN GEREKLİ) |
+| `Y-3.3.1-M03` | **Entegrasyon Planı** | İHA ve İKA aviyonik entegrasyonunda izlenecek plan | KISMEN (İHA planı rapora girdi: §3.3.1.3.1 kuru koşu zinciri 9/10 + §3.3.1.3.2 kapı özeti; ~~İKA planı §3.3.1.3.3 BEYAN GEREKLİ~~ → 10 Eylül (T217): İKA planının **yazılım kolu** §3.3.1.3.3'te koddan — katman zinciri alıcı→kilit→navigate→sürücü (dosya:satır), kabul turu K1–K6 sahte sürücüyle **6/6 GEÇTİ** (gazebo `gz` yok DÜŞTÜ, gerçek DONANIM_YOK), donanım gelince 6 adım, protokol beyanı NAVITAS çerçeve ≠ DDR MAVLink (D-439 §2); **donanım kolu** BEYAN GEREKLİ — tedarik yok) |
 | `Y-3.3.2-M01` | **Nihai Kablaj Hesapları** | kablo **kesitleri (AWG)** ve uzunlukları, **akım taşıma kapasitesi ve gerilim düşümü hesapları**, **ölçülen** maksimum akıma göre güncelleme; kablo düzenlemesi, ekranlama, konnektör kilitleme **görsellerle** | YOK |
 | `Y-3.3.2-M02` | **Güç Tüketimi Doğrulaması** | tam yükte **ölçülen akım** ↔ batarya kapasitesi uyumu; **teorik hesap ile pratik ölçüm karşılaştırması** | YOK (5 Eylül ölçümü) |
 | `Y-3.3.3-M01` | 🔴 **Üç Boyutlu Simülasyon Ortamı** | İHA ve İKA'nın **3B CAD modelleriyle** sanal görev icrası: kalkış, görüntü işleme ile rota tespiti, **verinin İKA'ya aktarılması**, İKA'nın **otonom sürüşü** | KISMEN (Gazebo iskeleti var: 7 dünya + İHA/İKA/mancınık SDF + görev betikleri; CAD yok — mesh 0, koşum yok) |
@@ -217,7 +217,7 @@
 | Bölüm 1 | 5 | 0 | 10 | 0 | İKA/Mancınık özeti zayıf |
 | Bölüm 2 | 5 | 1 | 3 | 0 | organizasyon **şeması** |
 | Bölüm 3.1 | *(40'ın içinde)* | 0 | 0 | 7 | **uçuş bilimleri hiç yok** |
-| Bölüm 3.2 | *(40'ın içinde)* | 0 | 8 | 48 | **İKA ve Mancınık yapısal; analizler** |
+| Bölüm 3.2 | *(40'ın içinde)* | 0 | ~~8~~ 9 | ~~48~~ 47 | **İKA ve Mancınık yapısal; analizler** (10 Eylül: `Y-3.2.1-T06` YOK → KISMEN, T217; sprint sonu yeniden sayım mimarın) |
 | Bölüm 3.3 | *(40'ın içinde)* | 0 | 7 | 4 | **3B görev simülasyonu + video**; kablaj hesabı ve güç tüketimi ölçümü |
 | Bölüm 4 | 15 | 1 | ~~7~~ 8 | ~~4~~ 3 | menzil, ~~kalibrasyon kanıtı,~~ görev simülasyonu, **arıza emniyet** (10 Eylül: `Y-4-M06` YOK → KISMEN; sprint sonu yeniden sayım mimarın) |
 | Bölüm 5 | 15 | 0 | 3 | 1 | düzeltici prosedürler + **reçete farkı gerekçesi** |

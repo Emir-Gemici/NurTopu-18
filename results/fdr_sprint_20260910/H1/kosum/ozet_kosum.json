@@ -1,0 +1,129 @@
+{
+ "tarih": "2026-09-10 10:22",
+ "kosum_n": 90,
+ "esik": "H1-K5 ≥ 12/15 harita × 3 tohum (ön kayıt; gevşetilmez)",
+ "kaynaklar": {
+  "gt": {
+   "etiket": "YER GERÇEĞİ",
+   "n": 45,
+   "rota_bulundu_n": 45,
+   "rota_dogru_n": 45,
+   "open_route_ack_ika_yks_n": 45,
+   "ika_go_ack_n": 45,
+   "hb_icinde_n": 35,
+   "temas_var_n": 12,
+   "rota_insaat_geregi_gecilemez_n": 10,
+   "temas_var_ve_gecilemez_n": 10,
+   "temas_var_ve_gecilebilir_n": 2,
+   "sure_asimi_n": 10,
+   "basari_n": 33,
+   "basari_orani": 0.733,
+   "harita_hepsi_basarili_n": 10,
+   "harita_n": 15,
+   "sure_sim_ika_basarili": {
+    "n": 33,
+    "min": 64.1,
+    "medyan": 71.3,
+    "ort": 75.6,
+    "maks": 98.4
+   },
+   "sure_sim_ika_hepsi": {
+    "n": 45,
+    "min": 64.1,
+    "medyan": 82.8,
+    "ort": 193.1,
+    "maks": 600.1
+   },
+   "varis_mesafesi_m": {
+    "n": 45,
+    "min": 0.1,
+    "medyan": 0.2,
+    "ort": 3.7,
+    "maks": 45.0
+   },
+   "duvar_saati_s_toplam": 292.1,
+   "senaryo": {
+    "kolay": {
+     "n": 15,
+     "basari_n": 15,
+     "hb_icinde_n": 15,
+     "temas_var_n": 0
+    },
+    "orta": {
+     "n": 15,
+     "basari_n": 7,
+     "hb_icinde_n": 9,
+     "temas_var_n": 8
+    },
+    "zor": {
+     "n": 15,
+     "basari_n": 11,
+     "hb_icinde_n": 11,
+     "temas_var_n": 4
+    }
+   },
+   "cikis_kodlari": {
+    "0": 35,
+    "1": 0,
+    "2": 0,
+    "3": 0,
+    "4": 10
+   }
+  },
+  "model": {
+   "etiket": "ÜRETİM MODELİ",
+   "n": 45,
+   "rota_bulundu_n": 0,
+   "rota_dogru_n": 0,
+   "open_route_ack_ika_yks_n": 45,
+   "ika_go_ack_n": 0,
+   "hb_icinde_n": 0,
+   "temas_var_n": 0,
+   "rota_insaat_geregi_gecilemez_n": 0,
+   "temas_var_ve_gecilemez_n": 0,
+   "temas_var_ve_gecilebilir_n": 0,
+   "sure_asimi_n": 0,
+   "basari_n": 0,
+   "basari_orani": 0.0,
+   "harita_hepsi_basarili_n": 0,
+   "harita_n": 15,
+   "sure_sim_ika_basarili": null,
+   "sure_sim_ika_hepsi": null,
+   "varis_mesafesi_m": {
+    "n": 45,
+    "min": 44.5,
+    "medyan": 45.2,
+    "ort": 45.0,
+    "maks": 45.8
+   },
+   "duvar_saati_s_toplam": 641.2,
+   "senaryo": {
+    "kolay": {
+     "n": 15,
+     "basari_n": 0,
+     "hb_icinde_n": 0,
+     "temas_var_n": 0
+    },
+    "orta": {
+     "n": 15,
+     "basari_n": 0,
+     "hb_icinde_n": 0,
+     "temas_var_n": 0
+    },
+    "zor": {
+     "n": 15,
+     "basari_n": 0,
+     "hb_icinde_n": 0,
+     "temas_var_n": 0
+    }
+   },
+   "cikis_kodlari": {
+    "0": 0,
+    "1": 0,
+    "2": 45,
+    "3": 0,
+    "4": 0
+   }
+  }
+ }
+}

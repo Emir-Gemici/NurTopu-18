@@ -1,0 +1,105 @@
+{
+  "surucu": "sahte",
+  "arka_uc": null,
+  "tavan": 3,
+  "rampa": {
+    "hedef_ms": 0.3,
+    "adim": 5,
+    "adim_suresi_s": 0.2,
+    "max_speed_ms": 2.0
+  },
+  "adimlar": [
+    {
+      "ad": "K1",
+      "baslik": "durdur() -> True",
+      "zorunlu": true,
+      "durum": "GECTI",
+      "olculen": "durdur()=True",
+      "sebep": null,
+      "uyari": null,
+      "veri": {
+        "durdur": true
+      }
+    },
+    {
+      "ad": "K2",
+      "baslik": "konum_al() -> 4'lu demet",
+      "zorunlu": true,
+      "durum": "GECTI",
+      "olculen": "(0.0, 0.0, 0.0, 0.0)",
+      "sebep": null,
+      "uyari": null,
+      "veri": {
+        "konum": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "ad": "K3",
+      "baslik": "hiz rampasi 0 -> 0.30 m/s, 5 adim",
+      "zorunlu": true,
+      "durum": "GECTI",
+      "olculen": "5/5 adim; son v=0.30 m/s",
+      "sebep": null,
+      "uyari": null,
+      "veri": {
+        "basarili_adim": 5,
+        "hizlar": [
+          0.06,
+          0.12,
+          0.18,
+          0.24,
+          0.3
+        ]
+      }
+    },
+    {
+      "ad": "K4",
+      "baslik": "durdur() -> True ve saglikli() True",
+      "zorunlu": true,
+      "durum": "GECTI",
+      "olculen": "durdur()=True saglikli()=True ika_nav.surucu_saglikli()=True",
+      "sebep": null,
+      "uyari": null,
+      "veri": {
+        "durdur": true,
+        "saglikli": true,
+        "nav_saglikli": true
+      }
+    },
+    {
+      "ad": "K5",
+      "baslik": "fail-closed: 3 ardisik ariza -> saglikli() False",
+      "zorunlu": true,
+      "durum": "GECTI",
+      "olculen": "ardisik_hata=3 saglikli()=False; tavan-1'de saglikli()=True",
+      "sebep": null,
+      "uyari": null,
+      "veri": {
+        "ardisik_hata": 3,
+        "saglikli": false
+      }
+    },
+    {
+      "ad": "K6",
+      "baslik": "basarili hiz_ver sonrasi ardisik_hata == 0",
+      "zorunlu": true,
+      "durum": "GECTI",
+      "olculen": "ana surucu ardisik_hata=0; ariza sonrasi hiz_ver=True ardisik_hata=0 saglikli()=True",
+      "sebep": null,
+      "uyari": null,
+      "veri": {
+        "ardisik_hata": 0,
+        "toparlanma_ardisik_hata": 0
+      }
+    }
+  ],
+  "son_durdur": true,
+  "gozle_teyit_gerekli": false,
+  "sonuc": "GECTI",
+  "cikis_kodu": 0
+}

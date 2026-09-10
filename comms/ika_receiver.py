@@ -25,10 +25,15 @@ from protocol import (encode, ack, FrameReader, MESAJ_OPEN_ROUTE, MESAJ_NO_ROUTE
 
 class IkaReceiver:
     def __init__(self, link, node="ika", send_ack=True, hb_timeout=3.0,
-                 yks_peer=None):
+                 yks_peer=None, saat=None):
         self.link = link
         self.node = node
         self.send_ack = send_ack
+        # T213 (ON_KAYIT §5.3 sim saati): karar/latch damgaları ve heartbeat
+        # zaman aşımı bu saatle ölçülür. None → time.monotonic (BAYT-EŞ eski
+        # davranış). Simülasyon zinciri fizik saatini (`data.time`) verir;
+        # deadline'ı kuran çağıran AYNI saati kullanmak zorundadır.
+        self._saat = time.monotonic if saat is None else saat
         # K8 (şartname §2.2.3): hakem "İKA'ya aktarıldı" onayını ekranda KANIT
         # görmeden veremez. UDP'de OPEN_ROUTE ACK'ı yalnız gönderene (İHA)
         # gider; YKS adresi biliniyorsa ACK'ın kopyası YKS'ye de yansıtılır.
@@ -117,7 +122,7 @@ class IkaReceiver:
             timeout = max(0.0, float(timeout))
         if deadline_monotonic is not None:
             deadline_monotonic = float(deadline_monotonic)
-            kalan = max(0.0, deadline_monotonic - time.monotonic())
+            kalan = max(0.0, deadline_monotonic - self._saat())
             timeout = kalan if timeout is None else min(timeout, kalan)
         if not self._surus_izni_event.wait(timeout):
             return False
@@ -143,7 +148,7 @@ class IkaReceiver:
 
     def iha_inisini_bildir(self, alindi_monotonic=None):
         """Doğrulanmış İHA iniş latch'ini ve gerekirse link saatini kur."""
-        latch_zamani = (time.monotonic() if alindi_monotonic is None
+        latch_zamani = (self._saat() if alindi_monotonic is None
                         else float(alindi_monotonic))
         with self._decision_lock:
             geri_geldi = False
@@ -229,7 +234,7 @@ class IkaReceiver:
             self.on_link_back()
 
     def _handle(self, msg, addr):
-        alindi_monotonic = time.monotonic()
+        alindi_monotonic = self._saat()
         tip = msg.get("type")
         if tip == MESAJ_OPEN_ROUTE:
             with self._decision_lock:
@@ -299,7 +304,7 @@ class IkaReceiver:
         kayip = False
         with self._decision_lock:
             if (self.last_rx is not None and not self.link_lost
-                    and time.monotonic() - self.last_rx > self.hb_timeout):
+                    and self._saat() - self.last_rx > self.hb_timeout):
                 self.link_lost = True   # rota önbelleği (latest) silinmez
                 kayip = True
         if kayip and self.on_link_lost:

@@ -21,7 +21,10 @@ from pathlib import Path
 from unittest import mock
 
 KOK = Path(__file__).resolve().parents[1]
-VENV = "O:/navitas-local-train/venv/Scripts/python.exe"
+# T220 / K10 #2: eskiden ciplak `O:/navitas-local-train/venv/Scripts/python.exe`
+# idi — Jetson'da 10 test `FileNotFoundError` ile dusuyordu. Suit uretim
+# yorumlayicisiyla kosar (madde 13); alt surecler AYNI yorumlayiciyi kullanir.
+VENV = sys.executable
 SIM = KOK / "simulation" / "scripts"
 for _y in (SIM,):
     if str(_y) not in sys.path:

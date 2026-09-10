@@ -24,6 +24,10 @@ import unittest
 from pathlib import Path
 
 KOK = Path(__file__).resolve().parents[1]
+if str(KOK / "tests") not in sys.path:
+    sys.path.insert(0, str(KOK / "tests"))
+from depo_yollari import ana_depo_adaylari  # noqa: E402  (T220/K10: worktree'de kapsayan ana depo)
+
 OLCUM_AYARLAR = KOK / "scripts" / "olcum" / "ayarlar.py"
 EGITIM_AYARLAR = KOK / "navitas-local-train" / "ayarlar.py"
 
@@ -41,6 +45,10 @@ class CiplakYolYasagi(unittest.TestCase):
         self.assertIn("_depo_koku(__file__)", s)
 
     def test_egitim_ayarlarinda_ciplak_kok_yok(self):
+        if not EGITIM_AYARLAR.is_file():
+            # T220 / K10 #5: kardes egitim deposu PC'ye ozgudur; Jetson paketinde
+            # ve temiz klonda YOKTUR. Atlanir (OLCULEMEDI), "gecti" sayilmaz.
+            self.skipTest(f"kardes egitim deposu yok: {EGITIM_AYARLAR}")
         s = EGITIM_AYARLAR.read_text(encoding="utf-8")
         self.assertIsNone(CIPLAK_KOK.search(s),
                           "navitas-local-train/ayarlar.py'de ciplak depo koku geri geldi")
@@ -69,6 +77,8 @@ class BulucuAynasi(unittest.TestCase):
         raise AssertionError(f"_depo_koku yok: {yol}")
 
     def test_iki_kopya_ayni(self):
+        if not EGITIM_AYARLAR.is_file():
+            self.skipTest(f"kardes egitim deposu yok: {EGITIM_AYARLAR} (K10 #5)")
         self.assertEqual(self._govde(OLCUM_AYARLAR), self._govde(EGITIM_AYARLAR),
                          "iki ayarlar.py'deki _depo_koku ayrismis (ayna bozuldu)")
 
@@ -143,8 +153,16 @@ class DepoDisindaCanliKlasor(unittest.TestCase):
     isaretcili depoyu bulmali — bulamazsa fail-closed (ciplak yol varsaymaz)."""
 
     def test_depo_disinda_kardes_taramasiyla_bulunur(self):
-        surucu = Path(KOK.anchor)                     # ornegin "O:\\"
-        with tempfile.TemporaryDirectory(dir=str(surucu)) as td:
+        # T220 / K10 #6: eskiden `dir=KOK.anchor` idi (surucu koku "O:\\").
+        # Linux'ta anchor "/"dir -> `/tmpXXXX` yazilamaz -> PermissionError
+        # (Jetson logu 378). Canli calisma klasoru deponun KARDESIDIR; kardes
+        # olmanin dogru modeli deponun ust dizinidir (PC'de o da "O:\\").
+        kardes_koku = KOK.parent
+        try:
+            gecici = tempfile.TemporaryDirectory(dir=str(kardes_koku))
+        except (PermissionError, OSError) as exc:
+            self.skipTest(f"deponun ust dizinine yazilamiyor ({kardes_koku}): {exc}")
+        with gecici as td:
             hedef = Path(td) / "ayarlar.py"
             shutil.copy2(OLCUM_AYARLAR, hedef)
             cp = subprocess.run(
@@ -153,7 +171,15 @@ class DepoDisindaCanliKlasor(unittest.TestCase):
                  "from ayarlar import REPO;print(REPO)", str(td)],
                 capture_output=True, text=True)
         self.assertEqual(0, cp.returncode, cp.stderr[-600:])
-        self.assertEqual(KOK.resolve(), Path(cp.stdout.strip()).resolve())
+        bulunan = Path(cp.stdout.strip()).resolve()
+        # Ana depoda (PC `O:\\navitas`, Jetson `~/navitas`) kardes taramasi KOK'u
+        # bulur. Bir git WORKTREE'de (`<ana>/.claude/worktrees/<ad>`) gecici klasor
+        # `worktrees/` altina duser ve bulucunun 2. kademesi (yukari dogru ilk
+        # isaretci) KAPSAYAN ana depoyu bulur — bu dogru davranistir (T161: yukari
+        # tarama kardes taramasindan once). Beklenti: KOK ya da onu kapsayan ana
+        # depo (`depo_yollari.ana_depo_adaylari`); baska bir dizin DUSER.
+        self.assertIn(bulunan, ana_depo_adaylari(),
+                      f"bulucu ne KOK'u ne kapsayan ana depoyu buldu: {bulunan}")
 
     def test_isaretcisiz_yalitilmis_agacta_FAIL_CLOSED(self):
         """Hicbir kademe tutmazsa sessiz varsayim YOK — ImportError."""

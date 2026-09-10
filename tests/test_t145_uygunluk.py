@@ -5,12 +5,14 @@ gurultulu kare (gozle okunamaz) dort bayragin hepsinden geciyordu. Bu test
 ayni mutasyonu (ayni tohum, ayni parametreler) yeniden uretir ve bayrak
 ALMASINI zorlar; temiz gunduz kareleri ise bayrak ALMAMALIDIR.
 
-Girdi kareler O:/navitas/results/dji_20260822/kareler/*.jpg — worktree'de
-yoksa test atlanir (skip), sessizce gecmez.
+Girdi kareler `results/dji_20260822/kareler/*.jpg` (gitignore'lu; worktree'de
+ana depodan `depo_yollari.ana_depo_adaylari()` ile TURETILIR, ciplak yol yok —
+T220/K10) — hicbir adayda yoksa test atlanir (skip), sessizce gecmez.
 """
 from __future__ import annotations
 
 import importlib.util
+import sys
 import unittest
 from pathlib import Path
 
@@ -18,9 +20,13 @@ import cv2
 import numpy as np
 
 KOK = Path(__file__).resolve().parents[1]
+if str(KOK / "tests") not in sys.path:
+    sys.path.insert(0, str(KOK / "tests"))
+from depo_yollari import ana_depo_adaylari  # noqa: E402  (T220/K10: ciplak yol yok)
+
 BETIK = KOK / "scripts" / "olcum" / "138_kare_uygunluk_denetimi.py"
-KARELER = [Path("O:/navitas/results/dji_20260822/kareler"),
-           KOK / "results" / "dji_20260822" / "kareler"]
+KARELER = [kok / "results" / "dji_20260822" / "kareler"
+           for kok in ana_depo_adaylari()]
 # BULANIK icin referans alt siniri: D-282 yeniden uretimindeki turetilmis
 # deger (results/codex_denetim/d282/kare_uygunluk_yeniden.json: 465,27).
 # Referans kume worktree'de olmayabilir; bu test KESKINLIK bandini sinamaz.

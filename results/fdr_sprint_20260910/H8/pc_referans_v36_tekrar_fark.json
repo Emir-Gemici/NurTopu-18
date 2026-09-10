@@ -1,0 +1,45 @@
+{
+ "kumeler": {
+  "sentetik_arena": {
+   "n_kiyaslanan": 30,
+   "farklar": [],
+   "uretim_uyusmazlik": 0,
+   "sebep_farki_bilgi": 0,
+   "katman_a_farki_bilgi": 0
+  },
+  "drone_kareleri": {
+   "n_kiyaslanan": 19,
+   "farklar": [],
+   "uretim_uyusmazlik": 0,
+   "sebep_farki_bilgi": 0,
+   "katman_a_farki_bilgi": 0
+  }
+ },
+ "hukum": {
+  "durum": "GECTI",
+  "uyusmazlik": 0,
+  "n": 49,
+  "eksik": 0,
+  "kare_farkli": 0,
+  "esik": 0,
+  "sebep": "uretim serit karari uyusmazligi 0/49 (esik: 0, GUN1 SS4 birebir)",
+  "_kaynak": "jetson_paket/GUN1_KONTROL_LISTESI.md SS4 (rota karari birebir; maske IoU degil)"
+ },
+ "_referans": {
+  "dosya": "results\\fdr_sprint_20260910\\H8\\pc_referans_v36.json",
+  "model": {
+   "yol": "models/navitas_seg_v36_best.pt",
+   "sha256": "1d1caca6f6da19ea35e69186a048da960ca5188be6ee6d49d6106457cac46911",
+   "defter_durum": "eslesti",
+   "dtype": "torch.float32",
+   "arka_uc": "AutoBackend"
+  }
+ },
+ "_yeni_model": {
+  "yol": "models/navitas_seg_v36_best.pt",
+  "sha256": "1d1caca6f6da19ea35e69186a048da960ca5188be6ee6d49d6106457cac46911",
+  "defter_durum": "eslesti",
+  "dtype": "torch.float32",
+  "arka_uc": "AutoBackend"
+ }
+}

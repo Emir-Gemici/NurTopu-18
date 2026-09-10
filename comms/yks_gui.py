@@ -363,10 +363,10 @@ def _kabul_kumesi_koku():
     bu yüzden ağırlıkla **aynı yerde** durur: sürüm değişince küme de tek
     yerden değişir, ikisi ayrı ayrı güncellenmez.
 
-    ⚠ Dizinin VAR OLMASI şart koşulmaz — küme depo dışındadır
-    (`O:\\navitas-local-train\\...`) ve temiz bir klonda bulunmayabilir. O
+    ⚠ Dizinin VAR OLMASI şart koşulmaz (temiz klon / paket eksik olabilir). O
     durumda ekran "Kaynak boş" der; sessizce BAŞKA bir kümeye düşmez.
     Fail-closed olan şey **bildirimin yokluğudur**, verinin değil.
+    T220: yol depo köküne GÖRELİ (madde 16); mutlak yol da kabul (pathlib `/`).
     """
     profil, defter = _kayit_profili()
     ham = profil.get("kabul_kumesi") if isinstance(profil, dict) else None
@@ -375,7 +375,7 @@ def _kabul_kumesi_koku():
             f"Kayıt defterindeki etkin profilde `kabul_kumesi` yok/geçersiz "
             f"({defter}); hakem ekranı modeli hangi zeminde göstereceğini "
             "UYDURMAZ.")
-    return Path(ham.strip())
+    return _PROJE_KOKU / Path(ham.strip())     # göreli -> depo kökü; mutlak -> kendisi
 
 
 def _udp_adres(deger):

@@ -1,0 +1,17 @@
+IKA SURUCU KABUL TURU — surucu=gazebo  tavan=3  rampa=0->0.30 m/s / 5 adim / 0.2 s  (MAX_SPEED=2.0 m/s)
+adim  durum    zorunlu  olculen
+K1    DUSTU    evet     durdur() -> True: durdur()=False
+      SEBEP    gz komutu yok (PATH'te bulunamadi)
+K2    GECTI    evet     konum_al() -> 4'lu demet: (None, None, None, None)
+      UYARI    KONUM YOK — GNSS/odometri baglanana dek kabul
+K3    DUSTU    evet     hiz rampasi 0 -> 0.30 m/s, 5 adim: 0/5 adim; adim 1 (v=0.06 m/s) iletilemedi
+      SEBEP    gz komutu yok (PATH'te bulunamadi)
+K4    DUSTU    evet     durdur() -> True ve saglikli() True: durdur()=False saglikli()=False ika_nav.surucu_saglikli()=False
+      SEBEP    durdur() False dondu — arac durmamis olabilir
+K5    ATLANDI  hayir    fail-closed: 3 ardisik ariza -> saglikli() False: 
+      SEBEP    ariza enjeksiyonu yalniz SahteSurucu'da mumkun
+K6    DUSTU    evet     basarili hiz_ver sonrasi ardisik_hata == 0: ardisik_hata=3
+      SEBEP    K4 durdur() basarisiz; sifirlama OLCULEMEDI (OLCULEMEDI != GECTI)
+SON DURDUR (fail-closed): durdur()=False
+GOZLE TEYIT ET: rampa sirasinda arac GERCEKTEN hareket etti mi ve K4'te durdu mu? Yazilim bunu OLCEMEZ; insan teyidi olmadan kabul TAMAMLANMIS sayilmaz.
+SONUC: DUSTU (exit 1)

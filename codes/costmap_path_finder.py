@@ -59,12 +59,20 @@ try:
     from .karar_sozlesmesi import (BERABERLIK_BANDI, ICERIK_YOK_LETTERBOX_SUPHESI_NOTU,
                                    LETTERBOX_SUPHE_BANT_ORANI, hedef_bant_yuksekligi,
                                    rota_serit_karari, serit_no,
-                                   zemin_maskesi_reddi)
+                                   zemin_maskesi_reddi,
+                                   IKA_AZAMI_HIZ_MS, IKA_IZ_GENISLIGI_M,
+                                   IKA_TEKER_YARICAP_M)
 except ImportError:
     from karar_sozlesmesi import (BERABERLIK_BANDI, ICERIK_YOK_LETTERBOX_SUPHESI_NOTU,
                                   LETTERBOX_SUPHE_BANT_ORANI, hedef_bant_yuksekligi,
                                   rota_serit_karari, serit_no,
-                                  zemin_maskesi_reddi)
+                                  zemin_maskesi_reddi,
+                                  IKA_AZAMI_HIZ_MS, IKA_IZ_GENISLIGI_M,
+                                  IKA_TEKER_YARICAP_M)
+# IKA kinematik sabitleri (CONTRACTS SS4 tablosu) burada YENIDEN TANIMLANMAZ:
+# tek kaynak karar_sozlesmesi'dir (saf Python; ika_nav cv2 almadan okur).
+# Buradaki adlar yalnizca SS4'un "tek kaynak dosya" atfini bozmamak icin
+# yeniden disa acilir: IKA_TEKER_YARICAP_M, IKA_IZ_GENISLIGI_M, IKA_AZAMI_HIZ_MS.
 
 logger = logging.getLogger("costmap_path_finder")
 
