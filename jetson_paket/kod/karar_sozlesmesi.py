@@ -1981,6 +1981,20 @@ SARTNAME_IKA_GOREV_SURESI_S = 10 * 60.0   # §6.2 · HB'ye ulasma
 IKA_BEKLEME_SURESI_S = SARTNAME_IHA_GOREV_SURESI_S   # rota+inis+IKA_GO beklemesi
 IKA_SURUS_SURESI_S = SARTNAME_IKA_GOREV_SURESI_S     # izin -> HB
 
+# ── IKA KINEMATIK SABITLERI — TEK KAYNAK (T213 · CONTRACTS SS4 · D-438 f) ──
+# NEDEN: `ika_nav.MAX_SPEED = 2.0`, `navitas_anim.cc` 1,1 ve kabul harnessi
+# 0,30 — uc kopya, hicbiri CONTRACTS'ta degildi (D-438 olcum 2f). DDR fiziksel
+# tavani 1,3 m/s'dir; 2,0 m/s komutu IKA'nin veremeyecegi hizi ister ve
+# costmap'in TAKIP_HATA_M (0,50) varsayimini gecersiz kilar.
+# Kaynak: rapor/NAVITAS_IKA_DDR.docx — 4x Keskinler KGX38 24 V 200 rpm
+# redukturlu motor, O125 mm TPU teker, skid-steer.
+#   azami hiz = 200 rpm x pi x 0,125 m / 60 = 1,309 m/s  -> DDR beyani 1,3 m/s
+# Bu modul SAF Python'dur; `ika_nav` (IKA'da kosar) buradan okur, cv2 almaz.
+# `costmap_path_finder` ayni adlari BURADAN alir, yeniden tanimlamaz.
+IKA_TEKER_YARICAP_M = 0.0625          # O125 mm / 2 (DDR)
+IKA_IZ_GENISLIGI_M = 0.39             # TAHMIN — DDR'de yok; insan teyidine kadar (ON_KAYIT SS3.3)
+IKA_AZAMI_HIZ_MS = 1.3                # DDR: 200 rpm x pi x O0,125 / 60 = 1,309 -> 1,3
+
 # ── SS5.3.2 · DRONE ILE GOREV TEST UCUSU (FDA) — T170 · ON_KAYIT SS37 ──────
 # Sartname: "Gorev test ucusunun basarili sayilabilmesi ... icin; gercek
 # zamanli guzergah tespitinin alan hakem heyeti tarafindan dogrulanip
