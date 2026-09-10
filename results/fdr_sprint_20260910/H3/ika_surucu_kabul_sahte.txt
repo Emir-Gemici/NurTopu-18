@@ -1,0 +1,10 @@
+IKA SURUCU KABUL TURU — surucu=sahte  tavan=3  rampa=0->0.30 m/s / 5 adim / 0.2 s  (MAX_SPEED=2.0 m/s)
+adim  durum    zorunlu  olculen
+K1    GECTI    evet     durdur() -> True: durdur()=True
+K2    GECTI    evet     konum_al() -> 4'lu demet: (0.0, 0.0, 0.0, 0.0)
+K3    GECTI    evet     hiz rampasi 0 -> 0.30 m/s, 5 adim: 5/5 adim; son v=0.30 m/s
+K4    GECTI    evet     durdur() -> True ve saglikli() True: durdur()=True saglikli()=True ika_nav.surucu_saglikli()=True
+K5    GECTI    evet     fail-closed: 3 ardisik ariza -> saglikli() False: ardisik_hata=3 saglikli()=False; tavan-1'de saglikli()=True
+K6    GECTI    evet     basarili hiz_ver sonrasi ardisik_hata == 0: ana surucu ardisik_hata=0; ariza sonrasi hiz_ver=True ardisik_hata=0 saglikli()=True
+SON DURDUR (fail-closed): durdur()=True
+SONUC: GECTI (exit 0)

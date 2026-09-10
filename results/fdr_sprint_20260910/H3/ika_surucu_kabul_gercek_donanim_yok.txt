@@ -1,0 +1,2 @@
+DONANIM_YOK — beklenen (Faz B oncesi): GercekSurucu arka ucu yok; kabul turu BASLAMADI. Arka uc dolunca --arka-uc modul:Sinif ile kos. Ayrinti: DONANIM_YOK: GercekSurucu arka ucu henüz bağlanmadı — seri/PWM uygulaması Faz B'de (5 Eylül) doldurulacak. Simülasyon için GazeboSurucu, test için SahteSurucu kullan.
+SONUC: SURUCU_KURULAMADI (exit 2)

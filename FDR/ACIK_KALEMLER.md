@@ -1,6 +1,6 @@
 # FDR — AÇIK KALEMLER (kim · ne zaman · nasıl kapanır)
 
-> Taslakta ~~**197 satır**~~ **530 satır** (10 Eylül 2026, `scripts/fdr_acik_kalem_cikar.py` sayımı) "BEYAN GEREKLİ" ya da "ÖLÇÜLEMEDİ" ile işaretli
+> Taslakta ~~**197 satır**~~ ~~**530 satır**~~ **550 satır** (10 Eylül 2026 öğle, T217 sonrası `scripts/fdr_acik_kalem_cikar.py` sayımı; sabah birleştirmeleriyle 533'tü, T217 +17 — §3.3.1.3.3/§3.3.1.3.4'ün fiziksel-arayüz BEYAN ve RF/Pixhawk ÖLÇÜLEMEDİ satırları) "BEYAN GEREKLİ" ya da "ÖLÇÜLEMEDİ" ile işaretli
 > (ham liste: `ACIK_KALEMLER_HAM.md`). Bunlar eksiklik değil, **dürüstlük
 > işaretidir**: rapor ölçülmemiş bir şeyi ölçülmüş gibi yazmaz. Aşağıda
 > sahibine ve kapanma tarihine göre gruplanmış hâli var.
@@ -106,7 +106,7 @@ Bu üç kalem için doğru okuma: **"Jetson açılırsa cumartesi kapanır; aç�
 | 28 | **İKA yapısal bölümü yok** — master geometri, parça numaralandırma + BOM, kütle dağılımı, malzeme gerekçesi, yük bırakma sistemi optimizasyonu | `Y-3.2.2-T01…T11`, `A01…A03` | tasarım | 3 |
 | 29 | **Mancınık yapısal bölümü yok** — aynı liste + **yay sabiti** ve **fırlatma menzilinin enerji denklemleriyle** açıklanması + şematik | `Y-3.2.3-T01…T11`, `A01…A02` | tasarım | 3 |
 | 30 | **Üç boyutlu görev icra simülasyonu** — 3B ortam + başarı oranları/grafikler + **video linki** | `Y-3.3.3-M01…M03`, `Y-4-M07` | yazılım / simülasyon | 3, 4 |
-| 31 | **Renk kodlu bağlantı şemaları** — İHA ve İKA için ayrı ayrı, sinyal (PWM/UART/I2C) ve güç hatları ayrı renkte | `Y-3.3.1-M01` | aviyonik | 3 |
+| 31 | **Renk kodlu bağlantı şemaları** — İHA ve İKA için ayrı ayrı, sinyal (PWM/UART/I2C) ve güç hatları ayrı renkte → **KISMEN KAPANDI:** İHA şeması 7 Eylül (ölçülen topoloji, 6 hat DOĞRULANACAK), İKA şeması 10 Eylül (T217, **DDR tasarımından**, 16/16 hat "tedarik yok", ölçülmüş 0 — `BOLUM_3` §3.3.1.1); kalan: İKA hatlarının ölçümü (tedarikle), SiK bağlanma noktası kararı (K13) | `Y-3.3.1-M01` | ~~aviyonik~~ çizim mimar (10 Eylül) · ölçüm aviyonik (tedarikle) | 3 |
 | 32 | **Nihai kablaj hesapları** — AWG kesitleri, uzunluklar, akım taşıma, gerilim düşümü; **ölçülen** maks. akıma göre güncelleme; ekranlama/konnektör kilitleme görselleri | `Y-3.3.2-M01` | aviyonik | 3 |
 | 33 | **Güç tüketimi doğrulaması** — tam yükte ölçülen akım ↔ batarya kapasitesi; teorik ↔ pratik karşılaştırma | `Y-3.3.2-M02` | aviyonik (5 Eylül) | 3 |
 | 34 | **Ekipman kabul testleri** — İHA ve İKA'daki **tüm** ekipmanlar | `Y-4-M04` | aviyonik (5 Eylül) | 4 |
