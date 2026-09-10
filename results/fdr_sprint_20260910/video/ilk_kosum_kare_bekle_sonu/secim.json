@@ -1,0 +1,17 @@
+[
+ {
+  "birincil": "model_1_kolay_44",
+  "secilen": "model_1_kolay_44",
+  "yedek_nedeni": null
+ },
+ {
+  "birincil": "model_3_orta_42",
+  "secilen": "model_3_orta_42",
+  "yedek_nedeni": null
+ },
+ {
+  "birincil": "model_5_zor_42",
+  "secilen": "model_5_zor_42",
+  "yedek_nedeni": null
+ }
+]

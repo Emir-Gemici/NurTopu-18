@@ -1,0 +1,635 @@
+{
+ "is": "T214-B · ON_KAYIT H1-K7 video",
+ "etiket": "SENTETİK (MuJoCo simülasyonu; saha kanıtı değildir)",
+ "dosya": "results/fdr_sprint_20260910/video/navitas_sim_gorev_20260910.mp4",
+ "sha256": "35ffc33e2f99c8335a7c4fe581cea257e294baea57f6f1edcd1fe1089139347d",
+ "boyut_bayt": 33555827,
+ "boyut_mb": 33.56,
+ "yazilan_kare_n": 4447,
+ "fps_yazilan": 25,
+ "okunan": {
+  "kare_n": 4447,
+  "fps": 25.0,
+  "genislik": 1280,
+  "yukseklik": 720,
+  "fourcc": "h264",
+  "ilk_kare_okundu": true
+ },
+ "sure_s": 177.88,
+ "esik": {
+  "sure_s": 90.0,
+  "fps": 24.0,
+  "boyut_mb_siniri": 60.0,
+  "kaynak": "ON_KAYIT H1-K7 (≥ 90 s, ≥ 24 FPS, HUD, üç kamera); boyut sınırı görev tanımı"
+ },
+ "kameralar": {
+  "iha_nadir": "IHA NADIR KAMERA (tarama, 30 m)",
+  "ucuncu_sahis": "UCUNCU SAHIS (arena genel)",
+  "ika_takip": "IKA TAKIP KAMERASI"
+ },
+ "hud_alanlari": [
+  "sim saati",
+  "faz FIRLATMA/TARAMA/ROTA/AKTARIM/IKA_GO/SURUS/VARIS",
+  "rota kaynağı etiketi (YER GERCEGI / URETIM MODELI)",
+  "OPEN_ROUTE ACK [ika,yks] · IHA_LANDED · IKA_GO · IKA_GO ACK",
+  "İKA→HB mesafesi · temas",
+  "oynatma hızı",
+  "SENTETİK"
+ ],
+ "hiz": {
+  "FIRLATMA": 2.0,
+  "TARAMA": 2.0,
+  "AKTARIM": 1.0,
+  "IKA_GO": 0.25,
+  "SURUS": 3.0
+ },
+ "kart_s": {
+  "giris": 8.0,
+  "kosum": 4.0,
+  "rota": 4.0,
+  "varis": 3.0,
+  "cikis": 8.0
+ },
+ "yazici": {
+  "api": "cv2.VideoWriter",
+  "fourcc": "mp4v",
+  "arka_uc": "FFMPEG",
+  "ana_kopya": "results/fdr_sprint_20260910/video/navitas_sim_gorev_20260910_cv2_mp4v.mp4",
+  "ana_kopya_sha256": "268eac1b373d01fe93a0e731a77d889c637247c8ada2c1889b128e8aba5fad54",
+  "ana_kopya_boyut_mb": 124.58
+ },
+ "donusum": {
+  "arac": "ffmpeg",
+  "surum": "ffmpeg version 2026-02-02-git-7e9fe341df-full_build-www.gyan.dev Copyright (c) 2000-2026 the FFmpeg developers",
+  "codec": "libx264 CRF 23 · preset medium · yuv420p · 25 FPS",
+  "komut": "ffmpeg -y -hide_banner -loglevel error -i results/fdr_sprint_20260910/video/navitas_sim_gorev_20260910_cv2_mp4v.mp4 -c:v libx264 -preset medium -crf 23 -pix_fmt yuv420p -r 25 -movflags +faststart -an results/fdr_sprint_20260910/video/navitas_sim_gorev_20260910.mp4"
+ },
+ "genel_sayilar": {
+  "k3_mozaik": {
+   "dogru": 6,
+   "n": 15
+  },
+  "k3_uretim": {
+   "dogru": 1,
+   "n": 15
+  },
+  "k5": {
+   "gt": {
+    "basari_n": 45,
+    "n": 45,
+    "harita": 15,
+    "harita_n": 15
+   },
+   "model": {
+    "basari_n": 9,
+    "n": 45,
+    "harita": 0,
+    "harita_n": 15
+   },
+   "uretim": {
+    "basari_n": 0,
+    "n": 15,
+    "harita": 0,
+    "harita_n": 5
+   }
+  },
+  "kaynak": [
+   "results/fdr_sprint_20260910/H1/kosum_tur3/ozet_kosum.json",
+   "results/fdr_sprint_20260910/H1/k3_uretim_boru/ozet_k3_uretim.json"
+  ]
+ },
+ "kosumlar": [
+  {
+   "secim": {
+    "birincil": "model_1_kolay_44",
+    "secilen": "model_1_kolay_44",
+    "yedek_nedeni": null
+   },
+   "json": "kosum/model_1_kolay_44.json",
+   "json_sha256": "c40ce699928e43d0608b8ca65f43faca27d2b26d5359aee0836ad53e3b72e558",
+   "durum_sha256": "62b5c6eee003380b98ddb33c7bc20c39df82e6bc1c44daf23ee614845dc75e8d",
+   "rota_kaynak": "model",
+   "etiket": "ÜRETİM MODELİ",
+   "harita": 1,
+   "senaryo": "kolay",
+   "seed": 44,
+   "basari": true,
+   "sure_sim_ika": 63.4,
+   "sure_sim_gorev": 100.58,
+   "varis_mesafesi_m": 0.273,
+   "temas_sayisi": 0,
+   "model_guven": 1.0,
+   "kare_hz_video": 25.0,
+   "kare_n_video": 2515,
+   "eslik_kosum_tur3": {
+    "kaynak": "results/fdr_sprint_20260910/H1/kosum_tur3/model_1_kolay_44.json",
+    "alanlar": {
+     "basari": {
+      "video": true,
+      "kosum_tur3": true,
+      "es": true
+     },
+     "rota_bulundu": {
+      "video": true,
+      "kosum_tur3": true,
+      "es": true
+     },
+     "rota_dogru": {
+      "video": true,
+      "kosum_tur3": true,
+      "es": true
+     },
+     "model_yol": {
+      "video": 1,
+      "kosum_tur3": 1,
+      "es": true
+     },
+     "model_guven": {
+      "video": 1.0,
+      "kosum_tur3": 1.0,
+      "es": true
+     },
+     "cikis_kodu": {
+      "video": 0,
+      "kosum_tur3": 0,
+      "es": true
+     },
+     "temas_sayisi": {
+      "video": 0,
+      "kosum_tur3": 0,
+      "es": true
+     },
+     "hb_icinde": {
+      "video": true,
+      "kosum_tur3": true,
+      "es": true
+     },
+     "wp_sayisi": {
+      "video": 43,
+      "kosum_tur3": 43,
+      "es": true
+     },
+     "sure_sim_ika": {
+      "video": 63.4,
+      "kosum_tur3": 63.4,
+      "es": true
+     },
+     "varis_mesafesi_m": {
+      "video": 0.273,
+      "kosum_tur3": 0.273,
+      "es": true
+     }
+    },
+    "hepsi_es": true,
+    "rota_json_es": true
+   }
+  },
+  {
+   "secim": {
+    "birincil": "model_3_orta_42",
+    "secilen": "model_3_orta_42",
+    "yedek_nedeni": null
+   },
+   "json": "kosum/model_3_orta_42.json",
+   "json_sha256": "81c40c2d0a7d4fe6277180e9a2a35389593a9f3ceff13c9427078b045fd18530",
+   "durum_sha256": "976496a2e6b2c318f27f84d0b5ffd81375384683541b730299b984b3eaeecf66",
+   "rota_kaynak": "model",
+   "etiket": "ÜRETİM MODELİ",
+   "harita": 3,
+   "senaryo": "orta",
+   "seed": 42,
+   "basari": true,
+   "sure_sim_ika": 65.9,
+   "sure_sim_gorev": 103.18,
+   "varis_mesafesi_m": 0.251,
+   "temas_sayisi": 0,
+   "model_guven": 0.937,
+   "kare_hz_video": 25.0,
+   "kare_n_video": 2580,
+   "eslik_kosum_tur3": {
+    "kaynak": "results/fdr_sprint_20260910/H1/kosum_tur3/model_3_orta_42.json",
+    "alanlar": {
+     "basari": {
+      "video": true,
+      "kosum_tur3": true,
+      "es": true
+     },
+     "rota_bulundu": {
+      "video": true,
+      "kosum_tur3": true,
+      "es": true
+     },
+     "rota_dogru": {
+      "video": true,
+      "kosum_tur3": true,
+      "es": true
+     },
+     "model_yol": {
+      "video": 2,
+      "kosum_tur3": 2,
+      "es": true
+     },
+     "model_guven": {
+      "video": 0.937,
+      "kosum_tur3": 0.937,
+      "es": true
+     },
+     "cikis_kodu": {
+      "video": 0,
+      "kosum_tur3": 0,
+      "es": true
+     },
+     "temas_sayisi": {
+      "video": 0,
+      "kosum_tur3": 0,
+      "es": true
+     },
+     "hb_icinde": {
+      "video": true,
+      "kosum_tur3": true,
+      "es": true
+     },
+     "wp_sayisi": {
+      "video": 47,
+      "kosum_tur3": 47,
+      "es": true
+     },
+     "sure_sim_ika": {
+      "video": 65.9,
+      "kosum_tur3": 65.8,
+      "es": false
+     },
+     "varis_mesafesi_m": {
+      "video": 0.251,
+      "kosum_tur3": 0.261,
+      "es": false
+     }
+    },
+    "hepsi_es": false,
+    "rota_json_es": false
+   }
+  },
+  {
+   "secim": {
+    "birincil": "model_5_zor_42",
+    "secilen": "model_5_zor_42",
+    "yedek_nedeni": null
+   },
+   "json": "kosum/model_5_zor_42.json",
+   "json_sha256": "e9090a12308fe7b383fc960643765f258d877da2d46da25ccb727c4a41fe80f4",
+   "durum_sha256": "d50d0af8ea5211eb8f986282998eff2caf63d352da442a54dc153591031283dc",
+   "rota_kaynak": "model",
+   "etiket": "ÜRETİM MODELİ",
+   "harita": 5,
+   "senaryo": "zor",
+   "seed": 42,
+   "basari": true,
+   "sure_sim_ika": 63.6,
+   "sure_sim_gorev": 100.88,
+   "varis_mesafesi_m": 0.259,
+   "temas_sayisi": 0,
+   "model_guven": 0.703,
+   "kare_hz_video": 25.0,
+   "kare_n_video": 2523,
+   "eslik_kosum_tur3": {
+    "kaynak": "results/fdr_sprint_20260910/H1/kosum_tur3/model_5_zor_42.json",
+    "alanlar": {
+     "basari": {
+      "video": true,
+      "kosum_tur3": true,
+      "es": true
+     },
+     "rota_bulundu": {
+      "video": true,
+      "kosum_tur3": true,
+      "es": true
+     },
+     "rota_dogru": {
+      "video": true,
+      "kosum_tur3": true,
+      "es": true
+     },
+     "model_yol": {
+      "video": 2,
+      "kosum_tur3": 2,
+      "es": true
+     },
+     "model_guven": {
+      "video": 0.703,
+      "kosum_tur3": 0.703,
+      "es": true
+     },
+     "cikis_kodu": {
+      "video": 0,
+      "kosum_tur3": 0,
+      "es": true
+     },
+     "temas_sayisi": {
+      "video": 0,
+      "kosum_tur3": 0,
+      "es": true
+     },
+     "hb_icinde": {
+      "video": true,
+      "kosum_tur3": true,
+      "es": true
+     },
+     "wp_sayisi": {
+      "video": 42,
+      "kosum_tur3": 42,
+      "es": true
+     },
+     "sure_sim_ika": {
+      "video": 63.6,
+      "kosum_tur3": 63.6,
+      "es": true
+     },
+     "varis_mesafesi_m": {
+      "video": 0.259,
+      "kosum_tur3": 0.259,
+      "es": true
+     }
+    },
+    "hepsi_es": true,
+    "rota_json_es": true
+   }
+  }
+ ],
+ "bolumler": [
+  {
+   "bolum": "giris_karti",
+   "video_s": 8.0,
+   "hiz": null
+  },
+  {
+   "bolum": "model_1_kolay_44",
+   "video_bas_s": 8.0,
+   "video_son_s": 61.36,
+   "faz_video_kare": {
+    "FIRLATMA": 98,
+    "TARAMA": 302,
+    "ROTA": 100,
+    "AKTARIM": 130,
+    "SURUS": 529,
+    "VARIS": 75
+   },
+   "hiz": {
+    "FIRLATMA": 2.0,
+    "TARAMA": 2.0,
+    "AKTARIM": 1.0,
+    "IKA_GO": 0.25,
+    "SURUS": 3.0
+   },
+   "kayit_kare_n": 2515,
+   "kayit_ucus_n": 800,
+   "kayit_surus_n": 1715
+  },
+  {
+   "bolum": "model_3_orta_42",
+   "video_bas_s": 61.36,
+   "video_son_s": 116.0,
+   "faz_video_kare": {
+    "FIRLATMA": 98,
+    "TARAMA": 302,
+    "ROTA": 100,
+    "AKTARIM": 130,
+    "IKA_GO": 12,
+    "SURUS": 549,
+    "VARIS": 75
+   },
+   "hiz": {
+    "FIRLATMA": 2.0,
+    "TARAMA": 2.0,
+    "AKTARIM": 1.0,
+    "IKA_GO": 0.25,
+    "SURUS": 3.0
+   },
+   "kayit_kare_n": 2580,
+   "kayit_ucus_n": 800,
+   "kayit_surus_n": 1780
+  },
+  {
+   "bolum": "model_5_zor_42",
+   "video_bas_s": 116.0,
+   "video_son_s": 169.88,
+   "faz_video_kare": {
+    "FIRLATMA": 98,
+    "TARAMA": 302,
+    "ROTA": 100,
+    "AKTARIM": 130,
+    "IKA_GO": 12,
+    "SURUS": 530,
+    "VARIS": 75
+   },
+   "hiz": {
+    "FIRLATMA": 2.0,
+    "TARAMA": 2.0,
+    "AKTARIM": 1.0,
+    "IKA_GO": 0.25,
+    "SURUS": 3.0
+   },
+   "kayit_kare_n": 2523,
+   "kayit_ucus_n": 800,
+   "kayit_surus_n": 1723
+  },
+  {
+   "bolum": "cikis_karti",
+   "video_s": 8.0,
+   "hiz": null
+  }
+ ],
+ "degismezlik": {
+  "kosum": "gt_1_kolay_42",
+  "kare_n_video": 2540,
+  "alanlar": {
+   "basari": {
+    "video": true,
+    "kosum_tur3": true,
+    "es": true
+   },
+   "rota_bulundu": {
+    "video": true,
+    "kosum_tur3": true,
+    "es": true
+   },
+   "rota_dogru": {
+    "video": true,
+    "kosum_tur3": true,
+    "es": true
+   },
+   "model_yol": {
+    "video": 1,
+    "kosum_tur3": 1,
+    "es": true
+   },
+   "model_guven": {
+    "video": 1.0,
+    "kosum_tur3": 1.0,
+    "es": true
+   },
+   "cikis_kodu": {
+    "video": 0,
+    "kosum_tur3": 0,
+    "es": true
+   },
+   "temas_sayisi": {
+    "video": 0,
+    "kosum_tur3": 0,
+    "es": true
+   },
+   "hb_icinde": {
+    "video": true,
+    "kosum_tur3": true,
+    "es": true
+   },
+   "wp_sayisi": {
+    "video": 41,
+    "kosum_tur3": 41,
+    "es": true
+   },
+   "sure_sim_ika": {
+    "video": 64.3,
+    "kosum_tur3": 64.3,
+    "es": true
+   },
+   "varis_mesafesi_m": {
+    "video": 0.211,
+    "kosum_tur3": 0.211,
+    "es": true
+   },
+   "takip_hatasi_maks_m": {
+    "video": 0.498,
+    "kosum_tur3": 0.498,
+    "es": true
+   },
+   "takip_hatasi_ort_m": {
+    "video": 0.071,
+    "kosum_tur3": 0.071,
+    "es": true
+   },
+   "takip_ornek_n": {
+    "video": 563,
+    "kosum_tur3": 563,
+    "es": true
+   },
+   "plan_takip_hatasi_maks_m": {
+    "video": 0.5,
+    "kosum_tur3": 0.5,
+    "es": true
+   },
+   "son_konum": {
+    "video": [
+     -11.326,
+     20.878,
+     0.082
+    ],
+    "kosum_tur3": [
+     -11.326,
+     20.878,
+     0.082
+    ],
+    "es": true
+   },
+   "t_ika_go": {
+    "video": 37.17999999999965,
+    "kosum_tur3": 37.17999999999965,
+    "es": true
+   },
+   "t_ika_go_ack": {
+    "video": 37.27999999999964,
+    "kosum_tur3": 37.27999999999964,
+    "es": true
+   },
+   "sure_sim_gorev": {
+    "video": 101.58,
+    "kosum_tur3": 101.58,
+    "es": true
+   },
+   "temas_adim": {
+    "video": 0,
+    "kosum_tur3": 0,
+    "es": true
+   }
+  },
+  "hepsi_es": true,
+  "kosum_tur3": "results/fdr_sprint_20260910/H1/kosum_tur3/gt_1_kolay_42.json"
+ },
+ "ilk_kosum_kusuru": {
+  "klasor": "results/fdr_sprint_20260910/video/ilk_kosum_kare_bekle_sonu",
+  "alanlar": "[ilk video koşumu, kosum_tur3]",
+  "neden": "kare bekle sonunda çiziliyordu → mj_forward xpos'u tazeledi → denetleyici 2 ms taze poz okudu (olay zamanları eş); düzeltme: kare yalnız alt-adım öbeğinin başında (gorev_kosumu.surus_adimla)",
+  "satirlar": [
+   {
+    "kosum": "model_1_kolay_44",
+    "sure_sim_ika": [
+     63.4,
+     63.4
+    ],
+    "varis_mesafesi_m": [
+     0.286,
+     0.273
+    ],
+    "takip_hatasi_maks_m": [
+     1.016,
+     1.012
+    ],
+    "t_ika_go_ack": [
+     37.27999999999964,
+     37.27999999999964
+    ]
+   },
+   {
+    "kosum": "model_3_orta_42",
+    "sure_sim_ika": [
+     65.7,
+     65.8
+    ],
+    "varis_mesafesi_m": [
+     0.256,
+     0.261
+    ],
+    "takip_hatasi_maks_m": [
+     1.752,
+     1.751
+    ],
+    "t_ika_go_ack": [
+     37.27999999999964,
+     37.27999999999964
+    ]
+   },
+   {
+    "kosum": "model_5_zor_42",
+    "sure_sim_ika": [
+     63.4,
+     63.6
+    ],
+    "varis_mesafesi_m": [
+     0.263,
+     0.259
+    ],
+    "takip_hatasi_maks_m": [
+     1.636,
+     1.626
+    ],
+    "t_ika_go_ack": [
+     37.27999999999964,
+     37.27999999999964
+    ]
+   }
+  ]
+ },
+ "komutlar": [
+  "O:/navitas-local-train/venv/Scripts/python.exe -B simulation/mujoco/sim_video.py --kos",
+  "O:/navitas-local-train/venv/Scripts/python.exe -B simulation/mujoco/sim_video.py --birlestir"
+ ],
+ "link": "BEYAN GEREKLİ (insan — YouTube liste dışı / Drive; T222)",
+ "tarih": "2026-09-10 17:02",
+ "hukum": {
+  "sure": true,
+  "fps": true,
+  "cozunurluk": true,
+  "uc_kamera": true,
+  "boyut": true,
+  "kosumlar_basarili": true
+ }
+}

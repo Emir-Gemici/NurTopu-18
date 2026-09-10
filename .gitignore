@@ -213,6 +213,16 @@ results/fdr_sprint_20260910/H1/k3b/*/harita_*/*.jpg
 results/fdr_sprint_20260910/H1/kosum*/*/iha_scan/**
 !results/fdr_sprint_20260910/H1/kosum*/*/iha_scan/detection.json
 !results/fdr_sprint_20260910/H1/kosum*/*/iha_scan/rota.json
+# T214-B video (H1-K7): koşum kareleri (kareler_video/ JPG'leri, tarama kareleri, mozaik/algı) git dışı;
+# mp4 zaten `*.mp4` ile dışarıda (kullanıcı yükler — T222). Kanıt: koşum JSON'u, durum.jsonl (HUD girdisi),
+# detection.json, rota.json, poses.csv, video_ozeti.json, OKUBENI.md depoda.
+# (`**/`: değişmezlik koşumu bir seviye derinde — kosum/degismezlik/<koşum>/)
+results/fdr_sprint_20260910/video/kosum/**/iha_scan/**
+!results/fdr_sprint_20260910/video/kosum/**/iha_scan/detection.json
+!results/fdr_sprint_20260910/video/kosum/**/iha_scan/rota.json
+!results/fdr_sprint_20260910/video/kosum/**/iha_scan/poses.csv
+results/fdr_sprint_20260910/video/kosum/**/kareler_video/**
+!results/fdr_sprint_20260910/video/kosum/**/kareler_video/durum.jsonl
 # T214-A: üretim kare-bazlı boru hattı beslemesi (kerteriz PNG'leri, sim_karar_toplayici yeniden üretir)
 results/fdr_sprint_20260910/H1/kosum*/*/besleme_*/
 results/fdr_sprint_20260910/H1/k3_uretim_boru/**/besleme_*/

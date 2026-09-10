@@ -447,8 +447,11 @@ def uret() -> str:
       "10 Eyl 15:27–15:37; K3 üretim aynı taramalarla yeniden + "
       "teşhis alanları, karar izi karşılaştırması, uretim 15 koşum). gt/model kolları yeniden koşulmadı: sürüş/rota kod yolları "
       "değişmedi (yalnız özet, tel-tipi ve takip örnekleme kancası `takip_ornekle` — davranış eş).")
-    a("- Tarama kareleri / mozaik / besleme PNG'leri git dışıdır (`.gitignore`; `--hepsi` içerik-eş yeniden üretir); "
-      "`detection.json`, `rota.json`, `poses.csv`, `karar_toplayici.json` ve tüm ölçüm JSON'ları depodadır.")
+    a("- Tarama kareleri / mozaik / besleme PNG'leri git dışıdır (`.gitignore`; `--hepsi` içerik-eş yeniden üretir). "
+      "Depoda: tüm ölçüm JSON'ları, `detection.json`, `rota.json`, `karar_toplayici.json`. `poses.csv` yalnız "
+      "`k3_uretim_boru/tarama/` altında depodadır; `kosum_tur3` koşumlarının tarama pozları git dışıdır "
+      "(T214-B düzeltmesi, çürütücü RED-1); `uretim` koşumlarında kare pozları `karar_toplayici.json` "
+      "`kareler[].x/y/z/yaw_derece` alanındadır.")
     a("- Özetler: `gorev_kosumu.ozet_kur` (`ozet_kosum.json`), `sim_karar_toplayici.ozet_kur` (`ozet_k3_uretim.json`); "
       "grafikler `sim_grafik.py`; bu belge `t214a_rapor.py`. Nöbetçiler ve mutasyonlar: `tests/test_sim_mujoco_olcum.py`, "
       "`results/fdr_sprint_20260910/H1/t214a/mutasyon_t214a.py` → `mutasyon_ciktisi.txt`.")

@@ -81,7 +81,7 @@ ROTA_KAYNAKLARI = ("gt", "model", "uretim")
 ROTA_KAYNAK_ETIKETI = {"gt": "YER GERÇEĞİ", "model": "ÜRETİM MODELİ",
                        "uretim": "ÜRETİM BORU HATTI (kare-bazlı)"}
 TOHUMLAR_VARSAYILAN = (42, 43, 44)
-KARE_HZ_VIDEO = 5.0
+KARE_HZ_VIDEO = 25.0      # T214-B (H1-K7 ≥ 24 FPS): kayıt aralığı sim saatiyle 0,04 s (5 Hz → 25 Hz)
 METRIK_ANAHTARLARI = (
     "rota_kaynak", "rota_kaynak_etiketi", "harita", "senaryo", "seed", "acik_yol",
     "rota_bulundu", "rota_dogru", "model_yol", "wp_sayisi", "sure_sim_iha_profil",
@@ -316,32 +316,96 @@ def uretim_rota(ldir: Path, kdir: Path, model, h: int, lv: str, seed: int, *, be
 
 
 class _KareKaydedici:
-    """Sürüş sırasında üçüncü şahıs + İKA takip kareleri (T214 videosu için)."""
+    """T214-B VİDEO kaydedicisi (ON_KAYIT H1-K7). Uçuşta (`iha_ucus.tara` kancası) ve sürüşte
+    (`bekle`) AYNI sim-saati aralığıyla (`KARE_HZ_VIDEO`) üç kamera — `iha_nadir` (scan_camera),
+    `ucuncu_sahis` (arena genel), `ika_takip` — ve her kare için bir `durum.jsonl` satırı (görev
+    saati, faz girdileri, ACK durumu, İKA konumu). HUD bu satırlardan kurulur (`sim_video.py`).
 
-    def __init__(self, m, d, kok: Path, hz: float = KARE_HZ_VIDEO, res=(1280, 720)):
-        import mujoco
-        self.d = d
-        self.kok = kok
+    Fizik trajektorisi DEĞİŞMEZ (kanıt: `tests/test_sim_mujoco_video.py` B — poz dizisi ve qpos bit-eş;
+    `results/fdr_sprint_20260910/video/kosum/degismezlik.json` — kareli GT koşumu kosum_tur3 eşiyle
+    20/20 alan eş): İHA/paraşüt geom'ları çarpışmasız (contype=conaffinity=0, `araclar`);
+    `mj_forward` durum değişkenlerine (qpos/qvel/qacc_warmstart) dokunmaz; sürüşte `surus_adimla`
+    `surucu.adimla(dt)` ile AYNI alt adım dizisini kare anlarında böler. Sürüş modelinde İHA'nın
+    paraşütle inişi aynı profilden (`iha_ucus.mocap_uygula`) çizilir (yalnız görüntü)."""
+
+    KAMERALAR = (("iha_nadir", "scan_camera"), ("ucuncu_sahis", "ucuncu_sahis"), ("ika_takip", "ika_takip"))
+
+    def __init__(self, kok: Path, hz: float = KARE_HZ_VIDEO, res=(960, 540), jpg_kalite: int = 85):
+        self.kok = Path(kok)
         self.kok.mkdir(parents=True, exist_ok=True)
-        self.r = mujoco.Renderer(m, height=res[1], width=res[0])
-        self.aralik = 1.0 / hz
-        self.sonraki = 0.0
+        for eski in self.kok.glob("*.jpg"):
+            eski.unlink()
+        self.hz = float(hz)
+        self.aralik = 1.0 / self.hz
+        self.res = (int(res[0]), int(res[1]))
+        self.jpg_kalite = int(jpg_kalite)
         self.n = 0
+        self.n_ucus = 0
+        self.sonraki_surus = 0.0          # sürüş modeli d.time (görev saati − rota yayını anı)
+        self.prof = iha_ucus.UcusProfili(0.0, 0.0)
+        self._r = {}                      # id(model) → (model, Renderer, (iha_mocap, parasut_mocap))
+        self._durum = open(self.kok / "durum.jsonl", "w", encoding="utf-8", newline="\n")
 
-    def tik(self):
+    def _cizici(self, m):
+        import mujoco
+        k = self._r.get(id(m))
+        if k is None:
+            ids = tuple(int(m.body_mocapid[mujoco.mj_name2id(m, mujoco.mjtObj.mjOBJ_BODY, ad)])
+                        for ad in ("iha", "parasut"))
+            k = self._r[id(m)] = (m, mujoco.Renderer(m, height=self.res[1], width=self.res[0]), ids)
+        return k
+
+    def kare(self, m, d, t_gorev: float, durum: dict):
         import cv2
-        if self.d.time + 1e-9 < self.sonraki:
-            return
-        for kam in ("ucuncu_sahis", "ika_takip"):
-            self.r.update_scene(self.d, camera=kam)
-            cv2.imwrite(str(self.kok / f"{kam}_{self.n:05d}.jpg"),
-                        cv2.cvtColor(self.r.render(), cv2.COLOR_RGB2BGR),
-                        [cv2.IMWRITE_JPEG_QUALITY, 88])
+        r = self._cizici(m)[1]
+        for ad, kam in self.KAMERALAR:
+            r.update_scene(d, camera=kam)
+            cv2.imwrite(str(self.kok / f"{ad}_{self.n:05d}.jpg"),
+                        cv2.cvtColor(r.render(), cv2.COLOR_RGB2BGR), [cv2.IMWRITE_JPEG_QUALITY, self.jpg_kalite])
+        self._durum.write(json.dumps({"n": self.n, "t": round(float(t_gorev), 3), **durum},
+                                     ensure_ascii=False) + "\n")
         self.n += 1
-        self.sonraki += self.aralik
+
+    def ucus_karesi(self, m, d, t: float, faz: str):
+        """`iha_ucus.tara(kare_kancasi=...)` — uçuş modeli; tarama sonuna dek (sonrası sürüş modelinde)."""
+        if t > self.prof.t_tarama_son + 1e-9:
+            return
+        pos = d.mocap_pos[self._cizici(m)[2][0]]
+        self.kare(m, d, t, {"kaynak": "ucus", "faz_profil": faz,
+                            "iha_xyz": [round(float(v), 2) for v in pos]})
+        self.n_ucus += 1
+
+    def surus_karesi(self, m, d, t_gorev: float, durum: dict):
+        import mujoco
+        iha, par = self._cizici(m)[2]
+        iha_ucus.mocap_uygula(d, self.prof, float(t_gorev), iha, par)    # iniş görüntüsü (çarpışmasız)
+        mujoco.mj_forward(m, d)
+        self.kare(m, d, t_gorev, {"kaynak": "surus", **durum})
+
+    def surus_adimla(self, surucu, m, d, dt: float, saat, durum):
+        """`surucu.adimla(dt)` ile AYNI alt adım sayısı ve sırası; kare anlarında bölünür.
+
+        Kare YALNIZ bir alt-adım öbeğinin BAŞINDA çizilir, `bekle`'nin SONUNDA asla: `mj_forward`
+        türetilmiş durumu (xpos/xmat) tazeler; `bekle` sonunda çizilseydi denetleyicinin bir sonraki
+        okuduğu poz 1 alt adım (2 ms) taze olur ve sürüş değişirdi. ÖLÇÜLDÜ (T214-B ilk video koşumu,
+        kare bekle sonunda çiziliyordu): model_1_kolay_44 olay zamanları ve rota.json kosum_tur3 ile
+        eş iken varış 0,286 ↔ 0,273 m, takip maks 1,016 ↔ 1,012 m. Kilit: tests/test_sim_mujoco_video.py B."""
+        ts = float(m.opt.timestep)
+        n = max(1, int(round(float(dt) / ts))) if dt > 0 else 0
+        while n > 0:
+            if float(d.time) + 1e-9 >= self.sonraki_surus:
+                self.surus_karesi(m, d, saat(), durum())
+                self.sonraki_surus += self.aralik
+            k = min(n, max(1, int(math.ceil((self.sonraki_surus - float(d.time)) / ts - 1e-6))))
+            surucu.adimla(k * ts)
+            n -= k
 
     def kapat(self):
-        self.r.close()
+        if not self._durum.closed:
+            self._durum.close()
+        for _, r, _ in self._r.values():
+            r.close()
+        self._r.clear()
 
 
 def kos(h: int, lv: str, seed: int, rota_kaynak: str, *, res: int, out: Path, model=None,
@@ -359,8 +423,13 @@ def kos(h: int, lv: str, seed: int, rota_kaynak: str, *, res: int, out: Path, mo
     ldir = kdir / "iha_scan"
     kdir.mkdir(parents=True, exist_ok=True)
 
+    # T214-B video (H1-K7): kaydedici uçuşta `tara` kancasıyla, sürüşte `bekle` üzerinden AYNI aralıkla.
+    kaydedici = _KareKaydedici(kdir / "kareler_video") if kare_kaydet else None
+
     # 1) İHA uçuş + tarama (render GPU, tek süreç)
-    tarama = iha_ucus.tara(h, lv, seed, out=ldir, res=res, fizik=fizik_tarama, onizleme=False)
+    tarama = iha_ucus.tara(h, lv, seed, out=ldir, res=res, fizik=fizik_tarama, onizleme=False,
+                           kare_kancasi=(kaydedici.ucus_karesi if kaydedici else None),
+                           kanca_aralik_s=(kaydedici.aralik if kaydedici else None))
     t_inis, t_tarama_son = float(tarama["t_inis"]), float(tarama["t_tarama_son"])
 
     # 2) Rota (model: çıkarım GPU, aynı süreçte renderdan SONRA)
@@ -421,14 +490,23 @@ def kos(h: int, lv: str, seed: int, rota_kaynak: str, *, res: int, out: Path, mo
 
     kayit = {"link_kayip": 0, "link_geri": 0, "t_surus_bas": None, "t_surus_son": None,
              "surus_sonucu": None}
-    kaydedici = _KareKaydedici(m, d, kdir / "kareler_video") if kare_kaydet else None
+    def durum_anlik():                            # T214-B video HUD girdisi (yalnız okuma)
+        x, y, _, _ = surucu.konum_al()
+        return {"acked": gonderim.get("acked"), "rota_alindi": hakem.rota is not None,
+                "ika_ack": hakem.rota_ack_kaniti is not None, "yks_ack": hakem.iha_ack_gonderildi is not None,
+                "no_route": hakem.no_route is not None, "landed": hakem.t_landed is not None,
+                "ika_go": hakem.t_ika_go is not None, "ika_go_ack": hakem.t_ika_go_ack is not None,
+                "surus": kayit["t_surus_bas"] is not None, "surus_bitti": kayit["t_surus_son"] is not None,
+                "ika_xy": [round(x, 2), round(y, 2)],
+                "hb_m": round(math.hypot(x - H["hb"][0], y - H["hb"][1]), 2), "temas": int(surucu.temas_sayisi)}
 
     def bekle(dt):
-        surucu.adimla(dt)
+        if kaydedici is None:
+            surucu.adimla(dt)
+        else:
+            kaydedici.surus_adimla(surucu, m, d, dt, saat, durum_anlik)
         takip_ornekle(kayit, surucu, takip, plan_takip)          # yalnız sürüşte (T214-A)
         hakem.adimla(saat())
-        if kaydedici is not None:
-            kaydedici.tik()
 
     def rota_bekle(bind, timeout, keep_receiver=True, deadline_monotonic=None, yks_peer=None):
         alindi = ika_nav.wait_open_route_from_comms(
@@ -528,6 +606,8 @@ def kos(h: int, lv: str, seed: int, rota_kaynak: str, *, res: int, out: Path, mo
         "model": model_kunye,
         "isaretler_carpismasiz": surucu.isaretler_degisti,
         "kare_kaydet": bool(kare_kaydet), "kare_n_video": (kaydedici.n if kaydedici else 0),
+        "kare_n_video_ucus": (kaydedici.n_ucus if kaydedici else 0),
+        "kare_hz_video": (kaydedici.hz if kaydedici else None),
         "duvar_saati_s": round(time.perf_counter() - t_duvar0, 2),
         "tarih": time.strftime("%Y-%m-%d %H:%M:%S"),
         "sinir": SINIR,
@@ -579,7 +659,12 @@ def ozet_hesapla(out: Path) -> dict:
             "etiket": ROTA_KAYNAK_ETIKETI[kaynak], "n": len(rs),
             "rota_bulundu_n": sum(r["rota_bulundu"] for r in rs),
             "rota_dogru_n": sum(r["rota_dogru"] for r in rs),
-            "open_route_ack_ika_yks_n": sum((r.get("open_route_ack") or []) == ["ika", "yks"] for r in rs),
+            # H1-K4 anlamı (T214-B, çürütücü RED-2): yalnız TEL'de OPEN_ROUTE olan ve [ika,yks] ACK'ı
+            # alan koşum (= olaylar.open_route_ack_ika_yks). Eski tanım tel tipinden bağımsız her karar
+            # mesajını sayıyordu (model 45 / uretim 15 ↔ OPEN_ROUTE 9 / 12) → `karar_ack_ika_yks_n`.
+            "open_route_ack_ika_yks_n": sum(tel_tipi(r) == "OPEN_ROUTE"
+                                            and (r.get("open_route_ack") or []) == ["ika", "yks"] for r in rs),
+            "karar_ack_ika_yks_n": sum((r.get("open_route_ack") or []) == ["ika", "yks"] for r in rs),
             "ika_go_ack_n": sum(r.get("t_ika_go_ack") is not None for r in rs),
             "hb_icinde_n": sum(r["hb_icinde"] for r in rs),
             "temas_var_n": sum(r["temas_sayisi"] > 0 for r in rs),

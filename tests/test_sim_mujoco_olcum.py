@@ -401,6 +401,25 @@ class E_KosumOzeti(unittest.TestCase):
         self.assertEqual(ol["open_route_ack_ika_yks"], 1)
         self.assertEqual(ol["no_route_ack_ika_yks"], 1)
 
+    def test_open_route_ack_alani_k4_anlaminda(self):
+        """T214-B · çürütücü RED-2: `open_route_ack_ika_yks_n` H1-K4 kapısının adını taşır → yalnız TEL'de
+        OPEN_ROUTE ∧ ACK [ika,yks] sayar (= olaylar.open_route_ack_ika_yks). Eski tanım NO_ROUTE ACK'larını
+        da sayıyordu (model 45 ↔ OPEN_ROUTE 9); o sayım `karar_ack_ika_yks_n` adıyla ayrı durur."""
+        with tempfile.TemporaryDirectory() as td:
+            for ad, r in (("model_1_kolay_42", self._satir(1, "kolay", tel="OPEN_ROUTE", basari=True)),
+                          ("model_2_zor_42", self._satir(2, "zor", tel="NO_ROUTE", basari=False))):
+                (Path(td) / f"{ad}.json").write_text(json.dumps(r), encoding="utf-8")
+            o = gk.ozet_hesapla(Path(td))["kaynaklar"]["model"]
+        self.assertEqual(o["open_route_ack_ika_yks_n"], 1)
+        self.assertEqual(o["karar_ack_ika_yks_n"], 2)
+        disk = json.loads((KOSUM / "ozet_kosum.json").read_text(encoding="utf-8"))
+        for k, o in disk["kaynaklar"].items():
+            with self.subTest(kaynak=k):
+                ol = o["olaylar"]
+                self.assertEqual(o["open_route_ack_ika_yks_n"], ol["open_route_ack_ika_yks"])
+                self.assertEqual(o["karar_ack_ika_yks_n"], ol["open_route_ack_ika_yks"] + ol["no_route_ack_ika_yks"])
+                self.assertLessEqual(o["open_route_ack_ika_yks_n"], ol["open_route_yayini"])
+
     def test_ozet_hesapla_yazmaz_ve_disk_es(self):
         disk = json.loads((KOSUM / "ozet_kosum.json").read_text(encoding="utf-8"))
         with mock.patch.object(Path, "write_text", side_effect=AssertionError("ozet_hesapla YAZDI")):

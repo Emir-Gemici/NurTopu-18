@@ -1,7 +1,7 @@
 # H1 · T214-A — Ölçüm zinciri: K3 (mozaik 512 / üretim boru hattı), K5 (gt / model / uretim), K6 süreler ve grafikler
 
 > **SENTETİK** (D-441 d): MuJoCo simülasyonu; saha kanıtı değildir. **ÖLÇÜLEMEDİ ≠ GEÇTİ**; eşikler ön kayıttan (`results/fdr_sprint_20260910/ON_KAYIT.md` H1-K3/K4/K5/K6) ve **gevşetilmedi**. Üretim modeli v36 (`sha 1d1caca6f6da…`, kayıt defteriyle eş: 90/90 ölçüm) **değişmedi**; sim'e özel eğitim YOK. Bu belge `simulation/mujoco/t214a_rapor.py` ile JSON'lardan üretilir, elle düzenlenmez (nöbetçi: `tests/test_sim_mujoco_olcum.py::G_Readme`).
-> Özet tarihleri: koşum `2026-09-10 15:37` · K3 üretim boru hattı `2026-09-10 15:31`.
+> Özet tarihleri: koşum `2026-09-10 16:36` · K3 üretim boru hattı `2026-09-10 15:31`.
 
 ## 0. Sonuç tablosu
 
@@ -201,7 +201,7 @@ Grafikler (`simulation/mujoco/sim_grafik.py`, JSON'dan; nöbetçi `tests/test_si
 
 - İlk koşu: `kosum_tur3/kosum_tur3.sh` → ham çıktı `kosum_tur3/kosum_tur3_log.txt` (git `42ca7b8f` + çalışma ağacı; K3 üretim 15 harita × 2 besleme, gt 45, model 45, uretim 6/15'te kesildi).
 - Devam: `kosum_tur3/kosum_tur3_devam.sh` → `kosum_tur3/kosum_tur3_devam_log.txt` (git `3132c503` + çalışma ağacı, 10 Eyl 15:27–15:37; K3 üretim aynı taramalarla yeniden + teşhis alanları, karar izi karşılaştırması, uretim 15 koşum). gt/model kolları yeniden koşulmadı: sürüş/rota kod yolları değişmedi (yalnız özet, tel-tipi ve takip örnekleme kancası `takip_ornekle` — davranış eş).
-- Tarama kareleri / mozaik / besleme PNG'leri git dışıdır (`.gitignore`; `--hepsi` içerik-eş yeniden üretir); `detection.json`, `rota.json`, `poses.csv`, `karar_toplayici.json` ve tüm ölçüm JSON'ları depodadır.
+- Tarama kareleri / mozaik / besleme PNG'leri git dışıdır (`.gitignore`; `--hepsi` içerik-eş yeniden üretir). Depoda: tüm ölçüm JSON'ları, `detection.json`, `rota.json`, `karar_toplayici.json`. `poses.csv` yalnız `k3_uretim_boru/tarama/` altında depodadır; `kosum_tur3` koşumlarının tarama pozları git dışıdır (T214-B düzeltmesi, çürütücü RED-1); `uretim` koşumlarında kare pozları `karar_toplayici.json` `kareler[].x/y/z/yaw_derece` alanındadır.
 - Özetler: `gorev_kosumu.ozet_kur` (`ozet_kosum.json`), `sim_karar_toplayici.ozet_kur` (`ozet_k3_uretim.json`); grafikler `sim_grafik.py`; bu belge `t214a_rapor.py`. Nöbetçiler ve mutasyonlar: `tests/test_sim_mujoco_olcum.py`, `results/fdr_sprint_20260910/H1/t214a/mutasyon_t214a.py` → `mutasyon_ciktisi.txt`.
 
 ## 9. Koşum tablosu (her satır bir JSON, `kosum_tur3/<kaynak>_<harita>_<senaryo>_<tohum>.json`)
