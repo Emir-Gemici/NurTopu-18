@@ -1,0 +1,25 @@
+T232 mutasyon kontrolu · O:\navitas-local-train\venv\Scripts\python.exe
+
+M1 A5 bolumunden Kabul satiri silindi: cikis=1 · FAILED (failures=2) · YAKALANDI
+    dusen testler: test_A5_heartbeat_penceresi, test_her_bolumun_ogeleri
+M2 A3 GERI AL adimi silindi: cikis=1 · FAILED (failures=1) · YAKALANDI
+    dusen testler: test_geri_alma_adimi_gecici_adimdan_sonra
+M3 'GEÇTİ' kelimesi eklendi (A6 kabul): cikis=1 · FAILED (failures=1) · YAKALANDI
+    dusen testler: test_kagitta_yok
+M4 dokum atfi degeri degisti (FS_THR_ENABLE 3 -> 1): cikis=1 · FAILED (failures=1) · YAKALANDI
+    dusen testler: test_dokum_atiflari_satirla_birebir
+M5 olu betik atfi (sik_rf_olc -> sik_rf_olcum): cikis=1 · FAILED (failures=2) · YAKALANDI
+    dusen testler: test_cagrilan_betikler_help_sifir, test_depo_yollari_var_ve_izleniyor
+M6 FOV hesabi sonucu degisti (55,3 -> 57,3): cikis=1 · FAILED (failures=1) · YAKALANDI
+    dusen testler: test_A9_fov
+M7 A9 basligi 15 dk -> 20 dk (tablo dilimiyle celisik): cikis=1 · FAILED (failures=1) · YAKALANDI
+    dusen testler: test_tablo_kesintisiz_ve_bolum_sureleriyle_ayni
+M8 A10 model yolu eski hataya dondu (models/): cikis=1 · FAILED (failures=1) · YAKALANDI
+    dusen testler: test_benzer_olcum_sayilari_kaynaktan
+M9 SONUC_SABLONU A7 satiri silindi: cikis=1 · FAILED (failures=1) · YAKALANDI
+    dusen testler: test_satirlar_sirali_ve_dosyalar_eslesiyor
+M10 ucus_logu_devrilme --help dali kaldirildi: cikis=1 · FAILED (failures=2) · YAKALANDI
+    dusen testler: test_cagrilan_betikler_help_sifir, test_help_sifir
+
+TEMIZ KOSU (geri alindiktan sonra): cikis=0 · OK
+SONUC: 10/10 mutant yakalandi; dosyalar sha256 ile geri dogrulandi

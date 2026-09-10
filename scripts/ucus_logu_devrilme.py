@@ -208,6 +208,12 @@ def analiz(yol: Path):
 
 
 def main(argv):
+    # T232: ATOLYE_TEST_GUNU_20260912.md bu betige atif yapar (A1-A4, A12 .bin ozeti) ve
+    # kapisi (tests/test_atolye_test_gunu.py) atif yapilan her betigin --help ile 0
+    # dondugunu olcer. Onceden '--help' dosya yolu sanilip "YOK: --help" (cikis 1) basiliyordu.
+    if any(a in ("-h", "--help") for a in argv[1:]):
+        print(__doc__)
+        return 0
     yollar = [Path(a) for a in argv[1:]]
     if not yollar:
         print(__doc__); return 1
