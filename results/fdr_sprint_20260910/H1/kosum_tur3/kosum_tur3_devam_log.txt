@@ -1,0 +1,605 @@
+[devam] başlangıç 2026-09-10 15:27:41 kök=/o/navitas/.claude/worktrees/wf_f7125212-5b5-1 git=3132c503 (+ çalışma ağacı değişiklikleri)
+[iz] 30 harita·besleme, 1170 kare → kosu1_karar_izi.json
+[devam] ilk koşu kopyaları: 6 uretim JSON
+[toplayici] model navitas-seg-v36-512 sha eşleşti=True kayıt=eslesti
+[ERROR:0@0.003] global cap_ffmpeg_impl.hpp:1430 open Could not find decoder for codec_id=61
+[ERROR:0@0.003] global cap_ffmpeg_impl.hpp:1479 open VIDEOIO/FFMPEG: Failed to initialize VideoCapture
+WARNING NMS time limit 2.050s exceeded
+[ERROR:0@29.010] global cap_ffmpeg_impl.hpp:1430 open Could not find decoder for codec_id=61
+[ERROR:0@29.010] global cap_ffmpeg_impl.hpp:1479 open VIDEOIO/FFMPEG: Failed to initialize VideoCapture
+[ERROR:0@44.118] global cap_ffmpeg_impl.hpp:1430 open Could not find decoder for codec_id=61
+[ERROR:0@44.118] global cap_ffmpeg_impl.hpp:1479 open VIDEOIO/FFMPEG: Failed to initialize VideoCapture
+[ERROR:0@58.019] global cap_ffmpeg_impl.hpp:1430 open Could not find decoder for codec_id=61
+[ERROR:0@58.019] global cap_ffmpeg_impl.hpp:1479 open VIDEOIO/FFMPEG: Failed to initialize VideoCapture
+[ERROR:0@71.756] global cap_ffmpeg_impl.hpp:1430 open Could not find decoder for codec_id=61
+[ERROR:0@71.756] global cap_ffmpeg_impl.hpp:1479 open VIDEOIO/FFMPEG: Failed to initialize VideoCapture
+[ERROR:0@85.996] global cap_ffmpeg_impl.hpp:1430 open Could not find decoder for codec_id=61
+[ERROR:0@85.996] global cap_ffmpeg_impl.hpp:1479 open VIDEOIO/FFMPEG: Failed to initialize VideoCapture
+[ERROR:0@98.468] global cap_ffmpeg_impl.hpp:1430 open Could not find decoder for codec_id=61
+[ERROR:0@98.468] global cap_ffmpeg_impl.hpp:1479 open VIDEOIO/FFMPEG: Failed to initialize VideoCapture
+[ERROR:0@112.696] global cap_ffmpeg_impl.hpp:1430 open Could not find decoder for codec_id=61
+[ERROR:0@112.696] global cap_ffmpeg_impl.hpp:1479 open VIDEOIO/FFMPEG: Failed to initialize VideoCapture
+[ERROR:0@127.840] global cap_ffmpeg_impl.hpp:1430 open Could not find decoder for codec_id=61
+[ERROR:0@127.840] global cap_ffmpeg_impl.hpp:1479 open VIDEOIO/FFMPEG: Failed to initialize VideoCapture
+[ERROR:0@141.098] global cap_ffmpeg_impl.hpp:1430 open Could not find decoder for codec_id=61
+[ERROR:0@141.098] global cap_ffmpeg_impl.hpp:1479 open VIDEOIO/FFMPEG: Failed to initialize VideoCapture
+[ERROR:0@154.347] global cap_ffmpeg_impl.hpp:1430 open Could not find decoder for codec_id=61
+[ERROR:0@154.347] global cap_ffmpeg_impl.hpp:1479 open VIDEOIO/FFMPEG: Failed to initialize VideoCapture
+[ERROR:0@167.425] global cap_ffmpeg_impl.hpp:1430 open Could not find decoder for codec_id=61
+[ERROR:0@167.425] global cap_ffmpeg_impl.hpp:1479 open VIDEOIO/FFMPEG: Failed to initialize VideoCapture
+[ERROR:0@181.155] global cap_ffmpeg_impl.hpp:1430 open Could not find decoder for codec_id=61
+[ERROR:0@181.155] global cap_ffmpeg_impl.hpp:1479 open VIDEOIO/FFMPEG: Failed to initialize VideoCapture
+[toplayici] kerteriz 1 kolay: acik=1 OPEN_ROUTE=2 yollar={'1': 1, '2': 1} kareler=[9, 15] dogru=False son={'tip': 'NO_ROUTE', 'seq': 60, 'sebep': 'MASKE_YOK', 'detay': 'Zemin maskesi 0 piksel; rota analizi yapilamadi.'} hizali=True NO_ROUTE={'HEDEF_YOK': 3, 'MASKE_YOK': 7, 'UC_BANT_TEMAS_YOK': 18, 'ZEMIN_MASKESI_SUPHELI': 9} duvar=23.99 s
+[toplayici] ham 1 kolay: acik=1 OPEN_ROUTE=0 yollar={} kareler=[] dogru=False son={'tip': 'NO_ROUTE', 'seq': 103, 'sebep': 'MASKE_YOK', 'detay': 'Zemin maskesi 0 piksel; rota analizi yapilamadi.'} hizali=True NO_ROUTE={'HEDEF_YOK': 3, 'MASKE_YOK': 8, 'UC_BANT_TEMAS_YOK': 15, 'ZEMIN_MASKESI_SUPHELI': 13} duvar=4.79 s
+[toplayici] kerteriz 1 orta: acik=2 OPEN_ROUTE=0 yollar={} kareler=[] dogru=False son={'tip': 'NO_ROUTE', 'seq': 150, 'sebep': 'MASKE_YOK', 'detay': 'Zemin maskesi 0 piksel; rota analizi yapilamadi.'} hizali=True NO_ROUTE={'GORUS_HATTI_KOPUK': 2, 'HEDEF_YOK': 6, 'MASKE_YOK': 7, 'UC_BANT_TEMAS_YOK': 16, 'ZEMIN_MASKESI_SUPHELI': 8} duvar=10.7 s
+[toplayici] ham 1 orta: acik=2 OPEN_ROUTE=0 yollar={} kareler=[] dogru=False son={'tip': 'NO_ROUTE', 'seq': 194, 'sebep': 'MASKE_YOK', 'detay': 'Zemin maskesi 0 piksel; rota analizi yapilamadi.'} hizali=True NO_ROUTE={'HEDEF_YOK': 3, 'MASKE_YOK': 7, 'UC_BANT_TEMAS_YOK': 18, 'ZEMIN_MASKESI_SUPHELI': 11} duvar=4.84 s
+[toplayici] kerteriz 1 zor: acik=3 OPEN_ROUTE=0 yollar={} kareler=[] dogru=False son={'tip': 'NO_ROUTE', 'seq': 240, 'sebep': 'MASKE_YOK', 'detay': 'Zemin maskesi 0 piksel; rota analizi yapilamadi.'} hizali=True NO_ROUTE={'GORUS_HATTI_KOPUK': 2, 'HEDEF_YOK': 3, 'MASKE_YOK': 7, 'UC_BANT_TEMAS_YOK': 18, 'ZEMIN_MASKESI_SUPHELI': 9} duvar=9.09 s
+[toplayici] ham 1 zor: acik=3 OPEN_ROUTE=0 yollar={} kareler=[] dogru=False son={'tip': 'NO_ROUTE', 'seq': 284, 'sebep': 'MASKE_YOK', 'detay': 'Zemin maskesi 0 piksel; rota analizi yapilamadi.'} hizali=True NO_ROUTE={'HEDEF_YOK': 1, 'MASKE_YOK': 8, 'UC_BANT_TEMAS_YOK': 16, 'ZEMIN_MASKESI_SUPHELI': 14} duvar=4.67 s
+[toplayici] kerteriz 2 kolay: acik=1 OPEN_ROUTE=1 yollar={'2': 1} kareler=[9] dogru=False son={'tip': 'NO_ROUTE', 'seq': 330, 'sebep': 'MASKE_YOK', 'detay': 'Zemin maskesi 0 piksel; rota analizi yapilamadi.'} hizali=True NO_ROUTE={'GORUS_HATTI_KOPUK': 1, 'HEDEF_YOK': 4, 'MASKE_YOK': 9, 'UC_BANT_TEMAS_YOK': 15, 'ZEMIN_MASKESI_SUPHELI': 9} duvar=9.12 s
+[toplayici] ham 2 kolay: acik=1 OPEN_ROUTE=0 yollar={} kareler=[] dogru=False son={'tip': 'NO_ROUTE', 'seq': 374, 'sebep': 'MASKE_YOK', 'detay': 'Zemin maskesi 0 piksel; rota analizi yapilamadi.'} hizali=True NO_ROUTE={'HEDEF_YOK': 3, 'MASKE_YOK': 7, 'UC_BANT_TEMAS_YOK': 16, 'ZEMIN_MASKESI_SUPHELI': 13} duvar=4.94 s
+[toplayici] kerteriz 2 orta: acik=1 OPEN_ROUTE=1 yollar={'1': 1} kareler=[15] dogru=True son={'tip': 'NO_ROUTE', 'seq': 420, 'sebep': 'MASKE_YOK', 'detay': 'Zemin maskesi 0 piksel; rota analizi yapilamadi.'} hizali=True NO_ROUTE={'HEDEF_YOK': 4, 'MASKE_YOK': 7, 'UC_BANT_TEMAS_YOK': 19, 'ZEMIN_MASKESI_SUPHELI': 8} duvar=8.69 s
+[toplayici] ham 2 orta: acik=1 OPEN_ROUTE=0 yollar={} kareler=[] dogru=False son={'tip': 'NO_ROUTE', 'seq': 464, 'sebep': 'MASKE_YOK', 'detay': 'Zemin maskesi 0 piksel; rota analizi yapilamadi.'} hizali=True NO_ROUTE={'HEDEF_YOK': 3, 'MASKE_YOK': 7, 'UC_BANT_TEMAS_YOK': 16, 'ZEMIN_MASKESI_SUPHELI': 13} duvar=4.99 s
+[toplayici] kerteriz 2 zor: acik=3 OPEN_ROUTE=0 yollar={} kareler=[] dogru=False son={'tip': 'NO_ROUTE', 'seq': 508, 'sebep': 'MASKE_YOK', 'detay': 'Zemin maskesi 0 piksel; rota analizi yapilamadi.'} hizali=True NO_ROUTE={'GORUS_HATTI_KOPUK': 1, 'HEDEF_YOK': 3, 'MASKE_YOK': 7, 'UC_BANT_TEMAS_YOK': 18, 'ZEMIN_MASKESI_SUPHELI': 10} duvar=8.77 s
+[toplayici] ham 2 zor: acik=3 OPEN_ROUTE=0 yollar={} kareler=[] dogru=False son={'tip': 'NO_ROUTE', 'seq': 552, 'sebep': 'MASKE_YOK', 'detay': 'Zemin maskesi 0 piksel; rota analizi yapilamadi.'} hizali=True NO_ROUTE={'HEDEF_YOK': 1, 'MASKE_YOK': 8, 'UC_BANT_TEMAS_YOK': 16, 'ZEMIN_MASKESI_SUPHELI': 14} duvar=4.3 s
+[toplayici] kerteriz 3 kolay: acik=3 OPEN_ROUTE=0 yollar={} kareler=[] dogru=False son={'tip': 'NO_ROUTE', 'seq': 597, 'sebep': 'MASKE_YOK', 'detay': 'Zemin maskesi 0 piksel; rota analizi yapilamadi.'} hizali=True NO_ROUTE={'GORUS_HATTI_KOPUK': 2, 'HEDEF_YOK': 5, 'MASKE_YOK': 6, 'UC_BANT_TEMAS_YOK': 17, 'ZEMIN_MASKESI_SUPHELI': 9} duvar=8.81 s
+[toplayici] ham 3 kolay: acik=3 OPEN_ROUTE=0 yollar={} kareler=[] dogru=False son={'tip': 'NO_ROUTE', 'seq': 642, 'sebep': 'MASKE_YOK', 'detay': 'Zemin maskesi 0 piksel; rota analizi yapilamadi.'} hizali=True NO_ROUTE={'HEDEF_YOK': 3, 'MASKE_YOK': 7, 'UC_BANT_TEMAS_YOK': 16, 'ZEMIN_MASKESI_SUPHELI': 13} duvar=5.25 s
+[toplayici] kerteriz 3 orta: acik=2 OPEN_ROUTE=0 yollar={} kareler=[] dogru=False son={'tip': 'NO_ROUTE', 'seq': 687, 'sebep': 'MASKE_YOK', 'detay': 'Zemin maskesi 0 piksel; rota analizi yapilamadi.'} hizali=True NO_ROUTE={'GORUS_HATTI_KOPUK': 2, 'HEDEF_YOK': 5, 'MASKE_YOK': 8, 'UC_BANT_TEMAS_YOK': 14, 'ZEMIN_MASKESI_SUPHELI': 10} duvar=9.34 s
+[toplayici] ham 3 orta: acik=2 OPEN_ROUTE=0 yollar={} kareler=[] dogru=False son={'tip': 'NO_ROUTE', 'seq': 732, 'sebep': 'MASKE_YOK', 'detay': 'Zemin maskesi 0 piksel; rota analizi yapilamadi.'} hizali=True NO_ROUTE={'HEDEF_YOK': 2, 'MASKE_YOK': 8, 'UC_BANT_TEMAS_YOK': 15, 'ZEMIN_MASKESI_SUPHELI': 14} duvar=5.55 s
+[toplayici] kerteriz 3 zor: acik=1 OPEN_ROUTE=0 yollar={} kareler=[] dogru=False son={'tip': 'NO_ROUTE', 'seq': 777, 'sebep': 'MASKE_YOK', 'detay': 'Zemin maskesi 0 piksel; rota analizi yapilamadi.'} hizali=True NO_ROUTE={'HEDEF_YOK': 5, 'MASKE_YOK': 7, 'UC_BANT_TEMAS_YOK': 19, 'ZEMIN_MASKESI_SUPHELI': 8} duvar=8.71 s
+[toplayici] ham 3 zor: acik=1 OPEN_ROUTE=0 yollar={} kareler=[] dogru=False son={'tip': 'NO_ROUTE', 'seq': 822, 'sebep': 'MASKE_YOK', 'detay': 'Zemin maskesi 0 piksel; rota analizi yapilamadi.'} hizali=True NO_ROUTE={'HEDEF_YOK': 2, 'MASKE_YOK': 8, 'UC_BANT_TEMAS_YOK': 17, 'ZEMIN_MASKESI_SUPHELI': 12} duvar=5.01 s
+[toplayici] kerteriz 4 kolay: acik=3 OPEN_ROUTE=0 yollar={} kareler=[] dogru=False son={'tip': 'NO_ROUTE', 'seq': 867, 'sebep': 'MASKE_YOK', 'detay': 'Zemin maskesi 0 piksel; rota analizi yapilamadi.'} hizali=True NO_ROUTE={'GORUS_HATTI_KOPUK': 2, 'HEDEF_YOK': 5, 'MASKE_YOK': 7, 'UC_BANT_TEMAS_YOK': 15, 'ZEMIN_MASKESI_SUPHELI': 10} duvar=8.44 s
+[toplayici] ham 4 kolay: acik=3 OPEN_ROUTE=0 yollar={} kareler=[] dogru=False son={'tip': 'NO_ROUTE', 'seq': 911, 'sebep': 'MASKE_YOK', 'detay': 'Zemin maskesi 0 piksel; rota analizi yapilamadi.'} hizali=True NO_ROUTE={'HEDEF_YOK': 4, 'MASKE_YOK': 7, 'UC_BANT_TEMAS_YOK': 16, 'ZEMIN_MASKESI_SUPHELI': 12} duvar=4.92 s
+[toplayici] kerteriz 4 orta: acik=3 OPEN_ROUTE=0 yollar={} kareler=[] dogru=False son={'tip': 'NO_ROUTE', 'seq': 955, 'sebep': 'MASKE_YOK', 'detay': 'Zemin maskesi 0 piksel; rota analizi yapilamadi.'} hizali=True NO_ROUTE={'GORUS_HATTI_KOPUK': 2, 'HEDEF_YOK': 3, 'MASKE_YOK': 8, 'UC_BANT_TEMAS_YOK': 17, 'ZEMIN_MASKESI_SUPHELI': 9} duvar=8.04 s
+[toplayici] ham 4 orta: acik=3 OPEN_ROUTE=0 yollar={} kareler=[] dogru=False son={'tip': 'NO_ROUTE', 'seq': 999, 'sebep': 'MASKE_YOK', 'detay': 'Zemin maskesi 0 piksel; rota analizi yapilamadi.'} hizali=True NO_ROUTE={'HEDEF_YOK': 2, 'MASKE_YOK': 9, 'UC_BANT_TEMAS_YOK': 15, 'ZEMIN_MASKESI_SUPHELI': 13} duvar=4.8 s
+[toplayici] kerteriz 4 zor: acik=1 OPEN_ROUTE=1 yollar={'2': 1} kareler=[9] dogru=False son={'tip': 'NO_ROUTE', 'seq': 1045, 'sebep': 'MASKE_YOK', 'detay': 'Zemin maskesi 0 piksel; rota analizi yapilamadi.'} hizali=True NO_ROUTE={'GORUS_HATTI_KOPUK': 1, 'HEDEF_YOK': 4, 'MASKE_YOK': 8, 'UC_BANT_TEMAS_YOK': 17, 'ZEMIN_MASKESI_SUPHELI': 8} duvar=8.57 s
+[toplayici] ham 4 zor: acik=1 OPEN_ROUTE=1 yollar={'2': 1} kareler=[19] dogru=False son={'tip': 'NO_ROUTE', 'seq': 1088, 'sebep': 'MASKE_YOK', 'detay': 'Zemin maskesi 0 piksel; rota analizi yapilamadi.'} hizali=True NO_ROUTE={'HEDEF_YOK': 4, 'MASKE_YOK': 8, 'UC_BANT_TEMAS_YOK': 13, 'ZEMIN_MASKESI_SUPHELI': 12} duvar=5.23 s
+[toplayici] kerteriz 5 kolay: acik=3 OPEN_ROUTE=0 yollar={} kareler=[] dogru=False son={'tip': 'NO_ROUTE', 'seq': 1132, 'sebep': 'MASKE_YOK', 'detay': 'Zemin maskesi 0 piksel; rota analizi yapilamadi.'} hizali=True NO_ROUTE={'GORUS_HATTI_KOPUK': 1, 'HEDEF_YOK': 4, 'MASKE_YOK': 8, 'UC_BANT_TEMAS_YOK': 18, 'ZEMIN_MASKESI_SUPHELI': 8} duvar=8.08 s[ERROR:0@193.507] global cap_ffmpeg_impl.hpp:1430 open Could not find decoder for codec_id=61
+[ERROR:0@193.507] global cap_ffmpeg_impl.hpp:1479 open VIDEOIO/FFMPEG: Failed to initialize VideoCapture
+[ERROR:0@206.029] global cap_ffmpeg_impl.hpp:1430 open Could not find decoder for codec_id=61
+[ERROR:0@206.029] global cap_ffmpeg_impl.hpp:1479 open VIDEOIO/FFMPEG: Failed to initialize VideoCapture
+
+[toplayici] ham 5 kolay: acik=3 OPEN_ROUTE=0 yollar={} kareler=[] dogru=False son={'tip': 'NO_ROUTE', 'seq': 1176, 'sebep': 'MASKE_YOK', 'detay': 'Zemin maskesi 0 piksel; rota analizi yapilamadi.'} hizali=True NO_ROUTE={'HEDEF_YOK': 2, 'MASKE_YOK': 8, 'UC_BANT_TEMAS_YOK': 16, 'ZEMIN_MASKESI_SUPHELI': 13} duvar=4.14 s
+[toplayici] kerteriz 5 orta: acik=3 OPEN_ROUTE=0 yollar={} kareler=[] dogru=False son={'tip': 'NO_ROUTE', 'seq': 1220, 'sebep': 'MASKE_YOK', 'detay': 'Zemin maskesi 0 piksel; rota analizi yapilamadi.'} hizali=True NO_ROUTE={'GORUS_HATTI_KOPUK': 1, 'HEDEF_YOK': 2, 'MASKE_YOK': 7, 'UC_BANT_TEMAS_YOK': 19, 'ZEMIN_MASKESI_SUPHELI': 10} duvar=8.38 s
+[toplayici] ham 5 orta: acik=3 OPEN_ROUTE=0 yollar={} kareler=[] dogru=False son={'tip': 'NO_ROUTE', 'seq': 1264, 'sebep': 'MASKE_YOK', 'detay': 'Zemin maskesi 0 piksel; rota analizi yapilamadi.'} hizali=True NO_ROUTE={'HEDEF_YOK': 1, 'MASKE_YOK': 8, 'UC_BANT_TEMAS_YOK': 17, 'ZEMIN_MASKESI_SUPHELI': 13} duvar=4.32 s
+[toplayici] kerteriz 5 zor: acik=2 OPEN_ROUTE=3 yollar={'1': 1, '2': 1, '3': 1} kareler=[9, 15, 20] dogru=False son={'tip': 'NO_ROUTE', 'seq': 1309, 'sebep': 'MASKE_YOK', 'detay': 'Zemin maskesi 0 piksel; rota analizi yapilamadi.'} hizali=True NO_ROUTE={'HEDEF_YOK': 4, 'MASKE_YOK': 6, 'UC_BANT_TEMAS_YOK': 17, 'ZEMIN_MASKESI_SUPHELI': 9} duvar=8.94 s
+[toplayici] ham 5 zor: acik=2 OPEN_ROUTE=0 yollar={} kareler=[] dogru=False son={'tip': 'NO_ROUTE', 'seq': 1353, 'sebep': 'MASKE_YOK', 'detay': 'Zemin maskesi 0 piksel; rota analizi yapilamadi.'} hizali=True NO_ROUTE={'HEDEF_YOK': 1, 'MASKE_YOK': 8, 'UC_BANT_TEMAS_YOK': 16, 'ZEMIN_MASKESI_SUPHELI': 14} duvar=4.69 s
+{
+ "kerteriz": {
+  "harita_n": 15,
+  "open_route_var_n": 5,
+  "dogru_n": 1,
+  "yanlis_yol_yayini_olan_n": 4,
+  "ilk_open_route_dogru_n": 1,
+  "son_open_route_dogru_n": 2,
+  "son_yayin_no_route_n": 15,
+  "kare_n": 585,
+  "open_route_kare_n": 8,
+  "open_route_tarama_bacaginda_n": 8,
+  "hizali_n": 15,
+  "ack_eksik_n": 0,
+  "no_route_sebepleri": {
+   "UC_BANT_TEMAS_YOK": 257,
+   "ZEMIN_MASKESI_SUPHELI": 134,
+   "MASKE_YOK": 109,
+   "HEDEF_YOK": 60,
+   "GORUS_HATTI_KOPUK": 17
+  },
+  "teshis": {
+   "harita_n": 15,
+   "dunya_yolu_dogru_or_olan_harita_n": 5,
+   "or_kare_n": 8,
+   "or_dunya_yolu_dogru_n": 8,
+   "or_etiket_dunya_esit_n": 3,
+   "tarama_bacagi_kare_n": 225,
+   "kb_karede_kare_n": 105,
+   "hb_karede_kare_n": 90,
+   "kb_hb_ayni_karede_kare_n": 0,
+   "kb_hb_ayni_karede_harita_n": 0,
+   "kare_ika_or_tutarli_n": 15
+  }
+ },
+ "ham": {
+  "harita_n": 15,
+  "open_route_var_n": 1,
+  "dogru_n": 0,
+  "yanlis_yol_yayini_olan_n": 1,
+  "ilk_open_route_dogru_n": 0,
+  "son_open_route_dogru_n": 0,
+  "son_yayin_no_route_n": 15,
+  "kare_n": 585,
+  "open_route_kare_n": 1,
+  "open_route_tarama_bacaginda_n": 1,
+  "hizali_n": 15,
+  "ack_eksik_n": 0,
+  "no_route_sebepleri": {
+   "UC_BANT_TEMAS_YOK": 238,
+   "ZEMIN_MASKESI_SUPHELI": 194,
+   "MASKE_YOK": 116,
+   "HEDEF_YOK": 35
+  },
+  "teshis": {
+   "harita_n": 15,
+   "dunya_yolu_dogru_or_olan_harita_n": 1,
+   "or_kare_n": 1,
+   "or_dunya_yolu_dogru_n": 1,
+   "or_etiket_dunya_esit_n": 0,
+   "tarama_bacagi_kare_n": 225,
+   "kb_karede_kare_n": 105,
+   "hb_karede_kare_n": 90,
+   "kb_hb_ayni_karede_kare_n": 0,
+   "kb_hb_ayni_karede_harita_n": 0,
+   "kare_ika_or_tutarli_n": 15
+  }
+ }
+}
+[devam] K3 üretim (yeniden) bitti 15:31:25
+[iz] 30 harita·besleme, 1170 kare: fark 0 → karar_es=True
+[devam] uretim haritaları (K3 kerteriz, OPEN_ROUTE var): 1_kolay,2_kolay,2_orta,4_zor,5_zor
+[ERROR:0@0.003] global cap_ffmpeg_impl.hpp:1430 open Could not find decoder for codec_id=61
+[ERROR:0@0.003] global cap_ffmpeg_impl.hpp:1479 open VIDEOIO/FFMPEG: Failed to initialize VideoCapture
+[ERROR:0@23.973] global cap_ffmpeg_impl.hpp:1430 open Could not find decoder for codec_id=61
+[ERROR:0@23.973] global cap_ffmpeg_impl.hpp:1479 open VIDEOIO/FFMPEG: Failed to initialize VideoCapture
+[ERROR:0@48.820] global cap_ffmpeg_impl.hpp:1430 open Could not find decoder for codec_id=61
+[ERROR:0@48.820] global cap_ffmpeg_impl.hpp:1479 open VIDEOIO/FFMPEG: Failed to initialize VideoCapture
+[ERROR:0@71.482] global cap_ffmpeg_impl.hpp:1430 open Could not find decoder for codec_id=61
+[ERROR:0@71.482] global cap_ffmpeg_impl.hpp:1479 open VIDEOIO/FFMPEG: Failed to initialize VideoCapture
+[ERROR:0@92.925] global cap_ffmpeg_impl.hpp:1430 open Could not find decoder for codec_id=61
+[ERROR:0@92.925] global cap_ffmpeg_impl.hpp:1479 open VIDEOIO/FFMPEG: Failed to initialize VideoCapture
+[ERROR:0@114.067] global cap_ffmpeg_impl.hpp:1430 open Could not find decoder for codec_id=61
+[ERROR:0@114.067] global cap_ffmpeg_impl.hpp:1479 open VIDEOIO/FFMPEG: Failed to initialize VideoCapture
+[ERROR:0@136.306] global cap_ffmpeg_impl.hpp:1430 open Could not find decoder for codec_id=61
+[ERROR:0@136.306] global cap_ffmpeg_impl.hpp:1479 open VIDEOIO/FFMPEG: Failed to initialize VideoCapture
+[kosum] üretim yükleyicisi navitas-seg-v36-512 sha eşleşti=True kayıt=eslesti
+[ika_nav] comms dinleniyor (hazır link, port 58706) — İHA açık yolu gönderecek...
+[ika_nav] ✓ İHA'dan dinamik rota ALINDI: SOL (1) conf=0.82 wp=18
+[ika_nav] YKS IKA_GO + İHA iniş kanıtı bekleniyor — İKA güvenli duruşta
+[ika_nav] ✓ IKA_GO ve IHA_LANDED alındı — İKA sürüş izni açık
+[ika_nav] sürüş süresi başladı: 600 s (şartname §6.2 İKA görev süresi)
+
+[ika_nav] Dinamik rota: SOL | 18 segment
+[ika_nav] Başlangıç: (-0.63, -23.0) → Hedef: (3.5700000000000003, 11.21)
+
+[ika_nav] ── Waypoint 1/18: (-0.7, -21.0)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.41m)
+
+[ika_nav] ── Waypoint 2/18: (-0.8, -19.1)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.42m)
+
+[ika_nav] ── Waypoint 3/18: (-0.9, -17.1)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.38m)
+
+[ika_nav] ── Waypoint 4/18: (-0.9, -15.2)
+[ika_nav] ✗ İKA sürüş süresi doldu (şartname §6.2) — GÜVENLİ DURMA, HB'ye ulaşılamadı
+[kosum] uretim 1 kolay 42: rota=True dogru=True kod=4 hb=False varis=38.52 m temas=5024 sure=600.1 s basari=False aciklik=0.0 (bariyer_2) duvar=23.24 s
+[ika_nav] comms dinleniyor (hazır link, port 60601) — İHA açık yolu gönderecek...
+[ika_nav] ✓ İHA'dan dinamik rota ALINDI: SOL (1) conf=0.798 wp=19
+[ika_nav] YKS IKA_GO + İHA iniş kanıtı bekleniyor — İKA güvenli duruşta
+[ika_nav] ✓ IKA_GO ve IHA_LANDED alındı — İKA sürüş izni açık
+[ika_nav] sürüş süresi başladı: 600 s (şartname §6.2 İKA görev süresi)
+
+[ika_nav] Dinamik rota: SOL | 19 segment
+[ika_nav] Başlangıç: (-0.63, -23.0) → Hedef: (3.15, 10.96)
+
+[ika_nav] ── Waypoint 1/19: (-1.0, -21.2)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.45m)
+
+[ika_nav] ── Waypoint 2/19: (-1.3, -19.3)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.47m)
+
+[ika_nav] ── Waypoint 3/19: (-1.6, -17.5)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.42m)
+
+[ika_nav] ── Waypoint 4/19: (-2.0, -15.7)
+[ika_nav] ✗ İKA sürüş süresi doldu (şartname §6.2) — GÜVENLİ DURMA, HB'ye ulaşılamadı
+[kosum] uretim 1 kolay 43: rota=True dogru=True kod=4 hb=False varis=38.52 m temas=7179 sure=600.1 s basari=False aciklik=0.0 (bariyer_2) duvar=25.88 s
+[ika_nav] comms dinleniyor (hazır link, port 52490) — İHA açık yolu gönderecek...
+[ika_nav] ✓ İHA'dan dinamik rota ALINDI: ORTA (2) conf=1.0 wp=21
+[ika_nav] YKS IKA_GO + İHA iniş kanıtı bekleniyor — İKA güvenli duruşta
+[ika_nav] ✓ IKA_GO ve IHA_LANDED alındı — İKA sürüş izni açık
+[ika_nav] sürüş süresi başladı: 600 s (şartname §6.2 İKA görev süresi)
+
+[ika_nav] Dinamik rota: ORTA | 21 segment
+[ika_nav] Başlangıç: (-0.63, -23.0) → Hedef: (2.3600000000000003, 13.600000000000001)
+
+[ika_nav] ── Waypoint 1/21: (-1.0, -21.0)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.43m)
+
+[ika_nav] ── Waypoint 2/21: (-1.4, -19.0)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.45m)
+
+[ika_nav] ── Waypoint 3/21: (-1.8, -17.0)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.47m)
+
+[ika_nav] ── Waypoint 4/21: (-2.2, -15.0)
+[ika_nav] ✗ İKA sürüş süresi doldu (şartname §6.2) — GÜVENLİ DURMA, HB'ye ulaşılamadı
+[kosum] uretim 1 kolay 44: rota=True dogru=False kod=4 hb=False varis=38.52 m temas=7462 sure=600.1 s basari=False aciklik=0.0 (bariyer_2) duvar=23.22 s
+[ika_nav] comms dinleniyor (hazır link, port 64699) — İHA açık yolu gönderecek...
+[ika_nav] ✓ İHA'dan dinamik rota ALINDI: ORTA (2) conf=1.0 wp=22
+[ika_nav] YKS IKA_GO + İHA iniş kanıtı bekleniyor — İKA güvenli duruşta
+[ika_nav] ✓ IKA_GO ve IHA_LANDED alındı — İKA sürüş izni açık
+[ika_nav] sürüş süresi başladı: 600 s (şartname §6.2 İKA görev süresi)
+
+[ika_nav] Dinamik rota: ORTA | 22 segment
+[ika_nav] Başlangıç: (0.9, -23.0) → Hedef: (7.630000000000001, 13.700000000000003)
+
+[ika_nav] ── Waypoint 1/22: (0.8, -21.5)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.43m)
+
+[ika_nav] ── Waypoint 2/22: (0.7, -20.1)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.46m)
+
+[ika_nav] ── Waypoint 3/22: (0.5, -18.6)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.43m)
+
+[ika_nav] ── Waypoint 4/22: (1.0, -17.1)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.49m)
+
+[ika_nav] ── Waypoint 5/22: (1.5, -15.6)
+[ika_nav] ✗ İKA sürüş süresi doldu (şartname §6.2) — GÜVENLİ DURMA, HB'ye ulaşılamadı
+[kosum] uretim 2 kolay 42: rota=True dogru=False kod=4 hb=False varis=39.79 m temas=7 sure=600.1 s basari=False aciklik=0.0 (bariyer_2) duvar=21.23 s
+[ika_nav] comms dinleniyor (hazır link, port 63695) — İHA açık yolu gönderecek...
+[ika_nav] ✓ İHA'dan dinamik rota ALINDI: ORTA (2) conf=1.0 wp=21
+[ika_nav] YKS IKA_GO + İHA iniş kanıtı bekleniyor — İKA güvenli duruşta
+[ika_nav] ✓ IKA_GO ve IHA_LANDED alındı — İKA sürüş izni açık
+[ika_nav] sürüş süresi başladı: 600 s (şartname §6.2 İKA görev süresi)
+
+[ika_nav] Dinamik rota: ORTA | 21 segment
+[ika_nav] Başlangıç: (0.9, -23.0) → Hedef: (7.630000000000001, 13.600000000000001)
+
+[ika_nav] ── Waypoint 1/21: (0.8, -21.3)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.45m)
+
+[ika_nav] ── Waypoint 2/21: (0.7, -19.6)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.47m)
+
+[ika_nav] ── Waypoint 3/21: (0.5, -17.8)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.47m)
+
+[ika_nav] ── Waypoint 4/21: (1.3, -16.3)
+[ika_nav] ✗ İKA sürüş süresi doldu (şartname §6.2) — GÜVENLİ DURMA, HB'ye ulaşılamadı
+[kosum] uretim 2 kolay 43: rota=True dogru=False kod=4 hb=False varis=39.77 m temas=10 sure=600.1 s basari=False aciklik=0.0 (bariyer_2) duvar=21.59 s
+[ika_nav] comms dinleniyor (hazır link, port 51486) — İHA açık yolu gönderecek...
+[ika_nav] ✓ İHA'dan dinamik rota ALINDI: ORTA (2) conf=1.0 wp=21
+[ika_nav] YKS IKA_GO + İHA iniş kanıtı bekleniyor — İKA güvenli duruşta
+[ika_nav] ✓ IKA_GO ve IHA_LANDED alındı — İKA sürüş izni açık
+[ika_nav] sürüş süresi başladı: 600 s (şartname §6.2 İKA görev süresi)
+
+[ika_nav] Dinamik rota: ORTA | 21 segment
+[ika_nav] Başlangıç: (0.9, -23.0) → Hedef: (6.890000000000001, 13.600000000000001)
+
+[ika_nav] ── Waypoint 1/21: (0.8, -21.3)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.45m)
+
+[ika_nav] ── Waypoint 2/21: (0.7, -19.6)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.47m)
+
+[ika_nav] ── Waypoint 3/21: (0.5, -17.8)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.47m)
+
+[ika_nav] ── Waypoint 4/21: (1.3, -16.3)
+[ika_nav] ✗ İKA sürüş süresi doldu (şartname §6.2) — GÜVENLİ DURMA, HB'ye ulaşılamadı
+[kosum] uretim 2 kolay 44: rota=True dogru=False kod=4 hb=False varis=39.77 m temas=10 sure=600.1 s basari=False aciklik=0.0 (bariyer_2) duvar=21.53 s
+[ika_nav] comms dinleniyor (hazır link, port 59508) — İHA açık yolu gönderecek...
+[ika_nav] ✓ İHA'dan dinamik rota ALINDI: SOL (1) conf=0.799 wp=32
+[ika_nav] YKS IKA_GO + İHA iniş kanıtı bekleniyor — İKA güvenli duruşta
+[ika_nav] ✓ IKA_GO ve IHA_LANDED alındı — İKA sürüş izni açık
+[ika_nav] sürüş süresi başladı: 600 s (şartname §6.2 İKA görev süresi)
+
+[ika_nav] Dinamik rota: SOL | 32 segment
+[ika_nav] Başlangıç: (1.73, -23.0) → Hedef: (27.14, 11.810000000000002)
+
+[ika_nav] ── Waypoint 1/32: (2.3, -21.3)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.46m)
+
+[ika_nav] ── Waypoint 2/32: (2.8, -19.6)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.49m)
+
+[ika_nav] ── Waypoint 3/32: (3.6, -18.5)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.43m)
+
+[ika_nav] ── Waypoint 4/32: (4.3, -17.4)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.45m)
+
+[ika_nav] ── Waypoint 5/32: (4.1, -15.7)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.43m)
+
+[ika_nav] ── Waypoint 6/32: (3.8, -13.9)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.40m)
+
+[ika_nav] ── Waypoint 7/32: (3.6, -12.2)
+[ika_nav] ✗ İKA sürüş süresi doldu (şartname §6.2) — GÜVENLİ DURMA, HB'ye ulaşılamadı
+[kosum] uretim 2 orta 42: rota=True dogru=True kod=4 hb=False varis=35.66 m temas=12839 sure=600.1 s basari=False aciklik=0.0 (tikama_2_1_1) duvar=23.37 s[ERROR:0@159.687] global cap_ffmpeg_impl.hpp:1430 open Could not find decoder for codec_id=61
+[ERROR:0@159.687] global cap_ffmpeg_impl.hpp:1479 open VIDEOIO/FFMPEG: Failed to initialize VideoCapture
+Rota 76 waypoint gerektiriyor (yumusak hedef: 75); azami aralik guvenligi icin seyreltilmedi.
+[ERROR:0@183.698] global cap_ffmpeg_impl.hpp:1430 open Could not find decoder for codec_id=61
+[ERROR:0@183.698] global cap_ffmpeg_impl.hpp:1479 open VIDEOIO/FFMPEG: Failed to initialize VideoCapture
+[ERROR:0@206.027] global cap_ffmpeg_impl.hpp:1430 open Could not find decoder for codec_id=61
+[ERROR:0@206.027] global cap_ffmpeg_impl.hpp:1479 open VIDEOIO/FFMPEG: Failed to initialize VideoCapture
+[ERROR:0@224.003] global cap_ffmpeg_impl.hpp:1430 open Could not find decoder for codec_id=61
+[ERROR:0@224.003] global cap_ffmpeg_impl.hpp:1479 open VIDEOIO/FFMPEG: Failed to initialize VideoCapture
+Rota 94 waypoint gerektiriyor (yumusak hedef: 58); azami aralik guvenligi icin seyreltilmedi.
+[ERROR:0@247.366] global cap_ffmpeg_impl.hpp:1430 open Could not find decoder for codec_id=61
+[ERROR:0@247.366] global cap_ffmpeg_impl.hpp:1479 open VIDEOIO/FFMPEG: Failed to initialize VideoCapture
+[ERROR:0@269.707] global cap_ffmpeg_impl.hpp:1430 open Could not find decoder for codec_id=61
+[ERROR:0@269.707] global cap_ffmpeg_impl.hpp:1479 open VIDEOIO/FFMPEG: Failed to initialize VideoCapture
+[ERROR:0@291.022] global cap_ffmpeg_impl.hpp:1430 open Could not find decoder for codec_id=61
+[ERROR:0@291.022] global cap_ffmpeg_impl.hpp:1479 open VIDEOIO/FFMPEG: Failed to initialize VideoCapture
+[ERROR:0@315.420] global cap_ffmpeg_impl.hpp:1430 open Could not find decoder for codec_id=61
+[ERROR:0@315.420] global cap_ffmpeg_impl.hpp:1479 open VIDEOIO/FFMPEG: Failed to initialize VideoCapture
+
+[ika_nav] comms dinleniyor (hazır link, port 49870) — İHA açık yolu gönderecek...
+[ika_nav] ✗ İHA NO_ROUTE bildirdi: MASKE_YOK — Zemin maskesi 0 piksel; rota analizi yapilamadi. — İKA güvenli duruşta; geçerli rota bekleniyor
+[ika_nav] ✗ Rota yok bildirimi alındı — timeout değil, güvenli ret
+[kosum] uretim 2 orta 43: rota=False dogru=False kod=2 hb=False varis=44.71 m temas=0 sure=None s basari=False aciklik=None (None) duvar=25.16 s
+[ika_nav] comms dinleniyor (hazır link, port 56124) — İHA açık yolu gönderecek...
+[ika_nav] ✗ İHA NO_ROUTE bildirdi: MASKE_YOK — Zemin maskesi 0 piksel; rota analizi yapilamadi. — İKA güvenli duruşta; geçerli rota bekleniyor
+[ika_nav] ✗ Rota yok bildirimi alındı — timeout değil, güvenli ret
+[kosum] uretim 2 orta 44: rota=False dogru=False kod=2 hb=False varis=44.71 m temas=0 sure=None s basari=False aciklik=None (None) duvar=21.87 s
+[ika_nav] comms dinleniyor (hazır link, port 58290) — İHA açık yolu gönderecek...
+[ika_nav] ✓ İHA'dan dinamik rota ALINDI: ORTA (2) conf=1.0 wp=23
+[ika_nav] YKS IKA_GO + İHA iniş kanıtı bekleniyor — İKA güvenli duruşta
+[ika_nav] ✓ IKA_GO ve IHA_LANDED alındı — İKA sürüş izni açık
+[ika_nav] sürüş süresi başladı: 600 s (şartname §6.2 İKA görev süresi)
+
+[ika_nav] Dinamik rota: ORTA | 23 segment
+[ika_nav] Başlangıç: (-0.62, -23.0) → Hedef: (5.37, 13.600000000000001)
+
+[ika_nav] ── Waypoint 1/23: (0.1, -21.4)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.46m)
+
+[ika_nav] ── Waypoint 2/23: (0.8, -19.8)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.45m)
+
+[ika_nav] ── Waypoint 3/23: (1.5, -18.1)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.48m)
+
+[ika_nav] ── Waypoint 4/23: (2.2, -16.5)
+[ika_nav] ✗ İKA sürüş süresi doldu (şartname §6.2) — GÜVENLİ DURMA, HB'ye ulaşılamadı
+[kosum] uretim 4 zor 42: rota=True dogru=False kod=4 hb=False varis=40.61 m temas=3 sure=600.1 s basari=False aciklik=0.0 (moloz_94) duvar=18.57 s
+[ika_nav] comms dinleniyor (hazır link, port 54159) — İHA açık yolu gönderecek...
+[ika_nav] ✗ İHA NO_ROUTE bildirdi: MASKE_YOK — Zemin maskesi 0 piksel; rota analizi yapilamadi. — İKA güvenli duruşta; geçerli rota bekleniyor
+[ika_nav] ✗ Rota yok bildirimi alındı — timeout değil, güvenli ret
+[kosum] uretim 4 zor 43: rota=False dogru=False kod=2 hb=False varis=45.22 m temas=0 sure=None s basari=False aciklik=None (None) duvar=23.02 s
+[ika_nav] comms dinleniyor (hazır link, port 50457) — İHA açık yolu gönderecek...
+[ika_nav] ✓ İHA'dan dinamik rota ALINDI: ORTA (2) conf=1.0 wp=25
+[ika_nav] YKS IKA_GO + İHA iniş kanıtı bekleniyor — İKA güvenli duruşta
+[ika_nav] ✓ IKA_GO ve IHA_LANDED alındı — İKA sürüş izni açık
+[ika_nav] sürüş süresi başladı: 600 s (şartname §6.2 İKA görev süresi)
+
+[ika_nav] Dinamik rota: ORTA | 25 segment
+[ika_nav] Başlangıç: (-0.62, -23.0) → Hedef: (4.6499999999999995, 13.600000000000001)
+
+[ika_nav] ── Waypoint 1/25: (-0.4, -21.1)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.41m)
+
+[ika_nav] ── Waypoint 2/25: (-0.2, -19.3)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.45m)
+
+[ika_nav] ── Waypoint 3/25: (1.0, -17.8)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.42m)
+
+[ika_nav] ── Waypoint 4/25: (2.3, -16.3)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.47m)
+
+[ika_nav] ── Waypoint 5/25: (3.5, -14.8)
+[ika_nav] ✗ İKA sürüş süresi doldu (şartname §6.2) — GÜVENLİ DURMA, HB'ye ulaşılamadı
+[kosum] uretim 4 zor 44: rota=True dogru=False kod=4 hb=False varis=40.04 m temas=11 sure=600.1 s basari=False aciklik=0.0 (tikama_2_0_0) duvar=20.24 s
+[ika_nav] comms dinleniyor (hazır link, port 60043) — İHA açık yolu gönderecek...
+[ika_nav] ✓ İHA'dan dinamik rota ALINDI: SOL (1) conf=1.0 wp=28
+[ika_nav] YKS IKA_GO + İHA iniş kanıtı bekleniyor — İKA güvenli duruşta
+[ika_nav] ✓ IKA_GO ve IHA_LANDED alındı — İKA sürüş izni açık
+[ika_nav] sürüş süresi başladı: 600 s (şartname §6.2 İKA görev süresi)
+
+[ika_nav] Dinamik rota: SOL | 28 segment
+[ika_nav] Başlangıç: (-4.48, -23.0) → Hedef: (-11.86, 13.450000000000003)
+
+[ika_nav] ── Waypoint 1/28: (-4.9, -21.0)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.43m)
+
+[ika_nav] ── Waypoint 2/28: (-5.4, -19.1)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.42m)
+
+[ika_nav] ── Waypoint 3/28: (-5.8, -17.1)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.41m)
+
+[ika_nav] ── Waypoint 4/28: (-6.3, -15.2)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.41m)
+
+[ika_nav] ── Waypoint 5/28: (-5.1, -13.8)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.43m)
+
+[ika_nav] ── Waypoint 6/28: (-3.9, -12.4)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.39m)
+
+[ika_nav] ── Waypoint 7/28: (-2.7, -11.0)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.49m)
+
+[ika_nav] ── Waypoint 8/28: (-1.6, -9.6)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.49m)
+
+[ika_nav] ── Waypoint 9/28: (-0.4, -8.2)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.49m)
+
+[ika_nav] ── Waypoint 10/28: (0.8, -6.8)
+[ika_nav] ✗ İKA sürüş süresi doldu (şartname §6.2) — GÜVENLİ DURMA, HB'ye ulaşılamadı
+[kosum] uretim 5 zor 42: rota=True dogru=False kod=4 hb=False varis=31.37 m temas=74 sure=600.1 s basari=False aciklik=0.0 (moloz_27) duvar=22.42 s
+[ika_nav] comms dinleniyor (hazır link, port 55388) — İHA açık yolu gönderecek...
+[ika_nav] ✓ İHA'dan dinamik rota ALINDI: SOL (1) conf=1.0 wp=26
+[ika_nav] YKS IKA_GO + İHA iniş kanıtı bekleniyor — İKA güvenli duruşta
+[ika_nav] ✓ IKA_GO ve IHA_LANDED alındı — İKA sürüş izni açık
+[ika_nav] sürüş süresi başladı: 600 s (şartname §6.2 İKA görev süresi)
+
+[ika_nav] Dinamik rota: SOL | 26 segment
+[ika_nav] Başlangıç: (-4.48, -23.0) → Hedef: (-11.93, 13.030000000000001)
+
+[ika_nav] ── Waypoint 1/26: (-4.8, -21.4)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.45m)
+
+[ika_nav] ── Waypoint 2/26: (-5.0, -19.8)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.48m)
+
+[ika_nav] ── Waypoint 3/26: (-5.3, -18.1)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.49m)
+
+[ika_nav] ── Waypoint 4/26: (-5.6, -16.5)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.49m)
+
+[ika_nav] ── Waypoint 5/26: (-5.2, -15.0)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.50m)
+
+[ika_nav] ── Waypoint 6/26: (-4.8, -13.5)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.41m)
+
+[ika_nav] ── Waypoint 7/26: (-3.6, -12.3)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.46m)
+
+[ika_nav] ── Waypoint 8/26: (-2.4, -11.1)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.42m)
+
+[ika_nav] ── Waypoint 9/26: (-1.2, -9.9)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.40m)
+
+[ika_nav] ── Waypoint 10/26: (-0.1, -8.7)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.48m)
+
+[ika_nav] ── Waypoint 11/26: (1.1, -7.5)
+[ika_nav] ✗ İKA sürüş süresi doldu (şartname §6.2) — GÜVENLİ DURMA, HB'ye ulaşılamadı
+[kosum] uretim 5 zor 43: rota=True dogru=False kod=4 hb=False varis=31.70 m temas=7607 sure=600.1 s basari=False aciklik=0.0 (moloz_8) duvar=24.94 s
+[ika_nav] comms dinleniyor (hazır link, port 55517) — İHA açık yolu gönderecek...
+[ika_nav] ✓ İHA'dan dinamik rota ALINDI: SOL (1) conf=1.0 wp=26
+[ika_nav] YKS IKA_GO + İHA iniş kanıtı bekleniyor — İKA güvenli duruşta
+[ika_nav] ✓ IKA_GO ve IHA_LANDED alındı — İKA sürüş izni açık
+[ika_nav] sürüş süresi başladı: 600 s (şartname §6.2 İKA görev süresi)
+
+[ika_nav] Dinamik rota: SOL | 26 segment
+[ika_nav] Başlangıç: (-4.48, -23.0) → Hedef: (-11.93, 13.030000000000001)
+
+[ika_nav] ── Waypoint 1/26: (-5.4, -21.2)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.44m)
+
+[ika_nav] ── Waypoint 2/26: (-6.3, -19.4)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.41m)
+
+[ika_nav] ── Waypoint 3/26: (-6.1, -17.6)
+[ika_nav] ✗ İKA sürüş süresi doldu (şartname §6.2) — GÜVENLİ DURMA, HB'ye ulaşılamadı
+[kosum] uretim 5 zor 44: rota=True dogru=False kod=4 hb=False varis=40.24 m temas=2704 sure=600.1 s basari=False aciklik=0.0 (moloz_30) duvar=21.99 s
+{
+ "etiket": "ÜRETİM BORU HATTI (kare-bazlı)",
+ "n": 15,
+ "rota_bulundu_n": 12,
+ "rota_dogru_n": 3,
+ "open_route_ack_ika_yks_n": 15,
+ "ika_go_ack_n": 12,
+ "hb_icinde_n": 0,
+ "temas_var_n": 12,
+ "rota_insaat_geregi_gecilemez_n": 12,
+ "temas_var_ve_gecilemez_n": 12,
+ "temas_var_ve_gecilebilir_n": 0,
+ "sure_asimi_n": 12,
+ "basari_n": 0,
+ "basari_orani": 0.0,
+ "harita_hepsi_basarili_n": 0,
+ "harita_n": 5,
+ "sure_sim_ika_basarili": null,
+ "sure_sim_ika_hepsi": {
+  "n": 12,
+  "min": 600.1,
+  "medyan": 600.1,
+  "ort": 600.1,
+  "maks": 600.1
+ },
+ "varis_mesafesi_m": {
+  "n": 15,
+  "min": 31.4,
+  "medyan": 39.8,
+  "ort": 39.3,
+  "maks": 45.2
+ },
+ "duvar_saati_s_toplam": 338.3,
+ "senaryo": {
+  "kolay": {
+   "n": 6,
+   "basari_n": 0,
+   "hb_icinde_n": 0,
+   "temas_var_n": 6
+  },
+  "orta": {
+   "n": 3,
+   "basari_n": 0,
+   "hb_icinde_n": 0,
+   "temas_var_n": 1
+  },
+  "zor": {
+   "n": 6,
+   "basari_n": 0,
+   "hb_icinde_n": 0,
+   "temas_var_n": 5
+  }
+ },
+ "cikis_kodlari": {
+  "0": 0,
+  "1": 0,
+  "2": 3,
+  "3": 0,
+  "4": 12
+ },
+ "takip_hatasi_maks_m": {
+  "n": 12,
+  "min": 3.802,
+  "medyan": 5.041,
+  "ort": 5.325,
+  "maks": 9.048
+ },
+ "takip_hatasi_maks_m_basarili": null,
+ "takip_hatasi_ort_m": {
+  "n": 12,
+  "min": 1.939,
+  "medyan": 2.587,
+  "ort": 2.671,
+  "maks": 4.714
+ },
+ "plan_takip_hatasi_maks_m": {
+  "n": 12,
+  "min": 0.055,
+  "medyan": 0.138,
+  "ort": 0.137,
+  "maks": 0.218
+ },
+ "sure_sim_gorev_basarili": null,
+ "olaylar": {
+  "open_route_yayini": 12,
+  "open_route_ack_ika_yks": 12,
+  "no_route_yayini": 3,
+  "no_route_ack_ika_yks": 3,
+  "guven_kapisi_reddi": 0,
+  "ika_go_ack": 12,
+  "temas_var": 12,
+  "sure_asimi_kod4": 12,
+  "hb_icinde": 0,
+  "link_kayip_var": 0
+ },
+ "harita_duzeyi": {
+  "1_kolay": {
+   "basari_n": 0,
+   "n": 3
+  },
+  "2_kolay": {
+   "basari_n": 0,
+   "n": 3
+  },
+  "2_orta": {
+   "basari_n": 0,
+   "n": 3
+  },
+  "4_zor": {
+   "basari_n": 0,
+   "n": 3
+  },
+  "5_zor": {
+   "basari_n": 0,
+   "n": 3
+  }
+ }
+}
+[kosum] toplam duvar saati 338.3 s → O:\navitas\.claude\worktrees\wf_f7125212-5b5-1\results\fdr_sprint_20260910\H1\kosum_tur3\ozet_kosum.json
+[devam] bitiş 2026-09-10 15:37:07

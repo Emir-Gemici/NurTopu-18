@@ -208,3 +208,11 @@ results/fdr_sprint_20260910/H1/k3b/*/harita_*/*.jpg
 # bunlarsiz verilemiyordu ve registry yolu ciplak `O:/` idi (madde 16). Yukaridaki
 # genel `images/` kalibi bu kumeleri yutmasin diye ISTISNA:
 !data/kabul/*/images/
+# T214-A: görev koşumu (kosum*/) tarama kareleri/mozaik/algı JPG'leri git dışı (--hepsi aynı taramayı içerik-eş
+# yeniden üretir); kanıt JSON'ları (detection.json, rota.json) git'te kalır (D-441 çürütücü M9).
+results/fdr_sprint_20260910/H1/kosum*/*/iha_scan/**
+!results/fdr_sprint_20260910/H1/kosum*/*/iha_scan/detection.json
+!results/fdr_sprint_20260910/H1/kosum*/*/iha_scan/rota.json
+# T214-A: üretim kare-bazlı boru hattı beslemesi (kerteriz PNG'leri, sim_karar_toplayici yeniden üretir)
+results/fdr_sprint_20260910/H1/kosum*/*/besleme_*/
+results/fdr_sprint_20260910/H1/k3_uretim_boru/**/besleme_*/

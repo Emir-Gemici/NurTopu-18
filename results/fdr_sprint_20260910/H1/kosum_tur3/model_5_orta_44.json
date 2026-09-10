@@ -1,0 +1,174 @@
+{
+ "rota_kaynak": "model",
+ "rota_kaynak_etiketi": "ÜRETİM MODELİ",
+ "harita": 5,
+ "senaryo": "orta",
+ "seed": 44,
+ "acik_yol": 3,
+ "acik_yol_etiket": "sag",
+ "rota_bulundu": false,
+ "rota_dogru": false,
+ "model_yol": null,
+ "model_guven": null,
+ "wp_sayisi": 0,
+ "maks_segment_m": null,
+ "rota_engel_aciklik_m": null,
+ "rota_engel_aciklik_geom": null,
+ "rota_insaat_geregi_gecilemez": null,
+ "ika_yari_genislik_m": 0.22,
+ "takip_hatasi_maks_m": null,
+ "takip_hatasi_ort_m": null,
+ "takip_ornek_n": 0,
+ "takip_temasla_kesildi": false,
+ "takip_referansi": "arena açık yol merkez hattı (arena.harita paths[open]); ilk temastan önce",
+ "plan_takip_hatasi_maks_m": null,
+ "plan_takip_hatasi_ort_m": null,
+ "sure_sim_iha_profil": 36.98,
+ "sure_sim_ika": null,
+ "sure_sim_gorev": 932.48,
+ "t_rota_yayini": 31.98,
+ "t_inis": 36.98,
+ "t_ika_go": null,
+ "t_ika_go_ack": null,
+ "varis_mesafesi_m": 44.777,
+ "hb_icinde": false,
+ "son_konum": [
+  1.908,
+  -23.0,
+  0.082
+ ],
+ "hb_xy": [
+  10.212,
+  21.0
+ ],
+ "temas_sayisi": 0,
+ "temas_adim": 0,
+ "temas_geomlari": [],
+ "ilk_temas_t": null,
+ "kararsiz_adim": 0,
+ "link_olaylari": {
+  "kayip": 0,
+  "geri": 0
+ },
+ "ack_listesi": [
+  {
+   "t": 32.68,
+   "node": "ika",
+   "ref": 50701,
+   "ref_tip": "NO_ROUTE"
+  },
+  {
+   "t": 37.28,
+   "node": "ika",
+   "ref": 50709,
+   "ref_tip": "IHA_LANDED"
+  }
+ ],
+ "open_route_ack": [
+  "ika",
+  "yks"
+ ],
+ "iha_gonderim": {
+  "tip": "NO_ROUTE",
+  "seq": 50701,
+  "acked": [
+   "ika",
+   "yks"
+  ],
+  "sebep": "KAPALI_DAR",
+  "detay": "Hicbir koridor gerekli aciklikta gecilebilir degil."
+ },
+ "hakem": {
+  "rota_seq": null,
+  "rota_ack_kaniti": null,
+  "iha_ack_gonderildi": null,
+  "no_route": {
+   "seq": 50701,
+   "sebep": "KAPALI_DAR"
+  },
+  "t_landed": 37.07999999999966,
+  "landed_durum": "ONAYLANDI",
+  "ika_go_durum": "BOS",
+  "ika_go_deneme": 0,
+  "heartbeat_sayisi": 1501
+ },
+ "hakem_olaylari": [
+  {
+   "t": 32.68,
+   "olay": "ROTA_YOK",
+   "seq": 50701,
+   "sebep": "KAPALI_DAR",
+   "detay": "Hicbir koridor gerekli aciklikta gecilebilir degil."
+  },
+  {
+   "t": 32.68,
+   "olay": "ACK_ALINDI",
+   "node": "ika",
+   "ref": 50701,
+   "ref_tip": "NO_ROUTE"
+  },
+  {
+   "t": 37.08,
+   "olay": "IHA_INIS",
+   "seq": 50709,
+   "sim": true
+  },
+  {
+   "t": 37.28,
+   "olay": "ACK_ALINDI",
+   "node": "ika",
+   "ref": 50709,
+   "ref_tip": "IHA_LANDED"
+  }
+ ],
+ "cikis_kodu": 2,
+ "navigate_sonucu": null,
+ "basari": false,
+ "tarama": {
+  "kare_n": 39,
+  "kabul": 15,
+  "htab_kapsama_orani": 1.0,
+  "res": 1280,
+  "fizik": true
+ },
+ "model_teshis": {
+  "rota_durum": "KAPALI_DAR",
+  "rota_sebep": "Hicbir koridor gerekli aciklikta gecilebilir degil.",
+  "label": "yok",
+  "conf": 0.0,
+  "wp_n": 0,
+  "darbogaz_m": null,
+  "kare_n": 15,
+  "imgsz": 512,
+  "mozaik_px": 1024,
+  "hb_yaricap_m": 0.0,
+  "birlestirme": "son_yazar"
+ },
+ "uretim_teshis": null,
+ "model": {
+  "model_id": "navitas-seg-v36-512",
+  "path": "O:\\navitas\\models\\navitas_seg_v36_best.pt",
+  "kayit_path": "models/navitas_seg_v36_best.pt",
+  "sha256_dosya": "1d1caca6f6da19ea35e69186a048da960ca5188be6ee6d49d6106457cac46911",
+  "sha256_kayit": "1d1caca6f6da19ea35e69186a048da960ca5188be6ee6d49d6106457cac46911",
+  "eslesti": true,
+  "imgsz_kayit": 512
+ },
+ "isaretler_carpismasiz": [
+  "iha_ib",
+  "hb_ped",
+  "hb_H_sol",
+  "hb_H_sag",
+  "hb_H_orta",
+  "kb_N",
+  "kb_S",
+  "kb_W",
+  "kb_E",
+  "kb_kose"
+ ],
+ "kare_kaydet": false,
+ "kare_n_video": 0,
+ "duvar_saati_s": 18.58,
+ "tarih": "2026-09-10 12:56:18",
+ "sinir": "İHA uçuşu KİNEMATİK (mocap, aerodinamik yok); hakem onayı sim'de OTOMATİK (sim=true, saha kanıtı değil); İKA iz genişliği 0,39 m TAHMİN; teker armature 0,01 TAHMİN; motor tork sınırı yok (DDR'de yok); haritala hesap süresi sim'de yok; modeller basitleştirilmiş (D-438 ek)."
+}
