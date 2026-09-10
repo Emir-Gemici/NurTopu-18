@@ -48,7 +48,10 @@ echo "== KAPI"
 echo "-- nvcc:";      /usr/local/cuda/bin/nvcc --version 2>/dev/null | tail -1 || echo "   nvcc YOK"
 echo "-- tensorrt:";  dpkg -l tensorrt python3-libnvinfer 2>/dev/null | awk '/^ii/{print "   "$2, $3}'
 echo "-- python3:";   python3 --version; python3 -m pip --version 2>/dev/null | head -1 || echo "   pip YOK"
-echo "-- cv2 (sistem):"; python3 -c "import cv2;print('  ',cv2.__version__,'GStreamer' in cv2.getBuildInformation())" 2>&1
+# T220 (ON_KAYIT §5.10): eski denetim `'GStreamer' in cv2.getBuildInformation()` HER ZAMAN True idi —
+# derleme bilgisi GStreamer'siz OpenCV'de de "GStreamer: NO" satiri tasir (PC'de olculdu: satir NO, naif True).
+# Dogru denetim: "GStreamer:" satirinin degeri YES mi.
+echo "-- cv2 (sistem):"; python3 -c "import cv2,re;_b=cv2.getBuildInformation();_m=re.search(r'^\s*GStreamer:\s*(\S+)',_b,re.M);print('  ',cv2.__version__,'GStreamer',(_m.group(1).upper()=='YES') if _m else 'BILINMIYOR')" 2>&1
 echo "-- swap:";      free -h | awk '/Swap/{print "   "$0}'
 echo "-- nvpmodel:";  nvpmodel -q 2>/dev/null | head -1
 echo

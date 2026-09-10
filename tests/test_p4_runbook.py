@@ -12,7 +12,10 @@ import unittest
 from pathlib import Path
 
 KOK = Path(__file__).resolve().parents[1]
-VENV = "O:/navitas-local-train/venv/Scripts/python.exe"
+# T220 / K10 #1: eskiden ciplak `O:/navitas-local-train/venv/Scripts/python.exe`
+# idi — Jetson'da 7 test `FileNotFoundError` ile dusuyordu. Suit zaten uretim
+# yorumlayicisiyla kosar (madde 13); alt surec AYNI yorumlayiciyi kullanir.
+VENV = sys.executable
 for _y in (KOK / "scripts",):
     if str(_y) not in sys.path:
         sys.path.insert(0, str(_y))

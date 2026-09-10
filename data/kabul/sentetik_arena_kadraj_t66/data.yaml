@@ -1,0 +1,9 @@
+# SENTETİK ARENA — 51_sentetik_arena.py (seed=7, ayni_malzeme=0.45, dar=0.28, kadraj=True)
+path: O:\navitas-local-train\calisma\sentetik_arena_kadraj_t66
+train: images/train
+val: images/val
+
+nc: 2
+names:
+  0: traversable
+  1: blocked

@@ -55,7 +55,7 @@ class KaliciKayitTesti(unittest.TestCase):
     def test_varsayilan_yol_oturumlari_ayirir(self):
         an = datetime(2026, 9, 21, 8, 9, 10, tzinfo=timezone.utc)
         yol = hakem_kaydi.varsayilan_hakem_log_yolu(
-            "O:/navitas", simdi=an, pid=4321)
+            str(KOK), simdi=an, pid=4321)      # T220/K10: ciplak surucu yolu yok
         self.assertEqual("hakem_log.jsonl", yol.name)
         self.assertEqual("20260921_080910_4321", yol.parent.name)
         self.assertEqual("prova", yol.parent.parent.name)

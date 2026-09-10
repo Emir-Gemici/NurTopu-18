@@ -1,0 +1,913 @@
+{
+ "_gorev": "T220/G4 — v36 PC referans kararlari (test_goruntuleri); Jetson engine ile --karsilastir",
+ "_on_kayit": "scripts/olcum/177_pc_referans_v36.py docstring (mpp kurali, hukum) + GUN1_KONTROL_LISTESI SS4",
+ "_zincir": "kare -> _preprocess -> predict(INFER_SIZE, conf) -> get_masks -> _maskeleri_icerige_kirp -> analyze_path(mpp)+rota_olcek_reddi+_rota_kararini_esikle (URETIM) | rota_bul(mpp=None, plan=False) (KATMAN-A bilgi)",
+ "_model": {
+  "yol": "models/navitas_seg_v36_best.pt",
+  "sha256": "1d1caca6f6da19ea35e69186a048da960ca5188be6ee6d49d6106457cac46911",
+  "defter_durum": "eslesti",
+  "dtype": "torch.float32",
+  "arka_uc": "AutoBackend"
+ },
+ "_ortam": {
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python": "3.13.7",
+  "torch": "2.11.0+cu128",
+  "cuda_var": true,
+  "cuda_adi": "NVIDIA GeForce RTX 5080 Laptop GPU",
+  "ultralytics": "8.4.92",
+  "cv2": "5.0.0"
+ },
+ "_cihaz": "0",
+ "_conf": 0.3,
+ "_infer_size": 512,
+ "_sinir": null,
+ "_kok": "jetson_paket/test_goruntuleri",
+ "_olcek_kurali": {
+  "sentetik_arena": "SENTETIK VARSAYIM (BEYAN): HTAB 50 m / goruntu genisligi — T66/T60 manifest kalibi; gercek kamera mpp olcumu DEGIL",
+  "drone_kareleri": "YOK: irtifa telemetrisi yok -> mpp None -> uretim karari OLCEK_YOK (CONTRACTS SS11.3 Halka 5); fark KATMAN-A satirindan okunur"
+ },
+ "_tarih": "2026-09-10 03:04",
+ "_sure_s": 12.1,
+ "ozet": {
+  "sentetik_arena": {
+   "n": 30,
+   "uretim_yol": {
+    "2": 2,
+    "None": 28
+   },
+   "uretim_red": {
+    "GORUS_HATTI_KOPUK": 2,
+    "MASKE_YOK": 1,
+    "None": 2,
+    "UC_BANT_TEMAS_YOK": 25
+   },
+   "katman_a_durum": {
+    "ACIK": 1,
+    "BELIRSIZ_COKLU": 2,
+    "BELIRSIZ_TEK_KAPI": 14,
+    "KAPALI_DAR": 10,
+    "KAPI_YOK": 1,
+    "MASKE_YOK": 2
+   },
+   "katman_a_yol_no": {
+    "1": 1,
+    "None": 29
+   }
+  },
+  "drone_kareleri": {
+   "n": 19,
+   "uretim_yol": {
+    "None": 19
+   },
+   "uretim_red": {
+    "OLCEK_YOK": 19
+   },
+   "katman_a_durum": {
+    "BELIRSIZ_COKLU": 19
+   },
+   "katman_a_yol_no": {
+    "None": 19
+   }
+  }
+ },
+ "kumeler": {
+  "sentetik_arena": [
+   {
+    "uretim_yol": null,
+    "uretim_red": "UC_BANT_TEMAS_YOK",
+    "katman_a_durum": "BELIRSIZ_TEK_KAPI",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.08444,
+    "engel_orani": 0.36024,
+    "kare": "sa_000000.jpg",
+    "sha256": "3f1783a64a330ced77c365a04da5f39a2b4b483975773ab71335c098e0bb19df",
+    "boyut": [
+     640,
+     640
+    ],
+    "mpp": 0.078125,
+    "mpp_kaynagi": "SENTETIK VARSAYIM (BEYAN): HTAB 50 m / goruntu genisligi — T66/T60 manifest kalibi; gercek kamera mpp olcumu DEGIL",
+    "sure_ms": 1589.9
+   },
+   {
+    "uretim_yol": null,
+    "uretim_red": "UC_BANT_TEMAS_YOK",
+    "katman_a_durum": "BELIRSIZ_TEK_KAPI",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.12516,
+    "engel_orani": 0.67007,
+    "kare": "sa_000001.jpg",
+    "sha256": "f68f3daddfd1592dc61d8a8ebb832e578b6da9674dce331f14876c72c12c72f0",
+    "boyut": [
+     640,
+     640
+    ],
+    "mpp": 0.078125,
+    "mpp_kaynagi": "SENTETIK VARSAYIM (BEYAN): HTAB 50 m / goruntu genisligi — T66/T60 manifest kalibi; gercek kamera mpp olcumu DEGIL",
+    "sure_ms": 42.3
+   },
+   {
+    "uretim_yol": null,
+    "uretim_red": "UC_BANT_TEMAS_YOK",
+    "katman_a_durum": "KAPALI_DAR",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.16482,
+    "engel_orani": 0.23055,
+    "kare": "sa_000002.jpg",
+    "sha256": "8a5df47b8b39c84706f3c13ff5fc11dee5bb30a14d55cfacc2cafeee341e064d",
+    "boyut": [
+     640,
+     640
+    ],
+    "mpp": 0.078125,
+    "mpp_kaynagi": "SENTETIK VARSAYIM (BEYAN): HTAB 50 m / goruntu genisligi — T66/T60 manifest kalibi; gercek kamera mpp olcumu DEGIL",
+    "sure_ms": 40.9
+   },
+   {
+    "uretim_yol": null,
+    "uretim_red": "UC_BANT_TEMAS_YOK",
+    "katman_a_durum": "KAPALI_DAR",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.2021,
+    "engel_orani": 0.42674,
+    "kare": "sa_000003.jpg",
+    "sha256": "cbbb18b5f7cd48048e2aeb33176ce344386c0a91759756f5d706ada133c40e4b",
+    "boyut": [
+     640,
+     640
+    ],
+    "mpp": 0.078125,
+    "mpp_kaynagi": "SENTETIK VARSAYIM (BEYAN): HTAB 50 m / goruntu genisligi — T66/T60 manifest kalibi; gercek kamera mpp olcumu DEGIL",
+    "sure_ms": 41.4
+   },
+   {
+    "uretim_yol": null,
+    "uretim_red": "GORUS_HATTI_KOPUK",
+    "katman_a_durum": "BELIRSIZ_COKLU",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.22047,
+    "engel_orani": 0.23342,
+    "kare": "sa_000004.jpg",
+    "sha256": "c43a1f48fe28da5bdbac3ece10fddba38fa9b641bf4d107f9647e86856ecb763",
+    "boyut": [
+     640,
+     640
+    ],
+    "mpp": 0.078125,
+    "mpp_kaynagi": "SENTETIK VARSAYIM (BEYAN): HTAB 50 m / goruntu genisligi — T66/T60 manifest kalibi; gercek kamera mpp olcumu DEGIL",
+    "sure_ms": 59.7
+   },
+   {
+    "uretim_yol": null,
+    "uretim_red": "UC_BANT_TEMAS_YOK",
+    "katman_a_durum": "BELIRSIZ_TEK_KAPI",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.11318,
+    "engel_orani": 0.55309,
+    "kare": "sa_000005.jpg",
+    "sha256": "69d958244903410e382d51808b130aad3a2e20bd77b73b71a9215041ab29dce2",
+    "boyut": [
+     640,
+     640
+    ],
+    "mpp": 0.078125,
+    "mpp_kaynagi": "SENTETIK VARSAYIM (BEYAN): HTAB 50 m / goruntu genisligi — T66/T60 manifest kalibi; gercek kamera mpp olcumu DEGIL",
+    "sure_ms": 41.8
+   },
+   {
+    "uretim_yol": null,
+    "uretim_red": "UC_BANT_TEMAS_YOK",
+    "katman_a_durum": "BELIRSIZ_TEK_KAPI",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.13475,
+    "engel_orani": 0.1564,
+    "kare": "sa_000006.jpg",
+    "sha256": "2cb5ba147c4ff9e260895ddf51c84ac7f2a9506db108d53ac27122e067da50f7",
+    "boyut": [
+     640,
+     640
+    ],
+    "mpp": 0.078125,
+    "mpp_kaynagi": "SENTETIK VARSAYIM (BEYAN): HTAB 50 m / goruntu genisligi — T66/T60 manifest kalibi; gercek kamera mpp olcumu DEGIL",
+    "sure_ms": 34.3
+   },
+   {
+    "uretim_yol": null,
+    "uretim_red": "UC_BANT_TEMAS_YOK",
+    "katman_a_durum": "KAPALI_DAR",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.14188,
+    "engel_orani": 0.60489,
+    "kare": "sa_000007.jpg",
+    "sha256": "5808de4e7f15cbda3224a9b5c686a38b838c95fe5a2698c6cce0d6481a84b2ab",
+    "boyut": [
+     640,
+     640
+    ],
+    "mpp": 0.078125,
+    "mpp_kaynagi": "SENTETIK VARSAYIM (BEYAN): HTAB 50 m / goruntu genisligi — T66/T60 manifest kalibi; gercek kamera mpp olcumu DEGIL",
+    "sure_ms": 42.0
+   },
+   {
+    "uretim_yol": null,
+    "uretim_red": "MASKE_YOK",
+    "katman_a_durum": "MASKE_YOK",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.0,
+    "engel_orani": 0.41657,
+    "kare": "sa_000008.jpg",
+    "sha256": "138001d15b13ba364f5f6fa9cbb3cf43bc5a97083089506ed3d3192ed39a19bc",
+    "boyut": [
+     640,
+     640
+    ],
+    "mpp": 0.078125,
+    "mpp_kaynagi": "SENTETIK VARSAYIM (BEYAN): HTAB 50 m / goruntu genisligi — T66/T60 manifest kalibi; gercek kamera mpp olcumu DEGIL",
+    "sure_ms": 30.3
+   },
+   {
+    "uretim_yol": null,
+    "uretim_red": "UC_BANT_TEMAS_YOK",
+    "katman_a_durum": "BELIRSIZ_TEK_KAPI",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.0408,
+    "engel_orani": 0.23519,
+    "kare": "sa_000009.jpg",
+    "sha256": "3373f4ab28b9131faaa30ed48f11a0a4324dbe1825429ecc5a461b604dceba7c",
+    "boyut": [
+     640,
+     640
+    ],
+    "mpp": 0.078125,
+    "mpp_kaynagi": "SENTETIK VARSAYIM (BEYAN): HTAB 50 m / goruntu genisligi — T66/T60 manifest kalibi; gercek kamera mpp olcumu DEGIL",
+    "sure_ms": 39.1
+   },
+   {
+    "uretim_yol": null,
+    "uretim_red": "UC_BANT_TEMAS_YOK",
+    "katman_a_durum": "MASKE_YOK",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.0463,
+    "engel_orani": 0.44462,
+    "kare": "sa_000010.jpg",
+    "sha256": "fd910ad3152806d3eba7f51b601afcb401cf75cfffcee0b33871298274a9723a",
+    "boyut": [
+     640,
+     640
+    ],
+    "mpp": 0.078125,
+    "mpp_kaynagi": "SENTETIK VARSAYIM (BEYAN): HTAB 50 m / goruntu genisligi — T66/T60 manifest kalibi; gercek kamera mpp olcumu DEGIL",
+    "sure_ms": 34.4
+   },
+   {
+    "uretim_yol": null,
+    "uretim_red": "UC_BANT_TEMAS_YOK",
+    "katman_a_durum": "KAPALI_DAR",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.04972,
+    "engel_orani": 0.67611,
+    "kare": "sa_000011.jpg",
+    "sha256": "125344786c3de30879757caf6fed70e471b4b6ec2d59a691cd9b3a15a379fb75",
+    "boyut": [
+     640,
+     640
+    ],
+    "mpp": 0.078125,
+    "mpp_kaynagi": "SENTETIK VARSAYIM (BEYAN): HTAB 50 m / goruntu genisligi — T66/T60 manifest kalibi; gercek kamera mpp olcumu DEGIL",
+    "sure_ms": 38.3
+   },
+   {
+    "uretim_yol": null,
+    "uretim_red": "UC_BANT_TEMAS_YOK",
+    "katman_a_durum": "KAPALI_DAR",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.18717,
+    "engel_orani": 0.07791,
+    "kare": "sa_000012.jpg",
+    "sha256": "82aeb8f02db1d09ae8a29e8ad2e63f33585f25aded182eea003d05e554f272d2",
+    "boyut": [
+     640,
+     640
+    ],
+    "mpp": 0.078125,
+    "mpp_kaynagi": "SENTETIK VARSAYIM (BEYAN): HTAB 50 m / goruntu genisligi — T66/T60 manifest kalibi; gercek kamera mpp olcumu DEGIL",
+    "sure_ms": 41.0
+   },
+   {
+    "uretim_yol": null,
+    "uretim_red": "UC_BANT_TEMAS_YOK",
+    "katman_a_durum": "KAPI_YOK",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.05293,
+    "engel_orani": 0.31009,
+    "kare": "sa_000013.jpg",
+    "sha256": "b67d4a2cf39557745117c94d9b51bd1c1028b590db94ac5b12b1916a24e28f4c",
+    "boyut": [
+     640,
+     640
+    ],
+    "mpp": 0.078125,
+    "mpp_kaynagi": "SENTETIK VARSAYIM (BEYAN): HTAB 50 m / goruntu genisligi — T66/T60 manifest kalibi; gercek kamera mpp olcumu DEGIL",
+    "sure_ms": 40.9
+   },
+   {
+    "uretim_yol": null,
+    "uretim_red": "UC_BANT_TEMAS_YOK",
+    "katman_a_durum": "BELIRSIZ_TEK_KAPI",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.07159,
+    "engel_orani": 0.84978,
+    "kare": "sa_000014.jpg",
+    "sha256": "b99193c758a9502b5567ce3b18db3a7c87989e2e55dbedf9569db07cf73f3309",
+    "boyut": [
+     640,
+     640
+    ],
+    "mpp": 0.078125,
+    "mpp_kaynagi": "SENTETIK VARSAYIM (BEYAN): HTAB 50 m / goruntu genisligi — T66/T60 manifest kalibi; gercek kamera mpp olcumu DEGIL",
+    "sure_ms": 38.0
+   },
+   {
+    "uretim_yol": null,
+    "uretim_red": "UC_BANT_TEMAS_YOK",
+    "katman_a_durum": "BELIRSIZ_TEK_KAPI",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.03591,
+    "engel_orani": 0.2776,
+    "kare": "sa_000015.jpg",
+    "sha256": "0356284fe3f9a952a38be92915b9378c3cccee0ea5ac9446622d27f1ed16dbea",
+    "boyut": [
+     640,
+     640
+    ],
+    "mpp": 0.078125,
+    "mpp_kaynagi": "SENTETIK VARSAYIM (BEYAN): HTAB 50 m / goruntu genisligi — T66/T60 manifest kalibi; gercek kamera mpp olcumu DEGIL",
+    "sure_ms": 39.0
+   },
+   {
+    "uretim_yol": null,
+    "uretim_red": "GORUS_HATTI_KOPUK",
+    "katman_a_durum": "BELIRSIZ_COKLU",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.18105,
+    "engel_orani": 0.282,
+    "kare": "sa_000016.jpg",
+    "sha256": "57d91151708081b9b72079ec96f33b9dc0a104a8cb042731c9a79fdd7eec2ded",
+    "boyut": [
+     640,
+     640
+    ],
+    "mpp": 0.078125,
+    "mpp_kaynagi": "SENTETIK VARSAYIM (BEYAN): HTAB 50 m / goruntu genisligi — T66/T60 manifest kalibi; gercek kamera mpp olcumu DEGIL",
+    "sure_ms": 53.4
+   },
+   {
+    "uretim_yol": null,
+    "uretim_red": "UC_BANT_TEMAS_YOK",
+    "katman_a_durum": "BELIRSIZ_TEK_KAPI",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.02643,
+    "engel_orani": 0.3596,
+    "kare": "sa_000017.jpg",
+    "sha256": "6bac3ae59a3be4ef662518156cbd0db1999c06bbf9eaf750143cd5261d591365",
+    "boyut": [
+     640,
+     640
+    ],
+    "mpp": 0.078125,
+    "mpp_kaynagi": "SENTETIK VARSAYIM (BEYAN): HTAB 50 m / goruntu genisligi — T66/T60 manifest kalibi; gercek kamera mpp olcumu DEGIL",
+    "sure_ms": 37.4
+   },
+   {
+    "uretim_yol": null,
+    "uretim_red": "UC_BANT_TEMAS_YOK",
+    "katman_a_durum": "KAPALI_DAR",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.35536,
+    "engel_orani": 0.33239,
+    "kare": "sa_000018.jpg",
+    "sha256": "4ec4d7552020f542ee1614a1d44b088b73a76760c432230f619aa3cd3d78f24e",
+    "boyut": [
+     640,
+     640
+    ],
+    "mpp": 0.078125,
+    "mpp_kaynagi": "SENTETIK VARSAYIM (BEYAN): HTAB 50 m / goruntu genisligi — T66/T60 manifest kalibi; gercek kamera mpp olcumu DEGIL",
+    "sure_ms": 49.2
+   },
+   {
+    "uretim_yol": null,
+    "uretim_red": "UC_BANT_TEMAS_YOK",
+    "katman_a_durum": "KAPALI_DAR",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.06862,
+    "engel_orani": 0.33149,
+    "kare": "sa_000019.jpg",
+    "sha256": "a7345e535ba929813c39e14154e7ebb152504b538da5c3fe18357c7983c8ec8a",
+    "boyut": [
+     640,
+     640
+    ],
+    "mpp": 0.078125,
+    "mpp_kaynagi": "SENTETIK VARSAYIM (BEYAN): HTAB 50 m / goruntu genisligi — T66/T60 manifest kalibi; gercek kamera mpp olcumu DEGIL",
+    "sure_ms": 40.8
+   },
+   {
+    "uretim_yol": null,
+    "uretim_red": "UC_BANT_TEMAS_YOK",
+    "katman_a_durum": "BELIRSIZ_TEK_KAPI",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.04621,
+    "engel_orani": 0.20993,
+    "kare": "sa_000020.jpg",
+    "sha256": "2042507300585ee27b676b2927f7bd3c19954c3d993bbb2cb48463f60ead8eb5",
+    "boyut": [
+     640,
+     640
+    ],
+    "mpp": 0.078125,
+    "mpp_kaynagi": "SENTETIK VARSAYIM (BEYAN): HTAB 50 m / goruntu genisligi — T66/T60 manifest kalibi; gercek kamera mpp olcumu DEGIL",
+    "sure_ms": 42.8
+   },
+   {
+    "uretim_yol": null,
+    "uretim_red": "UC_BANT_TEMAS_YOK",
+    "katman_a_durum": "BELIRSIZ_TEK_KAPI",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.16393,
+    "engel_orani": 0.26201,
+    "kare": "sa_000021.jpg",
+    "sha256": "e7a535f7767de6c6029a1e647c9d78d0e3b57680ba946c5ca15cecb4fb4bdf48",
+    "boyut": [
+     640,
+     640
+    ],
+    "mpp": 0.078125,
+    "mpp_kaynagi": "SENTETIK VARSAYIM (BEYAN): HTAB 50 m / goruntu genisligi — T66/T60 manifest kalibi; gercek kamera mpp olcumu DEGIL",
+    "sure_ms": 36.3
+   },
+   {
+    "uretim_yol": null,
+    "uretim_red": "UC_BANT_TEMAS_YOK",
+    "katman_a_durum": "KAPALI_DAR",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.18185,
+    "engel_orani": 0.31117,
+    "kare": "sa_000022.jpg",
+    "sha256": "57013e0ad1b2198c33c8083648421be581e28cabad0c37d289b8da4da878cde3",
+    "boyut": [
+     640,
+     640
+    ],
+    "mpp": 0.078125,
+    "mpp_kaynagi": "SENTETIK VARSAYIM (BEYAN): HTAB 50 m / goruntu genisligi — T66/T60 manifest kalibi; gercek kamera mpp olcumu DEGIL",
+    "sure_ms": 42.1
+   },
+   {
+    "uretim_yol": null,
+    "uretim_red": "UC_BANT_TEMAS_YOK",
+    "katman_a_durum": "BELIRSIZ_TEK_KAPI",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.28301,
+    "engel_orani": 0.30791,
+    "kare": "sa_000023.jpg",
+    "sha256": "f59797c5b3df74f1183624a095d6ab0a3a022f42cad9654f3e76d495f8d024a5",
+    "boyut": [
+     640,
+     640
+    ],
+    "mpp": 0.078125,
+    "mpp_kaynagi": "SENTETIK VARSAYIM (BEYAN): HTAB 50 m / goruntu genisligi — T66/T60 manifest kalibi; gercek kamera mpp olcumu DEGIL",
+    "sure_ms": 46.2
+   },
+   {
+    "uretim_yol": null,
+    "uretim_red": "UC_BANT_TEMAS_YOK",
+    "katman_a_durum": "KAPALI_DAR",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.00182,
+    "engel_orani": 0.39703,
+    "kare": "sa_000024.jpg",
+    "sha256": "2239ca500fb5c5dc7a2c22ab013fbe76be66f08dd4cc5e9e15c9f91ba4b82085",
+    "boyut": [
+     640,
+     640
+    ],
+    "mpp": 0.078125,
+    "mpp_kaynagi": "SENTETIK VARSAYIM (BEYAN): HTAB 50 m / goruntu genisligi — T66/T60 manifest kalibi; gercek kamera mpp olcumu DEGIL",
+    "sure_ms": 37.8
+   },
+   {
+    "uretim_yol": 2,
+    "uretim_red": null,
+    "katman_a_durum": "ACIK",
+    "katman_a_yol_no": 1,
+    "gecilebilir_orani": 0.39162,
+    "engel_orani": 0.22141,
+    "kare": "sa_000025.jpg",
+    "sha256": "02076a4171a4d9d343e6fa03cd368fe1e466e8a06e9a7a53b108f5308f49f311",
+    "boyut": [
+     640,
+     640
+    ],
+    "mpp": 0.078125,
+    "mpp_kaynagi": "SENTETIK VARSAYIM (BEYAN): HTAB 50 m / goruntu genisligi — T66/T60 manifest kalibi; gercek kamera mpp olcumu DEGIL",
+    "sure_ms": 80.6
+   },
+   {
+    "uretim_yol": null,
+    "uretim_red": "UC_BANT_TEMAS_YOK",
+    "katman_a_durum": "BELIRSIZ_TEK_KAPI",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.04085,
+    "engel_orani": 0.20191,
+    "kare": "sa_000026.jpg",
+    "sha256": "d73e1865d587d4a2985861058b6e6365ccb298a93ae7b94d4556b1e503c3abbe",
+    "boyut": [
+     640,
+     640
+    ],
+    "mpp": 0.078125,
+    "mpp_kaynagi": "SENTETIK VARSAYIM (BEYAN): HTAB 50 m / goruntu genisligi — T66/T60 manifest kalibi; gercek kamera mpp olcumu DEGIL",
+    "sure_ms": 34.7
+   },
+   {
+    "uretim_yol": 2,
+    "uretim_red": null,
+    "katman_a_durum": "BELIRSIZ_TEK_KAPI",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.1936,
+    "engel_orani": 0.66833,
+    "kare": "sa_000027.jpg",
+    "sha256": "b7b139a44210dc95db512c248635614a3a92f03aeca8f822ede73472a2d46827",
+    "boyut": [
+     640,
+     640
+    ],
+    "mpp": 0.078125,
+    "mpp_kaynagi": "SENTETIK VARSAYIM (BEYAN): HTAB 50 m / goruntu genisligi — T66/T60 manifest kalibi; gercek kamera mpp olcumu DEGIL",
+    "sure_ms": 60.0
+   },
+   {
+    "uretim_yol": null,
+    "uretim_red": "UC_BANT_TEMAS_YOK",
+    "katman_a_durum": "BELIRSIZ_TEK_KAPI",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.11735,
+    "engel_orani": 0.46155,
+    "kare": "sa_000028.jpg",
+    "sha256": "c38de46ae38ef8c8bd0c75594ae86541250104df2f44f305aac2b5ec95030ca4",
+    "boyut": [
+     640,
+     640
+    ],
+    "mpp": 0.078125,
+    "mpp_kaynagi": "SENTETIK VARSAYIM (BEYAN): HTAB 50 m / goruntu genisligi — T66/T60 manifest kalibi; gercek kamera mpp olcumu DEGIL",
+    "sure_ms": 36.7
+   },
+   {
+    "uretim_yol": null,
+    "uretim_red": "UC_BANT_TEMAS_YOK",
+    "katman_a_durum": "KAPALI_DAR",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.1248,
+    "engel_orani": 0.49443,
+    "kare": "sa_000029.jpg",
+    "sha256": "8c41d8044724b1ab70a1bf861276534091475ab0ed823cf3f2d2bc76d042ba52",
+    "boyut": [
+     640,
+     640
+    ],
+    "mpp": 0.078125,
+    "mpp_kaynagi": "SENTETIK VARSAYIM (BEYAN): HTAB 50 m / goruntu genisligi — T66/T60 manifest kalibi; gercek kamera mpp olcumu DEGIL",
+    "sure_ms": 42.4
+   }
+  ],
+  "drone_kareleri": [
+   {
+    "uretim_yol": null,
+    "uretim_red": "OLCEK_YOK",
+    "katman_a_durum": "BELIRSIZ_COKLU",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.45797,
+    "engel_orani": 0.2832,
+    "kare": "frame_000000_000000000.jpg",
+    "sha256": "eeaf59378d61caee008b1945b6d74ec978b546dddf35cf7368bbbe68acafacd9",
+    "boyut": [
+     1024,
+     576
+    ],
+    "mpp": null,
+    "mpp_kaynagi": "YOK: irtifa telemetrisi yok -> mpp None -> uretim karari OLCEK_YOK (CONTRACTS SS11.3 Halka 5); fark KATMAN-A satirindan okunur",
+    "sure_ms": 474.3
+   },
+   {
+    "uretim_yol": null,
+    "uretim_red": "OLCEK_YOK",
+    "katman_a_durum": "BELIRSIZ_COKLU",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.46864,
+    "engel_orani": 0.28952,
+    "kare": "frame_000001_000000336.jpg",
+    "sha256": "97d244bb67404834628350bdb18feac3dfdd16a48f3075c547e4d8312d96bc72",
+    "boyut": [
+     1024,
+     576
+    ],
+    "mpp": null,
+    "mpp_kaynagi": "YOK: irtifa telemetrisi yok -> mpp None -> uretim karari OLCEK_YOK (CONTRACTS SS11.3 Halka 5); fark KATMAN-A satirindan okunur",
+    "sure_ms": 457.7
+   },
+   {
+    "uretim_yol": null,
+    "uretim_red": "OLCEK_YOK",
+    "katman_a_durum": "BELIRSIZ_COKLU",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.35441,
+    "engel_orani": 0.37795,
+    "kare": "frame_000001_000000600.jpg",
+    "sha256": "19e5e93499b94425c0c4ad3f10bd2c0a5e98c88a8718e30a56d1c578ce6715a8",
+    "boyut": [
+     1024,
+     576
+    ],
+    "mpp": null,
+    "mpp_kaynagi": "YOK: irtifa telemetrisi yok -> mpp None -> uretim karari OLCEK_YOK (CONTRACTS SS11.3 Halka 5); fark KATMAN-A satirindan okunur",
+    "sure_ms": 476.1
+   },
+   {
+    "uretim_yol": null,
+    "uretim_red": "OLCEK_YOK",
+    "katman_a_durum": "BELIRSIZ_COKLU",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.46741,
+    "engel_orani": 0.29695,
+    "kare": "frame_000002_000000648.jpg",
+    "sha256": "9db23c48349a49a0da308d030660e39c24d47cb9fa15cb2203bf1b0dd872a48e",
+    "boyut": [
+     1024,
+     576
+    ],
+    "mpp": null,
+    "mpp_kaynagi": "YOK: irtifa telemetrisi yok -> mpp None -> uretim karari OLCEK_YOK (CONTRACTS SS11.3 Halka 5); fark KATMAN-A satirindan okunur",
+    "sure_ms": 421.5
+   },
+   {
+    "uretim_yol": null,
+    "uretim_red": "OLCEK_YOK",
+    "katman_a_durum": "BELIRSIZ_COKLU",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.37934,
+    "engel_orani": 0.35531,
+    "kare": "frame_000002_000000672.jpg",
+    "sha256": "2b0ce079f4da10813cfe2e3663db31567f2fe4840ae82b8a7cefc125a61e0346",
+    "boyut": [
+     1024,
+     576
+    ],
+    "mpp": null,
+    "mpp_kaynagi": "YOK: irtifa telemetrisi yok -> mpp None -> uretim karari OLCEK_YOK (CONTRACTS SS11.3 Halka 5); fark KATMAN-A satirindan okunur",
+    "sure_ms": 479.0
+   },
+   {
+    "uretim_yol": null,
+    "uretim_red": "OLCEK_YOK",
+    "katman_a_durum": "BELIRSIZ_COKLU",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.39424,
+    "engel_orani": 0.35466,
+    "kare": "frame_000003_000000720.jpg",
+    "sha256": "20789a44c6ab00e2a02d1846831404af309d65f94f9c8abc971e39d36e527558",
+    "boyut": [
+     1024,
+     576
+    ],
+    "mpp": null,
+    "mpp_kaynagi": "YOK: irtifa telemetrisi yok -> mpp None -> uretim karari OLCEK_YOK (CONTRACTS SS11.3 Halka 5); fark KATMAN-A satirindan okunur",
+    "sure_ms": 558.6
+   },
+   {
+    "uretim_yol": null,
+    "uretim_red": "OLCEK_YOK",
+    "katman_a_durum": "BELIRSIZ_COKLU",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.44897,
+    "engel_orani": 0.31195,
+    "kare": "frame_000003_000000912.jpg",
+    "sha256": "3f2d6e7aa05ef487456f26c7f5d1ae3672790855cc2c25e115dae3a68126f032",
+    "boyut": [
+     1024,
+     576
+    ],
+    "mpp": null,
+    "mpp_kaynagi": "YOK: irtifa telemetrisi yok -> mpp None -> uretim karari OLCEK_YOK (CONTRACTS SS11.3 Halka 5); fark KATMAN-A satirindan okunur",
+    "sure_ms": 437.5
+   },
+   {
+    "uretim_yol": null,
+    "uretim_red": "OLCEK_YOK",
+    "katman_a_durum": "BELIRSIZ_COKLU",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.41393,
+    "engel_orani": 0.36429,
+    "kare": "frame_000004_000000768.jpg",
+    "sha256": "22a0d28e9ca890d310f8fb4789f1e37373b1f77ada12e2b581d8abfe289b5b4c",
+    "boyut": [
+     1024,
+     576
+    ],
+    "mpp": null,
+    "mpp_kaynagi": "YOK: irtifa telemetrisi yok -> mpp None -> uretim karari OLCEK_YOK (CONTRACTS SS11.3 Halka 5); fark KATMAN-A satirindan okunur",
+    "sure_ms": 527.7
+   },
+   {
+    "uretim_yol": null,
+    "uretim_red": "OLCEK_YOK",
+    "katman_a_durum": "BELIRSIZ_COKLU",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.43463,
+    "engel_orani": 0.30869,
+    "kare": "frame_000004_000000960.jpg",
+    "sha256": "c31f02cc80a334cf5f32c0486a8437d067e8cc2a06aa30ae2bfe79dbd115195b",
+    "boyut": [
+     1024,
+     576
+    ],
+    "mpp": null,
+    "mpp_kaynagi": "YOK: irtifa telemetrisi yok -> mpp None -> uretim karari OLCEK_YOK (CONTRACTS SS11.3 Halka 5); fark KATMAN-A satirindan okunur",
+    "sure_ms": 415.5
+   },
+   {
+    "uretim_yol": null,
+    "uretim_red": "OLCEK_YOK",
+    "katman_a_durum": "BELIRSIZ_COKLU",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.40173,
+    "engel_orani": 0.36233,
+    "kare": "frame_000005_000000816.jpg",
+    "sha256": "4e411dd18189cce3601beb8c9167cf73cf357b4d6b95424157baf96089ae64cf",
+    "boyut": [
+     1024,
+     576
+    ],
+    "mpp": null,
+    "mpp_kaynagi": "YOK: irtifa telemetrisi yok -> mpp None -> uretim karari OLCEK_YOK (CONTRACTS SS11.3 Halka 5); fark KATMAN-A satirindan okunur",
+    "sure_ms": 424.3
+   },
+   {
+    "uretim_yol": null,
+    "uretim_red": "OLCEK_YOK",
+    "katman_a_durum": "BELIRSIZ_COKLU",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.44099,
+    "engel_orani": 0.33968,
+    "kare": "frame_000006_000000864.jpg",
+    "sha256": "7e46e149106bc2de4ca520ca20e98fd8795b623ff041a3add6478293905a8c81",
+    "boyut": [
+     1024,
+     576
+    ],
+    "mpp": null,
+    "mpp_kaynagi": "YOK: irtifa telemetrisi yok -> mpp None -> uretim karari OLCEK_YOK (CONTRACTS SS11.3 Halka 5); fark KATMAN-A satirindan okunur",
+    "sure_ms": 475.9
+   },
+   {
+    "uretim_yol": null,
+    "uretim_red": "OLCEK_YOK",
+    "katman_a_durum": "BELIRSIZ_COKLU",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.45568,
+    "engel_orani": 0.32236,
+    "kare": "frame_000007_000000936.jpg",
+    "sha256": "636e573b2715f9136475e68eac2a8f7cb6bcd9597c274d0134c9ebe6fca948b5",
+    "boyut": [
+     1024,
+     576
+    ],
+    "mpp": null,
+    "mpp_kaynagi": "YOK: irtifa telemetrisi yok -> mpp None -> uretim karari OLCEK_YOK (CONTRACTS SS11.3 Halka 5); fark KATMAN-A satirindan okunur",
+    "sure_ms": 575.3
+   },
+   {
+    "uretim_yol": null,
+    "uretim_red": "OLCEK_YOK",
+    "katman_a_durum": "BELIRSIZ_COKLU",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.46991,
+    "engel_orani": 0.31918,
+    "kare": "frame_000008_000001008.jpg",
+    "sha256": "7ea51e6e3a49e01f61c0b7622c1c7a15be608db8aea81221c6ba96ab722505e4",
+    "boyut": [
+     1024,
+     576
+    ],
+    "mpp": null,
+    "mpp_kaynagi": "YOK: irtifa telemetrisi yok -> mpp None -> uretim karari OLCEK_YOK (CONTRACTS SS11.3 Halka 5); fark KATMAN-A satirindan okunur",
+    "sure_ms": 422.6
+   },
+   {
+    "uretim_yol": null,
+    "uretim_red": "OLCEK_YOK",
+    "katman_a_durum": "BELIRSIZ_COKLU",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.48049,
+    "engel_orani": 0.30414,
+    "kare": "frame_000009_000001152.jpg",
+    "sha256": "244e7e8ab5ac6d9fd88dd500616847c89575c76905f15e3b71af5f08c69b4f40",
+    "boyut": [
+     1024,
+     576
+    ],
+    "mpp": null,
+    "mpp_kaynagi": "YOK: irtifa telemetrisi yok -> mpp None -> uretim karari OLCEK_YOK (CONTRACTS SS11.3 Halka 5); fark KATMAN-A satirindan okunur",
+    "sure_ms": 580.6
+   },
+   {
+    "uretim_yol": null,
+    "uretim_red": "OLCEK_YOK",
+    "katman_a_durum": "BELIRSIZ_COKLU",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.52117,
+    "engel_orani": 0.31877,
+    "kare": "frame_000010_000001200.jpg",
+    "sha256": "8ca25b0d267a0c5a8a266f5dfa987fc4ac372a064527fa14359c2bd846343a2f",
+    "boyut": [
+     1024,
+     576
+    ],
+    "mpp": null,
+    "mpp_kaynagi": "YOK: irtifa telemetrisi yok -> mpp None -> uretim karari OLCEK_YOK (CONTRACTS SS11.3 Halka 5); fark KATMAN-A satirindan okunur",
+    "sure_ms": 444.5
+   },
+   {
+    "uretim_yol": null,
+    "uretim_red": "OLCEK_YOK",
+    "katman_a_durum": "BELIRSIZ_COKLU",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.53743,
+    "engel_orani": 0.32298,
+    "kare": "frame_000011_000001224.jpg",
+    "sha256": "8ac206aef083b0087dd54975b10fc693ad340c2d24a10f32d348bfcefb4a709a",
+    "boyut": [
+     1024,
+     576
+    ],
+    "mpp": null,
+    "mpp_kaynagi": "YOK: irtifa telemetrisi yok -> mpp None -> uretim karari OLCEK_YOK (CONTRACTS SS11.3 Halka 5); fark KATMAN-A satirindan okunur",
+    "sure_ms": 493.4
+   },
+   {
+    "uretim_yol": null,
+    "uretim_red": "OLCEK_YOK",
+    "katman_a_durum": "BELIRSIZ_COKLU",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.54993,
+    "engel_orani": 0.31902,
+    "kare": "frame_000012_000001248.jpg",
+    "sha256": "785494e6b3d19d2fea17267b201a4d1183abeeca19c6c46511de812769f273ab",
+    "boyut": [
+     1024,
+     576
+    ],
+    "mpp": null,
+    "mpp_kaynagi": "YOK: irtifa telemetrisi yok -> mpp None -> uretim karari OLCEK_YOK (CONTRACTS SS11.3 Halka 5); fark KATMAN-A satirindan okunur",
+    "sure_ms": 450.0
+   },
+   {
+    "uretim_yol": null,
+    "uretim_red": "OLCEK_YOK",
+    "katman_a_durum": "BELIRSIZ_COKLU",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.53661,
+    "engel_orani": 0.30337,
+    "kare": "frame_000013_000001272.jpg",
+    "sha256": "9f5229ec74b8d2778bcdb7c0bca1793e2d0ce0668e7561a38cb59b5a7f4e5981",
+    "boyut": [
+     1024,
+     576
+    ],
+    "mpp": null,
+    "mpp_kaynagi": "YOK: irtifa telemetrisi yok -> mpp None -> uretim karari OLCEK_YOK (CONTRACTS SS11.3 Halka 5); fark KATMAN-A satirindan okunur",
+    "sure_ms": 517.4
+   },
+   {
+    "uretim_yol": null,
+    "uretim_red": "OLCEK_YOK",
+    "katman_a_durum": "BELIRSIZ_COKLU",
+    "katman_a_yol_no": null,
+    "gecilebilir_orani": 0.57862,
+    "engel_orani": 0.2703,
+    "kare": "frame_000014_000001320.jpg",
+    "sha256": "064f8bb55223b4c25d09f9a34fb803ccf8f8a4d3f686965704b90a1d78fb4637",
+    "boyut": [
+     1024,
+     576
+    ],
+    "mpp": null,
+    "mpp_kaynagi": "YOK: irtifa telemetrisi yok -> mpp None -> uretim karari OLCEK_YOK (CONTRACTS SS11.3 Halka 5); fark KATMAN-A satirindan okunur",
+    "sure_ms": 440.2
+   }
+  ]
+ }
+}

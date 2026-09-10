@@ -40,7 +40,9 @@ echo "== [5/5] KAPI"
 python - <<'PY'
 import sys
 print("python", sys.version.split()[0])
-import numpy, cv2; print("numpy", numpy.__version__, "| cv2", cv2.__version__, "| GStreamer" , "GStreamer" in cv2.getBuildInformation())
+# T220 (ON_KAYIT §5.10): `"GStreamer" in getBuildInformation()` HER ZAMAN True idi (GStreamer'siz derlemede
+# de "GStreamer: NO" satiri var). Dogru denetim: "GStreamer:" satirinin degeri YES mi.
+import numpy, cv2, re; _g = re.search(r"^\s*GStreamer:\s*(\S+)", cv2.getBuildInformation(), re.M); print("numpy", numpy.__version__, "| cv2", cv2.__version__, "| GStreamer", (_g.group(1).upper() == "YES") if _g else "BILINMIYOR")
 import torch; print("torch", torch.__version__, "| cuda", torch.cuda.is_available(), "|", torch.cuda.get_device_name(0) if torch.cuda.is_available() else "-")
 if torch.cuda.is_available():
     a = torch.randn(256, 256, device="cuda"); print("gpu matmul", float((a @ a).sum()) == float((a @ a).sum()))

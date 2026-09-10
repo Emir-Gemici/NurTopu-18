@@ -23,10 +23,22 @@ from pathlib import Path
 KOK = Path(__file__).resolve().parents[1]
 SIDECAR = KOK / "scripts" / "olcum" / "kabul_kumesi_bilinen_kareler.json"
 DENETCI = KOK / "scripts" / "olcum" / "65_kabul_denetcisi.py"
-MANIFEST = Path("O:/navitas-local-train/calisma/sentetik_arena_kadraj_t66/manifest.json")
-
 sys.path.insert(0, str(KOK / "codes"))
 sys.path.insert(0, str(KOK / "scripts" / "olcum"))
+
+
+def _t66_manifesti():
+    """T220 / K10: manifest yolu registry'nin `kabul_kumesi`sinden TURETILIR
+    (65_kabul_denetcisi.kabul_kumesi_yolu, depo kokune goreli) — eskiden ciplak
+    `O:/navitas-local-train/...` idi. Kume yoksa None -> testler ATLAR."""
+    try:
+        from importlib import import_module
+        return import_module("65_kabul_denetcisi").kabul_kumesi_yolu() / "manifest.json"
+    except RuntimeError:
+        return KOK / "data" / "kabul" / "sentetik_arena_kadraj_t66" / "manifest.json"
+
+
+MANIFEST = _t66_manifesti()
 
 KAYNAK = DENETCI.read_text(encoding="utf-8")
 NOTLAR = json.loads(SIDECAR.read_text(encoding="utf-8"))

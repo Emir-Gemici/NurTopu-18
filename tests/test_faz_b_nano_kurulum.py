@@ -280,6 +280,9 @@ class K4BelgeBetikHizasiTests(unittest.TestCase):
 
 class K5GitignoreTests(unittest.TestCase):
     def test_wheels_repoya_girmez(self):
+        if not GITIGNORE.is_file():
+            # T220 / K10 #7: Jetson paketi git DEGIL, `.gitignore` tasinmaz.
+            self.skipTest(f".gitignore yok (paket git degil): {GITIGNORE}")
         satirlar = [s.strip() for s in GITIGNORE.read_text(encoding="utf-8").splitlines()]
         self.assertIn("wheels/", satirlar)
         self.assertEqual(nti.WHEELS_VARSAYILAN, KOK / "wheels")

@@ -38,6 +38,14 @@ for _alt in ("codes", "comms"):
     if str(KOK / _alt) not in sys.path:
         sys.path.insert(0, str(KOK / _alt))
 
+
+def _ilan_yolu(ilan):
+    """Defterin `kabul_kumesi` ilani: T220'den beri depo kokune GORELI (madde 16);
+    mutlak yazilmissa oldugu gibi. Ekranin (`_kabul_kumesi_koku`) yaptigi cozumun aynisi."""
+    yol = Path(ilan)
+    return yol if yol.is_absolute() else KOK / yol
+
+
 import rpi_inference  # noqa: E402
 import yks_gui  # noqa: E402
 from karar_sozlesmesi import (OLCEK_YOK_SEBEBI,  # noqa: E402
@@ -497,9 +505,13 @@ class ArenaKaynakTests(unittest.TestCase):
         self.assertIsInstance(
             ilan, str, "etkin profil kabul kumesini ILAN ETMIYOR — ekran "
                        "hangi zemini gosterecegini uyduramaz")
-        self.assertEqual(Path(ilan),
+        # T220: defter yolu depo kokune GORELI (madde 16); ekran KOK altina cozer.
+        self.assertEqual(_ilan_yolu(ilan),
                          yks_gui.YksArayuz.ALGI_ARENA_KADRAJ_KOKU,
                          "hakem ekrani kabul kumesinden AYRISTI")
+        self.assertFalse(Path(ilan).is_absolute(),
+                         "defterdeki kabul_kumesi yine MUTLAK/ciplak yol — "
+                         "Jetson'da bulunmaz (T220/K2, madde 16)")
 
     def test_kadraj_yolu_kaynakta_CIPLAK_YAZILMAMIS(self):
         """Madde 16: yol ikinci kez kaynak dosyaya yazilmaz."""
@@ -762,7 +774,7 @@ class AcilisArgumanlariTests(unittest.TestCase):
         defter = json.loads(
             (KOK / "config" / "model_registry.json").read_text(encoding="utf-8"))
         ilan = defter["profiles"][defter["default_profile"]]["kabul_kumesi"]
-        self.assertEqual(Path(ilan), yks_gui.YksArayuz.ALGI_ARENA_KADRAJ_KOKU)
+        self.assertEqual(_ilan_yolu(ilan), yks_gui.YksArayuz.ALGI_ARENA_KADRAJ_KOKU)
 
         # Secim GERCEKTEN o koku okuyor mu — gecici kume ile kanitla.
         with tempfile.TemporaryDirectory() as gecici:

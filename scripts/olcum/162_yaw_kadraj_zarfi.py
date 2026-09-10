@@ -533,7 +533,9 @@ def olc(model, model_yolu: Path, kume: Path, ornekler: list[dict],
 def _varsayilan_kume() -> Path:
     defter = load_registry()
     profil = defter["profiles"][defter["default_profile"]]
-    return Path(profil["kabul_kumesi"])
+    yol = Path(profil["kabul_kumesi"])
+    # T220: defter yolu depo kokune GORELI (madde 16); mutlak yol oldugu gibi kalir.
+    return yol if yol.is_absolute() else KOK / yol
 
 
 def main(argv: list[str] | None = None) -> int:
