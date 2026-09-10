@@ -11,10 +11,12 @@
 | dizin | ne | dosya | parmak izi (`65_kabul_denetcisi.kume_parmak_izi`, ad+boyut) |
 |---|---|---|---|
 | `sentetik_arena_kadraj_t66/` | K1–K4/K7 **yatay** kabul kümesi (T66; tohum 7, 260 kare, mpp 0,078125) | 547 | `sha256:604c037f…` = registry `kabul_kumesi_parmak_izi` (n=547) |
-| `sentetik_arena_kadraj_ACILI_t189/` | K5A **açılı** bariyer kolu (T189; `--bariyer-acisi 90`) | 524 | `sha256:735ecc81…` |
+| `sentetik_arena_kadraj_ACILI_t189/` | K5A **açılı** bariyer kolu (T189; `--bariyer-acisi 90`) | 524 | `sha256:735ecc81…` = registry `kabul_kumesi_acili_parmak_izi` (n=524; T220'de yazıldı) |
 
 **Bayt-eş kopya.** İki dizin `O:/navitas-local-train/calisma/` altındaki kaynaktan olduğu
-gibi kopyalandı (T220'de parmak izi kaynak ↔ kopya **EŞ** ölçüldü); içlerine dosya
+gibi kopyalandı (T220'de ölçüldü: parmak izi kaynak ↔ kopya **EŞ**; ayrıca içerik düzeyinde
+her dosyanın sha256'sı üzerinden özet T66 `edfa318be480fdd3` / T189 `6816714e30326228`
+iki tarafta **aynı**, 547 dosya 36 599 043 B / 524 dosya 33 774 699 B); içlerine dosya
 **eklenmez, silinmez, değiştirilmez** — küme dondurulmuştur (D-263 §4.3, K1/K7 çapaları
 buna bağlı). Bu yüzden `data.yaml` içindeki tarihsel `path:` satırı da olduğu gibi durur
 (o alan yalnız YOLO eğitim/val komutları içindir; kabul zinciri onu okumaz).

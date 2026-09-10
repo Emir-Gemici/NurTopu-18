@@ -25,7 +25,10 @@ import unittest
 from pathlib import Path
 
 KOK = Path(__file__).resolve().parents[1]
-VENV = "O:/navitas-local-train/venv/Scripts/python.exe"
+# T220 / K10: eskiden ciplak `O:/navitas-local-train/venv/Scripts/python.exe` idi
+# (test_p4/test_p8 ile ayni kusur, Jetson'da FileNotFoundError). Suit uretim
+# yorumlayicisiyla kosar (madde 13); alt surec AYNI yorumlayiciyi kullanir.
+VENV = sys.executable
 DEMO = KOK / "simulation" / "scripts" / "mission_demo.py"
 URETIM_KAYNAK = {"yks": "yks_gui.py", "ika": "ika_receiver.py"}
 

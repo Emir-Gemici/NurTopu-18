@@ -24,6 +24,10 @@ import unittest
 from pathlib import Path
 
 KOK = Path(__file__).resolve().parents[1]
+if str(KOK / "tests") not in sys.path:
+    sys.path.insert(0, str(KOK / "tests"))
+from depo_yollari import ana_depo_adaylari  # noqa: E402  (T220/K10: worktree'de kapsayan ana depo)
+
 OLCUM_AYARLAR = KOK / "scripts" / "olcum" / "ayarlar.py"
 EGITIM_AYARLAR = KOK / "navitas-local-train" / "ayarlar.py"
 
@@ -167,7 +171,15 @@ class DepoDisindaCanliKlasor(unittest.TestCase):
                  "from ayarlar import REPO;print(REPO)", str(td)],
                 capture_output=True, text=True)
         self.assertEqual(0, cp.returncode, cp.stderr[-600:])
-        self.assertEqual(KOK.resolve(), Path(cp.stdout.strip()).resolve())
+        bulunan = Path(cp.stdout.strip()).resolve()
+        # Ana depoda (PC `O:\\navitas`, Jetson `~/navitas`) kardes taramasi KOK'u
+        # bulur. Bir git WORKTREE'de (`<ana>/.claude/worktrees/<ad>`) gecici klasor
+        # `worktrees/` altina duser ve bulucunun 2. kademesi (yukari dogru ilk
+        # isaretci) KAPSAYAN ana depoyu bulur — bu dogru davranistir (T161: yukari
+        # tarama kardes taramasindan once). Beklenti: KOK ya da onu kapsayan ana
+        # depo (`depo_yollari.ana_depo_adaylari`); baska bir dizin DUSER.
+        self.assertIn(bulunan, ana_depo_adaylari(),
+                      f"bulucu ne KOK'u ne kapsayan ana depoyu buldu: {bulunan}")
 
     def test_isaretcisiz_yalitilmis_agacta_FAIL_CLOSED(self):
         """Hicbir kademe tutmazsa sessiz varsayim YOK — ImportError."""

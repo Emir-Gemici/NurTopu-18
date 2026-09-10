@@ -18,6 +18,7 @@ results/fdr_sprint_20260910/ON_KAYIT.md SS5.10 (cv2 GStreamer denetimi kusuru).
 """
 from __future__ import annotations
 
+import ast
 import json
 import os
 import re
@@ -124,10 +125,14 @@ class K2KabulKumeleriDepoda(unittest.TestCase):
         self.assertEqual(pi["n"], kayit["n"], "kabul kumesi dosya sayisi registry ile uyusmuyor")
         self.assertEqual(pi["ozet"], kayit["ozet"], "kabul kumesi parmak izi registry ile uyusmuyor")
         self.assertEqual(pi["n"], 547)
+        # ACILI kume (T189) de dondurulmus: parmak izi T220'de registry'ye yazildi
+        # (kaynak <-> kopya ayni parmak izi + icerik sha256 ES olculdu).
         acili = K65.kume_parmak_izi(KOK / p["kabul_kumesi_acili"])
+        kayit_acili = p["kabul_kumesi_acili_parmak_izi"]
+        self.assertEqual(acili["n"], kayit_acili["n"], "acili kume dosya sayisi registry ile uyusmuyor")
+        self.assertEqual(acili["ozet"], kayit_acili["ozet"], "acili kume parmak izi registry ile uyusmuyor")
         self.assertEqual(acili["n"], 524)
-        self.assertEqual(acili["ozet"], "sha256:735ecc812c09a88e8a939da72ad3b8e1e7cc0a80d15a8d2e46e5dbcb6bd6fb1d"[:7]
-                         + acili["ozet"][7:], "acili kume parmak izi bicimi")
+        self.assertNotEqual(acili["ozet"], pi["ozet"], "iki kume ayni parmak izini tasiyor (kopya karismis)")
 
     def test_manifestler_260_ornek_ve_acili_90(self):
         p = _profil()
@@ -144,7 +149,6 @@ class K2KabulKumeleriDepoda(unittest.TestCase):
                         "kabul kumesi kareleri diskte eksik")
 
     def test_170_s_kumesi_kabul_goreli_yolu_bulur(self):
-        m = _m177.__globals__  # noqa: F841  (yalniz sys.path hazir)
         import importlib.util
         spec = importlib.util.spec_from_file_location(
             "m170_t220", KOK / "scripts" / "olcum" / "170_engine_karar_denkligi.py")
@@ -296,21 +300,66 @@ class G4PcReferans(unittest.TestCase):
 # K10 — suitte ciplak O:\ yolu YOK
 # ═══════════════════════════════════════════════════════════════════════════
 class K10CiplakYolYasagi(unittest.TestCase):
+    """Kilit KOD dizgilerine bakar, belgeye degil: docstring/yorumdaki `O:\\...` bir
+    KOSUM tarifidir (madde 13 yorumlayici yolu) ve Jetson'da hicbir seyi kirmaz;
+    Jetson'u kiran, `Path("O:/navitas/...")` gibi KOD icindeki dizgidir (K10_LISTE).
+    AST ile yalniz kod dizgileri (docstring disi Constant/str) taranir."""
 
-    def test_tests_altinda_ciplak_O_navitas_yok(self):
+    @staticmethod
+    def _kod_dizgileri(kaynak: str):
+        """(satir, dizgi) — docstring OLMAYAN her str sabiti (f-string parcalari dahil)."""
+        agac = ast.parse(kaynak)
+        docstringler = set()
+        for dugum in ast.walk(agac):
+            if isinstance(dugum, (ast.Module, ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef)):
+                govde = getattr(dugum, "body", [])
+                if govde and isinstance(govde[0], ast.Expr) and isinstance(govde[0].value, ast.Constant) \
+                        and isinstance(govde[0].value.value, str):
+                    docstringler.add(id(govde[0].value))
+        for dugum in ast.walk(agac):
+            if isinstance(dugum, ast.Constant) and isinstance(dugum.value, str) and id(dugum) not in docstringler:
+                yield dugum.lineno, dugum.value
+
+    def test_tests_altinda_KOD_dizgisinde_ciplak_O_navitas_yok(self):
         ihlal = []
         for p in sorted((KOK / "tests").glob("*.py")):
-            for i, satir in enumerate(p.read_text(encoding="utf-8", errors="replace").splitlines(), 1):
-                if CIPLAK_O_NAVITAS.search(satir):
-                    ihlal.append(f"{p.name}:{i}: {satir.strip()[:90]}")
-        self.assertEqual([], ihlal, "tests/ altinda ciplak O:/navitas yolu (K10, madde 16):\n" + "\n".join(ihlal))
+            for satir, dizgi in self._kod_dizgileri(p.read_text(encoding="utf-8", errors="replace")):
+                if CIPLAK_O_NAVITAS.search(dizgi):
+                    ihlal.append(f"{p.name}:{satir}: {dizgi.strip()[:90]}")
+        self.assertEqual([], ihlal, "tests/ altinda KOD dizgisinde ciplak surucu yolu (K10, madde 16):\n"
+                         + "\n".join(ihlal))
+
+    def test_kod_dizgisi_taramasi_docstringi_atlar_kodu_yakalar(self):
+        """POZITIF KONTROL: tarayici docstring'i atliyor, kod dizgisini yakaliyor.
+
+        Ornek kaynak metinleri PARCALI kurulur (`"O:" + "/navitas"`): bu test
+        dosyasi da taramanin kapsamindadir, ornek dizgiler tek sabit olarak
+        yazilsaydi tarayici KENDI ornegini ihlal sayardi."""
+        ciplak = "O:" + "/navitas"
+        ornek = ('"""KOSUM: ' + ciplak + '-local-train/venv/Scripts/python.exe -B x.py"""\n'
+                 '# yorum: ' + ciplak + '\n'
+                 'def f():\n    """' + ciplak + ' belge"""\n'
+                 '    return "yok"\n')
+        self.assertEqual([], [d for _, d in self._kod_dizgileri(ornek) if CIPLAK_O_NAVITAS.search(d)])
+        mutant = ornek + 'YOL = Path("' + ciplak + '/models")\n'
+        yakalanan = [d for _, d in self._kod_dizgileri(mutant) if CIPLAK_O_NAVITAS.search(d)]
+        self.assertEqual([ciplak + "/models"], yakalanan)
+        fstr = 'AD = "x"\nYOL = f"' + ciplak + '/{AD}"\n'
+        self.assertTrue([d for _, d in self._kod_dizgileri(fstr) if CIPLAK_O_NAVITAS.search(d)],
+                        "f-string parcasindaki ciplak yol kacti")
+        # ters bolu bicimi de yakalanir: r"O:\navitas\models"
+        ters = 'YOL = Path(r"' + "O:" + '\\navitas\\models")\n'
+        self.assertTrue([d for _, d in self._kod_dizgileri(ters) if CIPLAK_O_NAVITAS.search(d)],
+                        "ters bolulu ciplak yol kacti")
 
     def test_p4_p8_yorumlayici_sys_executable(self):
-        for ad in ("test_p4_runbook.py", "test_p8_sim_katmani.py"):
+        for ad in ("test_p4_runbook.py", "test_p8_sim_katmani.py", "test_sim_mission_demo_port.py"):
             with self.subTest(dosya=ad):
                 s = (KOK / "tests" / ad).read_text(encoding="utf-8")
                 self.assertIn("VENV = sys.executable", s)
-                self.assertNotIn("navitas-local-train/venv", s)
+                kod_dizgileri = [d for _, d in self._kod_dizgileri(s)]
+                self.assertFalse(any("navitas-local-train/venv" in d for d in kod_dizgileri),
+                                 f"{ad}: kod dizgisinde PC venv yolu geri geldi")
 
     def test_depo_koku_testi_anchor_kullanmiyor(self):
         s = (KOK / "tests" / "test_depo_koku_turetilir.py").read_text(encoding="utf-8")

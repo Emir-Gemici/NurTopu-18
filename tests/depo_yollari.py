@@ -18,6 +18,9 @@ Kullanim (testte):
     from depo_yollari import KOK, ana_depo_adaylari
     for kok in ana_depo_adaylari():
         aday = kok / "models" / ad
+
+KESIF MUAFIYETI: test DEGIL, yardimci modul — `ana_depo_adaylari`/`ilk_var_olan` test_t143_turev_ve_kamera, test_t145_uygunluk, test_depo_koku_turetilir ve test_t220_jetson_istekleri tarafindan ice alinir; kendi basina kapi degildir (T120 kurali: `test_` onekli olmayan dosya test tasimaz).
+KOSUM: O:\\navitas-local-train\\venv\\Scripts\\python.exe -m unittest discover -s tests -p "test_t220_jetson_istekleri.py"  (tests/depo_yollari.py bu kosumda K10CiplakYolYasagi tarafindan ice alinir; worktree kalibi ve NAVITAS_ANA_DEPO isaretcisi sentetik agacla sinanir)
 """
 from __future__ import annotations
 

@@ -363,15 +363,10 @@ def _kabul_kumesi_koku():
     bu yüzden ağırlıkla **aynı yerde** durur: sürüm değişince küme de tek
     yerden değişir, ikisi ayrı ayrı güncellenmez.
 
-    ⚠ Dizinin VAR OLMASI şart koşulmaz — küme eskiden depo dışındaydı
-    (eğitim çalışma alanı) ve temiz bir klonda bulunmayabilirdi. O
+    ⚠ Dizinin VAR OLMASI şart koşulmaz (temiz klon / paket eksik olabilir). O
     durumda ekran "Kaynak boş" der; sessizce BAŞKA bir kümeye düşmez.
     Fail-closed olan şey **bildirimin yokluğudur**, verinin değil.
-
-    T220 (10 Eylül 2026, K2/K10): defterdeki yol artık **depo köküne
-    görelidir** (`data/kabul/...`, madde 16); göreli yol `_PROJE_KOKU`
-    altına çözülür, mutlak yol olduğu gibi kalır. Jetson'da (`~/navitas`)
-    aynı defter aynı dizini bulur — çıplak `O:/` yolu yoktur.
+    T220: yol depo köküne GÖRELİ (madde 16); mutlak yol da kabul (pathlib `/`).
     """
     profil, defter = _kayit_profili()
     ham = profil.get("kabul_kumesi") if isinstance(profil, dict) else None
@@ -380,8 +375,7 @@ def _kabul_kumesi_koku():
             f"Kayıt defterindeki etkin profilde `kabul_kumesi` yok/geçersiz "
             f"({defter}); hakem ekranı modeli hangi zeminde göstereceğini "
             "UYDURMAZ.")
-    yol = Path(ham.strip())
-    return yol if yol.is_absolute() else _PROJE_KOKU / yol
+    return _PROJE_KOKU / Path(ham.strip())     # göreli -> depo kökü; mutlak -> kendisi
 
 
 def _udp_adres(deger):
