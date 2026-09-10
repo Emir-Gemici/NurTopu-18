@@ -45,6 +45,9 @@
 #   YKI canli kamera (ayri LAN):   KAMERA_KOPRU_BIND=0.0.0.0 ... --kuru
 #     Video SiK'e GIRMEZ. 0.0.0.0 yalniz acik beyanla; TCP 8080 YKI IP'sine
 #     guvenlik duvarinda sinirlanir. Varsayilan 127.0.0.1 (disariya KAPALI).
+#   Isaretli gosterici (T228):      GOSTERICI_KIP=x11 ... --kuru   (x11|drm|rtsp|kapali; varsayilan kapali)
+#     rpi_inference'a --isaretli-yayin $ISARETLI_YAYIN (T227, 127.0.0.1:8081) verir; gosterici
+#     surecini bu betik KALDIRMAZ (x11 autostart / drm birimi / rtsp elle: gosterici/GOSTERICI_KURULUM.md).
 #
 # CIKIS KODLARI: 0 tamam · 1 hata (fail-closed, hicbir sey baslatilmadi) ·
 #                3 --kuru'da beyan/paket/ana makine eksik (gercek kosum DURURDU)
@@ -186,6 +189,34 @@ elif [ "$KAMERA_KOPRU_BIND" != 127.0.0.1 ]; then
   hata "KAMERA_KOPRU_BIND yalniz KAMERA=http://127.0.0.1:<port>/video koprusu etkinken kullanilir"
 fi
 
+# ── Isaretli gosterici (T228 · D-443 · H9_MK15/TASARIM.md): MK15 video hatti, KARAR URETMEZ ──
+# ISARETLI_YAYIN: rpi_inference --isaretli-yayin ucu (T227). Gosterici buradan /kare.jpg (x11/rtsp)
+#   ya da /video (drm) okur. YALNIZ loopback: isaretli yayin LAN'a acilmaz — disari DP->HDMI
+#   donusturucu ya da yedek RTSP ile gider.
+# GOSTERICI_KIP: x11 | drm | rtsp | kapali. VARSAYILAN kapali = mevcut davranis DEGISMEZ
+#   (rpi_inference'a --isaretli-yayin VERILMEZ). Bu betik gostericiyi KALDIRMAZ: x11 = masaustu
+#   autostart (.desktop), drm = elle etkinlestirilen birim (gdm DURUR), rtsp = yedek, elle —
+#   gosterici/GOSTERICI_KURULUM.md. --kuru komutu ve [VAR]/[YOK] denetimini basar; --kur/--dogrudan
+#   kurulu rpi_inference bayragi tanimiyorsa (T227 yok) DURUR (argparse cikis 2 dongusu yerine).
+ISARETLI_YAYIN_PORT_VARSAYILAN=8081   # scripts/isaretli_gosterici.py VARSAYILAN_KAYNAK (test kilitler)
+GOSTERICI_BETIK="isaretli_gosterici.py"
+ISARETLI_YAYIN="${ISARETLI_YAYIN:-127.0.0.1:$ISARETLI_YAYIN_PORT_VARSAYILAN}"
+GOSTERICI_KIP="${GOSTERICI_KIP:-kapali}"
+case "$GOSTERICI_KIP" in
+  x11|drm|rtsp|kapali) ;;
+  *) hata "GOSTERICI_KIP='$GOSTERICI_KIP' taninmiyor (x11 | drm | rtsp | kapali)" ;;
+esac
+case "$ISARETLI_YAYIN" in
+  127.0.0.1:*) _iy_port="${ISARETLI_YAYIN#127.0.0.1:}" ;;
+  *) hata "ISARETLI_YAYIN='$ISARETLI_YAYIN': yalniz 127.0.0.1:<port> (isaretli yayin LAN'a ACILMAZ; disari HDMI/RTSP ile)" ;;
+esac
+case "$_iy_port" in ''|*[!0-9]*) hata "ISARETLI_YAYIN='$ISARETLI_YAYIN': port sayi degil" ;; esac
+[ "${#_iy_port}" -le 5 ] && [ "$((10#$_iy_port))" -ge 1 ] && [ "$((10#$_iy_port))" -le 65535 ] \
+  || hata "ISARETLI_YAYIN='$ISARETLI_YAYIN': port 1-65535 olmali"
+if [ "$KAMERA_KOPRU" = 1 ] && [ "$((10#$_iy_port))" -eq "$((10#$KAMERA_KOPRU_PORT))" ]; then
+  hata "ISARETLI_YAYIN portu ($_iy_port) kamera koprusuyle AYNI — iki HTTP sunucusu ayni porta baglanamaz"
+fi
+
 # ── KIP'e gore tuketici argumanlari — birimler bunlari $..._ARGS olarak okur ───
 RPI_EK_ARGS=""
 if [ -n "$FOV" ]; then RPI_EK_ARGS="$RPI_EK_ARGS --fov $FOV"; fi
@@ -193,6 +224,8 @@ if [ -n "$ODAK" ]; then RPI_EK_ARGS="$RPI_EK_ARGS --odak $ODAK"; fi
 if [ -n "$SENARYO" ]; then RPI_EK_ARGS="$RPI_EK_ARGS --senaryo $SENARYO"; fi
 if [ -n "$KAMERA" ]; then RPI_EK_ARGS="$RPI_EK_ARGS --kaynak $KAMERA"; fi
 if [ -n "$UB_REFERANS" ]; then RPI_EK_ARGS="$RPI_EK_ARGS --ub-referans $UB_REFERANS"; fi
+# T228: gosterici acikken isaretli yayin (T227) acilir; kapaliyken bayrak VERILMEZ (mevcut davranis)
+if [ "$GOSTERICI_KIP" != kapali ]; then RPI_EK_ARGS="$RPI_EK_ARGS --isaretli-yayin $ISARETLI_YAYIN"; fi
 RPI_EK_ARGS="${RPI_EK_ARGS# }"
 case "$KIP" in
   udp)
@@ -218,12 +251,14 @@ esac
 ENV_ANAHTARLAR=(NAVITAS_KOK PYTHON3 LOG_DIZIN KIP PIXHAWK_SERI PIXHAWK_BAUD SYSID
                 SIK_SERI SIK_BAUD KANIT_TIMEOUT RPI_EK_ARGS RPI_TELSIZ_ARGS
                 INIS_TELSIZ_ARGS KOMUT_TELSIZ_ARGS
-                KAMERA_PYTHON KAMERA_KOPRU_BIND KAMERA_KOPRU_PORT KAMERA_KOPRU_ARGS)
+                KAMERA_PYTHON KAMERA_KOPRU_BIND KAMERA_KOPRU_PORT KAMERA_KOPRU_ARGS
+                GOSTERICI_KIP ISARETLI_YAYIN)   # T228: DRM gosterici birimi ${ISARETLI_YAYIN} okur
 # Tek deger tasiyan beyanlar: bosluk/glob/kacis icerirse systemd ($VAR) ve bash (nohup $k)
 # ikisi de BOLER/GENISLETIR — --kuru [UYARI] basar (D-405, curutucu --dogrudan glob bulgusu).
 TEK_DEGER_ANAHTARLAR=(FOV ODAK SENARYO KAMERA UB_REFERANS YKS_IP IKA_IP SYSID KANIT_TIMEOUT
                       PIXHAWK_SERI PIXHAWK_BAUD SIK_SERI SIK_BAUD NAVITAS_KOK PYTHON3 LOG_DIZIN
-                      SERVIS_KULLANICI KAMERA_PYTHON KAMERA_KOPRU_BIND KAMERA_KOPRU_PORT)
+                      SERVIS_KULLANICI KAMERA_PYTHON KAMERA_KOPRU_BIND KAMERA_KOPRU_PORT
+                      GOSTERICI_KIP ISARETLI_YAYIN)
 
 env_icerik() {
   local k
@@ -369,6 +404,48 @@ kurulu_py_dosyalari() {
   done
 }
 
+# ── Isaretli gosterici (T228) denetimi ─────────────────────────────────────────
+# T227 destegi METIN denetimi: rpi_inference argparse'i tirnakli '--isaretli-yayin' bayragini
+# tanimliyor mu. Tanimlamiyorsa bayrak VERILEMEZ: argparse cikis 2 -> Restart=always cokme
+# dongusu. NEDEN pipe'siz grep: `set -o pipefail` altinda `tr | grep -q` erken cikinca tr'nin
+# SIGPIPE'i (141) bulunan eslesmeyi "yok" gosterirdi.
+isaretli_destek_var() { [ -n "$1" ] && [ -f "$1" ] && grep -Eq "[\"']--isaretli-yayin[\"']" "$1"; }
+
+gosterici_denetimi() {  # --kuru bolumu (stdout); kuru() buradaki [YOK] satirlarini sayar
+  local komut kip_dosyasi rpi_kurulu
+  if [ "$GOSTERICI_KIP" = kapali ]; then
+    echo "## gosterici (T228): GOSTERICI_KIP=kapali — rpi_inference'a --isaretli-yayin VERILMEZ, gosterici kalkmaz (mevcut davranis)"
+    return 0
+  fi
+  komut="$KAMERA_PYTHON $NAVITAS_KOK/scripts/$GOSTERICI_BETIK --kip $GOSTERICI_KIP --kaynak http://$ISARETLI_YAYIN"
+  echo "## gosterici (T228 · GOSTERICI_KIP=$GOSTERICI_KIP) — KARAR URETMEZ; bu betik gostericiyi KALDIRMAZ"
+  echo "isaretli yayin: rpi_inference --isaretli-yayin $ISARETLI_YAYIN (RPI_EK_ARGS; T227)"
+  echo "komut: $komut"
+  case "$GOSTERICI_KIP" in
+    x11)
+      echo "baslatan: X11 otomatik oturum + ~/.config/autostart/navitas-isaretli-gosterici.desktop (gosterici/GOSTERICI_KURULUM.md)"
+      kip_dosyasi="gosterici/navitas-isaretli-gosterici.desktop" ;;
+    drm)
+      echo "baslatan: navitas-isaretli-gosterici-drm.service — ELLE etkinlestirilir, gdm DURUR (gosterici/GOSTERICI_KURULUM.md)"
+      echo "[UYARI] nvidia-drm yuklenip gosterici CALISMAZSA Argus (nvarguscamerasrc) ~3 fps'e duser — DRM ya surekli calisir ya hic acilmaz"
+      kip_dosyasi="gosterici/navitas-isaretli-gosterici-drm.service" ;;
+    rtsp)
+      echo "baslatan: elle (YEDEK): $komut --jetson-ip <JETSON_IP> -> rtsp://<JETSON_IP>:8554/isaretli (oneri 192.168.144.30; .11/.12/.20/.25 YASAK)"
+      kip_dosyasi="gosterici/GOSTERICI_KURULUM.md" ;;
+  esac
+  if [ -f "$PAKET_DIZIN/kod/$GOSTERICI_BETIK" ]; then echo "[VAR] paket kod/$GOSTERICI_BETIK"
+  else echo "[YOK] paket kod/$GOSTERICI_BETIK <- scripts/jetson_paket_hazirla.py KOPYALAR"; fi
+  if [ -f "$PAKET_DIZIN/$kip_dosyasi" ]; then echo "[VAR] paket $kip_dosyasi"
+  else echo "[YOK] paket $kip_dosyasi"; fi
+  if isaretli_destek_var "$PAKET_DIZIN/kod/rpi_inference.py"; then echo "[VAR] paket rpi_inference --isaretli-yayin (T227)"
+  else echo "[YOK] paket rpi_inference --isaretli-yayin (T227) <- bayrak tanimli degil: rpi_inference argparse ile COKER (cikis 2, Restart dongusu); T227 birlesene dek GOSTERICI_KIP=kapali"; fi
+  if [ -f "$NAVITAS_KOK/scripts/$GOSTERICI_BETIK" ]; then echo "[VAR] kurulu $NAVITAS_KOK/scripts/$GOSTERICI_BETIK"
+  else echo "[YOK] kurulu $NAVITAS_KOK/scripts/$GOSTERICI_BETIK <- JETSON_KILAVUZ §2 (cp kod/$GOSTERICI_BETIK ~/navitas/scripts/)"; fi
+  rpi_kurulu="$(py_yolu "$(exec_start navitas-rpi-inference)")"
+  if isaretli_destek_var "$rpi_kurulu"; then echo "[VAR] kurulu rpi_inference --isaretli-yayin (T227)"
+  else echo "[YOK] kurulu rpi_inference --isaretli-yayin (T227) <- ${rpi_kurulu:-rpi_inference.py} bayragi tanimiyor"; fi
+}
+
 dosya_denetle() {  # kurulu kopyada kullanici, dosyalar ve cihazlar var mi? (kuru kipte CAGRILMAZ)
   local b y liste
   # NEDEN once kullanici (D-405): yanlis User= ile kurulan birimler 217/USER ile sonsuz
@@ -389,11 +466,18 @@ dosya_denetle() {  # kurulu kopyada kullanici, dosyalar ve cihazlar var mi? (kur
   while read -r b y; do
     [ -f "$y" ] || hata "$b: $y yok (JETSON_KILAVUZ §2: cp kod/... $NAVITAS_KOK/{codes,comms,scripts}; seri_hub icin comms/seri_hub.py; kamera_koprusu icin scripts/kamera_koprusu.py)"
   done <<< "$liste"
+  if [ "$GOSTERICI_KIP" != kapali ]; then
+    # T228 (fail-closed): --isaretli-yayin'i tanimayan rpi_inference argparse ile olur (cikis 2) ve
+    # Restart=always onu cokme dongusune sokar — birimleri kurmadan / baslatmadan DUR.
+    y="$(py_yolu "$(exec_start navitas-rpi-inference)")"
+    isaretli_destek_var "$y" \
+      || hata "GOSTERICI_KIP=$GOSTERICI_KIP: kurulu ${y:-rpi_inference.py} --isaretli-yayin TANIMIYOR (T227 yok) — argparse cikis 2 + Restart dongusu olurdu; GOSTERICI_KIP=kapali ya da T227'li paket"
+  fi
 }
 
 # ── --kuru ────────────────────────────────────────────────────────────────────
 kuru() {
-  local b y e u liste cr_isaret="" yok=0 kod=0
+  local b y e u g liste cr_isaret="" yok=0 kod=0
   # K8 kilidi: CR korumasi dali kostuysa basligi isaretle (test bunu assert eder)
   if [ -n "$CR_KOPYA" ]; then cr_isaret=" · (CR'siz kopya: $CR_KOPYA)"; fi
   echo "# jetson_baslat.sh --kuru · KIP=$KIP · HICBIR SEY BASLATILMADI$cr_isaret"
@@ -436,6 +520,11 @@ kuru() {
     if [ -f "$y" ]; then echo "[VAR] kurulu $y"
     else echo "[YOK] kurulu $y <- $b: JETSON_KILAVUZ §2 (cp kod/... $NAVITAS_KOK/{codes,comms,scripts})"; yok=$((yok + 1)); fi
   done <<< "$liste"
+  # T228: gosterici bolumu (kapaliyken tek satir). [YOK] satirlari toplam eksige eklenir:
+  # GOSTERICI_KIP acik ama T227 yoksa --kur dosya_denetle'de duracaktir — kuru bunu SIMDI soyler.
+  g="$(gosterici_denetimi)"
+  printf '%s\n' "$g"
+  yok=$((yok + $(printf '%s\n' "$g" | grep -c '^\[YOK\]' || true)))
   echo "## beyan denetimi"
   u="$(deger_uyarilari)"
   if [ -n "$u" ]; then printf '%s\n' "$u"; fi

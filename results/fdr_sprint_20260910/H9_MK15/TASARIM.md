@@ -59,12 +59,30 @@ doğrudan (Jetson IP 192.168.144.30, `rtsp://192.168.144.30:8554/isaretli`; hava
 4. Camdan cama gecikme: Jetson ekranında kronometre → YKS ekranı birlikte filme alınır (5 ölçüm, p50/maks).
 5. Kurulum provası: YKS + kumanda + HDMI + yakalama kartı + köprü ≤ 15 dk hazırlık içinde.
 
+**Kullanıcı cevapları (10 Eylül 15:3x, D-443 ek):**
+- 1–2: cevap "SIYI Air Unit HDMI Girişinden Ethernet Çıkışına Dönüştürücü" — dönüştürücü **İHA tarafıdır**; kumandanın HDMI çıkışı ve PC'deki USB HDMI yakalama kartı sorusu **AÇIK** (mimar yeniden sordu).
+- 3: mini HDMI → HDMI kablo var. Orin Nano DevKit'te HDMI yok, **DisplayPort** var → DP→HDMI adaptörü yine gerekli; mini HDMI ucu büyük olasılıkla dönüştürücü girişine gider (konektör doğrulanacak).
+- 4: İHA'da Jetson için **12,2 V dönüştürücü** var → HDMI giriş dönüştürücüsü (12 V / 3 W) aynı hattan beslenebilir; regülatörün akım kapasitesi BEYAN GEREKLİ. Hava birimi beslemesi Air Unit Mini aralığına göre.
+- 5: MK15 **5,8 GHz**; telemetri **SiK 433 MHz** (değişmez). BTK 5,8 GHz muafiyeti 25 mW e.i.r.p. riski açık — güç Link Status'tan okunacak.
+- 6: IP ayarları sahada birlikte yapılacak.
+
 ## 4. Eşikler (ön kayıt)
 - YKS: video ve rota paneli aynı ekranda — test ile EVET.
 - Video koptuğunda veri hattı ve onay akışı etkilenmez — test ile EVET.
 - Jetson FPS düşüşü ≤ %5 (PC ölçümü); Jetson'da ölçülene kadar ÖLÇÜLEMEDİ.
 - Camdan cama gecikme ≤ 1,0 s (hakemin eşzamanlı görmesi için) — sahada ölçülür; ölçülmezse ÖLÇÜLEMEDİ.
 
-## 5. Açık araştırma (mk15-bosluk sonucu buraya işlenir)
-Orin Nano DevKit DP → pasif/aktif HDMI adaptörü; ekransız tam ekran yöntemi; Air Unit Mini portları/besleme;
-dönüştürücü giriş çözünürlükleri ve kablosu; HQ kamera R8 direnci; SIYI FPV'de OSD'siz tam ekran.
+## 5. Boşluk araştırması sonuçları (mk15-bosluk, wf_2d31e42f; doğrulayıcı 7/7 + 3 rastgele iddia, çürütülen yok)
+
+| konu | sonuç | güven / kaynak |
+|---|---|---|
+| Jetson ekran çıkışı | DevKit'in tek çıkışı **DisplayPort**; **pasif ve aktif** DP→HDMI adaptör resmi olarak destekli (DP++ pin 13). Zincir: Jetson DP → DP(erkek)→HDMI(dişi) adaptör → kullanıcının mini HDMI↔HDMI kablosu → dönüştürücü. | YÜKSEK — docs.nvidia.com Orin Nano devkit hardware_layout; NVIDIA forum 249839 |
+| Ekransız tam ekran | Belgeli yol **nvdrmvideosink** (gdm durdur + `modprobe nvidia-drm modeset=1`); NVIDIA JP 6.2 + IMX477 ile 30 fps doğruladı. **Uyarı:** DRM açılıp kullanılmazsa Argus 3 fps'e düşüyor; JetPack 7.2'de nvidia-drm varsayılan denylist'te (nv-load-display-modules). **Karar:** birincil yol varsayılan X11 masaüstü oturumu + otomatik oturum + tam ekran pencere (gdm kapanmaz, Argus riski yok); DRM yolu ikinci seçenek; kmssink kaynaksız → kullanılmaz. | YÜKSEK — R39.2 Accelerated GStreamer; forum 331128, 345587 |
+| EDID/HPD | Dönüştürücünün EDID/HPD davranışı ve kabul ettiği giriş çözünürlükleri **belgesiz** → tezgâhta denenir; X yolunda EDID yoksa sahte xorg (dummy, IgnoreEDID, 1280×720) yedeği. | KAYNAK YOK / ORTA — forum 263892 |
+| Dönüştürücü | Giriş **Mini HDMI** (kılavuz V1.1; v1.9 "Micro HDMI" diyor — çelişki), 12 V / 3 W; çıkış konnektöründe **12V pini** var, hava biriminin LAN&PWR portunda da 12V pini var → besleme büyük olasılıkla **hava biriminden aynı kabloyla** (çıkarım); IP web arayüzünden değil **SD karttaki setip.txt** ile değişir; varsayılan .25; canlı codec H.264/H.265 çelişkili. | YÜKSEK/ORTA — SIYI dönüştürücü kılavuzu V1.1 |
+| Hava birimi | "Air Unit Mini" adında SIYI ürünü **yok**. Eldeki birim ya **MK15 Air Unit** (100 g, 1× LAN&PWR, **16,8–75,6 V = 4S–18S**, 2024 öncesi lotlar 6S–14S) ya **HM30 Air Unit** (74 g, 2× LAN&PWR, 12,6–25,2 V = 3S–6S, 2024 öncesi 3S–4S). **Risk:** MK15 Air Unit'in alt sınırı 4S'in DOLU gerilimi; yük altında kararabilir → ağırlık/port sayısı/etiketle birim belirlenir; MK15 Air Unit ise besleme yolu yeniden düşünülür. | YÜKSEK — MK15 kılavuz v1.9 s.21/s.24, SSS |
+| Kumanda HDMI | Yalnız **Enterprise**; dönüştürücü resmi olarak "Enterprise HDMI Combo" ile gelir. SIYI FPV'de OSD/Mavlink OSD/harita/artı kapatılabilir; tam ekran ve bildirim gizleme belgesiz. | YÜKSEK — kılavuz v1.9, SSS |
+| Frekans/güç | FCC 2AZBB-MK15TX: **5745–5825 MHz, 68,1 mW iletilen** → 5 dBi antenle ≈214 mW e.i.r.p. (HESAP) — BTK genel KET sınırı **25 mW e.i.r.p.** (Tablo 1 satır 26) ≈9 dB aşılıyor (FCC sürümü için; CE/TR gücü bilinmiyor). Şartnamede frekans kuralı yok → organizasyona sorulmalı. | YÜKSEK — FCC (Wayback), BTK ftm-teknik-olcutler-ek-5 |
+| Yazılım kodlama | Orin Nano x264: 30 fps kamera, ultrafast %19–38 çekirdek başı (NVIDIA R39.2 tablosu); 720p 5 fps yükü bunun altında olmalı — Jetson'da ölçülür. | YÜKSEK — R39.2 SoftwareEncodeInOrinNano |
+| 🔴 HQ kamera + JetPack 7.2.1 | Orin Nano'da R8 direnci için NVIDIA'dan kesin "gerekli" yok (koşullu). **Asıl risk:** JetPack 7.2 IMX477 sürücüsü — Arducam: NITO ISP dosyası eksik, beta sürücü 39.2.0'a bağlı, 39.2.1'de bağımlılık hatası; kullanıcı raporları: reset GPIO PH.06 düşük kalma, INVALID_SETTINGS. Stok sürücüyle 7.2.1'de başarılı IMX477 raporu bulunamadı. → **12 Eylül ilk test**; yedek: USB UVC kamera (`kamera_koprusu --kaynak <indeks>`, FOV 41–69°). | ORTA — forum.arducam.com 9297; NVIDIA forum 379028 |
+| Gösterici uygulaması (T228, D-447) | `scripts/isaretli_gosterici.py` master'da: `--kip x11` varsayılan (tam ekran, 5 Hz, kare yaşı > 2 s BAYAT, > 5 s / 503 / erişilemez GÖRÜNTÜ YOK), `--kip drm` seçenek (nvdrmvideosink + gözetmen; donmuş boru takibi T228-D), `--kip rtsp` yedek (x264, `rtsp://<.30>:8554/isaretli`); `jetson_baslat` `GOSTERICI_KIP` varsayılan kapalı, T227 yoksa fail-closed. PC dumanı: 4 senaryo (CANLI/BAYAT/503/köprü yok). **Jetson'da hiçbir kip ÖLÇÜLEMEDİ** → 12 Eylül, `jetson_paket/gosterici/GOSTERICI_KURULUM.md` §4. | ÖLÇÜM (PC) — `results/fdr_sprint_20260910/H9_MK15/t228/` |
