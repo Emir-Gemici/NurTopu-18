@@ -161,7 +161,7 @@ sudo systemctl start navitas-isaretli-gosterici-drm     # önce dene; kalıcı i
   **2 ardışık** taze yoklama **ve** son boru başlatmasından **≥ 3 s** ister — çırpınan yayın
   `nvdrmvideosink`'i sürekli yeniden açmaz (her açılış `set_mode=1` ile kip kurar). Kendiliğinden
   ölen video borusunun yerine GÖRÜNTÜ YOK borusu **hemen** açılır — yayın tazeyse ekrandaki sebep
-  `video borusu kendiliginden bitti (rc N)` (journal: `rc=N omur=…`; **T228-D2**, 10 Eylül), yayın
+  ~~`video borusu kendiliginden bitti (rc N)`~~ (journal: `rc=N omur=…`; **T228-D2**, 10 Eylül), yayın
   bayat/yoksa yayının kendi sebebi; ölen GÖRÜNTÜ YOK borusu ≥ 3 s
   aralıkla yeniden açılır. Açılışta kırmızı ekran ~3 s görünür (bu kurala göre beklenen).
 - **Boru ilerlemesi — donmuş boru (T228-D):** video borusunda `identity name=nabiz silent=false`;

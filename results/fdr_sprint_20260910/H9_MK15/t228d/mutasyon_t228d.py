@@ -14,6 +14,12 @@ MP boru ilerlemesi esigi kaldirildi — ve ek kilitler. R-* satirlari T228'in (t
 metni DEGISMEYEN mutantlarinin yeniden kosumudur (test dosyasi degisti: regresyon denetimi); T228
 M6'nin metni T228-D'de kaldirildi, yerine M6' var.
 
+T228-D2 (T228-D curutucusu RED, REVIEW_LOG D-453): curutucunun KACAN uc mutanti NG (nabiz
+izleyicisi borular arasi paylasilir), NK1 (§1 kodek notu cizilir), NK2 (§5 DOGRULANACAK maddesi
+cizilip 'doğrulandı' yazilir) + yeni kilitlerin mutantlari: NS (olen videonun sebebi), NK3-NK10
+(D-453: belge kilitleri cizili araliklar AYIKLANMIS metinde; §1/§5/§9'da olculmemis GECTI yok;
+§4 adim 9 sonuc hucresi tam 'ÖLÇÜLECEK'; §8 satiri; T228 kapsam kilidi). Hepsi MUTASYONLAR_D2'de.
+
 KOSUM (depo kokunden; baska surec bu dosyalari okurken KOSMA):
   O:/navitas-local-train/venv/Scripts/python.exe -B \
       results/fdr_sprint_20260910/H9_MK15/t228d/mutasyon_t228d.py
@@ -164,6 +170,49 @@ MUTASYONLAR = [
      ("test_G10_x11_T227siz_paket_YOK_exit_3_bayrak_verilir",)),
 ]
 
+# ── T228-D2: curutucunun KACAN mutantlari (NG, NK1, NK2) + yeni kilitlerin mutantlari ──
+NG_T = "test_G7_drm_kos_ikinci_video_borusu_YENI_nabiz_izleyicisiyle_surer"
+NS_T = "test_G7_olen_video_borusu_GORUNTU_YOK_sebebi_rc_ya_da_yayin_sebebi"
+G8K = "test_G8_kurulum_belgesi_kapsami"
+MUTASYONLAR_D2 = [
+    ("NG nabiz izleyicisi borular arasi PAYLASILIYOR (ikinci boru onceki izleyiciyle)", GOSTERICI,
+     [("        iz = NabizIzleyici(saat=saat)\n",
+       "        iz = son[\"iz\"] or NabizIzleyici(saat=saat)\n")], (NG_T,)),
+    ("NS olen video borusunun GORUNTU YOK sebebi 'yayin dogrulaniyor'a donuyor", GOSTERICI,
+     [("                    elif olen_video is not None:\n", "                    elif False:\n")],
+     (NS_T,)),
+    ("NK1 belge: §1 kodek celiski notu CIZILDI (metin durur)", KURULUM,
+     [("**H.264/H.265 çelişkili**", "~~**H.264/H.265 çelişkili**~~")], (G8D,)),
+    ("NK2 belge: §5 nabiz bicimi DOGRULANACAK maddesi cizilip 'doğrulandı' yazildi", KURULUM,
+     [("🔴 **`-v` nabız satırı biçimi Jetson'da ÖLÇÜLEMEDİ — DOĞRULANACAK**",
+       "~~🔴 **`-v` nabız satırı biçimi Jetson'da ÖLÇÜLEMEDİ — DOĞRULANACAK**~~ "
+       "(10 Eylül: doğrulandı)")], (G8D,)),
+    ("NK3 belge: §5 satir tamponu (stdbuf) cumlesi CIZILDI", KURULUM,
+     [("`drm_kos` video borusunu `stdbuf -oL` önekiyle koşar",
+       "~~`drm_kos` video borusunu `stdbuf -oL` önekiyle koşar~~")], (G8D,)),
+    ("NK4 belge: §9 nabiz bicimi OLCULEMEDI maddesi CIZILDI", KURULUM,
+     [("- `gst-launch-1.0 -v` nabız satırı biçimi (DRM",
+       "- ~~`gst-launch-1.0 -v` nabız satırı biçimi~~ (DRM")], (G8D,)),
+    ("NK5 belge: §5 DOGRULANACAK maddesi durur ama yanina 'doğrulandı' yazildi", KURULUM,
+     [("ÖLÇÜLEMEDİ — DOĞRULANACAK** (PC'de GStreamer yok;",
+       "ÖLÇÜLEMEDİ — DOĞRULANACAK** (12 Eylül atölyede doğrulandı; PC'de GStreamer yok;")],
+     (G8D,)),
+    ("NK6 belge: §5 olen video sebebi notu CIZILDI", KURULUM,
+     [("`video borusu kendiliginden bitti (rc N)` (journal",
+       "~~`video borusu kendiliginden bitti (rc N)`~~ (journal")], (G8D,)),
+    ("NK7 belge: §8 'kendiliginden bitti' sorun giderme satiri CIZILDI", KURULUM,
+     [('| drm kipinde kırmızı "video borusu kendiliginden bitti (rc N)" |',
+       '| ~~drm kipinde kırmızı "video borusu kendiliginden bitti (rc N)"~~ |')], (G8D,)),
+    ("NK8 belge: §0 'Video KARAR ÜRETMEZ' CIZILDI (T228 kapsam kilidi)", KURULUM,
+     [("**Video KARAR ÜRETMEZ.**", "~~**Video KARAR ÜRETMEZ.**~~")], (G8K,)),
+    ("NK9 belge: §4 adim 9 sonuc hucresi 'GEÇTİ — ÖLÇÜLECEK' (tam ÖLÇÜLECEK degil)", KURULUM,
+     [("ZAMANINDA` | ÖLÇÜLECEK |", "ZAMANINDA` | GEÇTİ — ÖLÇÜLECEK |")], (G8D,)),
+    ("NK10 belge: §5 yeni video borusu komutu CIZILDI (kod blogunda)", KURULUM,
+     [("sudo modprobe nvidia-drm modeset=1\n" + YENI_KOMUT + "\n",
+       "sudo modprobe nvidia-drm modeset=1\n~~" + YENI_KOMUT + "~~\n")], (G8D,)),
+]
+MUTASYONLAR += MUTASYONLAR_D2
+
 SATIRLAR = []
 
 
@@ -202,7 +251,7 @@ def main():
     tum = sorted({y for _a, ds, _c, _h in MUTASYONLAR for y in ds})
     orijinal = {y: y.read_bytes() for y in tum}
     sha0 = {y: hashlib.sha256(b).hexdigest() for y, b in orijinal.items()}
-    yaz("# T228-D mutasyon ciktisi · {} · {}".format(time.strftime("%Y-%m-%d %H:%M:%S"),
+    yaz("# T228-D + T228-D2 mutasyon ciktisi · {} · {}".format(time.strftime("%Y-%m-%d %H:%M:%S"),
                                                     Path(PY).name))
     yakalanan = 0
     uygulanamayan = 0
