@@ -15,12 +15,20 @@ import threading
 import time
 from pathlib import Path
 
+# cp1254 konsolda '✓' / '═' UnicodeEncodeError ile betigi dusuruyordu (D-438 §2a
+# sinifi); ika_nav.py ile ayni kalip.
+for _akim in (sys.stdout, sys.stderr):
+    try:
+        _akim.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, OSError):
+        pass
+
 sys.path.insert(0, str(Path(__file__).parent))
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "comms"))
 from link import UDPLink
 from iha_sender import IhaSender, rota_json_oku
 from ika_receiver import IkaReceiver
-from protocol import encode, ack, FrameReader
+from protocol import encode, ack, FrameReader, MESAJ_OPEN_ROUTE
 from ika_nav import route_to_world_waypoints
 
 
@@ -29,7 +37,7 @@ def _yks_acker(link, stop, box):
     while not stop.is_set():
         d, addr = link.recv()
         for m in reader.feed(d) if d else []:
-            if m.get("type") == "OPEN_ROUTE":
+            if m.get("type") == MESAJ_OPEN_ROUTE:
                 box["latest"] = m
                 print(f"   [YKS] 📡 tespit alındı: {m['label'].upper()} ({m['road']}) "
                       f"conf={m['conf']} — HAKEM ONAYI ✓")
@@ -42,9 +50,14 @@ def run(rota_json):
     line = "═" * 56
     print(f"\n{line}\n  NAVITAS GÖREV DEMOSU — dinamik A* rota\n{line}")
 
-    # Alıcılar (İKA + YKS) — gerçek UDP soketleri
-    ika_link = UDPLink(bind=("127.0.0.1", 5006), timeout=0.1)
-    yks_link = UDPLink(bind=("127.0.0.1", 5005), timeout=0.1)
+    # Alıcılar (İKA + YKS) — gerçek UDP soketleri, EPHEMERAL port (T209/D-427
+    # kalıbı, D-438 §2e). NEDEN: sabit 5005/5006 ÜRETİM YKS/İKA portlarıdır
+    # (yalnız CONTRACTS.md'ye ait); demo saha PC'sinde YKS açıkken bunlara bind
+    # edince `WinError 10013` ile düşüyordu. Gerçek port `UDPLink.port` ile
+    # alınır ve gönderici akran sözlüğüne verilir. Kilit:
+    # tests/test_sim_mission_demo_port.py (üretim portları tutuluyorken geçer).
+    ika_link = UDPLink(bind=("127.0.0.1", 0), timeout=0.1)
+    yks_link = UDPLink(bind=("127.0.0.1", 0), timeout=0.1)
     ika = IkaReceiver(ika_link).start()
     stop = threading.Event()
     yks_box = {"latest": None}
@@ -62,7 +75,8 @@ def run(rota_json):
     print("[3] İHA → YKS + İKA aktarımı (comms)...")
     iha_link = UDPLink(bind=("127.0.0.1", 0), timeout=0.1)
     sender = IhaSender(iha_link,
-                       peers={"ika": ("127.0.0.1", 5006), "yks": ("127.0.0.1", 5005)})
+                       peers={"ika": ("127.0.0.1", ika_link.port),
+                              "yks": ("127.0.0.1", yks_link.port)})
     seq, acked = sender.send_open_route(road, conf=conf,
                                         waypoints=yerel_wps, ref_xy=ref_xy)
     print(f"   [İHA] ✓ aktarım onaylandı — ACK: {sorted(acked)}")

@@ -1,4 +1,4 @@
-"""SiK 433 MHz RF OLCUM ARACI — ACK gidis-donusu (RTT) ve kayip.
+"""SiK 433 MHz RF OLCUM ARACI — ACK gidis-donusu (RTT), kayip ve VERI HIZI.
 
 NEDEN: D-388 seri hatti GERCEK bayt akisinda (TCP koprusu, `socket://`)
 dogruladi; gercek 433 MHz RF olcumu Faz B'ye kaldi. Bu arac o olcumu yapar:
@@ -21,6 +21,20 @@ okumak zorundadir; yoksa cevabi 0,3 s geciktirir. Bu yuzden her iki rol
 `_hizli_oku` kullanir: ilk bayta kadar bekle (`read(1)`), sonra birikeni
 bosalt. Acma/gonderme/kapama yine `SerialLink` uzerindendir (uretim yolu).
 
+VERI HIZI (T216 · yonerge Y-3.3.4-M03 / Y-4-M09 "kullanilan veri hizi"):
+olc rolu gonderdigi/aldigi BAYT ve PAKET'i (cozulen cerceve) sayar; sure =
+ilk prob gonderiminden son probun ACK'ine ya da zaman asimina kadar gecen
+monotonik zaman. Rapordaki `veri_hizi` alani bayt/s, bit/s ve paket/s verir.
+Bu, prob kadansindaki (`--aralik`) FIILI akistir — hattin KAPASITESI degildir:
+`--aralik 0.25` uretim IKA_GO kadansidir, sayilar o kadansin yukudur. Yanki
+ucu da ayni sayaclari tutar (`--json` ciktisinda). Sayaclar RTT/kayip
+hesabina DOKUNMAZ (kilit: tests/test_faz_b_sik_rf_olc.py).
+
+TASIYICI: varsayilan `seri` (SiK / `serial_for_url`). `--tasiyici udp` ayni
+prob/ACK yordamini UDP uzerinde kosar (`comms/link.py UDPLink`): 127.0.0.1
+loopback tabani ve WiFi/LAN hatti ayni betikle olculur; RF sayilari bu
+referansla okunur. UDP'de okuma artefakti yoktur (datagram butun gelir).
+
 VERDIKT (fail-closed):
   UYUMLU     (cikis 0) — RTT p95 < IKA_GO_TEKRAR_ARALIGI_S ve < PARASUT_TEKRAR_ARALIGI_S
   UYARI      (cikis 1) — p95 esiklerden en az birini asiyor
@@ -28,7 +42,7 @@ VERDIKT (fail-closed):
                          "UYUMLU" DENEMEZ, sessiz basari yalani yok.
 Kayip icin esik YOK (ilk olcum): yalniz raporlanir. RTT yuzdelikleri YALNIZ
 ACK alinan problar uzerindendir; yuksek kayipta p95 iyimserdir — kayip
-alanina birlikte bakilir.
+alanina birlikte bakilir. Veri hizi icin de esik YOK: raporlanir.
 
 Kullanim (iki telsiz, iki makine ya da iki port):
     venv\\Scripts\\python.exe -B scripts/sik_rf_olc.py --rol yanki --port COM7
@@ -36,6 +50,9 @@ Kullanim (iki telsiz, iki makine ya da iki port):
         --n 50 --aralik 0.25 --json --cikti results/faz_b/sik_rtt.json
 Port `serial_for_url` uyumludur: `COM7`, `/dev/ttyUSB0`, `socket://h:p`,
 `loop://` (loop:// ile olc rolu kendi CMD'sini gorur, ACK gelmez: kayip %100).
+UDP (loopback / LAN):
+    ... --rol yanki --tasiyici udp --bind 127.0.0.1:0        (portu stderr'e yazar)
+    ... --rol olc --tasiyici udp --peer 127.0.0.1:<port> --n 200 --json --cikti ...
 """
 
 from __future__ import annotations
@@ -55,8 +72,9 @@ for _yol in (KOK / "codes", KOK / "comms"):
 
 from karar_sozlesmesi import (IKA_GO_TEKRAR_ARALIGI_S,  # noqa: E402
                               PARASUT_TEKRAR_ARALIGI_S)
-from link import SerialLink  # noqa: E402
-from protocol import FrameReader, ack, command, encode  # noqa: E402
+from link import SerialLink, UDPLink  # noqa: E402
+from protocol import (FrameReader, ack, command, encode,  # noqa: E402
+                      MESAJ_ACK, MESAJ_CMD)
 
 # SiK varsayilan air-rate'inde yaygin seri hiz (`comms/link.py` varsayilaniyla
 # ayni; sozlesmede baud sabiti YOK — D-388 / link.py dokstringi).
@@ -77,19 +95,75 @@ OKUMA_TAVANI = 4096
 PROB_KOMUTU = "RF_PROBE"       # protocol.command(cmd=...) — alicilar bilmedigini yok sayar
 PROB_HEDEF = "ika"             # command(hedef=...) — yanki ucu IKA rolunu oynar
 YANKI_DUGUMU = "ika"           # ack(node=...)
-ACK_REF_TIPI = "CMD"           # ack(ref_tip=...) — CONTRACTS §6.6
+ACK_REF_TIPI = MESAJ_CMD       # ack(ref_tip=...) — CONTRACTS §6.6
+
+TASIYICI_SERI, TASIYICI_UDP = "seri", "udp"
+VARSAYILAN_UDP_BIND = "127.0.0.1:0"
 
 CIKIS_UYUMLU, CIKIS_UYARI, CIKIS_OLCULEMEDI = 0, 1, 2
 VERDIKT_UYUMLU = "tekrar tasarimiyla UYUMLU"
 VERDIKT_UYARI = "UYARI: RTT p95 tekrar araligini asiyor"
 VERDIKT_OLCULEMEDI = "OLCULEMEDI: hic ACK alinmadi (RTT ornegi yok)"
 
+VERI_HIZI_NOTU = ("Prob kadansindaki (aralik_s) FIILI akis; hat kapasitesi degil. "
+                  "sure_s = ilk prob gonderimi -> son prob ACK/zaman asimi. "
+                  "alinan_paket = cozulen cerceve sayisi (ACK + diger trafik).")
 
-# ── Seri uc ──────────────────────────────────────────────────────────────────
+
+# ── Uclar ────────────────────────────────────────────────────────────────────
 
 def uc_ac(port, baud=VARSAYILAN_BAUD, timeout=YANKI_OKUMA_ZAMAN_ASIMI_S):
     """Uretim tasiyicisi `SerialLink` ile ucu ac (serial_for_url uyumlu)."""
     return SerialLink(port, baud, timeout=timeout)
+
+
+class UdpUc:
+    """UDP tasiyici ucu (loopback / LAN) — `SerialLink` ile ayni yuzey.
+
+    `send(bytes)` / `close()` ayni; okuma `oku()` ile datagram butunudur.
+    Yanki rolunde akran verilmez: ilk probun kaynak adresine cevap yazilir
+    (`UDPLink.recv` adresi verir). Olc rolunde `peer` zorunludur.
+    """
+
+    def __init__(self, bind, peer=None, timeout=YANKI_OKUMA_ZAMAN_ASIMI_S):
+        self.link = UDPLink(bind=bind, peer=peer, timeout=timeout)
+        self._son_adres = None
+
+    @property
+    def port(self):
+        return self.link.port
+
+    def oku(self):
+        veri, adres = self.link.recv(OKUMA_TAVANI)
+        if veri and adres is not None:
+            self._son_adres = adres
+        return veri or b""
+
+    def send(self, data, peer=None):
+        hedef = peer or self.link.peer or self._son_adres
+        if hedef is None:
+            raise OSError("UDP: akran bilinmiyor (yanki ilk probu gormeden yazamaz)")
+        self.link.send(data, hedef)
+
+    def close(self):
+        self.link.close()
+
+
+def _adres(metin):
+    """'host:port' -> (host, int(port)); bozuksa ValueError."""
+    host, _, port = str(metin).rpartition(":")
+    if not host or not port.isdigit():
+        raise ValueError(f"adres 'host:port' olmali: {metin!r}")
+    return host, int(port)
+
+
+def udp_uc_ac(bind=VARSAYILAN_UDP_BIND, peer=None,
+              timeout=YANKI_OKUMA_ZAMAN_ASIMI_S):
+    """UDP ucu ac; `bind`/`peer` 'host:port' metni ya da (host, port)."""
+    b = _adres(bind) if isinstance(bind, str) else tuple(bind)
+    p = None if peer is None else (_adres(peer) if isinstance(peer, str)
+                                   else tuple(peer))
+    return UdpUc(b, p, timeout=timeout)
 
 
 def _hizli_oku(link):
@@ -97,7 +171,11 @@ def _hizli_oku(link):
 
     Donus: gelen baytlar (bos ise zaman asimi). Bir cerceve parcali gelebilir;
     cagiran `FrameReader` ile birlestirir — zamanlama cerceve TAMAMLANINCA alinir.
+    UDP ucunda (`UdpUc`) datagram butun doner; artefakt yok.
     """
+    oku = getattr(link, "oku", None)
+    if oku is not None:
+        return oku()
     ser = link.ser
     ilk = ser.read(1)
     if not ilk:
@@ -117,28 +195,63 @@ def _hizli_oku(link):
 
 
 def _seri_hatasi():
-    import serial  # tembel: link.py de oyle yapar
+    """pyserial'in hata sinifi; pyserial yoksa (UDP tasiyici) OSError yeter."""
+    try:
+        import serial  # tembel: link.py de oyle yapar
+    except ImportError:
+        return OSError
     return serial.SerialException
+
+
+# ── Veri hizi ────────────────────────────────────────────────────────────────
+
+def veri_hizi_hesapla(sure_s, gonderilen_bayt, alinan_bayt,
+                      gonderilen_paket, alinan_paket):
+    """Sayaclardan hiz sozlugu; sure <= 0 ise hizlar None (0'a bolme yok)."""
+    sure_s = float(sure_s)
+    gecerli = sure_s > 0.0
+
+    def hiz(deger):
+        return (deger / sure_s) if gecerli else None
+
+    return {
+        "sure_s": sure_s,
+        "gonderilen_bayt": int(gonderilen_bayt),
+        "alinan_bayt": int(alinan_bayt),
+        "gonderilen_paket": int(gonderilen_paket),
+        "alinan_paket": int(alinan_paket),
+        "gonderilen_bayt_s": hiz(gonderilen_bayt),
+        "alinan_bayt_s": hiz(alinan_bayt),
+        "gonderilen_bit_s": hiz(8 * gonderilen_bayt),
+        "alinan_bit_s": hiz(8 * alinan_bayt),
+        "gonderilen_paket_s": hiz(gonderilen_paket),
+        "alinan_paket_s": hiz(alinan_paket),
+        "not": VERI_HIZI_NOTU,
+    }
 
 
 # ── Rol: yanki ───────────────────────────────────────────────────────────────
 
 def _prob_mu(mesaj):
-    return (isinstance(mesaj, dict) and mesaj.get("type") == "CMD"
+    return (isinstance(mesaj, dict) and mesaj.get("type") == MESAJ_CMD
             and mesaj.get("cmd") == PROB_KOMUTU
             and isinstance(mesaj.get("seq"), int)
             and not isinstance(mesaj.get("seq"), bool))
 
 
-def yanki_kos(link, dur=None, ilerleme=None):
+def yanki_kos(link, dur=None, ilerleme=None, sayac=None, saat=time.monotonic):
     """Gelen her CMD(RF_PROBE) icin ack(seq, "ika", "CMD") yaz.
 
     `dur` (threading.Event) verilirse o kurulunca doner; verilmezse
     KeyboardInterrupt ya da hat kopana kadar surer. Cevaplanan sayiyi dondurur.
+    `sayac` (dict) verilirse bayt/paket sayaclari ve sure ona yazilir
+    (ilk gelen bayttan son ACK yazimina kadar); donus tipi DEGISMEZ.
     """
     okuyucu = FrameReader()
     cevaplanan = 0
     hata = _seri_hatasi()
+    alinan_bayt = gonderilen_bayt = alinan_paket = 0
+    t_ilk = t_son = None
     while dur is None or not dur.is_set():
         try:
             veri = _hizli_oku(link)
@@ -148,20 +261,31 @@ def yanki_kos(link, dur=None, ilerleme=None):
             break
         if not veri:
             continue
+        if t_ilk is None:
+            t_ilk = saat()
+        alinan_bayt += len(veri)
         for mesaj in okuyucu.feed(veri):
+            alinan_paket += 1
             if not _prob_mu(mesaj):
                 continue                   # baska trafik: yok say
-            link.send(encode(ack(mesaj["seq"], YANKI_DUGUMU, ref_tip=ACK_REF_TIPI)))
+            cerceve = encode(ack(mesaj["seq"], YANKI_DUGUMU, ref_tip=ACK_REF_TIPI))
+            link.send(cerceve)
+            gonderilen_bayt += len(cerceve)
             cevaplanan += 1
+            t_son = saat()
             if ilerleme:
                 ilerleme(f"yanki: seq={mesaj['seq']} -> ACK ({cevaplanan})")
+    if sayac is not None:
+        sure = (t_son - t_ilk) if (t_ilk is not None and t_son is not None) else 0.0
+        sayac.update(veri_hizi_hesapla(sure, gonderilen_bayt, alinan_bayt,
+                                       cevaplanan, alinan_paket))
     return cevaplanan
 
 
 # ── Rol: olc ─────────────────────────────────────────────────────────────────
 
 def _ack_eslesir(mesaj, seq):
-    if not isinstance(mesaj, dict) or mesaj.get("type") != "ACK":
+    if not isinstance(mesaj, dict) or mesaj.get("type") != MESAJ_ACK:
         return False
     if mesaj.get("ref") != seq:
         return False
@@ -184,7 +308,8 @@ def olc_kos(link, n, aralik, zaman_asimi=None, ilerleme=None,
 
     Prob i icin seq=i (1..n) — ACK `ref` ile eslenir. Zaman asimi icinde
     gelmeyen ACK KAYIP sayilir; sonradan gelen (bekleyen seq'e ait olmayan)
-    ACK `gec_ack` sayacina yazilir, RTT'ye GIRMEZ.
+    ACK `gec_ack` sayacina yazilir, RTT'ye GIRMEZ. Bayt/paket sayaclari
+    (`veri_hizi`) RTT ve kayip hesabindan BAGIMSIZDIR: yalniz sayar.
     """
     n = int(n)
     aralik = float(aralik)
@@ -200,16 +325,21 @@ def olc_kos(link, n, aralik, zaman_asimi=None, ilerleme=None,
     gonderilen = 0
     gec_ack = 0
     hat_koptu = None
+    gonderilen_bayt = alinan_bayt = alinan_paket = 0
+    t_ilk = None
 
     for seq in range(1, n + 1):
         cerceve = encode(command(PROB_KOMUTU, PROB_HEDEF, seq=seq))
         t0 = saat()
+        if t_ilk is None:
+            t_ilk = t0
         try:
             link.send(cerceve)
         except (hata, OSError) as exc:
             hat_koptu = f"gonderim {seq}: {exc}"
             break
         gonderilen += 1
+        gonderilen_bayt += len(cerceve)
         son = t0 + zaman_asimi
         rtt = None
         while rtt is None and saat() < son:
@@ -218,11 +348,13 @@ def olc_kos(link, n, aralik, zaman_asimi=None, ilerleme=None,
             except (hata, OSError) as exc:
                 hat_koptu = f"okuma {seq}: {exc}"
                 break
+            alinan_bayt += len(veri)
             for mesaj in okuyucu.feed(veri):
+                alinan_paket += 1
                 if _ack_eslesir(mesaj, seq):
                     rtt = (saat() - t0) * 1000.0
                     break
-                if isinstance(mesaj, dict) and mesaj.get("type") == "ACK":
+                if isinstance(mesaj, dict) and mesaj.get("type") == MESAJ_ACK:
                     gec_ack += 1
         if hat_koptu:
             break
@@ -236,6 +368,7 @@ def olc_kos(link, n, aralik, zaman_asimi=None, ilerleme=None,
         kalan = (t0 + aralik) - saat()
         if kalan > 0 and seq < n:
             time.sleep(kalan)
+    sure_s = (saat() - t_ilk) if t_ilk is not None else 0.0
 
     ack_alinan = len(rtt_ms)
     kayip = gonderilen - ack_alinan
@@ -263,6 +396,8 @@ def olc_kos(link, n, aralik, zaman_asimi=None, ilerleme=None,
             "min": (min(rtt_ms) if rtt_ms else None),
             "maks": (max(rtt_ms) if rtt_ms else None),
         },
+        "veri_hizi": veri_hizi_hesapla(sure_s, gonderilen_bayt, alinan_bayt,
+                                       gonderilen, alinan_paket),
         "esik_s": esik_s,
         "verdikt": verdikt,
         "cikis_kodu": cikis,
@@ -282,6 +417,20 @@ def _ms(deger):
     return "-" if deger is None else f"{deger:.1f} ms"
 
 
+def _hiz(deger, birim):
+    return "-" if deger is None else f"{deger:.1f} {birim}"
+
+
+def veri_hizi_metni(v):
+    """`veri_hizi` sozlugunu tek satirda ozetle (rapor metni ve yanki cikisi)."""
+    return (f"gonderilen {v['gonderilen_bayt']} B / {v['gonderilen_paket']} pkt "
+            f"-> {_hiz(v['gonderilen_bayt_s'], 'B/s')} "
+            f"({_hiz(v['gonderilen_paket_s'], 'pkt/s')}) · "
+            f"alinan {v['alinan_bayt']} B / {v['alinan_paket']} pkt "
+            f"-> {_hiz(v['alinan_bayt_s'], 'B/s')} "
+            f"({_hiz(v['alinan_paket_s'], 'pkt/s')}) · sure {v['sure_s']:.2f} s")
+
+
 def rapor_metni(rapor):
     r = rapor["rtt_ms"]
     satirlar = [
@@ -292,6 +441,7 @@ def rapor_metni(rapor):
         f"RTT p50    : {_ms(r['p50'])}",
         f"RTT p95    : {_ms(r['p95'])}",
         f"RTT maks   : {_ms(r['maks'])}",
+        f"veri hizi  : {veri_hizi_metni(rapor['veri_hizi'])}",
         "esik       : p95 < IKA_GO_TEKRAR_ARALIGI_S="
         f"{rapor['esik_s']['IKA_GO_TEKRAR_ARALIGI_S'] * 1000:.0f} ms ve "
         f"< PARASUT_TEKRAR_ARALIGI_S="
@@ -309,12 +459,38 @@ def _ilerleme_yaz(satir):
     print(satir, file=sys.stderr, flush=True)
 
 
+def _uc_ac_cli(a, ap, timeout):
+    """Argumanlara gore ucu ac; (uc, kunye) dondurur. Acilamazsa None, kunye."""
+    if a.tasiyici == TASIYICI_UDP:
+        kunye = {"tasiyici": TASIYICI_UDP, "bind": a.bind, "peer": a.peer}
+        try:
+            uc = udp_uc_ac(a.bind, a.peer, timeout=timeout)
+        except (OSError, ValueError) as exc:
+            return None, kunye, f"UDP ucu acilamadi ({a.bind} -> {a.peer}): {exc}"
+        kunye["bind"] = f"{_adres(a.bind)[0]}:{uc.port}"   # 0 -> gercek port
+        return uc, kunye, None
+    kunye = {"tasiyici": TASIYICI_SERI, "port": a.port, "baud": a.baud}
+    try:
+        hata = _seri_hatasi()
+        uc = uc_ac(a.port, a.baud, timeout=timeout)
+    except (hata, OSError, ValueError) as exc:
+        return None, kunye, f"port acilamadi ({a.port}): {exc}"
+    return uc, kunye, None
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--rol", choices=("yanki", "olc"), required=True)
-    ap.add_argument("--port", required=True,
-                    help="serial_for_url uyumlu: COM7, /dev/ttyUSB0, socket://, loop://")
+    ap.add_argument("--tasiyici", choices=(TASIYICI_SERI, TASIYICI_UDP),
+                    default=TASIYICI_SERI,
+                    help="seri (SiK, varsayilan) ya da udp (loopback/LAN)")
+    ap.add_argument("--port", default=None,
+                    help="seri: serial_for_url uyumlu: COM7, /dev/ttyUSB0, socket://, loop://")
     ap.add_argument("--baud", type=int, default=VARSAYILAN_BAUD)
+    ap.add_argument("--bind", default=VARSAYILAN_UDP_BIND,
+                    help="udp: dinlenen host:port (0 = ephemeral; yanki portu stderr'e yazar)")
+    ap.add_argument("--peer", default=None,
+                    help="udp: karsi uc host:port (olc icin zorunlu)")
     ap.add_argument("--n", type=int, default=VARSAYILAN_N, help="prob sayisi (olc)")
     ap.add_argument("--aralik", type=float, default=VARSAYILAN_ARALIK_S,
                     help="prob araligi s (olc); varsayilan IKA_GO tekrar araligi")
@@ -325,30 +501,42 @@ def main(argv=None):
     ap.add_argument("--sessiz", action="store_true", help="prob ilerlemesini basma")
     a = ap.parse_args(argv)
 
+    if a.tasiyici == TASIYICI_SERI:
+        if not a.port:
+            ap.error("--tasiyici seri icin --port gerekli")
+        try:
+            import serial  # noqa: F401
+        except ImportError:
+            print("OLCULEMEDI: pyserial kurulu degil (venv: pip install pyserial)",
+                  file=sys.stderr)
+            return CIKIS_OLCULEMEDI
+    else:
+        if a.rol == "olc" and not a.peer:
+            ap.error("--tasiyici udp + --rol olc icin --peer host:port gerekli")
+        try:
+            _adres(a.bind)
+            if a.peer:
+                _adres(a.peer)
+        except ValueError as exc:
+            ap.error(str(exc))
+
     ilerleme = None if a.sessiz else _ilerleme_yaz
-    try:
-        hata = _seri_hatasi()
-    except ImportError:
-        print("OLCULEMEDI: pyserial kurulu degil (venv: pip install pyserial)",
-              file=sys.stderr)
-        return CIKIS_OLCULEMEDI
 
     if a.rol == "olc":
         if a.n < 1 or not (a.aralik > 0) or (a.zaman_asimi is not None
                                              and not (a.zaman_asimi > 0)):
             ap.error("--n >= 1, --aralik > 0, --zaman-asimi > 0 olmali")
-        try:
-            link = uc_ac(a.port, a.baud, timeout=min(
-                a.zaman_asimi if a.zaman_asimi else 2.0 * a.aralik,
-                OLC_OKUMA_ZAMAN_ASIMI_S))
-        except (hata, OSError, ValueError) as exc:
-            print(f"OLCULEMEDI: port acilamadi ({a.port}): {exc}", file=sys.stderr)
+        link, kunye, hata_metni = _uc_ac_cli(a, ap, timeout=min(
+            a.zaman_asimi if a.zaman_asimi else 2.0 * a.aralik,
+            OLC_OKUMA_ZAMAN_ASIMI_S))
+        if link is None:
+            print(f"OLCULEMEDI: {hata_metni}", file=sys.stderr)
             return CIKIS_OLCULEMEDI
         try:
             rapor = olc_kos(link, a.n, a.aralik, a.zaman_asimi, ilerleme=ilerleme)
         finally:
             link.close()
-        rapor["port"], rapor["baud"] = a.port, a.baud
+        rapor.update(kunye)
         if a.cikti:
             yol = Path(a.cikti)
             yol.parent.mkdir(parents=True, exist_ok=True)
@@ -361,24 +549,37 @@ def main(argv=None):
         return rapor["cikis_kodu"]
 
     # rol == yanki
-    try:
-        link = uc_ac(a.port, a.baud, timeout=YANKI_OKUMA_ZAMAN_ASIMI_S)
-    except (hata, OSError, ValueError) as exc:
-        print(f"yanki: port acilamadi ({a.port}): {exc}", file=sys.stderr)
+    link, kunye, hata_metni = _uc_ac_cli(a, ap, timeout=YANKI_OKUMA_ZAMAN_ASIMI_S)
+    if link is None:
+        print(f"yanki: {hata_metni}", file=sys.stderr)
         return CIKIS_OLCULEMEDI
-    _ilerleme_yaz(f"yanki: {a.port} @ {a.baud} — CMD({PROB_KOMUTU}) bekleniyor "
-                  "(Ctrl+C ile cik)")
+    uc_adi = (kunye["bind"] if a.tasiyici == TASIYICI_UDP
+              else f"{a.port} @ {a.baud}")
+    # Bu satir --sessiz'de de yazilir: UDP'de ephemeral port yalniz buradan ogrenilir.
+    _ilerleme_yaz(f"yanki: dinliyor {a.tasiyici}://{uc_adi} — CMD({PROB_KOMUTU}) "
+                  "bekleniyor (Ctrl+C ile cik)")
     cevaplanan = 0
+    sayac = {}
     try:
-        cevaplanan = yanki_kos(link, ilerleme=ilerleme)
+        cevaplanan = yanki_kos(link, ilerleme=ilerleme, sayac=sayac)
     except KeyboardInterrupt:
         pass
     finally:
         link.close()
-    sonuc = {"rol": "yanki", "port": a.port, "baud": a.baud,
-             "cevaplanan": cevaplanan}
-    print(json.dumps(sonuc, ensure_ascii=False) if a.json
-          else f"yanki: cevaplanan prob = {cevaplanan}")
+    sonuc = {"rol": "yanki", "cevaplanan": cevaplanan}
+    sonuc.update(kunye)
+    if sayac:
+        sonuc["veri_hizi"] = sayac
+    if a.cikti:
+        yol = Path(a.cikti)
+        yol.parent.mkdir(parents=True, exist_ok=True)
+        yol.write_text(json.dumps(sonuc, indent=2, ensure_ascii=False) + "\n",
+                       encoding="utf-8")
+    if a.json:
+        print(json.dumps(sonuc, ensure_ascii=False))
+    else:
+        print(f"yanki: cevaplanan prob = {cevaplanan}"
+              + (f" · veri hizi: {veri_hizi_metni(sayac)}" if sayac else ""))
     return CIKIS_UYUMLU
 
 

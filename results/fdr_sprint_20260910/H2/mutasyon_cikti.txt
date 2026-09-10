@@ -1,0 +1,22 @@
+T216 — sayac mutasyon kontrolu (10 Eylul 2026, scratchpad/mutasyon.py; scripts/sik_rf_olc.py
+uzerinde satir degistir -> tests/test_faz_b_sik_rf_olc.py kos -> orijinali bayt-es geri koy)
+
+Komut (her mutant icin): O:\navitas-local-train\venv\Scripts\python.exe -B -m unittest discover -s tests -p "test_faz_b_sik_rf_olc.py"
+
+M1 olc_kos gonderilen_bayt sayilmaz: exit=1 | FAILED (failures=4) | dusen=4
+    FAIL: test_4_veri_hizi_sayaclari_koprude_iki_uc_tutarli (test_faz_b_sik_rf_olc.SikRfOlcKoprude.test_4_veri_hizi_sayaclari_koprude_iki_uc_tutarli)
+    FAIL: test_5_udp_loopback_tasiyici_ayni_yordam_cikis_0 (test_faz_b_sik_rf_olc.SikRfOlcKoprude.test_5_udp_loopback_tasiyici_ayni_yordam_cikis_0)
+    FAIL: test_ack_yokken_alinan_sifir_gonderilen_sayilir (test_faz_b_sik_rf_olc.SikRfOlcVeriHiziSayaci.test_ack_yokken_alinan_sifir_gonderilen_sayilir)
+    FAIL: test_sayaclar_gonderilen_ve_alinan_baytla_birebir (test_faz_b_sik_rf_olc.SikRfOlcVeriHiziSayaci.test_sayaclar_gonderilen_ve_alinan_baytla_birebir)
+M2 olc_kos alinan_paket sayilmaz: exit=1 | FAILED (failures=3) | dusen=3
+    FAIL: test_4_veri_hizi_sayaclari_koprude_iki_uc_tutarli (test_faz_b_sik_rf_olc.SikRfOlcKoprude.test_4_veri_hizi_sayaclari_koprude_iki_uc_tutarli)
+    FAIL: test_5_udp_loopback_tasiyici_ayni_yordam_cikis_0 (test_faz_b_sik_rf_olc.SikRfOlcKoprude.test_5_udp_loopback_tasiyici_ayni_yordam_cikis_0)
+    FAIL: test_sayaclar_gonderilen_ve_alinan_baytla_birebir (test_faz_b_sik_rf_olc.SikRfOlcVeriHiziSayaci.test_sayaclar_gonderilen_ve_alinan_baytla_birebir)
+M3 olc_kos sure sayaci sifir: exit=1 | FAILED (failures=3, errors=1) | dusen=4
+    ERROR: test_5_udp_loopback_tasiyici_ayni_yordam_cikis_0 (test_faz_b_sik_rf_olc.SikRfOlcKoprude.test_5_udp_loopback_tasiyici_ayni_yordam_cikis_0)
+    FAIL: test_3_yanki_yokken_kayip_yuzde_100_cokmez_UYUMLU_demez (test_faz_b_sik_rf_olc.SikRfOlcKoprude.test_3_yanki_yokken_kayip_yuzde_100_cokmez_UYUMLU_demez)
+    FAIL: test_4_veri_hizi_sayaclari_koprude_iki_uc_tutarli (test_faz_b_sik_rf_olc.SikRfOlcKoprude.test_4_veri_hizi_sayaclari_koprude_iki_uc_tutarli)
+    FAIL: test_sayaclar_gonderilen_ve_alinan_baytla_birebir (test_faz_b_sik_rf_olc.SikRfOlcVeriHiziSayaci.test_sayaclar_gonderilen_ve_alinan_baytla_birebir)
+GERI KONDU bayt-es: True
+
+Mutantsiz kosum (ayni komut): Ran 13 tests in 14.188s — OK

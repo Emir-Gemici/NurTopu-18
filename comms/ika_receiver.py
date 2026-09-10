@@ -20,7 +20,7 @@ import threading
 import time
 
 from link import UDPLink, SerialLink
-from protocol import encode, ack, FrameReader
+from protocol import (encode, ack, FrameReader, MESAJ_OPEN_ROUTE, MESAJ_NO_ROUTE, MESAJ_HEARTBEAT, MESAJ_IHA_LANDED, MESAJ_CMD)
 
 
 class IkaReceiver:
@@ -231,7 +231,7 @@ class IkaReceiver:
     def _handle(self, msg, addr):
         alindi_monotonic = time.monotonic()
         tip = msg.get("type")
-        if tip == "OPEN_ROUTE":
+        if tip == MESAJ_OPEN_ROUTE:
             with self._decision_lock:
                 geri_geldi = self._iha_canliligini_guncelle_unlocked(
                     alindi_monotonic)
@@ -244,7 +244,7 @@ class IkaReceiver:
             self._rota_ack(msg, addr)
             if self.on_route:
                 self.on_route(msg)
-        elif tip == "NO_ROUTE":
+        elif tip == MESAJ_NO_ROUTE:
             # Eski geçerli rota tanı/toparlanma için korunur. NO_ROUTE onu
             # ``None`` yapmaz; çağıran ayrı durumla güvenli duruş kararını görür.
             with self._decision_lock:
@@ -258,21 +258,21 @@ class IkaReceiver:
             self._rota_ack(msg, addr)
             if self.on_no_route:
                 self.on_no_route(msg)
-        elif tip == "HEARTBEAT" and msg.get("node") == "iha":
+        elif tip == MESAJ_HEARTBEAT and msg.get("node") == "iha":
             with self._decision_lock:
                 geri_geldi = self._iha_canliligini_guncelle_unlocked(
                     alindi_monotonic)
             self._link_geri_bildir(geri_geldi)
-        elif tip == "IHA_LANDED" and msg.get("node") == "iha":
+        elif tip == MESAJ_IHA_LANDED and msg.get("node") == "iha":
             ref_seq = msg.get("seq")
             if isinstance(ref_seq, bool) or not isinstance(ref_seq, int):
                 return
             geri_geldi = self.iha_inisini_bildir(alindi_monotonic)
             self._link_geri_bildir(geri_geldi)
-            self._kontrol_mesaji_ack(ref_seq, addr, "IHA_LANDED")
+            self._kontrol_mesaji_ack(ref_seq, addr, MESAJ_IHA_LANDED)
             if self.on_iha_landed:
                 self.on_iha_landed(msg)
-        elif (tip == "CMD"
+        elif (tip == MESAJ_CMD
               and msg.get("cmd") == "IKA_GO"
               and msg.get("hedef") == "ika"):
             ref_seq = msg.get("seq")
@@ -287,7 +287,7 @@ class IkaReceiver:
                 if self.yks_addr is None and addr is not None:
                     self.yks_addr = tuple(addr)   # K8: rota ACK kopyası buraya
             # Mükerrer IKA_GO idempotent: latch zaten kurulu, yalnız ACK tekrarlanır
-            self._kontrol_mesaji_ack(ref_seq, addr, "CMD")
+            self._kontrol_mesaji_ack(ref_seq, addr, MESAJ_CMD)
             if self.on_ika_go:
                 self.on_ika_go(msg)
 
