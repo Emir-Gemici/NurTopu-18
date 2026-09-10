@@ -160,7 +160,9 @@ sudo systemctl start navitas-isaretli-gosterici-drm     # önce dene; kalıcı i
   **ilk** bayat / hata / donmuş yoklamada, bekleme yok (güvenli taraf). Video borusuna dönüş
   **2 ardışık** taze yoklama **ve** son boru başlatmasından **≥ 3 s** ister — çırpınan yayın
   `nvdrmvideosink`'i sürekli yeniden açmaz (her açılış `set_mode=1` ile kip kurar). Kendiliğinden
-  ölen video borusunun yerine GÖRÜNTÜ YOK borusu **hemen** açılır; ölen GÖRÜNTÜ YOK borusu ≥ 3 s
+  ölen video borusunun yerine GÖRÜNTÜ YOK borusu **hemen** açılır — yayın tazeyse ekrandaki sebep
+  `video borusu kendiliginden bitti (rc N)` (journal: `rc=N omur=…`; **T228-D2**, 10 Eylül), yayın
+  bayat/yoksa yayının kendi sebebi; ölen GÖRÜNTÜ YOK borusu ≥ 3 s
   aralıkla yeniden açılır. Açılışta kırmızı ekran ~3 s görünür (bu kurala göre beklenen).
 - **Boru ilerlemesi — donmuş boru (T228-D):** video borusunda `identity name=nabiz silent=false`;
   `gst-launch-1.0 -v` her tamponda `…/GstIdentity:nabiz: last-message = chain … (nabiz:sink) … pts: …`
@@ -222,6 +224,7 @@ sudo systemctl start navitas-isaretli-gosterici-drm     # önce dene; kalıcı i
 | gösterici hemen çıkıyor, log "DISPLAY yok" (çıkış 2) | grafik oturum yok / Wayland | otomatik oturum, `WaylandEnable=false`; ssh'ten `DISPLAY=:0` |
 | "cv2 penceresi acilamadi" (çıkış 2) | venv Python'u (opencv-python-headless) | `/usr/bin/python3` + `python3-opencv` |
 | drm kipinde sürekli kırmızı "video borusu ilerlemiyor" | `-v` nabız biçimi eşleşmiyor, satırlar tamponlu (`TOPLU`) ya da `/video` akmıyor | §5 `--nabiz-sina`; journal'da `gst:` satırları; x11 kipine dön |
+| drm kipinde kırmızı "video borusu kendiliginden bitti (rc N)" | video borusu (`gst-launch`) çöktü: `nvdrmvideosink` kip kuramadı (`nvidia-drm` / EDID) ya da Argus çakışması | journal'da `DRM video borusu kendiliginden bitti rc=… omur=…` ve `[UYARI] … Argus`; video ≥ 3 s aralıkla yeniden denenir; sürerse x11 kipine dön |
 | kamera ~3 fps | `nvidia-drm` yüklü, DRM gösterici çalışmıyor (Argus) | DRM birimini çalıştır ya da `sudo modprobe -r nvidia_drm` / yeniden başlat |
 | monitörde var, MK15'te yok | dönüştürücü beslemesi / IP / Camera 1 ayarı | dönüştürücü LED'i; `ping 192.168.144.25`; VLC `rtsp://192.168.144.25:8554/main.264` |
 | hava birimi kararıyor | 4S yük altında alt sınır (MK15 Air Unit 16,8 V) | etiketi oku; ayrı BEC; D-440 |

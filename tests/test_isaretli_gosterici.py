@@ -26,9 +26,15 @@ Kapilar:
      2 ardisik taze; CANLI'dan cikis ANINDA; baslatma araligi >= 3 s; olen video -> YOK hemen);
      donmus boru (identity nabzi > 3 s) -> GORUNTU YOK, hic nabiz -> DOGRULANACAK uyarisi; nabiz
      ayristiricisi (sahte -v ciktisi; toleransli + secici), gercek boru okuyucu, --nabiz-sina;
-     drm_kos baglantisi (-v, stdout BORU, izleyici) gercek KareCekici + sahte HTTP + sahte Popen
+     drm_kos baglantisi (-v, stdout BORU, izleyici) gercek KareCekici + sahte HTTP + sahte Popen.
+     T228-D2: yayin 503 olup geri gelince IKINCI video borusu YENI nabiz izleyicisiyle surer (NG);
+     olen video borusunun GORUNTU YOK sebebi 'video borusu kendiliginden bitti (rc=N)' (yayin
+     tazeyse; degilse yayinin kendi sebebi)
   G8 jetson_paket/gosterici: .desktop Exec (bash -n), DRM birimi gozcu kilidi + onkosul + VARSAYILAN
-     KAPALI (systemd/ altinda degil, betik kurmaz), xorg sablonu TAHMIN basligi, kurulum belgesi
+     KAPALI (systemd/ altinda degil, betik kurmaz), xorg sablonu TAHMIN basligi, kurulum belgesi.
+     D-453: kurulum belgesi (markdown) kilitleri YENI icerigi cizili (~~...~~) araliklar AYIKLANMIS
+     metinde arar; §1 kodlayici / §5 / §9'da olculmemis 'doğrulandı/GEÇTİ/ölçüldü' yok; eski
+     metnin cizili durdugu HAM metinde denetlenir
   G9 paket aynasi: KOPYALAR tasir, bayt-es, kod/ dizininden izole import; kilavuz kopyalar
   G10 jetson_baslat.sh: bash -n; varsayilan kapali (env'de gorunur, --isaretli-yayin YOK); x11 ile rpi
      --isaretli-yayin + gosterici bolumu; T227'siz paket [YOK] + exit 3, T227'li exit 0; gecersiz
@@ -41,7 +47,9 @@ Mutasyon (results/fdr_sprint_20260910/H9_MK15/t228/mutasyon_t228.py): bayat esig
 yasak IP kontrolu kaldirilirsa, GORUNTU_YOK eski kareyi cizerse, jetson_baslat bayragi vermezse,
 --kur T227 denetimi kaldirilirsa bu dosya DUSER. T228-D (t228d/mutasyon_t228d.py): x11 dongusu
 hatayi yok sayarsa (MG), histerezis / baslatma araligi / aninda cikis / boru nabzi esigi
-kaldirilirsa, -v ya da identity dusurulurse, belge kilitleri silinirse DUSER.
+kaldirilirsa, -v ya da identity dusurulurse, belge kilitleri silinirse DUSER. T228-D2: nabiz
+izleyicisi borular arasi paylasilirsa (NG), belge notlari silinmeden CIZILIRSE ya da olculmemis
+madde 'doğrulandı' tasirsa (NK*), olen videonun sebebi 'yayin dogrulaniyor'a donerse (NS) DUSER.
 """
 import contextlib
 import io
@@ -680,6 +688,22 @@ class DrmGozetmen(unittest.TestCase):
         self.assertGreaterEqual(sum(1 for k, m in loglar if k and "Argus" in m), 3, loglar)
         self.assertFalse(any(s.sonlandirildi for s in kayit), "kendiliginden biten surec oldurulmez")
 
+    def test_G7_olen_video_borusu_GORUNTU_YOK_sebebi_rc_ya_da_yayin_sebebi(self):
+        """T228-D2 (T228-D curutucusu, kucuk bulgu): yayin TAZEYKEN video borusu kendiliginden
+        olurse GORUNTU YOK ekraninda 'yayin dogrulaniyor' DEGIL gercek sebep yazar: 'video borusu
+        kendiliginden bitti (rc=N)'. Yayin da bozuksa yayinin kendi sebebi (kok neden) gosterilir.
+        Ekranda '=' izinli karakter degil (_gst_metni) -> 'rc 1'; log ham sebebi tasir."""
+        _n, kayit, loglar, _u = self._kos([CANLI] * 6, omur=0)
+        self.assertEqual(self._baslatmalar(kayit)[:3], [(0.0, "yok"), (3.0, "video"), (4.0, "yok")])
+        metin = kayit[2].argv[-1]
+        self.assertIn('text="GORUNTU YOK - video borusu kendiliginden bitti (rc 1)"', metin)
+        self.assertNotIn("dogrulaniyor", metin)
+        self.assertTrue(any(k and "GORUNTU YOK borusu basladi (video borusu kendiliginden bitti "
+                                  "(rc=1))" in m for k, m in loglar), loglar)
+        _n, kayit, _l, _u = self._kos([CANLI, CANLI, CANLI, CANLI, YOK, YOK], omur=0)
+        self.assertEqual(self._baslatmalar(kayit)[:3], [(0.0, "yok"), (3.0, "video"), (4.0, "yok")])
+        self.assertIn('text="GORUNTU YOK - yayin erisilemiyor"', kayit[2].argv[-1])
+
     def test_G7_histerezis_tek_taze_yoklama_videoya_DONMEZ_cikis_ANINDA(self):
         durumlar = [YOK, YOK, YOK, YOK, CANLI, YOK, CANLI, BAYAT, CANLI, CANLI, CANLI, BAYAT, YOK]
         _n, kayit, _l, _u = self._kos(durumlar)
@@ -966,14 +990,58 @@ class DrmKosNabizBaglantisi(unittest.TestCase):
             self.addCleanup(setattr, g, ad, getattr(g, ad))
             setattr(g, ad, deger)
 
-    def _kos(self, aralik_s, sure, stdbuf_yolu=""):
-        kayit = []
+    def _kos(self, aralik_s, sure, stdbuf_yolu="", kayit=None):
+        kayit = [] if kayit is None else kayit
         args = g._parser().parse_args(["--kip", "drm", "--kaynak", self.y.kok, "--sure", str(sure)])
         out, err = io.StringIO(), io.StringIO()
         with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
             kod = g.drm_kos(args, baslat=lambda argv, **kw: _SahtePopen(argv, kayit, aralik_s, **kw),
                             gst_yolu="gst-launch-1.0", stdbuf_yolu=stdbuf_yolu)
         return kod, kayit, out.getvalue() + err.getvalue()
+
+    def test_G7_drm_kos_ikinci_video_borusu_YENI_nabiz_izleyicisiyle_surer(self):
+        """NG (T228-D curutucusu; REVIEW_LOG D-453): yayin kisa sure 503 olup geri gelince IKINCI
+        video borusu acilir; -v ciktisinda pts (gercek gst-launch gibi) yeniden ~0'dan baslar.
+        Nabiz izleyicisi borular arasinda PAYLASILIRSA 'pts > son_pts' saglanmaz: saglikli ikinci
+        boru 'donmus' sayilir, GORUNTU YOK <-> video dongusu. Dogru kod: her video borusuna YENI
+        NabizIzleyici; ikinci boru cikisa kadar surer. Ilk boru >= ILK_NABIZ nabiz basar (son pts
+        >= 2,4 s) -> paylasimli izleyicide ikinci boru >= 25 x 0,05 s = 1,25 s ilerlemez
+        (> donma esigi 0,6 s): mutant zamanlamadan bagimsiz duser."""
+        ILK_NABIZ, IKINCI_ASGARI = 24, 20
+        kayit, hata = [], []
+
+        def video_nabzi(i, n):
+            return (len(kayit) > i and _tur(kayit[i]) == "video" and kayit[i].stdout is not None
+                    and kayit[i].stdout.n >= n)
+
+        def senaryo():
+            try:
+                if not _bekle(lambda: video_nabzi(1, ILK_NABIZ), tavan_s=15.0, adim_s=0.01):
+                    hata.append("ilk video borusu {} nabza ulasmadi".format(ILK_NABIZ))
+                    return
+                self.y.kod, self.y.son_hata = 503, "kaynak acilamadi"
+                if not _bekle(lambda: len(kayit) >= 3, tavan_s=10.0, adim_s=0.01):
+                    hata.append("yayin 503 iken GORUNTU YOK borusu acilmadi")
+            finally:
+                self.y.kod, self.y.son_hata = 200, None
+
+        iplik = threading.Thread(target=senaryo, daemon=True)
+        iplik.start()
+        kod, _ayni, log = self._kos(aralik_s=0.05, sure=4.5, kayit=kayit)
+        iplik.join(30)
+        self.assertEqual(hata, [], log)
+        self.assertEqual(kod, g.CIKIS_TAMAM, log)
+        self.assertEqual([_tur(s) for s in kayit], ["yok", "video", "yok", "video"],
+                         "ikinci video borusu cikisa kadar SURMELI (donmus sayilmamali)\n" + log)
+        self.assertTrue(kayit[1].sonlandirildi, "yayin 503 olunca ilk video borusu durdurulmali")
+        self.assertIn("yayin HTTP 503", kayit[2].argv[-1])
+        self.assertEqual(kayit[3].argv, g.drm_video_argv("gst-launch-1.0", self.y.kok))
+        self.assertGreaterEqual(kayit[3].stdout.n, IKINCI_ASGARI,
+                                "gozlem penceresi kisa: ikinci boru donma esiginden (0,6 s) uzun "
+                                "gozlenmeli\n" + log)
+        self.assertNotIn("ilerlemiyor", log)
+        self.assertEqual(log.count("ilk nabiz"), 2,
+                         "her video borusunun KENDI izleyicisi ilk nabzini loglar\n" + log)
 
     def test_G7_drm_kos_donmus_boru_GORUNTU_YOK_borusuna_gecer(self):
         kod, kayit, log = self._kos(aralik_s=None, sure=2.5)
@@ -1089,7 +1157,7 @@ class GostericiDosyalari(unittest.TestCase):
             self.assertIn(parca, metin)
 
     def test_G8_kurulum_belgesi_kapsami(self):
-        m = KURULUM.read_text(encoding="utf-8")
+        m = _cizili_ayikla(KURULUM.read_text(encoding="utf-8"))   # D-453: cizili metin sayilmaz
         for parca in ("AutomaticLoginEnable=true", "WaylandEnable=false", "~/.config/autostart",
                       "DisplayPort", "DP→HDMI", "Mini HDMI", "192.168.144.25", "setip.txt",
                       "rtsp://192.168.144.25:8554/main.264", "Camera 1", "EDID", "Argus", "3 fps",
@@ -1100,21 +1168,53 @@ class GostericiDosyalari(unittest.TestCase):
             self.assertIn(dosya.name, m)
 
     def test_G8_kurulum_T228D_kodek_celiskisi_nabiz_DOGRULANACAK_eski_komut_cizili(self):
-        m = KURULUM.read_text(encoding="utf-8")
+        ham = KURULUM.read_text(encoding="utf-8")
+        m = _cizili_ayikla(ham)   # D-453: YENI icerik cizili araliklar AYIKLANMIS metinde aranir
         kodlayici = re.search(r"(?m)^\| Kodlayıcı \|.*$", m)
         self.assertIsNotNone(kodlayici, "§1 Kodlayıcı satiri yok")
-        for parca in ("H.264/H.265 çelişkili", "TASARIM §5", "V1.1"):
+        for parca in ("H.264/H.265 çelişkili", "TASARIM §5", "V1.1", "DOĞRULANACAK"):
             self.assertIn(parca, kodlayici.group(0))
-        bol5 = m.split("## 5. DRM kipi", 1)[1].split("\n## 6.", 1)[0]
+        bol5 = _kurulum_bolumu(m, "## 5. DRM kipi", "\n## 6.")
         self.assertIn(g.komut_metni(g.drm_video_argv("gst-launch-1.0")), bol5,
                       "§5 video borusu komutu kodla (--kuru) AYNI olmali")
         for parca in ("identity name=nabiz silent=false", "--nabiz-sina", "2 ardışık", "≥ 3 s",
                       "> 3 s", "nabız satırı biçimi Jetson'da ÖLÇÜLEMEDİ — DOĞRULANACAK",
-                      "ZAMANINDA", "TOPLU", "`drm_kos` video borusunu `stdbuf -oL` önekiyle koşar"):
+                      "ZAMANINDA", "TOPLU", "`drm_kos` video borusunu `stdbuf -oL` önekiyle koşar",
+                      "`video borusu kendiliginden bitti (rc N)`"):
             self.assertIn(parca, bol5)
-        # eski komut SILINMEDI, cizildi + tarih (runbook kurali)
-        self.assertRegex(bol5, r"~~10 Eylül \(T228\): `gst-launch-1\.0 -e 'souphttpsrc[^`]*`")
-        self.assertRegex(m, r"(?m)^\| 9 \|.*--nabiz-sina.*ÖLÇÜLECEK \|$")
+        self.assertRegex(m, r'(?m)^\| drm kipinde kırmızı "video borusu kendiliginden bitti '
+                            r'\(rc N\)" \|', "§8 sorun giderme satiri (T228-D2)")
+        bol9 = _kurulum_bolumu(m, "## 9. ÖLÇÜLEMEDİ")
+        for parca in ("`gst-launch-1.0 -v` nabız satırı biçimi", "`stdbuf -oL`",
+                      "Dönüştürücünün canlı kodeki (H.264/H.265 çelişkili)"):
+            self.assertIn(parca, bol9, "§9 OLCULEMEDI maddesi dusmemeli ya da cizilmemeli")
+        # D-453: olculmemis GECTI yok — OLCULEMEDI/DOGRULANACAK tasiyan yerlerde 'doğrulandı' vb.
+        for ad, metin in (("§1 Kodlayıcı", kodlayici.group(0)), ("§5", bol5), ("§9", bol9)):
+            bulunan = _GECTI_KALIBI.search(metin)
+            self.assertIsNone(bulunan, "{}: '{}' — Jetson'da OLCULMEDI; olculunce bu kilit KANITLA "
+                              "(§4 sonuc sutunu) guncellenir".format(ad, bulunan and bulunan.group(0)))
+        self.assertRegex(m, r"(?m)^\| 9 \|.*--nabiz-sina.*\| ÖLÇÜLECEK \|$")
+        # eski komut SILINMEDI, cizildi + tarih (runbook kurali) — HAM metinde denetlenir
+        self.assertRegex(_kurulum_bolumu(ham, "## 5. DRM kipi", "\n## 6."),
+                         r"~~10 Eylül \(T228\): `gst-launch-1\.0 -e 'souphttpsrc[^`]*`~~")
+
+
+#: D-453 (mimar kurali, 10 Eylul): markdown belge kilitleri YENI icerigi cizili (~~...~~) araliklar
+#: AYIKLANMIS metinde arar — ustu cizilen not ya da OLCULEMEDI/DOGRULANACAK maddesi kilidi GECMEZ;
+#: eski metnin cizili durdugunu denetleyen kilit HAM metinde kalir.
+def _cizili_ayikla(metin):
+    return re.sub(r"~~.*?~~", "", metin, flags=re.S)
+
+
+def _kurulum_bolumu(metin, baslik, bitis="\n## "):
+    return metin.split(baslik, 1)[1].split(bitis, 1)[0]
+
+
+#: Olculmemis GECTI kalibi (D-453): OLCULEMEDI/DOGRULANACAK tasiyan bolumlerde bu kelimeler ancak
+#: Jetson olcumu KANITLA islenince (kilit de o zaman guncellenir) yazilabilir.
+_GECTI_KALIBI = re.compile(
+    r"(?<!\w)(?:doğrulandı|Doğrulandı|DOĞRULANDI|dogrulandi|DOGRULANDI|geçti|Geçti|GEÇTİ|GECTI|"
+    r"ölçüldü|Ölçüldü|ÖLÇÜLDÜ|olculdu|OLCULDU)(?!\w)")
 
 
 # ── G9 ────────────────────────────────────────────────────────────────────────

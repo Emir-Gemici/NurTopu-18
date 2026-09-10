@@ -963,7 +963,9 @@ def drm_gozetmen(video_argv, yok_argv_uret, durum_oku, baslat, bitti, uyku=time.
     """drm kipi gozetmeni: yayin CANLI iken video borusu, degilse GORUNTU YOK borusu.
 
     Her `yoklama_s`'de bir: (1) calisan boru kendiliginden bittiyse KIRMIZI log (omur <
-    `asgari_omur_s` ise Argus uyarisi); (2) /kare.jpg yoklanir (`durum_oku`); (3) video borusu
+    `asgari_omur_s` ise Argus uyarisi); olen VIDEO borusunun yerine acilan GORUNTU YOK ekraninin
+    sebebi yayin tazeyse "video borusu kendiliginden bitti (rc=N)" (T228-D2; yayin bayat/yoksa
+    yayinin kendi sebebi); (2) /kare.jpg yoklanir (`durum_oku`); (3) video borusu
     calisiyorsa `ilerleme_oku(p)` (son nabiz zamani ya da None) ile boru ilerlemesi denetlenir —
     `donma_esigi_s`'den uzun sure tampon yoksa kare taze olsa da GORUNTU YOK; (4) karar SAF
     `drm_boru_karari`'ndadir (histerezis + baslatma sikligi). `ilerleme_oku` None ise nabiz
@@ -977,6 +979,7 @@ def drm_gozetmen(video_argv, yok_argv_uret, durum_oku, baslat, bitti, uyku=time.
     onceki_durum = None
     try:
         while not bitti():
+            olen_video = None
             if p is not None and p.poll() is not None:
                 omur = saat() - baslama_t
                 log("DRM {} borusu kendiliginden bitti rc={} omur={:.1f} s".format(
@@ -986,6 +989,7 @@ def drm_gozetmen(video_argv, yok_argv_uret, durum_oku, baslat, bitti, uyku=time.
                         omur, ARGUS_UYARISI), kirmizi=True)
                 if calisan == BORU_VIDEO:
                     ardisik = 0
+                    olen_video = "video borusu kendiliginden bitti (rc={})".format(p.returncode)
                 p, calisan = None, None
             d = durum_oku()
             simdi = saat()
@@ -1012,9 +1016,13 @@ def drm_gozetmen(video_argv, yok_argv_uret, durum_oku, baslat, bitti, uyku=time.
                 if k.boru == BORU_VIDEO:
                     argv, sebep = video_argv, ""
                 else:
-                    sebep = d.sebep if d.durum != DURUM_CANLI else (
-                        "yayin dogrulaniyor ({}/{} ardisik taze yoklama)".format(
-                            ardisik, gerekli_ardisik))
+                    if d.durum != DURUM_CANLI:
+                        sebep = d.sebep                # yayinin kendi sebebi (kok neden) once gelir
+                    elif olen_video is not None:
+                        sebep = olen_video             # T228-D2: yayin taze ama video borusu OLDU
+                    else:
+                        sebep = "yayin dogrulaniyor ({}/{} ardisik taze yoklama)".format(
+                            ardisik, gerekli_ardisik)
                     argv = yok_argv_uret(sebep)
                 p = baslat(argv)
                 sayac += 1
@@ -1064,6 +1072,8 @@ def drm_kos(args, baslat=subprocess.Popen, gst_yolu=None, saat=time.monotonic,
         # video borusu: -v ciktisi BORUYA; okuyucu iplik nabzi izler ve boruyu bosaltir
         p = baslat(argv, stdout=subprocess.PIPE, text=True, encoding="utf-8", errors="replace",
                    bufsize=1)
+        # HER video borusuna YENI izleyici (T228-D2, NG): yeni borunun pts'i ~0'dan baslar; onceki
+        # borunun izleyicisi paylasilirsa 'pts > son_pts' saglanmaz, saglikli boru 'donmus' sayilir
         iz = NabizIzleyici(saat=saat)
         iz.akimi_oku(p.stdout)
         son["p"], son["iz"] = p, iz
