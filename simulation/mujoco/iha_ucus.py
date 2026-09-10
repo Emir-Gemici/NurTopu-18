@@ -199,14 +199,40 @@ def htab_kapsama(pozlar: dict, cx=0.0, cy=0.0, hucre_m=0.25) -> float:
 
 # ── Tarama koşumu ───────────────────────────────────────────────────────────
 
+def mocap_uygula(d, prof: UcusProfili, t: float, iha: int, par: int):
+    """İHA + paraşüt mocap pozu — zamanın fonksiyonu. `tara` ve T214-B video kaydedicisi
+    (`gorev_kosumu._KareKaydedici`, sürüş modelinde iniş) AYNI kuralı kullanır. İki gövdenin
+    geom'ları çarpışmasızdır (contype=conaffinity=0, `araclar`): poz fiziğe girmez."""
+    pos, yaw, pitch, roll, faz = prof.durum(t)
+    d.mocap_pos[iha] = pos
+    d.mocap_quat[iha] = quat_ypr(yaw, pitch, roll)
+    if t >= prof.t_inis:
+        d.mocap_pos[par] = [pos[0], pos[1] - 1.2, 0.05]
+        d.mocap_quat[par] = [1, 0, 0, 0]
+    elif faz == "parasut":
+        d.mocap_pos[par] = [pos[0], pos[1], pos[2] + PARASUT_YUKSEKLIK]
+        d.mocap_quat[par] = [1, 0, 0, 0]
+    else:
+        d.mocap_pos[par] = [pos[0], pos[1], -60.0]
+    return pos, yaw, faz
+
+
 def tara(harita_id: int, lv: str, seed: int = arena_mjcf.SEED_VARSAYILAN, *,
          out: Path, res: int = arena_mjcf.KAM_RES_VARSAYILAN, fizik: bool = True,
          onizleme: bool = True, max_kare: int | None = None, jpg_kalite: int = 92,
          onizleme_res: int = 640, yol_dokusu: str = arena_mjcf.YOL_DOKUSU_VARSAYILAN,
          varyant: str = arena_mjcf.VARYANT_VARSAYILAN,
-         zemin_dokusu: str = arena_mjcf.ZEMIN_DOKUSU_VARSAYILAN) -> dict:
+         zemin_dokusu: str = arena_mjcf.ZEMIN_DOKUSU_VARSAYILAN,
+         kare_kancasi=None, kanca_aralik_s: float | None = None) -> dict:
     """Uçuşu koş, 1 Hz tarama karelerini + poses.csv + meta.txt yaz. Döner: özet dict.
-    `varyant`/`zemin_dokusu` (T213-A) arena_mjcf render varyantı; meta.txt'ye yazılır."""
+    `varyant`/`zemin_dokusu` (T213-A) arena_mjcf render varyantı; meta.txt'ye yazılır.
+
+    `kare_kancasi(m, d, t, faz)` (T214-B video, H1-K7): verilirse her `kanca_aralik_s` sim
+    saniyesinde (mocap + mj_forward sonrası) çağrılır. Tarama kareleri, poses.csv ve fizik
+    trajektorisi DEĞİŞMEZ: mj_forward durum değişkenlerine (qpos/qvel/qacc_warmstart) dokunmaz;
+    tarama kareleri de aynı mj_forward'ı zaten 1 Hz koşar. Varsayılan None = eski davranış."""
+    if kare_kancasi is not None and not (kanca_aralik_s and kanca_aralik_s > 0):
+        raise ValueError("kare_kancasi için kanca_aralik_s > 0 gerekli")
     import cv2
     import mujoco
 
@@ -228,18 +254,7 @@ def tara(harita_id: int, lv: str, seed: int = arena_mjcf.SEED_VARSAYILAN, *,
     t_son = prof.t_inis + 2.0
 
     def mocap_guncelle(t):
-        pos, yaw, pitch, roll, faz = prof.durum(t)
-        d.mocap_pos[iha] = pos
-        d.mocap_quat[iha] = quat_ypr(yaw, pitch, roll)
-        if t >= prof.t_inis:
-            d.mocap_pos[par] = [pos[0], pos[1] - 1.2, 0.05]
-            d.mocap_quat[par] = [1, 0, 0, 0]
-        elif faz == "parasut":
-            d.mocap_pos[par] = [pos[0], pos[1], pos[2] + PARASUT_YUKSEKLIK]
-            d.mocap_quat[par] = [1, 0, 0, 0]
-        else:
-            d.mocap_pos[par] = [pos[0], pos[1], -60.0]
-        return pos, yaw, faz
+        return mocap_uygula(d, prof, t, iha, par)
 
     r = mujoco.Renderer(m, height=res, width=res)
     ro = mujoco.Renderer(m, height=onizleme_res, width=onizleme_res) if onizleme else None
@@ -261,6 +276,7 @@ def tara(harita_id: int, lv: str, seed: int = arena_mjcf.SEED_VARSAYILAN, *,
     mujoco.mj_forward(m, d)
     onizle("baslangic_ucuncu_sahis", "ucuncu_sahis")
     sonraki_kare_t = 0.0
+    sonraki_kanca_t = 0.0
     tarama_onizlendi = False
     t_bas = time.perf_counter()
     while d.time <= t_son + 1e-9:
@@ -284,11 +300,16 @@ def tara(harita_id: int, lv: str, seed: int = arena_mjcf.SEED_VARSAYILAN, *,
             sonraki_kare_t += 1.0 / KARE_HZ
             if max_kare is not None and n >= max_kare:
                 break
+        if kare_kancasi is not None and d.time + 1e-9 >= sonraki_kanca_t:
+            _, _, faz_k = mocap_guncelle(d.time)
+            mujoco.mj_forward(m, d)
+            kare_kancasi(m, d, float(d.time), faz_k)
+            sonraki_kanca_t += float(kanca_aralik_s)
         if fizik:
             mocap_guncelle(d.time)
             mujoco.mj_step(m, d)
         else:
-            d.time = sonraki_kare_t
+            d.time = sonraki_kare_t if kare_kancasi is None else min(sonraki_kare_t, sonraki_kanca_t)
     sure = time.perf_counter() - t_bas
     if onizleme:
         mocap_guncelle(min(prof.t_inis, d.time)); mujoco.mj_forward(m, d)

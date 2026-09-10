@@ -1,0 +1,243 @@
+{
+ "rota_kaynak": "uretim",
+ "rota_kaynak_etiketi": "ÜRETİM BORU HATTI (kare-bazlı)",
+ "harita": 1,
+ "senaryo": "kolay",
+ "seed": 42,
+ "acik_yol": 1,
+ "acik_yol_etiket": "sol",
+ "rota_bulundu": true,
+ "rota_dogru": true,
+ "model_yol": 1,
+ "model_guven": 0.803,
+ "wp_sayisi": 19,
+ "maks_segment_m": 2.025,
+ "rota_engel_aciklik_m": 0.0,
+ "rota_engel_aciklik_geom": "bariyer_2",
+ "rota_insaat_geregi_gecilemez": true,
+ "ika_yari_genislik_m": 0.22,
+ "takip_hatasi_maks_m": 5.034,
+ "takip_hatasi_ort_m": 2.581,
+ "takip_ornek_n": 53,
+ "takip_temasla_kesildi": true,
+ "takip_referansi": "arena açık yol merkez hattı (arena.harita paths[open]); ilk temastan önce",
+ "plan_takip_hatasi_maks_m": 0.055,
+ "plan_takip_hatasi_ort_m": 0.041,
+ "sure_sim_iha_profil": 36.98,
+ "sure_sim_ika": 600.1,
+ "sure_sim_gorev": 637.38,
+ "t_rota_yayini": 31.98,
+ "t_inis": 36.98,
+ "t_ika_go": 37.17999999999965,
+ "t_ika_go_ack": 37.27999999999964,
+ "varis_mesafesi_m": 38.524,
+ "hb_icinde": false,
+ "son_konum": [
+  -4.328,
+  -16.915,
+  0.082
+ ],
+ "hb_xy": [
+  -11.153,
+  21.0
+ ],
+ "temas_sayisi": 5024,
+ "temas_adim": 103185,
+ "temas_geomlari": [
+  "bariyer_2"
+ ],
+ "ilk_temas_t": 11.234,
+ "kararsiz_adim": 0,
+ "link_olaylari": {
+  "kayip": 0,
+  "geri": 0
+ },
+ "ack_listesi": [
+  {
+   "t": 32.68,
+   "node": "ika",
+   "ref": 50,
+   "ref_tip": "OPEN_ROUTE"
+  },
+  {
+   "t": 37.18,
+   "node": "ika",
+   "ref": 59,
+   "ref_tip": "IHA_LANDED"
+  },
+  {
+   "t": 37.28,
+   "node": "ika",
+   "ref": 60,
+   "ref_tip": "CMD"
+  }
+ ],
+ "open_route_ack": [
+  "ika",
+  "yks"
+ ],
+ "iha_gonderim": {
+  "tip": "OPEN_ROUTE",
+  "seq": 50,
+  "acked": [
+   "ika",
+   "yks"
+  ]
+ },
+ "hakem": {
+  "rota_seq": 50,
+  "rota_ack_kaniti": {
+   "t": 32.68,
+   "node": "ika",
+   "ref": 50,
+   "ref_tip": "OPEN_ROUTE"
+  },
+  "iha_ack_gonderildi": {
+   "t": 32.68,
+   "seq": 50
+  },
+  "no_route": null,
+  "t_landed": 37.07999999999966,
+  "landed_durum": "ONAYLANDI",
+  "ika_go_durum": "ONAYLANDI",
+  "ika_go_deneme": 1,
+  "heartbeat_sayisi": 1150
+ },
+ "hakem_olaylari": [
+  {
+   "t": 32.68,
+   "olay": "ROTA_ALINDI",
+   "seq": 50,
+   "road": 1,
+   "conf": 0.803,
+   "waypoint": 19
+  },
+  {
+   "t": 32.68,
+   "olay": "HAKEM_ONAYI_1",
+   "seq": 50,
+   "dayanak": "SIM: otomatik"
+  },
+  {
+   "t": 32.68,
+   "olay": "ACK_ALINDI",
+   "node": "ika",
+   "ref": 50,
+   "ref_tip": "OPEN_ROUTE"
+  },
+  {
+   "t": 32.68,
+   "olay": "IKA_AKTARIM_KANITI",
+   "seq": 50
+  },
+  {
+   "t": 32.68,
+   "olay": "HAKEM_ONAYI_2",
+   "seq": 50,
+   "ref_tip": "OPEN_ROUTE",
+   "dayanak": "SIM: İKA ACK kopyası"
+  },
+  {
+   "t": 37.08,
+   "olay": "IHA_INIS",
+   "seq": 59,
+   "sim": true
+  },
+  {
+   "t": 37.18,
+   "olay": "ACK_ALINDI",
+   "node": "ika",
+   "ref": 59,
+   "ref_tip": "IHA_LANDED"
+  },
+  {
+   "t": 37.18,
+   "olay": "IKA_GO",
+   "seq": 60,
+   "sim": true
+  },
+  {
+   "t": 37.28,
+   "olay": "ACK_ALINDI",
+   "node": "ika",
+   "ref": 60,
+   "ref_tip": "CMD"
+  },
+  {
+   "t": 37.28,
+   "olay": "IKA_GO_ACK",
+   "seq": 60
+  }
+ ],
+ "cikis_kodu": 4,
+ "navigate_sonucu": false,
+ "basari": false,
+ "tarama": {
+  "kare_n": 39,
+  "kabul": 15,
+  "htab_kapsama_orani": 1.0,
+  "res": 1280,
+  "fizik": true
+ },
+ "model_teshis": null,
+ "uretim_teshis": {
+  "rota_durum": "OPEN_ROUTE",
+  "rota_sebep": null,
+  "besleme": "kerteriz",
+  "open_route_n": 2,
+  "open_route_yollari": {
+   "1": 1,
+   "2": 1
+  },
+  "open_route_kareleri": [
+   9,
+   15
+  ],
+  "son_yayin": {
+   "tip": "NO_ROUTE",
+   "seq": 47,
+   "sebep": "MASKE_YOK",
+   "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+  },
+  "hukum": {
+   "open_route_var": true,
+   "dogru": false,
+   "yanlis_yol_yayini_n": 1,
+   "ilk_open_route_dogru": false,
+   "son_open_route_dogru": true,
+   "son_yayin_tipi": "NO_ROUTE"
+  },
+  "hizali": true,
+  "ankor_kb_uzakligi_m": 18.11,
+  "rota_sonu_hb_uzakligi_m": 1.37,
+  "karar_toplayici": "karar_toplayici.json"
+ },
+ "model": {
+  "model_id": "navitas-seg-v36-512",
+  "path": "O:\\navitas\\models\\navitas_seg_v36_best.pt",
+  "kayit_path": "models/navitas_seg_v36_best.pt",
+  "sha256_dosya": "1d1caca6f6da19ea35e69186a048da960ca5188be6ee6d49d6106457cac46911",
+  "sha256_kayit": "1d1caca6f6da19ea35e69186a048da960ca5188be6ee6d49d6106457cac46911",
+  "eslesti": true,
+  "imgsz_kayit": 512,
+  "kayit_dogrulamasi": "eslesti",
+  "yukleyici": "rpi_inference.load_model"
+ },
+ "isaretler_carpismasiz": [
+  "iha_ib",
+  "hb_ped",
+  "hb_H_sol",
+  "hb_H_sag",
+  "hb_H_orta",
+  "kb_N",
+  "kb_S",
+  "kb_W",
+  "kb_E",
+  "kb_kose"
+ ],
+ "kare_kaydet": false,
+ "kare_n_video": 0,
+ "duvar_saati_s": 23.26,
+ "tarih": "2026-09-10 12:57:31",
+ "sinir": "İHA uçuşu KİNEMATİK (mocap, aerodinamik yok); hakem onayı sim'de OTOMATİK (sim=true, saha kanıtı değil); İKA iz genişliği 0,39 m TAHMİN; teker armature 0,01 TAHMİN; motor tork sınırı yok (DDR'de yok); haritala hesap süresi sim'de yok; modeller basitleştirilmiş (D-438 ek)."
+}
