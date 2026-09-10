@@ -35,9 +35,14 @@ Kapilar:
       olcutu 1 (T221-D, D-449): beklenen-yok listesi onceden yazilan kumeyle AYNI ve .param'da; yuklu
       ad sayisi .param'dan HESAPLANIR (N - |beklenen-yok|); her beklenen-yok adinin var_info adi SITL
       ikilisinde 0 kez, pozitif kontrolu >= 1 (sitl_yoklama.txt SS6.1); README sha'si = yoklama
-      sha'si; features.txt satir atfi yoklamayla ayni; DUSER kurali + CHUTE_* on hukmu yazili
+      sha'si; features.txt satir atfi yoklamayla ayni; DUSER kurali + CHUTE_* on hukmu yazili.
+      T221-D2 (curutucu C2/C3/C4/C7): D-449 oncesi olcut 1 ("dosyadaki N adin N'si") yururlukteki
+      metinde YOK, ham metinde TAM 1 kez ~~cizili~~ ve hemen ardinda tarih damgasi; olcut 1 maddesinde
+      acilis surumu ve `param show CHUTE_ENABLED` 1 TAM 1 kez; CHUTE_* on hukmu paragrafi TAM 1 kez,
+      basliginda tarih damgasi, hukum cumleleri ("Olcut 1 DUSER (... eklenmez, esik gevsetilmez)",
+      "olcut 3 yine olculur") paragrafin ICINDE, paragrafta her olcut en cok 1 kez anilir
   A19 ardupilot_param_kaynak.py saf fonksiyonlari (cevrimdisi sentetik kaynak)
-  M1..M14 mutasyonlar: bozulmus kopyada ilgili denetleyici DUSER
+  M1..M17 mutasyonlar: bozulmus kopyada ilgili denetleyici DUSER
 """
 import json
 import math
@@ -199,10 +204,30 @@ SITL_BEKLENEN_YOK = frozenset({"BRD_SER2_RTSCTS"})
 # beklenen-yok adinin ayni var_info'daki KOSULSUZ komsusu (AP_BoardConfig.cpp:171 SAFETY_DEFLT): ikilide
 # >= 1 gorulmezse "0" tarama yonteminin korlugu olabilir, kanit sayilmaz
 SITL_POZITIF_KONTROL = {"BRD_SER2_RTSCTS": "SAFETY_DEFLT"}
+# D-449 duzeltmesinin tarih damgasi (cizili eski olcut 1'in notu ve CHUTE_* on hukmunun basligi)
+SITL_DAMGA = "10 Eylül, ölçümden önce, D-449"
+# CHUTE_* on hukmunun on kayitli hukum cumleleri; on hukum paragrafinin ICINDE durur. T221-D2
+# (curutucu C3/C7): hukum kelimesi (DUSER -> OLCULEMEDI gevsetmesi) ve gerekcesi ("sonradan eklenmez,
+# esik gevsetilmez") da kilitli
+SITL_ON_HUKUM_IFADELERI = (
+    "SITL paraşütsüz derlenmiş — paraşüt zinciri ÖLÇÜLEMEDİ",
+    "Ölçüt 1 **DÜŞER** (`CHUTE_*` beklenen-yok listesine sonradan eklenmez, eşik gevşetilmez)",
+    "ölçüt 3 (kalkış kapısı) yine ölçülür",
+)
 # README SS6.6'da yururlukteki (cizilmemis) metinde bulunmasi gereken on kayit cumleleri
 SITL_KURAL_IFADELERI = ("listenin dışındaki her eksik ad **DÜŞER**",
-                        "SITL paraşütsüz derlenmiş — paraşüt zinciri ÖLÇÜLEMEDİ",
-                        "ölçümden önce, D-449")
+                        "ölçümden önce, D-449",
+                        *SITL_ON_HUKUM_IFADELERI)
+# T221-D2 (curutucu C2): D-449 ONCESI olcut 1 bicimi ("dosyadaki 62 adın 62'si yüklü" - SITL'de hic
+# tutamaz). Yururlukteki metinde BULUNMAZ; ham metinde TAM 1 kez ~~cizili~~ durur ve hemen ardinda
+# "(<SITL_DAMGA>" gelir (FDR kurali: eski metin silinmez, cizilir + tarih). "addan" bicimi de yakalanir;
+# yururlukteki yeni cumle ("addan SITL'de **61**'i") bu desene UYMAZ.
+SITL_ESKI_OLCUT1 = r"dosyadaki\s+\**\d+\**\s+ad(?:ın|dan)\s+\**\d+\**'\w+"
+# T221-D2 (curutucu C4): olcut 1 maddesinin yururlukteki metninde TAM 1 kez gecmesi gereken kosullar
+SITL_OLCUT1_KOSULLARI = ("Açılış `ArduPlane V4.5.7`", "`param show CHUTE_ENABLED` 1")
+SITL_KABUL_BASLIGI = "**Kabul ölçütleri"
+# CHUTE_* on hukmu paragrafinin basi: yururlukteki metinde TAM 1 kez, ardindan "(<SITL_DAMGA>):**"
+SITL_ON_HUKUM = "**Ön hüküm — SITL'de `CHUTE_*` yoksa"
 
 
 # ════════════════════════════════════════════════════════════════════════════
@@ -558,11 +583,78 @@ def dizge_sayisi(blok, dizge):
     return int(m.group(1)) if m else None
 
 
+def olcut_maddesi(metin, no):
+    """SS6.6 'Kabul olcutleri' listesinin <no>. maddesi; baslik ya da madde yoksa None. Madde bir
+    sonraki numarali maddeye ya da bos satira kadar surer (girintili devam satirlari dahil)."""
+    bas = metin.find(SITL_KABUL_BASLIGI)
+    if bas < 0:
+        return None
+    m = re.search(rf"^{no}\. (.*?)(?=^\d+\. |^[ \t]*$|\Z)", metin[bas:], flags=re.M | re.S)
+    return m.group(1) if m else None
+
+
+def paragraf(metin, bas_ifade):
+    """'bas_ifade' ile baslayan paragraf (ilk bos satira kadar); yoksa None."""
+    i = metin.find(bas_ifade)
+    if i < 0:
+        return None
+    son = re.search(r"\n[ \t]*\n", metin[i:])
+    return metin[i:i + son.start()] if son else metin[i:]
+
+
+def eski_olcut1_hatalari(ham, metin):
+    """T221-D2 (curutucu C2): D-449 oncesi olcut 1 yururlukte OLAMAZ (SITL'de hic tutamaz); FDR kurali
+    geregi ham metinde TAM 1 kez ~~cizili~~ durur ve hemen ardinda tarih damgasi gelir.
+    ham = SS6.6 ham metni, metin = cizilmemis(ham)."""
+    hatalar = []
+    yururlukte = re.findall(SITL_ESKI_OLCUT1, metin)
+    if yururlukte:
+        hatalar.append(f"eski olcut 1 yururlukteki metinde (cizgisi kaldirilmis): {yururlukte}")
+    cizili = [c for c in re.findall(r"~~(.*?)~~", ham, flags=re.S) if re.search(SITL_ESKI_OLCUT1, c)]
+    if len(cizili) != 1:
+        hatalar.append(f"eski olcut 1 ~~cizili~~ {len(cizili)} kez (tam 1: FDR, eski metin silinmez)")
+    elif not re.search(rf"~~[^~]*?{SITL_ESKI_OLCUT1}[^~]*?~~\s*\*?\({re.escape(SITL_DAMGA)}\W", ham):
+        hatalar.append(f"cizili eski olcut 1'in hemen ardinda tarih damgasi yok: '({SITL_DAMGA}'")
+    return hatalar
+
+
+def olcut1_hatalari(metin):
+    """T221-D2 (curutucu C4): yururlukteki olcut 1 maddesi acilis surumunu ve CHUTE_ENABLED kosulunu
+    TAM 1 kez tasir. metin = cizilmemis SS6.6."""
+    madde = olcut_maddesi(metin, 1)
+    if madde is None:
+        return [f"SS6.6 {SITL_KABUL_BASLIGI!r} altinda yururlukte olcut 1 maddesi yok"]
+    return [f"olcut 1 maddesinde {k!r} {madde.count(k)} kez (tam 1 olmali)"
+            for k in SITL_OLCUT1_KOSULLARI if madde.count(k) != 1]
+
+
+def on_hukum_hatalari(metin):
+    """T221-D2 (curutucu C3/C7): CHUTE_* on hukmu paragrafi yururlukte TAM 1 kez, basliginda tarih
+    damgasi; hukum cumleleri paragrafin ICINDE; paragrafta her olcut en cok 1 kez anilir (ayni olcute
+    celiskili ikinci hukum eklenemez). metin = cizilmemis SS6.6."""
+    adet = metin.count(SITL_ON_HUKUM)
+    if adet != 1:
+        return [f"CHUTE_* on hukmu paragrafi {adet} kez (tam 1 olmali)"]
+    on = paragraf(metin, SITL_ON_HUKUM)
+    hatalar = []
+    if not on.startswith(f"{SITL_ON_HUKUM} ({SITL_DAMGA}):**"):
+        hatalar.append(f"on hukum basliginda tarih damgasi yok: '({SITL_DAMGA}):**'")
+    hatalar += [f"on hukum paragrafinda yok: {ifade!r}" for ifade in SITL_ON_HUKUM_IFADELERI
+                if ifade not in on]
+    anilan = re.findall(r"[Öö]lçüt (\d+)", on)
+    cok = sorted({n for n in anilan if anilan.count(n) > 1})
+    if cok:
+        hatalar.append(f"on hukum paragrafinda olcut {cok} birden cok kez anilmis (celiskili hukum)")
+    return hatalar
+
+
 def sitl_kabul_hatalari(sitl_bolumu, p, kanit, yoklama):
     """A18 (T221-D, D-449): README SS6.6 kabul olcutu 1 SITL'de tutabilir ve olcume bagli mi?
 
     Yuklu ad sayisi .param'dan HESAPLANIR (README'deki elle yazilmis sayiya guvenilmez); beklenen-yok
     listesi onceden yazilan kumeyle ayni olmali ve her adi SITL ikili taramasinda 0 kez gecmeli.
+    T221-D2: eski olcut 1 cizili kalir (eski_olcut1_hatalari), olcut 1 kosullari tam 1 kez
+    (olcut1_hatalari), CHUTE_* on hukmu gevsetilemez (on_hukum_hatalari).
     """
     metin = cizilmemis(sitl_bolumu)
     hatalar = []
@@ -589,6 +681,8 @@ def sitl_kabul_hatalari(sitl_bolumu, p, kanit, yoklama):
     for ifade in SITL_KURAL_IFADELERI:
         if ifade not in metin:
             hatalar.append(f"README SS6.6 on kayit cumlesi eksik: {ifade!r}")
+    hatalar += (eski_olcut1_hatalari(sitl_bolumu, metin) + olcut1_hatalari(metin)
+                + on_hukum_hatalari(metin))
     ek = readme_bolumu(yoklama, YOKLAMA_EK)
     if ek is None:
         return hatalar + [f"sitl_yoklama.txt'de {YOKLAMA_EK!r} ek tarama blogu yok"]
@@ -965,6 +1059,49 @@ class DenetleyiciGercektenDuser(unittest.TestCase):
         bozuk = yoklama.replace(ek, ek_bozuk)
         self.assertTrue(any("olcumle celisir" in h
                             for h in sitl_kabul_hatalari(sitl, p, kanit, bozuk)))
+
+    def test_m15_eski_olcut1_cizgisi_kalkinca_ya_da_silinince_yakalanir(self):
+        """C2 (curutucu): eski olcut 1'in ~~cizgisi~~ kalkinca SITL'de tutamayan olcut yururluge doner;
+        eski metnin silinmesi (FDR) ve cizgi notundaki tarih damgasinin silinmesi de DUSER."""
+        sitl, p, kanit, yoklama = self._sitl_girdileri()
+        eski = re.search(rf"~~([^~]*?{SITL_ESKI_OLCUT1}[^~]*?)~~", sitl)
+        self.assertIsNotNone(eski, "cizili eski olcut 1 yok")
+        for bozuk, beklenen in ((sitl.replace(eski.group(0), eski.group(1), 1),
+                                 "eski olcut 1 yururlukteki metinde"),
+                                (sitl.replace(eski.group(0), "", 1), "~~cizili~~ 0 kez"),
+                                (sitl.replace(f"*({SITL_DAMGA}:", "*(D-449:", 1),
+                                 "ardinda tarih damgasi yok")):
+            self.assertNotEqual(bozuk, sitl, "mutasyon uygulanamadi")
+            hatalar = sitl_kabul_hatalari(bozuk, p, kanit, yoklama)
+            self.assertTrue(any(beklenen in h for h in hatalar), (beklenen, hatalar))
+
+    def test_m16_chute_on_hukmu_gevsetilince_yakalanir(self):
+        """C3/C7 (curutucu): on kayitli 'Olcut 1 DUSER' hukmu gevsetilemez, gerekcesi silinemez;
+        celiskili ikinci hukum eklenemez; hukum cumlesi paragraftan cikarilamaz; baslik damgasi silinemez."""
+        sitl, p, kanit, yoklama = self._sitl_girdileri()
+        for eski, yeni, beklenen in (
+                ("Ölçüt 1 **DÜŞER** (`CHUTE_*`", "Ölçüt 1 **ÖLÇÜLEMEDİ** (`CHUTE_*`",
+                 "on kayit cumlesi eksik: 'Ölçüt 1 **DÜŞER**"),
+                (" (`CHUTE_*` beklenen-yok listesine sonradan eklenmez, eşik gevşetilmez)", "",
+                 "on kayit cumlesi eksik: 'Ölçüt 1 **DÜŞER**"),
+                ("yine ölçülür.", "yine ölçülür. Ölçüt 1 bu durumda ÖLÇÜLEMEDİ sayılır.",
+                 "birden cok kez anilmis"),
+                ("kaydedilir. Ölçüt 1 **DÜŞER**", "kaydedilir.\n\nÖlçüt 1 **DÜŞER**",
+                 "on hukum paragrafinda yok"),
+                (f"yoksa ({SITL_DAMGA}):**", "yoksa (D-449):**", "basliginda tarih damgasi yok")):
+            self.assertEqual(sitl.count(eski), 1, eski)
+            hatalar = sitl_kabul_hatalari(sitl.replace(eski, yeni), p, kanit, yoklama)
+            self.assertTrue(any(beklenen in h for h in hatalar), (eski, hatalar))
+
+    def test_m17_olcut1_chute_enabled_ve_acilis_kosulu_silinince_yakalanir(self):
+        """C4 (curutucu): olcut 1'den `param show CHUTE_ENABLED` 1 ya da acilis surumu silinemez."""
+        sitl, p, kanit, yoklama = self._sitl_girdileri()
+        acilis, chute = SITL_OLCUT1_KOSULLARI
+        for eski, yeni, kosul in ((f"{acilis}; {chute}; dosyadaki", f"{acilis}; dosyadaki", chute),
+                                  (f"{acilis}; {chute}; dosyadaki", f"{chute}; dosyadaki", acilis)):
+            self.assertEqual(sitl.count(eski), 1, eski)
+            hatalar = sitl_kabul_hatalari(sitl.replace(eski, yeni), p, kanit, yoklama)
+            self.assertIn(f"olcut 1 maddesinde {kosul!r} 0 kez (tam 1 olmali)", hatalar)
 
 
 if __name__ == "__main__":
