@@ -34,7 +34,11 @@ Kapilar:
      KAPALI (systemd/ altinda degil, betik kurmaz), xorg sablonu TAHMIN basligi, kurulum belgesi.
      D-453: kurulum belgesi (markdown) kilitleri YENI icerigi cizili (~~...~~) araliklar AYIKLANMIS
      metinde arar; §1 kodlayici / §5 / §9'da olculmemis 'doğrulandı/GEÇTİ/ölçüldü' yok; eski
-     metnin cizili durdugu HAM metinde denetlenir
+     metnin cizili durdugu HAM metinde denetlenir. D-454 (T228-D2): yasak/celiski aramalari
+     NORMALLESTIRILMIS metinde ('tutar', karma yazim, kalin parcali / yumusak tireli hukum,
+     tipografik kesme/tirnak); belge GENELINDE olculmemis GECTI yok; §4 sonuclari tam ÖLÇÜLECEK;
+     §5 'N ardışık' / '≥ N s' / '> N s' kodla ayni (celiskili ikinci hukum yok); eski nabizsiz
+     boru canli metinde yok
   G9 paket aynasi: KOPYALAR tasir, bayt-es, kod/ dizininden izole import; kilavuz kopyalar
   G10 jetson_baslat.sh: bash -n; varsayilan kapali (env'de gorunur, --isaretli-yayin YOK); x11 ile rpi
      --isaretli-yayin + gosterici bolumu; T227'siz paket [YOK] + exit 3, T227'li exit 0; gecersiz
@@ -50,6 +54,9 @@ hatayi yok sayarsa (MG), histerezis / baslatma araligi / aninda cikis / boru nab
 kaldirilirsa, -v ya da identity dusurulurse, belge kilitleri silinirse DUSER. T228-D2: nabiz
 izleyicisi borular arasi paylasilirsa (NG), belge notlari silinmeden CIZILIRSE ya da olculmemis
 madde 'doğrulandı' tasirsa (NK*), olen videonun sebebi 'yayin dogrulaniyor'a donerse (NS) DUSER.
+D-454 sinifi (NK11-NK21): 'tutar' / karma yazim / kalin parcali / yumusak tireli hukum, §4 sonuc
+hucresi / basligi ve ust hukum cizilmesi, kalin sayili ya da ASCII '>=' ile celiskili ikinci
+hukum, tipografik tirnakla CANLI metne donen eski boru DUSER.
 """
 import contextlib
 import io
@@ -63,6 +70,7 @@ import sys
 import tempfile
 import threading
 import time
+import unicodedata
 import unittest
 import urllib.parse
 from http.server import BaseHTTPRequestHandler, HTTPServer
@@ -1188,15 +1196,61 @@ class GostericiDosyalari(unittest.TestCase):
         for parca in ("`gst-launch-1.0 -v` nabız satırı biçimi", "`stdbuf -oL`",
                       "Dönüştürücünün canlı kodeki (H.264/H.265 çelişkili)"):
             self.assertIn(parca, bol9, "§9 OLCULEMEDI maddesi dusmemeli ya da cizilmemeli")
-        # D-453: olculmemis GECTI yok — OLCULEMEDI/DOGRULANACAK tasiyan yerlerde 'doğrulandı' vb.
+        # D-453/D-454: olculmemis GECTI yok — NORMALLESTIRILMIS metinde aranir ('tutar', karma yazim,
+        # kalin parcali ya da yumusak tireli 'doğrulandı' da sayilir)
         for ad, metin in (("§1 Kodlayıcı", kodlayici.group(0)), ("§5", bol5), ("§9", bol9)):
-            bulunan = _GECTI_KALIBI.search(metin)
+            bulunan = _gecti_bul(metin)
             self.assertIsNone(bulunan, "{}: '{}' — Jetson'da OLCULMEDI; olculunce bu kilit KANITLA "
-                              "(§4 sonuc sutunu) guncellenir".format(ad, bulunan and bulunan.group(0)))
+                              "(§4 sonuc sutunu) guncellenir".format(ad, bulunan))
         self.assertRegex(m, r"(?m)^\| 9 \|.*--nabiz-sina.*\| ÖLÇÜLECEK \|$")
         # eski komut SILINMEDI, cizildi + tarih (runbook kurali) — HAM metinde denetlenir
         self.assertRegex(_kurulum_bolumu(ham, "## 5. DRM kipi", "\n## 6."),
                          r"~~10 Eylül \(T228\): `gst-launch-1\.0 -e 'souphttpsrc[^`]*`~~")
+
+    def test_G8_D453_D454_olculmemis_hukum_celiski_eski_komut(self):
+        """D-453/D-454 (T228-D2): kilitli hukumlere CIZIP ya da BASKA SOZLE donulemez. Metin cizili
+        araliklar ayiklanip NORMALLESTIRILIR (_normal: tipografik kesme/tire, kalin/italik, yumusak
+        tire, Turkce harf katlamasi).
+        (1) Belge GENELINDE olculmemis GECTI yok — tek istisna ust kural cumlesi 'ÖLÇÜLEMEDİ ≠ GEÇTİ'.
+        (2) Ust hukum 'hiçbiri Jetson'da koşulmadı'; §4 basligi 'hepsi şu an ÖLÇÜLEMEDİ'; §4
+            tablosunun 1-9. adimlarinin sonuc hucresi TAM 'ÖLÇÜLECEK'.
+        (3) §5'te CELISKILI ikinci hukum yok: 'N ardışık', '≥ N s' / '>= N s', '> N s' sayilarinin
+            HEPSI koddaki on kayitli sabitlerle ayni (kalin sayi da sayilir).
+        (4) Eski (nabizsiz) video borusu §5 CANLI metninde yok: gst-launch + souphttpsrc tasiyan her
+            satirda '-v' ve identity nabzi var (tipografik tirnakli kopya da yakalanir)."""
+        m = _cizili_ayikla(KURULUM.read_text(encoding="utf-8"))
+        n = _normal(m)
+        kural = _normal("ÖLÇÜLEMEDİ ≠ GEÇTİ")
+        self.assertIn(kural, n, "ust kural cumlesi 'ÖLÇÜLEMEDİ ≠ GEÇTİ' dusmemeli")
+        bulunan = _gecti_bul(n.replace(kural, ""))
+        self.assertIsNone(bulunan, "belgede olculmemis hukum '{}' — Jetson'da hicbir adim KOSULMADI; "
+                          "olculunce §4 sonuc sutunu ve bu kilit KANITLA guncellenir".format(bulunan))
+        self.assertIn("hiçbiri Jetson'da koşulmadı", m, "ust hukum cizilmemeli/degismemeli")
+        bol4 = _kurulum_bolumu(m, "## 4. Doğrulama sırası")
+        self.assertIn("hepsi şu an ÖLÇÜLEMEDİ", bol4.split("\n", 1)[0], "§4 basligi")
+        sonuclar = {int(s.group(1)): s.group(2) for s in
+                    re.finditer(r"(?m)^\|\s*(\d+)\s*\|.*\|([^|\n]*)\|[ \t]*$", bol4)}
+        self.assertTrue(set(range(1, 10)) <= set(sonuclar), "§4 adimlari: {}".format(sorted(sonuclar)))
+        for no, sonuc in sorted(sonuclar.items()):
+            self.assertEqual(_normal(sonuc).strip(), "olculecek", "§4 adim {} sonuc hucresi '{}' — "
+                             "tam ÖLÇÜLECEK olmali".format(no, sonuc.strip()))
+        n5 = _normal(_kurulum_bolumu(m, "## 5. DRM kipi", "\n## 6."))
+        sayi = r"(\d+(?:[.,]\d+)?)"
+        for ad, kalip, sabit in (
+                ("'N ardışık' (DRM_CANLI_ARDISIK)", sayi + r"\s*ardisik", g.DRM_CANLI_ARDISIK),
+                ("'≥ N s' (DRM_ASGARI_ARALIK_S)", r"(?:≥|>=)\s*" + sayi + r"\s*s(?![a-z])",
+                 g.DRM_ASGARI_ARALIK_S),
+                ("'> N s' (DRM_BORU_DONMA_S)", r"(?<![<>=≥≤!-])>(?!=)\s*" + sayi + r"\s*s(?![a-z])",
+                 g.DRM_BORU_DONMA_S)):
+            degerler = [float(x.replace(",", ".")) for x in re.findall(kalip, n5)]
+            self.assertTrue(degerler, "§5'te {} hukmu yok".format(ad))
+            self.assertEqual(set(degerler), {float(sabit)},
+                             "§5'te CELISKILI {} hukmu: {} (kod {})".format(ad, degerler, sabit))
+        borular = [s for s in n5.splitlines() if "gst-launch" in s and "souphttpsrc" in s]
+        self.assertTrue(borular, "§5 video borusu komutu yok")
+        for s in borular:
+            self.assertIn("gst-launch-1.0 -v ", s, "§5 CANLI metinde nabizsiz (eski) video borusu: " + s)
+            self.assertIn("identity name=nabiz silent=false", s, "§5 CANLI metinde nabizsiz boru: " + s)
 
 
 #: D-453 (mimar kurali, 10 Eylul): markdown belge kilitleri YENI icerigi cizili (~~...~~) araliklar
@@ -1210,11 +1264,34 @@ def _kurulum_bolumu(metin, baslik, bitis="\n## "):
     return metin.split(baslik, 1)[1].split(bitis, 1)[0]
 
 
-#: Olculmemis GECTI kalibi (D-453): OLCULEMEDI/DOGRULANACAK tasiyan bolumlerde bu kelimeler ancak
-#: Jetson olcumu KANITLA islenince (kilit de o zaman guncellenir) yazilabilir.
-_GECTI_KALIBI = re.compile(
-    r"(?<!\w)(?:doğrulandı|Doğrulandı|DOĞRULANDI|dogrulandi|DOGRULANDI|geçti|Geçti|GEÇTİ|GECTI|"
-    r"ölçüldü|Ölçüldü|ÖLÇÜLDÜ|olculdu|OLCULDU)(?!\w)")
+#: D-454 (T221-D2 curutucusu: 'tutar', tipografik kesme ’, 'tamamı', kalin sayilar kilidi deldi):
+#: yasak/celiski aramalari NORMALLESTIRILMIS metinde yapilir — sifir genislikli karakter ve yumusak
+#: tire ayiklanir; NFKD + birlesik isaretler atilir (ğ->g, ş->s, İ->I ...), ı->i; kesme/tirnak
+#: (’ ‘ ‚ ‛ ´ ` ʼ ʹ ′) -> ', tireler (‐ ‑ ‒ – — ― −) -> -, vurgu (* _) ayiklanir, kucuk harf.
+#: '≠' NFKD'de '=' + U+0338'e ayrisir, isaret atilinca '=' olurdu (anlam TERSINE doner) -> once '!='.
+_SIFIR_GENISLIK = dict.fromkeys(map(ord, "\u00ad\u200b\u200c\u200d\u200e\u200f\u2060\ufeff"))
+_KATLA = str.maketrans({**{c: "'" for c in "\u2018\u2019\u201a\u201b\u00b4`\u02bc\u02b9\u2032"},
+                        **{c: "-" for c in "\u2010\u2011\u2012\u2013\u2014\u2015\u2212"},
+                        "\u0131": "i", "*": None, "_": None})
+
+
+def _normal(metin):
+    s = metin.translate(_SIFIR_GENISLIK).replace("\u2260", "!=")  # '≠' (U+2260)
+    s = "".join(c for c in unicodedata.normalize("NFKD", s) if not unicodedata.combining(c))
+    return s.translate(_KATLA).lower()
+
+
+#: Olculmemis GECTI kalibi (D-453/D-454) — _normal() ciktisi uzerinde: OLCULEMEDI/DOGRULANACAK
+#: tasiyan yerlerde bu hukumler ancak Jetson olcumu KANITLA islenince (kilit de o zaman guncellenir)
+#: yazilabilir. 'tutar/tuttu/tutuyor' D-454 (T221-D2 'doğrulandı: tutar') ile eklendi.
+_GECTI_KALIBI = re.compile(r"(?<![a-z0-9])(?:dogrulan(?:di|mistir)|gec(?:ti|mistir)|"
+                           r"olcul(?:du|mustur)|tut(?:ar|tu|uyor)|onaylandi)(?![a-z0-9])")
+
+
+def _gecti_bul(metin):
+    """Normallestirilmis metinde ilk olculmemis GECTI hukmu (yoksa None)."""
+    b = _GECTI_KALIBI.search(_normal(metin))
+    return b.group(0) if b else None
 
 
 # ── G9 ────────────────────────────────────────────────────────────────────────

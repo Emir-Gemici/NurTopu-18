@@ -43,8 +43,8 @@ TEST_KALIPLARI = (
 
 
 def main():
-    log = ["# T228-D kapi ciktisi · {} · {}".format(time.strftime("%Y-%m-%d %H:%M:%S"),
-                                                  Path(PY).name)]
+    log = ["# T228-D + T228-D2 kapi ciktisi · {} · {}".format(time.strftime("%Y-%m-%d %H:%M:%S"),
+                                                             Path(PY).name)]
     ozet = []
     k, rc, _ = k228.kos("jetson_paket_hazirla (ayna tazele)",
                         [PY, "-B", "scripts/jetson_paket_hazirla.py"], 2)

@@ -19,6 +19,11 @@ izleyicisi borular arasi paylasilir), NK1 (§1 kodek notu cizilir), NK2 (§5 DOG
 cizilip 'doğrulandı' yazilir) + yeni kilitlerin mutantlari: NS (olen videonun sebebi), NK3-NK10
 (D-453: belge kilitleri cizili araliklar AYIKLANMIS metinde; §1/§5/§9'da olculmemis GECTI yok;
 §4 adim 9 sonuc hucresi tam 'ÖLÇÜLECEK'; §8 satiri; T228 kapsam kilidi). Hepsi MUTASYONLAR_D2'de.
+NK11-NK21 (D-454 sinifi — T221-D2 curutucusunun kacan kaliplari): olculmemis hukum 'tutar' / karma
+yazim 'dogrulandı' / kalin parcali 'Doğ**rulan**dı' / yumusak tireli 'doğ-rulandı' ile cevrilir; §4
+satir sonucu ve basligi ('tamamı ölçüldü'), ust hukum cizilir; §5'e kalin sayili ya da ASCII '>='li
+CELISKILI ikinci hukum yazilir; eski (nabizsiz) boru tipografik tirnakla CANLI metne geri gelir.
+Hedef: test_G8_D453_D454_olculmemis_hukum_celiski_eski_komut (normallestirilmis metin).
 
 KOSUM (depo kokunden; baska surec bu dosyalari okurken KOSMA):
   O:/navitas-local-train/venv/Scripts/python.exe -B \
@@ -174,6 +179,8 @@ MUTASYONLAR = [
 NG_T = "test_G7_drm_kos_ikinci_video_borusu_YENI_nabiz_izleyicisiyle_surer"
 NS_T = "test_G7_olen_video_borusu_GORUNTU_YOK_sebebi_rc_ya_da_yayin_sebebi"
 G8K = "test_G8_kurulum_belgesi_kapsami"
+D454_T = "test_G8_D453_D454_olculmemis_hukum_celiski_eski_komut"
+DOGRULANACAK_KOK = "ÖLÇÜLEMEDİ — DOĞRULANACAK** (PC'de GStreamer yok;"
 MUTASYONLAR_D2 = [
     ("NG nabiz izleyicisi borular arasi PAYLASILIYOR (ikinci boru onceki izleyiciyle)", GOSTERICI,
      [("        iz = NabizIzleyici(saat=saat)\n",
@@ -210,6 +217,43 @@ MUTASYONLAR_D2 = [
     ("NK10 belge: §5 yeni video borusu komutu CIZILDI (kod blogunda)", KURULUM,
      [("sudo modprobe nvidia-drm modeset=1\n" + YENI_KOMUT + "\n",
        "sudo modprobe nvidia-drm modeset=1\n~~" + YENI_KOMUT + "~~\n")], (G8D,)),
+    # ── D-454 sinifi: tipografik / eszanlamli varyant, celiskili ikinci hukum, eski kuralin donusu ──
+    ("NK11 belge: §5 DOGRULANACAK durur, yanina 'biçim tutar' (eski kalip 'tutar'i bilmez)", KURULUM,
+     [(DOGRULANACAK_KOK, DOGRULANACAK_KOK.replace("(PC'de", "(12 Eylül: biçim tutar; PC'de"))],
+     (G8D, D454_T)),
+    ("NK12 belge: §5 DOGRULANACAK yanina karma yazim 'dogrulandı' (g breve'siz, ı noktasiz)", KURULUM,
+     [(DOGRULANACAK_KOK, DOGRULANACAK_KOK.replace("(PC'de", "(12 Eylül: dogrulandı; PC'de"))],
+     (G8D, D454_T)),
+    ("NK13 belge: §5 DOGRULANACAK yanina kalin parcali 'Doğ**rulan**dı'", KURULUM,
+     [(DOGRULANACAK_KOK, DOGRULANACAK_KOK.replace("(PC'de", "(12 Eylül: Doğ**rulan**dı; PC'de"))],
+     (G8D, D454_T)),
+    ("NK14 belge: §5 DOGRULANACAK yanina yumusak tireli 'doğ\\u00adrulandı' (ekranda gorunmez)",
+     KURULUM,
+     [(DOGRULANACAK_KOK, DOGRULANACAK_KOK.replace("(PC'de", "(12 Eylül: doğ\u00adrulandı; PC'de"))],
+     (G8D, D454_T)),
+    ("NK15 belge: §4 adim 3 sonucu cizildi, yerine 'GEÇTİ (12 Eylül)'", KURULUM,
+     [("| CANLI, bindirme okunur | ÖLÇÜLECEK |",
+       "| CANLI, bindirme okunur | ~~ÖLÇÜLECEK~~ GEÇTİ (12 Eylül) |")], (D454_T,)),
+    ("NK16 belge: §4 basligi 'hepsi şu an ÖLÇÜLEMEDİ' cizildi, yerine 'tamamı ölçüldü'", KURULUM,
+     [("hepsi şu an ÖLÇÜLEMEDİ)", "~~hepsi şu an ÖLÇÜLEMEDİ~~ tamamı ölçüldü)")], (D454_T,)),
+    ("NK17 belge: ust hukum 'hiçbiri Jetson'da koşulmadı' cizildi (tipografik kesmeyle 'koşuldu')",
+     KURULUM,
+     [("**hiçbiri Jetson'da koşulmadı**",
+       "~~**hiçbiri Jetson'da koşulmadı**~~ tamamı 12 Eylül’de koşuldu")], (D454_T,)),
+    ("NK18 belge: §5'e CELISKILI ikinci hukum, kalin sayi: 'Sahada **1** ardışık taze yoklama yeterli'",
+     KURULUM,
+     [("Açılışta kırmızı ekran ~3 s görünür (bu kurala göre beklenen).",
+       "Açılışta kırmızı ekran ~3 s görünür (bu kurala göre beklenen). Sahada **1** ardışık taze "
+       "yoklama yeterli.")], (D454_T,)),
+    ("NK19 belge: §5'e CELISKILI donma esigi: 'Sahada donma eşiği **> 6 s** alınır'", KURULUM,
+     [('açılır (sebep "video borusu ilerlemiyor").',
+       'açılır (sebep "video borusu ilerlemiyor"). Sahada donma eşiği **> 6 s** alınır.')], (D454_T,)),
+    ("NK20 belge: eski (nabizsiz) boru tipografik tirnakla §5 kod blogunda CANLI", KURULUM,
+     [("sudo modprobe nvidia-drm modeset=1\n" + YENI_KOMUT + "\n",
+       "sudo modprobe nvidia-drm modeset=1\n" + YENI_KOMUT + "\n"
+       + ESKI_KOMUT.replace("'", "’") + "\n")], (D454_T,)),
+    ("NK21 belge: §5 ikinci baslatma araligi ASCII '>= 1 s' (tipografik varyantla gevsetme)", KURULUM,
+     [("ölen GÖRÜNTÜ YOK borusu ≥ 3 s", "ölen GÖRÜNTÜ YOK borusu >= 1 s")], (D454_T,)),
 ]
 MUTASYONLAR += MUTASYONLAR_D2
 
