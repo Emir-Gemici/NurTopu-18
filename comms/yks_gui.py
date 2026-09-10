@@ -128,6 +128,29 @@ HARITA_RENK_ACIKLAMA_Y_PX = 52
 # banda sığar (inset'siz tuvalde metin tüm genişliği kullanır).
 MINI_HARITA_GENISLIK_PX = 300
 MINI_HARITA_YUKSEKLIK_PX = 330
+# ── T226-D (D-448): KÜÇÜK harita etiket yerleşimi ──────────────────────────
+# 🔴 ÖLÇÜLEN KUSUR (çürütücü, 10 Eyl; bbox + ekran görüntüsü): 450×495 küçük
+# haritada (OLCEK 1,5) şerit 1/3 seçiliyken komşu kapalı şeritlerin "✕ KAPALI"
+# yazıları üst üste biniyordu (ekranda "✕ KAPA✕ KAPALI"); İKA-KB ↔ "2·ORTA"/
+# "3·SAG", ref ↔ İKA-KB, renk açıklaması ↔ "HB (hedef)" de kesişiyordu —
+# yukarıdaki "96 px üst banda sığar" varsayımı 1,5 ölçekte TUTMADI. Sabit
+# piksel ofsetleri dar tuvalde tutmaz: küçük haritada etiketler METİN KUTUSU
+# ÖLÇÜLEREK yerleşir (`_harita_olculu_yerlesim`), yazı tipi küçüktür ve kapalı
+# şerit etiketi şerit genişliğine sığmıyorsa yalnız "✕" yazılır (anlamı renk
+# açıklamasındaki "KIRMIZI: kapalı/moloz" taşır). Ana harita OPEN_ROUTE/boşta
+# DEĞİŞMEDİ (master ile bayt-eş; kapı tests/test_yks_mk15_hakem_ekrani H2d).
+# Değerler DPI ölçekli UI yerleşimidir, görev/geometri eşiği değil.
+MINI_HARITA_YAZI_PUNTO = 8
+KAPALI_SERIT_ETIKETI = "✕ KAPALI"
+KAPALI_SERIT_ETIKETI_KISA = "✕"
+RENK_ACIKLAMASI = "■ YEŞİL: açık/geçilebilir   ■ KIRMIZI: kapalı/moloz"
+# Metinler arası ve bant altı boşluk (S(4)).
+HARITA_METIN_PAYI_PX = 4
+# Tek satır yüksekliği ölçüm metni: Türkçe şapkalı büyük harfler + alt uzantı.
+HARITA_SATIR_OLCU_METNI = "ÇĞİÖŞÜ gjpqy()"
+# Hakem haritasında İKA-KB (başlangıç) ve HB (hedef) kutu merkezleri, metre.
+KB_KONUM_M = (25, 2)
+HB_KONUM_M = (25, 48)
 # Video karar ÜRETMEZ: hakem onayı telsiz (SiK) verisine verilir (CONTRACTS
 # §6.7, D-443). Video paneli başlığında SABİT durur; etiket boşken de silinmez.
 KAMERA_KARAR_NOTU = "karar üretmez — onay telsiz verisine verilir"
@@ -286,12 +309,17 @@ def sematik_uyari_yerlesimi(genislik_px, inset_var=True):
     return sol, S(HARITA_UYARI_Y_PX), genislik
 
 
-def harita_cizim_alani(genislik_px, yukseklik_px):
-    """Üst yazı bandının altında kalan kare arena çizim alanını döndür."""
+def harita_cizim_alani(genislik_px, yukseklik_px, ust_px=None, alt_px=None):
+    """Üst yazı bandının altında kalan kare arena çizim alanını döndür.
+
+    ``ust_px``/``alt_px`` (T226-D): ÖLÇÜLÜ yerleşimin (küçük harita, ROTA YOK)
+    üst bant / alt kenar pikseli; verilmezse sabit ana harita değerleri.
+    """
     sol = S(HARITA_YAN_KENAR_PX)
-    ust = S(HARITA_UST_BANT_PX)
+    ust = S(HARITA_UST_BANT_PX) if ust_px is None else int(ust_px)
+    alt = S(HARITA_ALT_KENAR_PX) if alt_px is None else int(alt_px)
     kullanilabilir_w = max(0, genislik_px - sol - S(HARITA_YAN_KENAR_PX))
-    kullanilabilir_h = max(0, yukseklik_px - ust - S(HARITA_ALT_KENAR_PX))
+    kullanilabilir_h = max(0, yukseklik_px - ust - alt)
     olcek = min(kullanilabilir_w, kullanilabilir_h)
     return sol, ust, olcek
 
@@ -950,6 +978,9 @@ class YksArayuz:
         self.f_buyuk = tkfont.Font(family="Segoe UI", size=36, weight="bold")
         self.f_orta = tkfont.Font(family="Segoe UI", size=12, weight="bold")
         self.f_kucuk = tkfont.Font(family="Segoe UI", size=10)
+        # T226-D (D-448): küçük harita etiketleri (dar tuval, ölçülü yerleşim).
+        self.f_mini = tkfont.Font(family="Segoe UI",
+                                  size=MINI_HARITA_YAZI_PUNTO)
         self.f_mono = tkfont.Font(family="Consolas", size=10)
 
         # Başlık şeridi
@@ -1390,16 +1421,143 @@ class YksArayuz:
         c = self.harita if tuval is None else tuval
         w = c.winfo_width() or 480
         h = c.winfo_height() or 480
-        sol, ust, olcek = harita_cizim_alani(w, h)
+        # T226-D (D-448): ölçülü yerleşimli tuvalin (küçük harita; ana haritada
+        # yalnız ROTA YOK'ta ve gerekirse) arena alanı `_harita_ciz`de ölçülüp
+        # kaydedilir. Kayıt yoksa alan eskisi gibi saf fonksiyondan gelir.
+        alan = getattr(self, "_olculu_alan", {}).get(str(c))
+        sol, ust, olcek = alan if alan is not None else harita_cizim_alani(w, h)
         px = sol + (x_m / ARENA_M) * olcek
         py = ust + (1.0 - y_m / ARENA_M) * olcek   # y yukarı = kuzey
         return px, py
+
+    @staticmethod
+    def _metin_kutusu(c, metin, font, genislik=0):
+        """``metin``in ``c`` tuvalinde kaplayacağı ``(w, h)`` pikseli (T226-D).
+
+        GEÇİCİ bir metin öğesiyle Tk'nin KENDİ yerleşimi (satır sarma dahil)
+        ölçülür ve öğe hemen silinir — tahmini karakter genişliği kullanılmaz.
+        Ölçüm yüzeyi olmayan tuvalde (Tk'siz kayıt tuvali) ``None`` döner;
+        çağıran sabit yerleşime düşer.
+        """
+        if not (hasattr(c, "bbox") and hasattr(c, "create_text")):
+            return None
+        try:
+            oge = c.create_text(0, 0, text=metin, font=font, anchor="nw",
+                                width=max(0, int(genislik)))
+            try:
+                kutu = c.bbox(oge)
+            finally:
+                c.delete(oge)
+            x0, y0, x1, y1 = (int(v) for v in kutu)
+        except Exception:                        # ölçülemedi → sabit yerleşim
+            return None
+        return x1 - x0, y1 - y0
+
+    @staticmethod
+    def _kesisim_alani(a, b):
+        """İki ``(x0, y0, x1, y1)`` kutusunun kesişim alanı (0 = kesişmez)."""
+        return (max(0, min(a[2], b[2]) - max(a[0], b[0]))
+                * max(0, min(a[3], b[3]) - max(a[1], b[1])))
+
+    def _etiket_yerlestir(self, c, oge, adaylar):
+        """T226-D: metin öğesini, başka bir METİNLE kesişmeyen ve tuvalden
+        taşmayan İLK aday konuma ``(x, y, çapa)`` taşı; hiçbiri boş değilse
+        (taşma, kesişim alanı) en küçük olana. Yalnız küçük haritada kullanılır.
+        """
+        tw, th = c.winfo_width(), c.winfo_height()
+        en_iyi = None
+        for x, y, capa in adaylar:
+            c.coords(oge, x, y)
+            c.itemconfigure(oge, anchor=capa)
+            kutu = c.bbox(oge)
+            ceza = sum(self._kesisim_alani(kutu, c.bbox(d))
+                       for d in c.find_overlapping(*kutu)
+                       if d != oge and c.type(d) == "text")
+            tasma = (kutu[0] < 0 or kutu[1] < 0 or kutu[2] > tw
+                     or kutu[3] > th)
+            if ceza == 0 and not tasma:
+                return
+            skor = (tasma, ceza)
+            if en_iyi is None or skor < en_iyi[0]:
+                en_iyi = (skor, x, y, capa)
+        _skor, x, y, capa = en_iyi
+        c.coords(oge, x, y)
+        c.itemconfigure(oge, anchor=capa)
+
+    def _harita_olculu_yerlesim(self, c, w, rota_yok_metni, inset_var):
+        """T226-D (D-448): üst bant + arena alanını METİN KUTULARI ÖLÇÜLEREK kur.
+
+        Dönüş: ``font`` etiket fontu · ``kucuk`` · ``bant_h``/``bant_w`` ROTA
+        YOK bandı · ``uyari_y`` SEMATİK uyarısı · ``aciklama_y`` renk
+        açıklaması (küçük) · ``etiket_h`` tek satır yüksekliği (küçük) ·
+        ``alan`` ``(sol, ust, olcek)`` ya da ``None`` (= sabit ana harita alanı).
+
+        Küçük harita (``inset_var=False``): uyarı → renk açıklaması (yeri HER
+        durumda ayrılır: boşta ↔ OPEN_ROUTE arena zıplamaz) → HB etiketi →
+        arena → İKA-KB yarım satırı + şerit adları satırı.
+        ROTA YOK (iki harita): bant yüksekliği bant metninden ölçülür, uyarı
+        bandın ALTINA (+S(4)) iner; ana haritada arena YALNIZ HB etiketi
+        uyarıya değecekse aşağı iner. Ölçüm yüzeyi olmayan tuvalde bant sabit
+        yüksekliğe (``max(S(42), h // 10)``), arena sabit alana düşer.
+        """
+        kucuk = not inset_var
+        f = (getattr(self, "f_mini", None) if kucuk else None) or self.f_kucuk
+        h = c.winfo_height() or S(420)
+        pay = S(HARITA_METIN_PAYI_PX)
+        _ux, uyari_y0, uyari_w = sematik_uyari_yerlesimi(w, inset_var)
+        y = {"font": f, "kucuk": kucuk, "bant_h": None, "bant_w": uyari_w,
+             "uyari_y": uyari_y0, "aciklama_y": None, "etiket_h": None,
+             "alan": None}
+        if rota_yok_metni:
+            bant = self._metin_kutusu(c, rota_yok_metni, f, uyari_w)
+            y["bant_h"] = max(S(42), h // 10,
+                              0 if bant is None else bant[1] + 2 * pay)
+            y["uyari_y"] = y["bant_h"] + pay
+        uyari = self._metin_kutusu(c, SEMATIK_GOSTERIM_UYARISI, f, uyari_w)
+        satir = self._metin_kutusu(c, HARITA_SATIR_OLCU_METNI, f)
+        if uyari is None or satir is None:
+            return y
+        ust_sinir = y["uyari_y"] + uyari[1]         # üst metin yığınının altı
+        hb_pay = 1.0 - HB_KONUM_M[1] / ARENA_M       # H kutusu merkezi / olcek
+        if kucuk:
+            aciklama = self._metin_kutusu(c, RENK_ACIKLAMASI, f, uyari_w)
+            y["aciklama_y"] = uyari_y0 + uyari[1] + S(2)
+            ust_sinir = max(ust_sinir,
+                            y["aciklama_y"] + (aciklama or (0, 0))[1])
+            y["etiket_h"] = satir[1]
+            # İKA-KB etiketi arena altına en çok yarım satır taşar; şerit
+            # adları onun altında tek satır (`n` çapası).
+            alt = max(S(2), (satir[1] + 1) // 2 + S(2)) + satir[1] + S(2)
+            ust = ust_sinir + pay
+
+            def hb_ustu(u, olcek):       # HB `s` çapalı: H kutusunun (±12) üstü
+                return u + hb_pay * olcek - 12 - S(2) - satir[1]
+        else:
+            alt = S(HARITA_ALT_KENAR_PX)
+            ust = S(HARITA_UST_BANT_PX)
+
+            def hb_ustu(u, olcek):       # ana harita: HB merkezi H'nin 20 px üstü
+                return u + hb_pay * olcek - 20 - (satir[1] + 1) // 2
+        for _ in range(12):
+            _sol, u, olcek = harita_cizim_alani(w, h, ust_px=ust, alt_px=alt)
+            eksik = ust_sinir + pay - hb_ustu(u, olcek)
+            if eksik <= 0:
+                break
+            ust += int(math.ceil(eksik))
+        if kucuk or ust != S(HARITA_UST_BANT_PX):
+            y["alan"] = harita_cizim_alani(w, h, ust_px=ust, alt_px=alt)
+        return y
 
     def _harita_ciz(self, tuval=None):
         """Şematik haritayı çiz. ``tuval`` verilmezse ANA harita çizilir ve
         kamera görünümündeki KÜÇÜK kopya (T226, D-443 kusur a) da AYNI yoldan
         tazelenir: seçili şerit, ROTA YOK bandı ve SEMATIK uyarısı ikisinde de
-        aynı koddan gelir — yalnız tuval boyutu farklıdır."""
+        aynı koddan gelir — yalnız tuval boyutu farklıdır.
+
+        T226-D (D-448): küçük haritada etiketler METİN KUTUSU ÖLÇÜLEREK
+        yerleşir (sabit ofsetler 450×495'te üst üste biniyordu). Ana harita
+        OPEN_ROUTE/boşta master ile BAYT-EŞ; yalnız ROTA YOK'ta bant metni
+        ölçülür ve SEMATİK uyarısı bandın ALTINA iner."""
         if tuval is None:
             mini = getattr(self, "mini_harita", None)
             if mini is not None and getattr(self, "gorunum_adi", None) == "kamera":
@@ -1412,6 +1570,30 @@ class YksArayuz:
         w = c.winfo_width()
         if w <= 1:
             w = S(480)
+        # Yeni NO_ROUTE, eski OPEN_ROUTE önbelleğini görsel olarak geçersiz
+        # kılar: hakem ekranda yeşil bir rota görüp yanlış onay vermemelidir.
+        acik = (self.rota["road"]
+                if self.rota and not self.rota_yok
+                and rota_ankor_uyarisi(self.rota) is None else None)
+        rota_yok_metni = None
+        if self.rota_yok:
+            sebep = self.rota_yok.get("sebep", "bilinmeyen neden")
+            detay = self.rota_yok.get("detay")
+            rota_yok_metni = f"ROTA YOK — {sebep} · İKA GÜVENLİ DURUŞTA"
+            if detay:
+                rota_yok_metni += f"\n{detay}"
+        # T226-D: ölçülü yerleşim küçük haritada HER durumda, ana haritada
+        # YALNIZ ROTA YOK'ta. `olcu is None` = ana harita OPEN_ROUTE/boşta:
+        # master ile bayt-eş yol (kapı: tests/artifacts/t226d/ana_harita_master.json).
+        olcu = (self._harita_olculu_yerlesim(c, w, rota_yok_metni, inset_var)
+                if (not inset_var or rota_yok_metni) else None)
+        alanlar = self.__dict__.setdefault("_olculu_alan", {})
+        if olcu is not None and olcu["alan"] is not None:
+            alanlar[str(c)] = olcu["alan"]
+        else:
+            alanlar.pop(str(c), None)
+        kucuk = olcu is not None and olcu["kucuk"]
+        f_etiket = self.f_kucuk if olcu is None else olcu["font"]
         # grid (5 m)
         for m in range(0, 51, 5):
             x0, y0 = self._mxy(m, 0, c)
@@ -1427,19 +1609,43 @@ class YksArayuz:
 
         # 3 yol koridoru — tespit sonrası: açık yol YEŞİL, geri kalan HER YER
         # (kapalı koridorlar + moloz sahası) KIRMIZI = gidilemez
-        # Yeni NO_ROUTE, eski OPEN_ROUTE önbelleğini görsel olarak geçersiz
-        # kılar: hakem ekranda yeşil bir rota görüp yanlış onay vermemelidir.
-        acik = (self.rota["road"]
-                if self.rota and not self.rota_yok
-                and rota_ankor_uyarisi(self.rota) is None else None)
         if acik is not None:
             c.create_rectangle(x0, y0, x1, y1, fill=KIRMIZI, stipple="gray12",
                                outline="")
             lx, _uyari_y, aciklama_w = sematik_uyari_yerlesimi(w, inset_var)
             c.create_text(
-                lx, S(HARITA_RENK_ACIKLAMA_Y_PX),
-                text="■ YEŞİL: açık/geçilebilir   ■ KIRMIZI: kapalı/moloz",
-                fill=SOLUK, font=self.f_kucuk, anchor="nw", width=aciklama_w)
+                lx, (olcu["aciklama_y"] if kucuk and olcu["aciklama_y"] is not None
+                     else S(HARITA_RENK_ACIKLAMA_Y_PX)),
+                text=RENK_ACIKLAMASI,
+                fill=SOLUK, font=f_etiket, anchor="nw", width=aciklama_w)
+        # T226-D küçük harita: şerit adları arena + İKA-KB etiketinin ALTINDA
+        # tek satır; kapalı şerit etiketi şerit genişliğine SIĞMAZSA yalnız "✕".
+        serit_adi_y = None
+        kapali_etiketi = KAPALI_SERIT_ETIKETI
+        serit_adi_kisa = False
+        if kucuk and olcu["etiket_h"] is not None:
+            _ax, arena_alt = self._mxy(0, 0, c)
+            _kx, kb_y = self._mxy(*KB_KONUM_M, c)
+            serit_adi_y = max(arena_alt + S(2),
+                              kb_y + (olcu["etiket_h"] + 1) // 2 + S(2))
+            kutu = self._metin_kutusu(c, KAPALI_SERIT_ETIKETI, f_etiket)
+            serit_px = min(self._mxy(xm + yg, 0, c)[0] - self._mxy(xm - yg, 0, c)[0]
+                           for xm, yg, _giris, _cikis in SERIT_CIZIM_TABLOSU.values())
+            if kutu is None or kutu[0] > serit_px - S(2):
+                kapali_etiketi = KAPALI_SERIT_ETIKETI_KISA
+            # Sıkışık küçük haritada (küçük ekran / yüksek DPI, ölçüldü: 1,5
+            # ölçekte ~450×340) komşu şerit adları birbirine değiyorsa yalnız
+            # şerit NUMARASI yazılır; seçili şerit yine YEŞİL, tam ad sağ
+            # paneldeki karar kutusundadır.
+            merkezler = sorted(self._mxy(g[0], 0, c)[0]
+                               for g in SERIT_CIZIM_TABLOSU.values())
+            aralik = min(b - a for a, b in zip(merkezler, merkezler[1:]))
+            for yol in SERIT_CIZIM_TABLOSU:
+                ad_kutusu = self._metin_kutusu(
+                    c, f"{yol}·{ROAD_LABEL[yol].upper()}", f_etiket)
+                if (ad_kutusu is None
+                        or ad_kutusu[0] > aralik - S(HARITA_METIN_PAYI_PX)):
+                    serit_adi_kisa = True
         for yol, geometri in SERIT_CIZIM_TABLOSU.items():
             xm, yari_genislik_m, giris_y_m, cikis_y_m = geometri
             secili = (yol == acik)
@@ -1456,22 +1662,31 @@ class YksArayuz:
                 c.create_rectangle(px0, py0, px1, py1, outline="#25303c",
                                    width=1, dash=(3, 3))
             tx, ty = self._mxy(xm, -2.4, c)          # arena çerçevesinin ALTINA yaz
-            c.create_text(tx, ty, text=f"{yol}·{ROAD_LABEL[yol].upper()}",
-                          fill=YESIL if secili else SOLUK, font=self.f_kucuk)
+            ad_capa = {}
+            if serit_adi_y is not None:
+                ty, ad_capa = serit_adi_y, {"anchor": "n"}
+            c.create_text(tx, ty, text=(f"{yol}" if serit_adi_kisa
+                                        else f"{yol}·{ROAD_LABEL[yol].upper()}"),
+                          fill=YESIL if secili else SOLUK, font=f_etiket,
+                          **ad_capa)
             if not secili and acik is not None:
                 kx, ky = self._mxy(xm, 25, c)
-                c.create_text(kx, ky, text="✕ KAPALI", fill="#ff8878",
-                              font=self.f_kucuk)
+                c.create_text(kx, ky, text=kapali_etiketi, fill="#ff8878",
+                              font=f_etiket)
 
         # İKA-KB (başlangıç, güney) ve HB (hedef, kuzey)
-        kx, ky = self._mxy(25, 2, c)
+        kx, ky = self._mxy(*KB_KONUM_M, c)
         c.create_rectangle(kx - 12, ky - 12, kx + 12, ky + 12, outline=MAVI, width=2)
-        c.create_text(kx + 16, ky, text="İKA-KB", fill=MAVI, font=self.f_kucuk,
-                      anchor="w")
-        hx, hy = self._mxy(25, 48, c)
+        c.create_text(kx + 12 + S(4) if kucuk else kx + 16, ky, text="İKA-KB",
+                      fill=MAVI, font=f_etiket, anchor="w")
+        hx, hy = self._mxy(*HB_KONUM_M, c)
         c.create_rectangle(hx - 12, hy - 12, hx + 12, hy + 12, outline=KIRMIZI, width=2)
         c.create_text(hx, hy, text="H", fill=KIRMIZI, font=self.f_orta)
-        c.create_text(hx, hy - 20, text="HB (hedef)", fill=KIRMIZI, font=self.f_kucuk)
+        # Küçük haritada HB etiketi H kutusunun ÜSTÜNE oturur (`s` çapası).
+        hb_y, hb_capa = ((hy - 12 - S(2), {"anchor": "s"}) if kucuk
+                         else (hy - 20, {}))
+        c.create_text(hx, hb_y, text="HB (hedef)", fill=KIRMIZI, font=f_etiket,
+                      **hb_capa)
 
         # rota: şerit giriş ankrajı + yerel ref_xy + yerel waypoint'ler.
         # Bu bir GPS/dünya konumu değil, hakem için semantik gösterimdir.
@@ -1488,30 +1703,42 @@ class YksArayuz:
                 c.create_line(ax, ay, bx, by, fill=YESIL, width=3, arrow="last")
             rx, ry = pks[0]
             c.create_oval(rx - 5, ry - 5, rx + 5, ry + 5, fill=SARI, outline="")
-            c.create_text(rx - 16, ry, text="ref", fill=SARI, font=self.f_kucuk, anchor="e")
+            # T226-D: küçük haritada "ref" İKA-KB/şerit adlarıyla KESİŞMEYEN
+            # yana yerleşir (şerit 3'te sol yan İKA-KB'nin üstüne düşüyordu).
+            ref_adaylari = (((rx - S(8), ry, "e"), (rx + S(8), ry, "w"),
+                             (rx - S(8), ry - S(8), "se"),
+                             (rx + S(8), ry - S(8), "sw")) if kucuk
+                            else ((rx - 16, ry, "e"),))
+            ref_x, ref_y, ref_capa = ref_adaylari[0]
+            ref = c.create_text(ref_x, ref_y, text="ref", fill=SARI,
+                                font=f_etiket, anchor=ref_capa)
+            if len(ref_adaylari) > 1:
+                self._etiket_yerlestir(c, ref, ref_adaylari)
         if rota_uyarisi:
             ux, uy = self._mxy(25, 25, c)
             c.create_text(ux, uy, text=rota_uyarisi, fill=KIRMIZI,
                           font=self.f_orta, anchor="center", width=w - S(48))
 
-        if self.rota_yok:
-            sebep = self.rota_yok.get("sebep", "bilinmeyen neden")
-            detay = self.rota_yok.get("detay")
-            w, h = c.winfo_width() or S(480), c.winfo_height() or S(420)
-            bant_h = max(S(42), h // 10)
+        if rota_yok_metni:
+            # T226-D (D-448): bant yüksekliği METİNDEN ölçülür (detay satırı
+            # bandın dışına taşıyordu) ve metin SEMATİK uyarısıyla aynı yatay
+            # aralıkta (ana haritada inset'in solunda) sarılır.
+            bant_h = olcu["bant_h"]
             c.create_rectangle(0, 0, w, bant_h, fill=KIRMIZI, outline="")
-            metin = f"ROTA YOK — {sebep} · İKA GÜVENLİ DURUŞTA"
-            if detay:
-                metin += f"\n{detay}"
-            c.create_text(S(12), bant_h // 2, text=metin, fill="white",
-                          font=self.f_kucuk, anchor="w", width=w - S(24))
+            c.create_text(S(12), bant_h // 2, text=rota_yok_metni, fill="white",
+                          font=f_etiket, anchor="w", width=olcu["bant_w"])
 
         # Hakemin GPS sanmaması gereken semantik gösterim uyarısı en son
         # çizilir; grid/rota-yok katmanları metni sonradan örtemez. Sağ üstteki
         # inset ayrı çağrıda çizildiği için yatay kutular da çakışmaz.
+        # T226-D (D-448): ROTA YOK bandı varken uyarı bandın ALTINA iner
+        # (bant alti + S(4)); önceden ikisi de üst banttaydı ve üst üste
+        # biniyordu (ana harita bbox (17,22,518,50) / (17,12,547,40)).
         uyari_x, uyari_y, uyari_w = sematik_uyari_yerlesimi(w, inset_var)
+        if olcu is not None:
+            uyari_y = olcu["uyari_y"]
         c.create_text(uyari_x, uyari_y, text=SEMATIK_GOSTERIM_UYARISI,
-                      fill=SARI, font=self.f_kucuk, anchor="nw",
+                      fill=SARI, font=f_etiket, anchor="nw",
                       width=uyari_w)
 
     def _inset_ciz(self):
@@ -2714,10 +2941,17 @@ class YksArayuz:
         # Harita görünümüne dönüldüğünde protokol durumu OLDUĞU GİBİ görünür;
         # canlı algı görünümünde telsiz değeri EKRANA BASILMAZ.
         self._kutu_ciz()
+        # T226-D (D-448): görünüm çerçevesi görünüm düğmelerinin HEMEN altına
+        # paketlenir (ilk açılıştaki sıra). Çıplak `pack()` sona ekliyordu:
+        # kamera → harita dönüşünde harita sol panelin SONUNA, senaryo/demo
+        # düğmelerinin altına düşüyordu (T226 öncesinden; ölçüldü, D-448).
+        anahtar = getattr(self, "_gorunum_anahtari", None)
+        yer = {"after": anahtar} if anahtar is not None else {}
         if ad == "harita":
             self.algi_cerceve.pack_forget()
             self.kamera_cerceve.pack_forget()
-            self.harita.pack(padx=10, pady=(4, 6), fill="both", expand=True)
+            self.harita.pack(padx=10, pady=(4, 6), fill="both", expand=True,
+                             **yer)
             self.btn_gor_harita.config(fg=BG, bg=YESIL)
             self.btn_gor_algi.config(fg=METIN, bg="#232e3a")
             self.btn_gor_kamera.config(fg=METIN, bg="#232e3a")
@@ -2725,7 +2959,7 @@ class YksArayuz:
         elif ad == "algi":
             self.harita.pack_forget()
             self.kamera_cerceve.pack_forget()
-            self.algi_cerceve.pack(fill="both", expand=True)
+            self.algi_cerceve.pack(fill="both", expand=True, **yer)
             self.btn_gor_algi.config(fg=BG, bg=YESIL)
             self.btn_gor_harita.config(fg=METIN, bg="#232e3a")
             self.btn_gor_kamera.config(fg=METIN, bg="#232e3a")
@@ -2735,10 +2969,7 @@ class YksArayuz:
             self.algi_cerceve.pack_forget()
             # T226 (D-443 kusur a): kamera çerçevesi görünüm düğmelerinin HEMEN
             # altına; içindeki KÜÇÜK harita GİZLENMEZ (video + rota aynı anda).
-            anahtar = getattr(self, "_gorunum_anahtari", None)
-            self.kamera_cerceve.pack(
-                fill="both", expand=True,
-                **({"after": anahtar} if anahtar is not None else {}))
+            self.kamera_cerceve.pack(fill="both", expand=True, **yer)
             self.btn_gor_kamera.config(fg=BG, bg=YESIL)
             self.btn_gor_harita.config(fg=METIN, bg="#232e3a")
             self.btn_gor_algi.config(fg=METIN, bg="#232e3a")

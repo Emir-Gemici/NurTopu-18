@@ -60,7 +60,16 @@ class HaritaUstBantTests(unittest.TestCase):
                     and cagri.func.attr == "create_text"):
                 continue
             metin = next((k.value for k in cagri.keywords if k.arg == "text"), None)
-            if isinstance(metin, ast.Constant) and "YEŞİL:" in str(metin.value):
+            # T226-D (D-448): açıklama metni modül sabitine (RENK_ACIKLAMASI)
+            # alındı — küçük harita yerleşimi onu ÖLÇER. Sabit adı da çözülür;
+            # "tek açıklama çağrısı + width" koşulu DEĞİŞMEDİ.
+            if isinstance(metin, ast.Name):
+                deger = getattr(yks_gui, metin.id, None)
+            elif isinstance(metin, ast.Constant):
+                deger = metin.value
+            else:
+                deger = None
+            if isinstance(deger, str) and "YEŞİL:" in deger:
                 aciklamalar.append(cagri)
         self.assertEqual(1, len(aciklamalar))
         anahtarlar = {k.arg for k in aciklamalar[0].keywords}

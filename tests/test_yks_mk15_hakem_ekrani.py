@@ -35,8 +35,25 @@ Kapılar:
   K4  /durum HTTP (gerçek sunucu, sahte kaynak): kamera_ayari + boyut +
       cozunurluk_eslesti (eşleşen ve eşleşmeyen iki yön).
 
+T226-D (D-448; çürütücü RED 77853afb — küçük haritada etiketler üst üste):
+  H2c  GÖRÜNÜR pencere, gerçek Tk, OLCEK 1,0 ve 1,5 (tk scaling = OLCEK×96/72):
+       kamera görünümünde KÜÇÜK haritanın metin kutuları ikişer ikişer
+       kesişmez (istisna yalnız H ↔ HB (hedef)) ve tuvalden taşmaz — boşta,
+       road 1/2/3 OPEN_ROUTE, NO_ROUTE (kısa + uzun detay); beklenen metinler
+       yerinde, kapalı şerit etiketi kendi şeridinde; ROTA YOK'ta bant metni
+       bandın İÇİNDE, SEMATİK uyarısı bandın ALTINDA; ana haritada (inset
+       dahil) aynı kesişmezlik.
+  H2d  ANA harita OPEN_ROUTE (road 1/2/3, ANKOR YOK) ve boşta: çağrı listesi
+       master (362197e0) ile BAYT-EŞ — 20 senaryo, tests/artifacts/t226d/.
+  H6   Görünüm dönüşü: harita → kamera → harita (ve algı; model yüklenmez)
+       sonrası harita çerçevesinin paket sırası, winfo_y, yüksekliği ve pack
+       seçenekleri ilk açılıştakiyle aynı.
+  K5   kamera_koprusu: cv2'de CAP_DSHOW/CAP_MSMF/CAP_V4L2 yoksa import
+       düşmez (yedek 700/1400/200); varsa cv2'nin değeri kullanılır.
+
 Mutasyon (elle koşuldu; betik ve ham çıktı results/fdr_sprint_20260910/
-H9_MK15/t226/mutasyon_t226.py · mutasyon_ciktisi.txt).
+H9_MK15/t226/mutasyon_t226.py · mutasyon_ciktisi.txt). T226-D: mutasyon_t226d.py
+(eski M1–M14 yeni koda uyarlanarak YENİDEN + N1–N9; aynı çıktı dosyasına eklendi).
 
 KOSUM:
   O:\\navitas-local-train\\venv\\Scripts\\python.exe -B -m unittest discover \\
@@ -46,6 +63,8 @@ KOSUM:
 import ast
 import contextlib
 import gc
+import hashlib
+import importlib.util
 import io
 import json
 import re
@@ -55,6 +74,7 @@ import sys
 import tempfile
 import threading
 import time
+import types
 import unittest
 import urllib.request
 from pathlib import Path
@@ -105,6 +125,16 @@ def _metinler(tuval):
             if tuval.type(i) == "text" and "inset" not in tuval.gettags(i)]
 
 
+def _kisalt(metin):
+    """T226-D küçük harita kısaltmaları: "✕ KAPALI" → "✕", "2·ORTA" → "2"."""
+    if metin == yks_gui.KAPALI_SERIT_ETIKETI:
+        return yks_gui.KAPALI_SERIT_ETIKETI_KISA
+    for yol, ad in yks_gui.ROAD_LABEL.items():
+        if metin == f"{yol}·{ad.upper()}":
+            return str(yol)
+    return metin
+
+
 def _dolgulu(tuval, tur, renk):
     return [i for i in tuval.find_all()
             if tuval.type(i) == tur and tuval.itemcget(i, "fill") == renk]
@@ -112,9 +142,16 @@ def _dolgulu(tuval, tur, renk):
 
 # ── Gerçek kurucu + gerçek Tk + gerçek UDP (efemer) ─────────────────────────
 class _GercekEkran(unittest.TestCase):
-    def _kur(self, kamera_url=None, etiket=ETIKET):
+    def _kur(self, kamera_url=None, etiket=ETIKET, olcek=None):
         self.app = None
         self.kok = _tk_kok(self)
+        if olcek is not None:
+            # T226-D: main()'in DPI ölçeği (OLCEK) + Tk font pikseli (scaling);
+            # fontlar `_arayuz_kur`da (kurucuda) bu ölçekle oluşur.
+            self.kok.tk.call("tk", "scaling", olcek * 96.0 / 72.0)
+            yama = mock.patch.object(yks_gui, "OLCEK", olcek)
+            yama.start()
+            self.addCleanup(yama.stop)          # LIFO: söküm SONRASI
         self.link = UDPLink(bind=("127.0.0.1", 0), timeout=0.05)
         # Sahte İHA/İKA uçları: kaynak kilidi GERÇEK adreslerle çalışır, ACK
         # gerçek UDP ile İHA ucuna döner (5005/5006/5007'ye bind YOK).
@@ -311,10 +348,15 @@ class H2_AyniCizimYolu(_GercekEkran):
                          "seçili şerit küçük haritada YEŞİL değil")
         secili = f"2·{yks_gui.ROAD_LABEL[2].upper()}"
         yesil_metin = [mini.itemcget(i, "text") for i in _dolgulu(mini, "text", yks_gui.YESIL)]
-        self.assertIn(secili, yesil_metin)
+        # T226-D: sıkışık/henüz yerleşmemiş küçük haritada ad numaraya kısalır.
+        self.assertIn(_kisalt(secili), [_kisalt(t) for t in yesil_metin])
         self.assertIn(yks_gui.SEMATIK_GOSTERIM_UYARISI, _metinler(mini))
-        # Aynı yol: küçük haritanın metin kümesi ana haritanınkiyle birebir.
-        self.assertEqual(sorted(_metinler(app.harita)), sorted(_metinler(mini)))
+        # Aynı yol: küçük haritanın metin kümesi ana haritanınkiyle birebir —
+        # T226-D (D-448): kapalı şerit etiketi küçük haritada şeride SIĞMAZSA
+        # "✕"e kısalır (belgelenmiş tek fark; iki yan da aynı eşlemeden geçer).
+        # Sıkışık küçük haritada şerit adı yalnız NUMARAYA kısalabilir (T226-D).
+        self.assertEqual(sorted(_kisalt(t) for t in _metinler(app.harita)),
+                         sorted(_kisalt(t) for t in _metinler(mini)))
         # NO_ROUTE → ROTA YOK bandı küçük haritada da; yeşil şerit kalmaz.
         self._rota_gonder(dict(YOK_ROTA, seq=SEQ + 1))
         self.assertTrue(self._pompala(lambda: app.rota_yok is not None))
@@ -353,6 +395,306 @@ class H2_AyniCizimYolu(_GercekEkran):
                       if isinstance(n, ast.FunctionDef) and n.name == "_harita_ciz")
         self.assertIn("tuval", [a.arg for a in harita.args.args])
         self.assertIn('"mini_harita"', ast.get_source_segment(kaynak, harita))
+
+
+# ── T226-D (D-448): küçük harita etiket yerleşimi · ROTA YOK bant/uyarı ─────
+H_HB_ISTISNASI = frozenset(("H", "HB (hedef)"))
+UZUN_DETAY = ("koridor genişlik tavanı aşıldı · şerit 1 moloz · şerit 3 kapalı"
+              " · costmap güvenli rota üretmedi · İKA başlangıçta bekler")
+
+
+def _metin_kutulari(tuval):
+    """Gerçek Tk'nin çizdiği METİN öğeleri: ``(metin, bbox, etiketler)``."""
+    return [(tuval.itemcget(i, "text"), tuple(tuval.bbox(i)), tuval.gettags(i))
+            for i in tuval.find_all()
+            if tuval.type(i) == "text" and tuval.itemcget(i, "text")]
+
+
+def _kesisen_ciftler(kutular):
+    """Kutuları KESİŞEN (alanı > 0) metin çiftleri; tek istisna H ↔ HB (hedef)
+    (T226 öncesinden ana haritada da var olan, H kutusunun kendi etiketi)."""
+    ciftler = []
+    for i, (ta, ba, _e) in enumerate(kutular):
+        for tb, bb, _f in kutular[i + 1:]:
+            if frozenset((ta, tb)) == H_HB_ISTISNASI:
+                continue
+            if ba[0] < bb[2] and bb[0] < ba[2] and ba[1] < bb[3] and bb[1] < ba[3]:
+                ciftler.append((ta, ba, tb, bb))
+    return ciftler
+
+
+def _tasanlar(tuval, kutular):
+    w, h = tuval.winfo_width(), tuval.winfo_height()
+    return [(t, b) for t, b, _e in kutular
+            if b[0] < 0 or b[1] < 0 or b[2] > w or b[3] > h]
+
+
+class H2c_EtiketCakismasi(_GercekEkran):
+    """T226-D (D-448) — GÖRÜNÜR pencere, gerçek Tk, gerçek UDP.
+
+    ÇÜRÜTÜCÜ RED (77853afb, ölçüldü): 450×495 küçük haritada şerit 1/3
+    seçiliyken "✕ KAPALI" yazıları üst üste ("✕ KAPA✕ KAPALI"); İKA-KB ↔
+    "2·ORTA"/"3·SAG", ref ↔ İKA-KB, renk açıklaması ↔ HB (hedef) de kesişik;
+    NO_ROUTE'ta bant metni ↔ SEMATİK uyarısı iki haritada da üst üste.
+    Kapı: kamera görünümünde KÜÇÜK haritanın bütün metin kutuları ikişer
+    ikişer kesişmez (istisna yalnız H ↔ HB (hedef)) ve tuvalden taşmaz —
+    boşta, road 1/2/3 OPEN_ROUTE, NO_ROUTE (kısa + uzun detay); ROTA YOK'ta
+    bant metni bandın İÇİNDE, uyarı bandın ALTINDA; ANA haritada (inset
+    dahil) aynısı. Ölçek: `tk scaling` = OLCEK × 96/72 — main()'in DPI-duyarlı
+    süreci (bu PC 144 DPI → OLCEK 1,5, scaling ≈ 2,0) DPI-duyarsız test
+    sürecinde de kurulur; RED 1,5'te ölçülmüştü.
+    """
+
+    def _olcekli_kur(self, olcek):
+        app = self._kur(olcek=olcek)
+        self.kok.deiconify()
+        # Gerçek akış: ekran HARİTA görünümünde açılır, sonra kameraya geçilir
+        # (ana haritanın <Configure> bağı yok — bkz. rapor, açık kalem).
+        self.assertTrue(self._pompala(
+            lambda: app.harita.winfo_ismapped() and app.harita.winfo_height() > 1,
+            5.0))
+        self._pompala(lambda: False, 0.2)
+        app.gorunum("kamera")
+        self.assertTrue(self._pompala(
+            lambda: app.mini_harita.winfo_ismapped()
+            and app.mini_harita.winfo_width() > 1, 5.0))
+        self._pompala(lambda: False, 0.3)
+        return app
+
+    def _mesaj_ver(self, mesaj):
+        self._rota_gonder(mesaj)
+        alan = "rota" if mesaj["type"] == "OPEN_ROUTE" else "rota_yok"
+        self.assertTrue(self._pompala(
+            lambda: (getattr(self.app, alan) or {}).get("seq") == mesaj["seq"]),
+            mesaj)
+        self._pompala(lambda: False, 0.15)
+
+    def _bant_denetle(self, c, ad):
+        bantlar = _dolgulu(c, "rectangle", yks_gui.KIRMIZI)
+        self.assertEqual(1, len(bantlar), f"{ad}: ROTA YOK bandı yok/çok")
+        _bx0, by0, _bx1, by1 = c.coords(bantlar[0])
+        yazi = [i for i in c.find_all() if c.type(i) == "text"
+                and c.itemcget(i, "text").startswith("ROTA YOK — ")]
+        self.assertEqual(1, len(yazi), ad)
+        _tx0, ty0, _tx1, ty1 = c.bbox(yazi[0])
+        self.assertGreaterEqual(ty0, by0, f"{ad}: bant metni bandın ÜSTÜNE taştı")
+        self.assertLessEqual(ty1, by1, f"{ad}: bant metni bandın ALTINA taştı "
+                                       f"({ty1} > {by1})")
+        uyari = [i for i in c.find_all() if c.type(i) == "text"
+                 and c.itemcget(i, "text") == yks_gui.SEMATIK_GOSTERIM_UYARISI]
+        self.assertEqual(1, len(uyari), ad)
+        self.assertGreaterEqual(c.bbox(uyari[0])[1], by1,
+                                f"{ad}: SEMATİK uyarısı bandın ALTINDA değil")
+
+    def _mini_denetle(self, ad, mesaj):
+        c = self.app.mini_harita
+        boyut = f"{c.winfo_width()}x{c.winfo_height()}"
+        kutular = _metin_kutulari(c)
+        metinler = [t for t, _b, _e in kutular]
+        acik = mesaj is not None and mesaj["type"] == "OPEN_ROUTE"
+        # Çakışma etiket SİLİNEREK "çözülemez": beklenen metinler yerinde.
+        beklenen = {yks_gui.SEMATIK_GOSTERIM_UYARISI, "İKA-KB", "H", "HB (hedef)"}
+        if acik:
+            beklenen |= {yks_gui.RENK_ACIKLAMASI, "ref"}
+        self.assertLessEqual(beklenen, set(metinler), f"{ad} {boyut}: {metinler}")
+        # Şerit adları: tam ("2·ORTA") ya da sıkışık tuvalde yalnız numara ("2").
+        self.assertEqual(sorted(str(y) for y in yks_gui.ROAD_LABEL),
+                         sorted(_kisalt(t) for t in metinler
+                                if _kisalt(t) in {str(y) for y in yks_gui.ROAD_LABEL}),
+                         f"{ad} {boyut}: {metinler}")
+        if acik:
+            kapali = [b for t, b, _e in kutular
+                      if t in (yks_gui.KAPALI_SERIT_ETIKETI,
+                               yks_gui.KAPALI_SERIT_ETIKETI_KISA)]
+            self.assertEqual(2, len(kapali), f"{ad}: kapalı şerit etiketleri {kapali}")
+            # Her kapalı şeridin etiketi KENDİ şeridinin yatay sınırı içinde.
+            for yol, (xm, yg, _giris, _cikis) in yks_gui.SERIT_CIZIM_TABLOSU.items():
+                if yol == mesaj["road"]:
+                    continue
+                sx0 = self.app._mxy(xm - yg, 0, c)[0]
+                sx1 = self.app._mxy(xm + yg, 0, c)[0]
+                self.assertTrue(
+                    any(sx0 <= b[0] and b[2] <= sx1 for b in kapali),
+                    f"{ad}: şerit {yol} ({sx0:.0f}..{sx1:.0f}) etiketsiz: {kapali}")
+        self.assertEqual([], _kesisen_ciftler(kutular), f"{ad} {boyut}")
+        self.assertEqual([], _tasanlar(c, kutular), f"{ad} {boyut}")
+        if mesaj is not None and mesaj["type"] == "NO_ROUTE":
+            self._bant_denetle(c, f"küçük {ad}")
+
+    def _ana_denetle(self, ad):
+        c = self.app.harita
+        # `_tik` inset'i (İHA-UB) YALNIZ harita görünümünde çizer: denetime dahil.
+        self.assertTrue(self._pompala(
+            lambda: any("inset" in c.gettags(i) for i in c.find_all()), 3.0))
+        kutular = _metin_kutulari(c)
+        boyut = f"{c.winfo_width()}x{c.winfo_height()}"
+        self.assertEqual([], _kesisen_ciftler(kutular), f"ana {ad} {boyut}")
+        self.assertEqual([], _tasanlar(c, kutular), f"ana {ad} {boyut}")
+        self._bant_denetle(c, f"ana {ad}")
+
+    def _h2c(self, olcek):
+        self._olcekli_kur(olcek)
+        seq = SEQ + 100
+        durumlar = [("bos", None)]
+        for yol in (1, 2, 3):
+            seq += 1
+            durumlar.append((f"road{yol}", dict(ROTA, seq=seq, road=yol,
+                                                label=yks_gui.ROAD_LABEL[yol])))
+        durumlar.append(("no_route", dict(YOK_ROTA, seq=seq + 1)))
+        durumlar.append(("no_route_uzun", dict(YOK_ROTA, seq=seq + 2,
+                                               detay=UZUN_DETAY)))
+        for ad, mesaj in durumlar:
+            with self.subTest(olcek=olcek, durum=ad):
+                if mesaj is not None:
+                    self._mesaj_ver(mesaj)
+                self._mini_denetle(ad, mesaj)
+        # ANA harita (harita görünümü, inset dahil): uzun ve kısa detaylı ROTA YOK.
+        self.app.gorunum("harita")
+        self.assertTrue(self._pompala(self.app.harita.winfo_ismapped, 3.0))
+        with self.subTest(olcek=olcek, durum="ana_no_route_uzun"):
+            self._ana_denetle("no_route_uzun")
+        with self.subTest(olcek=olcek, durum="ana_no_route"):
+            self._mesaj_ver(dict(YOK_ROTA, seq=seq + 3))
+            self._ana_denetle("no_route")
+
+    def test_H2c_olcek_1_0(self):
+        self._h2c(1.0)
+
+    def test_H2c_olcek_1_5_hakem_ekrani(self):
+        self._h2c(1.5)
+
+
+class _AltinTuval:
+    """`results/.../t226/ana_harita_altin_uret.py` KayitTuval'ının AYNISI.
+
+    Ölçüm yüzeyi (`bbox`/`coords`) bilerek YOK: ana harita OPEN_ROUTE/boşta
+    font/DPI'ya bağlı ölçülü yerleşime girerse AttributeError ile düşer."""
+
+    def __init__(self, w, h):
+        self.w, self.h, self.cagrilar = w, h, []
+
+    def winfo_width(self):
+        return self.w
+
+    def winfo_height(self):
+        return self.h
+
+    def delete(self, *a, **k):
+        self.cagrilar.append(["delete", list(a), dict(sorted(k.items()))])
+
+    def _kayit(self, ad, a, k):
+        self.cagrilar.append([ad, [list(x) if isinstance(x, tuple) else x for x in a],
+                              {kk: (list(v) if isinstance(v, tuple) else v)
+                               for kk, v in sorted(k.items())}])
+        return len(self.cagrilar)
+
+    def create_line(self, *a, **k):
+        return self._kayit("create_line", a, k)
+
+    def create_rectangle(self, *a, **k):
+        return self._kayit("create_rectangle", a, k)
+
+    def create_text(self, *a, **k):
+        return self._kayit("create_text", a, k)
+
+    def create_oval(self, *a, **k):
+        return self._kayit("create_oval", a, k)
+
+
+class H2d_AnaHaritaMasterIleBaytEs(unittest.TestCase):
+    """MİMAR KARARI (D-448 §4): ana haritanın çizimi YALNIZ `rota_yok`ta
+    değişebilir. OPEN_ROUTE (road 1/2/3, ANKOR YOK) ve boşta öğe listesi +
+    koordinatlar master (362197e0, T226 birleşmemiş) ile BAYT-EŞ: 4 boyut ×
+    5 durum = 20 senaryo. Altın kayıt master kaynağından `git show` ile
+    üretildi: results/fdr_sprint_20260910/H9_MK15/t226/ana_harita_altin_uret.py.
+    Küçük harita fontu (`f_mini`) ana haritaya SIZARSA da düşer."""
+
+    ALTIN = KOK / "tests" / "artifacts" / "t226d" / "ana_harita_master.json"
+    MASTER = "362197e0"
+
+    def test_H2d_open_route_ve_bosta_master_ile_bayt_es(self):
+        veri = json.loads(self.ALTIN.read_text(encoding="utf-8"))
+        self.assertEqual(f"{self.MASTER}:comms/yks_gui.py", veri["kaynak"])
+        senaryolar = veri["senaryolar"]
+        self.assertEqual(20, len(senaryolar))
+        for ad, s in senaryolar.items():
+            with self.subTest(senaryo=ad), \
+                    mock.patch.object(yks_gui, "OLCEK", s["olcek"]):
+                g = yks_gui.YksArayuz.__new__(yks_gui.YksArayuz)
+                g.harita = _AltinTuval(s["w"], s["h"])
+                g.f_kucuk, g.f_orta, g.f_mini = "f_kucuk", "f_orta", "f_mini"
+                g.rota, g.rota_yok = s["rota"], None
+                g.gorunum_adi = "harita"
+                g._harita_ciz()
+                self.assertEqual(
+                    json.dumps(s["cagrilar"], ensure_ascii=False),
+                    json.dumps(g.harita.cagrilar, ensure_ascii=False))
+
+    def test_H2d_altin_kayit_master_kaynagindan(self):
+        try:
+            ham = subprocess.run(
+                ["git", "-C", str(KOK), "show", f"{self.MASTER}:comms/yks_gui.py"],
+                capture_output=True, check=True, timeout=60).stdout
+        except (OSError, subprocess.SubprocessError) as exc:
+            self.skipTest(f"YAPILAMADI: git show {self.MASTER}: {exc!r}")
+        veri = json.loads(self.ALTIN.read_text(encoding="utf-8"))
+        self.assertEqual(hashlib.sha256(ham).hexdigest(), veri["kaynak_sha256"])
+
+
+class H6_GorunumDonusSirasi(_GercekEkran):
+    """MİMAR KARARI (D-448 §4): kamera/algı → harita dönüşünde harita
+    çerçevesi ilk açılıştaki yerine (görünüm düğmelerinin HEMEN altı) döner.
+    Kusur (T226 öncesinden): çıplak `pack()` çerçeveyi sol panelin SONUNA,
+    senaryo/demo düğmelerinin altına ekliyordu."""
+
+    def _durum(self, app):
+        bilgi = dict(app.harita.pack_info())
+        bilgi.pop("in", None)
+        return ([str(w) for w in app.harita.master.pack_slaves()],
+                app.harita.winfo_y(), app.harita.winfo_height(), bilgi)
+
+    def _ilk(self):
+        app = self._kur()
+        self.kok.deiconify()
+        self.assertTrue(self._pompala(
+            lambda: app.harita.winfo_ismapped() and app.harita.winfo_height() > 1,
+            5.0))
+        self._pompala(lambda: False, 0.2)
+        ilk = self._durum(app)
+        sira = ilk[0]
+        self.assertEqual(sira.index(str(app._gorunum_anahtari)) + 1,
+                         sira.index(str(app.harita)), sira)
+        return app, ilk
+
+    def _harita_don(self, app):
+        app.gorunum("harita")
+        self.assertTrue(self._pompala(app.harita.winfo_ismapped, 3.0))
+        self._pompala(lambda: False, 0.2)
+
+    def test_H6_harita_kamera_harita_sonrasi_sira_ve_konum_ilk_acilistaki(self):
+        app, ilk = self._ilk()
+        app.gorunum("kamera")
+        self.assertTrue(self._pompala(app.kamera_cerceve.winfo_ismapped, 3.0))
+        self._harita_don(app)
+        self.assertEqual(ilk, self._durum(app))
+        # İki tur: dönüş tek seferlik değil.
+        app.gorunum("kamera")
+        self.assertTrue(self._pompala(app.kamera_cerceve.winfo_ismapped, 3.0))
+        self._harita_don(app)
+        self.assertEqual(ilk, self._durum(app))
+
+    def test_H6b_algi_gorunumu_de_ilk_yerde_model_yuklenmez(self):
+        app, ilk = self._ilk()
+        # Algı görünümü model/GPU istemez bu testte: `_algi_iste` taklit.
+        with mock.patch.object(app, "_algi_iste") as iste:
+            app.gorunum("algi")
+            self.assertTrue(self._pompala(app.algi_cerceve.winfo_ismapped, 3.0))
+            sira = [str(w) for w in app.algi_cerceve.master.pack_slaves()]
+            self.assertEqual(sira.index(str(app._gorunum_anahtari)) + 1,
+                             sira.index(str(app.algi_cerceve)), sira)
+            self._harita_don(app)
+        iste.assert_called_once_with()
+        self.assertEqual(ilk, self._durum(app))
 
 
 class H3_VideoBasligi(unittest.TestCase):
@@ -791,6 +1133,50 @@ class K4_DurumHttp(_KopruTaban):
         self.assertEqual(64.0, d["kamera_ayari"]["surucu"]["genislik"])
         self.assertIs(False, d["cozunurluk_eslesti"],
                       "sürücü 64x48 dese de gerçek kare 32x24: eşleşme YOK")
+
+
+class K5_Cv2SabitYedegi(unittest.TestCase):
+    """MİMAR KARARI (D-448 iş 4): `ARKA_UC_API` modül YÜKLENİRKEN kurulur;
+    cv2 derlemesinde (Jetson python3-opencv) CAP_DSHOW/CAP_MSMF/CAP_V4L2
+    eksikse `cv2.CAP_DSHOW` AttributeError ile köprü importu — nvargus yolu
+    dahil — düşerdi. Sahte cv2 modülüyle GERÇEK dosya yüklenir."""
+
+    KOPRU = KOK / "scripts" / "kamera_koprusu.py"
+
+    @staticmethod
+    def _sahte_cv2(**ek):
+        m = types.ModuleType("cv2")
+        # Yalnız modül düzeyinde okunan, her derlemede bulunan sabitler.
+        m.CAP_ANY = 0
+        m.CAP_PROP_FRAME_WIDTH, m.CAP_PROP_FRAME_HEIGHT, m.CAP_PROP_FPS = 3, 4, 5
+        for ad, deger in ek.items():
+            setattr(m, ad, deger)
+        return m
+
+    def _yukle(self, sahte):
+        spec = importlib.util.spec_from_file_location("_kamera_koprusu_k5", self.KOPRU)
+        modul = importlib.util.module_from_spec(spec)
+        with mock.patch.dict(sys.modules, {"cv2": sahte}):
+            spec.loader.exec_module(modul)
+        return modul
+
+    def test_K5_arka_uc_sabiti_eksik_cv2_ile_import_dusmez(self):
+        sahte = self._sahte_cv2()
+        for ad in ("CAP_DSHOW", "CAP_MSMF", "CAP_V4L2"):
+            self.assertFalse(hasattr(sahte, ad))
+        modul = self._yukle(sahte)
+        self.assertEqual({"auto": 0, "dshow": 700, "msmf": 1400, "v4l2": 200},
+                         modul.ARKA_UC_API)
+        self.assertEqual(kk.ARKA_UC_SECENEKLERI, modul.ARKA_UC_SECENEKLERI)
+        # Yedek sayılar OpenCV videoio enum'uyla aynı (bu PC'deki gerçek cv2).
+        self.assertEqual((700, 1400, 200),
+                         (cv2.CAP_DSHOW, cv2.CAP_MSMF, cv2.CAP_V4L2))
+
+    def test_K5b_sabit_varsa_cv2_degeri_kullanilir(self):
+        modul = self._yukle(self._sahte_cv2(CAP_DSHOW=7001, CAP_MSMF=14001,
+                                            CAP_V4L2=2001))
+        self.assertEqual({"auto": 0, "dshow": 7001, "msmf": 14001, "v4l2": 2001},
+                         modul.ARKA_UC_API)
 
 
 if __name__ == "__main__":

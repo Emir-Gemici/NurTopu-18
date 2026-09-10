@@ -115,11 +115,16 @@ KIP_AYARLI_TURLER = (KAYNAK_TURU_INDEKS, KAYNAK_TURU_CIHAZ)
 #: kararli, sahada olculur -> secilebilir olmali. auto = CAP_ANY (eski davranis).
 ARKA_UC_OTOMATIK = "auto"
 ARKA_UC_SECENEKLERI = ("auto", "dshow", "msmf", "v4l2")
+#: T226-D (D-448): arka uc sabitleri modul YUKLENIRKEN okunur; bir derlemede
+#: (Jetson python3-opencv) sabit eksikse `cv2.CAP_DSHOW` AttributeError ile
+#: importu -- dolayisiyla kopruyu, nvargus yolu dahil -- dusururdu. Yedek
+#: degerler OpenCV videoio `VideoCaptureAPIs` enum sayilaridir (sabit, ABI):
+#: CAP_DSHOW=700, CAP_MSMF=1400, CAP_V4L2=200.
 ARKA_UC_API = {
     "auto": cv2.CAP_ANY,
-    "dshow": cv2.CAP_DSHOW,
-    "msmf": cv2.CAP_MSMF,
-    "v4l2": cv2.CAP_V4L2,
+    "dshow": getattr(cv2, "CAP_DSHOW", 700),
+    "msmf": getattr(cv2, "CAP_MSMF", 1400),
+    "v4l2": getattr(cv2, "CAP_V4L2", 200),
 }
 #: cap.set SIRASI: once cozunurluk, sonra FPS (DSHOW'da FPS, kip secildikten
 #: sonra anlamlidir). Adlar /durum `kamera_ayari` anahtarlaridir.
