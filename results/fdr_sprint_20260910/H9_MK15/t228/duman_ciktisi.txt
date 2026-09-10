@@ -1,0 +1,76 @@
+# T228 PC dumani · 2026-09-10 16:42:59 · python 3.13.7 · cv2 5.0.0
+AVI: <gecici>/t228_arena_native.avi (40 kare, kaynak data/kabul/sentetik_arena_kadraj_t66/images/train [234 dosya], boyut (640, 640, 3), parlaklik min/ort/maks 76/119/167, 5 fps MJPG, 2.7 MB)
+AVI (x264 girdisi): <gecici>/t228_arena_tuval_1280x720.avi (ayni kareler sigdir ile 1280x720, 2.9 MB)
+
+=== S1 CANLI (kopru --fps 2) ===
+$ -B scripts\kamera_koprusu.py --kaynak <gecici>\t228_arena_native.avi --port 0 --fps 2 --log-aralik 0
+kopru /durum: {'kaynak_acik': True, 'kare_sayaci': 1, 'fps_tavani': 2.0, 'son_hata': None, 'acma_denemesi': 1, 'port': 49777}
+$ -B scripts\isaretli_gosterici.py --kip x11 --kaynak http://127.0.0.1:49777 --sure 4 --tuval-kaydi results\fdr_sprint_20260910\H9_MK15\t228\duman\S1
+cikis=0 duvar=4.5 s
+  | [ISARETLI_GOSTERICI] t=106279.400 basladi: kip=x11 kaynak=http://127.0.0.1:49777/kare.jpg cekme=5 Hz bayat>2 s goruntu_yok>5 s sure=4 s
+  | [ISARETLI_GOSTERICI] t=106279.429 tuval kaydi: <depo>\results\fdr_sprint_20260910\H9_MK15\t228\duman\S1\01_GORUNTU_YOK.jpg
+  | [ISARETLI_GOSTERICI] t=106279.641 ekran GORUNTU_YOK -> CANLI
+  | [ISARETLI_GOSTERICI] t=106279.643 tuval kaydi: <depo>\results\fdr_sprint_20260910\H9_MK15\t228\duman\S1\02_CANLI.jpg
+  | [ISARETLI_GOSTERICI] t=106283.612 tuval kaydi: <depo>\results\fdr_sprint_20260910\H9_MK15\t228\duman\S1\son.jpg
+  | [ISARETLI_GOSTERICI] t=106283.612 ozet: kip=x11 sure=4.2 s cizim=20 istek=21 basari=21 yeni_kare=9 hata=0 cpu=0.23 s (tek cekirdegin %6'i)
+  | [ISARETLI_GOSTERICI] t=106279.427 KIRMIZI ekran - -> GORUNTU_YOK (henuz kare alinmadi)
+tuval kaydi: ['01_GORUNTU_YOK.jpg', '02_CANLI.jpg', 'son.jpg']
+kopru logu (son 3): ["[KAMERA_KOPRUSU] t=106279.108 dinliyor http://127.0.0.1:49777/video · kare http://127.0.0.1:49777/kare.jpg · durum http://127.0.0.1:49777/durum · kaynak='<gecici>\\\\t228_arena_native.avi' [dosya] kalite=80 fps_tavani=2.0", "[KAMERA_KOPRUSU] t=106279.115 kaynak ACILDI (deneme 1): '<gecici>\\\\t228_arena_native.avi' [dosya]"]
+
+=== S2 BAYAT (kopru --fps 0.25) ===
+$ -B scripts\kamera_koprusu.py --kaynak <gecici>\t228_arena_native.avi --port 0 --fps 0.25 --log-aralik 0
+kopru /durum: {'kaynak_acik': True, 'kare_sayaci': 1, 'fps_tavani': 0.25, 'son_hata': None, 'acma_denemesi': 1, 'port': 49803}
+$ -B scripts\isaretli_gosterici.py --kip x11 --kaynak http://127.0.0.1:49803 --sure 9 --tuval-kaydi results\fdr_sprint_20260910\H9_MK15\t228\duman\S2
+cikis=0 duvar=9.4 s
+  | [ISARETLI_GOSTERICI] t=106284.115 basladi: kip=x11 kaynak=http://127.0.0.1:49803/kare.jpg cekme=5 Hz bayat>2 s goruntu_yok>5 s sure=9 s
+  | [ISARETLI_GOSTERICI] t=106284.141 tuval kaydi: <depo>\results\fdr_sprint_20260910\H9_MK15\t228\duman\S2\01_GORUNTU_YOK.jpg
+  | [ISARETLI_GOSTERICI] t=106284.354 ekran GORUNTU_YOK -> CANLI
+  | [ISARETLI_GOSTERICI] t=106284.356 tuval kaydi: <depo>\results\fdr_sprint_20260910\H9_MK15\t228\duman\S2\02_CANLI.jpg
+  | [ISARETLI_GOSTERICI] t=106286.205 ekran CANLI -> BAYAT (kare 2.1 s eski (> 2 s))
+  | [ISARETLI_GOSTERICI] t=106286.206 tuval kaydi: <depo>\results\fdr_sprint_20260910\H9_MK15\t228\duman\S2\03_BAYAT.jpg
+  | [ISARETLI_GOSTERICI] t=106288.167 ekran BAYAT -> CANLI
+  | [ISARETLI_GOSTERICI] t=106288.170 tuval kaydi: <depo>\results\fdr_sprint_20260910\H9_MK15\t228\duman\S2\04_CANLI.jpg
+  | [ISARETLI_GOSTERICI] t=106290.019 ekran CANLI -> BAYAT (kare 2.1 s eski (> 2 s))
+  | [ISARETLI_GOSTERICI] t=106290.020 tuval kaydi: <depo>\results\fdr_sprint_20260910\H9_MK15\t228\duman\S2\05_BAYAT.jpg
+  | [ISARETLI_GOSTERICI] t=106292.189 ekran BAYAT -> CANLI
+  | [ISARETLI_GOSTERICI] t=106292.193 tuval kaydi: <depo>\results\fdr_sprint_20260910\H9_MK15\t228\duman\S2\06_CANLI.jpg
+  | [ISARETLI_GOSTERICI] t=106293.235 tuval kaydi: <depo>\results\fdr_sprint_20260910\H9_MK15\t228\duman\S2\son.jpg
+  | [ISARETLI_GOSTERICI] t=106293.235 ozet: kip=x11 sure=9.1 s cizim=43 istek=45 basari=45 yeni_kare=3 hata=0 cpu=0.36 s (tek cekirdegin %4'i)
+  | [ISARETLI_GOSTERICI] t=106284.138 KIRMIZI ekran - -> GORUNTU_YOK (henuz kare alinmadi)
+tuval kaydi: ['01_GORUNTU_YOK.jpg', '02_CANLI.jpg', '03_BAYAT.jpg', '04_CANLI.jpg', '05_BAYAT.jpg', '06_CANLI.jpg', 'son.jpg']
+kopru logu (son 3): ["[KAMERA_KOPRUSU] t=106283.831 dinliyor http://127.0.0.1:49803/video · kare http://127.0.0.1:49803/kare.jpg · durum http://127.0.0.1:49803/durum · kaynak='<gecici>\\\\t228_arena_native.avi' [dosya] kalite=80 fps_tavani=0.25", "[KAMERA_KOPRUSU] t=106283.834 kaynak ACILDI (deneme 1): '<gecici>\\\\t228_arena_native.avi' [dosya]"]
+
+=== S3 503 (kopru kaynagi yok) ===
+$ -B scripts\kamera_koprusu.py --kaynak yok/olmayan_kaynak.avi --port 0 --fps 2 --log-aralik 0
+kopru /durum: {'kaynak_acik': False, 'kare_sayaci': 0, 'fps_tavani': 2.0, 'son_hata': "kaynak acilamadi (deneme 2): 'yok/olmayan_kaynak.avi' [dosya]", 'acma_denemesi': 2, 'port': 55381}
+$ -B scripts\isaretli_gosterici.py --kip x11 --kaynak http://127.0.0.1:55381 --sure 3 --tuval-kaydi results\fdr_sprint_20260910\H9_MK15\t228\duman\S3
+cikis=0 duvar=3.5 s
+  | [ISARETLI_GOSTERICI] t=106294.908 basladi: kip=x11 kaynak=http://127.0.0.1:55381/kare.jpg cekme=5 Hz bayat>2 s goruntu_yok>5 s sure=3 s
+  | [ISARETLI_GOSTERICI] t=106294.936 tuval kaydi: <depo>\results\fdr_sprint_20260910\H9_MK15\t228\duman\S3\01_GORUNTU_YOK.jpg
+  | [ISARETLI_GOSTERICI] t=106298.083 tuval kaydi: <depo>\results\fdr_sprint_20260910\H9_MK15\t228\duman\S3\son.jpg
+  | [ISARETLI_GOSTERICI] t=106298.083 ozet: kip=x11 sure=3.2 s cizim=15 istek=16 basari=0 yeni_kare=0 hata=16 cpu=0.20 s (tek cekirdegin %6'i)
+  | [ISARETLI_GOSTERICI] t=106294.914 KIRMIZI yayin HTTP 503: kaynak acilamadi (deneme 2): 'yok/olmayan_kaynak.avi' [dosya]
+  | [ISARETLI_GOSTERICI] t=106294.934 KIRMIZI ekran - -> GORUNTU_YOK (henuz kare alinmadi)
+  | [ISARETLI_GOSTERICI] t=106295.738 KIRMIZI yayin HTTP 503: kaynak acilamadi (deneme 3): 'yok/olmayan_kaynak.avi' [dosya]
+  | [ISARETLI_GOSTERICI] t=106296.744 KIRMIZI yayin HTTP 503: kaynak acilamadi (deneme 4): 'yok/olmayan_kaynak.avi' [dosya]
+  | [ISARETLI_GOSTERICI] t=106297.767 KIRMIZI yayin HTTP 503: kaynak acilamadi (deneme 5): 'yok/olmayan_kaynak.avi' [dosya]
+tuval kaydi: ['01_GORUNTU_YOK.jpg', 'son.jpg']
+kopru logu (son 3): ["[KAMERA_KOPRUSU] t=106293.445 dinliyor http://127.0.0.1:55381/video · kare http://127.0.0.1:55381/kare.jpg · durum http://127.0.0.1:55381/durum · kaynak='yok/olmayan_kaynak.avi' [dosya] kalite=80 fps_tavani=2.0", "[KAMERA_KOPRUSU] t=106293.537 KIRMIZI kaynak acilamadi (deneme 1): 'yok/olmayan_kaynak.avi' [dosya] — 1.0 s sonra yeniden"]
+
+=== S4 YOK (kopru yok) ===
+kopru YOK — bos port http://127.0.0.1:55404
+$ -B scripts\isaretli_gosterici.py --kip x11 --kaynak http://127.0.0.1:55404 --sure 3 --tuval-kaydi results\fdr_sprint_20260910\H9_MK15\t228\duman\S4
+cikis=0 duvar=4.4 s
+  | [ISARETLI_GOSTERICI] t=106298.384 basladi: kip=x11 kaynak=http://127.0.0.1:55404/kare.jpg cekme=5 Hz bayat>2 s goruntu_yok>5 s sure=3 s
+  | [ISARETLI_GOSTERICI] t=106298.419 tuval kaydi: <depo>\results\fdr_sprint_20260910\H9_MK15\t228\duman\S4\01_GORUNTU_YOK.jpg
+  | [ISARETLI_GOSTERICI] t=106302.441 tuval kaydi: <depo>\results\fdr_sprint_20260910\H9_MK15\t228\duman\S4\son.jpg
+  | [ISARETLI_GOSTERICI] t=106302.441 ozet: kip=x11 sure=4.1 s cizim=14 istek=4 basari=0 yeni_kare=0 hata=4 cpu=0.28 s (tek cekirdegin %7'i)
+  | [ISARETLI_GOSTERICI] t=106298.416 KIRMIZI ekran - -> GORUNTU_YOK (henuz kare alinmadi)
+  | [ISARETLI_GOSTERICI] t=106299.391 KIRMIZI yayin erisilemiyor (http://127.0.0.1:55404/kare.jpg): timed out
+tuval kaydi: ['01_GORUNTU_YOK.jpg', 'son.jpg']
+
+=== OZET ===
+S1: cikis=0 durum gecisleri=['GORUNTU_YOK', 'CANLI']
+S2: cikis=0 durum gecisleri=['GORUNTU_YOK', 'CANLI', 'BAYAT', 'CANLI', 'BAYAT', 'CANLI']
+S3: cikis=0 durum gecisleri=['GORUNTU_YOK']
+S4: cikis=0 durum gecisleri=['GORUNTU_YOK']
