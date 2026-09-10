@@ -61,9 +61,24 @@ from sinif_semasi import (COSTMAP_ENGEL_KATMANLARI,               # noqa: E402
                           COSTMAP_YOL_KATMANLARI, costmap_katmanlari)
 
 # ── Mozaik sabitleri ──────────────────────────────────────────────────────────
-MOZ_PX   = 1024            # mozaik kenarı (px) — iha_perceive CANON ile aynı → ölçeksiz infer
+MOZ_PX   = 1024            # mozaik TUVAL kenarı (px) — geometri/costmap ölçeği (çıkarım boyu DEĞİL)
 MOZ_M    = 56.0            # mozaiğin kapladığı alan (m) — HTAB 50 + 3 m kenar payı
 MPP      = MOZ_M / MOZ_PX  # metre/piksel (~0.055)
+
+
+def cikarim_boyu(kok=None) -> int:
+    """Model ÇIKARIM boyu (imgsz) — TEK KAYNAK `config/model_registry.json` etkin profili
+    (CONTRACTS §8, madde 16; D-441 mimar kararı a). Eskiden burada `_infer(..., MOZ_PX)` ile
+    1024 ÇIPLAK yazılıydı ve kayıt defteri (512, v36 kalibrasyonu) ile ayrışıyordu
+    (T213-A §2.2: v36 1280'de çöker, 960'ta 9/12). Fail-closed: defter okunamazsa istisna
+    yükselir — sessiz yedek değer YOK (bu betik yalnız depo kökünde koşar)."""
+    from model_registry import DEFAULT_REGISTRY, load_registry
+    kayit = (Path(kok) / "config" / "model_registry.json") if kok is not None else DEFAULT_REGISTRY
+    veri = load_registry(kayit)
+    return int(veri["profiles"][veri["default_profile"]]["imgsz"])
+
+
+INFER_SIZE = cikarim_boyu()   # 512 (kayıt); mozaik tuvali MOZ_PX'te kalır, maskeler tuvale büyütülür
 HFOV     = 1.3             # scan_camera horizontal_fov (models/iha/model.sdf ile AYNI)
 SCAN_Z   = 30.0            # tarama irtifası (world_generator.SCAN_Z ile AYNI)
 BG_GRI   = 114             # boş mozaik zemini (YOLO letterbox nötr grisi)
@@ -280,7 +295,8 @@ def haritala(level_dir, model, htab_cx, htab_cy, conf=0.15,
     poses = girdi_dir / "poses.csv"
     det = {"road": None, "label": "yok", "conf": 0.0, "image": "ortomozaik.jpg",
            "kaynak": "sim-tarama", "kare_n": 0,
-           "hb_yaricap_m": float(hb_yaricap_m), "birlestirme": birlestirme}
+           "hb_yaricap_m": float(hb_yaricap_m), "birlestirme": birlestirme,
+           "imgsz": int(INFER_SIZE), "mozaik_px": int(MOZ_PX)}
     if girdi_dir != level_dir:
         det["girdi_dir"] = str(girdi_dir)
 
@@ -306,8 +322,15 @@ def haritala(level_dir, model, htab_cx, htab_cy, conf=0.15,
     # Model maskeleri tek basina rota degildir. Kalibre mozaik olceginde
     # serbest alan = zemin - (arac|moloz|engel) kurulur; A* KB'den HB'ye
     # sadece bu C-uzayinda rota uretirse IKA'ya rota verilir.
+    # Çıkarım boyu KAYIT DEFTERİNDEN (INFER_SIZE, D-441 a); maskeler mozaik tuvaline (MOZ_PX)
+    # en-yakın-komşu ile büyütülür ki costmap/MPP/tohum geometrisi değişmesin. Tuval kare
+    # olduğundan letterbox dolgusu yoktur (içerik = tüm kare).
     content, masks, _model_road, _model_conf, _old_wps, _ = _infer(
-        mozaik, model, conf, MOZ_PX)
+        mozaik, model, conf, INFER_SIZE)
+    if INFER_SIZE != MOZ_PX:
+        masks = {k: cv2.resize(v.astype("uint8"), (MOZ_PX, MOZ_PX), interpolation=cv2.INTER_NEAREST)
+                 for k, v in masks.items()}
+        content = mozaik
     # Free_Space = Road - (Rubble/blocked | Car).  Segmentasyonun blocked
     # sinifi molozu tasir; OBB arac poligonlari ayni mozaik piksel sisteminde
     # ek bir engel kanali olur. Costmap bu iki kanali OR'layarak C-uzayini kurar.
