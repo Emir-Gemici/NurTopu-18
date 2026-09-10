@@ -1,0 +1,10 @@
+# T228 x264 CPU olcumu (PC) · 2026-09-10 16:44:04
+PC: Intel(R) Core(TM) Ultra 9 275HX | cekirdek 24 | mantiksal 24 · Windows-11-10.0.26200-SP0 · C:\ffmpeg\bin\ffmpeg.EXE
+girdi: t228_arena_tuval_1280x720.avi (1280x720 MJPG 5 fps; arena kareleri 16:9 bantli tuvalde), -re ile gercek zaman, 20 s
+$ -hide_banner -nostdin -benchmark -stream_loop -1 -re -i t228_arena_tuval_1280x720.avi -t 20 -an -f null -
+  bench: utime=0.000s stime=0.016s rtime=19.704s
+  taban (coz, kodlama yok): CPU (utime+stime)/rtime = 0.1% tek cekirdek
+$ -hide_banner -nostdin -benchmark -stream_loop -1 -re -i t228_arena_tuval_1280x720.avi -t 20 -an -c:v libx264 -preset ultrafast -tune zerolatency -b:v 2000k -g 10 -pix_fmt yuv420p -f null -
+  bench: utime=0.469s stime=0.312s rtime=19.707s
+  x264 (coz + libx264): CPU (utime+stime)/rtime = 4.0% tek cekirdek
+SONUC (PC): x264 kodlama farki = 3.9% tek cekirdek (5 fps 1280x720, ultrafast/zerolatency/2000k/GOP10). Jetson Orin Nano: OLCULEMEDI.

@@ -1,0 +1,37 @@
+# NEDEN: T228 · REVIEW_LOG D-443 · results/fdr_sprint_20260910/H9_MK15/TASARIM.md §5 (mk15-bosluk,
+# 10 Eylul): ekransiz tam ekranin BELGELI yolu nvdrmvideosink — X/gdm kapali, seat0 serbest,
+# nvidia-drm modeset=1 yuklu olmali. Birim scripts/isaretli_gosterici.py --kip drm kosar: yayin
+# CANLI iken souphttpsrc(/video) -> nvdrmvideosink, degilse kirmizi GORUNTU YOK borusu.
+# VARSAYILAN KAPALI: jetson_baslat.sh bu birimi KURMAZ / ETKINLESTIRMEZ (bilerek jetson_paket/systemd/
+# altinda DEGIL). Birincil yol X11 masaustu (navitas-isaretli-gosterici.desktop).
+# Elle kurulum ve geri alma: gosterici/GOSTERICI_KURULUM.md §5. ${KAMERA_PYTHON} ve ${ISARETLI_YAYIN}
+# /etc/navitas.env'den gelir (jetson_baslat.sh --kur yazar).
+# KIRMIZI UYARI (Argus): nvidia-drm yuklenip nvdrmvideosink CALISMAZSA Argus (nvarguscamerasrc)
+#   ~3 fps'e duser. Birim durdurulunca nvidia-drm YUKLU KALIR — ya birimi calisir tut ya da
+#   `sudo modprobe -r nvidia_drm` / yeniden baslat; kamera FPS'ini DRM acikken olc.
+# DOGRULANACAK (Jetson'da OLCULEMEDI): JetPack 7.2'de nvidia-drm varsayilan denylist'te
+#   (nv-load-display-modules) — acik modprobe yukluyor mu; User=navitas DRM master olabiliyor mu
+#   (video grubu, /dev/dri/card*); set_mode=1 donusturucunun EDID'siyle 1280x720 seciyor mu;
+#   '-+' onek birlesimi (systemd.service: '+' tam yetki, '-' hata birimi durdurmaz).
+[Unit]
+Description=NAVITAS isaretli gosterici - DRM tam ekran (nvdrmvideosink, gdm KAPALI) - T228 VARSAYILAN KAPALI
+After=network.target navitas-rpi-inference.service
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+EnvironmentFile=/etc/navitas.env
+User=navitas
+SupplementaryGroups=video
+WorkingDirectory=/home/navitas/navitas
+Environment=PYTHONUNBUFFERED=1
+ExecStartPre=+/usr/bin/systemctl stop gdm.service
+ExecStartPre=-+/usr/bin/loginctl terminate-seat seat0
+ExecStartPre=+/usr/sbin/modprobe nvidia-drm modeset=1
+ExecStart=/usr/bin/env ${KAMERA_PYTHON} /home/navitas/navitas/scripts/isaretli_gosterici.py --kip drm --kaynak http://${ISARETLI_YAYIN}
+Restart=always
+RestartSec=2
+TimeoutStopSec=5
+
+[Install]
+WantedBy=multi-user.target

@@ -116,7 +116,7 @@ BEYAN_ANAHTARLARI = ("KIP", "YKS_IP", "IKA_IP", "FOV", "ODAK", "SENARYO", "KAMER
                      "NAVITAS_PAKET_DIZIN", "NAVITAS_CR_KOPYA",
                      "SHIM_LOG", "SHIM_UID", "SHIM_KULLANICI", "FAKE_DUSEN", "FAKE_SURE",
                      "FAKE_SLEEP", "NAVITAS_TEST_PATH_ON", "KAMERA_PYTHON",
-                     "KAMERA_KOPRU_ARGS")
+                     "KAMERA_KOPRU_ARGS", "GOSTERICI_KIP", "ISARETLI_YAYIN")
 SERI_CIHAZ_KALIBI = re.compile(r"/dev/tty")
 
 

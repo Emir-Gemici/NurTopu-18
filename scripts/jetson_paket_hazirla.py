@@ -63,6 +63,13 @@ KOPYALAR = {
     # navitas-kamera-koprusu.service bunu KAMERA_PYTHON ile kosar ve
     # ~/navitas/scripts/kamera_koprusu.py arar. Kanonik scripts/, kod/ AYNADIR.
     KOK / "scripts" / "kamera_koprusu.py": PAKET_KOD / "kamera_koprusu.py",
+    # T228 (D-443 · H9_MK15/TASARIM.md): isaretli gosterici — T227 isaretli yayinini
+    # (127.0.0.1:8081) tam ekran DP->HDMI->SIYI donusturucuye (x11/drm) ya da yedek RTSP'ye
+    # verir; KARAR URETMEZ. kamera_koprusu'nun HTTP sabitlerini import eder (ikisi de
+    # ~/navitas/scripts/). Kanonik scripts/, kod/ AYNADIR. Yardimci dosyalar (autostart
+    # .desktop, DRM birimi, xorg sablonu, kurulum belgesi) jetson_paket/gosterici/ altinda
+    # KANONIKTIR (systemd/ gibi) — KOPYALAR'a girmez.
+    KOK / "scripts" / "isaretli_gosterici.py": PAKET_KOD / "isaretli_gosterici.py",
     # D-431 (7 Eylul 2026): kart Jetson NANO degil ORIN NANO 4GB (JetPack 7.2.1,
     # Ubuntu 24.04, Py 3.12, NVMe) cikti — `JETSON_NANO_KURULUM.md`, cp38 `wheels/`
     # ve venv38 plani bu kartta gecersiz. 6 Eylul'de kartta OLCULEREK yazilan
