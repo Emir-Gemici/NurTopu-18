@@ -42,6 +42,16 @@ Kullanim (Jetson, systemd/navitas-kamera-koprusu.service bunu kosar):
   /usr/bin/python3 scripts/kamera_koprusu.py                # nvargus 1280x720 -> :8080
   /usr/bin/python3 scripts/kamera_koprusu.py --kaynak 0     # USB (UVC) kamera
   /usr/bin/python3 scripts/kamera_koprusu.py --kaynak dosya.avi --port 8081 --fps 5
+  # T226 (D-443, MK15 video hatti): PC'de HDMI yakalama karti (UVC) -> YKS
+  python scripts/kamera_koprusu.py --kaynak 0 --arka-uc dshow --genislik 1280 --yukseklik 720 --kamera-fps 30
+
+Kip ayari (T226): indeks ("0") ya da V4L2 aygit ("/dev/video1") kaynaginda
+--genislik/--yukseklik/--kamera-fps VERILIRSE cap.set ile uygulanir; surucunun
+bildirdigi deger (`kamera_ayari`), gercek kare boyutu (`boyut`) ve ikisinin
+istenenle eslesmesi (`cozunurluk_eslesti`) /durum'a yazilir, uyusmazlik KIRMIZI
+loglanir. Verilmezse surucu varsayilani (eski davranis; olculdu: bu PC'nin web
+kamerasi 640x480 aciliyor). --arka-uc {auto,dshow,msmf,v4l2} yalniz indeks/aygit
+kaynaginda apiPreference'tir. nvargus borusu DEGISMEZ (kip boru dizgisinde).
 """
 import argparse
 import json
@@ -91,6 +101,33 @@ KAYNAK_TURU_GSTREAMER = "gstreamer"
 KAYNAK_TURU_INDEKS = "indeks"
 KAYNAK_TURU_URL = "url"
 KAYNAK_TURU_DOSYA = "dosya"
+#: T226 (D-443): V4L2 aygit yolu (/dev/videoN) DOSYA degil CIHAZ'dir: dosya sonu
+#: "basa sar" mantigi uygulanmaz, kip ayari (cozunurluk/FPS) uygulanir.
+KAYNAK_TURU_CIHAZ = "cihaz"
+CIHAZ_YOLU_ONEKI = "/dev/video"
+#: Kip ayarinin (cap.set) uygulandigi kaynak turleri. nvargus kipi boru
+#: dizgisindedir (set UYGULANMAZ — davranis degismez); URL/dosya/GStreamer
+#: kaynaginda cozunurluk kaynagin ozelligidir, koprunun degil.
+KIP_AYARLI_TURLER = (KAYNAK_TURU_INDEKS, KAYNAK_TURU_CIHAZ)
+#: T226: --arka-uc -> cv2 VideoCapture apiPreference. OLCULDU (D-443, 10 Eyl):
+#: bu PC'nin web kamerasi indeks 0'da surucu varsayilani 640x480 aciliyor;
+#: DSHOW ve MSMF ile set(1280x720) tuttu. Yakalama kartinda (MS2130 vb.) hangisi
+#: kararli, sahada olculur -> secilebilir olmali. auto = CAP_ANY (eski davranis).
+ARKA_UC_OTOMATIK = "auto"
+ARKA_UC_SECENEKLERI = ("auto", "dshow", "msmf", "v4l2")
+ARKA_UC_API = {
+    "auto": cv2.CAP_ANY,
+    "dshow": cv2.CAP_DSHOW,
+    "msmf": cv2.CAP_MSMF,
+    "v4l2": cv2.CAP_V4L2,
+}
+#: cap.set SIRASI: once cozunurluk, sonra FPS (DSHOW'da FPS, kip secildikten
+#: sonra anlamlidir). Adlar /durum `kamera_ayari` anahtarlaridir.
+KIP_OZELLIKLERI = (
+    ("genislik", cv2.CAP_PROP_FRAME_WIDTH),
+    ("yukseklik", cv2.CAP_PROP_FRAME_HEIGHT),
+    ("fps", cv2.CAP_PROP_FPS),
+)
 #: Kaynak arizasi sonrasi yeniden acma araligi (seri_hub ile ayni gerekce:
 #: daha sik denemek log seli, daha seyrek denemek bosuna gecikme).
 YENIDEN_ACMA_ARALIGI_S = 1.0
@@ -137,22 +174,35 @@ def nvargus_boru(genislik=VARSAYILAN_GENISLIK, yukseklik=VARSAYILAN_YUKSEKLIK,
     ).format(sid=int(sensor_id), w=int(genislik), h=int(yukseklik), fps=int(fps))
 
 
-def kaynagi_coz(metin, **nvargus_ayar):
+def kaynagi_coz(metin, arka_uc=ARKA_UC_OTOMATIK, **nvargus_ayar):
     """--kaynak metnini (VideoCapture argumani, apiPreference, tur) ucluye cevir.
 
     bos / "nvargus" -> nvarguscamerasrc borusu (CAP_GSTREAMER)
-    "0", "2"        -> kamera indeksi (USB/UVC)
+    "0", "2"        -> kamera indeksi (USB/UVC; apiPreference = arka_uc)
+    "/dev/video1"   -> V4L2 aygit yolu (CIHAZ; apiPreference = arka_uc)
     "a ! b"         -> TAM GStreamer borusu (CAP_GSTREAMER)
     "http://…"      -> URL (FFmpeg)
-    diger           -> dosya/cihaz yolu
+    diger           -> dosya yolu
+
+    `arka_uc` yalniz indeks/aygit kaynaginda anlamlidir; baska kaynakta "auto"
+    disi deger ValueError'dur — sessizce yok sayilmaz (nvargus borusu
+    CAP_GSTREAMER disinda bir arka uca verilemez).
     """
+    if arka_uc not in ARKA_UC_API:
+        raise ValueError("bilinmeyen arka uc {!r} (secenekler: {})".format(
+            arka_uc, ", ".join(ARKA_UC_SECENEKLERI)))
     m = "" if metin is None else str(metin).strip()
-    if m == "" or m == KAYNAK_NVARGUS:
-        return nvargus_boru(**nvargus_ayar), cv2.CAP_GSTREAMER, KAYNAK_TURU_NVARGUS
     try:
-        return int(m), cv2.CAP_ANY, KAYNAK_TURU_INDEKS
+        return int(m), ARKA_UC_API[arka_uc], KAYNAK_TURU_INDEKS
     except ValueError:
         pass
+    if m.startswith(CIHAZ_YOLU_ONEKI) and m[len(CIHAZ_YOLU_ONEKI):].isdigit():
+        return m, ARKA_UC_API[arka_uc], KAYNAK_TURU_CIHAZ
+    if arka_uc != ARKA_UC_OTOMATIK:
+        raise ValueError("--arka-uc {} yalniz indeks/aygit kaynaginda gecerli "
+                         "(kaynak {!r})".format(arka_uc, m or KAYNAK_NVARGUS))
+    if m == "" or m == KAYNAK_NVARGUS:
+        return nvargus_boru(**nvargus_ayar), cv2.CAP_GSTREAMER, KAYNAK_TURU_NVARGUS
     if "!" in m:
         return m, cv2.CAP_GSTREAMER, KAYNAK_TURU_GSTREAMER
     if "://" in m:
@@ -163,6 +213,68 @@ def kaynagi_coz(metin, **nvargus_ayar):
 def video_url(port=VARSAYILAN_PORT, host=YEREL_HOST):
     """rpi_inference --kaynak icin verilecek URL (jetson_baslat.sh ile ayni)."""
     return "http://{}:{}{}".format(host, int(port), VIDEO_YOLU)
+
+
+def _sayi_ya_da_none(deger):
+    try:
+        return round(float(deger), 3)
+    except (TypeError, ValueError):
+        return None
+
+
+def cihaz_kipini_uygula(cap, istek):
+    """Indeks/aygit kaynaginda istenen kipi ``cap.set`` ile uygula, raporla (T226).
+
+    ``istek``: {"genislik", "yukseklik", "fps"} alanlarindan YALNIZ acikca
+    verilenler. Donus (/durum ``kamera_ayari``):
+      istenen   — istek aynen
+      set_kabul — alan basina surucunun ``set`` donusu (bool)
+      surucu    — ``get`` ile okunan deger: surucunun BILDIRIMI; gercek kare
+                  boyutu ayrica /durum ``boyut``'tadir (ikisi ayrisabilir)
+      hata      — surucu istisnasi; kaynak acik kalir, akis surucunun sectigi
+                  kipte surer (fail-visible: /durum + KIRMIZI log)
+    """
+    rapor = {"istenen": dict(istek), "set_kabul": {}, "surucu": {}, "hata": None}
+    try:
+        for ad, ozellik in KIP_OZELLIKLERI:
+            if istek.get(ad) is not None:
+                rapor["set_kabul"][ad] = bool(cap.set(ozellik, float(istek[ad])))
+        for ad, ozellik in KIP_OZELLIKLERI:
+            rapor["surucu"][ad] = _sayi_ya_da_none(cap.get(ozellik))
+    except Exception as exc:  # cv2.error ve surucu eklentisi istisnalari
+        rapor["hata"] = "kip ayari istisnasi {}: {}".format(type(exc).__name__, exc)
+    return rapor
+
+
+def kip_sorunlari(rapor):
+    """Kip raporundaki uyusmazliklar -> metin listesi (bos = istenen uygulandi)."""
+    sorun = []
+    if rapor.get("hata"):
+        sorun.append(rapor["hata"])
+    red = [ad for ad, _o in KIP_OZELLIKLERI if rapor["set_kabul"].get(ad) is False]
+    if red:
+        sorun.append("set REDDEDILDI: " + ", ".join(red))
+    for ad in ("genislik", "yukseklik"):
+        istenen = rapor["istenen"].get(ad)
+        bildirilen = rapor["surucu"].get(ad)
+        if istenen is not None and bildirilen is not None \
+                and int(round(bildirilen)) != int(istenen):
+            sorun.append("{} surucu {} != istenen {}".format(
+                ad, int(round(bildirilen)), int(istenen)))
+    return sorun
+
+
+def _kip_metni(kip):
+    return "{}x{}@{}".format(kip.get("genislik", "?"), kip.get("yukseklik", "?"),
+                             kip.get("fps", "?"))
+
+
+def _arka_uc_adi(cap):
+    """Acilan arka ucun adi (DSHOW/MSMF/V4L2...); okunamazsa None."""
+    try:
+        return str(cap.getBackendName())
+    except Exception:  # eski/sahte capture nesnesi ya da surucu istisnasi
+        return None
 
 
 def _http_yetkisi_dogrula(metin):
@@ -203,11 +315,17 @@ class KareUretici(threading.Thread):
 
     def __init__(self, kaynak_metin, kalite=VARSAYILAN_KALITE,
                  fps_tavani=VARSAYILAN_FPS_TAVANI, log_aralik_s=VARSAYILAN_LOG_ARALIGI_S,
-                 saat=time.monotonic, log=logla, **nvargus_ayar):
+                 saat=time.monotonic, log=logla, arka_uc=ARKA_UC_OTOMATIK, **kip_ayari):
         super().__init__(name="kamera-uretici", daemon=True)
         self.kaynak_metin = "" if kaynak_metin is None else str(kaynak_metin)
+        # T226: None = "verilmedi" -> nvargus'ta boru varsayilani, indeks/aygitta
+        # surucu varsayilani (cap.set CAGRILMAZ — eski davranis birebir).
+        ayar = {ad: deger for ad, deger in kip_ayari.items() if deger is not None}
+        self.arka_uc = arka_uc
         self.kaynak_arg, self.kaynak_api, self.kaynak_turu = kaynagi_coz(
-            self.kaynak_metin, **nvargus_ayar)
+            self.kaynak_metin, arka_uc=arka_uc, **ayar)
+        self.kip_istegi = ({ad: ayar[ad] for ad, _o in KIP_OZELLIKLERI if ad in ayar}
+                           if self.kaynak_turu in KIP_AYARLI_TURLER else {})
         self.kalite = int(kalite)
         self.fps_tavani = float(fps_tavani)
         self.log_aralik_s = float(log_aralik_s)
@@ -235,6 +353,8 @@ class KareUretici(threading.Thread):
         self.donuk_kare = 0
         self.donuk_kare_ardisik = 0
         self.istemci_sayisi = 0
+        self.kamera_ayari = None    # T226: son acilistaki kip raporu (degismez sozluk)
+        self.arka_uc_adi = None     # T226: acilan arka ucun adi (indeks/aygit)
         self.baslangic_t = saat()
         self._zamanlar = deque(maxlen=FPS_PENCERESI)
 
@@ -279,6 +399,18 @@ class KareUretici(threading.Thread):
             return None
         return (len(self._zamanlar) - 1) / sure
 
+    def _cozunurluk_eslesti(self):
+        """GERCEK kare boyutu istenen kiple ayni mi; kilit CAGIRANDA olmali.
+
+        None: istenen cozunurluk yok ya da henuz kare yok (OLCULEMEDI, gecti degil).
+        """
+        w = self.kip_istegi.get("genislik")
+        h = self.kip_istegi.get("yukseklik")
+        if self.sekil is None or (w is None and h is None):
+            return None
+        return bool((w is None or self.sekil[1] == int(w)) and
+                    (h is None or self.sekil[0] == int(h)))
+
     def durum(self):
         """/durum JSON'unun uretici kismi (kilit altinda tutarli anlik goruntu)."""
         with self.kilit:
@@ -303,6 +435,15 @@ class KareUretici(threading.Thread):
                 "acma_sayisi": self.acma_sayisi,
                 "istemci_sayisi": self.istemci_sayisi,
                 "calisma_s": round(simdi - self.baslangic_t, 3),
+                # T226: indeks/aygit kaynaginda istenen kip, surucu bildirimi
+                # ve gercek kare boyutuyla eslesme (boyut yukarida).
+                "arka_uc": self.arka_uc,
+                "arka_uc_adi": self.arka_uc_adi,
+                "kip_istegi": dict(self.kip_istegi) or None,
+                "kamera_ayari": (None if self.kamera_ayari is None else
+                                 {ad: (dict(deger) if isinstance(deger, dict) else deger)
+                                  for ad, deger in self.kamera_ayari.items()}),
+                "cozunurluk_eslesti": self._cozunurluk_eslesti(),
             }
 
     # ── uretici tarafi ──────────────────────────────────────────────────
@@ -372,13 +513,32 @@ class KareUretici(threading.Thread):
                 self.log(hata + " — {} s sonra yeniden".format(YENIDEN_ACMA_ARALIGI_S),
                          kirmizi=True)
             return None
+        # T226: kip YALNIZ indeks/aygitta ve yalniz acikca istendiyse uygulanir;
+        # nvargus/URL/dosya yolu bu blogu atlar (davranis degismez).
+        rapor = arka_uc_adi = None
+        if self.kaynak_turu in KIP_AYARLI_TURLER:
+            if self.kip_istegi:
+                rapor = cihaz_kipini_uygula(cap, self.kip_istegi)
+            arka_uc_adi = _arka_uc_adi(cap)
         with self.kilit:
             self.acma_denemesi = deneme
             self.kaynak_acik = True
             self.son_hata = None
             self.acma_sayisi += 1
+            self.kamera_ayari = rapor
+            self.arka_uc_adi = arka_uc_adi
         self.log("kaynak ACILDI (deneme {}): {!r} [{}]".format(
             deneme, self.kaynak_arg, self.kaynak_turu))
+        if rapor is not None:
+            sorun = kip_sorunlari(rapor)
+            metin = "kamera kipi: istenen {} · surucu {} · arka uc {}".format(
+                _kip_metni(rapor["istenen"]), _kip_metni(rapor["surucu"]),
+                arka_uc_adi or self.arka_uc)
+            if sorun:
+                self.log(metin + " — istenen kip UYGULANMADI: " + "; ".join(sorun),
+                         kirmizi=True)
+            else:
+                self.log(metin)
         return cap
 
     def _koptu(self, cap, neden):
@@ -657,14 +817,16 @@ class KopruSunucusu(ThreadingMixIn, HTTPServer):
 
 def kopru_kur(kaynak, port=VARSAYILAN_PORT, host=YEREL_HOST, kalite=VARSAYILAN_KALITE,
               fps_tavani=VARSAYILAN_FPS_TAVANI, log_aralik_s=VARSAYILAN_LOG_ARALIGI_S,
-              istek_logu=False, log=logla, **nvargus_ayar):
+              istek_logu=False, log=logla, arka_uc=ARKA_UC_OTOMATIK, **kip_ayari):
     """Uretici ipligini baslat + HTTP sunucuyu BAGLA (serve_forever CAGIRMAZ).
 
     -> (sunucu, uretici). port=0: efemer (test). Kaynak yoksa da doner —
     uretici arka planda yeniden acma dongusundedir (fail-visible).
+    `kip_ayari`: genislik/yukseklik/fps/sensor_id (None = verilmedi).
     """
     uretici = KareUretici(kaynak, kalite=kalite, fps_tavani=fps_tavani,
-                          log_aralik_s=log_aralik_s, log=log, **nvargus_ayar)
+                          log_aralik_s=log_aralik_s, log=log, arka_uc=arka_uc,
+                          **kip_ayari)
     sunucu = KopruSunucusu((host, int(port)), uretici, istek_logu=istek_logu)
     uretici.start()
     return sunucu, uretici
@@ -693,10 +855,23 @@ def _parser():
     p.add_argument("--kalite", type=int, default=VARSAYILAN_KALITE, help="JPEG kalitesi 1-100")
     p.add_argument("--fps", type=float, default=VARSAYILAN_FPS_TAVANI,
                    help="uretici fps tavani (0 = tavan yok)")
-    p.add_argument("--genislik", type=int, default=VARSAYILAN_GENISLIK, help="nvargus kip genisligi")
-    p.add_argument("--yukseklik", type=int, default=VARSAYILAN_YUKSEKLIK, help="nvargus kip yuksekligi")
-    p.add_argument("--kamera-fps", type=int, default=VARSAYILAN_KAMERA_FPS, help="nvargus kip fps")
+    # T226: varsayilan None = "verilmedi": nvargus borusu VARSAYILAN_* ile kurulur
+    # (davranis degismez); indeks/aygitta cap.set yalniz verilince cagrilir.
+    p.add_argument("--genislik", type=int, default=None,
+                   help="kip genisligi: nvargus borusu (verilmezse {}) ya da indeks/aygit "
+                        "kaynaginda cap.set (verilmezse surucu varsayilani)".format(
+                            VARSAYILAN_GENISLIK))
+    p.add_argument("--yukseklik", type=int, default=None,
+                   help="kip yuksekligi: nvargus (verilmezse {}) ya da indeks/aygitta "
+                        "cap.set".format(VARSAYILAN_YUKSEKLIK))
+    p.add_argument("--kamera-fps", type=int, default=None,
+                   help="kip fps: nvargus (verilmezse {}) ya da indeks/aygitta "
+                        "cap.set".format(VARSAYILAN_KAMERA_FPS))
     p.add_argument("--sensor-id", type=int, default=VARSAYILAN_SENSOR_ID, help="nvargus sensor-id")
+    p.add_argument("--arka-uc", choices=ARKA_UC_SECENEKLERI, default=ARKA_UC_OTOMATIK,
+                   help="indeks/aygit kaynaginda VideoCapture apiPreference: auto=CAP_ANY, "
+                        "dshow/msmf (Windows yakalama karti), v4l2 (Linux); baska "
+                        "kaynakta yalniz auto")
     p.add_argument("--log-aralik", type=float, default=VARSAYILAN_LOG_ARALIGI_S,
                    help="periyodik sayac logu (s), 0 = kapali")
     p.add_argument("--istek-logu", action="store_true", help="her HTTP istegini logla")
@@ -712,12 +887,17 @@ def main(argv=None):
         parser.error("--fps negatif olamaz")
     if args.port < 0 or args.port > 65535:
         parser.error("--port 0-65535 arasi olmali")
-    if args.genislik <= 0 or args.yukseklik <= 0 or args.kamera_fps <= 0:
+    if any(d is not None and d <= 0 for d in (args.genislik, args.yukseklik, args.kamera_fps)):
         parser.error("--genislik/--yukseklik/--kamera-fps pozitif olmali")
+    try:
+        kaynagi_coz(args.kaynak, arka_uc=args.arka_uc)
+    except ValueError as exc:
+        parser.error(str(exc))
     try:
         sunucu, uretici = kopru_kur(
             args.kaynak, port=args.port, host=args.host, kalite=args.kalite,
             fps_tavani=args.fps, log_aralik_s=args.log_aralik, istek_logu=args.istek_logu,
+            arka_uc=args.arka_uc,
             genislik=args.genislik, yukseklik=args.yukseklik, fps=args.kamera_fps,
             sensor_id=args.sensor_id)
     except OSError as exc:
@@ -725,10 +905,13 @@ def main(argv=None):
         logla("HATA: HTTP ucu acilamadi {}:{}: {}".format(args.host, args.port, exc), kirmizi=True)
         return 3
     port = sunucu.server_address[1]
-    logla("dinliyor {} · kare {} · durum {} · kaynak={!r} [{}] kalite={} fps_tavani={}".format(
-        video_url(port, args.host), "http://{}:{}{}".format(args.host, port, KARE_YOLU),
-        "http://{}:{}{}".format(args.host, port, DURUM_YOLU),
-        uretici.kaynak_metin or KAYNAK_NVARGUS, uretici.kaynak_turu, args.kalite, args.fps))
+    logla("dinliyor {} · kare {} · durum {} · kaynak={!r} [{}] kalite={} fps_tavani={} "
+          "arka_uc={} kip={}".format(
+              video_url(port, args.host), "http://{}:{}{}".format(args.host, port, KARE_YOLU),
+              "http://{}:{}{}".format(args.host, port, DURUM_YOLU),
+              uretici.kaynak_metin or KAYNAK_NVARGUS, uretici.kaynak_turu, args.kalite,
+              args.fps, args.arka_uc,
+              _kip_metni(uretici.kip_istegi) if uretici.kip_istegi else "-"))
 
     def _sinyal(_s, _f):
         raise SystemExit(0)

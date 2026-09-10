@@ -1,0 +1,3 @@
+[KAMERA_KOPRUSU] t=102929.090 dinliyor http://127.0.0.1:50433/video · kare http://127.0.0.1:50433/kare.jpg · durum http://127.0.0.1:50433/durum · kaynak='0' [indeks] kalite=80 fps_tavani=10.0 arka_uc=auto kip=1280x720@30
+[KAMERA_KOPRUSU] t=102929.646 kaynak ACILDI (deneme 1): 0 [indeks]
+[KAMERA_KOPRUSU] t=102929.646 kamera kipi: istenen 1280x720@30 · surucu 1280.0x720.0@30.0 · arka uc MSMF

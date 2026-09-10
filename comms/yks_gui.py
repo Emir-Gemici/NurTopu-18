@@ -118,6 +118,24 @@ HARITA_UST_BANT_PX = 96
 HARITA_UYARI_Y_PX = 8
 HARITA_RENK_ACIKLAMA_Y_PX = 52
 
+# ── T226 (D-443 kusur a): kamera görünümünde VİDEO + ROTA aynı anda ─────────
+# 🔴 ÖLÇÜLEN KUSUR (D-443, kod haritası): `gorunum("kamera")` şematik haritayı
+# `pack_forget` ile gizliyordu; MK15 videosu açıkken hakem seçilen şeridi
+# haritada GÖREMİYORDU. Kamera görünümünde haritanın KÜÇÜK kopyası videonun
+# yanında durur. Çizim AYNI `_harita_ciz` yolundan, yalnız tuval farklı (iki
+# çizim kodu = ayrışabilecek iki gerçek). Boyut DPI ölçekli UI yerleşimidir,
+# görev/geometri eşiği değil: 300 px'te uyarı + renk açıklaması 96 px üst
+# banda sığar (inset'siz tuvalde metin tüm genişliği kullanır).
+MINI_HARITA_GENISLIK_PX = 300
+MINI_HARITA_YUKSEKLIK_PX = 330
+# Video karar ÜRETMEZ: hakem onayı telsiz (SiK) verisine verilir (CONTRACTS
+# §6.7, D-443). Video paneli başlığında SABİT durur; etiket boşken de silinmez.
+KAMERA_KARAR_NOTU = "karar üretmez — onay telsiz verisine verilir"
+# `--kamera-etiket` operatör metnidir (örn. "MK15 · HDMI · yakalama"): başlığa
+# ve KAMERA_KANIT `kaynak` alanına yazılır. Yazdırılamaz karakter/aşırı uzunluk
+# ekranı ve kayıt satırını bozar — taşıma biçimi sınırı, karar eşiği değil.
+KAMERA_ETIKETI_AZAMI_KARAKTER = 64
+
 # ── Hakem kanıt kaydı — olay kümesi (CONTRACTS §6.8) ─────────────────────────
 # NEDEN: kayıt 21 Eylül'de şartname §2.2.3 onayının DAYANAĞIDIR; ekrandaki
 # kayan metin uçuş sonrası kanıt değildir. Olay ADLARI serbest metin olarak
@@ -252,11 +270,19 @@ def inset_kutusu(genislik_px):
     return sag - boyut, ust, sag, ust + boyut
 
 
-def sematik_uyari_yerlesimi(genislik_px):
-    """Semantik uyarıyı sağ üst inset'ten yatayda ayıran yerleşim."""
-    inset_sol, _ust, _sag, _alt = inset_kutusu(genislik_px)
+def sematik_uyari_yerlesimi(genislik_px, inset_var=True):
+    """Semantik uyarıyı sağ üst inset'ten yatayda ayıran yerleşim.
+
+    ``inset_var=False``: inset çizilmeyen tuval (T226 küçük harita) — metin
+    tuvalin tüm genişliğini kullanır. Ana harita (varsayılan) DEĞİŞMEDİ.
+    """
     sol = S(12)
-    genislik = max(0, inset_sol - S(8) - sol)
+    if inset_var:
+        inset_sol, _ust, _sag, _alt = inset_kutusu(genislik_px)
+        sag = inset_sol - S(8)
+    else:
+        sag = genislik_px - S(12)
+    genislik = max(0, sag - sol)
     return sol, S(HARITA_UYARI_Y_PX), genislik
 
 
@@ -268,6 +294,42 @@ def harita_cizim_alani(genislik_px, yukseklik_px):
     kullanilabilir_h = max(0, yukseklik_px - ust - S(HARITA_ALT_KENAR_PX))
     olcek = min(kullanilabilir_w, kullanilabilir_h)
     return sol, ust, olcek
+
+
+def kamera_etiketi_dogrula(etiket):
+    """``--kamera-etiket`` metnini doğrula → kırpılmış metin ("" = etiket yok).
+
+    Yükseltir (ValueError): metin olmayan değer, yazdırılamaz karakter (satır
+    sonu, sekme, kontrol), ``KAMERA_ETIKETI_AZAMI_KARAKTER`` üstü uzunluk.
+    """
+    if etiket is None:
+        return ""
+    if not isinstance(etiket, str):
+        raise ValueError("kamera etiketi metin olmalı")
+    metin = etiket.strip()
+    if len(metin) > KAMERA_ETIKETI_AZAMI_KARAKTER:
+        raise ValueError(
+            f"kamera etiketi en çok {KAMERA_ETIKETI_AZAMI_KARAKTER} karakter "
+            f"olabilir ({len(metin)} verildi)")
+    if not metin.isprintable():
+        raise ValueError("kamera etiketi yazdırılamaz karakter taşıyamaz")
+    return metin
+
+
+def kamera_baslik_metni(etiket):
+    """Video paneli başlığı: kaynak etiketi + SABİT "karar üretmez" notu (T226)."""
+    kaynak = etiket if etiket else "etiket verilmedi (--kamera-etiket)"
+    return f"VİDEO KAYNAĞI: {kaynak}   |   {KAMERA_KARAR_NOTU}"
+
+
+def kamera_kanit_kaynagi(url, etiket):
+    """CONTRACTS §6.8 ``KAMERA_KANIT.kaynak`` = URL [+ etiket] → ``"<URL> [<etiket>]"``.
+
+    URL yoksa None (kaynak yok — etiket tek başına kaynak değildir).
+    """
+    if not url:
+        return None
+    return f"{url} [{etiket}]" if etiket else str(url)
 
 
 def _kayit_profili():
@@ -699,7 +761,7 @@ class YksArayuz:
     def __init__(
             self, kok, link, otomatik_onay=False, demo=False, ika_peer=None,
             iha_peer=None, kamera_url=None, hakem_log_yolu=None,
-            oturum_kunyesi=None):
+            oturum_kunyesi=None, kamera_etiket=""):
         self.kok = kok
         self.link = link
         self.reader = FrameReader()
@@ -828,6 +890,10 @@ class YksArayuz:
         # Canlı RAW kamera, karar/telemetri SiK hattından AYRI bir LAN veri
         # düzlemidir. İstemci arızası ana Tk döngüsünü ve komutları bloklamaz.
         self.kamera_url = kamera_url
+        # T226: video kaynak etiketi (örn. "MK15 · HDMI · yakalama") — video
+        # paneli başlığı ve KAMERA_KANIT `kaynak` alanı (CONTRACTS §6.8).
+        # Karar üretmez; `_arayuz_kur`dan ÖNCE kurulur (başlık onu okur).
+        self.kamera_etiket = kamera_etiketi_dogrula(kamera_etiket)
         self.kamera_istemci = None
         self._kamera_surum = -1
         self._kamera_foto = None
@@ -933,6 +999,7 @@ class YksArayuz:
 
         anahtar = tk.Frame(sol, bg=PANEL)
         anahtar.pack(fill="x", padx=10, pady=(4, 0))
+        self._gorunum_anahtari = anahtar   # T226: kamera çerçevesi bunun ALTINA
         self.btn_gor_harita = tk.Button(anahtar, text="◈ Saha Haritası (V)",
                                         font=self.f_kucuk, fg=BG, bg=YESIL,
                                         relief="flat", padx=8, pady=3,
@@ -975,13 +1042,39 @@ class YksArayuz:
 
         # Canlı kamera, yerel model çıkarımı değildir. Jetson'ın /kare.jpg
         # ucundan ayrı Wi-Fi/LAN üstünde gelir; bu görünüm karar üretmez.
+        # T226 (D-443 kusur a): başlık = kaynak etiketi + SABİT not; video ile
+        # KÜÇÜK şematik harita YAN YANA — hakem rotayı video açıkken de görür.
         self.kamera_cerceve = tk.Frame(sol, bg=PANEL)
+        self.lbl_kamera_baslik = tk.Label(
+            self.kamera_cerceve, text=kamera_baslik_metni(self.kamera_etiket),
+            font=self.f_kucuk, fg=SARI, bg=PANEL, anchor="w",
+            wraplength=S(640), justify="left")
+        self.lbl_kamera_baslik.pack(fill="x", padx=10, pady=(4, 0))
+        kamera_govde = tk.Frame(self.kamera_cerceve, bg=PANEL)
+        kamera_govde.pack(fill="both", expand=True)
+        # Video karesinin İSTEDİĞİ boyut gövdeye yayılmaz: aksi hâlde geniş
+        # kare sol paneli büyütür ve sağdaki onay panelini daraltırdı.
+        kamera_govde.pack_propagate(False)
+        self.mini_harita_cerceve = tk.Frame(kamera_govde, bg=PANEL)
+        self.mini_harita_cerceve.pack(side="right", fill="y", padx=(0, 10),
+                                      pady=(4, 4))
+        tk.Label(self.mini_harita_cerceve, text="ROTA — telsiz verisi (şematik)",
+                 font=self.f_kucuk, fg=SOLUK, bg=PANEL, anchor="w").pack(fill="x")
+        self.mini_harita = tk.Canvas(
+            self.mini_harita_cerceve, width=S(MINI_HARITA_GENISLIK_PX),
+            height=S(MINI_HARITA_YUKSEKLIK_PX), bg="#121920",
+            highlightthickness=0)
+        self.mini_harita.pack(anchor="n")
+        # Yerleşim tamamlanınca (ilk gösterim, pencere boyutu) AYNI çizim yolu.
+        self.mini_harita.bind(
+            "<Configure>", lambda _e: self._harita_ciz(self.mini_harita))
         self.lbl_kamera_img = tk.Label(
-            self.kamera_cerceve, bg="#121920", fg=SOLUK,
+            kamera_govde, bg="#121920", fg=SOLUK,
             text=("KAMERA URL YOK — --kamera-url http://<JETSON_IP>:8080"
                   if not self.kamera_url else "RAW kamera bağlanıyor…"),
             font=self.f_kucuk)
-        self.lbl_kamera_img.pack(padx=10, pady=(4, 4), fill="both", expand=True)
+        self.lbl_kamera_img.pack(side="left", padx=10, pady=(4, 4), fill="both",
+                                 expand=True)
         self.lbl_kamera_bilgi = tk.Label(
             self.kamera_cerceve,
             text=(f"Kaynak: {self.kamera_url}" if self.kamera_url else
@@ -1292,32 +1385,44 @@ class YksArayuz:
                        guven=y.get("guven") if y.get("guven") is not None else 0.0)
 
     # ── Harita ───────────────────────────────────────────────────────────────
-    def _mxy(self, x_m, y_m):
-        """Metre (0..50, y kuzey) → canvas pikseli."""
-        w = self.harita.winfo_width() or 480
-        h = self.harita.winfo_height() or 480
+    def _mxy(self, x_m, y_m, tuval=None):
+        """Metre (0..50, y kuzey) → canvas pikseli (``tuval`` yoksa ana harita)."""
+        c = self.harita if tuval is None else tuval
+        w = c.winfo_width() or 480
+        h = c.winfo_height() or 480
         sol, ust, olcek = harita_cizim_alani(w, h)
         px = sol + (x_m / ARENA_M) * olcek
         py = ust + (1.0 - y_m / ARENA_M) * olcek   # y yukarı = kuzey
         return px, py
 
-    def _harita_ciz(self):
-        c = self.harita
+    def _harita_ciz(self, tuval=None):
+        """Şematik haritayı çiz. ``tuval`` verilmezse ANA harita çizilir ve
+        kamera görünümündeki KÜÇÜK kopya (T226, D-443 kusur a) da AYNI yoldan
+        tazelenir: seçili şerit, ROTA YOK bandı ve SEMATIK uyarısı ikisinde de
+        aynı koddan gelir — yalnız tuval boyutu farklıdır."""
+        if tuval is None:
+            mini = getattr(self, "mini_harita", None)
+            if mini is not None and getattr(self, "gorunum_adi", None) == "kamera":
+                self._harita_ciz(mini)
+            tuval = self.harita
+        c = tuval
+        # Inset (İHA-UB genel saha) yalnız ana haritada çizilir.
+        inset_var = c is self.harita
         c.delete("all")
         w = c.winfo_width()
         if w <= 1:
             w = S(480)
         # grid (5 m)
         for m in range(0, 51, 5):
-            x0, y0 = self._mxy(m, 0)
-            x1, y1 = self._mxy(m, 50)
+            x0, y0 = self._mxy(m, 0, c)
+            x1, y1 = self._mxy(m, 50, c)
             c.create_line(x0, y0, x1, y1, fill="#1c2630")
-            x0, y0 = self._mxy(0, m)
-            x1, y1 = self._mxy(50, m)
+            x0, y0 = self._mxy(0, m, c)
+            x1, y1 = self._mxy(50, m, c)
             c.create_line(x0, y0, x1, y1, fill="#1c2630")
         # arena çerçevesi
-        x0, y0 = self._mxy(0, 0)
-        x1, y1 = self._mxy(50, 50)
+        x0, y0 = self._mxy(0, 0, c)
+        x1, y1 = self._mxy(50, 50, c)
         c.create_rectangle(x0, y0, x1, y1, outline=CIZGI, width=2)
 
         # 3 yol koridoru — tespit sonrası: açık yol YEŞİL, geri kalan HER YER
@@ -1330,7 +1435,7 @@ class YksArayuz:
         if acik is not None:
             c.create_rectangle(x0, y0, x1, y1, fill=KIRMIZI, stipple="gray12",
                                outline="")
-            lx, _uyari_y, aciklama_w = sematik_uyari_yerlesimi(w)
+            lx, _uyari_y, aciklama_w = sematik_uyari_yerlesimi(w, inset_var)
             c.create_text(
                 lx, S(HARITA_RENK_ACIKLAMA_Y_PX),
                 text="■ YEŞİL: açık/geçilebilir   ■ KIRMIZI: kapalı/moloz",
@@ -1338,8 +1443,8 @@ class YksArayuz:
         for yol, geometri in SERIT_CIZIM_TABLOSU.items():
             xm, yari_genislik_m, giris_y_m, cikis_y_m = geometri
             secili = (yol == acik)
-            px0, py0 = self._mxy(xm - yari_genislik_m, giris_y_m)
-            px1, py1 = self._mxy(xm + yari_genislik_m, cikis_y_m)
+            px0, py0 = self._mxy(xm - yari_genislik_m, giris_y_m, c)
+            px1, py1 = self._mxy(xm + yari_genislik_m, cikis_y_m, c)
             if secili:
                 c.create_rectangle(px0, py0, px1, py1, fill=YESIL,
                                    stipple="gray25", outline=YESIL, width=2)
@@ -1350,20 +1455,20 @@ class YksArayuz:
             else:
                 c.create_rectangle(px0, py0, px1, py1, outline="#25303c",
                                    width=1, dash=(3, 3))
-            tx, ty = self._mxy(xm, -2.4)          # arena çerçevesinin ALTINA yaz
+            tx, ty = self._mxy(xm, -2.4, c)          # arena çerçevesinin ALTINA yaz
             c.create_text(tx, ty, text=f"{yol}·{ROAD_LABEL[yol].upper()}",
                           fill=YESIL if secili else SOLUK, font=self.f_kucuk)
             if not secili and acik is not None:
-                kx, ky = self._mxy(xm, 25)
+                kx, ky = self._mxy(xm, 25, c)
                 c.create_text(kx, ky, text="✕ KAPALI", fill="#ff8878",
                               font=self.f_kucuk)
 
         # İKA-KB (başlangıç, güney) ve HB (hedef, kuzey)
-        kx, ky = self._mxy(25, 2)
+        kx, ky = self._mxy(25, 2, c)
         c.create_rectangle(kx - 12, ky - 12, kx + 12, ky + 12, outline=MAVI, width=2)
         c.create_text(kx + 16, ky, text="İKA-KB", fill=MAVI, font=self.f_kucuk,
                       anchor="w")
-        hx, hy = self._mxy(25, 48)
+        hx, hy = self._mxy(25, 48, c)
         c.create_rectangle(hx - 12, hy - 12, hx + 12, hy + 12, outline=KIRMIZI, width=2)
         c.create_text(hx, hy, text="H", fill=KIRMIZI, font=self.f_orta)
         c.create_text(hx, hy - 20, text="HB (hedef)", fill=KIRMIZI, font=self.f_kucuk)
@@ -1378,14 +1483,14 @@ class YksArayuz:
         else:
             noktalar = ()
         if noktalar:
-            pks = [self._mxy(x, y) for x, y in noktalar]
+            pks = [self._mxy(x, y, c) for x, y in noktalar]
             for (ax, ay), (bx, by) in zip(pks, pks[1:]):
                 c.create_line(ax, ay, bx, by, fill=YESIL, width=3, arrow="last")
             rx, ry = pks[0]
             c.create_oval(rx - 5, ry - 5, rx + 5, ry + 5, fill=SARI, outline="")
             c.create_text(rx - 16, ry, text="ref", fill=SARI, font=self.f_kucuk, anchor="e")
         if rota_uyarisi:
-            ux, uy = self._mxy(25, 25)
+            ux, uy = self._mxy(25, 25, c)
             c.create_text(ux, uy, text=rota_uyarisi, fill=KIRMIZI,
                           font=self.f_orta, anchor="center", width=w - S(48))
 
@@ -1404,7 +1509,7 @@ class YksArayuz:
         # Hakemin GPS sanmaması gereken semantik gösterim uyarısı en son
         # çizilir; grid/rota-yok katmanları metni sonradan örtemez. Sağ üstteki
         # inset ayrı çağrıda çizildiği için yatay kutular da çakışmaz.
-        uyari_x, uyari_y, uyari_w = sematik_uyari_yerlesimi(w)
+        uyari_x, uyari_y, uyari_w = sematik_uyari_yerlesimi(w, inset_var)
         c.create_text(uyari_x, uyari_y, text=SEMATIK_GOSTERIM_UYARISI,
                       fill=SARI, font=self.f_kucuk, anchor="nw",
                       width=uyari_w)
@@ -2628,10 +2733,16 @@ class YksArayuz:
         else:
             self.harita.pack_forget()
             self.algi_cerceve.pack_forget()
-            self.kamera_cerceve.pack(fill="both", expand=True)
+            # T226 (D-443 kusur a): kamera çerçevesi görünüm düğmelerinin HEMEN
+            # altına; içindeki KÜÇÜK harita GİZLENMEZ (video + rota aynı anda).
+            anahtar = getattr(self, "_gorunum_anahtari", None)
+            self.kamera_cerceve.pack(
+                fill="both", expand=True,
+                **({"after": anahtar} if anahtar is not None else {}))
             self.btn_gor_kamera.config(fg=BG, bg=YESIL)
             self.btn_gor_harita.config(fg=METIN, bg="#232e3a")
             self.btn_gor_algi.config(fg=METIN, bg="#232e3a")
+            self._harita_ciz()          # küçük kopya güncel rotayla
             self._kamera_tazele()
 
     def _kamera_tazele(self):
@@ -2665,7 +2776,8 @@ class YksArayuz:
             try:
                 from PIL import Image, ImageOps, ImageTk
                 resim = ImageOps.exif_transpose(Image.open(io.BytesIO(jpeg)))
-                resim.thumbnail((S(660), S(430)), Image.Resampling.LANCZOS)
+                resim.thumbnail(self._kamera_resim_kutusu(etiket),
+                                Image.Resampling.LANCZOS)
                 self._kamera_foto = ImageTk.PhotoImage(resim.convert("RGB"))
                 etiket.config(image=self._kamera_foto, text="", fg=METIN)
                 self._kamera_surum = surum
@@ -2693,9 +2805,24 @@ class YksArayuz:
             f"{durum}·{'KARE' if jpeg is not None else 'KARE_YOK'}",
             kare_sira=snap.get("kare_sira"),
             kare_yasi_s=(None if yas is None else round(float(yas), 3)),
-            kaynak=snap.get("kaynak") or getattr(self, "kamera_url", None),
+            # T226: kaynak = URL [+ etiket] (CONTRACTS §6.8). `getattr`:
+            # kurucuyu atlayan fikstürlerde etiket yoktur → yalnız URL.
+            kaynak=kamera_kanit_kaynagi(
+                snap.get("kaynak") or getattr(self, "kamera_url", None),
+                getattr(self, "kamera_etiket", "")),
             hata=(str(hata) if hata else None),
             calisiyor=bool(snap.get("calisiyor")))
+
+    def _kamera_resim_kutusu(self, etiket):
+        """Video karesinin sığacağı kutu (T226): etiketin GERÇEK alanı (küçük
+        harita yanında); yerleşim henüz yoksa eski sabit kutu."""
+        try:
+            w, h = int(etiket.winfo_width()), int(etiket.winfo_height())
+        except Exception:
+            w = h = 0
+        if w < S(160) or h < S(90):
+            return S(660), S(430)
+        return w - S(8), h - S(8)
 
     def _kamera_kanitini_yaz(self, durum, **alanlar):
         """Kamera kanıt durumunu hakem kaydına KENAR olayı olarak yaz (§6.8)."""
@@ -4447,6 +4574,14 @@ def main():
         help=("Jetson RAW kamera kökü (örn. http://192.168.4.2:8080). "
               "Yalnız ayrı Wi-Fi/LAN; SiK üzerinden video taşınmaz. "
               "Varsayılan: NAVITAS_KAMERA_URL, yoksa kamera kapalı"))
+    # T226 (D-443): video kaynak etiketi — başlık + KAMERA_KANIT kaynak alanı.
+    ap.add_argument(
+        "--kamera-etiket", default="",
+        help=("video kaynak etiketi (örn. 'MK15 · HDMI · yakalama'): video "
+              "paneli başlığına ve KAMERA_KANIT kaynak alanına yazılır "
+              "(CONTRACTS §6.8). Video karar üretmez — onay telsiz verisine "
+              "verilir. Varsayılan boş; en çok "
+              f"{KAMERA_ETIKETI_AZAMI_KARAKTER} karakter"))
     ap.add_argument("--demo", action="store_true",
                     help="dahili İHA/İKA beslemesi (tanıtım + otomatik hakem onayı)")
     ap.add_argument("--otokaydet", type=float, default=0,
@@ -4486,6 +4621,10 @@ def main():
                     help="açılış görünümü (varsayılan: saha)")
     args = ap.parse_args()
 
+    try:
+        args.kamera_etiket = kamera_etiketi_dogrula(args.kamera_etiket)
+    except ValueError as exc:
+        ap.error(f"--kamera-etiket: {exc}")
     if args.serial and args.demo:
         ap.error("--demo yalnız UDP kipinde kullanılabilir")
     if args.serial and args.ika:
@@ -4545,7 +4684,8 @@ def main():
             kok, link, otomatik_onay=False, demo=args.demo, ika_peer=ika_peer,
             iha_peer=iha_peer, kamera_url=args.kamera_url,
             hakem_log_yolu=hakem_log_yolu,
-            oturum_kunyesi=oturum_kunyesi)
+            oturum_kunyesi=oturum_kunyesi,
+            kamera_etiket=args.kamera_etiket)
     except Exception:
         link.close()
         kok.destroy()
@@ -4558,6 +4698,13 @@ def main():
          "RAW kamera KAPALI: --kamera-url/NAVITAS_KAMERA_URL verilmedi; "
          "telemetri ve komut hattı çalışmaya devam eder"),
         "mavi" if args.kamera_url else "sari")
+    if args.kamera_etiket:
+        app._logla(
+            (f"VİDEO KAYNAK ETİKETİ: {args.kamera_etiket} — {KAMERA_KARAR_NOTU}"
+             if args.kamera_url else
+             f"VİDEO KAYNAK ETİKETİ verildi ({args.kamera_etiket}) ama "
+             "--kamera-url YOK: etiket yalnız başlıkta, kanıt kaynağı boş"),
+            "mavi" if args.kamera_url else "sari")
 
     if args.demo:
         demo_besle(link.port, app.demo_durum)
