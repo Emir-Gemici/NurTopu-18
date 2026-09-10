@@ -2,7 +2,7 @@
 
 > 🔴 **KART DÜZELTMESİ (2026-09-10, T220 · D-431 kalıbı: eski metin ~~çizili~~, silinmedi).** Bu kılavuz 2026-08-05'te
 > "Orin NX" varsayımıyla yazıldı; elde olan ve 6 Eylül 2026'da **ölçülen** kart **Jetson Orin Nano Developer Kit 4 GB**
-> (p3767-0004, JetPack 7.2.1, TensorRT 10.16.2, Python 3.12 — `results/jetson_20260906/ORTAM_KUNYESI.txt`). Orin NX bu
+> (p3767-0004 — `results/jetson_20260906/JETSON_KESIF_RAPORU_20260906.md`; JetPack 7.2.1, TensorRT 10.16.2, Python 3.12 — `results/jetson_20260906/ORTAM_KUNYESI.txt`). Orin NX bu
 > projede **hiç ölçülmedi**; metindeki NX cümleleri tahmindir. Ölçülen FPS (T17, `jetson_fps.py`, 512, girdi `data/raw_frames`
 > — ⚠ §5'in istediği `sentetik_arena` değil, 6 Eylül koşumu drone kareleriyle yapıldı; `ozet.json` `parametreler.girdi` —
 > `results/jetson_20260906/jetson_fps_20260906_orin_nano/ozet.json`): `.pt` p50 **1,35 FPS** (739 ms; p95 942 ms),

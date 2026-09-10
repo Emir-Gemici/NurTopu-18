@@ -15,7 +15,7 @@
 
 **Bayt-eş kopya.** İki dizin `O:/navitas-local-train/calisma/` altındaki kaynaktan olduğu
 gibi kopyalandı (T220'de ölçüldü: parmak izi kaynak ↔ kopya **EŞ**; ayrıca içerik düzeyinde
-her dosyanın sha256'sı üzerinden özet T66 `edfa318be480fdd3` / T189 `6816714e30326228`
+her dosyanın sha256'sı tek tek karşılaştırıldı (iki taraf bayt-eş); türetilebilir kanıt küme parmak izidir: `scripts/olcum/65_kabul_denetcisi.py` `kume_parmak_izi` → T66 `sha256:604c037f…` (n=547), T189 `sha256:735ecc81…` (n=524), `config/model_registry.json` ile eş (çürütücü 10 Eylül: önceki iki özet sayısı yöntemsizdi, kaldırıldı)
 iki tarafta **aynı**, 547 dosya 36 599 043 B / 524 dosya 33 774 699 B); içlerine dosya
 **eklenmez, silinmez, değiştirilmez** — küme dondurulmuştur (D-263 §4.3, K1/K7 çapaları
 buna bağlı). Bu yüzden `data.yaml` içindeki tarihsel `path:` satırı da olduğu gibi durur
