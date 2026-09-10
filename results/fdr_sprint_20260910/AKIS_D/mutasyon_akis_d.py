@@ -3,6 +3,9 @@
 Her mutant scripts/akis_satir_tazele.py ya da scripts/akis_diyagram_dogrula.py
 icinde TEKIL bir satiri degistirir, tests/test_akis_kapsam_korumasi.py kosulur,
 dosya BAYT-ES geri yuklenir (sha256 karsilastirilir). Yakalanmayan mutant = kacan.
+AKIS-D2 (curutucu RED): M21-M25 curutucunun KACAN N1/N2/N3/N4 mutasyonlari (+ N2b capa),
+M26-M34 taban suphesi (KUSUR-1) ve goreli --mmd kilitleri. M02/M09 metni yeni satira
+uyarlandi (capa, damga).
 GPU yok, model yok. Kullanim: python mutasyon_akis_d.py  (cikti stdout)
 """
 import hashlib

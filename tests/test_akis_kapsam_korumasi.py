@@ -14,13 +14,27 @@ Gecici GERCEK git deposunda (mock yok; betik alt surecte kosar):
   K3 kapsamda birden cok aday → en yakin; esit uzaklikta ESITLIK hatasi.
   K4 eski satir tabanda metni tasimiyorsa TABANDA TUTMUYOR (tahmin yok).
   K5 --kuru hicbir dosya yazmaz; --taban varsayilani HEAD; gecersiz taban → 2;
-     kod commit'lendiyse eski commit --taban olarak verilebilir.
+     kod commit'lendiyse varsayilan TABAN SUPHELI (2), eski commit --taban ile.
   K6 ayni ad iki kez tanimli (property setter): kacinci tanim korunur; tanim
      sayisi degisirse KAPSAM BELIRSIZ (tazele ve dogrula).
   K7 akis_diyagram_dogrula --taban kapsam degisimini yakalar (seceneksiz metin
      denetimi "tuttu" der — eski kor nokta); kapsam ici kayma ve yeni dugum hata
      degildir; kapsam hatasi varken --tablo yazilmaz.
   K8 cok parcali etiket ARDISIK satirlarda aranir.
+AKIS-D2 (curutucu RED: KUSUR-1 ve kacan N1-N4 mutasyonlari):
+  K9  kod commit'lenip .mmd tazelenmediyse (curutucu karsi-ornegi: basa f3, tek
+      dugum n1:8) varsayilan tazele TABAN SUPHELI → cikis 2, hicbir sey yazilmaz;
+      elle --taban L dogru; elle --taban HEAD uyariyla surer, basligi damgalamaz;
+      dogrula --taban HEAD TABAN SUPHELI, --taban L KAPSAM DEGISTI.
+  K9b satir kaydirmayan commit supheli DEGIL (toptan dosya farki yanlis alarm).
+  K9c onceki tazelemeyle degismis dugum ikinci kosuda calisma agacina gore de
+      cozulur; sonuc farkliysa TABAN SUPHELI (yoksa f2'deki dugum f1'e kayiyordu).
+  K10 dogrula: ayni adli fonksiyon BASKA dosyada → "dosya degisti" (N1).
+  K11 dekorator satiri tanima aittir: tazele ve dogrula (N2).
+  K12 goreli konum capasi def satiri: iki dekorator eklenince ayni gecis (N2b).
+  K13 async def kapsamdir: tazele ve dogrula (N3).
+  K14 dosya:N-M araliginin sonu da kayar (N4).
+  K15 dogrula --mmd goreli yolla cokmez (D-440 EK).
 """
 import contextlib
 import importlib.util as _u
@@ -91,12 +105,15 @@ F1_ICINE_10 = "    y = x + 1\n" + "".join(f"    y += {i}\n" for i in range(10))
 class _GeciciDepo(unittest.TestCase):
     KOD = TABAN_KOD
     MMD = TABAN_MMD
+    EK = {}                                   # ek kod dosyalari {goreli_yol: metin}
 
     def setUp(self):
         self.kok = Path(tempfile.mkdtemp(prefix="akis_kapsam_")).resolve()
         self.addCleanup(_sil, self.kok)
         _git(self.kok, "init", "-q")
         self.yaz("pkg/mod.py", self.KOD)
+        for goreli, metin in self.EK.items():
+            self.yaz(goreli, metin)
         self.yaz("sekil/akis_t.mmd", self.MMD)
         _git(self.kok, "add", "-A")
         _git(self.kok, "commit", "-q", "-m", "taban")
@@ -236,7 +253,12 @@ class K4_TabandaTutmuyor(_GeciciDepo):
         # .mmd sanki daha yeni bir koddan turetilmis: n1 → 18 (tabanda 9 satir var)
         self.yaz("sekil/akis_t.mmd", TABAN_MMD.replace("pkg/mod.py:8", "pkg/mod.py:18"))
         self.kodu_degistir("def f1(x):\n", YARDIMCI_10 + "def f1(x):\n")
-        rc, out = self.tazele()
+        once = self.mmd.read_bytes()
+        rc, out = self.tazele()          # varsayilan: n1 satiri tabandaki .mmd'de yok → suphe
+        self.assertEqual(rc, 2, out)
+        self.assertIn("TABAN SUPHELI: akis_t.mmd: n1:", out)
+        self.assertEqual(self.mmd.read_bytes(), once)
+        rc, out = self.tazele("--taban", "HEAD")    # elle: tahmin yok, TABANDA TUTMUYOR
         self.assertEqual(rc, 1, out)
         self.assertRegex(out, r"HATA n1: .*TABANDA TUTMUYOR")
         self.assertEqual(self.yer("n1"), "pkg/mod.py:18")
@@ -257,14 +279,18 @@ class K5_KuruVeTaban(_GeciciDepo):
         self.assertEqual(rc, 2, out)
         self.assertIn("TABAN GECERSIZ", out)
 
-    def test_kod_commitlendiyse_eski_commit_taban_verilir(self):
+    def test_kod_commitlendiyse_varsayilan_supheli_eski_commit_taban_verilir(self):
         self.kodu_degistir("    y = x + 1\n", F1_ICINE_10)
         _git(self.kok, "commit", "-q", "-am", "kod")
-        rc, out = self.tazele()                  # HEAD artik yeni kod → eski satir tutmaz
+        rc, out = self.tazele()                  # varsayilan HEAD: sonuc tabana bagli
+        self.assertEqual(rc, 2, out)
+        self.assertIn("TABAN SUPHELI: akis_t.mmd: n1:", out)
+        rc, out = self.tazele("--taban", "HEAD")  # elle HEAD: eski satir tutmaz (yuksek sesle)
         self.assertEqual(rc, 1, out)
         self.assertIn("TABANDA TUTMUYOR", out)
         rc, out = self.tazele("--taban", "HEAD~1")
         self.assertEqual(rc, 0, out)
+        self.assertNotIn("TABAN UYARISI", out)
         self.assertEqual(self.yer("n1"), "pkg/mod.py:18", out)
 
 
@@ -355,6 +381,224 @@ class K8_CokParcaliEtiket(_GeciciDepo):
         rc, out = self.tazele()
         self.assertEqual(rc, 0, out)
         self.assertEqual(self.yer("n1"), "pkg/mod.py:10", out)
+
+
+# ── AKIS-D2 (curutucu RED) ───────────────────────────────────────────────────
+F3_BASA = ("def f3(x):\n" + "".join(f"    a{i} = {i}\n" for i in range(6))
+           + "    sonuc = hesapla(x)\n    return sonuc\n\n\n")      # 11 satir; f3 metni 8
+G_BASA_6 = "def g(x):\n    a = 1\n    b = 2\n    return a\n\n\n"    # 6 satir
+
+
+class K9_KodCommitlenince_TabanSupheli(_GeciciDepo):
+    """Curutucu karsi-ornegi (KUSUR-1): taban f2:2 / f1:8, tek dugum n1 → :8 (f1). Basa
+    f3 eklenip COMMIT'lenir: ayni metin 8 (f3), 13 (f2), 19 (f1). fd65b427 varsayilan HEAD
+    ile cikis 0 verip n1'i f3'te birakiyor, basligi yeniden damgaliyordu; dogrula
+    --taban HEAD de 'tuttu' diyordu."""
+    MMD = BASLIK + '  n1["sonuc = hesapla(x)<br/>pkg/mod.py:8"]\n'
+
+    def setUp(self):
+        super().setUp()
+        self.kodu_degistir("def f2(x):\n", F3_BASA + "def f2(x):\n")
+        _git(self.kok, "commit", "-q", "-am", "basa f3 (.mmd tazelenmedi)")
+
+    def test_varsayilan_taban_supheli_cikis_2_hicbir_sey_yazilmaz(self):
+        once = self.mmd.read_bytes()
+        rc, out = self.tazele()
+        self.assertEqual(rc, 2, out)
+        self.assertRegex(out, r"TABAN SUPHELI: akis_t\.mmd: n1: pkg/mod\.py:8 — sonuc tabana "
+                              r"bagli: secilen taban \w{7} → 8 \[f3\] · \w{7} \(\.mmd'nin son "
+                              r"commit'i\) → 19 \[f1\]")
+        self.assertIn("SONUC: TABAN SUPHELI (1 dugum) — hicbir dosya yazilmadi", out)
+        self.assertEqual(self.mmd.read_bytes(), once)             # dugum de baslik da ayni
+
+    def test_kuru_da_supheli(self):
+        rc, out = self.tazele("--kuru")
+        self.assertEqual(rc, 2, out)
+        self.assertIn("TABAN SUPHELI", out)
+
+    def test_dogru_taban_elle_verilince_f1(self):
+        rc, out = self.tazele("--taban", "HEAD~1")
+        self.assertEqual(rc, 0, out)
+        self.assertNotIn("TABAN SUPHELI", out)
+        self.assertNotIn("TABAN UYARISI", out)
+        self.assertEqual(self.yer("n1"), "pkg/mod.py:19", out)
+        self.assertIn("[f1]", out)
+
+    def test_elle_head_uyariyla_surer_baslik_damgalanmaz(self):
+        rc, out = self.tazele("--taban", "HEAD")
+        self.assertEqual(rc, 0, out)                              # kullanicinin acik secimi
+        self.assertIn("TABAN UYARISI: akis_t.mmd: n1: pkg/mod.py:8", out)
+        self.assertEqual(self.yer("n1"), "pkg/mod.py:8")
+        self.assertIn("0000000", self.mmd.read_text(encoding="utf-8").splitlines()[0])
+
+    def test_dogrula_taban_head_supheyi_raporlar(self):
+        rc0, out0 = self.dogrula_main("--mmd", str(self.mmd))
+        self.assertEqual(rc0, 0, out0)                            # metin denetimi 'tuttu'
+        rc, out = self.dogrula_main("--mmd", str(self.mmd), "--taban", "HEAD")
+        self.assertEqual(rc, 1, out)
+        self.assertRegex(out, r"TABAN SUPHELI: n1: \.mmd \w{7} commit'inden beri değişmedi, "
+                              r"kod değişti — pkg/mod\.py:8 o commit'te \[f1\], tabanda \[f3\]")
+        self.assertIn("KAPSAM DEGISTI 0 · TABAN SUPHELI 1", out)
+
+    def test_dogrula_dogru_taban_kapsam_degisti(self):
+        rc, out = self.dogrula_main("--mmd", str(self.mmd), "--taban", "HEAD~1")
+        self.assertEqual(rc, 1, out)
+        self.assertRegex(out, r"KAPSAM DEGISTI: n1: taban pkg/mod\.py:8 \[f1\] → "
+                              r"çalışma pkg/mod\.py:8 \[f3\]")
+        self.assertIn("TABAN SUPHELI 0", out)
+
+
+class K9b_SatirKaydirmayanCommitSupheliDegil(_GeciciDepo):
+    def test_dosya_sonuna_ekleme_commitlenince_supheli_degil(self):
+        p = self.kok / "pkg" / "mod.py"
+        p.write_bytes(p.read_bytes() + b"\n\ndef f9():\n    return 9\n")
+        _git(self.kok, "commit", "-q", "-am", "sona f9 (.mmd tazelenmedi, satir kaymadi)")
+        rc, out = self.tazele()
+        self.assertEqual(rc, 0, out)
+        self.assertIn("akis_t.mmd: 0 dugum tazelendi; cozulemeyen 0", out)
+        self.assertNotIn("TABAN SUPHELI", out)
+        self.assertNotIn("TABAN UYARISI", out)
+        rc, out = self.dogrula_main("--mmd", str(self.mmd), "--taban", "HEAD")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("TABAN SUPHELI 0", out)
+
+
+class K9c_OncekiTazelemeSonrasiIkinciKosu(_GeciciDepo):
+    """.mmd bir kez tazelenince satirlari CALISMA AGACINA goredir; ikinci kosu onlari HEAD
+    koduna gore okursa (HEAD'in 8. satiri f1'in metni) f2'deki dugumu SESSIZCE f1'e tasir."""
+    MMD = BASLIK + '  n2["sonuc = hesapla(x)<br/>pkg/mod.py:2"]\n'
+
+    def test_ikinci_kosu_supheli_ilk_kosu_dogru(self):
+        self.kodu_degistir("def f2(x):\n", G_BASA_6 + "def f2(x):\n")
+        rc, out = self.tazele()
+        self.assertEqual(rc, 0, out)
+        self.assertEqual(self.yer("n2"), "pkg/mod.py:8", out)     # f2'nin yeni satiri
+        once = self.mmd.read_bytes()
+        rc, out = self.tazele()                                   # ayni kodla ikinci kosu
+        self.assertEqual(rc, 2, out)
+        self.assertRegex(out, r"TABAN SUPHELI: akis_t\.mmd: n2: pkg/mod\.py:8 — sonuc tabana "
+                              r"bagli: secilen taban \w{7} → 14 \[f1\] · calisma agaci .* → 8 \[f2\]")
+        self.assertEqual(self.mmd.read_bytes(), once)
+
+
+class K10_DosyaDegisimi(_GeciciDepo):
+    KOD = "def f1(x):\n    sonuc = hesapla(x)\n    return sonuc\n"
+    EK = {"pkg/b.py": "def f1(x):\n    sonuc = hesapla(x)\n    return sonuc\n"}
+    MMD = BASLIK + '  n1["sonuc = hesapla(x)<br/>pkg/mod.py:2"]\n'
+
+    def test_dogrula_baska_dosyadaki_ayni_adli_fonksiyona_kayma(self):
+        self.yaz("sekil/akis_t.mmd", self.MMD.replace("pkg/mod.py:2", "pkg/b.py:2"))
+        rc0, out0 = self.dogrula_main("--mmd", str(self.mmd))
+        self.assertEqual(rc0, 0, out0)                            # metin denetimi 'tuttu'
+        rc, out = self.dogrula_main("--mmd", str(self.mmd), "--taban", "HEAD")
+        self.assertEqual(rc, 1, out)
+        self.assertIn("KAPSAM DEGISTI: n1: dosya değişti — taban pkg/mod.py:2 → "
+                      "çalışma pkg/b.py:2", out)
+
+
+DEKOR_KOD = ("def dekor(f):\n"     # 1
+             "    return f\n"      # 2
+             "\n"                  # 3
+             "\n"                  # 4
+             "@dekor\n"            # 5  <- n1 (g1'in dekoratoru)
+             "def g1():\n"         # 6
+             "    return 1\n"      # 7
+             "\n"                  # 8
+             "\n"                  # 9
+             "@dekor\n"            # 10 (g2)
+             "def g2():\n"         # 11
+             "    return 2\n")     # 12
+G0_EK = "@dekor\ndef g0():\n    return 0\n\n\n"                  # 5 satir, g1'in ustune
+
+
+class K11_DekoratorSatiriTanimaAittir(_GeciciDepo):
+    KOD = DEKOR_KOD
+    MMD = BASLIK + '  n1["@dekor<br/>pkg/mod.py:5"]\n'
+
+    def test_tazele_dekorator_dugumu_kendi_fonksiyonunda_kalir(self):
+        # dekorator modul kapsaminda sayilsaydi: modulun @dekor satirlari 5/10/15, beklenen 5 → g0
+        self.kodu_degistir("@dekor\ndef g1():\n", G0_EK + "@dekor\ndef g1():\n")
+        rc, out = self.tazele()
+        self.assertEqual(rc, 0, out)
+        self.assertEqual(self.yer("n1"), "pkg/mod.py:10", out)   # g1'in dekoratoru
+        self.assertIn("[g1]", out)
+
+    def test_dogrula_baska_fonksiyonun_dekoratorune_kayma(self):
+        self.kodu_degistir("@dekor\ndef g1():\n", G0_EK + "@dekor\ndef g1():\n")
+        rc, out = self.dogrula_main("--mmd", str(self.mmd), "--taban", "HEAD")  # n1 :5 → g0
+        self.assertEqual(rc, 1, out)
+        self.assertRegex(out, r"KAPSAM DEGISTI: n1: taban pkg/mod\.py:5 \[g1\] → "
+                              r"çalışma pkg/mod\.py:5 \[g0\]")
+
+
+class K12_DekoratorEklenenFonksiyondaGoreliKonum(_GeciciDepo):
+    KOD = ("def f1(x):\n"              # 1
+           "    a = 0\n"               # 2
+           "    sonuc = hesapla(x)\n"  # 3
+           "    b = 1\n"               # 4
+           "    sonuc = hesapla(x)\n"  # 5  <- n1 (ikinci gecis)
+           "    return sonuc\n")       # 6
+    MMD = BASLIK + '  n1["sonuc = hesapla(x)<br/>pkg/mod.py:5"]\n'
+
+    def test_iki_dekorator_eklenince_ayni_gecise_baglanir(self):
+        """Capa def satiri: 3 + (5-1) = 7. fd65b427'de capa dekoratorlu baslangicti:
+        1 + 4 = 5 → ILK gecis (5), ayni fonksiyonda SESSIZ yanlis baglanti (cikis 0)."""
+        self.kodu_degistir("def f1(x):\n", "@dekor_a\n@dekor_b\ndef f1(x):\n")
+        rc, out = self.tazele()
+        self.assertEqual(rc, 0, out)
+        self.assertEqual(self.yer("n1"), "pkg/mod.py:7", out)
+
+
+class K13_AsyncDef(_GeciciDepo):
+    KOD = ("async def a2(x):\n"               # 1
+           "    sonuc = await hesapla(x)\n"   # 2
+           "    return sonuc\n"               # 3
+           "\n"                               # 4
+           "\n"                               # 5
+           "async def a1(x):\n"               # 6
+           "    y = x + 1\n"                  # 7
+           "    sonuc = await hesapla(x)\n"   # 8  <- n1
+           "    return sonuc\n")              # 9
+    MMD = BASLIK + '  n1["sonuc = await hesapla(x)<br/>pkg/mod.py:8"]\n'
+
+    def test_tazele_async_kapsam_icinde(self):
+        # async kapsam sayilmasaydi: modul satirlarinda adaylar 2 (a2) ve 18; beklenen 8 → 2
+        self.kodu_degistir("async def a1(x):\n", YARDIMCI_10 + "async def a1(x):\n")
+        rc, out = self.tazele()
+        self.assertEqual(rc, 0, out)
+        self.assertEqual(self.yer("n1"), "pkg/mod.py:18", out)
+        self.assertIn("[a1]", out)
+
+    def test_dogrula_async_baska_fonksiyona_kayma(self):
+        self.yaz("sekil/akis_t.mmd", self.MMD.replace("pkg/mod.py:8", "pkg/mod.py:2"))
+        rc, out = self.dogrula_main("--mmd", str(self.mmd), "--taban", "HEAD")
+        self.assertEqual(rc, 1, out)
+        self.assertRegex(out, r"KAPSAM DEGISTI: n1: taban pkg/mod\.py:8 \[a1\] → "
+                              r"çalışma pkg/mod\.py:2 \[a2\]")
+
+
+class K14_AralikliAtif(_GeciciDepo):
+    MMD = BASLIK + '  n1["sonuc = hesapla(x)<br/>pkg/mod.py:8-9"]\n'
+
+    def test_aralik_sonu_da_kayar(self):
+        self.kodu_degistir("def f1(x):\n", YARDIMCI_10 + "def f1(x):\n")
+        rc, out = self.tazele()
+        self.assertEqual(rc, 0, out)
+        self.assertIn('<br/>pkg/mod.py:18-19"]', self.mmd.read_text(encoding="utf-8"), out)
+
+
+class K15_GoreliMmdYolu(_GeciciDepo):
+    def test_goreli_mmd_yolu_cokmez(self):
+        eski_cwd = os.getcwd()
+        os.chdir(self.kok)
+        self.addCleanup(os.chdir, eski_cwd)                        # _sil'den ONCE calisir
+        goreli = os.path.join("sekil", "akis_t.mmd")
+        rc, out = self.dogrula_main("--mmd", goreli)
+        self.assertEqual(rc, 0, out)
+        self.assertIn(goreli + ": 3 düğüm · 3 tuttu", out)
+        rc, out = self.dogrula_main("--mmd", goreli, "--taban", "HEAD")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("KAPSAM DEGISTI 0", out)
 
 
 if __name__ == "__main__":
