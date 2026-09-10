@@ -1,0 +1,12 @@
+h=30.0 m  kare genisligi 31.44 m  orta ucte-bir |x|<5.24 m ; alan-goreli (20 m) |x|<3.33 m
+   yol araligi  4.00 m -> kare-goreli [2, 2, 2]  alan-goreli [1, 2, 3]
+   yol araligi  5.00 m -> kare-goreli [2, 2, 2]  alan-goreli [1, 2, 3]
+   yol araligi  6.00 m -> kare-goreli [1, 2, 3]  alan-goreli [1, 2, 3]
+   yol araligi  6.67 m -> kare-goreli [1, 2, 3]  alan-goreli [1, 2, 3]
+   yol araligi  8.00 m -> kare-goreli [1, 2, 3]  alan-goreli [1, 2, 3]
+h=32.0 m  kare genisligi 33.53 m  orta ucte-bir |x|<5.59 m ; alan-goreli (20 m) |x|<3.33 m
+   yol araligi  4.00 m -> kare-goreli [2, 2, 2]  alan-goreli [1, 2, 3]
+   yol araligi  5.00 m -> kare-goreli [2, 2, 2]  alan-goreli [1, 2, 3]
+   yol araligi  6.00 m -> kare-goreli [1, 2, 3]  alan-goreli [1, 2, 3]
+   yol araligi  6.67 m -> kare-goreli [1, 2, 3]  alan-goreli [1, 2, 3]
+   yol araligi  8.00 m -> kare-goreli [1, 2, 3]  alan-goreli [1, 2, 3]

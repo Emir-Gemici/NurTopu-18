@@ -1,0 +1,1315 @@
+
+--- SAYFA 1 ---
+ 
+0 
+ 
+ 
+ 
+ 
+ 
+ 
+İLERİ OTONOM 
+SİSTEMLER TASARIM VE 
+OPERASYON YARIŞMASI 
+ŞARTNAMESİ 
+ 
+2026 
+
+--- SAYFA 2 ---
+ 
+1 
+ 
+İÇİNDEKİLER 
+TABLOLAR ............................................................................................................... 3 
+VERSİYONLAR .......................................................................................................... 4 
+TANIMLAR ve KISALTMALAR ...................................................................................... 5 
+1. 
+AMAÇ KAPSAM .................................................................................................. 7 
+2. 
+YARIŞMA TANIMI ................................................................................................ 7 
+2.1. Yarışma Alanı ve Operasyonel Çevre ................................................................ 7 
+2.2. Görev Akışı ..................................................................................................... 8 
+2.2.1. Kalkış ...................................................................................................... 8 
+2.2.2. Keşif ve Rota Tespiti: ................................................................................. 9 
+2.2.3. Veri Aktarımı: ........................................................................................... 9 
+2.2.4 İniş ........................................................................................................... 9 
+2.2.5. Kara Harekâtı ........................................................................................... 9 
+2.2.6. Görevin Tamamlanması .......................................................................... 10 
+3. 
+YARIŞMA TAKVİMİ ............................................................................................ 10 
+4. 
+YARIŞMA KATILIM KOŞULLARI ........................................................................... 11 
+4.1. Takım Oluşturma .......................................................................................... 13 
+4.2. Danışman Yükümlülükleri ............................................................................. 13 
+4.3. Süreç Bilgileri ............................................................................................... 14 
+4.4. Başvuru Esasları ........................................................................................... 15 
+5. YARIŞMA TEKNİK PROJE SÜRECİ .......................................................................... 15 
+5.1. Ön Değerlendirme Raporu (ÖDR) ................................................................... 15 
+5.2. Detay Değerlendirme Raporu (DDR) ............................................................... 16 
+5.3. Final Değerlendirme Aşaması (FDA): .............................................................. 17 
+5.3.1. Final Değerlendirme Raporu (FDR)........................................................... 17 
+5.3.2. Drone ile Görev Test Uçuşu ..................................................................... 17 
+5.4. Sistem Gözden Geçirme Sunumu (SGGS): ...................................................... 18 
+5.5. Uçuşa Hazırlık Değerlendirme Raporu (UHDR): ............................................... 18 
+6. YARIŞMA UYGULAMA ESASLARI ........................................................................... 19 
+6.1. Yarışma Öncesi ......................................................................................... 20 
+6.2. Yarışma Sırası ............................................................................................... 21 
+
+--- SAYFA 3 ---
+ 
+2 
+ 
+6.3. Yarışma Sonrası ............................................................................................ 23 
+6.4. Uçuşun Geçersiz Olması ile İlgili Hususlar ..................................................... 23 
+7. DEĞERLENDİRME ve PUANLAMA ......................................................................... 24 
+8. ÖDÜLLER ........................................................................................................... 26 
+8.1. TUSAŞ Özel Ödülü ........................................................................................ 26 
+9. İDARİ HÜKÜMLER ............................................................................................... 26 
+10. İLETİŞİM ........................................................................................................... 27 
+11. GENEL KURALLAR ............................................................................................. 27 
+12. ETİK KURALLAR ................................................................................................. 28 
+Sorumluluk Beyanı ................................................................................................. 28 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+--- SAYFA 4 ---
+ 
+3 
+ 
+TABLOLAR 
+Tablo 1. Yarışma Takvimi 
+Tablo 2. Ön Değerlendirme Raporu Değerlendirme Kriterleri 
+Tablo 3. Detay Değerlendirme Raporu Değerlendirme Kriterleri 
+Tablo 4. Final Değerlendirme Raporu Değerlendirme Kriterleri 
+Tablo 5. Uçuşa Hazırlık Değerlendirme Raporu Değerlendirme Kriterleri 
+Tablo 6. Yarışma Değerlendirme ve Puanlama Kriterleri 
+Tablo 7. Yarışma Ödülleri 
+ 
+ 
+ 
+
+--- SAYFA 5 ---
+ 
+4 
+ 
+VERSİYONLAR 
+Tablo. Versiyonlar 
+VERSİYON 
+TARİH 
+AÇIKLAMA 
+V 1 
+02.03.2026 
+TEKNOFEST 2026 İlk 
+Versiyon 
+V 2 
+13.04.2026 
+TEKNOFEST 2026 İkinci 
+Versiyon 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+--- SAYFA 6 ---
+ 
+5 
+ 
+ 
+TANIMLAR ve KISALTMALAR 
+Şartname kapsamında kullanılan kısaltmalar ve bunlara ilişkin tanımlar, bu bölüm altında 
+yer almaktadır. 
+DDK: Danışma ve Değerlendirme Kurulu 
+İHA: İnsansız Hava Aracı 
+İKA: İnsansız Kara Aracı 
+HTAB: Hedef Tespit Alan Bölgesi 
+İHA-FB: İHA Fırlatma Bölgesi 
+İHA-UB: İHA Uçuş Bölgesi 
+İKA-KB: İKA Konumlanma Bölgesi 
+HB: Hedef Bölge 
+İHA-İB: İHA İniş Bölgesi 
+ÖDR: Ön Değerlendirme Raporu 
+DDR: Detay Değerlendirme Raporu 
+FDR: Final Değerlendirme Raporu 
+FDA: Final Değerlendirme Aşaması 
+FDS: Final Değerlendirme Sunumu 
+SGGS: Sistem Gözden Geçirme Sunumu Teslimi 
+UHDR: Uçuşa Hazırlık Değerlendirme Raporu 
+Kzorluk: Zorluk Katsayısı 
+mİHA: İHA Hafiflik Puanı 
+tİHA: İHA Görev Süresi Puanı 
+thazırlık: Hazırlık Süresi Puanı  
+mİKA: İKA Hafiflik Puanı 
+myük: İKA Yük Puanı 
+tİKA: İKA Görev Süresi Puanı 
+
+--- SAYFA 7 ---
+ 
+6 
+ 
+Pgörev: Görev Başarısı 
+P: Katılım Başarısı Puanı 
+PTI: Teknik Muayene Başarı Puanı 
+Puçuş: Uçuş Başarı Puanı 
+Pcentilmenlik: Centilmenlik Başarı Puanı 
+Cceza: Ceza Puanı 
+ 
+ 
+
+--- SAYFA 8 ---
+ 
+7 
+ 
+1. AMAÇ KAPSAM 
+Türk Havacılık ve Uzay Sanayii (TUSAŞ) tarafından düzenlenen İleri Otonom Sistemler 
+Tasarım ve Operasyon Yarışması; ülkemizin tam bağımsız savunma sanayii vizyonu 
+doğrultusunda, genç yetenekleri geleceğin havacılık ve uzay teknolojilerine yönlendirmeyi 
+amaçlar. Yarışma; ön lisans, lisans ve lisansüstü düzeydeki öğrencileri savunma 
+sanayiimizin kritik bir parçası olmaya davet ederken, onlara gerçek dünya problemlerine 
+yönelik yenilikçi çözümler üretme ve fikirlerini prototipe dönüştürme imkanı sunar. 
+Savunma sanayiinin geleceğini inşa edecek olan genç nesillerin; mühendislik becerilerini 
+geliştirmeleri, 
+karmaşık 
+sistem 
+tasarımlarında 
+deneyim 
+kazanmaları 
+ve 
+İHA 
+teknolojilerindeki 
+küresel 
+gelişmelere 
+yön 
+verecek 
+kabiliyete 
+erişmeleri 
+hedeflenmektedir. Bu organizasyon, Türkiye’nin teknoloji hamlesinde gençlerin aktif rol 
+almasını sağlayarak ülkemizi bu alanda bir mükemmeliyet merkezi haline getirmeyi görev 
+edinir.  
+Yarışmalar, TUSAŞ koordinasyonunda, milli havacılık ekosistemini genişletme ve 
+güçlendirme vizyonuyla TEKNOFEST kapsamında düzenlenir. Teknik kuralların 
+belirlenmesi, tasarım süreçlerinin denetimi ve performans değerlendirmeleri, TUSAŞ’ın 
+alanında uzman mühendislerinden oluşan Danışma ve Değerlendirme Kurulu 
+(DDK) tarafından yürütülür. 
+İşbu şartname, yarışma sürecine dair tüm teknik gereklilikleri, katılım koşullarını, 
+katılımcıların uyması gereken etik, güvenlik ve teknik kurallarını kapsar. 
+2. YARIŞMA TANIMI 
+İleri Otonom Sistemler Tasarım ve Operasyon Yarışması kapsamında takımlardan; afet 
+sonrası senaryoları simüle eden bir ortamda, İnsansız Hava Aracı (İHA) ve İnsansız Kara 
+Aracının (İKA) koordineli çalışarak lojistik/ulaşım problemini otonom olarak çözmesi 
+beklenmektedir. Görevin icrası, aşağıda belirtilen kurallar ve akış çerçevesinde 
+gerçekleştirilecektir. 
+2.1. Yarışma Alanı ve Operasyonel Çevre 
+Yarışma alanı içerisinde aşağıda belirtilen tanımlı bölgeler teknik ekipler tarafından 
+oluşturulacaktır. 
+• Hedef Tespit Alan Bölgesi (HTAB): Yarışma alanı içerisinde 50 metre x 50 metre 
+boyutlarında sınırlandırılmış bir alandır. Bu bölge içerisinde, afet bölgesini simüle 
+eden moloz yığınları ve engeller bulunmaktadır. 
+• İHA Fırlatma Bölgesi (İHA-FB): İHA'nın mancınık sisteminin kurulacağı ve kalkışın 
+yapılacağı alandır.  
+
+--- SAYFA 9 ---
+ 
+8 
+ 
+• İHA Uçuş Bölgesi (İHA-UB): İHA’nın yarışma alanı içerisinde uçuş yapabileceği 
+maksimum uçuş bölgesidir. Boyutları 300 metre x 300 metre ile sınırlandırılmış 
+olacaktır. 
+• İKA Konumlanma Bölgesi (İKA-KB): Kara aracının başlangıç pozisyonunu aldığı 
+bölgedir. Boyutları 1 metre x 1 metre ile sınırlandırılmış olacaktır. 
+• Hedef Bölge (HB): Hedef tespit alan bölgesi içerisinde İKA'nın ulaşması beklenen varış 
+noktasıdır. 2 metre x 2 metre boyutlarında üzerinde kırmızı H harfinin bulunacağı bir 
+bölgedir. 
+• İHA İniş Bölgesi (İHA-İB): İHA'nın görev sonrası paraşütle ineceği belirlenmiş güvenli 
+alandır. Boyutları 30 metre x 30 metre olan mavi bir bölge olacaktır. 
+• Güzergahlar: HTAB içerisinde İKA-KB ile HB arasında, moloz yığınları arasında 
+oluşturulmuş üç (3) adet farklı yol (güzergah) bulunmaktadır. Yarışma günlerinde, bu 
+üç yoldan yalnızca bir (1) tanesi açık bırakılacak, diğer iki yol fiziki engellerle 
+kapatılacaktır. 
+Hangi 
+yolun 
+açık 
+olduğu 
+bilgisi 
+yarışmacılarla 
+önceden 
+paylaşılmayacak olup, bu bilgi gizli tutulacaktır. 
+ 
+ 
+Şekil 1. Yarışma alanı ve operasyonel çevre örnek görseli (Görsel tamamen yapay zeka ile 
+oluşturulmuştur. Gerçek alanı doğrudan yansıtmamaktadır.) 
+2.2. Görev Akışı 
+Görevin başarılı sayılabilmesi için sistemin aşağıdaki adımları sırasıyla ve kurallara uygun 
+olarak icra etmesi zorunludur: 
+2.2.1. Kalkış 
+• Teknik gereksinimler listesinde belirtildiği üzere; ilgili sistemlerin görev sahasına 
+mühürlü kutular içerisinde intikal ettirilmesi esastır. Kurulum süresi, söz konusu 
+mühürlerin hakem heyeti nezaretinde açılmasını müteakip başlatılacaktır. 
+
+--- SAYFA 10 ---
+ 
+9 
+ 
+• İHA, belirlenen İHA-FB içerisinden yalnızca mancınık sistemi kullanılarak 
+fırlatılacaktır. 
+• Elden atış, pistten koşarak kalkış veya dikey kalkış yasaktır; kalkışın mancınık ile icra 
+edilmesi zorunludur. 
+2.2.2. Keşif ve Rota Tespiti: 
+• Fırlatma sonrası İHA, tam otonom uçuş moduna geçerek İHA-UB içerisinde uçuşunu 
+gerçekleştirecektir. 
+• İHA, üzerindeki algılayıcılar ve görüntü işleme algoritmaları vasıtasıyla HTAB 
+içerisindeki açık olan güzergâhı tespit edecektir.  
+2.2.3. Veri Aktarımı: 
+• İHA, tespit ettiği güzergâh bilgisini kablosuz haberleşme sistemleri üzerinden yerdeki 
+yer istasyonuna ve İKA'ya aktaracaktır. 
+• Yer istasyonunda bulunan alan hakemi, canlı olarak güzergâh bilgisinin tespit 
+edildiğini onaylamalıdır.  
+• Yer istasyonunda bulunan alan hakemi tespit edilen güzergâh bilgisinin İKA’ya 
+aktarıldığını onaylayacaktır.  
+• Bu aktarımın İHA havada iken tamamlanması gerekmektedir. 
+2.2.4 İniş 
+• Güzergâh bilgisinin İKA'ya aktarılmasının ardından İHA, belirlenen İHA-İB içerisine iniş 
+prosedürünü başlatacaktır. 
+• İnişin paraşüt sistemi kullanılarak gerçekleştirilmesi zorunludur. 
+• Paraşüt açma komutu, otonom sistem tarafından verilebileceği gibi, emniyet tedbirleri 
+kapsamında yer istasyonundan manuel tetikleme ile de gerçekleştirilebilir. 
+• Paraşüt açılma sisteminin otonom yerine manuel olarak tetiklenmesi durumunda, 
+ilgili takıma yönelik belirlenmiş ceza puanı yaptırımı uygulanır. 
+2.2.5. Kara Harekâtı 
+• İKA, harekete geçmek için İHA'nın inişini tamamlamasını beklemek zorundadır. İHA 
+yere temas etmeden İKA hareket edemez. 
+• İHA iniş yapmadan harekete geçen takımların görevi başarısız sayılacaktır. 
+• İHA'nın iniş operasyonunun tamamlanmasını müteakip, İKA'nın intikal süreci yer 
+kontrol istasyonunda (YKS) görevli takım üyesi tarafından manuel olarak tetiklenir. 
+• İHA'dan aldığı güzergâh verisini doğrultusunda İKA; otonom olarak açık olan güzergâhı 
+takip ederek HB’ye ilerleyecektir. 
+• Otonom hareket etmeyen İKA’nın görevi başarısız sayılacaktır. 
+
+--- SAYFA 11 ---
+ 
+10 
+ 
+2.2.6. Görevin Tamamlanması 
+• İKA'nın, İHA tarafından bildirilen güzergâhı takip ederek HB sınırları içerisine girmesi 
+ile görev başarılı şekilde icra edilmiş kabul edilecektir. 
+• Belirlenen süre içerisinde HB’ye ulaşamayan yarışmacıların görevi başarısız 
+sayılacaktır. 
+• Teknik gereksinimler listesinde tanımlandığı üzere; İKA’nın belirlenen yükleri taşıyarak 
+hedef bölgeye intikal etmesi esastır. Hedef noktasına ulaşıldığında İKA’nın yapısal 
+bütünlüğünü koruyor olması ve taşıdığı yükü/yükleri eksiksiz muhafaza etmesi 
+zorunludur; aksi takdirde ilgili görev başarısız sayılır. 
+3. YARIŞMA TAKVİMİ 
+İleri Otonom Sistemler Tasarım ve Operasyon Yarışması için hazırlanmış takvim aşağıda 
+sunulmaktadır. 
+Tablo 1. Yarışma Takvimi 
+Açıklama 
+Tarih 
+Yarışma Son Başvuru Tarihi 
+10 Nisan 2026 
+Ön Değerlendirme Raporu (ÖDR) Son 
+Teslim Tarihi  
+26.04.2026 – 17.00 
+ÖDR Sonuçlarının Açıklanması 
+04.05.2026 
+Detay Değerlendirme Raporu (DDR) Son 
+Teslim Tarihi 
+15.07.2026 – 17.00 
+DDR Sonuçlarının Açıklanması 
+29.07.2026 
+Final Değerlendirme Raporu (FDR) Son 
+Teslim Tarihi 
+21.09.2026 – 17.00 
+Final 
+Değerlendirme 
+Aşaması 
+(Final 
+Değerlendirme Sunumları (FDS) ve Drone 
+ile Görev Test Uçuşu) 
+30.09-03.10.2026 
+FDR Sonuçlarının ve Maddi Destek Almaya 
+Hak Kazanan Takımların Açıklanması 
+04.10.2026 
+Sistem Gözden Geçirme Sunumu (SGGS) 
+Son Teslim Tarihi 
+05.02.2027 – 17.00 
+SGGS Sonuçlarının Açıklanması 
+19.02.2027 
+Uçuşa Hazırlık Değerlendirme Raporu 
+(UHDR) Son Teslim Tarihi 
+16.04.2027 – 17.00 
+UHDR Sonuçlarının Açıklanması 
+30.04.2027 
+Uçuş Testleri 
+21.05.2027 
+Yarışma Tarihi/Yeri 
+Ağustos-Eylül 2027 
+
+--- SAYFA 12 ---
+ 
+11 
+ 
+4. YARIŞMA KATILIM KOŞULLARI 
+• İleri Otonom Sistemler Tasarım ve Operasyon Yarışması’na başvurular; Türkiye’de 
+veya yurt dışında öğrenim gören T.C. vatandaşı veya yabancı uyruklu tüm ön lisans, 
+lisans ve lisansüstü öğrencileri katılabilir.  
+• Takımlar Türkiye Cumhuriyeti (T.C.) vatandaşı veya yabancı uyruklu öğrencilerden 
+oluşabilir. 
+• Takımlar, Takım Kaptanı ile toplamda en az altı (6), en fazla on (10) kişiden 
+oluşmalıdır. Yarışma sahasına ya da TEKNOFEST alanına kabul edilecek üye 
+sayısında, TUSAŞ ve hakem heyeti tarafından kısıtlamaya gidilebilir. Olası kontenjan 
+sınırlamaları hakkında takımlar gerektiğinde bilgilendirilecektir. 
+• Takım bünyesinde yer alan lisansüstü statüsündeki üyelerin oranı, toplam üye 
+sayısının %20’sini aşamaz. 
+• Aynı yarışma bünyesinde bir katılımcının (öğrenci, takım kaptanı veya danışman) 
+birden fazla takımda görev alması yasaktır. Bu kuralın ihlali durumunda, söz konusu 
+kişinin kayıtlı olduğu tüm takımlar yarışmadan diskalifiye edilir 
+• Her takımın, üniversite öğrencisi statüsünde bir (1) 'Takım Kaptanı’ bulundurması 
+zorunludur. Takım Kaptanı olarak belirlenecek kişinin aktif öğrencilik durumunun 
+belgelenmesi esastır. 
+• Yarışmacı takımlar için danışman görevlendirilmesi zorunlu olmayıp bu husus 
+katılımcıların 
+tercihine 
+bırakılmıştır. 
+Eğer 
+görevlendirilecekse 
+her 
+takım 
+bünyesinde azami bir (1) danışman bulundurabilir. Belirlenen bu kontenjanın aşılması 
+ve birden fazla danışman beyan edilmesi durumunda, ilgili takımın başvurusu katılım 
+şartlarına aykırılık teşkil etmesi sebebiyle geçersiz sayılacaktır. 
+• Takım oluşumunda ulusal veya uluslararası bir kısıtlama bulunmamaktadır. Birden 
+fazla ülke temsilcisinden oluşan karma takımlar; ülke bilgisini, üyelerin sayıca üstün 
+olduğu ülkeye göre belirleme veya kendi inisiyatifleri doğrultusunda bünyelerindeki 
+ülkelerden birini tercih etme hakkına sahiptir. 
+• Başvuru tarihi itibarıyla, Danışman haricindeki tüm takım üyelerinin aktif öğrencilik 
+statüsüne sahip olması zorunludur. Bu şartı sağlamadığı tespit edilen üyelerin 
+bulunduğu takımlar, yarışmadan diskalifiye edilir. 
+• Danışman haricindeki takım üyelerinin öğrencilik statülerinin sona ermesi 
+durumunda dahi, havacılık ve uzay endüstrisinde herhangi bir kurum veya kuruluş 
+bünyesinde tam zamanlı istihdam edilmiyor olmaları şartı aranmaktadır. 
+• Başvurulardaki fikir, proje ve sistemlerin özgünlüğü esastır. Katılımcılar, mükerrer veya 
+kopya niteliği taşıyan rapor/fikir/tasarım ile yarışmaya katılım sağlayamazlar. İntihal ya 
+da benzerlik teşkil ettiği tespit edilen çalışmalar, yarışma dışı bırakılma gerekçesi 
+sayılacaktır. 
+• Her bir proje ile yalnızca tek bir yarışma kategorisine veya tek bir yarışma başlığına 
+başvuru yapılabilir. Aynı projenin, TEKNOFEST bünyesindeki farklı kategorilere veya eş 
+
+--- SAYFA 13 ---
+ 
+12 
+ 
+zamanlı düzenlenen farklı yarışmalara sunulması durumunda, ilgili takım veya 
+kişilerin tüm başvuruları geçersiz addedilecektir. 
+• Başvuru süreci, rapor tanzimi ve görsel materyallerin sisteme yüklenmesi de dâhil 
+olmak üzere tüm operasyonel süreçlerin idaresi ile hazırlık ve yarışma safhalarında 
+ekip üyelerinin koordinasyonu ve temsiliyet sorumluluğu Takım Kaptanının 
+uhdesindedir. 
+• Yarışma takviminde yer alan Final Değerlendirme Sunumlarına müteakip, takımların 
+mevcut üye yapısında herhangi bir değişikliğe veya güncellemeye gidilmesi mümkün 
+değildir. Bu aşamadan itibaren takım listeleri nihai halini almış kabul edilir. 
+• Yarışmacı, başvuru yapmadan önce yarışma hakkındaki tüm açıklamaları ve katılım 
+koşullarını okuyup onayladığını beyan ederek yarışmaya katılabilir. 
+• Yarışmacı TEKNOFEST 2026’ya katılacağı projesi ile geçmiş yıllarda düzenlenen 
+TEKNOFEST yarışmalarına katılım sağladı ise projesini/fikrini geliştirme ve/veya 
+dönüştürme şartı ile tekrar başvuru yapabilmektedir. 
+• Yarışmacı daha önce katıldığı proje raporunun/fikrinin birebir aynısı ve/veya kopya 
+raporu/fikri ile katılamaz. Benzer ya da taklit olduğu tespit edilen projeler yarışma dışı 
+kalacaktır. 
+• Geçmiş yıl TEKNOFEST proje raporları kapsamında www.teknofest.org adresinden 
+yayınlanmış olan raporlar geçmiş yıllarda katılım sağlamış olduğu proje raporları 
+üzerinden alıntı yapılması halinde kaynak belirtilmelidir. Kaynak belirtme formatına 
+şartnamede yer alan genel kurallar başlığından ulaşabilirsiniz. 
+• Yarışmacılar farklı projeler ile farklı TEKNOFEST yarışmalarına başvuru yapabilir. 
+• Kategori seçimi yaparken, başvuru döneminde bulunduğunuz eğitim seviyesi dikkate 
+alınmalıdır. 
+• Yarışmacı aynı proje ile daha evvel bir başka yarışmada (TEKNOFEST veya diğer 
+yarışmalar) yer almışsa, katılmış olduğu yarışmanın adı, yeri, tarihi, organizatörü, 
+yarışmada aldığı netice bilgilerini proje dosyası içerisinde bildirmelidir. 
+• Sunulan fikirler ve dokümanların yarışmacılar tarafından özgün olarak oluşturulması 
+ve intihal içermemesi beklenmektedir. Yarışma sürecinde iletilen raporlar intihal 
+tespit programlarınca taranacaktır. 
+• Yarışma başvuru metinlerinde, tutarlı zaman kipleri kullanımı esastır. (Örneğin geniş 
+zaman, geçmiş zaman vb.) 
+• Projenin sunulduğu raporda, çalışma konusuyla ilgisi olmayan, manipülatif veya siyasi 
+ifade ve içeriklere yer verilmemelidir. 
+• Koşullara uymayan veya usule aykırı durumlarda takım/yarışmacı doğrudan diskalifiye 
+edilir. 
+• Diskalifiye olan katılımcıların, yarışma sonuçlarına veya komite kararlarına itiraz hakkı 
+bulunmaz. 
+
+--- SAYFA 14 ---
+ 
+13 
+ 
+• TEKNOFEST Yarışmalar Komitesi, yarışma süresince ek duyurular yapma veya 
+kurallarda güncelleme hakkını saklı tutar. 
+• Tüm katılımcıların duyuruları ve güncellemeleri takip etme sorumluluğu vardır. 
+• Öğrencilerin onaylı öğrenci belgelerini, danışmanların ise çalıştıkları kurumu gösteren 
+onaylı belgelerini ıslak imzalı olarak TEKNOFEST Yarışmalar Komitesi tarafından 
+açıklanacak tarihte sisteme yüklemeleri gerekmektedir. (Belge şablonları tarafınızla 
+paylaşılacaktır.) 
+• Başvurular 10 Nisan 2026 tarihine kadar www.t3kys.com başvuru sistemi üzerinden 
+çevrimiçi olarak yapılır. 
+4.1. Takım Oluşturma  
+• Takım üye sayısı tüm kategori ve eğitim seviyeleri için en az 6 ve en fazla 10 kişiden 
+oluşacak şekilde takımlar oluşturulmalıdır. (Bu sayıya danışman dahil değildir.)  
+• Yarışacak takımların danışman alma zorunluluğu bulunmamaktadır.  
+• Danışman, takım üyesi rolüyle eklenmemelidir. Danışmanın takımdaki rolü danışman 
+olarak belirtilmelidir.  
+• Her takımın en fazla bir danışmanı olabilir. Birden fazla danışman bulunan takımların 
+başvuruları geçersiz sayılacaktır. 
+• Takımlar tek bir yükseköğretim kurumuna mensup öğrencilerin bir araya gelmesi ile 
+oluşturulabileceği gibi birden fazla farklı yükseköğretim kurumuna mensup 
+öğrencilerin bir araya gelmesi ile de oluşturulabilir. 
+• Takımlar tek bir ülkeden oluşturulabileceği gibi bir veya birden fazla ülkenin 
+öğrencisinin bir araya gelmesi ile de oluşturulabilir. Bir takımda üyelerinin 
+çoğunluğunun bulunduğu ülke, takımın ülke bilgisi olarak seçilebilir veya takımın 
+kendi inisiyatifi ile takımda bulunan ülkeler arasından istedikleri ülkeyi seçebilirler. 
+• Takım içerisinde takım kaptanı bulunmalıdır. 
+• Yarışma süreci boyunca, başvuru yaptığınız dönemde, takım oluştururken seçtiğiniz 
+eğitim seviyeniz dikkate alınacaktır. Eğitim seviyesi seçimi yaparken buna dikkat 
+etmeniz gerekmektedir.  
+• Başvuru tarihleri arasında takım kaptanı/danışman (varsa) sistem üzerinden kayıt olur, 
+danışman (varsa) ve/veya takım kaptanı, takım üyelerinin kaydını doğru ve eksiksiz 
+olarak sistemde oluşturur ve üyelerin e-postalarına davet gönderir. Davet gönderilen 
+üye, başvuru sistemine giriş yaparak “Takım bilgilerim” kısmından gelen daveti kabul 
+eder ve kayıt işlemi tamamlanır. Aksi durumda kayıt işlemi tamamlanmış olmaz. 
+4.2. Danışman Yükümlülükleri 
+• Danışman olarak görev yapacak kişinin danışmanlık görevlerini yerine getireceğine 
+dair belgenin ıslak imzalı olarak TEKNOFEST Yarışmalar Komitesinin açıklayacağı 
+tarihte sisteme yüklenmesi gerekmektedir. 
+
+--- SAYFA 15 ---
+ 
+14 
+ 
+• Yarışmacılar final aşamasına danışmanları ile gelmek zorunda değildir. Başvurularda 
+takım danışmanı bulunması durumunda danışmanlık belgesi göndermesi zorunludur. 
+• Danışmanın 
+görevi; 
+öğrencilere 
+kendi 
+eğitim-öğretimlerini 
+planlayabilmeleri 
+konusunda yardımcı olmak, akademik, sosyal ve kültürel konularda yol göstermek, 
+zihinsel, sosyal ve duygusal yönleriyle öğrencinin kişiliğinin bir bütün olarak 
+gelişebilmesi için uygun ortamın hazırlanmasına yardımcı olmak vb. görev ve 
+hizmetlerdir. Danışmanının takımdaki rolü projede ihtiyaç duyulacak akademik 
+desteği sağlayarak takım üyelerinin problemlerine çözüm üretebilmeleri için yol 
+göstermektir. 
+• Danışman 
+şartları; 
+Danışman 
+olarak 
+eğitim/öğretim 
+kurumlarında 
+görevli 
+öğretmenler/akademisyenler veya ilgili alanda kariyer hayatını devam ettiren 
+mühendis/uzman vb. kişiler danışman olarak takımda yer alabilir. 
+• Danışman final aşamasına kadar takıma destek olacağını ve final aşaması süresince 
+takımın yanında bulunacağını (yarışma alanı hariç) taahhüt eder. 
+4.3. Süreç Bilgileri 
+• Yarışma süreci boyunca TEKNOFEST yarışmalar komitesi tarafından yapılacak olan 
+tüm bilgilendirmeler takımın iletişim sorumlusu olarak belirlediği kişiye yapılacaktır. 
+Bu sebeple her takım bir iletişim sorumlusu belirlemelidir. (KYS’ ye kayıtlı e-mail 
+adresine bilgilendirme yapılmaktadır.) 
+• Süreçlerin (Başvuru Yapma, Rapor/Sunum/Form Son Yükleme Tarihi, İtiraz Süreci, 
+Doldurulması Gereken Form vb.) takibi iletişim sorumlusunun görevi olup iletişim 
+sorumlusundan kaynaklı gecikmeler ve/veya aksaklıklardan TEKNOFEST yarışmalar 
+komitesi sorumlu değildir. 
+• Yarışma kapsamında gerekli tüm süreçler (Başvuru, Rapor/Sunum/Form Alımı, 
+Rapor/Sunum/Form Sonuçları, Maddi Destek Başvurusu, İtiraz Süreçleri, Üye 
+ekleme/çıkarma işlemleri vb.) KYS sistemi üzerinden yapılmaktadır. Takımların KYS 
+portalı üzerinden süreçleri takip etmesi gerekmektedir. 
+• Yarışma süreci boyunca başvuru yapma, rapor yükleme, itiraz süreci ve form doldurma 
+işlemleri takım kaptanı ve/veya danışmanın yetkisi dahilinde olup yarışma süreçleri bu 
+kişiler üzerinden yönetilmektedir.  
+• Üye ekleme/çıkarma işlemleri Final Değerlendirme Raporu son teslim tarihine kadar 
+yapılmaktadır. Rapor tesliminden sonra takımlarda değişiklik yapılamaz. TEKNOFEST 
+Yarışmalar komitesi, belirli bir tarihe kadar takım üyelerinde değişiklik yapılmasına izin 
+verebilir. Bu tarihten sonra takım yapısında değişiklik yapılamaz. 
+• Finale kalan takımlara sağlanacak ulaşım ve konaklama desteği sınırlıdır. Destek 
+verilecek kişi sayısı TEKNOFEST Yarışmalar Komitesi tarafından değişiklik yapma hakkı 
+bulunmaktadır. Takım oluşturulurken bu maddenin göz önünde bulundurulması 
+gerekmektedir. 
+
+--- SAYFA 16 ---
+ 
+15 
+ 
+• TEKNOFEST Yarışmalar Komitesi festival alanında bulunacak üye sayısını 
+sınırlandırma yetkisine sahiptir. Sınırlandırma yapılması durumunda komite 
+tarafından bilgilendirme yapılacaktır. 
+• Takım oluşturma işlemini tamamlayan yarışmacıların projesine uygun yarışmaya 
+başvuru yapması gerekmektedir. 
+• Başvuru sürecini tamamlayan yarışmacılar, herhangi bir eleme sürecine tabi 
+tutulmaksızın, yarışma takviminde belirtilen Ön Tasarım Raporu son yükleme tarihine 
+kadar formlarını eksiksiz bir şekilde hazırlayarak sisteme yüklemekle sorumludur. 
+Raporu belirtilen süre içerisinde sisteme yüklemeyen takımlar bu aşamada elenmiş 
+sayılacaktır.  
+4.4. Başvuru Esasları  
+Başvurular, TEKNOFEST Havacılık, Uzay ve Teknoloji Festivali Teknoloji Yarışmaları resmî 
+web sitesi (www.teknofest.org) üzerinden alınacaktır. 
+Başvurular 10 Nisan 2026 tarihine kadar www.t3kys.com başvuru sistemi üzerinden 
+çevrim içi olarak yapılır. 
+Yarışmacı, başvuru yapmadan önce yarışma hakkındaki tüm açıklamaları ve katılım 
+koşullarını okuyup onaylamak suretiyle yarışmaya katılabilecektir. 
+Yarışmaya başvuranlar şartnamede yer alan şartların tamamını kabul etmiş oldukları 
+sayılmaktadır. 
+5. YARIŞMA TEKNİK PROJE SÜRECİ 
+5.1. Ön Değerlendirme Raporu (ÖDR) 
+İleri Otonom Sistemler ve Operasyon Yarışması için hazırlanması gereken Ön 
+Değerlendirme Raporu (ÖDR), yarışma teknik proje sürecinin ilk kritik aşamasını teşkil 
+eder. Toplam sekiz (8) ana bölümden oluşan rapor sırasıyla Özet, Organizasyonel Yapı, 
+Proje Takvimi, Bütçe Analizi, Kavramsal Tasarım Yaklaşımı, Fayda Analizi Çalışmaları, 
+Üretim Planı ve Sistem Entegrasyon ve Test Planı başlıklarını içermektedir. ÖDR 
+kapsamında belirlenen bölümler ve ana başlıklar Tablo 1’de yer almaktadır.  
+Ekiplerin tüm hazırlık ve konsept süreçlerini analitik bir dille ve Tablo 1’de belirtilen başarı 
+kriterleriyle sunmaları, bir sonraki teknik safhaya geçiş yapabilmeleri için zorunlu bir ön 
+koşuldur. Ön Değerlendirme Raporu’na ilişkin hazırlanan kılavuz belge, ilk başvuruların 
+alınması ve değerlendirme sürecinin tamamlanmasını müteakiben yarışma teknik proje 
+süreçlerine başlamaya hak kazanan katılımcılarla paylaşılacaktır. 
+Tablo 2. Ön Değerlendirme Raporu Değerlendirme Kriterleri 
+
+--- SAYFA 17 ---
+ 
+16 
+ 
+Bölüm No 
+Konu 
+Puan 
+Bölüm 1 
+Özet 
+10 
+Bölüm 2 
+Organizasyonel Yapı 
+5 
+Bölüm 3 
+Proje Takvimi 
+5 
+Bölüm 4 
+Bütçe Analizi 
+5 
+Bölüm 5 
+Kavramsal Tasarım Yaklaşımı 
+30 
+Bölüm 6 
+Fayda Analizi Çalışmaları 
+25 
+Bölüm 7 
+Üretim Planı 
+10 
+Bölüm 8 
+Sistem Entegrasyon ve Test Planı 
+10 
+ 
+5.2. Detay Değerlendirme Raporu (DDR) 
+İleri Otonom Sistemler ve Operasyon Yarışması’nın ikinci teknik aşaması Detay 
+Değerlendirme Raporu’dur (DDR). DDR sırasıyla Özet, Organizasyonel Yapı ve Proje 
+Takvimi, Genel Sistem Spesifikasyonları, Test Faaliyetleri ile Gereksinim İzlenebilirliği ve 
+Değerlendirme olmak üzere beş (5) ana bölümden oluşur. İş bu rapor kapsamında İHA 
+kavramsal tasarım, İHA-İKA-Mancınık sistemlerinin yapısal ve donanım/yazılım 
+faaliyetleri kapsamında alınan aksiyonlar hakkında detaylı bilgi verilmelidir. Bu kapsamda 
+yapılmış iterasyon/iterasyonlar mutlaka detaylıca sunulmalıdır. Bunların haricinde 
+katılımcılardan yarışma gereksinimlerinin izlenebilirliği ve değerlendirilmesine dair 
+analitik bir yaklaşım beklenmektedir.  
+Tablo 3. Detay Değerlendirme Raporu Değerlendirme Kriterleri 
+Bölüm No 
+Konu 
+Puan 
+Bölüm 1 
+Özet 
+10 
+Bölüm 2 
+Organizasyonel Yapı ve Proje Takvimi 
+10 
+Bölüm 3 
+Genel Sistem Spesifikasyonları 
+60 
+Bölüm 4 
+Test Faaliyetleri 
+10 
+Bölüm 5 
+Gereksinim İzlenebilirliği ve 
+Değerlendirme 
+10 
+ 
+DDR sonuçlarına göre başarılı bulunan takımlar, maddi destek başvurusunda bulunmuş 
+olmaları halinde toplam bütçenin %25 ini almaya hak kazanacaktır. Bu kapsamda, KYS 
+sistemi üzerinden iletilecek olan maddi destek formunun eksiksiz şekilde doldurulması 
+gerekmektedir.  
+Maddi destek formuna ilişkin tarih, TEKNOFEST Yarışmalar Komitesi tarafından 
+belirlenecek olup, bilgilendirme ilgili takımın iletişim sorumlusuna yapılacaktır. 
+Not: Maddi destek başvurusu yapmak zorunlu değildir. 
+
+--- SAYFA 18 ---
+ 
+17 
+ 
+5.3. Final Değerlendirme Aşaması (FDA): 
+Yarışmanın bu aşaması, takımların teorik tasarımlarını ve yazılım mimarilerini saha 
+koşullarında kısmi olarak doğruladıkları kritik bir eleme adımıdır. Bu aşama iki alt bölümden 
+oluşmaktadır: 
+5.3.1. Final Değerlendirme Raporu (FDR)  
+Final Değerlendirme Raporu (FDR), ilgili tüm sistemlerin tüm detay tasarım süreçlerinin 
+tamamlandığını ve sistemin verilen görev gereksinimlerini karşılamaya hazır olduğunu 
+ispatlamak amacıyla hazırlanması gereken teknik bir dokümandır. FDR kapsamında, ÖDR 
+ve DDR aşamalarında belirlenen gereksinimlerin doğrulandığını, gerekli revizyonların 
+yapıldığına, tasarımın üretilebilir olduğuna ve sistem entegrasyonunun tamamlandığına 
+dair kanıtlar sunulmalıdır. Süreç boyunca meydana gelen bütün revizyonlar FDR 
+kapsamında sunulmalıdır. Ayrıca sistemin gerçek görev koşullarında çalışabilir olduğunu 
+göstermek amacıyla nihai mekanik, aviyonik ve yazılım mimarisi, alt sistem etkileşimleri 
+ile üretim, montaj ve saha kurulum süreçleri ayrıntılı biçimde belirtmelidir. FDR 
+kapsamında belirlenen bölümler, ana başlıklar ve değerlendirme kriterleri Tablo 3’de yer 
+almaktadır.  
+Tablo 4. Final Değerlendirme Raporu Değerlendirme Kriterleri 
+Bölüm No 
+Konu 
+Puan 
+Bölüm 1 
+Özet 
+5 
+Bölüm 2 
+Organizasyonel Yapı ve Proje Takvimi 
+5 
+Bölüm 3 
+Genel Sistem Spesifikasyonları 
+40 
+Bölüm 4 
+Test Faaliyetleri 
+15 
+Bölüm 5 
+Üretim Faaliyetleri 
+15 
+Bölüm 6 
+Gereksinim İzlenebilirliği ve 
+Değerlendirme 
+10 
+Bölüm 7 
+Bütçe Gerçekleme Analizi 
+10 
+ 
+5.3.2. Drone ile Görev Test Uçuşu 
+Bu aşama, takımların yarışma için geliştirdikleri görev yazılımlarının ve otonomi 
+algoritmalarının saha koşullarında test edildiği zorunlu uçuş aşamasıdır. Takımların, kendi 
+özgün donanım ve yazılım mimarileriyle entegre ettikleri çoklu rotorlu ve dikey iniş-kalkış 
+yapabilen bir insansız hava aracı (Drone) kullanarak, içerisinde engeller ve enkaz yapıları 
+barındıran 20x20 metre boyutlarındaki simüle edilmiş bir test alanında bu görevi icra etmeleri 
+gerekmektedir. Görev kapsamında drone; sınırları belirlenmiş "Başlangıç Alanı" ile "Hedef 
+Alanı" arasında emniyetli geçişe uygun olan "Açık Güzergah"ı asgari 30 metre irtifadan uçarak, 
+havadan görüntü işleme ve yapay zeka algoritmaları vasıtasıyla tespit etmek ve tespit edilen 
+bu güzergahı uçuş esnasında gerçek zamanlı olarak Yer Kontrol İstasyonu'na (YKİ) aktarmakla 
+
+--- SAYFA 19 ---
+ 
+18 
+ 
+yükümlüdür. Görev test uçuşunun başarılı sayılabilmesi ve takımların 100 tam puan alabilmesi 
+için; gerçek zamanlı güzergah tespitinin alan hakem heyeti tarafından doğrulanıp onaylanması 
+ve tüm operasyon sürecinin (kalkış, tespit, veri aktarımı ve iniş) maksimum 10 dakika içerisinde 
+tamamlanması zorunludur. Belirtilen bu kriterlerden herhangi birini sağlayamayan, süreyi 
+aşan veya yanlış güzergah tespiti yapan takımlar 0 puan alarak görevden başarısız sayılacaktır. 
+Final değerlendirme aşaması toplam puanı aşağıdaki ağırlıklı ortalama formülüne göre 
+hesaplanır: 
+Final Değerlendirme Aşaması Toplam Puan = (FDR * 0.85) + (Drone ile GörevTest Uçuşu * 0.15)  
+FDA sonuçlarına göre başarılı bulunan takımlar, maddi destek başvurusunda bulunmuş 
+olmaları halinde toplam bütçenin %75 ini almaya hak kazanacaktır. Bu kapsamda, KYS 
+sistemi üzerinden iletilecek olan maddi destek formunun eksiksiz şekilde doldurulması 
+gerekmektedir.  
+Maddi destek formuna ilişkin tarih, TEKNOFEST Yarışmalar Komitesi tarafından 
+belirlenecek olup, bilgilendirme ilgili takımın iletişim sorumlusuna yapılacaktır. 
+Not: Maddi destek başvurusu yapmak zorunlu değildir. 
+5.4. Sistem Gözden Geçirme Sunumu (SGGS): 
+Sistem Gözden Geçirme Sunumu, yarışma kapsamında geliştirilen İHA, İKA ve Mancınık 
+sistemlerinin tasarım/üretim/tedarik olgunluğunun izlenebilir şekilde doğrulanması 
+amacıyla takımlar tarafından hazırlanacak zorunlu sunum dokümandır. Sunumda esas 
+alınan BOM (Bill of Materials / Malzeme Listesi); sistemin üretilen veya satın alınan tüm 
+parça, alt sistem ve sarf kalemlerini (ör. yapıştırıcı/bağlayıcı) isim, adet ve temel bilgilerle 
+listeleyen resmi malzeme dökümüdür. Sunum; BOM’da yer alan her bir parça ve/veya 
+hazır satın alınan sistem kalemi için üretim yöntemi, üretim süresi, CAD model kütlesi ile 
+üretim/teslim sonrası ölçülen gerçek kütle, üretim için ilave fikstür/tool ihtiyacı ve varsa 
+karşılaşılan üretim zorluklarını içerecek;  
+hazır satın alınan alt sistemlerde tedarik durumu (alındı/sipariş edildi/henüz aksiyon 
+alınmadı) ile satın alınan kalemlerin ağırlık ve boyut bilgileri ayrıca raporlanacaktır. Bu 
+sayede beyan edilen BOM’un tamamı parça/sistem bazında kontrol edilecek, ilerleme 
+takibi standardize edilecektir. Sunum sonrasında ayrıca bir puanlama yapılmayacak olup, 
+değerlendirme “Başarılı / Başarısız” sonucu ile ilan edilecektir. 
+5.5. Uçuşa Hazırlık Değerlendirme Raporu (UHDR): 
+Bu rapor kapsamında yarışmacılar montajı biten İHA ve İKA sistemlerinin nihai 
+görsellerini, fiziksel özelliklerini (boyut, ağırlık vb.), toplam bütçe analizlerini detaylı bir 
+şekilde sunmalıdır. Gerçekleşen proje takvimi ile FDR’de öngörülen proje takvimi ile 
+farklarını detayları ile vermelidir. FDR’de planlanan montaj, entegrasyon adımlarında 
+uygulanan değişiklikleri gerekçeleri ile açıklamalıdır.  
+
+--- SAYFA 20 ---
+ 
+19 
+ 
+Yarışmacılar test uçuşu öncesi İHA, İKA ve Mancınık sistemlerinin otonom başarılı harekât 
+videolarını rapor dahilinde paylaşmalıdır. Görev icrası için kullanılacak algoritma ve 
+modeller nihai halleri ile raporda detaylıca açıklanmalıdır. 
+Tablo 5. Uçuş Hazırlık Değerlendirme Raporu Değerlendirme Kriterleri 
+Bölüm No 
+Konu 
+Puan 
+Bölüm 1 
+Özet 
+5 
+Bölüm 2 
+Proje Takvimi 
+5 
+Bölüm 3 
+Bütçe Gerçekleme Analizi ve Sapma 
+10 
+Bölüm 4 
+Genel Sistem Spesifikasyonları 
+40 
+Bölüm 5 
+Uçuş ve Otonom Harekât Videoları 
+40 
+6. YARIŞMA UYGULAMA ESASLARI 
+• İleri Otonom Sistemler Tasarım ve Operasyon Yarışması kapsamında geliştirilecek 
+hava aracı platformlarının, sabit kanatlı insansız hava aracı (İHA) konfigürasyonunda 
+olması zorunludur.  
+• Kılavuz dokümanlarının tamamında yer alan sistem ifadesi; İnsansız Hava Araçlarını 
+(İHA), İnsansız Kara Araçlarını (İKA) ve fırlatma (mancınık) platformlarını bütünleşik 
+olarak kapsamaktadır. 
+• Yarışmaya dahil edilecek sistemlerin; tasarım, boyutlandırma ve imalat süreçlerinin 
+tamamının yarışmacı takımlar tarafından gerçekleştirilmesi esastır. Hazır ticari 
+platformlar veya intihal/kopya içerdiği saptanan tasarımlar ile katılım sağlayan ekipler, 
+yarışmadan diskalifiye edilir. 
+• İleri Otonom Sistemler Yarışması çerçevesinde üretilecek hava araçları için belirlenen 
+üst ağırlık limiti, operasyonel yükler dahil 25 kg’dır. Bu limitin üzerindeki araçlar teknik 
+denetim aşamasında değerlendirme dışı bırakılacaktır. 
+• İleri Otonom Sistemler Yarışması çerçevesinde üretilecek kara araçları için belirlenen 
+üst ağırlık limiti, operasyonel yükler hariç 10 kg olmalıdır. Bu limitin üzerindeki araçlar 
+teknik denetim aşamasında değerlendirme dışı bırakılacaktır.  
+• Operasyonel uçuş alanı boyutları ve saha konfigürasyonu, yarışma yerleşkesinin 
+belirlenmesinin ardından resmi kanallar aracılığıyla tüm takımlara duyurulacaktır. 
+• İlgili kurum, yarışma süreci boyunca operasyonel gereklilikler, teknik ihtiyaçlar veya 
+mücbir sebepler doğrultusunda işbu şartnamede ve ilgili tüm teknik dokümanlarda 
+değişiklik, güncelleme veya revizyon yapma hakkını saklı tutar. Yapılan değişiklikler, 
+yarışmanın resmî web sitesi ve duyuru kanalları üzerinden ilan edildiği andan itibaren 
+tüm katılımcı takımlar için bağlayıcı nitelik taşır. 
+• Yarışma toplam 6 (altı) gün sürecektir. Bu 6 günlük süre, her biri ardışık ikişer (2) 
+günden oluşan 3 (üç) farklı görev periyoduna bölünmüştür. 
+• Hedef tespit alanı içerisinde, İKA Konumlandırma Bölgesi (İKA-KB) ile Hedef Bölge 
+(HB) arasında geçişi sağlayan 3 (üç) adet farklı güzergâh bulunmaktadır. Bu 
+
+--- SAYFA 21 ---
+ 
+20 
+ 
+güzergahlar "Kolay", "Orta" ve "Zor" olmak üzere üç farklı zorluk kategorisinde 
+tasarlanmıştır. Her bir güzergâh, değerlendirme hesaplamalarında farklı bir zorluk 
+katsayısına sahip olacaktır. 
+• Yarışmanın her iki günlük periyodunda, bu üç güzergâhtan yalnızca bir (1) tanesi 
+kullanıma açık olacak, diğer iki güzergâh ise fiziksel engeller (bariyer, enkaz 
+simülasyonu vb.) ile tamamen kapatılacaktır. Hangi yarışma günlerinde, hangi zorluk 
+seviyesindeki yolun açık olacağı bilgisi yarışmacılarla önceden kesinlikle 
+paylaşılmayacak olup, bu bilgi gizli tutulacaktır. 
+• Açık rotanın önceden bilinmemesi sebebiyle takımların; İHA'nın otonom uçuşu 
+esnasında sensörler ve görüntü işleme teknolojilerini kullanarak sahadaki fiziksel 
+engelleri taraması ve İKA'nın ilerleyeceği açık güzergâhı tespit etmesi zorunludur. 
+• Yarışmacı takımların, kullanıma açılan her bir güzergâh (her bir 2 günlük periyot) için 
+sadece bir (1) uçuş hakkı bulunmaktadır. Bu doğrultuda, takımların 6 günlük yarışma 
+süresince toplam üç (3) uçuş hakkı olacaktır. 
+• Takımların sahip olduğu uçuş hakları, sadece o an açık olan güzergâhın periyodu 
+içerisinde geçerlidir. Bir güzergâh için tanımlanan sürede kullanılmayan uçuş hakkı, 
+kesinlikle bir sonraki güzergâha veya diğer günlere devredilemez. Kullanılmayan uçuş 
+hakları iptal edilecek (yanacak) ve takım ilgili turun görev puanlamasından sıfır (0) 
+alacaktır. 
+6.1. Yarışma Öncesi 
+• Yarışmacı takımlar, etkinlik haftasının ilk günü sahada kayıt işlemlerini tamamlamakla 
+mükelleftir. Kayıt esnasında Takım Kaptanının şahsen hazır bulunması zorunlu 
+olup tescil işlemleri, Yönetim Ofisi nezdinde Takım Kaptanı tarafından yürütülecektir. 
+Kayıt saatlerinde alanda bulunmayan ekip üyelerinin sahaya intikal etmeleri 
+durumunda; Takım Kaptanı ilgili üyeyle birlikte Yönetim Ofisine başvurarak mevcut 
+durumu bildirmek ve kesin kayıt formunu güncelletmekle yükümlüdür. 
+• Saha tescilini gerçekleştiren takımlar, teknik uygunluk onayı almak üzere Teknik 
+Kontrol Çadırı’na müracaat edecektir.  
+• Kayıt işlemlerini tamamlamış olan tüm takımların, uçuş safhasına geçmeden önce 
+teknik denetim sürecine tabi tutulmaları zorunluluk arz etmektedir. Teknik kontrol 
+aşamasını tamamlamayan hiçbir ekibin uçuş icrasına izin verilmeyecektir. 
+• Teknik kontrol safhasında TUSAŞ yetkilileri ve hakem heyeti tarafından verilen tüm 
+kararlar kesin ve bağlayıcı niteliktedir. Katılımcı takımların, denetim süreci boyunca 
+verilen bu kararlara kayıtsız şartsız riayet etmeleri zorunludur. 
+• Takımların; Final Değerlendirme Sunumu, Sistem Gözden Geçirme Sunumu ve Uçuşa 
+Hazırlık Değerlendirme Raporu kapsamında beyan ve taahhüt ettikleri sistem 
+konfigürasyonları ile teknik kontrole girmeleri esastır. Raporlanan teknik özelliklerin 
+dışına çıkılması veya farklı bir sistemle katılım sağlanması kural ihlali sayılacaktır. 
+
+--- SAYFA 22 ---
+ 
+21 
+ 
+• Teknik kontrolden geçerek 'Uçuşa Uygundur' onayı alan İHA ve İKA sistemlerinin 
+muhafaza kutuları hakemler tarafından mühürlenir. Kutular mühürlendikten sonra 
+sistemlerin mevcut mekanik ve elektronik yapısında, görev öncesinde herhangi 
+bir modifikasyon, demontaj veya parça değişimi yapılması emniyet kuralları gereği 
+yasaklanmıştır. 
+• Teknik kontroller neticesinde muhafaza kutuları mühürlenen takımlar, kendilerine 
+tahsis 
+edilen 
+uçuş 
+sırası 
+gelene 
+dek 
+söz 
+konusu mühürlere 
+müdahale 
+edemezler. Mühürlerin açılması, uçuş alanında ve hazırlık süresi başlatılmadan 
+hemen önce hakem heyeti nezaretinde gerçekleştirilecektir. 
+6.2. Yarışma Sırası 
+• Yarışmacı takımlar, Final Değerlendirme Sunumları neticesinde oluşan başarı 
+sıralamasına göre uçuş sıralarını belirleme hakkına sahiptir. Değerlendirme 
+sonucunda en yüksek puanı alan takım, uçuş takvimindeki yerini seçme 
+hususunda öncelik hakkına sahip olacaktır. 
+• Gruplama ve uçuş sırasına yönelik hiçbir itiraz kabul edilmeyecektir. Belirlenen 
+takvim, yarışma operasyonlarının aksamaması adına değiştirilemez ve tüm takımlar 
+için bağlayıcıdır. 
+• Yarışma sırasında görevlerin yerine getirilmesi için gerekli olan tüm donanım, araç-
+gereç ve materyallerin karşılanması takımların mesuliyetindedir.  
+• Göreve ilişkin operasyonel süreçlerde kullanılacak tüm sistemler ve yardımcı altyapı 
+bileşenlerinin alanda hazır bulundurulması hususunda sorumluluk takımların 
+uhdesindedir.  
+• Muhtemel her türlü risk senaryosu dahilinde; hakem heyeti, uçuş emniyetini korumak 
+amacıyla operasyonu sonlandırma yetkisine haizdir. Uçuş öncesinde veya icrası 
+esnasında İHA’nın herhangi bir hasara veya kırıma uğraması durumunda, sistemin 
+kapsamlı bir teknik denetime tabi tutulması zorunluluk arz etmektedir. Söz konusu 
+denetim 
+neticesinde teknik 
+uygunluk 
+onayı alamayan 
+platformların 
+uçuş 
+faaliyetlerine devam etmesine kesinlikle müsaade edilmeyecektir. 
+• Güvenlik gerekçesiyle reddedilen veya durdurulan uçuş işlemlerine yönelik herhangi 
+bir itiraz mekanizması işletilmeyecektir. Emniyet odaklı alınan idari ve teknik kararlar 
+tüm katılımcılar için bağlayıcıdır; bu hususta yapılacak başvurular hükümsüz 
+sayılacaktır. 
+• Yarışma alanına her takımdan en fazla sekiz (8) takım üyesinin girişine izin verilir. 
+• Danışmanlar (Akademik Danışman veya Danışman Öğretmen) uçuş alanına kesinlikle 
+giremezler. 
+• Takımlar yarışma alanına giriş yaptıktan sonra, alan dışındaki danışmanları ile sözlü, 
+telefonla veya işaret yoluyla herhangi bir iletişim kuramazlar. Tespiti halinde takım 
+diskalifiye edilir. 
+
+--- SAYFA 23 ---
+ 
+22 
+ 
+• Uçuş sırasında alan içerisinde bulunan tüm takım üyelerinin, temin edilen baret ve 
+yelekleri giymesi zorunludur. 
+• Takımlar, "Alan Hakeminin" onayı ile yarışma alanına giriş yaparlar. Giriş onayı ile 
+birlikte takımın 15 dakikalık "Hazırlık Süresi" başlar. 
+• Hazırlık süresi içerisinde takımlar; İHA montajı, mancınık sisteminin İHA-FB içerisine 
+yerleşimi, İHA’nın mancınık üzerine oturtulması, İKA’nın İKA-KB içerisine yerleşimi ve 
+Yer Kontrol İstasyonunun kurulumu işlemlerini tamamlamak zorundadır. 
+• Hazırlıklarını tamamlayan takım kaptanı, hakeme "Takım Hazır" komutunu verir ve 
+hazırlık süresi durdurulur. 
+• "Takım Hazır" komutundan sonra, yarışmacıların araçlara veya yer istasyonuna fiziksel 
+müdahalede bulunması yasaktır. 
+• Yaşanan bir teknik aksaklık nedeniyle sistemlere müdahale edilmesi gerekirse; takım 
+kaptanı 100 ceza puanını kabul ettiğini hakeme beyan ederek müdahalede bulunabilir. 
+Müdahale için geçen süre, takımın kullandığı hazırlık süresine eklenir. Toplam sürenin 
+aşılması durumunda uçuş hakkı iptal edilir. 
+• Hazırlıklar tamamlandıktan sonra Alan Hakemlerinden "Uçuşa Uygunluk" onayı alınır. 
+Onay alınmadan fırlatma yapılamaz. 
+• Uçuş süresi, İHA’nın mancınık sisteminden ayrılması (fırlatma) ile başlar. Güzergâh 
+tespiti, veri aktarımı ve İHA’nın paraşütle inişini tamamlaması ile sona erer. Bu işlemler 
+için tanınan maksimum süre 15 dakikadır. 
+• Mancınık sistemi ile gerçekleştirilen fırlatma işleminin ardından, İHA’nın havada 
+tutunamayarak (airborne olamadan) yere temas etmesi durumunda; araçta uçuş 
+güvenliğini tehlikeye atacak bir kaza/kırım veya yapısal hasar oluşmadığı Alan Hakemi 
+tarafından teyit edilirse, takıma tekrar fırlatma hakkı tanınır. 
+• Tekrar fırlatma süreci (aracın geri alınması, mancınığa yeniden kurulması ve 
+fırlatılması) için geçen süre durdurulmaz; toplam uçuş süresine (15 dakika) dahil 
+edilir. Takımlar bu işlemi, kalan görev süreleri içerisinde tamamlamak zorundadır. Süre 
+bittiğinde fırlatma yapılamaz. 
+• Tekrar kurulum esnasında sadece mancınık kurulumu ve sistemin yeniden 
+başlatılması işlemlerine izin verilir. Bu süreçte araç üzerinde kapsamlı tamirat veya 
+parça değişimi yapılması yasaktır. 
+• İHA tarafından tespit edilen açık yol güzergâhı, gerçek zamanlı olarak Yer Kontrol 
+İstasyonuna aktarılmalı ve Alan Hakemi tarafından monitör üzerinden izlenmelidir. 
+Hakem, tespitin başarılı olduğunu sözlü olarak onaylamalıdır. Hakem onayı alınmayan 
+tespitler geçersiz sayılır. 
+• İHA, uçuşunu belirlenen İHA-UB sınırları içerisinde icra etmelidir. İHA-UB dışına taşan 
+uçuşlar "Alan İhlali" olarak kabul edilir ve uçuş başarısız sayılır. 
+• İKA, ancak başarılı bir İHA uçuşu (güzergâh verisinin aktarılması ve İHA'nın inişini 
+bitirmesi) sonrasında, İHA'dan aldığı veriye göre HB’ye hareket edebilir. İKA’nın HB 
+
+--- SAYFA 24 ---
+ 
+23 
+ 
+ulaşması için verilen maksimum süre 10 dakikadır. Bu sürenin aşılması durumunda 
+İKA görevi başarısız kabul edilecektir. 
+• Hem İHA hem de İKA’nın; fırlatma/başlangıç anından görev bitimine kadar olan tüm 
+süreçleri (seyrüsefer, tespit, veri aktarımı, sürüş) tam otonom olarak icra etmesi 
+gerekmektedir. 
+6.3. Yarışma Sonrası 
+• Uçuş operasyonlarının tamamlanmasını müteakip, tüm takımlar ilgili sistem ve 
+ekipmanlarını uçuş sahasından ivedilikle tahliye etmekle mükelleftir. Sahanın bir 
+sonraki uçuşa hazır hale getirilmesi için ekipmanların hızlıca toplanması katılımcıların 
+sorumluluğundadır. 
+• Yarışma alanında görevli TUSAŞ ve TEKNOFEST yetkililerine, hakem heyetine ve destek 
+personeline yönelik her türlü sözlü veya fiili müdahale kesinlikle yasaktır. Bu tür 
+disipline aykırı tutumların tespiti halinde, ilgili şahsın dahil olduğu takım yarışmadan 
+diskalifiye edilme yaptırımı ile karşı karşıya kalabilecektir. 
+6.4. Uçuşun Geçersiz Olması ile İlgili Hususlar 
+Yarışma esnasında icra edilen görev uçuşları, aşağıda belirtilen durumların herhangi 
+birinin gerçekleşmesi halinde "Geçersiz" sayılacak ve ilgili uçuş turundan puan 
+alınamayacaktır: 
+• Süre Aşımı: İHA görev süresi; İHA'nın mancınık sisteminden ayrılmasıyla başlar, 
+güzergâh tespitini yapması, veriyi aktarması ve paraşütle inişini tamamlamasıyla sona 
+erer. Bu süreçler için tanımlanan azami süre 15 dakikadır. Bu sürenin aşılması 
+durumunda, görev tamamlanmış olsa dahi uçuş geçersiz sayılacaktır. 
+• Manuel Müdahale: Uçuşun herhangi bir aşamasında (kalkış, seyir veya iniş), güvenlik 
+gerekçesiyle veya teknik bir aksaklık nedeniyle Güvenlik Pilotunun devreye girerek 
+İHA'yı manuel moda alması durumunda uçuş başarısız sayılacaktır 
+• Hakem Teyidi ve Veri Aktarımı: İHA tarafından yapılan güzergâh tespiti, gerçek zamanlı 
+olarak Yer Kontrol İstasyonuna aktarılmalıdır. Aktarılan verinin doğruluğunun Alan 
+Hakemi tarafından teyit edilemediği veya veri akışının sağlanamadığı durumlarda uçuş 
+geçersiz sayılacaktır. 
+• Saha Sınır İhlali: İHA'nın, yarışma komitesi tarafından belirlenen İHA-UB sınırlarının 
+dışına çıkması durumunda, güvenlik prosedürleri gereği uçuş başarısız sayılacaktır. 
+• Kırım ve Yapısal Bütünlük: Uçuşun herhangi bir safhasında veya iniş sırasında İHA'nın 
+kırıma uğraması, parçalanması veya donanımsal bütünlüğünü kaybetmesi (pervane 
+kırılması hariç) durumunda uçuş başarısız sayılacaktır. 
+• İniş İhlali: İHA'nın, görev tamamlandıktan sonra belirlenen İHA-İB inişi esnasında 
+paraşüt sisteminin açılmaması nedeniyle sert iniş (kontrolsüz düşüş) gerçekleştirmesi 
+durumunda uçuş geçersiz sayılacaktır. 
+
+--- SAYFA 25 ---
+ 
+24 
+ 
+7. DEĞERLENDİRME ve PUANLAMA 
+Yarışma takvimi boyunca icra edilecek tüm değerlendirme ve puanlama faaliyetleri, 
+aşağıda sunulan formülasyonlar esas alınarak gerçekleştirilecektir. Bu kapsamda; Ön 
+Değerlendirme Raporu (ÖDR), Detaylı Tasarım Raporu (DDR) ve Final Değerlendirme 
+Aşaması (FDA) basamaklarının tamamını kapsayan, teknik yeterlilik esaslı ve kademeli bir 
+eleme mekanizması tesis edilmiştir. 
+ 
+𝑃𝑢𝑎𝑛1 = 0.1 × Ö𝐷𝑅+ 0.25 × 𝐷𝐷𝑅+ 0.55 × 𝐹𝐷𝐴+ 0.1 × 𝑈𝐻𝐷𝑅 
+𝑃𝑢𝑎𝑛2 = 𝐾𝑧𝑜𝑟𝑙𝑢𝑘
+× [𝑃𝑔ö𝑟𝑒𝑣+ 25000 −𝑚İ𝐻𝐴
+10
++ 900 −𝑡İ𝐻𝐴
+5
++ 900 −𝑡ℎ𝑎𝑧𝚤𝑟𝑙𝚤𝑘
+30
++ 10000 −𝑚İ𝐾𝐴
+15
++ (𝑚𝑦ü𝑘× 0.01) + 600 −𝑡İ𝐾𝐴
+15
+−𝐶𝑐𝑒𝑧𝑎] 
+𝐾𝑧𝑜𝑟𝑙𝑢𝑘= {
+1.0          𝑆𝑒𝑛𝑎𝑟𝑦𝑜 1
+1.5        𝑆𝑒𝑛𝑎𝑟𝑦𝑜 2
+2.0        𝑆𝑒𝑛𝑎𝑟𝑦𝑜 3
+ 
+ 
+𝑃= 𝑃𝑇𝐼+ 𝑃𝑢ç𝑢ş + 𝑃𝑐𝑒𝑛𝑡𝑖𝑙𝑚𝑒𝑛𝑙𝑖𝑘 
+ 
+𝑃𝑢𝑎𝑛= 0.65 × 𝑃𝑢𝑎𝑛2 + 0.20 × 𝑃+ 0.15 × 𝑃𝑢𝑎𝑛1 
+Tablo 6. Yarışma Değerlendirme ve Puanlama Kriterleri 
+Sembol 
+Parametre Adı 
+Hesaplama Yöntemi / Açıklama 
+𝑷𝒖𝒂𝒏𝟏 
+Rapor Performans 
+Puanı 
+Yarışmacıların tüm süreç boyunca yazdığı rapor ve 
+gerçekleştirdiği sunumlardan elde ettiği puandır. 
+Ö𝑫𝑹 
+Ön Değerlendirme 
+Rapor Puanı 
+Ön Değerlendirme Raporu değerlendirmesi 
+sonucunda takımın elde ettiği puandır. 
+𝑫𝑫𝑹 
+Detay 
+Değerlendirme 
+Raporu Puanı 
+Detay Değerlendirme Raporu değerlendirmesi 
+sonucunda takımın elde ettiği puandır. 
+𝑭𝑫𝑨 
+Final 
+Değerlendirme 
+Aşaması Puanı 
+Final Değerlendirme Aşaması değerlendirmesi 
+sonucunda takımın elde ettiği puandır. 
+𝑷𝒖𝒂𝒏𝟐 
+Uçuş 
+Performans 
+Puanı 
+Yarışmacıların 
+görev 
+uçuş 
+performansları 
+sonucunda elde edeceği puandır.  
+𝑲𝒛𝒐𝒓𝒍𝒖𝒌 
+Zorluk Katsayısı 
+Görevin gerçekleşeceği senaryoya bağlı olarak 
+değişen katsayıdır.  
+
+--- SAYFA 26 ---
+ 
+25 
+ 
+𝒎İ𝑯𝑨 
+İHA Hafiflik Puanı 
+İHA’nın 25000 gram sınırının altındaki her 10 
+gram hafifliği için 1 puan verilir. 
+𝒕İ𝑯𝑨 
+İHA Görev Süresi 
+Puanı 
+İHA’nın maksimum görevi süresi olan 900 
+saniyeden tasarruf edilen her 5 saniyeden 1 
+puan verilir. İHA’nın görev süresi mancınıktan 
+fırlatılmasıyla başlar ve İHA’nın paraşütle iniş 
+gerçekleştirmesiyle son bulur. 
+𝒕𝒉𝒂𝒛𝚤𝒓𝒍𝚤𝒌 
+Hazırlık 
+Süresi 
+Puanı 
+Maksimum kurulum süresi olan 900 saniyeden 
+tasarruf edilen her 30 saniyeden 1 puan verilir. 
+Kurulum süresi görevli hakemin işaretiyle başlar 
+ve takımın hazır olduklarına dair işaretiyle son 
+bulur (Hands-Off). Takımlar hazır olduklarını 
+hakeme bildirdikten sonra sistemlerine tekrar 
+müdahale etmeleri gerekirse ceza puanı alarak, 
+yaptıkları işlemlerin süresi hazırlık süresine 
+eklenmesi koşulu ile yapabilirler. 
+𝒎İ𝑲𝑨 
+İKA Hafiflik Puanı 
+İKA’nın 10000 gram sınırının altındaki her 15 
+gram hafifliğine 1 puan verilir. 
+𝒎𝒚ü𝒌 
+İKA Yük Puanı 
+İKA’nın taşıdığı toplam yükün her 100 gramı için 
+1 puan verilir. 
+𝒕İ𝑲𝑨 
+İKA Görev Süresi 
+Puanı 
+İKA’nın toplam görevi gerçekleştireceği süredir. 
+İKA’nın maksimum görev süresi 600 saniyedir. 
+Süre İKA’nın tekerlerinin dönmesiyle başlar ve 
+İKA’nın branda üzerine fiziksel olarak temas 
+etmesiyle sonlanır. İKA 600 saniye sınırının 
+altındaki tasarruf edeceği her 15 saniyeden 1 
+puan alır. 
+𝑷𝒈ö𝒓𝒆𝒗 
+Görev Başarısı 
+İKA, hedef branda üzerine (H noktası) fiziksel 
+olarak temas ederse alınacak puandır. Başarılı 
+durumunda 600 puan, ulaşamazsa 0 puan alınır. 
+𝑷 
+Katılım 
+Başarısı 
+Puanı 
+- 
+𝑷𝑻𝑰 
+Teknik 
+Muayene 
+Başarısı 
+Takım tüm teknik muayeneleri tamamlaması 
+halinde elde edeceği puandır. Takım teknik 
+muayeneden ilk denemesinde başarılı olursa 
+100, ikinci denemesinde başarılı olursa 50, 
+teknik muayeneden geçememesi durumunda 
+ise 0 puan elde edilir. Teknik muayeneden 
+geçemeyen takımlar uçuş gerçekleştiremezler. 
+𝑷𝒖ç𝒖ş 
+Uçuş Başarısı 
+Takımın kurallara uygun başarılı bir uçuş 
+gerçekleştireceği 
+durumda 
+elde 
+edeceği 
+puandır. 
+Başarılı 
+uçuş 
+için 
+İHA 
+kırıma 
+uğramaması, hedefi tespit edebilmesi, İKA’nın 
+hareket etmesi gerekmektedir. Takım başarılı 
+gerçekleştireceği her bir senaryo uçuşu için 200 
+puan, başarısız durumda ise 0 puan alır. 
+
+--- SAYFA 27 ---
+ 
+26 
+ 
+𝑷𝒄𝒆𝒏𝒕𝒊𝒍𝒎𝒆𝒏𝒍𝒊𝒌 
+Centilmenlik Başarı 
+Puanı 
+Takımın yarışma boyunca gösterdiği takım 
+çalışması ve centilmenlik sonucunda elde 
+edilen puandır. Maksimum 50 puan alınabilir. 
+𝑼𝑯𝑫𝑹 
+Uçuşa 
+Hazırlık 
+Değerlendirme 
+Raporu Puanı 
+Uçuşa 
+Hazırlık 
+Değerlendirme 
+Raporu 
+değerlendirmesi sonucunda takımın elde ettiği 
+puandır. 
+𝑪𝒄𝒆𝒛𝒂 
+Ceza Puanları 
+İniş Sapması: İHA’nın inişi esnasında belirlene 
+alanın dışına çıkması durumunda alandan 
+uzaklaşılan her metre için -5 puan alacaktır. 
+Yeniden başlatma: Takımlar hazırlık aşamasında 
+el bırakma (hands-off) sonrasında sistemlerine 
+müdahale etmeleri gerekirse -100 puan ceza 
+puanı alacaktır. 
+Manuel 
+paraşüt 
+tetikleme: 
+İHA’nın 
+inişi 
+esnasında paraşüt sistemi manuel tetikleme ile 
+aktif getirilmesi durumunda -50 puan ceza puanı 
+tanımlanır. 
+8. ÖDÜLLER 
+Yarışma neticesinde dereceye giren (ilk üç) takımlara takdim edilecek ödüllere ilişkin detaylar, 
+Tablo 7’da belirtilmiştir. 
+Tablo 7. Yarışma ödülleri 
+Derece 
+Ödül Miktarı 
+Danışman 
+Birincilik 
+750.000 TL 
+50.000 TL 
+İkincilik 
+600.000 TL 
+40.000 TL 
+Üçüncülük 
+500.000 TL 
+30.000 TL 
+8.1. TUSAŞ Özel Ödülü 
+• Yarışma genel sıralamasında ilk üç (3) dereceye giren takımların üyeleri, TUSAŞ Ankara 
+yerleşkesinde icra edilecek olan yaz dönemi staj programına katılım hakkını doğrudan 
+elde edeceklerdir. Söz konusu hak, ilgili öğrencilerin TUSAŞ’ın mevcut stajyer 
+kabul kriterlerini karşılaması kaydıyla geçerli olacaktır. 
+• Staj imkanına ek olarak başkaca ödüllerin tanımlanması durumunda; söz konusu 
+ödüllerin mahiyeti, kapsamı ve takvimi ilerleyen süreçte resmi kanallar vasıtasıyla 
+katılımcılara ilan edilecektir. 
+9. İDARİ HÜKÜMLER 
+• Yarışma takvimi boyunca tüm katılımcı ekipler; teknofest.org resmi internet sitesinde 
+yayımlanan duyuruları ve başvuru sisteminde tanımlı olan e-posta adreslerine iletilen 
+
+--- SAYFA 28 ---
+ 
+27 
+ 
+bildirimleri kesintisiz olarak takip etmekle mükelleftir. Bu kanallar üzerinden yapılan 
+tüm bilgilendirmeler tebliğ niteliği taşımaktadır. 
+• TUSAŞ, gerekli gördüğü hallerde şartname hükümlerinde değişiklik yapma ve 
+maddeleri güncelleme hakkını saklı tutar. Yarışma sürecinde, resmi kanallar 
+üzerinden ilan edilen en güncel şartname hükümleri esas alınacak olup; önceki 
+sürümler hükmünü yitirmiş sayılacaktır. 
+• Ödenek yetersizliği veya gecikmesi, gümrük süreçlerindeki aksamalar ve lojistik/kargo 
+gönderimlerinde yaşanan gecikmeler gibi öngörülebilir ve önceden tedbir alınması 
+mümkün olan durumlar, yarışmaya katılım sağlanamaması hususunda geçerli bir 
+mazeret (mücbir sebep) olarak kabul edilmeyecektir. 
+• Yarışmaya başvuru yapacak ekiplerde yer alan öğrenciler ile varsa takım danışmanı 
+arasında birinci 
+derece 
+akrabalık 
+bağı, 
+doğrudan 
+çıkar 
+ilişkisi 
+veya çıkar 
+çatışması olarak nitelendirilebilecek bir münasebetin bulunmaması esastır. Etik 
+ilkeler gereği tarafsızlığı gölgeleyebilecek bu tür durumların tespiti halinde, ilgili 
+başvurular değerlendirmeye alınmaksızın reddedilecektir. 
+• Yarışmaya katılan ekiplerin herhangi bir üyesinin; yarışma takviminin tüm evrelerinde 
+(öncesi, süreci ve sonrası), TUSAŞ personeli, TEKNOFEST görevlileri, Danışma ve 
+Değerlendirme Kurulu (DDK) üyeleri, hakem heyeti, diğer takımlar veya saha 
+personeline yönelik yazılı, sözlü veya fiziki olarak gerek yüz yüze gerekse dijital 
+mecralar üzerinden sergileyeceği her türlü etik dışı, nezaket kurallarına aykırı veya 
+saldırgan tutum kesinlikle yasaktır. Söz konusu durumun tespiti halinde, ilgili takım 
+TUSAŞ ve TEKNOFEST tarafından yarışmadan ihraç edilebilecek ve belirlenecek 
+süreyle tüm yarışmalardan men edilme yaptırımıyla karşı karşıya kalabilecektir. 
+10. İLETİŞİM 
+Yarışma hakkında sorular için TEKNOFEST web sitesinde İleri Otonom Sistemler Tasarım 
+ve Operasyon Yarışması sayfasından yarışmanın grubuna katılabilirsiniz. Bu grubun aktif 
+olarak takip edilmesi ve her takımdan en az 1 kişinin üye olarak bu gruptaki duyuruları, 
+soru ve cevapları takip etmesi yarışmacıların sorumluluğundadır. Belirtilen e-posta 
+grubunun takip edilmemesi sonucunda doğacak takımların güncel bilgilendirmelere 
+ulaşamama durumundan TEKNOFEST Yarışmalar Komitesi sorumlu değildir.  
+Yarışmanın organizasyonel bölümleri ile ilgili soruların iletisim@teknofest.org e-posta 
+adresi üzerinden iletilmesi gereklidir.  
+Sorularınızın yukarıda doğru kanallar üzerinden iletilmesi, sorulan sorulara hızlı dönüş 
+yapılabilmesi açısından önem arz etmektedir. 
+11. GENEL KURALLAR 
+Yarışma kapsamında geçerli olan Genel Kurallar kitapçığına ulaşmak için tıklayınız. 
+
+--- SAYFA 29 ---
+ 
+28 
+ 
+12. ETİK KURALLAR 
+Yarışma kapsamında geçerli olan Etik Kurallar kitapçığına ulaşmak için tıklayınız. 
+Sorumluluk Beyanı 
+T3 Vakfı ve TEKNOFEST, yarışmacıların teslim etmiş olduğu herhangi bir üründen veya 
+yarışmacıdan kaynaklanan herhangi bir yaralanma veya hasardan hiçbir şekilde sorumlu 
+değildir. Yarışmacıların 3. kişilere verdiği zararlardan T3 Vakfı ve organizasyon yetkilileri 
+sorumlu değildir. T3 Vakfı ve TEKNOFEST, takımların kendi sistemlerini Türkiye 
+Cumhuriyeti yasaları çerçevesinde hazırlamalarını ve uygulamalarını sağlamaktan 
+sorumlu değildir. 
+Türkiye Teknoloji Takımı Vakfı işbu şartnamede her türlü değişiklik yapma hakkını 
+saklı tutar. 
+ 
+ 
+
+--- SAYFA 30 ---
+ 
+29 
+ 
+ 
+ 
