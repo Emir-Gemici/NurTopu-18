@@ -1,6 +1,6 @@
 # Akış diyagramı (a) — düğüm → dosya:satır tablosu
 
-Kaynak: `FDR/sekiller/akis_a.mmd` · koddan türetildi: commit `f3441b4`, 2026-09-07 · üretici: `scripts/akis_diyagram_dogrula.py --tablo`
+Kaynak: `FDR/sekiller/akis_a.mmd` · koddan türetildi: commit `4ee70d9`, 2026-09-10 · üretici: `scripts/akis_diyagram_dogrula.py --tablo`
 
 Düğüm kuralı: **fonksiyon** = `def ad()` ve satır o tanımın başı; **karar** = koşul metni koddan birebir; **blok** = deyim koddan birebir. Doğrulama sütunu: `tam` = tam satır, `±n` = n satır sapma (tolerans 3). Başka düğüm tipi yoktur.
 
@@ -37,7 +37,7 @@ Düğüm kuralı: **fonksiyon** = `def ad()` ve satır o tanımın başı; **kar
 | 29 | `a28` | blok | sA2 | `open_path, path_conf, waypoints = None, 0.0, []` | `codes/rpi_inference.py:2391` | tam |
 | 30 | `a29` | fonksiyon | sA2 | `def _rota_kararini_esikle()` | `codes/rpi_inference.py:1779` | tam |
 | 31 | `a30` | karar | sA2 | `if yumusatici.suz(open_path, karar_reddi):` | `codes/rpi_inference.py:2399` | tam |
-| 32 | `a31` | fonksiyon | sA2 | `def KararYumusatici.suz()` | `codes/karar_sozlesmesi.py:2158` | tam |
+| 32 | `a31` | fonksiyon | sA2 | `def KararYumusatici.suz()` | `codes/karar_sozlesmesi.py:2172` | tam |
 | 33 | `a32` | fonksiyon | sA2 | `def _karari_yayinla()` | `codes/rpi_inference.py:285` | tam |
 | 34 | `a33` | karar | sA2 | `if ekransiz:` | `codes/rpi_inference.py:2403` | tam |
 | 35 | `a34` | fonksiyon | sA2 | `def draw_masks()` | `codes/rpi_inference.py:856` | tam |

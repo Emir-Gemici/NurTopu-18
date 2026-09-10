@@ -1,6 +1,6 @@
 # Akış diyagramı (b) — düğüm → dosya:satır tablosu
 
-Kaynak: `FDR/sekiller/akis_b.mmd` · koddan türetildi: commit `1792856`, 2026-09-10 · üretici: `scripts/akis_diyagram_dogrula.py --tablo`
+Kaynak: `FDR/sekiller/akis_b.mmd` · koddan türetildi: commit `4ee70d9`, 2026-09-10 · üretici: `scripts/akis_diyagram_dogrula.py --tablo`
 
 Düğüm kuralı: **fonksiyon** = `def ad()` ve satır o tanımın başı; **karar** = koşul metni koddan birebir; **blok** = deyim koddan birebir. Doğrulama sütunu: `tam` = tam satır, `±n` = n satır sapma (tolerans 3). Başka düğüm tipi yoktur.
 

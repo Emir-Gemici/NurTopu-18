@@ -1,84 +1,84 @@
-%% koddan turetildi 1792856 2026-09-10
+%% koddan turetildi 4ee70d9 2026-09-10
 %% (e) IKA otonom surus — simulation/scripts/ika_nav.py (ika_gorevi -> rota bekle -> surus izni -> navigate) + comms/ika_receiver.py kapilari
 %% Halka 10 (motor surucusu) SAHIPSIZDIR: surucu() varsayilani Gazebo'dur (gercek motor surucusu yok — FDR §3.3.1.3.1); dugum e76 bunu koddan gosterir.
 %% Dugum kurali: [ ] fonksiyon/blok (dosya:satir = tanim ya da deyim satiri), { } karar (kosul koddan birebir).
 %% Dogrulayici: scripts/akis_diyagram_dogrula.py
 flowchart TD
-  subgraph sE1["def ika_gorevi()<br/>simulation/scripts/ika_nav.py:437"]
-    e01["bekleme_deadline = saat() + bekleme_suresi<br/>simulation/scripts/ika_nav.py:460"]
-    e03{"if alindi is None:<br/>simulation/scripts/ika_nav.py:468"}
-    e04["return 1<br/>simulation/scripts/ika_nav.py:471"]
-    e05{"if isinstance(alindi, dict) and alindi.get(#quot;type#quot;) == MESAJ_NO_ROUTE:<br/>simulation/scripts/ika_nav.py:472"}
-    e06["return 2<br/>simulation/scripts/ika_nav.py:474"]
-    e08{"if not izin_bekle(receiver, kalan, deadline_monotonic=bekleme_deadline):<br/>simulation/scripts/ika_nav.py:478"}
-    e09["return 3<br/>simulation/scripts/ika_nav.py:479"]
-    e10["surus_deadline = saat() + surus_suresi<br/>simulation/scripts/ika_nav.py:481"]
-    e11["def navigate_route()<br/>simulation/scripts/ika_nav.py:416"]
-    e12["return 0 if basarili else 4<br/>simulation/scripts/ika_nav.py:494"]
-    e13["send_vel(0, 0)<br/>simulation/scripts/ika_nav.py:499"]
-    e14["receiver.stop()<br/>simulation/scripts/ika_nav.py:502"]
-    e15["receiver.link.close()<br/>simulation/scripts/ika_nav.py:504"]
+  subgraph sE1["def ika_gorevi()<br/>simulation/scripts/ika_nav.py:477"]
+    e01["bekleme_deadline = saat() + bekleme_suresi<br/>simulation/scripts/ika_nav.py:512"]
+    e03{"if alindi is None:<br/>simulation/scripts/ika_nav.py:520"}
+    e04["return 1<br/>simulation/scripts/ika_nav.py:523"]
+    e05{"if isinstance(alindi, dict) and alindi.get(#quot;type#quot;) == MESAJ_NO_ROUTE:<br/>simulation/scripts/ika_nav.py:524"}
+    e06["return 2<br/>simulation/scripts/ika_nav.py:526"]
+    e08{"if not izin_bekle(receiver, kalan, deadline_monotonic=bekleme_deadline):<br/>simulation/scripts/ika_nav.py:530"}
+    e09["return 3<br/>simulation/scripts/ika_nav.py:531"]
+    e10["surus_deadline = saat() + surus_suresi<br/>simulation/scripts/ika_nav.py:533"]
+    e11["def navigate_route()<br/>simulation/scripts/ika_nav.py:455"]
+    e12["return 0 if basarili else 4<br/>simulation/scripts/ika_nav.py:546"]
+    e13["send_vel(0, 0)<br/>simulation/scripts/ika_nav.py:450"]
+    e14["receiver.stop()<br/>simulation/scripts/ika_nav.py:554"]
+    e15["receiver.link.close()<br/>simulation/scripts/ika_nav.py:556"]
   end
-  subgraph sE2["def wait_open_route_from_comms()<br/>simulation/scripts/ika_nav.py:524"]
-    e20["rx = IkaReceiver(UDPLink(bind=(h, int(p))), yks_peer=yks_peer).start()<br/>simulation/scripts/ika_nav.py:542"]
-    e21["def IkaReceiver.start()<br/>comms/ika_receiver.py:312"]
-    e22["def IkaReceiver._loop()<br/>comms/ika_receiver.py:308"]
-    e23["def IkaReceiver._handle()<br/>comms/ika_receiver.py:231"]
-    e24{"while True:<br/>simulation/scripts/ika_nav.py:553"}
-    e25["terminal_snapshot = time.monotonic() >= deadline<br/>simulation/scripts/ika_nav.py:554"]
-    e26["def IkaReceiver.decision_snapshot()<br/>comms/ika_receiver.py:74"]
-    e27{"if karar_zamani is not None and karar_zamani > deadline:<br/>simulation/scripts/ika_nav.py:565"}
-    e28{"if route is not None and no_route is None:<br/>simulation/scripts/ika_nav.py:570"}
-    e29["def route_to_world_waypoints()<br/>simulation/scripts/ika_nav.py:144"]
-    e30{"except ValueError as exc:<br/>simulation/scripts/ika_nav.py:573"}
-    e31{"if (guncel_nesil != karar_nesli<br/>simulation/scripts/ika_nav.py:586"}
-    e32{"if keep_receiver:<br/>simulation/scripts/ika_nav.py:598"}
-    e33["return route, rx<br/>simulation/scripts/ika_nav.py:600"]
-    e34{"if no_route is not None and karar_nesli != son_no_route_nesil:<br/>simulation/scripts/ika_nav.py:603"}
-    e35{"if terminal_snapshot:<br/>simulation/scripts/ika_nav.py:611"}
-    e36["return no_route<br/>simulation/scripts/ika_nav.py:612"]
+  subgraph sE2["def wait_open_route_from_comms()<br/>simulation/scripts/ika_nav.py:576"]
+    e20["rx = IkaReceiver(link, yks_peer=yks_peer, saat=saat).start()<br/>simulation/scripts/ika_nav.py:610"]
+    e21["def IkaReceiver.start()<br/>comms/ika_receiver.py:317"]
+    e22["def IkaReceiver._loop()<br/>comms/ika_receiver.py:313"]
+    e23["def IkaReceiver._handle()<br/>comms/ika_receiver.py:236"]
+    e24{"while True:<br/>simulation/scripts/ika_nav.py:621"}
+    e25["terminal_snapshot = _saat() >= deadline<br/>simulation/scripts/ika_nav.py:622"]
+    e26["def IkaReceiver.decision_snapshot()<br/>comms/ika_receiver.py:79"]
+    e27{"if karar_zamani is not None and karar_zamani > deadline:<br/>simulation/scripts/ika_nav.py:633"}
+    e28{"if route is not None and no_route is None:<br/>simulation/scripts/ika_nav.py:638"}
+    e29["def route_to_world_waypoints()<br/>simulation/scripts/ika_nav.py:149"]
+    e30{"except ValueError as exc:<br/>simulation/scripts/ika_nav.py:641"}
+    e31{"if (guncel_nesil != karar_nesli<br/>simulation/scripts/ika_nav.py:654"}
+    e32{"if keep_receiver:<br/>simulation/scripts/ika_nav.py:666"}
+    e33["return route, rx<br/>simulation/scripts/ika_nav.py:668"]
+    e34{"if no_route is not None and karar_nesli != son_no_route_nesil:<br/>simulation/scripts/ika_nav.py:671"}
+    e35{"if terminal_snapshot:<br/>simulation/scripts/ika_nav.py:628"}
+    e36["return no_route<br/>simulation/scripts/ika_nav.py:680"]
   end
-  subgraph sE3["def receiver_surus_izni_bekle()<br/>simulation/scripts/ika_nav.py:260"]
-    e40["send_vel(0, 0)<br/>simulation/scripts/ika_nav.py:263"]
-    e41["def IkaReceiver.wait_surus_izni()<br/>comms/ika_receiver.py:114"]
-    e42{"if not self._surus_izni_event.wait(timeout):<br/>comms/ika_receiver.py:122"}
-    e43["def IkaReceiver._surus_izni_gecerli_unlocked()<br/>comms/ika_receiver.py:127"]
-    e44{"if not self.ika_go or not self.iha_landed:<br/>comms/ika_receiver.py:129"}
+  subgraph sE3["def receiver_surus_izni_bekle()<br/>simulation/scripts/ika_nav.py:265"]
+    e40["send_vel(0, 0)<br/>simulation/scripts/ika_nav.py:256"]
+    e41["def IkaReceiver.wait_surus_izni()<br/>comms/ika_receiver.py:119"]
+    e42{"if not self._surus_izni_event.wait(timeout):<br/>comms/ika_receiver.py:127"}
+    e43["def IkaReceiver._surus_izni_gecerli_unlocked()<br/>comms/ika_receiver.py:132"]
+    e44{"if not self.ika_go or not self.iha_landed:<br/>comms/ika_receiver.py:134"}
   end
-  subgraph sE4["def navigate()<br/>simulation/scripts/ika_nav.py:280"]
-    e50{"for idx, (wx, wy) in enumerate(wps[1:], 1):<br/>simulation/scripts/ika_nav.py:327"}
-    e51{"while not at_wp:<br/>simulation/scripts/ika_nav.py:331"}
-    e52{"if surus_deadline is not None and saat() >= surus_deadline:<br/>simulation/scripts/ika_nav.py:332"}
-    e53["return False<br/>simulation/scripts/ika_nav.py:336"]
-    e54{"if not surucu_saglikli():<br/>simulation/scripts/ika_nav.py:337"}
-    e55["def surucu_saglikli()<br/>simulation/scripts/ika_nav.py:69"]
-    e56{"if link_ok is not None and not link_ok():<br/>simulation/scripts/ika_nav.py:346"}
-    e57["def IkaReceiver.link_ok()<br/>comms/ika_receiver.py:69"]
-    e58{"if not rota_kapisi_acik():<br/>simulation/scripts/ika_nav.py:356"}
-    e59["def rota_kapisi_acik()<br/>simulation/scripts/ika_nav.py:312"]
-    e60["def receiver_rota_gecerli()<br/>simulation/scripts/ika_nav.py:203"]
-    e61{"if (not getattr(receiver, #quot;ika_go#quot;, False)<br/>simulation/scripts/ika_nav.py:211"}
-    e62{"if route is None or no_route is not None:<br/>simulation/scripts/ika_nav.py:215"}
-    e63["def get_pose()<br/>simulation/scripts/ika_nav.py:74"]
-    e64{"if cx is None:<br/>simulation/scripts/ika_nav.py:362"}
-    e65{"if dist < hedef_yaricapi:<br/>simulation/scripts/ika_nav.py:379"}
-    e66["def steer()<br/>simulation/scripts/ika_nav.py:97"]
-    e67{"if not rota_kapisi_acik():<br/>simulation/scripts/ika_nav.py:392"}
-    e68{"if rota_korumali_gonder is None:<br/>simulation/scripts/ika_nav.py:395"}
-    e69["def receiver_korumali_hiz_gonder()<br/>simulation/scripts/ika_nav.py:234"]
-    e70["def IkaReceiver.run_if_route_valid()<br/>comms/ika_receiver.py:80"]
-    e71{"if (self.last_rx is None or self.link_lost<br/>comms/ika_receiver.py:91"}
-    e72{"elif not rota_korumali_gonder(r, l):<br/>simulation/scripts/ika_nav.py:397"}
-    e73["def rota_gecersiz_dur()<br/>simulation/scripts/ika_nav.py:304"]
-    e77["return True<br/>simulation/scripts/ika_nav.py:413"]
-    e78["return False<br/>simulation/scripts/ika_nav.py:345"]
+  subgraph sE4["def navigate()<br/>simulation/scripts/ika_nav.py:311"]
+    e50{"for idx, (wx, wy) in enumerate(wps[1:], 1):<br/>simulation/scripts/ika_nav.py:366"}
+    e51{"while not at_wp:<br/>simulation/scripts/ika_nav.py:370"}
+    e52{"if surus_deadline is not None and saat() >= surus_deadline:<br/>simulation/scripts/ika_nav.py:371"}
+    e53["return False<br/>simulation/scripts/ika_nav.py:308"]
+    e54{"if not surucu_saglikli():<br/>simulation/scripts/ika_nav.py:376"}
+    e55["def surucu_saglikli()<br/>simulation/scripts/ika_nav.py:74"]
+    e56{"if link_ok is not None and not link_ok():<br/>simulation/scripts/ika_nav.py:385"}
+    e57["def IkaReceiver.link_ok()<br/>comms/ika_receiver.py:74"]
+    e58{"if not rota_kapisi_acik():<br/>simulation/scripts/ika_nav.py:395"}
+    e59["def rota_kapisi_acik()<br/>simulation/scripts/ika_nav.py:351"]
+    e60["def receiver_rota_gecerli()<br/>simulation/scripts/ika_nav.py:208"]
+    e61{"if (not getattr(receiver, #quot;ika_go#quot;, False)<br/>simulation/scripts/ika_nav.py:216"}
+    e62{"if route is None or no_route is not None:<br/>simulation/scripts/ika_nav.py:220"}
+    e63["def get_pose()<br/>simulation/scripts/ika_nav.py:79"]
+    e64{"if cx is None:<br/>simulation/scripts/ika_nav.py:401"}
+    e65{"if dist < hedef_yaricapi:<br/>simulation/scripts/ika_nav.py:418"}
+    e66["def steer()<br/>simulation/scripts/ika_nav.py:102"]
+    e67{"if not rota_kapisi_acik():<br/>simulation/scripts/ika_nav.py:395"}
+    e68{"if rota_korumali_gonder is None:<br/>simulation/scripts/ika_nav.py:434"}
+    e69["def receiver_korumali_hiz_gonder()<br/>simulation/scripts/ika_nav.py:239"]
+    e70["def IkaReceiver.run_if_route_valid()<br/>comms/ika_receiver.py:85"]
+    e71{"if (self.last_rx is None or self.link_lost<br/>comms/ika_receiver.py:96"}
+    e72{"elif not rota_korumali_gonder(r, l):<br/>simulation/scripts/ika_nav.py:436"}
+    e73["def rota_gecersiz_dur()<br/>simulation/scripts/ika_nav.py:343"]
+    e77["return True<br/>simulation/scripts/ika_nav.py:452"]
+    e78["return False<br/>simulation/scripts/ika_nav.py:364"]
   end
-  subgraph sE5["def send_vel()<br/>simulation/scripts/ika_nav.py:82"]
-    e75["def surucu()<br/>simulation/scripts/ika_nav.py:55"]
-    e76["_SURUCU = ika_surucu.GazeboSurucu()<br/>simulation/scripts/ika_nav.py:59"]
-    e79["def surucu_ayarla()<br/>simulation/scripts/ika_nav.py:63"]
+  subgraph sE5["def send_vel()<br/>simulation/scripts/ika_nav.py:87"]
+    e75["def surucu()<br/>simulation/scripts/ika_nav.py:60"]
+    e76["_SURUCU = ika_surucu.GazeboSurucu()<br/>simulation/scripts/ika_nav.py:64"]
+    e79["def surucu_ayarla()<br/>simulation/scripts/ika_nav.py:68"]
   end
-  e00["ap = argparse.ArgumentParser(description=#quot;İKA navigasyon (dinamik rota + comms)#quot;)<br/>simulation/scripts/ika_nav.py:628"]
+  e00["ap = argparse.ArgumentParser(description=#quot;İKA navigasyon (dinamik rota + comms)#quot;)<br/>simulation/scripts/ika_nav.py:696"]
   e00 --> e01
   e01 --> e20
   e20 -.-> e21
