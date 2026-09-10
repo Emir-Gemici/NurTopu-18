@@ -1,4 +1,13 @@
-# JETSON ORIN NX — SAHA KILAVUZU
+# JETSON ~~ORIN NX~~ **ORIN NANO 4 GB** — SAHA KILAVUZU
+
+> 🔴 **KART DÜZELTMESİ (2026-09-10, T220 · D-431 kalıbı: eski metin ~~çizili~~, silinmedi).** Bu kılavuz 2026-08-05'te
+> "Orin NX" varsayımıyla yazıldı; elde olan ve 6 Eylül 2026'da **ölçülen** kart **Jetson Orin Nano Developer Kit 4 GB**
+> (p3767-0004, JetPack 7.2.1, TensorRT 10.16.2, Python 3.12 — `results/jetson_20260906/ORTAM_KUNYESI.txt`). Orin NX bu
+> projede **hiç ölçülmedi**; metindeki NX cümleleri tahmindir. Ölçülen FPS (T17, `jetson_fps.py`, 512, girdi `data/raw_frames`
+> — ⚠ §5'in istediği `sentetik_arena` değil, 6 Eylül koşumu drone kareleriyle yapıldı; `ozet.json` `parametreler.girdi` —
+> `results/jetson_20260906/jetson_fps_20260906_orin_nano/ozet.json`): `.pt` p50 **1,35 FPS** (739 ms; p95 942 ms),
+> `.engine` FP16 p50 **1,58 FPS** (635 ms; p95 751 ms); eşik 0,61 FPS **GEÇTİ** (D-431). Uçuş `.pt` ile (engine↔pt denkliği D-303 oransal DÜŞTÜ, D-431 §4).
+> Kurulum: `JETSON_ORIN_NANO_KURULUM.md` (§0-Nano bloğu ve `wheels/` bu kartta geçersiz).
 
 > Hazırlanma: 2026-08-05 · **ASIL MODEL: v36** (2026-08-26, D-293 · kullanıcı kararı) · eskiler: v35 → v34 → v30 → v27 → v24 → v21 → v17/v20
 >
@@ -446,7 +455,9 @@ python3 scripts/jetson_fps.py \
 
 **PC referansı (RTX 5080, aynı zincir, karşılaştırman için):**
 `çıkarım 14,00 ms · maske 2,23 ms · costmap 8,89 ms · toplam 27,38 ms · 36,5 FPS`
-Jetson Orin NX bunun belirgin altında çıkacaktır; gerekli olan **0,9–2,6 FPS**.
+~~Jetson Orin NX bunun belirgin altında çıkacaktır; gerekli olan **0,9–2,6 FPS**.~~
+**2026-09-10 (T220):** kart **Orin Nano 4 GB**; 6 Eylül'de ölçüldü (`results/jetson_20260906/jetson_fps_20260906_orin_nano/ozet.json`):
+`.pt` p50 **1,35 FPS** (p95 1,06), `.engine` FP16 p50 **1,58 FPS** (p95 1,33) — gerekli 0,9–2,6 FPS bandının içinde, eşik 0,61 GEÇTİ (D-431).
 
 Ölçülen zincir (yalnız model değil, **gerçek karar yolu**):
 ```

@@ -198,3 +198,10 @@ firmware/
 # T212 MuJoCo: harita basina uretilen dokular ve tarama kareleri (buyuk, yeniden uretilebilir)
 simulation/mujoco/dokular/uretilen/
 results/fdr_sprint_20260910/H1/**/kareler/
+
+# T220 (K2, 10 Eylul 2026): uretim modelinin KABUL KUMELERI (T66 yatay + T189 acili,
+# 2x260 kare + manifest, toplam 71 MB, DONDURULMUS — parmak izi registry'de) depoya
+# alindi: Jetson'da engine karari (`170_engine_karar_denkligi.py --s-kume kabul`)
+# bunlarsiz verilemiyordu ve registry yolu ciplak `O:/` idi (madde 16). Yukaridaki
+# genel `images/` kalibi bu kumeleri yutmasin diye ISTISNA:
+!data/kabul/*/images/

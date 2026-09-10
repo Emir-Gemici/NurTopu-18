@@ -27,7 +27,10 @@ from unittest import mock
 KOK = Path(__file__).resolve().parents[1]
 if str(KOK / "codes") not in sys.path:
     sys.path.insert(0, str(KOK / "codes"))
+if str(KOK / "tests") not in sys.path:
+    sys.path.insert(0, str(KOK / "tests"))
 
+from depo_yollari import ana_depo_adaylari, ilk_var_olan  # noqa: E402  (T220/K10)
 import rpi_inference as R  # noqa: E402
 from codes import model_registry as MR  # noqa: E402
 from codes.karar_sozlesmesi import (  # noqa: E402
@@ -59,11 +62,15 @@ def _sha(yol: Path) -> str:
 
 
 def _diskteki_turev(ad: str):
-    """Turev dosyasi bu makinede varsa yolu (worktree'de ana depo salt okunur kaynak)."""
-    for dizin in (KOK / "models", KOK / "jetson_paket" / "models",
-                  Path("O:/navitas/models"), Path("O:/navitas/jetson_paket/models")):
-        if (dizin / ad).is_file():
-            return dizin / ad
+    """Turev dosyasi bu makinede varsa yolu (worktree'de ana depo salt okunur kaynak).
+
+    T220 / K10: ana depo adaylari `depo_yollari.ana_depo_adaylari()` ile TURETILIR
+    (worktree kalibi / NAVITAS_ANA_DEPO); ciplak `O:/navitas` yazilmaz (madde 16).
+    """
+    for kok in ana_depo_adaylari():
+        for dizin in (kok / "models", kok / "jetson_paket" / "models"):
+            if (dizin / ad).is_file():
+                return dizin / ad
     return None
 
 
@@ -162,9 +169,9 @@ class UretimDefteriTests(unittest.TestCase):
 
     def test_diskteki_onnx_turevi_GERCEKTEN_GECER(self):
         """Gercek dosya, gercek ozet — sadece defter metni degil."""
-        onnx = KOK / "models" / "navitas_seg_v36_best.onnx"
-        if not onnx.is_file():
-            onnx = Path("O:/navitas/models/navitas_seg_v36_best.onnx")   # worktree: salt okunur kaynak
+        onnx = ilk_var_olan("models", "navitas_seg_v36_best.onnx")   # worktree: ana depo salt okunur kaynak
+        if onnx is None:
+            onnx = KOK / "models" / "navitas_seg_v36_best.onnx"
         if not onnx.is_file():
             self.skipTest(f"ONNX turevi bu makinede yok: {onnx}")
         u, d = R.model_kayit_dogrula(onnx, kok=KOK, calisan_imgsz=512)

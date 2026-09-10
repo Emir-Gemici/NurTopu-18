@@ -60,7 +60,8 @@ def kabul_kumesi_yolu(kok=None):
     S5/INFER_SIZE kalibinin sert cesidi: orada guvenli varsayilan vardi,
     burada yanlis kume "olculemeyeni DUSTU satmak" demektir).
     """
-    taban = (Path(kok) if kok is not None else REPO) / "config" / "model_registry.json"
+    depo = Path(kok) if kok is not None else REPO
+    taban = depo / "config" / "model_registry.json"
     try:
         veri = json.loads(taban.read_text(encoding="utf-8"))
         profil = veri["default_profile"]
@@ -68,11 +69,27 @@ def kabul_kumesi_yolu(kok=None):
     except (OSError, UnicodeError, ValueError, KeyError, TypeError) as exc:
         raise RuntimeError(
             f"kabul_kumesi registry'den okunamadi ({taban}): {exc}") from exc
-    yol = Path(deger)
+    yol = _goreli_yolu_coz(deger, depo)
     if not yol.is_dir():
         raise RuntimeError(
             f"kabul kumesi dizini yok: {yol} "
             f"(kaynak: {taban} -> profiles.{profil}.kabul_kumesi)")
+    return yol
+
+
+def _goreli_yolu_coz(deger, depo):
+    """Registry'deki kume yolu DEPO KOKUNE GORELI ise `depo` altina cozulur.
+
+    T220 (K2/K10, 10 Eylul 2026): alan eskiden ciplak `O:/navitas-local-train/...`
+    idi; Jetson'da (`~/navitas`) dizin bulunamiyor, K5/K5A kollari OLCULEMIYORDU
+    (JETSON_OTURUM_DURUMU_20260909 SS5.1). Kumeler `data/kabul/` altina alindi ve
+    yol depo kokune goreli yazildi (madde 16). Mutlak yol HALA kabul edilir
+    (gecici registry'li testler, elle verilen kume). Fail-closed kalip degismedi:
+    cozulen dizin yoksa cagiran RuntimeError verir.
+    """
+    yol = Path(deger)
+    if not yol.is_absolute():
+        yol = Path(depo) / yol
     return yol
 
 
@@ -88,7 +105,8 @@ def kabul_kumesi_acili_yolu(kok=None):
     CIPLAK YEDEK YOL YOKTUR (madde 16) — yanlis/bos kume "olculemeyeni
     GECTI satmak" demektir.
     """
-    taban = (Path(kok) if kok is not None else REPO) / "config" / "model_registry.json"
+    depo = Path(kok) if kok is not None else REPO
+    taban = depo / "config" / "model_registry.json"
     try:
         veri = json.loads(taban.read_text(encoding="utf-8"))
         profil = veri["default_profile"]
@@ -96,7 +114,7 @@ def kabul_kumesi_acili_yolu(kok=None):
     except (OSError, UnicodeError, ValueError, KeyError, TypeError) as exc:
         raise RuntimeError(
             f"kabul_kumesi_acili registry'den okunamadi ({taban}): {exc}") from exc
-    yol = Path(deger)
+    yol = _goreli_yolu_coz(deger, depo)
     if not yol.is_dir():
         raise RuntimeError(f"acili kabul kumesi dizini yok: {yol}")
     return yol

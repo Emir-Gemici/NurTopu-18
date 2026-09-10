@@ -7,10 +7,11 @@
    "path": "models/navitas_seg_v36_best.pt",
    "backend": "pytorch",
    "imgsz": 512,
-   "kabul_kumesi": "O:/navitas-local-train/calisma/sentetik_arena_kadraj_t66",
+   "kabul_kumesi": "data/kabul/sentetik_arena_kadraj_t66",
    "_kabul_kumesi_notu": "T77 · D-115/D-133: uretim modeli BU kume uzerinde kabul edilir (T66 ada geometrisi, n=260); v27 de v30 da burada olculdu. Hakem ekrani `arena_kadraj` kaynagini buradan okur; onceden T60 yolu comms/yks_gui.py'de CIPLAK yaziliydi ve surum v27'ye gecince cevrilmedi (kusur D-116/5) — ekran modeli KABUL EDILMEDIGI bir dagilimda gosteriyordu (olculdu: T60 11/12, T66 12/12). Surum degisirse BU alan da degismelidir; ikisi ayni profilde durur ki ayri ayri unutulamasin.",
-   "kabul_kumesi_acili": "O:/navitas-local-train/calisma/sentetik_arena_kadraj_ACILI_t189",
+   "kabul_kumesi_acili": "data/kabul/sentetik_arena_kadraj_ACILI_t189",
    "_kabul_kumesi_acili_notu": "T189 · D-334/D-336: K5'in IKINCI kolu. Yatay kume (yukarisi) T184'ten ONCE uretildi ve icindeki HER bariyer yataydir; bu yuzden K5, T184'un duzelttigi DONME KORLUGUNU ne yakalayabilir ne de duzelmeyi dogrulayabilirdi (vakum kapi, TEST_SPECS SS4.1). Bu kume ayni uretec/tohum/parametrelerle, yalniz --bariyer-acisi 90 eklenerek uretildi. AYIRT EDICILIGI MUTASYONLA OLCULDU (results/t63/t189_ayirt_edicilik.json): T184 oncesi dedektor burada 185/260 -> 48/260 dusuyor (52,7 puan), YATAY kumede ise 181/260 -> 181/260 HIC dusmuyor. Yatay kume DEGISTIRILMEZ: K1/K7 capalari ona baglidir.",
+   "_kabul_kumesi_yol_notu": "T220 (10 Eylul 2026, Jetson K2/K10): iki kabul_kumesi* yolu DEPO KOKUNE GORELIDIR (madde 16) — eskiden ciplak `O:/navitas-local-train/calisma/...` idi ve Jetson'da (`~/navitas`) hem `65_kabul_denetcisi` hem `170_engine_karar_denkligi --s-kume kabul` dizini bulamiyordu (JETSON_OTURUM_DURUMU_20260909 SS5.1, K10_LISTE #3/#4). Kumeler `O:/navitas-local-train/calisma/` altindan `data/kabul/` altina BAYT-ES kopyalandi (T66 547 dosya / T189 524 dosya; `kabul_kumesi_parmak_izi` degismedi, kume DONDURULMUS kaldi). Goreli yolu cozen okuyucular: `65_kabul_denetcisi.kabul_kumesi_yolu/_acili_yolu` (kok=REPO ya da verilen kok), `170_engine_karar_denkligi.s_kumesi`, `comms/yks_gui._kabul_kumesi_koku` (_PROJE_KOKU), `151_k7_serit_dogrulugu`, `162_yaw_kadraj_zarfi`. Mutlak yol hala kabul edilir (geriye uyum). Nobetci: tests/test_t220_jetson_istekleri.py.",
    "sha256": "1d1caca6f6da19ea35e69186a048da960ca5188be6ee6d49d6106457cac46911",
    "turevler": {
     "navitas_seg_v36_best_512_fp16.engine": {

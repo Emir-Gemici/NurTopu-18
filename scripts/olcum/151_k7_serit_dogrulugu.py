@@ -113,6 +113,8 @@ def main():
     defter = json.loads((KOK / "config" / "model_registry.json")
                         .read_text(encoding="utf-8"))
     kume_koku = a.kume or Path(defter["profiles"]["competition"]["kabul_kumesi"])
+    if not kume_koku.is_absolute():
+        kume_koku = KOK / kume_koku      # T220: defter yolu depo kokune GORELI (madde 16)
     agirlik = a.agirlik
     if agirlik is None:
         from model_registry import resolve_model
