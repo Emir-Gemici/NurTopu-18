@@ -1,0 +1,22 @@
+{
+ "dosya": "results/fdr_sprint_20260910/video/navitas_sim_gorev_20260910.mp4",
+ "sha256": "35ffc33e2f99c8335a7c4fe581cea257e294baea57f6f1edcd1fe1089139347d",
+ "boyut_mb": 33.56,
+ "sure_s": 177.88,
+ "okunan": {
+  "kare_n": 4447,
+  "fps": 25.0,
+  "genislik": 1280,
+  "yukseklik": 720,
+  "fourcc": "h264",
+  "ilk_kare_okundu": true
+ },
+ "hukum": {
+  "sure": true,
+  "fps": true,
+  "cozunurluk": true,
+  "uc_kamera": true,
+  "boyut": true,
+  "kosumlar_basarili": true
+ }
+}

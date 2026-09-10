@@ -1,0 +1,33 @@
+# T214-A mutasyon çıktısı — 2026-09-10 15:53 · test test_sim_mujoco_olcum.py
+
+M0 mutasyonsuz temel                                       → OK (temel geçer) · Ran 34 · OK · 3.8 s
+M1 basari: temas kosulu yok                                → YAKALANDI (test düştü) · Ran 34 · FAILED (failures=2) · 4.1 s
+    düşen: test_her_kosul_tek_basina_dusurur (test_her_kosul_tek_basina_dusurur), test_her_kosul_tek_basina_dusurur (test_her_kosul_tek_basina_dusurur)
+M2 basari: sure siniri 1 s gevsek                          → YAKALANDI (test düştü) · Ran 34 · FAILED (failures=1) · 4.0 s
+    düşen: test_her_kosul_tek_basina_dusurur (test_her_kosul_tek_basina_dusurur)
+M3 basari: cikis kodu kosulu yok                           → YAKALANDI (test düştü) · Ran 34 · FAILED (failures=3) · 4.0 s
+    düşen: test_her_kosul_tek_basina_dusurur (test_her_kosul_tek_basina_dusurur), test_her_kosul_tek_basina_dusurur (test_her_kosul_tek_basina_dusurur), test_her_kosul_tek_basina_dusurur (test_her_kosul_tek_basina_dusurur)
+M4 takip: temasta kesilmez                                 → YAKALANDI (test düştü) · Ran 34 · FAILED (failures=1) · 3.9 s
+    düşen: test_ilk_temastan_sonra_orneklemez (test_ilk_temastan_sonra_orneklemez)
+M5 takip: surus kosulu yok (bekleme/sonrasi da orneklenir) → YAKALANDI (test düştü) · Ran 34 · FAILED (failures=1) · 4.1 s
+    düşen: test_yalniz_surus_sirasinda_ornekler (test_yalniz_surus_sirasinda_ornekler)
+M6 iha_haritala: cikarim MOZ_PX (1024) ile                 → YAKALANDI (test düştü) · Ran 34 · FAILED (failures=1) · 3.5 s
+    düşen: test_infer_cagrisi_kayit_boyuyla (test_infer_cagrisi_kayit_boyuyla)
+M7 iha_haritala: cikarim_boyu sabit 512 (defter okunmaz)   → YAKALANDI (test düştü) · Ran 34 · FAILED (failures=1) · 3.9 s
+    düşen: test_kopya_defter_degisince_ayni_degeri_okur (test_kopya_defter_degisince_ayni_degeri_okur)
+M8 on_olcum_k3: teshis varsayilani MOZ_PX                  → YAKALANDI (test düştü) · Ran 34 · FAILED (failures=1) · 3.8 s
+    düşen: test_on_olcum_k3_teshis_uretim_boyu (test_on_olcum_k3_teshis_uretim_boyu)
+M9 hukum: yanlis yol yayini sayilmaz                       → YAKALANDI (test düştü) · Ran 34 · FAILED (failures=8) · 3.9 s
+    düşen: test_harita_hukmu (test_harita_hukmu), test_harita_json_semasi (test_harita_json_semasi), test_harita_json_semasi (test_harita_json_semasi), test_harita_json_semasi (test_harita_json_semasi)
+M10 toplayici ozet_hesapla diske yazar (bos kapi)          → YAKALANDI (test düştü) · Ran 34 · FAILED (failures=1) · 4.0 s
+    düşen: test_ozet_hesapla_yazmaz_ve_disk_es (test_ozet_hesapla_yazmaz_ve_disk_es)
+M11 tel_tipi: cagrilan yontem (ilk kosu kusuru)            → YAKALANDI (test düştü) · Ran 34 · FAILED (failures=4) · 3.8 s
+    düşen: test_olaylar_tel_tipinden (test_olaylar_tel_tipinden), test_ozet_hesapla_yazmaz_ve_disk_es (test_ozet_hesapla_yazmaz_ve_disk_es), test_tel_tipi (test_tel_tipi), test_readme_uretecle_es (test_readme_uretecle_es)
+M12 kosum ozet_hesapla diske yazar (bos kapi)              → YAKALANDI (test düştü) · Ran 34 · FAILED (failures=1) · 3.9 s
+    düşen: test_ozet_hesapla_yazmaz_ve_disk_es (test_ozet_hesapla_yazmaz_ve_disk_es)
+M13 grafik: gt rengi degisti                               → YAKALANDI (test düştü) · Ran 34 · FAILED (failures=4) · 3.9 s
+    düşen: test_jsondan_yeniden_uretim_es (test_jsondan_yeniden_uretim_es), test_jsondan_yeniden_uretim_es (test_jsondan_yeniden_uretim_es), test_jsondan_yeniden_uretim_es (test_jsondan_yeniden_uretim_es), test_jsondan_yeniden_uretim_es (test_jsondan_yeniden_uretim_es)
+M14 rapor: bolum basligi elle degisti                      → YAKALANDI (test düştü) · Ran 34 · FAILED (failures=1) · 3.9 s
+    düşen: test_readme_uretecle_es (test_readme_uretecle_es)
+
+özet: 14 mutasyon, kaçan/temel sorunu 0; kaynaklar sha256 ile bayt-eş geri yüklendi

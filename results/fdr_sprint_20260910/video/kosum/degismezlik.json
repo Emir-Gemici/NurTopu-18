@@ -1,0 +1,116 @@
+{
+ "kosum": "gt_1_kolay_42",
+ "kare_n_video": 2540,
+ "alanlar": {
+  "basari": {
+   "video": true,
+   "kosum_tur3": true,
+   "es": true
+  },
+  "rota_bulundu": {
+   "video": true,
+   "kosum_tur3": true,
+   "es": true
+  },
+  "rota_dogru": {
+   "video": true,
+   "kosum_tur3": true,
+   "es": true
+  },
+  "model_yol": {
+   "video": 1,
+   "kosum_tur3": 1,
+   "es": true
+  },
+  "model_guven": {
+   "video": 1.0,
+   "kosum_tur3": 1.0,
+   "es": true
+  },
+  "cikis_kodu": {
+   "video": 0,
+   "kosum_tur3": 0,
+   "es": true
+  },
+  "temas_sayisi": {
+   "video": 0,
+   "kosum_tur3": 0,
+   "es": true
+  },
+  "hb_icinde": {
+   "video": true,
+   "kosum_tur3": true,
+   "es": true
+  },
+  "wp_sayisi": {
+   "video": 41,
+   "kosum_tur3": 41,
+   "es": true
+  },
+  "sure_sim_ika": {
+   "video": 64.3,
+   "kosum_tur3": 64.3,
+   "es": true
+  },
+  "varis_mesafesi_m": {
+   "video": 0.211,
+   "kosum_tur3": 0.211,
+   "es": true
+  },
+  "takip_hatasi_maks_m": {
+   "video": 0.498,
+   "kosum_tur3": 0.498,
+   "es": true
+  },
+  "takip_hatasi_ort_m": {
+   "video": 0.071,
+   "kosum_tur3": 0.071,
+   "es": true
+  },
+  "takip_ornek_n": {
+   "video": 563,
+   "kosum_tur3": 563,
+   "es": true
+  },
+  "plan_takip_hatasi_maks_m": {
+   "video": 0.5,
+   "kosum_tur3": 0.5,
+   "es": true
+  },
+  "son_konum": {
+   "video": [
+    -11.326,
+    20.878,
+    0.082
+   ],
+   "kosum_tur3": [
+    -11.326,
+    20.878,
+    0.082
+   ],
+   "es": true
+  },
+  "t_ika_go": {
+   "video": 37.17999999999965,
+   "kosum_tur3": 37.17999999999965,
+   "es": true
+  },
+  "t_ika_go_ack": {
+   "video": 37.27999999999964,
+   "kosum_tur3": 37.27999999999964,
+   "es": true
+  },
+  "sure_sim_gorev": {
+   "video": 101.58,
+   "kosum_tur3": 101.58,
+   "es": true
+  },
+  "temas_adim": {
+   "video": 0,
+   "kosum_tur3": 0,
+   "es": true
+  }
+ },
+ "hepsi_es": true,
+ "kosum_tur3": "results/fdr_sprint_20260910/H1/kosum_tur3/gt_1_kolay_42.json"
+}

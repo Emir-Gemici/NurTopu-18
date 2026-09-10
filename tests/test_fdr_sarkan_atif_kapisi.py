@@ -114,6 +114,100 @@ class GercekBelgeler(unittest.TestCase):
             "etiket işaretçi gibi okunuyor:\n  " + "\n  ".join(hatali))
 
 
+# ── T214-B (10 Eylül) · KOD DOSYA:SATIR ATIF KAPISI ─────────────────────────
+# NEDEN (ölçülen kusur): T213-B `ika_nav.py` ve `karar_sozlesmesi.py`'ye satır ekledi; FDR'deki T217
+# tabloları (§3.3.1.3.3/§3.3.1.3.4) ve sabit tabloları eski satırları göstermeye devam etti
+# (ör. `ika_nav.py:437 ika_gorevi` → tanım 477'de; `karar_sozlesmesi.py:2112` MAVLINK tavanı → 2126).
+# Bir hakem `dosya:satır`ı açınca başka bir şey bulurdu. Kural: atıf bir TANIMLAYICI taşıyorsa
+# (`dosya.py:N ad` ya da hemen önündeki `ad` + `dosya.py:N`) o ad kaynağın [N−3, M+3] satırlarında
+# geçmelidir. ~~Üstü çizili~~ atıf tarihsel kayıttır (bakılmaz); tanımlayıcısız atıf ölçülemez (atlanır).
+# Zorlanan dosyalar T214-B'de tazelenenlerdir; diğerleri (ör. `comms/yks_gui.py` — T224 dalında
+# tazeleniyor) tazelendikçe `KOD_ATIF_DOSYALARI`'na eklenir.
+KOD_ATIF_DOSYALARI = {
+    "ika_nav.py": KOK / "simulation" / "scripts" / "ika_nav.py",
+    "karar_sozlesmesi.py": KOK / "codes" / "karar_sozlesmesi.py",
+}
+KOD_ATIF_PAYI = 3
+_TIK = re.compile(r"`([^`\n]+)`")
+_CIZILI = re.compile(r"~~.*?~~")
+_KOD_ATIF = re.compile(r"^(?:(?:[\w.-]+/)*([\w.-]+\.py))?:(\d+)(?:\s*[-–]\s*(\d+))?(?:\s+([A-Za-z_][\w.]*))?$")
+_DOSYA_ADI = re.compile(r"(?:[\w.-]+/)*([\w.-]+\.py)\b")
+_ONCEKI_AD = re.compile(r"^([A-Za-z_][\w.]*)(?:\s*=.*)?$")
+_AYRAC = re.compile(r"^[\s,(;]*$")
+
+
+def kod_atif_ihlalleri(metin: str, kaynaklar: dict, pay: int = KOD_ATIF_PAYI):
+    """`dosya.py:N[-M] ad` (ya da `ad` hemen önde, arada yalnız `,` `(` `;` boşluk) atıflarında `ad`
+    (noktalıysa son parçası) kaynağın [N−pay, M+pay] satırlarında geçmeli. Devam atıfı `:N` aynı
+    hücredeki son dosyaya bağlanır. SAF: `kaynaklar` = {dosya_adı: satır listesi}. Döner: ihlaller."""
+    ihlal = []
+    for no, satir in enumerate(metin.splitlines(), 1):
+        temiz = _CIZILI.sub(" ", satir)
+        hucreler = temiz.split("|") if temiz.lstrip().startswith("|") else [temiz]
+        for h in hucreler:
+            son_dosya, onceki_ad, onceki_bitis = None, None, 0
+            for mt in _TIK.finditer(h):
+                ic = mt.group(1).strip()
+                m = _KOD_ATIF.match(ic)
+                if m and (m.group(1) or son_dosya):
+                    dosya = m.group(1) or son_dosya
+                    son_dosya = dosya
+                    ad = m.group(4)
+                    if ad is None and onceki_ad and _AYRAC.match(h[onceki_bitis:mt.start()]):
+                        ad = onceki_ad
+                    if ad and dosya in kaynaklar:
+                        n1, n2 = int(m.group(2)), int(m.group(3) or m.group(2))
+                        src = kaynaklar[dosya]
+                        pencere = src[max(0, n1 - 1 - pay):min(len(src), n2 + pay)]
+                        if not any(ad.split(".")[-1] in s for s in pencere):
+                            ihlal.append((no, f"{dosya}:{m.group(2)}", ad, satir.strip()[:90]))
+                    onceki_ad, onceki_bitis = None, mt.end()
+                    continue
+                md = _DOSYA_ADI.search(ic)
+                if md:
+                    son_dosya = md.group(1)
+                ma = _ONCEKI_AD.match(ic)
+                onceki_ad = ma.group(1) if ma else None
+                onceki_bitis = mt.end()
+    return ihlal
+
+
+def _kod_kaynaklari():
+    return {ad: p.read_text(encoding="utf-8").splitlines() for ad, p in KOD_ATIF_DOSYALARI.items()}
+
+
+class KodSatirAtiflari(unittest.TestCase):
+    def test_T4_fdr_kod_atiflari_tanimlayiciyla_es(self):
+        kaynaklar = _kod_kaynaklari()
+        hatali, sayilan = [], 0
+        for p in sorted(FDR.glob("*.md")):
+            metin = p.read_text(encoding="utf-8")
+            sayilan += sum(metin.count(f"{d}:") for d in kaynaklar)
+            for no, atif, ad, satir in kod_atif_ihlalleri(metin, kaynaklar):
+                hatali.append(f"{p.name}:{no}  `{atif}` ±{KOD_ATIF_PAYI} satırda `{ad}` YOK  ->  {satir}")
+        self.assertGreater(sayilan, 20, "atıf sayımı boş — kapı hiçbir şeye bakmıyor")
+        self.assertEqual([], hatali, "FDR kod atfı bayat (kaynak satır kaydı):\n  " + "\n  ".join(hatali))
+
+    def test_T4a_bayat_atif_YAKALANIR(self):
+        kay = {"ornek.py": ["x = 1", "", "", "", "", "", "", "", "def hedef():", "    pass"]}
+        self.assertEqual(1, len(kod_atif_ihlalleri("bkz. `ornek.py:1 hedef`", kay)))
+        self.assertEqual(1, len(kod_atif_ihlalleri("(`hedef`, `ornek.py:1`)", kay)))       # önceki ad
+        self.assertEqual(1, len(kod_atif_ihlalleri("`ornek.py:2 x` ve `:1 hedef`", kay)))   # devam atıfı
+
+    def test_T4b_dogru_atif_ve_pay_YAKALANMAZ(self):
+        kay = {"ornek.py": ["x = 1", "", "", "", "", "", "", "", "def hedef():", "    pass"]}
+        for metin in ("`ornek.py:9 hedef`", "`ornek.py:6 hedef`", "`ornek.py:12 hedef`",
+                      "(`hedef`, `ornek.py:9`)", "`x = 1` (`ornek.py:1`)", "`ornek.py:1-2 x`"):
+            with self.subTest(metin=metin):
+                self.assertEqual([], kod_atif_ihlalleri(metin, kay))
+
+    def test_T4c_cizili_ve_tanimlayicisiz_atif_BAKILMAZ(self):
+        kay = {"ornek.py": ["x = 1"] + [""] * 20 + ["def hedef():"]}
+        self.assertEqual([], kod_atif_ihlalleri("~~`ornek.py:1 hedef`~~ `ornek.py:22 hedef`", kay))
+        self.assertEqual([], kod_atif_ihlalleri("sürücü sağlığı (`ornek.py:1`)", kay))
+        self.assertEqual([], kod_atif_ihlalleri("`baska.py:1 hedef`", kay))          # zorlanmayan dosya
+
+
 class KuralBirimTestleri(unittest.TestCase):
     """Kural sentetik metinlerle iki yönde de sınanır (boş kapı olmasın)."""
 

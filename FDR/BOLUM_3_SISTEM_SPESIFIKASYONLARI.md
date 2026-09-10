@@ -1053,14 +1053,14 @@ ile yazılıdır; **donanım kolu** (bilgisayar, sürücü kartı, güç hattı,
 olarak §3.3.1.1'deki İKA şemasında durur, **tedarik edilmedi** — o kol için **BEYAN GEREKLİ (insan)**
 kalır (R6). İKA fizikte sürülmedi; aşağıdaki her satır **yazılım ölçümüdür**, saha kanıtı değildir.
 
-**(1) Katman zinciri — alıcı → kilit → navigasyon → sürücü arayüzü → arka uç** (satır numaraları 10 Eylül okuması)
+**(1) Katman zinciri — alıcı → kilit → navigasyon → sürücü arayüzü → arka uç** (satır numaraları 10 Eylül okuması; `ika_nav.py` / `karar_sozlesmesi.py` atıfları T213-B birleşmesi satır kaydırdığı için 10 Eylül akşamı tazelendi — eskisi ~~üstü çizili~~, T214-B)
 
 | # | katman | ne yapar (koddan) | üretim kodu | kilit (test) |
 |---|---|---|---|---|
 | 1 | **Alıcı** `IkaReceiver` | Taşıyıcıdan bağımsız (UDP `comms/link.py:14` / SiK seri `:73`) satır-JSON çerçeveleri alır: `OPEN_ROUTE` → `latest` (`comms/ika_receiver.py:234`); `NO_ROUTE` ayrı alana, `latest` **ezilmez** (`:247`); İHA `HEARTBEAT` hat canlılığı (`:261`); `IHA_LANDED` → iniş latch'i (`:266`); `CMD IKA_GO` → izin latch'i, mükerrer alım yalnız ACK'lanır (`:275`). `hb_timeout` 3 s sessizlikte `link_lost` (`:27`, `:294 poll`). Rota ACK'ı gönderene **ve** YKS'ye (K8, `:175 _rota_ack`) | `comms/ika_receiver.py` | `tests/test_ika_go_gate.py`, `tests/test_iha_landed_gate.py`, `tests/test_ika_no_route_recovery.py`, `comms/test_comms.py` |
-| 2 | **Görev kapısı** (`CONTRACTS.md` §7) | `sür ⟺ OPEN_ROUTE ∧ IHA_LANDED ∧ IKA_GO`; iki latch + ortak son tarih `_surus_izni_gecerli_unlocked` (`ika_receiver.py:127`), bekleyen `wait_surus_izni` (`:114`); sıfır-dışı her motor komutu karar kilidi altında `run_if_route_valid` (`:80`) ile geçer — `NO_ROUTE` geldiyse komut düşer | `comms/ika_receiver.py`; `simulation/scripts/ika_nav.py:203 receiver_rota_gecerli`, `:234 receiver_korumali_hiz_gonder`, `:260 receiver_surus_izni_bekle` | `tests/test_p3_ika_surucu.py::T6` (izinsiz sıfır-dışı komut yok), `tests/test_ika_surus_no_route.py`, `tests/test_k5_k6_sure_limitleri.py` |
-| 3 | **Navigasyon** `navigate` | Dünya waypoint'lerini (`route_to_world_waypoints`, `ika_nav.py:144`) 10 Hz döngüde izler (`CTRL_HZ`, `:39`); geçiş yarıçapı 0,5 m, son waypoint 0,3 m (`:37-38`). Her adımda **sürüş son tarihi (K5)**, **sürücü sağlığı** (`:337`), **hat canlılığı** ve **rota kapısı** denetlenir; biri düşerse `send_vel(0,0)` — güvenli duruş (`:304 rota_gecersiz_dur`). Görev sarmalayıcısı `ika_gorevi` (`:437`) iki ayrı son tarihle (bekleme 900 s / sürüş 600 s, `codes/karar_sozlesmesi.py:1981-1982`) 0–4 çıkış kodu döner | `simulation/scripts/ika_nav.py:280 navigate`, `:416 navigate_route`, `:437 ika_gorevi`, `:524 wait_open_route_from_comms` | `tests/test_k5_k6_sure_limitleri.py`, `tests/test_dalga2_k1_k5_k8_kusurlari.py`; akış diyagramı (e) `sekiller/akis_e.svg` |
-| 4 | **Sürücü arayüzü** `IkaSurucu` (`CONTRACTS.md` §7.2) | `hiz_ver(sağ, sol) → bool` (istisna sızmaz), `konum_al() → (x, y, z, yaw)` ya da 4×None, `durdur()`, `saglikli()` = ardışık hata < `ARDISIK_HATA_TAVANI` 3 (`simulation/scripts/ika_surucu.py:34`, sınıf `:44`); `ika_nav.send_vel/get_pose` buraya delege eder (`ika_nav.py:74`, `:82`); aktif sürücü `surucu_ayarla` ile takılır (`:63`) | `simulation/scripts/ika_surucu.py` | `tests/test_p3_ika_surucu.py` (T1 bayt-eşitlik, T3 tavan, T5 zaman aşımı, T7 fail-loud) |
+| 2 | **Görev kapısı** (`CONTRACTS.md` §7) | `sür ⟺ OPEN_ROUTE ∧ IHA_LANDED ∧ IKA_GO`; iki latch + ortak son tarih `_surus_izni_gecerli_unlocked` (`ika_receiver.py:127`), bekleyen `wait_surus_izni` (`:114`); sıfır-dışı her motor komutu karar kilidi altında `run_if_route_valid` (`:80`) ile geçer — `NO_ROUTE` geldiyse komut düşer | `comms/ika_receiver.py`; ~~`simulation/scripts/ika_nav.py:203 receiver_rota_gecerli`, `:234 receiver_korumali_hiz_gonder`, `:260 receiver_surus_izni_bekle`~~ `simulation/scripts/ika_nav.py:208 receiver_rota_gecerli`, `:239 receiver_korumali_hiz_gonder`, `:265 receiver_surus_izni_bekle` | `tests/test_p3_ika_surucu.py::T6` (izinsiz sıfır-dışı komut yok), `tests/test_ika_surus_no_route.py`, `tests/test_k5_k6_sure_limitleri.py` |
+| 3 | **Navigasyon** `navigate` | Dünya waypoint'lerini (`route_to_world_waypoints`, ~~`ika_nav.py:144`~~ `ika_nav.py:149`) 10 Hz döngüde izler (`CTRL_HZ`, ~~`:39`~~ `:44`); geçiş yarıçapı 0,5 m, son waypoint 0,3 m (~~`:37-38`~~ `:42-43`). Her adımda **sürüş son tarihi (K5)**, **sürücü sağlığı** (~~`:337`~~ `:376`), **hat canlılığı** ve **rota kapısı** denetlenir; biri düşerse `send_vel(0,0)` — güvenli duruş (~~`:304 rota_gecersiz_dur`~~ `:343 rota_gecersiz_dur`). Görev sarmalayıcısı `ika_gorevi` (~~`:437`~~ `:477`) iki ayrı son tarihle (bekleme 900 s / sürüş 600 s, `codes/karar_sozlesmesi.py:1981-1982`) 0–4 çıkış kodu döner | ~~`simulation/scripts/ika_nav.py:280 navigate`, `:416 navigate_route`, `:437 ika_gorevi`, `:524 wait_open_route_from_comms`~~ `simulation/scripts/ika_nav.py:311 navigate`, `:455 navigate_route`, `:477 ika_gorevi`, `:576 wait_open_route_from_comms` | `tests/test_k5_k6_sure_limitleri.py`, `tests/test_dalga2_k1_k5_k8_kusurlari.py`; akış diyagramı (e) `sekiller/akis_e.svg` |
+| 4 | **Sürücü arayüzü** `IkaSurucu` (`CONTRACTS.md` §7.2) | `hiz_ver(sağ, sol) → bool` (istisna sızmaz), `konum_al() → (x, y, z, yaw)` ya da 4×None, `durdur()`, `saglikli()` = ardışık hata < `ARDISIK_HATA_TAVANI` 3 (`simulation/scripts/ika_surucu.py:34`, sınıf `:44`); `ika_nav.send_vel/get_pose` buraya delege eder (~~`ika_nav.py:74`, `:82`~~ `ika_nav.py:87 send_vel`, `:79 get_pose`); aktif sürücü `surucu_ayarla` ile takılır (~~`:63`~~ `:68 surucu_ayarla`) | `simulation/scripts/ika_surucu.py` | `tests/test_p3_ika_surucu.py` (T1 bayt-eşitlik, T3 tavan, T5 zaman aşımı, T7 fail-loud) |
 | 5 | **Arka uç** | `GercekSurucu` (`ika_surucu.py:186`): arka uçsuz kurulum `DONANIM_YOK` ile **düşer** (`:196`) — sessiz iskelet yasak; `GazeboSurucu` (`:79`; `gz` bu makinede yok); `SahteSurucu` (`:157`; test ve kabul); **`MuJoCoSurucu`** (T213-B, `simulation/mujoco/`, aynı arayüz — bu görevde değil, H1-K5 orada ölçülür) | `simulation/scripts/ika_surucu.py`, `scripts/ika_surucu_kabul.py` | `tests/test_faz_b_ika_surucu_kabul.py` (exit 0/1/2 sözleşmesi) |
 
 **(2) Kabul turu K1–K6 — koşuldu (10 Eylül 2026, `scripts/ika_surucu_kabul.py`)**
@@ -1088,9 +1088,9 @@ Aynı betik diğer iki sürücüyle de koşuldu ve **düştüğü yerde düştü
 `SONUC: SURUCU_KURULAMADI (exit 2)` (`H3/ika_surucu_kabul_gercek_donanim_yok.txt`). Sahte sürücünün
 6/6'sı **sözleşmenin** kanıtıdır, aracın değil: rampa 0 → 0,30 m/s'de (`RAMPA_HEDEF_MS`, 5 adım,
 `ika_surucu_kabul.py:83-85`) aracın hareketi gerçek/sim sürücüde **GÖZLE TEYİT** ister — betik bu
-satırı basar, yazılım bunu ölçemez. ⚠ Çıktıdaki `MAX_SPEED=2.0 m/s` `ika_nav.py:35` değeridir; DDR
-fiziksel hız 1,3 m/s — üç kopyalı sabit `CONTRACTS.md` §4'e tek kaynak olarak taşınıyor (T213-B,
-D-438 §2f); kabul rampası (0,30) iki değerin de altındadır, sonuç değişmez.
+satırı basar, yazılım bunu ölçemez. ⚠ Çıktıdaki `MAX_SPEED=2.0 m/s` kabul koşumu anındaki (T213-B öncesi) ~~`ika_nav.py:35`~~ değeridir; DDR
+fiziksel hız 1,3 m/s — üç kopyalı sabit `CONTRACTS.md` §4'e tek kaynak olarak ~~taşınıyor~~ **taşındı** (T213-B,
+D-438 §2f; bugün `MAX_SPEED` `ika_nav.py:39` = `codes/karar_sozlesmesi.py:1996 IKA_AZAMI_HIZ_MS` 1,3 m/s — 10 Eylül T214-B okuması); kabul rampası (0,30) iki değerin de altındadır, sonuç değişmez.
 
 **(3) Donanım gelince izlenecek sıra — DDR tasarımına göre; tedarik tarihi yok, her adım BEYAN GEREKLİ (insan)**
 
@@ -1145,11 +1145,11 @@ RF hattı ve gerçek Pixhawk için ÖLÇÜLEMEDİ satırları §3.3.4.3.4'tedir.
 | # | arayüz (yön) | mesaj / sinyal | taşıyıcı | tekrar / ACK | kapı — ne zaman geçerli | üretim kodu | kilit (test) | ölçüm |
 |---|---|---|---|---|---|---|---|---|
 | F1 | İHA → YKS **ve** İKA | `OPEN_ROUTE` (`road`, `label`, `conf`, `ref_xy`, `waypoints`) | UDP (WiFi/sim) ya da SiK 433 MHz seri — aynı çerçeve | 8 × 0,25 s, her akrandan `ACK(ref_tip="OPEN_ROUTE")` gelene dek (`comms/iha_sender.py:171 _tekrarli_gonder`, `:219 send_open_route`); üretimde `KararYayinci` latest-wins kuyruğu (`:301`) | güven kapısı tek yerde, eşik altı `NO_ROUTE` olur (`:219-237`); her karede tam bir mesaj (K1, `CONTRACTS.md` §6.5) | üretici `comms/protocol.py:54 open_route`; alıcılar `comms/ika_receiver.py:234`, `comms/yks_gui.py:1521 _mesaj_isle` | `tests/test_rpi_telsiz_yayin.py`, `comms/test_comms.py`, `tests/test_faz_b_ack_ref_tip.py` | UDP loopback 200/200 ACK, RTT p50 0,27 / p95 0,38 ms (`results/fdr_sprint_20260910/H2/ozet.json`) |
-| F2 | İHA → YKS ve İKA | `NO_ROUTE` (`sebep`, `detay`) | aynı | 8 × 0,25 s (`iha_sender.py:240`) | `latest` **ezilmez**; sürüşteyse güvenli duruş, yeni `OPEN_ROUTE` ile devam (`CONTRACTS.md` §6.1; `ika_nav.py:304`) | `protocol.py:86 rota_yok`; `ika_receiver.py:247` | `tests/test_ika_no_route_recovery.py`, `tests/test_ika_surus_no_route.py` | — (davranış testi) |
+| F2 | İHA → YKS ve İKA | `NO_ROUTE` (`sebep`, `detay`) | aynı | 8 × 0,25 s (`iha_sender.py:240`) | `latest` **ezilmez**; sürüşteyse güvenli duruş, yeni `OPEN_ROUTE` ile devam (`CONTRACTS.md` §6.1; ~~`ika_nav.py:304`~~ `ika_nav.py:343 rota_gecersiz_dur`) | `protocol.py:86 rota_yok`; `ika_receiver.py:247` | `tests/test_ika_no_route_recovery.py`, `tests/test_ika_surus_no_route.py` | — (davranış testi) |
 | F3 | İHA → herkes | `HEARTBEAT` (`node`, `karar_yas`, telemetri alanları) | aynı | 1 Hz (`IHA_HEARTBEAT_ARALIK_S`, `codes/karar_sozlesmesi.py:145`), ACK'sız | İKA: 3 s sessizlik → `link_lost` → durur, hat dönünce aynı waypoint'ten (`ika_receiver.py:27`, `:294`); YKS: tazelik özeti, `karar_yas` yoksa taze sayılmaz | `iha_sender.py:247 send_heartbeat`; `protocol.py:126` | `tests/test_ika_go_gate.py`, `tests/test_dalga2_k1_k5_k8_kusurlari.py` | — |
 | F4 | İHA → YKS ve İKA | `IHA_LANDED` (`seq`) | aynı | 8 × 0,25 s (`iha_sender.py:264 send_iha_landed`); üretici `comms/iha_inis_yayinci.py:361` | **Pixhawk kanıtı** `inis_kaniti.yerde_mi` (`comms/inis_kaniti.py:925`: `ON_GROUND` + `relative_alt` < 1 m, 3 ardışık, aynı sysid); İKA latch (`ika_receiver.py:266`); YKS manuel düğmesi latch'i **açmaz** | `protocol.py:211 iha_landed` | `tests/test_iha_landed_gate.py` (`:313`), `tests/test_iha_inis_yayinci.py`, `tests/test_inis_kaniti.py` | gerçek Pixhawk'ta **ÖLÇÜLEMEDİ** (Jetson–Pixhawk MAVLink kapısı, §3.3.1.3.2) |
-| F5 | YKS → İKA | `CMD` (`cmd="IKA_GO"`, `hedef="ika"`) | aynı | aynı `seq` ile 20 × 0,25 s, `ACK(ref_tip="CMD")` gelince durur; üst sınırda KIRMIZI, görev kaybedilmez (`IKA_GO_TEKRAR_*`, `karar_sozlesmesi.py:2081-2082`; `comms/komut_tekrar.py:18 AckliTekrar`) | YKS: `IHA_LANDED` kanıtı **ve** 2/2 hakem onayı olmadan gönderilmez (`yks_gui.py:3487 ika_baslat`, `:3497-3506`); İKA: latch idempotent, her alım ACK'lanır (`ika_receiver.py:275`) | `protocol.py:197 command`; `yks_gui.py:3509` | `tests/test_ika_go_ackli_tekrar.py`, `tests/test_ika_go_gate.py` | IKA_GO kadansında 4,01 pkt/s · 322,5 B/s (H2) |
-| F6 | YKS → İHA | `CMD` (`ARM` / `DISARM` / `RTL` / `LAND` / `PARACHUTE`) | aynı | ARM/DISARM/RTL/LAND 20 × 0,25 s; PARACHUTE 40 × 0,20 s (`karar_sozlesmesi.py:2088-2089`, `:2102-2103`); ACK **yalnız** Pixhawk `COMMAND_ACK(ACCEPTED)` sonrası, pencere 0,5 s (`:2112`) | oturum + `seq` + saat tazeliği; FDA kipinde PARACHUTE gönderilmez (`CONTRACTS.md` §6.7) | `yks_gui.py:3357 acil_komut`, `:3631 parasut`; alıcı `comms/iha_komut_alici.py:303 IhaKomutAlici`, `:510 _aktar` (`DO_PARACHUTE`, `:242`) | `tests/test_faz_b_iha_komut_alici.py`, `tests/test_iha_komut_guvenligi.py`, `tests/test_iha_komut_saat_ve_tekrar.py` | TCP-seri köprüsü RTT p50 1,33 / p95 1,83 ms (H2); Pixhawk'ta **ÖLÇÜLEMEDİ** |
+| F5 | YKS → İKA | `CMD` (`cmd="IKA_GO"`, `hedef="ika"`) | aynı | aynı `seq` ile 20 × 0,25 s, `ACK(ref_tip="CMD")` gelince durur; üst sınırda KIRMIZI, görev kaybedilmez (`IKA_GO_TEKRAR_*`, ~~`karar_sozlesmesi.py:2081-2082`~~ `karar_sozlesmesi.py:2095-2096 IKA_GO_TEKRAR_ARALIGI_S`; `comms/komut_tekrar.py:18 AckliTekrar`) | YKS: `IHA_LANDED` kanıtı **ve** 2/2 hakem onayı olmadan gönderilmez (`yks_gui.py:3487 ika_baslat`, `:3497-3506`); İKA: latch idempotent, her alım ACK'lanır (`ika_receiver.py:275`) | `protocol.py:197 command`; `yks_gui.py:3509` | `tests/test_ika_go_ackli_tekrar.py`, `tests/test_ika_go_gate.py` | IKA_GO kadansında 4,01 pkt/s · 322,5 B/s (H2) |
+| F6 | YKS → İHA | `CMD` (`ARM` / `DISARM` / `RTL` / `LAND` / `PARACHUTE`) | aynı | ARM/DISARM/RTL/LAND 20 × 0,25 s; PARACHUTE 40 × 0,20 s (~~`karar_sozlesmesi.py:2088-2089`, `:2102-2103`~~ `karar_sozlesmesi.py:2102-2103 ARM_TEKRAR_ARALIGI_S`, `:2116-2117 PARASUT_TEKRAR_ARALIGI_S`); ACK **yalnız** Pixhawk `COMMAND_ACK(ACCEPTED)` sonrası, pencere 0,5 s (~~`:2112`~~ `:2126 MAVLINK_KOMUT_ACK_TAVANI_S`) | oturum + `seq` + saat tazeliği; FDA kipinde PARACHUTE gönderilmez (`CONTRACTS.md` §6.7) | `yks_gui.py:3357 acil_komut`, `:3631 parasut`; alıcı `comms/iha_komut_alici.py:303 IhaKomutAlici`, `:510 _aktar` (`DO_PARACHUTE`, `:242`) | `tests/test_faz_b_iha_komut_alici.py`, `tests/test_iha_komut_guvenligi.py`, `tests/test_iha_komut_saat_ve_tekrar.py` | TCP-seri köprüsü RTT p50 1,33 / p95 1,83 ms (H2); Pixhawk'ta **ÖLÇÜLEMEDİ** |
 | F7 | İKA → İHA **ve** YKS | `ACK` (`ref`, `ref_tip`) | aynı; seri hatta ortam yayını | rota ACK'ı gönderene + YKS kopyası (`ika_receiver.py:175 _rota_ack`), kontrol ACK'ı (`:160`) | **K8 aktarım kanıtı:** YKS 2/2 onayı İKA'nın `OPEN_ROUTE` ACK'ını görmeden verilemez (`yks_gui.py:1942 ika_aktarim_kaniti_var`, `:2002 _ack_isle`) | `protocol.py:141 ack` | `tests/test_faz_b_ack_ref_tip.py`, `tests/test_dalga2_k1_k5_k8_kusurlari.py` | 200/200 ACK (H2) |
 | F8 | YKS → İHA | `ACK` (`OPEN_ROUTE` / `NO_ROUTE` / `IHA_LANDED`, `ref_tip`) | aynı | 2/2 hakem onayında tek ACK; İHA tekrarı durdurur | `yks_gui.py:1842 onayla` — ankor, tazelik, K8 kanıtı fail-closed; kanıt kaydı `comms/hakem_kaydi.py` (`CONTRACTS.md` §6.8) | `yks_gui.py:1842` | `tests/test_faz_b_yks_fda_kipi.py`, `tests/test_yks_hakem_kanit_olaylari.py` | — |
 | F9 | Mancınık → İHA / YKS | **fiziksel** ayrılma; yazılımda yalnız YKS `FIRLATMA` zaman damgası (İHA kronometresi) | — | — | ARM kilidi: taze Pixhawk `HEARTBEAT` + `armed` olmadan damga **reddedilir** (`yks_gui.py:3433 firlatma`; FDA kipinde etiket `KALKIŞ`, §3.3.4.1.15) | `yks_gui.py:3433` | `tests/test_faz_b_yks_fda_kipi.py` | mancınıkla elektriksel/yazılımsal hat **yok**; kızak, ayrılma anı, tutma kuvveti **BEYAN GEREKLİ (insan)** |
@@ -1206,6 +1206,28 @@ yapılmaz** (§3.2.1.1); pil tek adettir ve iMAX B6 ile dolum ≈ 3 saat sürdü
 
 ### 3.3.3 Görev İcra Simülasyonu
 
+> 🧪 **SENTETİK — 10 Eylül 2026 (ölçüm T214-A, metin T214-B; ön kayıt `results/fdr_sprint_20260910/ON_KAYIT.md` H1).**
+> Görev icra simülasyonu **MuJoCo 3.13**'te koşuldu (karar D-438: bu makinede Gazebo ve Podman yok — ölçüldü,
+> ON_KAYIT §0). Aşağıdaki her sayı bir **simülasyon ölçümüdür, saha kanıtı değildir.** Eşikler ön kayıttan alındı ve
+> **gevşetilmedi**; DÜŞEN kapılar olduğu gibi yazılıdır. Sayıların kaynağı `results/fdr_sprint_20260910/H1/README_T214A.md`
+> (105 koşum JSON'undan `simulation/mujoco/t214a_rapor.py` ile üretilir) ve `results/fdr_sprint_20260910/video/OKUBENI.md`.
+
+**Kapı özeti (ON_KAYIT H1 · SENTETİK):**
+
+| kapı | ne ölçüldü | ölçüm | eşik (önceden) | hüküm |
+|---|---|---|---|---|
+| H1-K3 | görüntü işleme ile rota tespiti — ÜRETİM MODELİ, mozaik zinciri (`iha_haritala`, imgsz 512) | doğru etiket **6/15** (tohum 42; yanlış 0) | ≥ 12/15 | **DÜŞTÜ** |
+| H1-K3 | aynı — üretim kare-bazlı boru hattı (`rpi_inference.run_camera`, kerteriz beslemesi) | doğru **1/15** | ≥ 12/15 | **DÜŞTÜ** |
+| H1-K4 | aktarım — OPEN_ROUTE ACK [ika, yks] ve IKA_GO ACK (YER GERÇEĞİ kolu) | 45/45 · 45/45 | 15/15 | **GEÇTİ** |
+| H1-K5 | İKA otonom fizik sürüşü — YER GERÇEĞİ rota | başarı **45/45** · harita 15/15 | ≥ 12/15 harita × 3 tohum | **GEÇTİ** |
+| H1-K5 | aynı — ÜRETİM MODELİ rota (mozaik zinciri) | başarı **9/45** · harita 0/15 | ≥ 12/15 harita × 3 tohum | **DÜŞTÜ** |
+| H1-K5 | aynı — ÜRETİM BORU HATTI rota (kare-bazlı) | başarı **0/15** · harita 0/5 koşulan (kalan 10 harita K3'te NO_ROUTE → başarısız sayılır) | ≥ 12/15 harita × 3 tohum | **DÜŞTÜ** |
+| H1-K6 | sanal görev süresi ve grafikler | 105 koşum tablosu + 4 grafik (§3.3.3.2) | 45 koşum + 4 grafik | **ÜRETİLDİ** |
+| H1-K7 | video ≥ 90 s, ≥ 24 FPS, HUD'lu, üç kamera | 177,88 s · 25 FPS · 1280×720 · üç kamera + HUD (§3.3.3.3) | ≥ 90 s · ≥ 24 FPS | **GEÇTİ** — link **BEYAN GEREKLİ (insan)** |
+
+YER GERÇEĞİ oranı sürüş + fizik halkasını ölçer, görüntü işlemeyi ölçmez (rota `arena.route_waypoints`'ten, ON_KAYIT
+§5.2); uçtan uca zincir ÜRETİM MODELİ ve ÜRETİM BORU HATTI satırlarıdır — ikisi de eşiğin altında.
+
 🔴 **Bu başlık 3 Eylül'de yeniden açıldı.** Açık kalem listesinde madde 16 *"Gazebo
 fiziksel temas koşusu — kapanmayacak sınır"* diye üstü çizilmişti; yönerge `Y-3.3.3` ve
 `Y-4-M07` görev icra simülasyonunu **puanlanan bir gereksinim** yaptığı için madde
@@ -1213,25 +1235,33 @@ yeniden açıldı (`FDR/ACIK_KALEMLER.md` madde 16, `REVIEW_LOG.md` D-417). Gere
 *"simülasyon saha kanıtı değildir"* doğrudur, ama **yönerge onu saha kanıtı olarak
 istemiyor**; ayrı bir çıktı olarak istiyor.
 
-**Bugün elde ne var (depodan okundu):**
+**Gazebo iskeleti — önceki tasarım, koşulmadı.** Depoda bir Gazebo Classic 11 + Podman ağacı durur
+(`simulation/worlds/` 7 dünya; `simulation/models/{iha,ika,catapult}/model.sdf` — mesh sayısı 0; kayıt yolu
+`simulation/docker/record.sh`). Bu geliştirme makinesinde `gz` ve `podman` bulunmadığı için (ölçüldü, ON_KAYIT §0)
+**hiç koşulmadı**; ağaç silinmedi (`test_p8` kapıları sürer). Bu bölümdeki **hiçbir sayı Gazebo'dan gelmez** —
+hepsi MuJoCo koşumlarındandır.
 
-| kalem | dosya | not |
+*(3 Eylül metni — 10 Eylül 2026'da MuJoCo ölçümüyle geçersizleşti; üstü çizili, silinmedi.)*
+
+~~**Bugün elde ne var (depodan okundu):**~~
+
+| ~~kalem~~ | ~~dosya~~ | ~~not~~ |
 |---|---|---|
-| Gazebo Classic 11 dünyaları | `simulation/worlds/` — 7 dünya (`navitas.world`, `navitas_arena.world`, `navitas_arena_zor.world`, `navitas_multi.world`, `navitas_orta.world`, `navitas_zor.world`, `navitas_arena_test.world`) | arena + moloz senaryoları |
-| İHA / İKA / mancınık modelleri | `simulation/models/iha/model.sdf`, `models/ika/model.sdf`, `models/catapult/model.sdf` | 🔴 **CAD değil** — `mesh` sayısı **0** |
-| görev betikleri | `simulation/scripts/iha_flight.py`, `iha_detect_send.py`, `ika_nav.py`, `ika_surucu.py`, `score.py`, `hakem_log.py` | kalkış, tespit, aktarım, sürüş, puanlama |
-| kayıt yolu | `simulation/docker/record.sh` → `simulation/recordings/v<id>/navitas.mp4` (1280×720) | Podman konteyneri; `simulation/KULLANIM.md` §1 |
+| ~~Gazebo Classic 11 dünyaları~~ | ~~`simulation/worlds/` — 7 dünya (`navitas.world`, `navitas_arena.world`, `navitas_arena_zor.world`, `navitas_multi.world`, `navitas_orta.world`, `navitas_zor.world`, `navitas_arena_test.world`)~~ | ~~arena + moloz senaryoları~~ |
+| ~~İHA / İKA / mancınık modelleri~~ | ~~`simulation/models/iha/model.sdf`, `models/ika/model.sdf`, `models/catapult/model.sdf`~~ | ~~🔴 **CAD değil** — `mesh` sayısı **0**~~ |
+| ~~görev betikleri~~ | ~~`simulation/scripts/iha_flight.py`, `iha_detect_send.py`, `ika_nav.py`, `ika_surucu.py`, `score.py`, `hakem_log.py`~~ | ~~kalkış, tespit, aktarım, sürüş, puanlama~~ |
+| ~~kayıt yolu~~ | ~~`simulation/docker/record.sh` → `simulation/recordings/v<id>/navitas.mp4` (1280×720)~~ | ~~Podman konteyneri; `simulation/KULLANIM.md` §1~~ |
 
-**Bugün ne YOK:**
+~~**Bugün ne YOK:**~~
 
-1. `simulation/recordings/` dizini **yoktur** → üretilmiş hiçbir video yoktur.
-2. `results/` altında **hiçbir simülasyon ölçüm çıktısı yoktur**.
-3. Bu geliştirme makinesinde `gz` ve `podman` **PATH'te değildir** → koşum burada
-   yapılamaz (`simulation/KULLANIM.md`: *"Bu makinede Gazebo host'a kurulu değil"*).
-4. Modeller **CAD değildir.** `simulation/models/iha/model.sdf` silindir + kutu
+1. ~~`simulation/recordings/` dizini **yoktur** → üretilmiş hiçbir video yoktur.~~
+2. ~~`results/` altında **hiçbir simülasyon ölçüm çıktısı yoktur**.~~
+3. ~~Bu geliştirme makinesinde `gz` ve `podman` **PATH'te değildir** → koşum burada
+   yapılamaz (`simulation/KULLANIM.md`: *"Bu makinede Gazebo host'a kurulu değil"*).~~
+4. ~~Modeller **CAD değildir.** `simulation/models/iha/model.sdf` silindir + kutu
    primitiflerinden kuruludur (dosyanın kendi yorumu: *"Gelişmiş primitif tasarım"*) ve
    `<static>true</static>`'tur — İHA'yı fizik değil, kayıt eklentisi hareket ettirir.
-   Yönerge açıkça *"üç boyutlu CAD modellerini içeren"* bir ortam ister.
+   Yönerge açıkça *"üç boyutlu CAD modellerini içeren"* bir ortam ister.~~
 
 #### 3.3.3.1 Üç Boyutlu Simülasyon Ortamı
 
@@ -1240,55 +1270,168 @@ istemiyor**; ayrı bir çıktı olarak istiyor.
 > İHA'nın kalkışını, görüntü işleme ile rota tespitini, verinin İKA'ya aktarılmasını ve
 > İKA'nın otonom sürüşünü kapsamalıdır."*
 
-**ÖLÇÜLEMEDİ:** CAD modelli sanal görev icrası. Ortam iskeleti vardır, **CAD ve koşum
-yoktur**.
+**10 Eylül 2026 — ortam ve modeller (MuJoCo 3.13 · SENTETİK):**
 
-**Neyin gerektiği (somut, üç kalem):**
+| bileşen | simülasyonda ne | etiket | kaynak |
+|---|---|---|---|
+| Arena | şartname geometrisi: HTAB 50×50 m, İHA-İB 30×30 m mavi, HB 2×2 m kırmızı H, İKA-KB, 3 güzergâh (1 açık; 2 kapalı — bariyer ve tıkama molozu), dağınık moloz, chicane; 15 harita = 5 × {kolay, orta, zor}, aynı tohum → bayt-eş MJCF; açık yol hattı ± 1,45 m engelsiz (D-441) | **SENTETİK** yerleşim; dokular gerçek kare kırpması (yol şeridi zeminden ayrı doku — şartname arenasında zemin ile güzergâh aynı toprak, T213-A §6) | `simulation/mujoco/arena_mjcf.py` (tek kaynak `simulation/scripts/arena.py`) |
+| İHA | sabit kanat: gövde + kanat + kuyruk + pervane mesh'i (açıklık 1,8 m), mocap gövde; nadir tarama kamerası (hfov 74,5°, 1280×1280, 1 Hz) | **BASİTLEŞTİRİLMİŞ MODEL** (ekip CAD'i değil — sabit kanat STL'i gelmedi, ON_KAYIT §3 madde 1); uçuş **KİNEMATİK** (aerodinamik yok) | `simulation/mujoco/araclar.py`, `simulation/mujoco/iha_ucus.py` |
+| İKA | DDR ölçülü fizik gövdesi: 488×440×310 mm zarf, 9,40 kg, 4 × Ø125 mm teker, skid-steer (4 hız aktüatörü), azami 1,3 m/s; iz genişliği 0,39 m **TAHMİN**, teker ataleti 0,01 kg·m² **TAHMİN**, motor tork sınırı yok | **BASİTLEŞTİRİLMİŞ MODEL** (DDR ölçüleri; CAD değil — İKA STL'i gelmedi, ON_KAYIT §3 madde 2) | `simulation/mujoco/araclar.py`, `simulation/mujoco/ika_surucu_mujoco.py` (`MuJoCoSurucu`, `IkaSurucu` arayüzü — `CONTRACTS.md` §7.2) |
+| Mancınık · paraşüt | mancınık İHA-FB'de (x = −26 m) görsel; paraşüt kubbesi iniş bacağında açılır | BASİTLEŞTİRİLMİŞ | `simulation/mujoco/araclar.py` |
+| Hakem | sim hakem: OPEN_ROUTE onayı otomatik (2/2 — İKA ACK kopyası görülünce), IHA_LANDED → IKA_GO ACK'lı tekrar; mesajlar `sim: true` | **saha kanıtı değil** (`CONTRACTS.md` §6.7.1 istisnası) | `simulation/mujoco/sim_hakem.py` |
+| Saat | MuJoCo `data.time` (2 ms fizik, İKA 10 Hz kontrol) `ika_nav`'a enjekte edilir; `iha_haritala` hesap süresi sim saatine eklenmez | — | `simulation/mujoco/gorev_kosumu.py` |
 
-1. **Makine:** Gazebo Classic 11'in koşabildiği bir Linux makinesi ya da Podman kurulu
+**Zincir — her koşumda tek süreçte, GPU işleri sıralı** (örnek koşum `model_1_kolay_44`, sim saati):
+
+1. **Kalkış** — mancınıktan fırlatma, kinematik tırmanış; profil süresi (fırlatma → iniş) **36,98 s**.
+2. **Tarama** — 30 m'de 4 bacaklı serpantin, 1 Hz nadir kare + `poses.csv` (Gazebo `navitas_scan_cam.cc` sözleşmesi korunur); tarama sonu ve rota yayını **t = 31,98 s**.
+3. **Görüntü işleme ile rota tespiti** — ÜRETİM MODELİ v36 (sha `1d1caca6…`, kayıt defteriyle eş; **sim'e özel eğitim YOK**; çıkarım boyu 512 kayıt defterinden). İki yol ayrı etiketle ölçüldü: (a) **mozaik zinciri** `simulation/scripts/iha_haritala.py` (ortomozaik → v36 → costmap A\* → `rota.json`); (b) **üretim kare-bazlı boru hattı** `codes/rpi_inference.py` `run_camera` dosya kaynağıyla (Katman A/B + HB tespiti + `KararYumusatici` + `KararYayinci`) — üretim kodu değiştirilmeden (`simulation/mujoco/sim_karar_toplayici.py`).
+4. **Verinin İKA'ya aktarılması** — `comms` `OPEN_ROUTE` (UDP, geçici port, ACK'lı tekrar) → İKA + sim YKS; OPEN_ROUTE ACK [ika, yks] **32,68 s**, IHA_LANDED **37,08 s**, IKA_GO **37,18 s**, IKA_GO ACK **37,28 s**.
+5. **İKA otonom sürüşü** — `simulation/scripts/ika_nav.py` `navigate` + `MuJoCoSurucu` (fizik; temas sayılır, koşumu durdurmaz) → HB 2×2 m karesi. Başarı tek fonksiyondur, `gorev_kosumu.basari_hesapla`: çıkış 0 ∧ rota bulundu ∧ HB içinde ∧ temas 0 ∧ sürüş ≤ 600 s (sim).
+
+*(3 Eylül metni — 10 Eylül 2026'da MuJoCo ölçümüyle geçersizleşti; üstü çizili, silinmedi.)*
+
+~~**ÖLÇÜLEMEDİ:** CAD modelli sanal görev icrası. Ortam iskeleti vardır, **CAD ve koşum
+yoktur**.~~
+
+~~**Neyin gerektiği (somut, üç kalem):**~~
+
+1. ~~**Makine:** Gazebo Classic 11'in koşabildiği bir Linux makinesi ya da Podman kurulu
    bir host. `simulation/docker/record.sh` kurulumu kendi yapar; ilk imaj derlemesi
    **~3,5 GB disk** ve **~3–4 dakika** ister (`simulation/docker/README.md`,
-   `simulation/KULLANIM.md` §0). Bu makinede `podman` ve `gz` yoktur.
-2. **CAD:** `models/iha` ve `models/ika` SDF'lerine `<mesh><uri>` ile gerçek geometri
+   `simulation/KULLANIM.md` §0). Bu makinede `podman` ve `gz` yoktur.~~
+2. ~~**CAD:** `models/iha` ve `models/ika` SDF'lerine `<mesh><uri>` ile gerçek geometri
    bağlanması. Görev test uçuşu aracı için STL'ler **hazırdır** (`dronesolid/*.STL`,
    altı parça) ve doğrudan bağlanabilir. **Sabit kanat İHA ve İKA için CAD yoktur**
-   (§3.2.1.2, §3.2.2) — yönergenin istediği araç bunlardır.
-3. **Koşum:** kalkış → görüntü işleme ile rota tespiti → veri aktarımı → İKA otonom
+   (§3.2.1.2, §3.2.2) — yönergenin istediği araç bunlardır.~~
+3. ~~**Koşum:** kalkış → görüntü işleme ile rota tespiti → veri aktarımı → İKA otonom
    sürüşü sırasını **tek koşumda** kapsayan senaryo. Senaryo tanımı
-   `simulation/PROVA_SENARYOSU.md`'dedir.
+   `simulation/PROVA_SENARYOSU.md`'dedir.~~
 
-⚠ **Kapsam sınırı (bilerek yazılıyor):** simülasyondaki rota kolu `rota_bul`'dur; sahada
+~~⚠ **Kapsam sınırı (bilerek yazılıyor):** simülasyondaki rota kolu `rota_bul`'dur; sahada
 yayına giden **üretim** karar yolu `run_camera → analyze_path → KararYayinci`'dir
 (§3.3.4.1.1). Simülasyon koşulduğunda bu iki yolun **hangisinin ölçüldüğü** raporda
-açıkça yazılmalıdır; aksi hâlde simülasyon başarımı üretim başarımı sanılır.
+açıkça yazılmalıdır; aksi hâlde simülasyon başarımı üretim başarımı sanılır.~~ → **10 Eylül 2026:** iki yol ayrı etiketle ölçüldü (zincir madde 3 a/b, §3.3.3.2); YER GERÇEĞİ rotası (`arena.route_waypoints`) yalnız İKA sürüş halkası için, ayrı etiketle kullanıldı (ON_KAYIT §5.2).
 
 #### 3.3.3.2 Simülasyon Verileri
 
 > **Yönerge:** *"Simülasyon sonucunda elde edilen otonom karar verme başarı oranları,
 > sanal görev süresi ve sistem tepkileri grafiklerle rapora eklenmelidir."*
 
-**ÖLÇÜLEMEDİ:** Otonom karar verme başarı oranı, sanal görev süresi ve sistem tepkisi
-grafikleri. Üretici betikler depoda vardır (~~`simulation/scripts/score.py`~~
-`simulation/score.py` — yol 10 Eylül'de düzeltildi, D-438 §0 ölçümü `simulation/score.py:141`;
+**10 Eylül 2026 — ölçüm (SENTETİK · 15 harita × 3 tohum; `results/fdr_sprint_20260910/H1/kosum_tur3/`):**
+
+**(a) Görüntü işleme ile rota tespiti (H1-K3) — ÜRETİM MODELİ v36, sim'e özel eğitim YOK**
+
+| yol | tohum 42 | tohum 43 | tohum 44 | eşik | hüküm |
+|---|---|---|---|---|---|
+| mozaik zinciri — doğru etiket (yanlış etiket) | 6/15 (0) | 1/15 (0) | 3/15 (0) | ≥ 12/15 | **DÜŞTÜ** |
+| mozaik zinciri — güven kapısından geçip yayımlanan doğru OPEN_ROUTE | 5/15 | 1/15 | 3/15 | — | — |
+| üretim kare-bazlı, kerteriz beslemesi — doğru (ön kayıtlı hüküm) | 1/15 | — | — | ≥ 12/15 | **DÜŞTÜ** |
+| üretim kare-bazlı, ham besleme (TEŞHİS, kapı değil) | 0/15 | — | — | — | — |
+
+Karşılaştırma: aynı mozaik zinciri imgsz 1024 ile (ayrı render, D-441 ek) 7/15; iki ölçüm
+aynı kareler üzerinde değildir. Mozaik zincirinde yanlış etiket **0**'dır — düşüşün tamamı "karar yok"tur
+(`KAPALI_DAR` / `BELIRSIZ_*`). Üretim kare-bazlı hatta **teşhis** (hüküm dışı, üretim kodu değiştirilmedi): OPEN_ROUTE
+yayınlanan karelerin 8/8'i dünyada açık yolu izliyor ama yayınlanan etiket
+dünya yoluyla yalnız 3/8 eşleşiyor — `analyze_path` şerit etiketini
+**kareye göreli** okur, tarama bacakları HTAB'a ortalı değildir; İKA-KB ile HB **aynı karede 0/225**
+tarama karesinde görülür → tek kare rotası KB'ye ankorlanamaz (sim kamerası 30 m'de ~45,6 m iz, KB–HB 44,5–45,8 m).
+Kare başına NO_ROUTE sebepleri (kerteriz): `UC_BANT_TEMAS_YOK` 257, `ZEMIN_MASKESI_SUPHELI` 134, `MASKE_YOK` 109, `HEDEF_YOK` 60, `GORUS_HATTI_KOPUK` 17.
+
+**(b) Aktarım (H1-K4) ve İKA otonom sürüşü (H1-K5) — MuJoCo fizik, `ika_nav` + `MuJoCoSurucu`, sim saati**
+
+| rota kaynağı | n | OPEN_ROUTE yayını (tel) · ACK [ika, yks] | NO_ROUTE yayını · ACK | IKA_GO ACK | HB içinde | temas var | **başarı** | harita (3/3 tohum) | eşik | hüküm |
+|---|---|---|---|---|---|---|---|---|---|---|
+| YER GERÇEĞİ | 45 | 45 · 45 | 0 · 0 | 45 | 45 | 0 | **45/45** | 15/15 | ≥ 12/15 | **GEÇTİ** |
+| ÜRETİM MODELİ (mozaik) | 45 | 9 · 9 | 36 · 36 | 9 | 9 | 0 | **9/45** | 0/15 | ≥ 12/15 | **DÜŞTÜ** |
+| ÜRETİM BORU HATTI (kare-bazlı) | 15 | 12 · 12 | 3 · 3 | 12 | 0 | 12 | **0/15** | 0/5 koşulan | ≥ 12/15 | **DÜŞTÜ** |
+
+OPEN_ROUTE / NO_ROUTE sayımı **teldeki** karar tipindendir (hakem kaydı, `gorev_kosumu.tel_tipi`): güven kapısı
+(conf < 0,20) OPEN_ROUTE'u NO_ROUTE'a çevirir (1 ÜRETİM MODELİ koşumu). H1-K4 kapısı
+**OPEN_ROUTE** ACK'ıdır; ÜRETİM MODELİ koşumlarının 45'inin tamamı bir karar mesajı yayınlayıp [ika, yks] ACK'ı
+aldı ama bunların yalnız 9'u OPEN_ROUTE'tur. Link kaybı olan koşum: 0.
+ÜRETİM BORU HATTI koşumlarında İKA rotayı aldı (12/15) ama rota KB'den kaymış
+başladığı için (rota başlangıcının KB'ye uzaklığı medyan 17,84 m, n = 12) 12 koşumda temas
+ve süre aşımı oldu. Karşılaştırma: T213-B'nin aynı YER GERÇEĞİ ölçümü **eski yerleşimle** (D-441 öncesi, açık yol
+hattına sokulan engeller) 33/45, harita 10/15 idi — yerleşim
+düzeltilince 45/45; sürücü ve kontrol kodu değişmedi.
+
+**(c) Sanal görev süresi ve sistem tepkileri (H1-K6) — sim saniyesi; İHA kolu kinematik profil süresidir**
+
+| rota kaynağı | İKA sürüş süresi (başarılı) | toplam görev süresi (başarılı; fırlatmadan HB'ye) | takip hatası maks. m (sürülen, ilk temastan önce) | plan takip maks. m | varış mesafesi m (hepsi) |
+|---|---|---|---|---|---|
+| YER GERÇEĞİ | n=45 · min 64,1 · medyan 71,3 · ort 77,3 · maks 98,4 | n=45 · min 101,3 · medyan 108,6 · ort 114,5 · maks 135,7 | n=45 · min 0,24 · medyan 0,498 · ort 0,475 · maks 0,563 | n=45 · min 0,161 · medyan 0,5 · ort 0,441 · maks 0,563 | n=45 · min 0,1 · medyan 0,2 · ort 0,2 · maks 0,2 |
+| ÜRETİM MODELİ | n=9 · min 63,4 · medyan 67,6 · ort 69,4 · maks 88,5 | n=9 · min 100,7 · medyan 104,9 · ort 106,7 · maks 125,8 | n=9 · min 0,975 · medyan 1,564 · ort 1,517 · maks 2,367 | n=9 · min 0,146 · medyan 0,241 · ort 0,249 · maks 0,38 | n=45 · min 0,2 · medyan 44,7 · ort 36,0 · maks 45,8 |
+| ÜRETİM BORU HATTI | — | — | n=12 · min 3,802 · medyan 5,041 · ort 5,325 · maks 9,048 | n=12 · min 0,055 · medyan 0,138 · ort 0,137 · maks 0,218 | n=15 · min 31,4 · medyan 39,8 · ort 39,3 · maks 45,2 |
+
+Takip hatası: İKA konumu ↔ arena açık yol merkez hattı (planlayıcı sapmasını da içerir); plan takip: İKA ↔ komut edilen
+rota (sürücü hatası). Koşum koşum tablo: `README_T214A.md` §9 (105 satır).
+
+![](sekiller/sim_basari_orani.svg)
+
+*Şekil 3.3.3.1 — Otonom karar ve sürüş başarı oranı, rota kaynağı × seviye (SENTETİK). Veri
+`results/fdr_sprint_20260910/H1/kosum_tur3/ozet_kosum.json`; üreteç `simulation/mujoco/sim_grafik.py`.*
+
+![](sekiller/sim_gorev_suresi.svg)
+
+*Şekil 3.3.3.2 — Sanal görev süresi dağılımı: İKA sürüşü ve toplam görev, sim saniyesi (başarılı koşumlar; SENTETİK).*
+
+![](sekiller/sim_takip_hatasi.svg)
+
+*Şekil 3.3.3.3 — Takip hatası (ilk temastan önce) ve varış mesafesi (SENTETİK).*
+
+![](sekiller/sim_sistem_tepkileri.svg)
+
+*Şekil 3.3.3.4 — Sistem tepkileri: OPEN_ROUTE / NO_ROUTE / ACK / IKA_GO / temas olay sayıları, teldeki karar tipinden (SENTETİK).*
+
+**Sınırlar (bu ölçümün kapsamı dışı):** İHA uçuşu KİNEMATİK (aerodinamik yok); hakem onayı sim'de OTOMATİK; İKA iz
+genişliği ve teker ataleti TAHMİN, motor tork sınırı yok; sim kamerası hfov 74,5° (gerçek ~55°, ÖLÇÜLMEDİ); irtifa
+`poses.csv`'den gürültüsüz; kamera köprüsü (MJPEG) atlandı; Jetson ~1,35 FPS kare hızı modellenmedi; OBB araç maskesi
+kapalı (sim'de araç yok); ışık/gölge çeşitliliği sentetik.
+
+*(3 Eylül metni — 10 Eylül 2026'da MuJoCo ölçümüyle geçersizleşti; üstü çizili, silinmedi.)*
+
+~~**ÖLÇÜLEMEDİ:** Otonom karar verme başarı oranı, sanal görev süresi ve sistem tepkisi
+grafikleri. Üretici betikler depoda vardır (~~ ~~`simulation/scripts/score.py`~~
+~~`simulation/score.py` — yol 10 Eylül'de düzeltildi, D-438 §0 ölçümü `simulation/score.py:141`;
 `simulation/scripts/hakem_log.py`); koşum yapılmadığı için çıktı yoktur. Kapanma:
-§3.3.3.1'deki makine sağlandığında.
+§3.3.3.1'deki makine sağlandığında.~~
 
 🔴 **Karıştırma yasağı:** §3.3.4.2'deki K0–K8 ölçümleri (n = 260 sentetik arena kadrajı)
 **simülasyon verisi DEĞİLDİR.** Onlar bir kadraj kümesi üzerinde koşulmuş **algı
 ölçümleridir**; sanal görev icrası, sanal görev süresi ve İKA sürüşü içermezler. İki
-sayı kümesi aynı tabloya konulamaz.
+sayı kümesi aynı tabloya konulamaz. Aynı yasak tersine de geçerlidir: §3.3.3.2'deki MuJoCo sayıları K0–K8 algı ölçümlerinin yerine konmaz.
 
 #### 3.3.3.3 Video Kanıtı
 
 > **Yönerge:** *"Simülasyonun gerçekleştirildiğine dair ekran kaydı videosunun bağlantısı
 > (Link) raporda paylaşılmalıdır."*
 
-**ÖLÇÜLEMEDİ:** Ekran kaydı videosu ve linki. Üretim yolu depoda yazılıdır
+**10 Eylül 2026 — video üretildi (SENTETİK; yerel dosya, git dışı):**
+
+| alan | değer |
+|---|---|
+| dosya | `results/fdr_sprint_20260910/video/navitas_sim_gorev_20260910.mp4` (yerel; `.gitignore` `*.mp4`) |
+| sha256 | `35ffc33e2f99c8335a7c4fe581cea257e294baea57f6f1edcd1fe1089139347d` |
+| süre · kare hızı · çözünürlük | 177,88 s (4447 kare) · 25 FPS · 1280×720 · H.264 · 33,56 MB |
+| kameralar | İHA nadir (tarama) · üçüncü şahıs (arena genel) · İKA takip — aynı ekranda, faza göre biri büyük |
+| HUD | sim saati · faz (FIRLATMA / TARAMA / ROTA / AKTARIM / IKA_GO / SURUS / VARIS) · rota kaynağı etiketi · OPEN_ROUTE ACK [ika, yks] · IHA_LANDED · IKA_GO ACK · İKA→HB mesafesi · temas · oynatma hızı · **SENTETİK** |
+| koşumlar | 3 başarılı ÜRETİM MODELİ koşumu: harita 1 kolay (tohum 44), harita 3 orta (tohum 42), harita 5 zor (tohum 42); giriş kartında genel oran (9/45, harita 0/15 — DÜŞTÜ) açıkça yazılı |
+| kanıt bütünlüğü | kare kaydedici fizik trajektorisini değiştirmez: YER GERÇEĞİ koşumu `gt_1_kolay_42` kareli ↔ kaydısız 20/20 alan eş; model_1_kolay_44, model_5_zor_42 kosum_tur3 ile 11/11 alan eş; `model_3_orta_42` koşumunda rota GPU render'lı mozaikten farklı çıktı (`rota.json` farklı) → sürüş 65,9 ↔ 65,8 s |
+| oynatma | FIRLATMA / TARAMA 2× · AKTARIM 1× · IKA_GO 0,25× · SURUS 3×; ROTA kartı sim saatini dondurur (hesap süresi modellenmez) — her karede HUD'da yazılı |
+| üretim | `simulation/mujoco/sim_video.py --kos` ve `--birlestir`; ayrıntı `results/fdr_sprint_20260910/video/OKUBENI.md` |
+
+**Video linki — BEYAN GEREKLİ (insan):** yükleme platformu (YouTube liste dışı / Drive) ve erişilebilir bağlantı
+(T222). Link gelene kadar `Y-3.3.3-M03` ve `Y-4-M07` **KISMEN** kalır; yerel dosya yukarıdaki sha256 ile tanınır.
+
+*(3 Eylül metni — 10 Eylül 2026'da MuJoCo ölçümüyle geçersizleşti; üstü çizili, silinmedi.)*
+
+~~**ÖLÇÜLEMEDİ:** Ekran kaydı videosu ve linki. Üretim yolu depoda yazılıdır
 (`simulation/docker/record.sh` → `simulation/recordings/v<id>/navitas.mp4`, 1280×720);
-`simulation/recordings/` dizini **bugün yoktur**, yani hiç koşulmamıştır.
+`simulation/recordings/` dizini **bugün yoktur**, yani hiç koşulmamıştır.~~
 
 **BEYAN GEREKLİ (insan):** Video üretildikten sonra yükleneceği platform ve **erişilebilir
-link**. Link olmadan bu madde `Y-3.3.3-M03` ve `Y-4-M07` **kapanmaz**.
+link**. Link olmadan bu madde `Y-3.3.3-M03` ve `Y-4-M07` **kapanmaz**. *(10 Eylül 2026: video üretildi — §3.3.3.3 tablosu; link bekleniyor, T222.)*
 
 ### 3.3.4 Görev Algoritması ve Yazılım Detayları
 
@@ -1340,7 +1483,7 @@ içindedir. Adımlar, gerçek çağrı sırasıyla:
    ├─[6]─ _rota_kararini_esikle(...)             rpi_inference.py:1775 → 2133
    │        güven < ROTA_GUVEN_ESIGI (0,20) → yol None, waypoints boş
    │
-   ├─[7]─ KararYumusatici.suz(open_path, karar_reddi)   karar_sozlesmesi.py:2140
+   ├─[7]─ KararYumusatici.suz(open_path, karar_reddi)   karar_sozlesmesi.py:2140 → 2172
    │        yayın histerezisi, K = KARAR_HISTEREZIS_KARE = 3
    │        (NO_ROUTE ASLA geciktirilmez — §3.3.4.1.7)
    │
@@ -1356,7 +1499,7 @@ Aynı zincir `run_video` (satır 2214) ve tek kare için `run_image` (satır 198
 > (commit `64cd543`) karşılıkları: `run_camera` 2298 · `run_video` 2125 · `run_image` 1960 ·
 > `_preprocess` 1892 · `model.predict` 2360 · `get_masks` 744 · `_ince_bariyeri_ekle` 831 ·
 > `kare_olcek_kahini` 453 · `analyze_path` 1352 · `_rota_kararini_esikle` 1779 ·
-> `KararYumusatici.suz` `codes/karar_sozlesmesi.py:2158` (`KARAR_HISTEREZIS_KARE` :2122) ·
+> `KararYumusatici.suz` ~~`codes/karar_sozlesmesi.py:2158`~~ `codes/karar_sozlesmesi.py:2172` (`KARAR_HISTEREZIS_KARE` ~~:2122~~ :2136; 10 Eylül T214-B okuması) ·
 > `_karari_yayinla` 285. Diyagram (a) §3.3.4.1.17 bu numaralarla çizildi.
 
 **İki üretim yolu sorunu kapandı.** Denetimde `analyze_path` (Jetson) ile `rota_bul`
@@ -1426,7 +1569,7 @@ Kuralın nedeni **ölçülmüş üç ihlaldir** (düzeltildi, tekrarlanmasın di
 **Yerel ↔ dünya:** `OPEN_ROUTE` waypoint'leri `ref_xy`'ye **göreli metre** cinsindendir;
 `ref_xy` daima `[0, 0]`'dır (`YAYIN_REF_XY`) çünkü sahada ortak bir dünya çerçevesi yoktur.
 İKA kendi çerçevesine **saf öteleme** ile oturtur; **dönme yoktur**
-(`simulation/scripts/ika_nav.py:206`).
+(~~`simulation/scripts/ika_nav.py:206`~~ `simulation/scripts/ika_nav.py:203`, `route_to_world_waypoints` içinde; 10 Eylül T214-B okuması).
 
 Piksel → yerel metre dönüşümü: `x = (px − px₀)·mpp`, `y = (py₀ − py)·mpp` — piksel `y`
 aşağı, yerel `y` **ileri**. İlk nokta `[0,0]`. Kenar `MAX_SEGMENT_M`'i aşarsa **mevcut kenar
@@ -1517,7 +1660,7 @@ fail-closed reddidir.
 algı gürültüsü kararları kareler arasında çevirebiliyordu (T68 ölçümü: tohuma göre 4–7/260;
 T92 bant oynaklığı 34/260). Yayımlanan şerit zikzak yaparsa İKA'nın hedefi zikzak yapar.
 
-**Çözüm yayın katmanındadır** (`codes/karar_sozlesmesi.py:2117` `KARAR_HISTEREZIS_KARE = 3`,
+**Çözüm yayın katmanındadır** (~~`codes/karar_sozlesmesi.py:2117`~~ `codes/karar_sozlesmesi.py:2136` `KARAR_HISTEREZIS_KARE = 3`,
 sınıf `KararYumusatici`). Analiz katmanına **dokunulmamıştır** (madde 15).
 
 | kural | davranış |
@@ -1690,8 +1833,9 @@ biter; sınıra girmek 0 puandır. İki yarım da kilitlidir:
    **`FINAL_WP_RADIUS < HB_KENAR_M/2` (1,0 m)** eşitsizliği bağlayıcıdır → araç merkezi ped
    kenarından ≥ **0,7 m** içeride durur, gövde pedin üstündedir.
 
-> ⚠ Gazebo **fiziksel temas** koşusu geliştirme makinesinde **ÖLÇÜLEMEDİ** (gz yok);
-> Gazebo'lu makinede koşulacaktır. `ÖLÇÜLEMEDİ ≠ GEÇTİ`.
+> ~~⚠ Gazebo **fiziksel temas** koşusu geliştirme makinesinde **ÖLÇÜLEMEDİ** (gz yok);
+> Gazebo'lu makinede koşulacaktır.~~ `ÖLÇÜLEMEDİ ≠ GEÇTİ`.
+> → **10 Eylül 2026 (SENTETİK, §3.3.3.2):** İKA yarısı MuJoCo fiziğinde koşuldu — YER GERÇEĞİ rotayla 45/45 koşum HB 2×2 m karesi içinde bitti, temaslı koşum 0, varış mesafesi medyan 0,2 m. Gazebo koşulmadı (önceki tasarım). Simülasyondur, saha kanıtı değildir; gerçek İKA koşusu A1'e bağlıdır.
 
 
 ##### 3.3.4.1.14 Süre limitleri (§6.2 / §6.4)
@@ -1787,7 +1931,7 @@ saat). Alan **yoksa** yaş BİLİNMİYOR demektir ve alıcı **taze saymaz.**
 
 ![](sekiller/akis_d.svg)
 
-(e) İKA otonom sürüş — `simulation/scripts/ika_nav.py` + `comms/ika_receiver.py` kapıları, 70 düğüm; halka 10 (motor sürücüsü) diyagramda `surucu()` → `_SURUCU = ika_surucu.GazeboSurucu()` (`simulation/scripts/ika_nav.py:59`) düğümü ve "gercek motor surucusu YOK" kenarıyla görünür — gerçek motor sürücüsü **yoktur** (§3.3.1.3.1):
+(e) İKA otonom sürüş — `simulation/scripts/ika_nav.py` + `comms/ika_receiver.py` kapıları, 70 düğüm; halka 10 (motor sürücüsü) diyagramda `surucu()` → `_SURUCU = ika_surucu.GazeboSurucu()` (~~`simulation/scripts/ika_nav.py:59`~~ `simulation/scripts/ika_nav.py:64`) düğümü ve "gercek motor surucusu YOK" kenarıyla görünür — gerçek motor sürücüsü **yoktur** (§3.3.1.3.1):
 
 ![](sekiller/akis_e.svg)
 
@@ -1798,7 +1942,7 @@ metin ve ASCII blok olarak vardır (§3.3.4.1.1 sekiz adım, satır numaralarıy
 §3.3.1.1.4 ve §3.3.1.1.5 iki kipin mesaj akışı). Bunlar akışın **içeriğidir**; eksik
 olan **görsel biçimdir**.
 
-**KARŞILANDI (7 Eylül 2026):** (a) `sekiller/akis_a.svg` (51 düğüm), (b) `sekiller/akis_e.svg` (70 düğüm). Halka 10 sahipsizliği (e)'de `_SURUCU = ika_surucu.GazeboSurucu()` düğümüyle (`simulation/scripts/ika_nav.py:59`) ve "varsayilan: Gazebo (gercek motor surucusu YOK)" kenar etiketiyle görünür; çalışmayan kutu çalışıyor gibi çizilmedi. 7 Eylül öncesinde insandan beklenen beyan şuydu: (a) İHA ana döngüsü ve (b) İKA otonom sürüş döngüsü için
+**KARŞILANDI (7 Eylül 2026):** (a) `sekiller/akis_a.svg` (51 düğüm), (b) `sekiller/akis_e.svg` (70 düğüm). Halka 10 sahipsizliği (e)'de `_SURUCU = ika_surucu.GazeboSurucu()` düğümüyle (~~`simulation/scripts/ika_nav.py:59`~~ `simulation/scripts/ika_nav.py:64 _SURUCU`) ve "varsayilan: Gazebo (gercek motor surucusu YOK)" kenar etiketiyle görünür; çalışmayan kutu çalışıyor gibi çizilmedi. 7 Eylül öncesinde insandan beklenen beyan şuydu: (a) İHA ana döngüsü ve (b) İKA otonom sürüş döngüsü için
 rapora gömülecek akış diyagramı görselleri. İKA döngüsünün diyagramı çizilirken
 **halka 10'un sahipsiz** olduğu (gerçek motor sürücüsü yok — §3.3.1.3.1) diyagramda da
 görünmelidir; çalışmayan bir kutu çalışıyor gibi çizilemez.
@@ -2183,13 +2327,13 @@ Tekrar aralığı `KANIT_TEKRAR_ARALIGI_S = 30.0` (`yks_gui.py:151`); `HEARTBEAT
 
 ##### 3.3.4.3.2 ACK'li tekrar parametreleri
 
-| komut | aralık | üst sınır | pencere | sabit (satır numaraları 5 Eylül okuması) |
+| komut | aralık | üst sınır | pencere | sabit (satır numaraları 5 Eylül okuması; `karar_sozlesmesi.py` satırları ~~5 Eylül~~ 10 Eylül T214-B okuması) |
 |---|---|---|---|---|
 | `OPEN_ROUTE` / `NO_ROUTE` / `IHA_LANDED` | 0,25 s | 8 | 2,0 s | `comms/iha_sender.py:171` `_tekrarli_gonder(repeat=8, interval=0.25)`; çağıranlar `:220`, `:240`, `:264` (3 Eylül taslağı: `:97,145,166,190`) |
-| `IKA_GO` | 0,25 s | 20 | 5,0 s | `IKA_GO_TEKRAR_ARALIGI_S` / `_UST_SINIRI` (`codes/karar_sozlesmesi.py:2081-2082`; tasarım notu: 4 pkt/s, `:2076`) |
-| `PARACHUTE` | 0,20 s | 40 | 8,0 s | `PARASUT_TEKRAR_ARALIGI_S` / `_UST_SINIRI` (`:2102-2103`; tasarım notu: 5 pkt/s, `:2098`) |
-| `ARM` / `DISARM` / `RTL` / `LAND` | 0,25 s | 20 | 5,0 s | `ARM_TEKRAR_ARALIGI_S` / `_UST_SINIRI` (`:2088-2089`); dört komut aynı merdiveni paylaşır (`comms/iha_komut_alici.py:120-126` `KOMUT_YAS_TAVANI_S`); DISARM teyidi `DISARM_TEYIT_SURESI_S = 4.0` (`:2092`) |
-| Pixhawk `COMMAND_ACK` tavanı | — | — | **0,5 s** | `MAVLINK_KOMUT_ACK_TAVANI_S` (`karar_sozlesmesi.py:2112`) |
+| `IKA_GO` | 0,25 s | 20 | 5,0 s | `IKA_GO_TEKRAR_ARALIGI_S` / `_UST_SINIRI` (~~`codes/karar_sozlesmesi.py:2081-2082`~~ `codes/karar_sozlesmesi.py:2095-2096`; tasarım notu: 4 pkt/s, ~~`:2076`~~ `:2090`) |
+| `PARACHUTE` | 0,20 s | 40 | 8,0 s | `PARASUT_TEKRAR_ARALIGI_S` / `_UST_SINIRI` (~~`:2102-2103`~~ `codes/karar_sozlesmesi.py:2116-2117`; tasarım notu: 5 pkt/s, ~~`:2098`~~ `:2112`) |
+| `ARM` / `DISARM` / `RTL` / `LAND` | 0,25 s | 20 | 5,0 s | `ARM_TEKRAR_ARALIGI_S` / `_UST_SINIRI` (~~`:2088-2089`~~ `codes/karar_sozlesmesi.py:2102-2103`); dört komut aynı merdiveni paylaşır (`comms/iha_komut_alici.py:120-126` `KOMUT_YAS_TAVANI_S`); DISARM teyidi `DISARM_TEYIT_SURESI_S = 4.0` (~~`:2092`~~ `codes/karar_sozlesmesi.py:2106`) |
+| Pixhawk `COMMAND_ACK` tavanı | — | — | **0,5 s** | `MAVLINK_KOMUT_ACK_TAVANI_S` (~~`karar_sozlesmesi.py:2112`~~ `karar_sozlesmesi.py:2126`) |
 
 **`COMMAND_ACK` neden zorunlu:** `command_long_send` istisnasız dönmesi **kanıt değildir** —
 pymavlink `udp:` sunucusu ölü akrana yazıp hatayı **yutar**; router/Pixhawk ölmüşken de
@@ -2378,7 +2522,7 @@ bağlandı (BEYAN, D-426 §1) ama üzerinden ölçüm alınmadı — §3.3.4.3.4
 | büyüklük | durum |
 |---|---|
 | **Gerçek SiK 433 MHz RF üzerinde RTT / paket kaybı** | **ÖLÇÜLEMEDİ.** Araç `scripts/sik_rf_olc.py` **yazıldı** (`--rol yanki` / `--rol olc --n 50`), hedef **RTT p95 < 0,20 s** (`PARASUT_TEKRAR_ARALIGI_S`) ve < 0,25 s (`IKA_GO_TEKRAR_ARALIGI_S`); çıkış kodları UYUMLU 0 / UYARI 1 / ÖLÇÜLEMEDİ 2; kayıp için eşik yok, yalnız raporlanır. **3 Eylül:** radyolar kutuda. **5 Eylül:** hat sahada bağlandı (BEYAN, D-426 §1 "~18:45 SiK telemetri baglandi"), betik koşulmadı; `results/` altında ölçüm dosyası **yoktur** (5 Eylül sayımı). **10 Eylül (T216):** araç veri hızını da sayar ve UDP taşıyıcı (`--tasiyici udp`) kazandı; yazılım düzenekleri ölçüldü (§3.3.4.3.3 "10 Eylül" tablosu, `results/fdr_sprint_20260910/H2/`), **RF'te hâlâ koşulmadı** — `results/` altında SiK RF ölçüm dosyası **yoktur** (10 Eylül sayımı). Kapanma komutu: `--rol yanki --port COMx` / `--rol olc --port COMy --n 200 --json --cikti results/<tarih>/sik_rtt.json`. |
-| **Veri hızı (bit/s, paket/s)** | **RF hattında ÖLÇÜLEMEDİ.** ~~Hiçbir betik ölçmez (`sik_rf_olc.py` RTT ve kayıp verir);~~ **10 Eylül (T216):** `sik_rf_olc.py` artık bayt/s, bit/s ve paket/s sayar (`veri_hizi` alanı; kilit `tests/test_faz_b_sik_rf_olc.py`, 13 test, sayaç mutasyonu yakalandı) ve yazılım düzeneklerinde ölçüldü — §3.3.4.3.3 "10 Eylül" tablosu (UDP loopback / TCP-seri köprüsü: IKA_GO kadansında ≈ 4,0 pkt/s · ≈ 322 B/s TX, PARAŞÜT kadansında ≈ 5,0 pkt/s · ≈ 403 B/s TX; kayıp 0/200). Bunlar **kadans yüküdür, hat kapasitesi değildir** ve **RF değildir**. §3.3.4.3.2'deki 4 pkt/s (`IKA_GO`) ve 5 pkt/s (`PARACHUTE`) tasarım oranları bu ölçümle **loopback'te doğrulandı**; "57600 baud'da ~200 B çerçeve + ACK < 100 ms" (`karar_sozlesmesi.py:2075-2076`) hâlâ tasarım tahminidir — RF'te ölçülmedi |
+| **Veri hızı (bit/s, paket/s)** | **RF hattında ÖLÇÜLEMEDİ.** ~~Hiçbir betik ölçmez (`sik_rf_olc.py` RTT ve kayıp verir);~~ **10 Eylül (T216):** `sik_rf_olc.py` artık bayt/s, bit/s ve paket/s sayar (`veri_hizi` alanı; kilit `tests/test_faz_b_sik_rf_olc.py`, 13 test, sayaç mutasyonu yakalandı) ve yazılım düzeneklerinde ölçüldü — §3.3.4.3.3 "10 Eylül" tablosu (UDP loopback / TCP-seri köprüsü: IKA_GO kadansında ≈ 4,0 pkt/s · ≈ 322 B/s TX, PARAŞÜT kadansında ≈ 5,0 pkt/s · ≈ 403 B/s TX; kayıp 0/200). Bunlar **kadans yüküdür, hat kapasitesi değildir** ve **RF değildir**. §3.3.4.3.2'deki 4 pkt/s (`IKA_GO`) ve 5 pkt/s (`PARACHUTE`) tasarım oranları bu ölçümle **loopback'te doğrulandı**; "57600 baud'da ~200 B çerçeve + ACK < 100 ms" (~~`karar_sozlesmesi.py:2075-2076`~~ `karar_sozlesmesi.py:2089-2090`) hâlâ tasarım tahminidir — RF'te ölçülmedi |
 | **Menzil** | **ÖLÇÜLEMEDİ.** DDR'deki *">%98, 300 m"* iddiasının repoda kanıtı **yoktur**; 5 Eylül tutanağında (D-426) menzil satırı yok |
 | **SiK telsiz firmware / baud** | **ÖLÇÜLEMEDİ.** Parametre dosyası fabrika 57600 baud bekler; telsizin üzerindeki firmware doğrulanmadı (D-424 §5: "kutusu açılmamış donanım" örüntüsünün açık kalemi) |
 | **Gerçek Pixhawk'ta `COMMAND_ACK` turu** | **ÖLÇÜLEMEDİ.** D-419/D-422 ölçümleri `scripts/sahte_pixhawk.py` iledir; 5 Eylül'de Pixhawk 6C Mission Planner'a bağlıydı, Jetson takılı değildi (D-426 §4); `iha_komut_alici` gerçek karta karşı koşulmadı |
@@ -2401,7 +2545,7 @@ karşılanır.
 | # | açık | neden kapanmadı |
 |---|---|---|
 | A1 | **Gerçek İKA motor sürücüsü** | Donanım tedarik edilmedi; İKA hattı finale bırakıldı. Arayüz ve sahte sürücü hazır, gerçek arka uç yok |
-| A2 | **Gazebo fiziksel temas koşusu** (§7.3 İKA yarısı) | Geliştirme makinesinde `gz` yok — **ÖLÇÜLEMEDİ** |
+| A2 | ~~**Gazebo fiziksel temas koşusu**~~ **Fiziksel temas koşusu** (§7.3 İKA yarısı) | ~~Geliştirme makinesinde `gz` yok — **ÖLÇÜLEMEDİ**~~ → **10 Eylül 2026:** MuJoCo'da koşuldu (SENTETİK, §3.3.3.2) — YER GERÇEĞİ 45/45 HB içinde, temaslı koşum 0; Gazebo koşulmadı. Gerçek İKA ile saha koşusu **ÖLÇÜLEMEDİ** (tedarik yok, A1) |
 | A3 | **TensorRT `.engine` denkliği** | Nano venv38'de `tensorrt` modülü yok; `.engine` bu kart için **ÖLÇÜLEMEDİ** |
 | A4 | **Karar kararsızlığı** (v36 14/260, v35'ten kötü) | Histerezis (K=3) yayın katmanında bastırıyor ama **kök neden modeldedir**; ölçüm kayıtlı, kapı yok. *5 Eylül eki:* yayın katmanı için H1c damgası koşuldu ve kilitlendi (aşağıdaki 4b #24 satırı); kök neden (model) bu satırda açık kalır |
 | A5 | **`min()` yolundaki duvar saati zayıflığı** (`rota_zaman` / `son_hb`) | Çürütücü işaret etti, `karar_yas` yolu düzeltildi; bu kol **A2'den eskidir** ve ayrı iş ister |
@@ -2487,6 +2631,12 @@ OLCULEMEDI: Gorev icra simulasyonu (3.3.3) — Gazebo Classic 11 kosumu,
   Bu makinede `gz` ve `podman` PATH'te YOK; `simulation/recordings/`
   dizini YOK. Kapanma: Podman kurulu bir makine + `dronesolid/*.STL`
   mesh baglanmasi + tek kosum.
+  -> 10 Eylul 2026: bu satir GECERSIZ (bir sonraki OLCULDU satiri).
+
+OLCULDU (10 Eylul 2026, SENTETIK): Gorev icra simulasyonu (3.3.3) MuJoCo'da
+  kosuldu — 105 kosum, 4 grafik, HUD'lu video (yerel dosya). Gazebo
+  kosulmadi (onceki tasarim). Modeller basitlestirilmis (CAD STL yok).
+  Acik: video LINKI (asagidaki BEYAN satiri, T222).
 
 OLCULDU (7 Eylul 2026): Sinif bazli karisiklik matrisi — DOGRULAMA
   kumesi test29 (arena DEGIL), v36, CPU, piksel + ornek duzeyi; IoU
@@ -2617,12 +2767,12 @@ Bölümde geçen her sayının kaynağı. Biçim: **değer** · *dosya yolu* · 
 | değer | dosya | üreten | tarih |
 |---|---|---|---|
 | Histerezis K=3; tohum 7: 13→7 (bastırılan 6, NO_ROUTE 0) · tohum 42: 24→11 (bastırılan 14, NO_ROUTE 0) | `results/p5_histerezis/olcum_20260903.json` · ön kayıt `results/p5_histerezis/ON_KAYIT.md` | P5 ölçüm betiği | 2026-09-03 |
-| `KARAR_HISTEREZIS_KARE = 3` ve gerekçesi | `codes/karar_sozlesmesi.py:2109-2117` | — | — |
+| `KARAR_HISTEREZIS_KARE = 3` ve gerekçesi | ~~`codes/karar_sozlesmesi.py:2109-2117`~~ `codes/karar_sozlesmesi.py:2128-2136` | — | — |
 | Geometri sabitleri (`R_GEREKLI_M = 1,10` vb.) | `codes/costmap_path_finder.py` · `CONTRACTS.md` §4 | — | — |
 | C-uzayı etkisi: doğru şerit 1/7 → 6/7 · darboğaz 1,0 px → 13,0–15,0 px · güven 0,028–0,117 → 0,644–0,744 | `CONTRACTS.md` §5.3 | arena kompoziti ölçümü | — |
 | Madde 15 uyumu: 7 kompozit karede fazla piksel 0 | `CONTRACTS.md` §5.3 | — | — |
 | HB'den `mpp`: tespit 260/260 · merkez hatası medyan 0,71 px · sapma medyan %5,2 (p90 %8,6) · 260 doğrulandı / 0 çelişkili | `CONTRACTS.md` §5.1/§5.4 · `REVIEW_LOG.md` D-105 | T72 ölçümü | 2026-08 |
-| Ölçek çapraz bandı 0,25 (= sapmanın ~4,8 katı) | `codes/karar_sozlesmesi.py:1485` `OLCEK_CAPRAZ_BANDI` | — | — |
+| Ölçek çapraz bandı 0,25 (= sapmanın ~4,8 katı) | ~~`codes/karar_sozlesmesi.py:1485`~~ `codes/karar_sozlesmesi.py:1490 OLCEK_CAPRAZ_BANDI` | — | — |
 | Ölçeksiz tuzak: `1,10 / 0,0868 = 12,7 px` (~11 kat) | `CONTRACTS.md` §5.2 · `tests/test_olcek_ve_c_uzayi.py` | — | — |
 | İnce bariyer: 3644 px · model %0,0 engel · %30,9 zemin · rota 59 px kesiyordu · güven 0,75 | `CONTRACTS.md` §2.1 · `REVIEW_LOG.md` D-92/D-93/D-99 | T67 ölçümü | 2026-08 |
 | Çerçeve ihlalleri: 576×1024'te ORTA yerine SAĞ · %1 → %1,78 · 18/18 karede rota yok | `CONTRACTS.md` §3.1 | — | — |
@@ -2654,16 +2804,16 @@ Bölümde geçen her sayının kaynağı. Biçim: **değer** · *dosya yolu* · 
 | FDA kipi sözleşmesi ve tablosu | `CONTRACTS.md` §6.7 | — | 2026-09-03 |
 | FDA kipi: 9 test · **4/4 mutant yakalandı** · dosya `cmp` ile bayt-eş geri yüklendi | `tests/test_faz_b_yks_fda_kipi.py` · `REVIEW_LOG.md` D-408 §3 | — | 2026-09-03 |
 | `IKA_GO` ACK'li tekrar: 0,25 s × 20 · 5 mutasyonun tamamı yakalandı | `CONTRACTS.md` §6.6 · `tests/test_ika_go_ackli_tekrar.py` | — | — |
-| Paraşüt: 0,20 s × 40 · ceza sabiti `PARASUT_MANUEL_CEZA_PUANI = 50` | `codes/karar_sozlesmesi.py:2097-2099` · `REVIEW_LOG.md` D-393 §1 | — | 2026-09-02 |
+| Paraşüt: 0,20 s × 40 · ceza sabiti `PARASUT_MANUEL_CEZA_PUANI = 50` | ~~`codes/karar_sozlesmesi.py:2097-2099`~~ `codes/karar_sozlesmesi.py:2116-2118 PARASUT_MANUEL_CEZA_PUANI` · `REVIEW_LOG.md` D-393 §1 | — | 2026-09-02 |
 | ARM kilidi kusuru ve düzeltmesi | `REVIEW_LOG.md` D-393 §2 · `tests/test_p9abc_yks.py` (10 test) | — | 2026-09-02 |
-| Süre limitleri: 900 / 600 / 600 / 900 s · 4 mutasyonla düştüğü gösterildi | `codes/karar_sozlesmesi.py:1974-1991` · `tests/test_k5_k6_sure_limitleri.py` | — | — |
+| Süre limitleri: 900 / 600 / 600 / 900 s · 4 mutasyonla düştüğü gösterildi | ~~`codes/karar_sozlesmesi.py:1974-1991`~~ `codes/karar_sozlesmesi.py:1960-1982` · `tests/test_k5_k6_sure_limitleri.py` | — | — |
 | Algı körlüğünde heartbeat akmaya devam ediyordu (45–51 s) | `REVIEW_LOG.md` D-374 | ölçüm | 2026-09 |
 | Duvar saati / NaN / ekran çelişkisi kaçakları | `REVIEW_LOG.md` D-383 §2 | 3 bağımsız çürütücü ajan (357k token, 74 araç çağrısı) | 2026-09-01 |
 | İniş kanıtı zinciri: `ON_GROUND` + `relative_alt < 1 m`, aynı sysid, 3 ardışık çift; manuel düğme latch'i açmaz | `comms/inis_kaniti.yerde_mi` (`comms/inis_kaniti.py:695-735`) · `tests/test_iha_landed_gate.py:313` | — | — |
 | Sürücü arayüzü: `ARDISIK_HATA_TAVANI = 3` (10 Hz'de ~0,3 s), `DONANIM_YOK` | `CONTRACTS.md` §7.2 · `simulation/scripts/ika_surucu.py` · `tests/test_p3_ika_surucu.py` | — | 2026-09-02 |
-| Komut yaş tavanları: ARM/DISARM/RTL/LAND 0,25 s × 20 = 5 s · PARACHUTE 0,20 s × 40 = 8 s · saat ofseti penceresi 60 s, en az 2 örnek, bant dışı 6 destekleyen örnek · `COMMAND_ACK` tavanı 0,5 s | `comms/iha_komut_alici.py:120-126, 149, 155, 176` · `codes/karar_sozlesmesi.py:2088-2089, 2102-2103, 2112` | — | 2026-09-05 |
-| İniş kanıtı yayıncısı: `send_iha_landed` 8 × 0,25 s · heartbeat 0,5 s · `yerde_mi` ardisik = 3, tavan_m = 1,0 m · İKA `hb_timeout` 3,0 s | `comms/iha_inis_yayinci.py:361-364, 386` · `comms/iha_sender.py:264` · `comms/inis_kaniti.py:925, 937` · `codes/karar_sozlesmesi.py:2070` · `comms/ika_receiver.py:27` | — | 2026-09-05 |
-| YKS tazelik `YKS_TESPIT_TAZELIK_S = 5,0 s` · İKA `WP_RADIUS` 0,5 m · `FINAL_WP_RADIUS` 0,3 m · `CTRL_HZ` 10 · bekleme / sürüş 900 / 600 s | `codes/karar_sozlesmesi.py:159, 1979-1982` · `simulation/scripts/ika_nav.py:37-39` | — | 2026-09-05 |
+| Komut yaş tavanları: ARM/DISARM/RTL/LAND 0,25 s × 20 = 5 s · PARACHUTE 0,20 s × 40 = 8 s · saat ofseti penceresi 60 s, en az 2 örnek, bant dışı 6 destekleyen örnek · `COMMAND_ACK` tavanı 0,5 s | `comms/iha_komut_alici.py:120-126, 149, 155, 176` · ~~`codes/karar_sozlesmesi.py:2088-2089, 2102-2103, 2112`~~ `codes/karar_sozlesmesi.py:2102-2103, 2116-2117, 2126` | — | 2026-09-05 |
+| İniş kanıtı yayıncısı: `send_iha_landed` 8 × 0,25 s · heartbeat 0,5 s · `yerde_mi` ardisik = 3, tavan_m = 1,0 m · İKA `hb_timeout` 3,0 s | `comms/iha_inis_yayinci.py:361-364, 386` · `comms/iha_sender.py:264` · `comms/inis_kaniti.py:925, 937` · ~~`codes/karar_sozlesmesi.py:2070`~~ `codes/karar_sozlesmesi.py:2084 IHA_INIS_HEARTBEAT_ARALIGI_S` · `comms/ika_receiver.py:27` | — | 2026-09-05 |
+| YKS tazelik `YKS_TESPIT_TAZELIK_S = 5,0 s` · İKA `WP_RADIUS` 0,5 m · `FINAL_WP_RADIUS` 0,3 m · `CTRL_HZ` 10 · bekleme / sürüş 900 / 600 s | `codes/karar_sozlesmesi.py:159, 1979-1982` · ~~`simulation/scripts/ika_nav.py:37-39`~~ `simulation/scripts/ika_nav.py:42-44` | — | 2026-09-05 |
 
 ### Zincir ve kapı özetleri
 
