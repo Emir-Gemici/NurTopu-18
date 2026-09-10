@@ -1,0 +1,480 @@
+{
+ "tarih": "2026-09-10 16:36",
+ "kosum_n": 105,
+ "esik": "H1-K5 ≥ 12/15 harita × 3 tohum (ön kayıt; gevşetilmez)",
+ "kaynaklar": {
+  "gt": {
+   "etiket": "YER GERÇEĞİ",
+   "n": 45,
+   "rota_bulundu_n": 45,
+   "rota_dogru_n": 45,
+   "open_route_ack_ika_yks_n": 45,
+   "karar_ack_ika_yks_n": 45,
+   "ika_go_ack_n": 45,
+   "hb_icinde_n": 45,
+   "temas_var_n": 0,
+   "rota_insaat_geregi_gecilemez_n": 0,
+   "temas_var_ve_gecilemez_n": 0,
+   "temas_var_ve_gecilebilir_n": 0,
+   "sure_asimi_n": 0,
+   "basari_n": 45,
+   "basari_orani": 1.0,
+   "harita_hepsi_basarili_n": 15,
+   "harita_n": 15,
+   "sure_sim_ika_basarili": {
+    "n": 45,
+    "min": 64.1,
+    "medyan": 71.3,
+    "ort": 77.3,
+    "maks": 98.4
+   },
+   "sure_sim_ika_hepsi": {
+    "n": 45,
+    "min": 64.1,
+    "medyan": 71.3,
+    "ort": 77.3,
+    "maks": 98.4
+   },
+   "varis_mesafesi_m": {
+    "n": 45,
+    "min": 0.1,
+    "medyan": 0.2,
+    "ort": 0.2,
+    "maks": 0.2
+   },
+   "duvar_saati_s_toplam": 170.2,
+   "senaryo": {
+    "kolay": {
+     "n": 15,
+     "basari_n": 15,
+     "hb_icinde_n": 15,
+     "temas_var_n": 0
+    },
+    "orta": {
+     "n": 15,
+     "basari_n": 15,
+     "hb_icinde_n": 15,
+     "temas_var_n": 0
+    },
+    "zor": {
+     "n": 15,
+     "basari_n": 15,
+     "hb_icinde_n": 15,
+     "temas_var_n": 0
+    }
+   },
+   "cikis_kodlari": {
+    "0": 45,
+    "1": 0,
+    "2": 0,
+    "3": 0,
+    "4": 0
+   },
+   "takip_hatasi_maks_m": {
+    "n": 45,
+    "min": 0.24,
+    "medyan": 0.498,
+    "ort": 0.475,
+    "maks": 0.563
+   },
+   "takip_hatasi_maks_m_basarili": {
+    "n": 45,
+    "min": 0.24,
+    "medyan": 0.498,
+    "ort": 0.475,
+    "maks": 0.563
+   },
+   "takip_hatasi_ort_m": {
+    "n": 45,
+    "min": 0.065,
+    "medyan": 0.075,
+    "ort": 0.075,
+    "maks": 0.089
+   },
+   "plan_takip_hatasi_maks_m": {
+    "n": 45,
+    "min": 0.161,
+    "medyan": 0.5,
+    "ort": 0.441,
+    "maks": 0.563
+   },
+   "sure_sim_gorev_basarili": {
+    "n": 45,
+    "min": 101.3,
+    "medyan": 108.6,
+    "ort": 114.5,
+    "maks": 135.7
+   },
+   "olaylar": {
+    "open_route_yayini": 45,
+    "open_route_ack_ika_yks": 45,
+    "no_route_yayini": 0,
+    "no_route_ack_ika_yks": 0,
+    "guven_kapisi_reddi": 0,
+    "ika_go_ack": 45,
+    "temas_var": 0,
+    "sure_asimi_kod4": 0,
+    "hb_icinde": 45,
+    "link_kayip_var": 0
+   },
+   "harita_duzeyi": {
+    "1_kolay": {
+     "basari_n": 3,
+     "n": 3
+    },
+    "1_orta": {
+     "basari_n": 3,
+     "n": 3
+    },
+    "1_zor": {
+     "basari_n": 3,
+     "n": 3
+    },
+    "2_kolay": {
+     "basari_n": 3,
+     "n": 3
+    },
+    "2_orta": {
+     "basari_n": 3,
+     "n": 3
+    },
+    "2_zor": {
+     "basari_n": 3,
+     "n": 3
+    },
+    "3_kolay": {
+     "basari_n": 3,
+     "n": 3
+    },
+    "3_orta": {
+     "basari_n": 3,
+     "n": 3
+    },
+    "3_zor": {
+     "basari_n": 3,
+     "n": 3
+    },
+    "4_kolay": {
+     "basari_n": 3,
+     "n": 3
+    },
+    "4_orta": {
+     "basari_n": 3,
+     "n": 3
+    },
+    "4_zor": {
+     "basari_n": 3,
+     "n": 3
+    },
+    "5_kolay": {
+     "basari_n": 3,
+     "n": 3
+    },
+    "5_orta": {
+     "basari_n": 3,
+     "n": 3
+    },
+    "5_zor": {
+     "basari_n": 3,
+     "n": 3
+    }
+   }
+  },
+  "model": {
+   "etiket": "ÜRETİM MODELİ",
+   "n": 45,
+   "rota_bulundu_n": 10,
+   "rota_dogru_n": 10,
+   "open_route_ack_ika_yks_n": 9,
+   "karar_ack_ika_yks_n": 45,
+   "ika_go_ack_n": 9,
+   "hb_icinde_n": 9,
+   "temas_var_n": 0,
+   "rota_insaat_geregi_gecilemez_n": 0,
+   "temas_var_ve_gecilemez_n": 0,
+   "temas_var_ve_gecilebilir_n": 0,
+   "sure_asimi_n": 0,
+   "basari_n": 9,
+   "basari_orani": 0.2,
+   "harita_hepsi_basarili_n": 0,
+   "harita_n": 15,
+   "sure_sim_ika_basarili": {
+    "n": 9,
+    "min": 63.4,
+    "medyan": 67.6,
+    "ort": 69.4,
+    "maks": 88.5
+   },
+   "sure_sim_ika_hepsi": {
+    "n": 9,
+    "min": 63.4,
+    "medyan": 67.6,
+    "ort": 69.4,
+    "maks": 88.5
+   },
+   "varis_mesafesi_m": {
+    "n": 45,
+    "min": 0.2,
+    "medyan": 44.7,
+    "ort": 36.0,
+    "maks": 45.8
+   },
+   "duvar_saati_s_toplam": 647.9,
+   "senaryo": {
+    "kolay": {
+     "n": 15,
+     "basari_n": 4,
+     "hb_icinde_n": 4,
+     "temas_var_n": 0
+    },
+    "orta": {
+     "n": 15,
+     "basari_n": 2,
+     "hb_icinde_n": 2,
+     "temas_var_n": 0
+    },
+    "zor": {
+     "n": 15,
+     "basari_n": 3,
+     "hb_icinde_n": 3,
+     "temas_var_n": 0
+    }
+   },
+   "cikis_kodlari": {
+    "0": 9,
+    "1": 0,
+    "2": 36,
+    "3": 0,
+    "4": 0
+   },
+   "takip_hatasi_maks_m": {
+    "n": 9,
+    "min": 0.975,
+    "medyan": 1.564,
+    "ort": 1.517,
+    "maks": 2.367
+   },
+   "takip_hatasi_maks_m_basarili": {
+    "n": 9,
+    "min": 0.975,
+    "medyan": 1.564,
+    "ort": 1.517,
+    "maks": 2.367
+   },
+   "takip_hatasi_ort_m": {
+    "n": 9,
+    "min": 0.314,
+    "medyan": 0.368,
+    "ort": 0.39,
+    "maks": 0.572
+   },
+   "plan_takip_hatasi_maks_m": {
+    "n": 9,
+    "min": 0.146,
+    "medyan": 0.241,
+    "ort": 0.249,
+    "maks": 0.38
+   },
+   "sure_sim_gorev_basarili": {
+    "n": 9,
+    "min": 100.7,
+    "medyan": 104.9,
+    "ort": 106.7,
+    "maks": 125.8
+   },
+   "olaylar": {
+    "open_route_yayini": 9,
+    "open_route_ack_ika_yks": 9,
+    "no_route_yayini": 36,
+    "no_route_ack_ika_yks": 36,
+    "guven_kapisi_reddi": 1,
+    "ika_go_ack": 9,
+    "temas_var": 0,
+    "sure_asimi_kod4": 0,
+    "hb_icinde": 9,
+    "link_kayip_var": 0
+   },
+   "harita_duzeyi": {
+    "1_kolay": {
+     "basari_n": 1,
+     "n": 3
+    },
+    "1_orta": {
+     "basari_n": 0,
+     "n": 3
+    },
+    "1_zor": {
+     "basari_n": 0,
+     "n": 3
+    },
+    "2_kolay": {
+     "basari_n": 2,
+     "n": 3
+    },
+    "2_orta": {
+     "basari_n": 0,
+     "n": 3
+    },
+    "2_zor": {
+     "basari_n": 0,
+     "n": 3
+    },
+    "3_kolay": {
+     "basari_n": 0,
+     "n": 3
+    },
+    "3_orta": {
+     "basari_n": 1,
+     "n": 3
+    },
+    "3_zor": {
+     "basari_n": 1,
+     "n": 3
+    },
+    "4_kolay": {
+     "basari_n": 1,
+     "n": 3
+    },
+    "4_orta": {
+     "basari_n": 0,
+     "n": 3
+    },
+    "4_zor": {
+     "basari_n": 1,
+     "n": 3
+    },
+    "5_kolay": {
+     "basari_n": 0,
+     "n": 3
+    },
+    "5_orta": {
+     "basari_n": 1,
+     "n": 3
+    },
+    "5_zor": {
+     "basari_n": 1,
+     "n": 3
+    }
+   }
+  },
+  "uretim": {
+   "etiket": "ÜRETİM BORU HATTI (kare-bazlı)",
+   "n": 15,
+   "rota_bulundu_n": 12,
+   "rota_dogru_n": 3,
+   "open_route_ack_ika_yks_n": 12,
+   "karar_ack_ika_yks_n": 15,
+   "ika_go_ack_n": 12,
+   "hb_icinde_n": 0,
+   "temas_var_n": 12,
+   "rota_insaat_geregi_gecilemez_n": 12,
+   "temas_var_ve_gecilemez_n": 12,
+   "temas_var_ve_gecilebilir_n": 0,
+   "sure_asimi_n": 12,
+   "basari_n": 0,
+   "basari_orani": 0.0,
+   "harita_hepsi_basarili_n": 0,
+   "harita_n": 5,
+   "sure_sim_ika_basarili": null,
+   "sure_sim_ika_hepsi": {
+    "n": 12,
+    "min": 600.1,
+    "medyan": 600.1,
+    "ort": 600.1,
+    "maks": 600.1
+   },
+   "varis_mesafesi_m": {
+    "n": 15,
+    "min": 31.4,
+    "medyan": 39.8,
+    "ort": 39.3,
+    "maks": 45.2
+   },
+   "duvar_saati_s_toplam": 338.3,
+   "senaryo": {
+    "kolay": {
+     "n": 6,
+     "basari_n": 0,
+     "hb_icinde_n": 0,
+     "temas_var_n": 6
+    },
+    "orta": {
+     "n": 3,
+     "basari_n": 0,
+     "hb_icinde_n": 0,
+     "temas_var_n": 1
+    },
+    "zor": {
+     "n": 6,
+     "basari_n": 0,
+     "hb_icinde_n": 0,
+     "temas_var_n": 5
+    }
+   },
+   "cikis_kodlari": {
+    "0": 0,
+    "1": 0,
+    "2": 3,
+    "3": 0,
+    "4": 12
+   },
+   "takip_hatasi_maks_m": {
+    "n": 12,
+    "min": 3.802,
+    "medyan": 5.041,
+    "ort": 5.325,
+    "maks": 9.048
+   },
+   "takip_hatasi_maks_m_basarili": null,
+   "takip_hatasi_ort_m": {
+    "n": 12,
+    "min": 1.939,
+    "medyan": 2.587,
+    "ort": 2.671,
+    "maks": 4.714
+   },
+   "plan_takip_hatasi_maks_m": {
+    "n": 12,
+    "min": 0.055,
+    "medyan": 0.138,
+    "ort": 0.137,
+    "maks": 0.218
+   },
+   "sure_sim_gorev_basarili": null,
+   "olaylar": {
+    "open_route_yayini": 12,
+    "open_route_ack_ika_yks": 12,
+    "no_route_yayini": 3,
+    "no_route_ack_ika_yks": 3,
+    "guven_kapisi_reddi": 0,
+    "ika_go_ack": 12,
+    "temas_var": 12,
+    "sure_asimi_kod4": 12,
+    "hb_icinde": 0,
+    "link_kayip_var": 0
+   },
+   "harita_duzeyi": {
+    "1_kolay": {
+     "basari_n": 0,
+     "n": 3
+    },
+    "2_kolay": {
+     "basari_n": 0,
+     "n": 3
+    },
+    "2_orta": {
+     "basari_n": 0,
+     "n": 3
+    },
+    "4_zor": {
+     "basari_n": 0,
+     "n": 3
+    },
+    "5_zor": {
+     "basari_n": 0,
+     "n": 3
+    }
+   }
+  }
+ }
+}

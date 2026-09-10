@@ -94,12 +94,14 @@ def htab_penceresi():
 def teshis(mozaik_bgr, model, conf, H, lv, serit_w: float | None = None, imgsz: int | None = None,
            rota: bool = False, hb_yaricap_m: float = 0.0) -> dict:
     """Model maskeleri üstünde piksel oranları (sınıf 0 geçilebilir, 1 moloz/engel).
-    `imgsz` (TEŞHİS): üretim zinciri MOZ_PX=1024'te çıkarım yapar; verilirse aynı mozaik bu
-    çözünürlükte de koşulur (kayıt imgsz 512, CONTRACTS §8) ve maskeler 1024'e büyütülür.
+    `imgsz` (TEŞHİS): üretim zinciri `iha_haritala.INFER_SIZE` (kayıt defteri, 512 — D-441 a; eskiden
+    MOZ_PX=1024 çıplaktı) ile çıkarım yapar; verilirse aynı mozaik bu boyda da koşulur ve maskeler
+    MOZ_PX tuvaline büyütülür. None → üretim boyu.
     `rota=True`: aynı costmap/rota_bul zinciri bu maskelerle koşulur (durum + yol no)."""
     import cv2
-    _content, masks, _road, _conf, _wps, _k = _infer(mozaik_bgr, model, conf, imgsz or ih.MOZ_PX)
-    if imgsz and imgsz != ih.MOZ_PX:
+    imgsz = int(imgsz or ih.INFER_SIZE)
+    _content, masks, _road, _conf, _wps, _k = _infer(mozaik_bgr, model, conf, imgsz)
+    if imgsz != ih.MOZ_PX:
         masks = {k: cv2.resize(v.astype(np.uint8), (ih.MOZ_PX, ih.MOZ_PX), interpolation=cv2.INTER_NEAREST)
                  for k, v in masks.items()}
     trav = masks[0].astype(bool); eng = masks[1].astype(bool)
@@ -187,7 +189,7 @@ def harita_olc(h: int, lv: str, model, conf: float, res: int, yeniden: bool, fiz
     truth = H["open"]
     return {
         "harita": h, "senaryo": lv, "yol_dokusu": yol_dokusu, "varyant": varyant, "mozaik": mozaik,
-        "hb_yaricap_m": hb_yaricap_m,
+        "hb_yaricap_m": hb_yaricap_m, "imgsz": int(ih.INFER_SIZE), "mozaik_px": int(ih.MOZ_PX),
         "tarama_kaynak": ((str(girdi.relative_to(KOK)) if girdi.is_relative_to(KOK) else str(girdi))
                           if girdi != ldir else None),
         "zemin_dokusu": zemin_dokusu if varyant != "taban" else None,
@@ -204,7 +206,7 @@ def harita_olc(h: int, lv: str, model, conf: float, res: int, yeniden: bool, fiz
         "arac_model": det.get("arac_model"),
         "teshis": th,
         "teshis_imgsz": ({"imgsz": teshis_imgsz,
-                          "not": "TEŞHİS — üretim zinciri değil (iha_haritala MOZ_PX=1024 kullanır)",
+                          "not": f"TEŞHİS — üretim zinciri değil (iha_haritala INFER_SIZE={ih.INFER_SIZE}, kayıt defteri)",
                           **th_imgsz} if th_imgsz else None),
         "haritala_sure_s": round(t_harita, 2),
         "dosyalar": {k: (str((ldir / k).relative_to(KOK)) if ldir.is_relative_to(KOK) else str(ldir / k))
@@ -287,6 +289,7 @@ def main():
         "yol_dokusu": a.yol_dokusu, "varyant": a.varyant,
         "zemin_dokusu": a.zemin_dokusu if a.varyant != "taban" else None,
         "teshis_imgsz": a.teshis_imgsz or None, "mozaik": a.mozaik, "hb_yaricap_m": a.hb_yaricap,
+        "imgsz": int(ih.INFER_SIZE), "mozaik_px": int(ih.MOZ_PX),
         "kok": str(a.kok), "tarama_kaynak": a.tarama_kaynak,
         "sim_sinir": "İHA uçuşu kinematik; render MuJoCo; dokular gerçek kare kırpması (dokular/KAYNAK.md)",
         "ozet": {"harita_n": len(sonuclar), "rota_bulunan": rota, "dogru_etiket": dogru,

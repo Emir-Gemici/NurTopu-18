@@ -1,0 +1,23 @@
+# T214-B mutasyon çıktısı — 2026-09-10 17:22
+
+M0 mutasyonsuz temel                                               → OK (temel geçer) · Ran 59 · test_sim_mujoco_video.py: OK · test_sim_mujoco_olcum.py: OK · test_fdr_sarkan_atif_kapisi.py: OK · 4.5 s
+M1 kaydedici: kare bekle SONUNDA da cizilir (ilk kosum kusuru)     → YAKALANDI (test düştü) · Ran 13 · test_sim_mujoco_video.py: FAILED (failures=2) · 0.6 s
+    düşen: test_alt_adim_sayisi_adimla_ile_es (B_KaydediciFizikDegismezligi), test_kaydedici_trajektoriyi_degistirmez (B_KaydediciFizikDegismezligi)
+M2 kaydedici: alt adim eksik (n -= k + 1)                          → YAKALANDI (test düştü) · Ran 13 · test_sim_mujoco_video.py: FAILED (failures=5) · 0.6 s
+    düşen: test_alt_adim_sayisi_adimla_ile_es (B_KaydediciFizikDegismezligi), test_alt_adim_sayisi_adimla_ile_es (B_KaydediciFizikDegismezligi), test_alt_adim_sayisi_adimla_ile_es (B_KaydediciFizikDegismezligi), test_alt_adim_sayisi_adimla_ile_es (B_KaydediciFizikDegismezligi)
+M3 faz: donus FIRLATMA sayilir                                     → YAKALANDI (test düştü) · Ran 13 · test_sim_mujoco_video.py: FAILED (failures=1) · 0.7 s
+    düşen: test_faz_belirle (A_SafYardimcilar)
+M4 plan: yavas oynatmada kare tekrari yok                          → YAKALANDI (test düştü) · Ran 13 · test_sim_mujoco_video.py: FAILED (failures=1) · 0.6 s
+    düşen: test_kare_plani_hizlar (A_SafYardimcilar)
+M5 RED-2: open_route_ack_ika_yks_n eski tanim (tel tipinden bagimsiz) → YAKALANDI (test düştü) · Ran 35 · test_sim_mujoco_olcum.py: FAILED (failures=2) · 3.9 s
+    düşen: test_open_route_ack_alani_k4_anlaminda (E_KosumOzeti), test_ozet_hesapla_yazmaz_ve_disk_es (E_KosumOzeti)
+M6 RED-1: README poses.csv iddiasi eski haline doner               → YAKALANDI (test düştü) · Ran 35 · test_sim_mujoco_olcum.py: FAILED (failures=1) · 4.4 s
+    düşen: test_readme_uretecle_es (G_Readme)
+M7 FDR atif: ika_gorevi eski satira (437) doner                    → YAKALANDI (test düştü) · Ran 11 · test_fdr_sarkan_atif_kapisi.py: FAILED (failures=1) · 0.2 s
+    düşen: test_T4_fdr_kod_atiflari_tanimlayiciyla_es (KodSatirAtiflari)
+M8 video_ozeti.json: sure elle 80 s                                → YAKALANDI (test düştü) · Ran 13 · test_sim_mujoco_video.py: FAILED (failures=2) · 0.9 s
+    düşen: test_h1_k7_esikleri (D_VideoOzeti), test_okubeni_uretecle_es (E_OkubeniVeMp4)
+M9 OKUBENI.md elle duzenlendi                                      → YAKALANDI (test düştü) · Ran 13 · test_sim_mujoco_video.py: FAILED (failures=1) · 1.0 s
+    düşen: test_okubeni_uretecle_es (E_OkubeniVeMp4)
+
+özet: 9 mutasyon, kaçan/temel sorunu 0; dosyalar sha256 ile bayt-eş geri yüklendi

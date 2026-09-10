@@ -1,0 +1,22 @@
+{
+  "road": null,
+  "label": "yok",
+  "conf": 0.75,
+  "image": "ortomozaik.jpg",
+  "kaynak": "sim-tarama",
+  "kare_n": 15,
+  "hb_yaricap_m": 0.0,
+  "birlestirme": "son_yazar",
+  "imgsz": 512,
+  "mozaik_px": 1024,
+  "trav_px": 268360,
+  "moloz_px": 149016,
+  "arac_px": 0,
+  "engel_px": 149016,
+  "arac_model": null,
+  "wp_n": 0,
+  "rota_durum": "BELIRSIZ_COKLU",
+  "rota_sebep": "2 kapi tespit edildi (3 beklenir).",
+  "darbogaz_m": null,
+  "rota_ihlalleri": []
+}

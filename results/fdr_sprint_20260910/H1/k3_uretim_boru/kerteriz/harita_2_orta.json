@@ -1,0 +1,1862 @@
+{
+ "harita": 2,
+ "senaryo": "orta",
+ "seed": 42,
+ "besleme": "kerteriz",
+ "acik_yol": 1,
+ "acik_yol_etiket": "sol",
+ "kb_xy": [
+  1.73,
+  -23.0
+ ],
+ "hb_xy": [
+  9.66,
+  21.0
+ ],
+ "tarama_dir": "results\\fdr_sprint_20260910\\H1\\k3_uretim_boru\\tarama\\harita_2_orta_42\\iha_scan",
+ "kaynak_deseni": "<out>/besleme_kerteriz/scan_%05d.png",
+ "kare_n": 39,
+ "okunan": 39,
+ "irtifa_cagri_n": 39,
+ "hizali": true,
+ "kamera_bitis": "DUSEN_KARE_UST_SINIRI",
+ "yayinci_durdu": true,
+ "yayinci_hata": [],
+ "karar_cagri_n": 39,
+ "bastirilan_n": 0,
+ "uretim": {
+  "imgsz": 512,
+  "conf": 0.3,
+  "fov_derece": 74.485,
+  "histerezis_kare": 3,
+  "kaynak_kipi": "run_camera + dosya kaynağı"
+ },
+ "model": {
+  "model_id": "navitas-seg-v36-512",
+  "path": "O:\\navitas\\models\\navitas_seg_v36_best.pt",
+  "kayit_path": "models/navitas_seg_v36_best.pt",
+  "sha256_dosya": "1d1caca6f6da19ea35e69186a048da960ca5188be6ee6d49d6106457cac46911",
+  "sha256_kayit": "1d1caca6f6da19ea35e69186a048da960ca5188be6ee6d49d6106457cac46911",
+  "eslesti": true,
+  "imgsz_kayit": 512,
+  "kayit_dogrulamasi": "eslesti",
+  "yukleyici": "rpi_inference.load_model"
+ },
+ "kareler": [
+  {
+   "n": 0,
+   "t": 0.0,
+   "x": -26.0,
+   "y": 0.0,
+   "z": 0.5,
+   "yaw_derece": 0.0,
+   "teta_derece": 0.0,
+   "artik_aci_derece": 0.0,
+   "tarama_bacagi": false,
+   "kb_karede": false,
+   "hb_karede": false,
+   "karar": "NO_ROUTE",
+   "yol": null,
+   "guven": 0.0,
+   "mpp": 0.000594,
+   "sebep": "MASKE_YOK",
+   "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi.",
+   "wp_n": 0,
+   "acked": [
+    "ika",
+    "yks"
+   ]
+  },
+  {
+   "n": 1,
+   "t": 1.0,
+   "x": -14.45,
+   "y": 0.0,
+   "z": 3.96,
+   "yaw_derece": 0.0,
+   "teta_derece": 0.0,
+   "artik_aci_derece": 0.0,
+   "tarama_bacagi": false,
+   "kb_karede": false,
+   "hb_karede": false,
+   "karar": "NO_ROUTE",
+   "yol": null,
+   "guven": 0.0,
+   "mpp": 0.004709,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor alt uc bandina yeterli temas etmiyor; olculen alt=0/1280px, ust=415/1280px; gereken >= 26px.",
+   "wp_n": 0,
+   "acked": [
+    "ika",
+    "yks"
+   ]
+  },
+  {
+   "n": 2,
+   "t": 2.0,
+   "x": -0.24,
+   "y": 0.0,
+   "z": 8.16,
+   "yaw_derece": 0.0,
+   "teta_derece": 0.0,
+   "artik_aci_derece": 0.0,
+   "tarama_bacagi": false,
+   "kb_karede": false,
+   "hb_karede": false,
+   "karar": "NO_ROUTE",
+   "yol": null,
+   "guven": 0.0,
+   "mpp": 0.009693,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor alt uc bandina yeterli temas etmiyor; olculen alt=0/1280px, ust=545/1280px; gereken >= 26px.",
+   "wp_n": 0,
+   "acked": [
+    "ika",
+    "yks"
+   ]
+  },
+  {
+   "n": 3,
+   "t": 3.0,
+   "x": 15.77,
+   "y": 0.0,
+   "z": 12.78,
+   "yaw_derece": 0.0,
+   "teta_derece": 0.0,
+   "artik_aci_derece": 0.0,
+   "tarama_bacagi": false,
+   "kb_karede": false,
+   "hb_karede": false,
+   "karar": "NO_ROUTE",
+   "yol": null,
+   "guven": 0.0,
+   "mpp": 0.01518,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor ust uc bandina yeterli temas etmiyor; olculen alt=782/1280px, ust=0/1280px; gereken >= 26px.",
+   "wp_n": 0,
+   "acked": [
+    "ika",
+    "yks"
+   ]
+  },
+  {
+   "n": 4,
+   "t": 4.0,
+   "x": 30.54,
+   "y": 6.36,
+   "z": 16.75,
+   "yaw_derece": 57.9,
+   "teta_derece": 90.0,
+   "artik_aci_derece": 32.1,
+   "tarama_bacagi": false,
+   "kb_karede": false,
+   "hb_karede": false,
+   "karar": "NO_ROUTE",
+   "yol": null,
+   "guven": 0.0,
+   "mpp": 0.019893,
+   "sebep": "MASKE_YOK",
+   "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi.",
+   "wp_n": 0,
+   "acked": [
+    "ika",
+    "yks"
+   ]
+  },
+  {
+   "n": 5,
+   "t": 5.0,
+   "x": 26.66,
+   "y": 21.9,
+   "z": 20.49,
+   "yaw_derece": 147.9,
+   "teta_derece": 180.0,
+   "artik_aci_derece": 32.1,
+   "tarama_bacagi": false,
+   "kb_karede": false,
+   "hb_karede": true,
+   "karar": "NO_ROUTE",
+   "yol": null,
+   "guven": 0.0,
+   "mpp": 0.024341,
+   "sebep": "ZEMIN_MASKESI_SUPHELI",
+   "detay": "Zemin maskesi icerigin %99.6'ini kapliyor (tavan %55.0) VE cevrenin %74.8'ine dayaniyor (tavan %40.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.",
+   "wp_n": 0,
+   "acked": [
+    "ika",
+    "yks"
+   ]
+  },
+  {
+   "n": 6,
+   "t": 6.0,
+   "x": 9.45,
+   "y": 25.06,
+   "z": 23.76,
+   "yaw_derece": 174.3,
+   "teta_derece": 180.0,
+   "artik_aci_derece": 5.7,
+   "tarama_bacagi": false,
+   "kb_karede": false,
+   "hb_karede": true,
+   "karar": "NO_ROUTE",
+   "yol": null,
+   "guven": 0.0,
+   "mpp": 0.028221,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor ust uc bandina yeterli temas etmiyor; olculen alt=1194/1280px, ust=0/1280px; gereken >= 26px.",
+   "wp_n": 0,
+   "acked": [
+    "ika",
+    "yks"
+   ]
+  },
+  {
+   "n": 7,
+   "t": 7.0,
+   "x": -8.22,
+   "y": 26.82,
+   "z": 26.7,
+   "yaw_derece": 174.3,
+   "teta_derece": 180.0,
+   "artik_aci_derece": 5.7,
+   "tarama_bacagi": false,
+   "kb_karede": false,
+   "hb_karede": true,
+   "karar": "NO_ROUTE",
+   "yol": null,
+   "guven": 0.0,
+   "mpp": 0.031719,
+   "sebep": "ZEMIN_MASKESI_SUPHELI",
+   "detay": "Zemin maskesi icerigin %87.1'ini kapliyor (tavan %55.0) VE cevrenin %63.3'ine dayaniyor (tavan %40.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.",
+   "wp_n": 0,
+   "acked": [
+    "ika",
+    "yks"
+   ]
+  },
+  {
+   "n": 8,
+   "t": 8.0,
+   "x": -18.0,
+   "y": 16.7,
+   "z": 30.0,
+   "yaw_derece": -90.0,
+   "teta_derece": 270.0,
+   "artik_aci_derece": 0.0,
+   "tarama_bacagi": true,
+   "kb_karede": false,
+   "hb_karede": false,
+   "karar": "NO_ROUTE",
+   "yol": null,
+   "guven": 0.0,
+   "mpp": 0.035635,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor ust uc bandina yeterli temas etmiyor; olculen alt=249/1280px, ust=0/1280px; gereken >= 26px.",
+   "wp_n": 0,
+   "acked": [
+    "ika",
+    "yks"
+   ]
+  },
+  {
+   "n": 9,
+   "t": 9.0,
+   "x": -18.0,
+   "y": 2.7,
+   "z": 30.0,
+   "yaw_derece": -90.0,
+   "teta_derece": 270.0,
+   "artik_aci_derece": 0.0,
+   "tarama_bacagi": true,
+   "kb_karede": false,
+   "hb_karede": false,
+   "karar": "NO_ROUTE",
+   "yol": null,
+   "guven": 0.0,
+   "mpp": 0.035635,
+   "sebep": "HEDEF_YOK",
+   "detay": "HB (2 m x 2 m kirmizi H bolgesi) karede bulunamadi; varis noktasi bilinmeden rota uretilmez.",
+   "wp_n": 0,
+   "acked": [
+    "ika",
+    "yks"
+   ]
+  },
+  {
+   "n": 10,
+   "t": 10.0,
+   "x": -18.0,
+   "y": -11.3,
+   "z": 30.0,
+   "yaw_derece": -90.0,
+   "teta_derece": 270.0,
+   "artik_aci_derece": 0.0,
+   "tarama_bacagi": true,
+   "kb_karede": true,
+   "hb_karede": false,
+   "karar": "NO_ROUTE",
+   "yol": null,
+   "guven": 0.0,
+   "mpp": 0.035635,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor alt uc bandina yeterli temas etmiyor; olculen alt=0/1280px, ust=274/1280px; gereken >= 26px.",
+   "wp_n": 0,
+   "acked": [
+    "ika",
+    "yks"
+   ]
+  },
+  {
+   "n": 11,
+   "t": 11.0,
+   "x": -16.62,
+   "y": -23.81,
+   "z": 30.0,
+   "yaw_derece": -45.0,
+   "teta_derece": 0.0,
+   "artik_aci_derece": 45.0,
+   "tarama_bacagi": false,
+   "kb_karede": true,
+   "hb_karede": false,
+   "karar": "NO_ROUTE",
+   "yol": null,
+   "guven": 0.0,
+   "mpp": 0.035635,
+   "sebep": "HEDEF_YOK",
+   "detay": "HB (2 m x 2 m kirmizi H bolgesi) karede bulunamadi; varis noktasi bilinmeden rota uretilmez.",
+   "wp_n": 0,
+   "acked": [
+    "ika",
+    "yks"
+   ]
+  },
+  {
+   "n": 12,
+   "t": 12.0,
+   "x": -7.77,
+   "y": -24.2,
+   "z": 30.0,
+   "yaw_derece": 45.0,
+   "teta_derece": 0.0,
+   "artik_aci_derece": 45.0,
+   "tarama_bacagi": false,
+   "kb_karede": true,
+   "hb_karede": false,
+   "karar": "NO_ROUTE",
+   "yol": null,
+   "guven": 0.0,
+   "mpp": 0.035635,
+   "sebep": "ZEMIN_MASKESI_SUPHELI",
+   "detay": "Zemin maskesi icerigin %91.1'ini kapliyor (tavan %55.0) VE cevrenin %57.0'ine dayaniyor (tavan %40.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.",
+   "wp_n": 0,
+   "acked": [
+    "ika",
+    "yks"
+   ]
+  },
+  {
+   "n": 13,
+   "t": 13.0,
+   "x": -6.0,
+   "y": -14.68,
+   "z": 30.0,
+   "yaw_derece": 90.0,
+   "teta_derece": 90.0,
+   "artik_aci_derece": 0.0,
+   "tarama_bacagi": true,
+   "kb_karede": true,
+   "hb_karede": false,
+   "karar": "NO_ROUTE",
+   "yol": null,
+   "guven": 0.0,
+   "mpp": 0.035635,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor alt uc bandina yeterli temas etmiyor; olculen alt=0/1280px, ust=226/1280px; gereken >= 26px.",
+   "wp_n": 0,
+   "acked": [
+    "ika",
+    "yks"
+   ]
+  },
+  {
+   "n": 14,
+   "t": 14.0,
+   "x": -6.0,
+   "y": -4.68,
+   "z": 30.0,
+   "yaw_derece": 90.0,
+   "teta_derece": 90.0,
+   "artik_aci_derece": 0.0,
+   "tarama_bacagi": true,
+   "kb_karede": true,
+   "hb_karede": false,
+   "karar": "NO_ROUTE",
+   "yol": null,
+   "guven": 0.0,
+   "mpp": 0.035635,
+   "sebep": "HEDEF_YOK",
+   "detay": "HB (2 m x 2 m kirmizi H bolgesi) karede bulunamadi; varis noktasi bilinmeden rota uretilmez.",
+   "wp_n": 0,
+   "acked": [
+    "ika",
+    "yks"
+   ]
+  },
+  {
+   "n": 15,
+   "t": 15.0,
+   "x": -6.0,
+   "y": 5.32,
+   "z": 30.0,
+   "yaw_derece": 90.0,
+   "teta_derece": 90.0,
+   "artik_aci_derece": 0.0,
+   "tarama_bacagi": true,
+   "kb_karede": false,
+   "hb_karede": true,
+   "karar": "OPEN_ROUTE",
+   "yol": 1,
+   "guven": 0.799,
+   "mpp": 0.035635,
+   "sebep": null,
+   "detay": null,
+   "wp_n": 10,
+   "acked": [
+    "ika",
+    "yks"
+   ],
+   "rota_ilk_dunya": [
+    -16.58,
+    -14.49
+   ],
+   "rota_son_dunya": [
+    8.82,
+    20.32
+   ],
+   "ankor_kb_uzakligi_m": 20.19,
+   "rota_sonu_hb_uzakligi_m": 1.08,
+   "rota_dunya": [
+    [
+     -16.58,
+     -14.49
+    ],
+    [
+     -15.48,
+     -11.14
+    ],
+    [
+     -13.98,
+     -8.9
+    ],
+    [
+     -14.73,
+     -3.66
+    ],
+    [
+     -16.98,
+     -0.67
+    ],
+    [
+     -19.22,
+     10.56
+    ],
+    [
+     -14.73,
+     15.05
+    ],
+    [
+     0.98,
+     18.79
+    ],
+    [
+     1.73,
+     19.54
+    ],
+    [
+     8.82,
+     20.32
+    ]
+   ],
+   "rota_dunya_yolu": 1,
+   "rota_dunya_ort_uzaklik_m": {
+    "1": 0.6,
+    "2": 10.93,
+    "3": 19.06
+   },
+   "rota_dunya_ayrim_m": 10.34,
+   "rota_dunya_yolu_dogru": true,
+   "etiket_dunya_esit": true
+  },
+  {
+   "n": 16,
+   "t": 16.0,
+   "x": -6.0,
+   "y": 15.32,
+   "z": 30.0,
+   "yaw_derece": 90.0,
+   "teta_derece": 90.0,
+   "artik_aci_derece": 0.0,
+   "tarama_bacagi": true,
+   "kb_karede": false,
+   "hb_karede": true,
+   "karar": "NO_ROUTE",
+   "yol": null,
+   "guven": 0.0,
+   "mpp": 0.035635,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor ust uc bandina yeterli temas etmiyor; olculen alt=250/1280px, ust=0/1280px; gereken >= 26px.",
+   "wp_n": 0,
+   "acked": [
+    "ika",
+    "yks"
+   ]
+  },
+  {
+   "n": 17,
+   "t": 17.0,
+   "x": -3.78,
+   "y": 24.65,
+   "z": 30.0,
+   "yaw_derece": 45.0,
+   "teta_derece": 0.0,
+   "artik_aci_derece": 45.0,
+   "tarama_bacagi": false,
+   "kb_karede": false,
+   "hb_karede": true,
+   "karar": "NO_ROUTE",
+   "yol": null,
+   "guven": 0.0,
+   "mpp": 0.035635,
+   "sebep": "HEDEF_YOK",
+   "detay": "HB (2 m x 2 m kirmizi H bolgesi) karede bulunamadi; varis noktasi bilinmeden rota uretilmez.",
+   "wp_n": 0,
+   "acked": [
+    "ika",
+    "yks"
+   ]
+  },
+  {
+   "n": 18,
+   "t": 18.0,
+   "x": 4.98,
+   "y": 23.28,
+   "z": 30.0,
+   "yaw_derece": -57.9,
+   "teta_derece": 270.0,
+   "artik_aci_derece": 32.1,
+   "tarama_bacagi": false,
+   "kb_karede": false,
+   "hb_karede": true,
+   "karar": "NO_ROUTE",
+   "yol": null,
+   "guven": 0.0,
+   "mpp": 0.035635,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor ust uc bandina yeterli temas etmiyor; olculen alt=174/1280px, ust=0/1280px; gereken >= 26px.",
+   "wp_n": 0,
+   "acked": [
+    "ika",
+    "yks"
+   ]
+  },
+  {
+   "n": 19,
+   "t": 19.0,
+   "x": 6.0,
+   "y": 13.49,
+   "z": 30.0,
+   "yaw_derece": -90.0,
+   "teta_derece": 270.0,
+   "artik_aci_derece": 0.0,
+   "tarama_bacagi": true,
+   "kb_karede": false,
+   "hb_karede": true,
+   "karar": "NO_ROUTE",
+   "yol": null,
+   "guven": 0.0,
+   "mpp": 0.035635,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor ust uc bandina yeterli temas etmiyor; olculen alt=178/1280px, ust=0/1280px; gereken >= 26px.",
+   "wp_n": 0,
+   "acked": [
+    "ika",
+    "yks"
+   ]
+  },
+  {
+   "n": 20,
+   "t": 20.0,
+   "x": 6.0,
+   "y": 3.49,
+   "z": 30.0,
+   "yaw_derece": -90.0,
+   "teta_derece": 270.0,
+   "artik_aci_derece": 0.0,
+   "tarama_bacagi": true,
+   "kb_karede": false,
+   "hb_karede": true,
+   "karar": "NO_ROUTE",
+   "yol": null,
+   "guven": 0.0,
+   "mpp": 0.035635,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor alt uc bandina yeterli temas etmiyor; olculen alt=0/1280px, ust=210/1280px; gereken >= 26px.",
+   "wp_n": 0,
+   "acked": [
+    "ika",
+    "yks"
+   ]
+  },
+  {
+   "n": 21,
+   "t": 21.0,
+   "x": 6.0,
+   "y": -6.51,
+   "z": 30.0,
+   "yaw_derece": -90.0,
+   "teta_derece": 270.0,
+   "artik_aci_derece": 0.0,
+   "tarama_bacagi": true,
+   "kb_karede": true,
+   "hb_karede": false,
+   "karar": "NO_ROUTE",
+   "yol": null,
+   "guven": 0.0,
+   "mpp": 0.035635,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor alt/ust uc bandina yeterli temas etmiyor; olculen alt=0/1280px, ust=0/1280px; gereken >= 26px.",
+   "wp_n": 0,
+   "acked": [
+    "ika",
+    "yks"
+   ]
+  },
+  {
+   "n": 22,
+   "t": 22.0,
+   "x": 6.0,
+   "y": -16.51,
+   "z": 30.0,
+   "yaw_derece": -90.0,
+   "teta_derece": 270.0,
+   "artik_aci_derece": 0.0,
+   "tarama_bacagi": true,
+   "kb_karede": true,
+   "hb_karede": false,
+   "karar": "NO_ROUTE",
+   "yol": null,
+   "guven": 0.0,
+   "mpp": 0.035635,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor alt uc bandina yeterli temas etmiyor; olculen alt=0/1280px, ust=63/1280px; gereken >= 26px.",
+   "wp_n": 0,
+   "acked": [
+    "ika",
+    "yks"
+   ]
+  },
+  {
+   "n": 23,
+   "t": 23.0,
+   "x": 9.22,
+   "y": -25.3,
+   "z": 30.0,
+   "yaw_derece": -32.1,
+   "teta_derece": 0.0,
+   "artik_aci_derece": 32.1,
+   "tarama_bacagi": false,
+   "kb_karede": true,
+   "hb_karede": false,
+   "karar": "NO_ROUTE",
+   "yol": null,
+   "guven": 0.0,
+   "mpp": 0.035635,
+   "sebep": "ZEMIN_MASKESI_SUPHELI",
+   "detay": "Zemin maskesi icerigin %96.8'ini kapliyor (tavan %55.0) VE cevrenin %69.9'ine dayaniyor (tavan %40.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.",
+   "wp_n": 0,
+   "acked": [
+    "ika",
+    "yks"
+   ]
+  },
+  {
+   "n": 24,
+   "t": 24.0,
+   "x": 17.53,
+   "y": -22.24,
+   "z": 30.0,
+   "yaw_derece": 70.7,
+   "teta_derece": 90.0,
+   "artik_aci_derece": 19.3,
+   "tarama_bacagi": false,
+   "kb_karede": true,
+   "hb_karede": false,
+   "karar": "NO_ROUTE",
+   "yol": null,
+   "guven": 0.0,
+   "mpp": 0.035635,
+   "sebep": "MASKE_YOK",
+   "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi.",
+   "wp_n": 0,
+   "acked": [
+    "ika",
+    "yks"
+   ]
+  },
+  {
+   "n": 25,
+   "t": 25.0,
+   "x": 18.0,
+   "y": -12.3,
+   "z": 30.0,
+   "yaw_derece": 90.0,
+   "teta_derece": 90.0,
+   "artik_aci_derece": 0.0,
+   "tarama_bacagi": true,
+   "kb_karede": true,
+   "hb_karede": false,
+   "karar": "NO_ROUTE",
+   "yol": null,
+   "guven": 0.0,
+   "mpp": 0.035635,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor alt/ust uc bandina yeterli temas etmiyor; olculen alt=0/1280px, ust=0/1280px; gereken >= 26px.",
+   "wp_n": 0,
+   "acked": [
+    "ika",
+    "yks"
+   ]
+  },
+  {
+   "n": 26,
+   "t": 26.0,
+   "x": 18.0,
+   "y": -2.3,
+   "z": 30.0,
+   "yaw_derece": 90.0,
+   "teta_derece": 90.0,
+   "artik_aci_derece": 0.0,
+   "tarama_bacagi": true,
+   "kb_karede": true,
+   "hb_karede": false,
+   "karar": "NO_ROUTE",
+   "yol": null,
+   "guven": 0.0,
+   "mpp": 0.035635,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor alt uc bandina yeterli temas etmiyor; olculen alt=0/1280px, ust=615/1280px; gereken >= 26px.",
+   "wp_n": 0,
+   "acked": [
+    "ika",
+    "yks"
+   ]
+  },
+  {
+   "n": 27,
+   "t": 27.0,
+   "x": 18.0,
+   "y": 7.7,
+   "z": 30.0,
+   "yaw_derece": 90.0,
+   "teta_derece": 90.0,
+   "artik_aci_derece": 0.0,
+   "tarama_bacagi": true,
+   "kb_karede": false,
+   "hb_karede": true,
+   "karar": "NO_ROUTE",
+   "yol": null,
+   "guven": 0.0,
+   "mpp": 0.035635,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor alt/ust uc bandina yeterli temas etmiyor; olculen alt=0/1280px, ust=0/1280px; gereken >= 26px.",
+   "wp_n": 0,
+   "acked": [
+    "ika",
+    "yks"
+   ]
+  },
+  {
+   "n": 28,
+   "t": 28.0,
+   "x": 18.0,
+   "y": 17.7,
+   "z": 30.0,
+   "yaw_derece": 90.0,
+   "teta_derece": 90.0,
+   "artik_aci_derece": 0.0,
+   "tarama_bacagi": true,
+   "kb_karede": false,
+   "hb_karede": true,
+   "karar": "NO_ROUTE",
+   "yol": null,
+   "guven": 0.0,
+   "mpp": 0.035635,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor ust uc bandina yeterli temas etmiyor; olculen alt=180/1280px, ust=0/1280px; gereken >= 26px.",
+   "wp_n": 0,
+   "acked": [
+    "ika",
+    "yks"
+   ]
+  },
+  {
+   "n": 29,
+   "t": 29.0,
+   "x": 20.43,
+   "y": 27.18,
+   "z": 30.0,
+   "yaw_derece": 57.9,
+   "teta_derece": 90.0,
+   "artik_aci_derece": 32.1,
+   "tarama_bacagi": false,
+   "kb_karede": false,
+   "hb_karede": true,
+   "karar": "NO_ROUTE",
+   "yol": null,
+   "guven": 0.0,
+   "mpp": 0.035635,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor ust uc bandina yeterli temas etmiyor; olculen alt=459/1280px, ust=0/1280px; gereken >= 26px.",
+   "wp_n": 0,
+   "acked": [
+    "ika",
+    "yks"
+   ]
+  },
+  {
+   "n": 30,
+   "t": 30.0,
+   "x": 28.9,
+   "y": 31.88,
+   "z": 30.0,
+   "yaw_derece": 6.4,
+   "teta_derece": 0.0,
+   "artik_aci_derece": 6.4,
+   "tarama_bacagi": false,
+   "kb_karede": false,
+   "hb_karede": true,
+   "karar": "NO_ROUTE",
+   "yol": null,
+   "guven": 0.0,
+   "mpp": 0.035635,
+   "sebep": "ZEMIN_MASKESI_SUPHELI",
+   "detay": "Zemin maskesi icerigin %99.2'ini kapliyor (tavan %55.0) VE cevrenin %49.8'ine dayaniyor (tavan %40.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.",
+   "wp_n": 0,
+   "acked": [
+    "ika",
+    "yks"
+   ]
+  },
+  {
+   "n": 31,
+   "t": 31.0,
+   "x": 38.07,
+   "y": 28.8,
+   "z": 30.0,
+   "yaw_derece": -45.0,
+   "teta_derece": 0.0,
+   "artik_aci_derece": 45.0,
+   "tarama_bacagi": false,
+   "kb_karede": false,
+   "hb_karede": false,
+   "karar": "NO_ROUTE",
+   "yol": null,
+   "guven": 0.0,
+   "mpp": 0.035635,
+   "sebep": "ZEMIN_MASKESI_SUPHELI",
+   "detay": "Zemin maskesi icerigin %99.6'ini kapliyor (tavan %55.0) VE cevrenin %74.8'ine dayaniyor (tavan %40.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.",
+   "wp_n": 0,
+   "acked": [
+    "ika",
+    "yks"
+   ]
+  },
+  {
+   "n": 32,
+   "t": 32.0,
+   "x": 42.0,
+   "y": 19.78,
+   "z": 29.88,
+   "yaw_derece": -90.0,
+   "teta_derece": 270.0,
+   "artik_aci_derece": 0.0,
+   "tarama_bacagi": false,
+   "kb_karede": false,
+   "hb_karede": false,
+   "karar": "NO_ROUTE",
+   "yol": null,
+   "guven": 0.0,
+   "mpp": 0.035486,
+   "sebep": "ZEMIN_MASKESI_SUPHELI",
+   "detay": "Zemin maskesi icerigin %97.5'ini kapliyor (tavan %55.0) VE cevrenin %66.1'ine dayaniyor (tavan %40.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.",
+   "wp_n": 0,
+   "acked": [
+    "ika",
+    "yks"
+   ]
+  },
+  {
+   "n": 33,
+   "t": 33.0,
+   "x": 42.0,
+   "y": 11.02,
+   "z": 24.58,
+   "yaw_derece": -90.0,
+   "teta_derece": 270.0,
+   "artik_aci_derece": 0.0,
+   "tarama_bacagi": false,
+   "kb_karede": false,
+   "hb_karede": false,
+   "karar": "NO_ROUTE",
+   "yol": null,
+   "guven": 0.0,
+   "mpp": 0.0292,
+   "sebep": "ZEMIN_MASKESI_SUPHELI",
+   "detay": "Zemin maskesi icerigin %69.5'ini kapliyor (tavan %55.0) VE cevrenin %42.6'ine dayaniyor (tavan %40.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.",
+   "wp_n": 0,
+   "acked": [
+    "ika",
+    "yks"
+   ]
+  },
+  {
+   "n": 34,
+   "t": 34.0,
+   "x": 42.0,
+   "y": 4.22,
+   "z": 18.67,
+   "yaw_derece": -90.0,
+   "teta_derece": 270.0,
+   "artik_aci_derece": 0.0,
+   "tarama_bacagi": false,
+   "kb_karede": false,
+   "hb_karede": false,
+   "karar": "NO_ROUTE",
+   "yol": null,
+   "guven": 0.0,
+   "mpp": 0.022171,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor alt uc bandina yeterli temas etmiyor; olculen alt=0/1280px, ust=1273/1280px; gereken >= 26px.",
+   "wp_n": 0,
+   "acked": [
+    "ika",
+    "yks"
+   ]
+  },
+  {
+   "n": 35,
+   "t": 35.0,
+   "x": 42.0,
+   "y": 1.98,
+   "z": 11.9,
+   "yaw_derece": -90.0,
+   "teta_derece": 270.0,
+   "artik_aci_derece": 0.0,
+   "tarama_bacagi": false,
+   "kb_karede": false,
+   "hb_karede": false,
+   "karar": "NO_ROUTE",
+   "yol": null,
+   "guven": 0.0,
+   "mpp": 0.014133,
+   "sebep": "MASKE_YOK",
+   "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi.",
+   "wp_n": 0,
+   "acked": [
+    "ika",
+    "yks"
+   ]
+  },
+  {
+   "n": 36,
+   "t": 36.0,
+   "x": 42.0,
+   "y": 0.78,
+   "z": 5.91,
+   "yaw_derece": -90.0,
+   "teta_derece": 270.0,
+   "artik_aci_derece": 0.0,
+   "tarama_bacagi": false,
+   "kb_karede": false,
+   "hb_karede": false,
+   "karar": "NO_ROUTE",
+   "yol": null,
+   "guven": 0.0,
+   "mpp": 0.007025,
+   "sebep": "MASKE_YOK",
+   "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi.",
+   "wp_n": 0,
+   "acked": [
+    "ika",
+    "yks"
+   ]
+  },
+  {
+   "n": 37,
+   "t": 37.0,
+   "x": 42.0,
+   "y": 0.0,
+   "z": 0.35,
+   "yaw_derece": -90.0,
+   "teta_derece": 270.0,
+   "artik_aci_derece": 0.0,
+   "tarama_bacagi": false,
+   "kb_karede": false,
+   "hb_karede": false,
+   "karar": "NO_ROUTE",
+   "yol": null,
+   "guven": 0.0,
+   "mpp": 0.000416,
+   "sebep": "MASKE_YOK",
+   "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi.",
+   "wp_n": 0,
+   "acked": [
+    "ika",
+    "yks"
+   ]
+  },
+  {
+   "n": 38,
+   "t": 38.0,
+   "x": 42.0,
+   "y": 0.0,
+   "z": 0.35,
+   "yaw_derece": -90.0,
+   "teta_derece": 270.0,
+   "artik_aci_derece": 0.0,
+   "tarama_bacagi": false,
+   "kb_karede": false,
+   "hb_karede": false,
+   "karar": "NO_ROUTE",
+   "yol": null,
+   "guven": 0.0,
+   "mpp": 0.000416,
+   "sebep": "MASKE_YOK",
+   "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi.",
+   "wp_n": 0,
+   "acked": [
+    "ika",
+    "yks"
+   ]
+  }
+ ],
+ "ika_yayin": [
+  {
+   "tip": "NO_ROUTE",
+   "seq": 377,
+   "sebep": "MASKE_YOK",
+   "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 378,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor alt uc bandina yeterli temas etmiyor; olculen alt=0/1280px, ust=415/1280px; gereken >= 26px."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 379,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor alt uc bandina yeterli temas etmiyor; olculen alt=0/1280px, ust=545/1280px; gereken >= 26px."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 380,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor ust uc bandina yeterli temas etmiyor; olculen alt=782/1280px, ust=0/1280px; gereken >= 26px."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 381,
+   "sebep": "MASKE_YOK",
+   "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 382,
+   "sebep": "ZEMIN_MASKESI_SUPHELI",
+   "detay": "Zemin maskesi icerigin %99.6'ini kapliyor (tavan %55.0) VE cevrenin %74.8'ine dayaniyor (tavan %40.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 383,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor ust uc bandina yeterli temas etmiyor; olculen alt=1194/1280px, ust=0/1280px; gereken >= 26px."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 385,
+   "sebep": "ZEMIN_MASKESI_SUPHELI",
+   "detay": "Zemin maskesi icerigin %87.1'ini kapliyor (tavan %55.0) VE cevrenin %63.3'ine dayaniyor (tavan %40.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 386,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor ust uc bandina yeterli temas etmiyor; olculen alt=249/1280px, ust=0/1280px; gereken >= 26px."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 387,
+   "sebep": "HEDEF_YOK",
+   "detay": "HB (2 m x 2 m kirmizi H bolgesi) karede bulunamadi; varis noktasi bilinmeden rota uretilmez."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 388,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor alt uc bandina yeterli temas etmiyor; olculen alt=0/1280px, ust=274/1280px; gereken >= 26px."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 389,
+   "sebep": "HEDEF_YOK",
+   "detay": "HB (2 m x 2 m kirmizi H bolgesi) karede bulunamadi; varis noktasi bilinmeden rota uretilmez."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 390,
+   "sebep": "ZEMIN_MASKESI_SUPHELI",
+   "detay": "Zemin maskesi icerigin %91.1'ini kapliyor (tavan %55.0) VE cevrenin %57.0'ine dayaniyor (tavan %40.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 392,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor alt uc bandina yeterli temas etmiyor; olculen alt=0/1280px, ust=226/1280px; gereken >= 26px."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 393,
+   "sebep": "HEDEF_YOK",
+   "detay": "HB (2 m x 2 m kirmizi H bolgesi) karede bulunamadi; varis noktasi bilinmeden rota uretilmez."
+  },
+  {
+   "tip": "OPEN_ROUTE",
+   "seq": 394,
+   "yol": 1,
+   "guven": 0.799,
+   "wp_n": 33
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 396,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor ust uc bandina yeterli temas etmiyor; olculen alt=250/1280px, ust=0/1280px; gereken >= 26px."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 397,
+   "sebep": "HEDEF_YOK",
+   "detay": "HB (2 m x 2 m kirmizi H bolgesi) karede bulunamadi; varis noktasi bilinmeden rota uretilmez."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 398,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor ust uc bandina yeterli temas etmiyor; olculen alt=174/1280px, ust=0/1280px; gereken >= 26px."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 399,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor ust uc bandina yeterli temas etmiyor; olculen alt=178/1280px, ust=0/1280px; gereken >= 26px."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 400,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor alt uc bandina yeterli temas etmiyor; olculen alt=0/1280px, ust=210/1280px; gereken >= 26px."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 401,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor alt/ust uc bandina yeterli temas etmiyor; olculen alt=0/1280px, ust=0/1280px; gereken >= 26px."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 402,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor alt uc bandina yeterli temas etmiyor; olculen alt=0/1280px, ust=63/1280px; gereken >= 26px."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 404,
+   "sebep": "ZEMIN_MASKESI_SUPHELI",
+   "detay": "Zemin maskesi icerigin %96.8'ini kapliyor (tavan %55.0) VE cevrenin %69.9'ine dayaniyor (tavan %40.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 405,
+   "sebep": "MASKE_YOK",
+   "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 406,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor alt/ust uc bandina yeterli temas etmiyor; olculen alt=0/1280px, ust=0/1280px; gereken >= 26px."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 407,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor alt uc bandina yeterli temas etmiyor; olculen alt=0/1280px, ust=615/1280px; gereken >= 26px."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 408,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor alt/ust uc bandina yeterli temas etmiyor; olculen alt=0/1280px, ust=0/1280px; gereken >= 26px."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 409,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor ust uc bandina yeterli temas etmiyor; olculen alt=180/1280px, ust=0/1280px; gereken >= 26px."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 410,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor ust uc bandina yeterli temas etmiyor; olculen alt=459/1280px, ust=0/1280px; gereken >= 26px."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 411,
+   "sebep": "ZEMIN_MASKESI_SUPHELI",
+   "detay": "Zemin maskesi icerigin %99.2'ini kapliyor (tavan %55.0) VE cevrenin %49.8'ine dayaniyor (tavan %40.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 412,
+   "sebep": "ZEMIN_MASKESI_SUPHELI",
+   "detay": "Zemin maskesi icerigin %99.6'ini kapliyor (tavan %55.0) VE cevrenin %74.8'ine dayaniyor (tavan %40.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 413,
+   "sebep": "ZEMIN_MASKESI_SUPHELI",
+   "detay": "Zemin maskesi icerigin %97.5'ini kapliyor (tavan %55.0) VE cevrenin %66.1'ine dayaniyor (tavan %40.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 414,
+   "sebep": "ZEMIN_MASKESI_SUPHELI",
+   "detay": "Zemin maskesi icerigin %69.5'ini kapliyor (tavan %55.0) VE cevrenin %42.6'ine dayaniyor (tavan %40.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 416,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor alt uc bandina yeterli temas etmiyor; olculen alt=0/1280px, ust=1273/1280px; gereken >= 26px."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 417,
+   "sebep": "MASKE_YOK",
+   "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 418,
+   "sebep": "MASKE_YOK",
+   "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 419,
+   "sebep": "MASKE_YOK",
+   "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 420,
+   "sebep": "MASKE_YOK",
+   "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+  }
+ ],
+ "yks_yayin": [
+  {
+   "tip": "NO_ROUTE",
+   "seq": 377,
+   "sebep": "MASKE_YOK",
+   "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 378,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor alt uc bandina yeterli temas etmiyor; olculen alt=0/1280px, ust=415/1280px; gereken >= 26px."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 379,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor alt uc bandina yeterli temas etmiyor; olculen alt=0/1280px, ust=545/1280px; gereken >= 26px."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 380,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor ust uc bandina yeterli temas etmiyor; olculen alt=782/1280px, ust=0/1280px; gereken >= 26px."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 381,
+   "sebep": "MASKE_YOK",
+   "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 382,
+   "sebep": "ZEMIN_MASKESI_SUPHELI",
+   "detay": "Zemin maskesi icerigin %99.6'ini kapliyor (tavan %55.0) VE cevrenin %74.8'ine dayaniyor (tavan %40.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 383,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor ust uc bandina yeterli temas etmiyor; olculen alt=1194/1280px, ust=0/1280px; gereken >= 26px."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 385,
+   "sebep": "ZEMIN_MASKESI_SUPHELI",
+   "detay": "Zemin maskesi icerigin %87.1'ini kapliyor (tavan %55.0) VE cevrenin %63.3'ine dayaniyor (tavan %40.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 386,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor ust uc bandina yeterli temas etmiyor; olculen alt=249/1280px, ust=0/1280px; gereken >= 26px."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 387,
+   "sebep": "HEDEF_YOK",
+   "detay": "HB (2 m x 2 m kirmizi H bolgesi) karede bulunamadi; varis noktasi bilinmeden rota uretilmez."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 388,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor alt uc bandina yeterli temas etmiyor; olculen alt=0/1280px, ust=274/1280px; gereken >= 26px."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 389,
+   "sebep": "HEDEF_YOK",
+   "detay": "HB (2 m x 2 m kirmizi H bolgesi) karede bulunamadi; varis noktasi bilinmeden rota uretilmez."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 390,
+   "sebep": "ZEMIN_MASKESI_SUPHELI",
+   "detay": "Zemin maskesi icerigin %91.1'ini kapliyor (tavan %55.0) VE cevrenin %57.0'ine dayaniyor (tavan %40.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 392,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor alt uc bandina yeterli temas etmiyor; olculen alt=0/1280px, ust=226/1280px; gereken >= 26px."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 393,
+   "sebep": "HEDEF_YOK",
+   "detay": "HB (2 m x 2 m kirmizi H bolgesi) karede bulunamadi; varis noktasi bilinmeden rota uretilmez."
+  },
+  {
+   "tip": "OPEN_ROUTE",
+   "seq": 394,
+   "yol": 1,
+   "guven": 0.799,
+   "wp_n": 33
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 396,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor ust uc bandina yeterli temas etmiyor; olculen alt=250/1280px, ust=0/1280px; gereken >= 26px."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 397,
+   "sebep": "HEDEF_YOK",
+   "detay": "HB (2 m x 2 m kirmizi H bolgesi) karede bulunamadi; varis noktasi bilinmeden rota uretilmez."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 398,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor ust uc bandina yeterli temas etmiyor; olculen alt=174/1280px, ust=0/1280px; gereken >= 26px."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 399,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor ust uc bandina yeterli temas etmiyor; olculen alt=178/1280px, ust=0/1280px; gereken >= 26px."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 400,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor alt uc bandina yeterli temas etmiyor; olculen alt=0/1280px, ust=210/1280px; gereken >= 26px."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 401,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor alt/ust uc bandina yeterli temas etmiyor; olculen alt=0/1280px, ust=0/1280px; gereken >= 26px."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 402,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor alt uc bandina yeterli temas etmiyor; olculen alt=0/1280px, ust=63/1280px; gereken >= 26px."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 404,
+   "sebep": "ZEMIN_MASKESI_SUPHELI",
+   "detay": "Zemin maskesi icerigin %96.8'ini kapliyor (tavan %55.0) VE cevrenin %69.9'ine dayaniyor (tavan %40.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 405,
+   "sebep": "MASKE_YOK",
+   "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 406,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor alt/ust uc bandina yeterli temas etmiyor; olculen alt=0/1280px, ust=0/1280px; gereken >= 26px."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 407,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor alt uc bandina yeterli temas etmiyor; olculen alt=0/1280px, ust=615/1280px; gereken >= 26px."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 408,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor alt/ust uc bandina yeterli temas etmiyor; olculen alt=0/1280px, ust=0/1280px; gereken >= 26px."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 409,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor ust uc bandina yeterli temas etmiyor; olculen alt=180/1280px, ust=0/1280px; gereken >= 26px."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 410,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor ust uc bandina yeterli temas etmiyor; olculen alt=459/1280px, ust=0/1280px; gereken >= 26px."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 411,
+   "sebep": "ZEMIN_MASKESI_SUPHELI",
+   "detay": "Zemin maskesi icerigin %99.2'ini kapliyor (tavan %55.0) VE cevrenin %49.8'ine dayaniyor (tavan %40.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 412,
+   "sebep": "ZEMIN_MASKESI_SUPHELI",
+   "detay": "Zemin maskesi icerigin %99.6'ini kapliyor (tavan %55.0) VE cevrenin %74.8'ine dayaniyor (tavan %40.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 413,
+   "sebep": "ZEMIN_MASKESI_SUPHELI",
+   "detay": "Zemin maskesi icerigin %97.5'ini kapliyor (tavan %55.0) VE cevrenin %66.1'ine dayaniyor (tavan %40.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 414,
+   "sebep": "ZEMIN_MASKESI_SUPHELI",
+   "detay": "Zemin maskesi icerigin %69.5'ini kapliyor (tavan %55.0) VE cevrenin %42.6'ine dayaniyor (tavan %40.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 416,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "detay": "Koridor alt uc bandina yeterli temas etmiyor; olculen alt=0/1280px, ust=1273/1280px; gereken >= 26px."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 417,
+   "sebep": "MASKE_YOK",
+   "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 418,
+   "sebep": "MASKE_YOK",
+   "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 419,
+   "sebep": "MASKE_YOK",
+   "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+  },
+  {
+   "tip": "NO_ROUTE",
+   "seq": 420,
+   "sebep": "MASKE_YOK",
+   "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+  }
+ ],
+ "yks_heartbeat_n": 6,
+ "open_route_n": 1,
+ "open_route_yollari": {
+  "1": 1
+ },
+ "no_route_sebepleri": {
+  "HEDEF_YOK": 4,
+  "MASKE_YOK": 7,
+  "UC_BANT_TEMAS_YOK": 19,
+  "ZEMIN_MASKESI_SUPHELI": 8
+ },
+ "ack_ika_yks_n": 39,
+ "ack_eksik_n": 0,
+ "ilk_open_route": {
+  "yol": 1,
+  "guven": 0.799,
+  "waypoints": [
+   [
+    0.0,
+    0.0
+   ],
+   [
+    0.55,
+    1.67
+   ],
+   [
+    1.1,
+    3.35
+   ],
+   [
+    1.85,
+    4.47
+   ],
+   [
+    2.6,
+    5.59
+   ],
+   [
+    2.35,
+    7.34
+   ],
+   [
+    2.1,
+    9.09
+   ],
+   [
+    1.85,
+    10.83
+   ],
+   [
+    0.73,
+    12.33
+   ],
+   [
+    -0.39,
+    13.83
+   ],
+   [
+    -0.77,
+    15.7
+   ],
+   [
+    -1.14,
+    17.57
+   ],
+   [
+    -1.51,
+    19.44
+   ],
+   [
+    -1.89,
+    21.31
+   ],
+   [
+    -2.26,
+    23.18
+   ],
+   [
+    -2.64,
+    25.05
+   ],
+   [
+    -1.51,
+    26.17
+   ],
+   [
+    -0.39,
+    27.3
+   ],
+   [
+    0.73,
+    28.42
+   ],
+   [
+    1.85,
+    29.54
+   ],
+   [
+    3.82,
+    30.01
+   ],
+   [
+    5.78,
+    30.48
+   ],
+   [
+    7.75,
+    30.94
+   ],
+   [
+    9.71,
+    31.41
+   ],
+   [
+    11.67,
+    31.88
+   ],
+   [
+    13.64,
+    32.35
+   ],
+   [
+    15.6,
+    32.81
+   ],
+   [
+    17.57,
+    33.28
+   ],
+   [
+    18.32,
+    34.03
+   ],
+   [
+    20.09,
+    34.23
+   ],
+   [
+    21.86,
+    34.42
+   ],
+   [
+    23.63,
+    34.62
+   ],
+   [
+    25.41,
+    34.81
+   ]
+  ],
+  "ref_xy": [
+   0.0,
+   0.0
+  ]
+ },
+ "son_open_route": {
+  "yol": 1,
+  "guven": 0.799,
+  "waypoints": [
+   [
+    0.0,
+    0.0
+   ],
+   [
+    0.55,
+    1.67
+   ],
+   [
+    1.1,
+    3.35
+   ],
+   [
+    1.85,
+    4.47
+   ],
+   [
+    2.6,
+    5.59
+   ],
+   [
+    2.35,
+    7.34
+   ],
+   [
+    2.1,
+    9.09
+   ],
+   [
+    1.85,
+    10.83
+   ],
+   [
+    0.73,
+    12.33
+   ],
+   [
+    -0.39,
+    13.83
+   ],
+   [
+    -0.77,
+    15.7
+   ],
+   [
+    -1.14,
+    17.57
+   ],
+   [
+    -1.51,
+    19.44
+   ],
+   [
+    -1.89,
+    21.31
+   ],
+   [
+    -2.26,
+    23.18
+   ],
+   [
+    -2.64,
+    25.05
+   ],
+   [
+    -1.51,
+    26.17
+   ],
+   [
+    -0.39,
+    27.3
+   ],
+   [
+    0.73,
+    28.42
+   ],
+   [
+    1.85,
+    29.54
+   ],
+   [
+    3.82,
+    30.01
+   ],
+   [
+    5.78,
+    30.48
+   ],
+   [
+    7.75,
+    30.94
+   ],
+   [
+    9.71,
+    31.41
+   ],
+   [
+    11.67,
+    31.88
+   ],
+   [
+    13.64,
+    32.35
+   ],
+   [
+    15.6,
+    32.81
+   ],
+   [
+    17.57,
+    33.28
+   ],
+   [
+    18.32,
+    34.03
+   ],
+   [
+    20.09,
+    34.23
+   ],
+   [
+    21.86,
+    34.42
+   ],
+   [
+    23.63,
+    34.62
+   ],
+   [
+    25.41,
+    34.81
+   ]
+  ],
+  "ref_xy": [
+   0.0,
+   0.0
+  ]
+ },
+ "son_yayin": {
+  "tip": "NO_ROUTE",
+  "seq": 420,
+  "sebep": "MASKE_YOK",
+  "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+ },
+ "ika_son_durum": {
+  "latest_yol": 1,
+  "last_no_route": "MASKE_YOK",
+  "nesil": 39
+ },
+ "log_son": [
+  "KAMERA: kare dusdu (29/30 ardisik, toplam 29) — yeniden deneniyor",
+  "KAMERA: 30 ardisik dusen kare (ust sinir 30) — hat KOPTU sayildi, dongu kontrollu bitiyor. toplam dusen=30 okunan=39",
+  "KAMERA BITIS: neden=DUSEN_KARE_UST_SINIRI okunan=39 dusen_toplam=30 dusen_ardisik_maks=30"
+ ],
+ "duvar_saati_s": 8.69,
+ "hukum_tanimi": "dogru = İKA ucuna ≥ 1 OPEN_ROUTE ulaştı ∧ ulaşan her OPEN_ROUTE'un yolu açık yol (yanlış yol yayını 0)",
+ "sinir": "SENTETİK: MuJoCo render; İHA uçuşu KİNEMATİK; irtifa poses.csv z (gürültüsüz, MAVLink relative_alt yerine); FOV sim kamerası (74,5°; gerçek IMX477+6 mm ~55°, ÖLÇÜLMEDİ); kamera köprüsü (MJPEG) atlandı, kare döngüsü üretimdir; yayın senkron beklenir (latest-wins kaybı yok); kerteriz beslemesinde döndürme sim tarafındadır.",
+ "open_route_kareleri": [
+  15
+ ],
+ "open_route_tarama_bacaginda_n": 1,
+ "hukum": {
+  "open_route_var": true,
+  "dogru": true,
+  "yanlis_yol_yayini_n": 0,
+  "ilk_open_route_dogru": true,
+  "son_open_route_dogru": true,
+  "son_yayin_tipi": "NO_ROUTE"
+ },
+ "teshis": {
+  "tarama_bacagi_kare_n": 15,
+  "kb_karede_kare_n": 7,
+  "hb_karede_kare_n": 6,
+  "kb_hb_ayni_karede_kare_n": 0,
+  "or_kare_n": 1,
+  "or_dunya_yolu_dogru_n": 1,
+  "or_etiket_dunya_esit_n": 1,
+  "or_dunya_yollari": {
+   "1": 1
+  },
+  "dunya_yolu_dogru_var": true,
+  "kare_ika_or_tutarli": true,
+  "not": "TEŞHİS — hüküm (ön kayıt, yayınlanan etiket) değişmez"
+ },
+ "tarih": "2026-09-10 15:29"
+}
