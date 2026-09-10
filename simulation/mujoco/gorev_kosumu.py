@@ -35,6 +35,8 @@ import threading
 import time
 from pathlib import Path
 
+import numpy as np
+
 for _akim in (sys.stdout, sys.stderr):
     try:
         _akim.reconfigure(encoding="utf-8", errors="replace")
@@ -52,7 +54,7 @@ import arena_mjcf                                         # noqa: E402
 import araclar                                            # noqa: E402
 import iha_ucus                                           # noqa: E402
 import ika_nav                                            # noqa: E402
-from ika_surucu_mujoco import MuJoCoSurucu                # noqa: E402
+from ika_surucu_mujoco import MuJoCoSurucu, ENGEL_ONEKLERI as ENGEL_ONEKLERI_KOSUM   # noqa: E402
 from sim_hakem import SimHakem                            # noqa: E402
 from iha_sender import IhaSender, rota_json_oku           # noqa: E402
 from link import UDPLink                                  # noqa: E402
@@ -70,6 +72,7 @@ METRIK_ANAHTARLARI = (
     "rota_bulundu", "rota_dogru", "model_yol", "wp_sayisi", "sure_sim_iha_profil",
     "sure_sim_ika", "sure_sim_gorev", "varis_mesafesi_m", "hb_icinde", "temas_sayisi",
     "link_olaylari", "ack_listesi", "open_route_ack", "cikis_kodu", "basari",
+    "rota_engel_aciklik_m", "rota_engel_aciklik_geom", "rota_insaat_geregi_gecilemez",
     "duvar_saati_s", "sinir",
 )
 SINIR = ("İHA uçuşu KİNEMATİK (mocap, aerodinamik yok); hakem onayı sim'de OTOMATİK "
@@ -90,6 +93,49 @@ def rota_bol(wps, maks=ika_nav.MAX_SEGMENT_M):
             t = k / n
             out.append((a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t))
     return out
+
+
+IKA_YARI_GENISLIK_M = (araclar.IKA_IZ_M + araclar.IKA_TEKER_W) / 2.0   # teker dış kenarı
+
+
+def rota_engel_acikligi(m, wps_dunya, engel_onekleri=ENGEL_ONEKLERI_KOSUM, adim_m: float = 0.05):
+    """Rota polyline'ı ile engel geomları arasındaki en küçük XY açıklık (m) ve geom adı.
+
+    Rota `adim_m` aralıkla örneklenir; her engel geomu için örnekler geomun yerel
+    çerçevesine (geom_pos/geom_quat, statik geomlar) çevrilir: kutu → eksen hizalı
+    dikdörtgene uzaklık hypot(max(|x|−sx,0), max(|y|−sy,0)); silindir/küre → |xy| − r.
+    İçerideyse 0. `< IKA_YARI_GENISLIK_M` ise rota İNŞAAT GEREĞİ çarpışmasız izlenemez
+    (İKA merkez hatta sıfır hatayla gitse bile). TEŞHİS metriğidir: arena yerleşimi
+    (kapalı yol tıkaması açık yol hattına sokulmuş mu) ile sürücü hatasını AYIRIR
+    (10 Eyl teşhisi: 1 zor 43 — tikama_2_2_2 açık yol 3 hattına 0,07 m; İKA orada takıldı).
+    """
+    import mujoco
+    pts = [np.asarray(wps_dunya[0], float)]
+    for a, b in zip(wps_dunya, wps_dunya[1:]):
+        a, b = np.asarray(a, float), np.asarray(b, float)
+        L = float(np.hypot(*(b - a)))
+        n = max(1, int(math.ceil(L / adim_m)))
+        for k in range(1, n + 1):
+            pts.append(a + (b - a) * (k / n))
+    P = np.asarray(pts, float)
+    en_kucuk, geom_ad = None, None
+    R9 = np.zeros(9)
+    for g in range(m.ngeom):
+        ad = mujoco.mj_id2name(m, mujoco.mjtObj.mjOBJ_GEOM, g) or ""
+        if not ad.startswith(engel_onekleri):
+            continue
+        mujoco.mju_quat2Mat(R9, m.geom_quat[g])
+        R = R9.reshape(3, 3)[:2, :2]
+        yerel = (P - m.geom_pos[g][:2]) @ R          # dünya→yerel: R^T · v  (satır vektörü: v · R)
+        sx, sy = float(m.geom_size[g][0]), float(m.geom_size[g][1])
+        if int(m.geom_type[g]) == int(mujoco.mjtGeom.mjGEOM_BOX):
+            d = np.hypot(np.maximum(np.abs(yerel[:, 0]) - sx, 0.0), np.maximum(np.abs(yerel[:, 1]) - sy, 0.0))
+        else:
+            d = np.maximum(np.hypot(yerel[:, 0], yerel[:, 1]) - sx, 0.0)
+        dm = float(d.min())
+        if en_kucuk is None or dm < en_kucuk:
+            en_kucuk, geom_ad = dm, ad
+    return (None if en_kucuk is None else round(en_kucuk, 3)), geom_ad
 
 
 def gt_rota(h: int, lv: str):
@@ -191,6 +237,10 @@ def kos(h: int, lv: str, seed: int, rota_kaynak: str, *, res: int, out: Path, mo
     d = mujoco.MjData(m)
     surucu = MuJoCoSurucu(m, d)
     t_ofset = t_tarama_son
+    rota_aciklik, rota_aciklik_geom = (None, None)
+    if rota_bulundu:
+        wps_dunya = [(rota[2][0] + x, rota[2][1] + y) for x, y in rota[3]]
+        rota_aciklik, rota_aciklik_geom = rota_engel_acikligi(m, wps_dunya)
 
     def saat():
         return t_ofset + float(d.time)
@@ -283,6 +333,10 @@ def kos(h: int, lv: str, seed: int, rota_kaynak: str, *, res: int, out: Path, mo
         "model_yol": road, "model_guven": (round(float(rota[1]), 4) if rota_bulundu else None),
         "wp_sayisi": wp_sayisi,
         "maks_segment_m": (round(max(segler), 3) if rota_bulundu else None),
+        "rota_engel_aciklik_m": rota_aciklik, "rota_engel_aciklik_geom": rota_aciklik_geom,
+        "rota_insaat_geregi_gecilemez": (None if rota_aciklik is None
+                                         else bool(rota_aciklik < IKA_YARI_GENISLIK_M)),
+        "ika_yari_genislik_m": round(IKA_YARI_GENISLIK_M, 3),
         "sure_sim_iha_profil": round(t_inis, 2),
         "sure_sim_ika": sure_ika,
         "sure_sim_gorev": round(saat(), 2),
@@ -363,6 +417,11 @@ def ozet_kur(out: Path) -> dict:
             "ika_go_ack_n": sum(r.get("t_ika_go_ack") is not None for r in rs),
             "hb_icinde_n": sum(r["hb_icinde"] for r in rs),
             "temas_var_n": sum(r["temas_sayisi"] > 0 for r in rs),
+            "rota_insaat_geregi_gecilemez_n": sum(bool(r.get("rota_insaat_geregi_gecilemez")) for r in rs),
+            "temas_var_ve_gecilemez_n": sum(r["temas_sayisi"] > 0 and bool(r.get("rota_insaat_geregi_gecilemez"))
+                                            for r in rs),
+            "temas_var_ve_gecilebilir_n": sum(r["temas_sayisi"] > 0 and not r.get("rota_insaat_geregi_gecilemez")
+                                              for r in rs),
             "sure_asimi_n": sum(r["cikis_kodu"] == 4 for r in rs),
             "basari_n": len(basarili), "basari_orani": round(len(basarili) / len(rs), 3),
             "harita_hepsi_basarili_n": sum(all(v) for v in harita_basari.values()),
@@ -415,7 +474,9 @@ def main(argv=None):
                     print(f"[kosum] {a.rota_kaynak} {h} {lv} {seed}: rota={r['rota_bulundu']} "
                           f"dogru={r['rota_dogru']} kod={r['cikis_kodu']} hb={r['hb_icinde']} "
                           f"varis={r['varis_mesafesi_m']:.2f} m temas={r['temas_sayisi']} "
-                          f"sure={r['sure_sim_ika']} s basari={r['basari']} duvar={r['duvar_saati_s']} s")
+                          f"sure={r['sure_sim_ika']} s basari={r['basari']} "
+                          f"aciklik={r['rota_engel_aciklik_m']} ({r['rota_engel_aciklik_geom']}) "
+                          f"duvar={r['duvar_saati_s']} s")
         oz = ozet_kur(out)
         print(json.dumps(oz["kaynaklar"].get(a.rota_kaynak), ensure_ascii=False, indent=1))
         print(f"[kosum] toplam duvar saati {time.perf_counter() - t0:.1f} s → {out / 'ozet_kosum.json'}")

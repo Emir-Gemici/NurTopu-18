@@ -604,8 +604,11 @@ def wait_open_route_from_comms(
     if link is None:
         h, p = bind.split(":")
         link = UDPLink(bind=(h, int(p)))
+        dinlenen = bind
+    else:
+        dinlenen = f"hazır link, port {getattr(link, 'port', '?')}"
     rx = IkaReceiver(link, yks_peer=yks_peer, saat=saat).start()
-    print(f"[ika_nav] comms dinleniyor ({bind}) — İHA açık yolu gönderecek...")
+    print(f"[ika_nav] comms dinleniyor ({dinlenen}) — İHA açık yolu gönderecek...")
     if deadline_monotonic is None:
         deadline = _saat() + max(0.0, float(timeout))
     else:

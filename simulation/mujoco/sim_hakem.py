@@ -67,6 +67,11 @@ def sim_iha_heartbeat(seq=None) -> dict:
     return sim_etiketle(heartbeat(NODE_IHA, seq))
 
 
+def sim_yks_ack(ref_seq, ref_tip) -> dict:
+    """Hakemin (YKS ucu) ACK'ı — o da sim=true taşır; İhaSender ek alanı yok sayar (§6.1)."""
+    return sim_etiketle(ack(ref_seq, NODE_YKS, ref_tip))
+
+
 class SimHakem:
     def __init__(self, ika_addr, *, t_inis: float, saat, link=None,
                  hb_araligi: float = IHA_INIS_HEARTBEAT_ARALIGI_S,
@@ -83,6 +88,13 @@ class SimHakem:
         self.iha_addr = None            # OPEN_ROUTE/NO_ROUTE'un geldiği adres
         self.rota = None                # kabul edilen OPEN_ROUTE
         self.rota_ack_kaniti = None     # İKA'nın OPEN_ROUTE ACK kopyası (K8)
+        # T213-B ÖLÇÜM (gt 1 orta 44, 10 Eyl 10:0x): İKA'nın ACK kopyası hakeme
+        # OPEN_ROUTE'tan ÖNCE ulaştı (loopback'te İKA, İHA'nın YKS'ye ikinci
+        # datagramından hızlı); hakem `rota None` diye kanıtı atıyordu, İHA 'ika'
+        # ACK'ını gördüğü için İKA'ya tekrar göndermiyor → kopya bir daha gelmiyor
+        # → 2/2 asla, IKA_GO yok, çıkış 3. Erken kanıt seq'iyle SAKLANIR, rota
+        # gelince eşlenir (sıra bağımsız). Kilit: test E (mutasyon: tampon yok).
+        self._erken_kanit = {}          # seq -> ACK kaydı (OPEN_ROUTE'tan önce gelen)
         self.iha_ack_gonderildi = None  # İHA'ya giden OPEN_ROUTE ACK (2/2)
         self.no_route = None
         self.landed = AckliTekrar(self._ika_ya_gonder, landed_araligi, landed_ust_siniri, saat=saat)
@@ -129,23 +141,29 @@ class SimHakem:
                 self._olay("ROTA_ALINDI", seq=m["seq"], road=m.get("road"), conf=m.get("conf"),
                            waypoint=len(m.get("waypoints") or []))
                 self._olay("HAKEM_ONAYI_1", seq=m["seq"], dayanak="SIM: otomatik")
+                erken = self._erken_kanit.pop(m["seq"], None)
+                if erken is not None and self.rota_ack_kaniti is None:
+                    self.rota_ack_kaniti = erken
+                    self._olay("IKA_AKTARIM_KANITI", seq=m["seq"], erken=True)
             self._iki_bolu_iki_dene()
         elif tip == "NO_ROUTE" and isinstance(m.get("seq"), int):
             self.iha_addr = addr
             self.no_route = m
-            self.link.send(encode(ack(m["seq"], NODE_YKS, "NO_ROUTE")), addr)
+            self.link.send(encode(sim_yks_ack(m["seq"], "NO_ROUTE")), addr)
             self._olay("ROTA_YOK", seq=m["seq"], sebep=m.get("sebep"), detay=m.get("detay"))
         elif tip == "ACK" and isinstance(m.get("ref"), int):
             kayit = {"t": round(t, 3), "node": m.get("node"), "ref": m["ref"],
                      "ref_tip": m.get("ref_tip")}
             self.ack_listesi.append(kayit)
             self._olay("ACK_ALINDI", **{k: v for k, v in kayit.items() if k != "t"})
-            if (m.get("node") == "ika" and m.get("ref_tip") == "OPEN_ROUTE"
-                    and self.rota is not None and m["ref"] == self.rota.get("seq")):
-                if self.rota_ack_kaniti is None:
-                    self.rota_ack_kaniti = kayit
-                    self._olay("IKA_AKTARIM_KANITI", seq=m["ref"])
-                self._iki_bolu_iki_dene()
+            if m.get("node") == "ika" and m.get("ref_tip") == "OPEN_ROUTE":
+                if self.rota is not None and m["ref"] == self.rota.get("seq"):
+                    if self.rota_ack_kaniti is None:
+                        self.rota_ack_kaniti = kayit
+                        self._olay("IKA_AKTARIM_KANITI", seq=m["ref"])
+                    self._iki_bolu_iki_dene()
+                elif self.rota is None:
+                    self._erken_kanit.setdefault(m["ref"], kayit)   # rota henüz yok: sakla
             if m.get("node") == "ika" and m.get("ref_tip") == "IHA_LANDED":
                 self.landed.ack_geldi(m)
             if m.get("node") == "ika" and m.get("ref_tip") == "CMD":
@@ -159,7 +177,7 @@ class SimHakem:
                 or self.iha_ack_gonderildi is not None or self.iha_addr is None):
             return
         seq = self.rota["seq"]
-        self.link.send(encode(ack(seq, NODE_YKS, "OPEN_ROUTE")), self.iha_addr)
+        self.link.send(encode(sim_yks_ack(seq, "OPEN_ROUTE")), self.iha_addr)
         self.iha_ack_gonderildi = {"t": round(float(self.saat()), 3), "seq": seq}
         self._olay("HAKEM_ONAYI_2", seq=seq, ref_tip="OPEN_ROUTE", dayanak="SIM: İKA ACK kopyası")
 

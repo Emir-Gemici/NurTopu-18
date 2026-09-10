@@ -20,6 +20,7 @@ from __future__ import annotations
 import ast
 import contextlib
 import io
+import json
 import math
 import re
 import sys
@@ -32,7 +33,7 @@ from unittest import mock
 
 KOK = Path(__file__).resolve().parents[1]
 for _p in (str(KOK / "simulation" / "mujoco"), str(KOK / "simulation" / "scripts"),
-           str(KOK / "codes"), str(KOK / "comms")):
+           str(KOK / "codes"), str(KOK / "comms"), str(KOK / "scripts")):
     if _p not in sys.path:
         sys.path.insert(0, _p)
 
@@ -51,7 +52,9 @@ from ika_surucu_mujoco import MuJoCoSurucu, ISARET_GEOMLARI   # noqa: E402
 from ika_receiver import IkaReceiver            # noqa: E402
 from iha_sender import IhaSender, rota_geometrisini_dogrula   # noqa: E402
 from link import UDPLink                        # noqa: E402
-from protocol import encode, open_route         # noqa: E402
+from protocol import FrameReader, encode, open_route, rota_yok   # noqa: E402
+
+_GERCEK_UYKU = time.sleep      # yama ÖNCESİ yakalanır: test yardımcıları thread'e nefes verir
 
 
 def _sar(a):
@@ -120,6 +123,16 @@ class A_TekKaynakSabitler(unittest.TestCase):
         self.assertNotEqual(nav, mutant, "MUTASYON UYGULANMADI")
         self.assertIsNone(_atama_isim(mutant, "MAX_SPEED"), "çıplak 1.3 yakalanmadı")
 
+    def test_contracts_s4_ika_kinematik_tablosu(self):
+        """CONTRACTS §4 üç sabiti adıyla ve tek kaynak dosyasıyla anar (belge↔kod kilidi)."""
+        c = (KOK / "CONTRACTS.md").read_text(encoding="utf-8")
+        b4 = c.split("## 4. Geometri sabitleri", 1)[1].split("\n## 5.", 1)[0]
+        for ad in ("IKA_TEKER_YARICAP_M", "IKA_IZ_GENISLIGI_M", "IKA_AZAMI_HIZ_MS"):
+            self.assertIn(f"`{ad}`", b4, f"CONTRACTS §4'te {ad} yok")
+        self.assertIn("karar_sozlesmesi", b4)
+        self.assertIn("TAHMİN", b4, "iz genişliği TAHMİN etiketi §4'te olmalı")
+        self.assertIn("0.0625", b4); self.assertIn("0.39", b4); self.assertIn("1.3", b4)
+
     def test_kabul_rampasi_yeni_tavanin_altinda(self):
         from ika_surucu_kabul import RAMPA_HEDEF_MS
         self.assertLessEqual(RAMPA_HEDEF_MS, ika_nav.MAX_SPEED)
@@ -148,6 +161,31 @@ class B_MuJoCoSurucu(unittest.TestCase):
         x, y, z, yaw = s.konum_al()
         self.assertEqual(len(s.konum_al()), 4)
         self.assertAlmostEqual(yaw, math.pi / 2, places=3)     # KB'de kuzeye bakar
+
+    def test_konum_al_adim_oncesi_kb_pozu(self):
+        """Regresyon (10 Eyl): taze MjData'da mj_forward'sız xpos/xmat sıfırdı →
+        konum_al (0,0,0,0) veriyordu; sürücü kurulumda mj_forward koşar."""
+        s, _ = self._kur()
+        H = arena.harita(1, "kolay")
+        x, y, z, yaw = s.konum_al()
+        self.assertAlmostEqual(x, H["kb"][0], places=3)
+        self.assertAlmostEqual(y, H["kb"][1], places=3)
+        self.assertAlmostEqual(z, araclar.IKA_BASLANGIC_Z, places=3)
+        self.assertAlmostEqual(yaw, math.pi / 2, places=3)
+
+    def test_MUTASYON_nan_kirpmadan_once_denetlenmezse_tam_gaz(self):
+        """Mutant (kırp → sonra denetle): min(w, nan) = w → NaN komut tam gaz olur."""
+        s, d = self._kur()
+        w = s.w_maks
+        mutant = max(-w, min(w, float("nan")))
+        self.assertTrue(math.isfinite(mutant) and mutant == w, "mutant kanıtı: NaN → w_maks")
+        # gerçek kod: False ve ctrl DEĞİŞMEZ
+        s.hiz_ver(0.5, 0.5)
+        onceki = s.teker_hedefleri()
+        self.assertFalse(s.hiz_ver(float("nan"), 0.0))
+        self.assertFalse(s.hiz_ver(float("inf"), 0.0))
+        self.assertEqual(s.teker_hedefleri(), onceki)
+        self.assertEqual(s.ardisik_hata, 2)
 
     def test_hiz_ver_teker_hizi_donusumu(self):
         s, d = self._kur()
@@ -281,7 +319,7 @@ class D_SimSaatiRotaBekleme(unittest.TestCase):
             if gonderildi["n"] == 0:
                 g.send(encode(open_route(**self.ROTA, seq=77)), ("127.0.0.1", link.port))
                 gonderildi["n"] = 1
-            time.sleep(0.02)                     # alıcı thread'i datagramı alsın (test yardımı)
+            _GERCEK_UYKU(0.02)                   # alıcı thread'i datagramı alsın (test yardımı)
 
         with mock.patch.object(ika_nav.time, "sleep", _uyku_yasak), \
              contextlib.redirect_stdout(io.StringIO()):
@@ -316,7 +354,7 @@ class D_SimSaatiRotaBekleme(unittest.TestCase):
             if gonderildi["n"] == 0:
                 g.send(encode(open_route(**self.ROTA, seq=78)), ("127.0.0.1", link.port))
                 gonderildi["n"] = 1
-            time.sleep(0.02)
+            _GERCEK_UYKU(0.02)
 
         with mock.patch.object(ika_receiver, "IkaReceiver", DuvarSaatliAlici), \
              contextlib.redirect_stdout(io.StringIO()):
@@ -371,6 +409,23 @@ class E_SimHakem(unittest.TestCase):
         from protocol import iha_landed
         self.assertNotIn("sim", iha_landed())
 
+    def test_hakem_acki_de_sim_alani_tasir(self):
+        """Hakemin ürettiği ACK (NO_ROUTE / OPEN_ROUTE 2/2) da sim=true taşır."""
+        saat = SahteSaat(0.0)
+        link = UDPLink(bind=("127.0.0.1", 0), timeout=0.01)
+        hakem = sim_hakem.SimHakem(("127.0.0.1", 1), t_inis=99.0, saat=saat, link=link)
+        self.addCleanup(hakem.kapat)
+        giden = []
+        hakem.link.send = lambda b, addr: giden.append((b, addr))
+        hakem._mesaj(rota_yok("KARAR_YOK", seq=41), ("127.0.0.1", 2))
+        self.assertEqual(len(giden), 1)
+        m = list(FrameReader().feed(giden[0][0]))[0]
+        self.assertEqual((m["type"], m["node"], m["ref"], m["ref_tip"]), ("ACK", "yks", 41, "NO_ROUTE"))
+        self.assertIs(m["sim"], True)
+        # saha ACK'ında alan yok
+        from protocol import ack
+        self.assertNotIn("sim", ack(41, "yks", "NO_ROUTE"))
+
     def test_uretim_kodunda_sim_hakem_importu_yok(self):
         desen = re.compile(r"^\s*(from|import)\s+.*sim_hakem", re.M)
         vuran = []
@@ -380,6 +435,42 @@ class E_SimHakem(unittest.TestCase):
                     vuran.append(str(p.relative_to(KOK)))
         self.assertEqual(vuran, [], f"üretim kodu sim_hakem'e bağlandı: {vuran}")
         self.assertTrue((KOK / "simulation" / "mujoco" / "sim_hakem.py").is_file())
+
+    def test_erken_ika_ack_kopyasi_rota_gelince_eslesir(self):
+        """Regresyon (gt 1 orta 44): İKA ACK kopyası OPEN_ROUTE'tan ÖNCE gelirse
+        kanıt saklanır; rota gelince 2/2 verilir ve İHA'ya ACK gider.
+        Mutasyon: tampon devre dışı → kanıt None, İHA'ya ACK yok (eski kilitlenme)."""
+        from protocol import ack
+        for tampon in (True, False):
+            saat = SahteSaat(0.0)
+            link = UDPLink(bind=("127.0.0.1", 0), timeout=0.01)
+            hakem = sim_hakem.SimHakem(("127.0.0.1", 1), t_inis=99.0, saat=saat, link=link)
+            self.addCleanup(hakem.kapat)
+            giden = []
+            hakem.link.send = lambda b, addr, _g=giden: _g.append((list(FrameReader().feed(b))[0], addr))
+            if not tampon:
+                hakem._erken_kanit = mock.MagicMock()      # mutant: saklamaz, hiç eşlemez
+                hakem._erken_kanit.pop.return_value = None
+            hakem._mesaj(ack(5, "ika", "OPEN_ROUTE"), ("127.0.0.1", 3))
+            self.assertIsNone(hakem.rota_ack_kaniti)
+            hakem._mesaj(open_route(1, 0.9, [[0, 0], [0, 1.5]], [0.0, -23.0], seq=5), ("127.0.0.1", 2))
+            if tampon:
+                self.assertIsNotNone(hakem.rota_ack_kaniti, "erken kanıt eşlenmedi")
+                self.assertEqual([(m["type"], m["ref_tip"], addr[1]) for m, addr in giden],
+                                 [("ACK", "OPEN_ROUTE", 2)])
+                self.assertTrue(any(o["olay"] == "IKA_AKTARIM_KANITI" and o.get("erken") for o in hakem.olaylar))
+            else:
+                self.assertIsNone(hakem.rota_ack_kaniti, "mutant kanıt buldu — kilit anlamsız")
+                self.assertEqual(giden, [])
+
+    def test_contracts_s67_sim_istisnasi_yazili(self):
+        c = (KOK / "CONTRACTS.md").read_text(encoding="utf-8")
+        b = c.split("### 6.7 FDA görev kipi", 1)[1].split("\n### 6.8", 1)[0]
+        self.assertIn("Simülasyon istisnası", b)
+        self.assertIn("sim_hakem", b)
+        self.assertIn('"sim": true', b)
+        self.assertIn("saha kanıtı", b)
+        self.assertIn("simulation/mujoco/", b)
 
     def _akis(self, yks_peer_ver: bool, t_inis=10.0):
         saat = SahteSaat(0.0)
@@ -408,7 +499,7 @@ class E_SimHakem(unittest.TestCase):
                     landed_once_gorulen = saat()
                 if hakem.t_ika_go_ack is not None:
                     break
-                time.sleep(0.002)
+                _GERCEK_UYKU(0.002)
             thr.join(3.0)
             rx.poll()
         finally:
@@ -492,6 +583,51 @@ class F_GorevKosumu(unittest.TestCase):
         self.assertEqual(oz["kaynaklar"]["gt"]["basari_n"], 1)
         print(f"[F] duman {self.sure:.1f} s · sürüş {r['sure_sim_ika']} sim-s · varış "
               f"{r['varis_mesafesi_m']} m · temas {r['temas_sayisi']} · ack {r['open_route_ack']}")
+
+    def test_rota_engel_acikligi_teshis_metrigi(self):
+        """Açıklık = rota örnekleri → geom OBB uzaklığı; merkezden geçen rota 0, uzak rota
+        büyük; kutu kenarından 0,30 m geçen hat ≈ 0,30; duman koşumunda alan bool."""
+        m = arena_mjcf.yukle(1, "kolay", 42, kam_res=64)
+        g = mujoco.mj_name2id(m, mujoco.mjtObj.mjOBJ_GEOM, "tikama_2_0_0")
+        self.assertGreaterEqual(g, 0)
+        cx, cy = float(m.geom_pos[g][0]), float(m.geom_pos[g][1])
+        a, ad = gorev_kosumu.rota_engel_acikligi(m, [(cx - 3, cy), (cx + 3, cy)])
+        self.assertLessEqual(a, 1e-6, "merkezden geçen hat içeride → 0")
+        self.assertTrue(ad.startswith(("moloz_", "tikama_", "chicane_", "bariyer_", "ub_duvar_")))
+        # eksen hizalı yapay kutu: (0,0) merkez, yarı kenar 0,4, yaw 0 → y=0,7 hattı 0,30 açıklık
+        import numpy as np
+        yerel_m = mujoco.MjModel.from_xml_string(
+            '<mujoco><worldbody><geom name="moloz_x" type="box" size="0.4 0.4 0.3" pos="0 0 0.3"/>'
+            '</worldbody></mujoco>')
+        a2, ad2 = gorev_kosumu.rota_engel_acikligi(yerel_m, [(-2.0, 0.7), (2.0, 0.7)])
+        self.assertAlmostEqual(a2, 0.30, places=2); self.assertEqual(ad2, "moloz_x")
+        a3, _ = gorev_kosumu.rota_engel_acikligi(yerel_m, [(-2.0, 0.55), (2.0, 0.55)])
+        self.assertAlmostEqual(a3, 0.15, places=2)
+        self.assertLess(a3, gorev_kosumu.IKA_YARI_GENISLIK_M)       # inşaat gereği geçilemez
+        a4, _ = gorev_kosumu.rota_engel_acikligi(m, [(400.0, 400.0), (401.0, 401.0)])
+        self.assertGreater(a4, 50.0)
+        self.assertIn(self.r["rota_insaat_geregi_gecilemez"], (True, False))
+        self.assertAlmostEqual(self.r["ika_yari_genislik_m"], (ks.IKA_IZ_GENISLIGI_M + araclar.IKA_TEKER_W) / 2, places=3)
+        self.assertIsInstance(self.r["rota_engel_aciklik_m"], float)
+        print(f"[F] 1 kolay 42 GT rota açıklığı {self.r['rota_engel_aciklik_m']} m ({self.r['rota_engel_aciklik_geom']})")
+
+    def test_readme_olcumden_bayt_es(self):
+        """README_T213B.md üreteç çıktısıyla BAYT-EŞ (elle düzenlenmedi); duman klasöründe de üretilir."""
+        import kosum_readme
+        gorev_kosumu.ozet_kur(Path(self.tmp.name))
+        metin = kosum_readme.uret(Path(self.tmp.name))
+        self.assertIn("| gt (YER GERÇEĞİ) | 1 |", metin)
+        self.assertIn("| model | 0 |", metin)                  # ölçülmemiş kaynak ÖLÇÜLMEDİ satırı
+        self.assertIn("ÖLÇÜLMEDİ", metin)
+        self.assertIn("| gt | 1 | kolay | 42 |", metin)
+        self.assertIn("TAHMİN", metin); self.assertIn("saha kanıtı sayılmaz", metin)
+        kosum = gorev_kosumu.KOSUM_KOK
+        if (kosum / kosum_readme.README_ADI).is_file() and (kosum / "ozet_kosum.json").is_file():
+            disk = (kosum / kosum_readme.README_ADI).read_text(encoding="utf-8")
+            self.assertEqual(disk, kosum_readme.uret(kosum), "README elle düzenlenmiş / bayat — kosum_readme.py ile üret")
+            oz = json.loads((kosum / "ozet_kosum.json").read_text(encoding="utf-8"))
+            for k, o in oz["kaynaklar"].items():
+                self.assertIn(f"**{o['basari_n']}/{o['n']} ({o['basari_orani']:.3f})**", disk)
 
     def test_rota_bol_d438c(self):
         H = arena.harita(1, "kolay")

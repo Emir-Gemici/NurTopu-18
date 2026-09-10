@@ -216,6 +216,32 @@ Rota doğrulaması **C-space'te** yapılır (`dt_px` üzerinden), **ham maskede 
 olduğu için koridor merkezinden geçme davranışı `maliyet = 1.0 + λ·u^p` ile elde edilir.
 Bilinçli ikamedir, eksiklik değil.
 
+### 4.1 İKA kinematik sabitleri — TEK KAYNAK `codes/karar_sozlesmesi.py` (T213 · D-438 ölçüm 2f · 2026-09-10)
+
+**Olgu (D-438 f):** `ika_nav.MAX_SPEED = 2.0`, `navitas_anim.cc` 1,1 ve kabul harnessi 0,30 —
+üç kopya, hiçbiri sözleşmede değildi; 2,0 m/s DDR fiziksel tavanının (1,3 m/s) üstündeydi.
+Tek kaynak `karar_sozlesmesi` seçildi (**saf Python**; `ika_nav` İKA'da cv2 almadan okur).
+`costmap_path_finder` aynı adları **oradan alır**, yeniden tanımlamaz.
+
+| Sabit | Değer | Kaynak / durum |
+|---|---|---|
+| `IKA_TEKER_YARICAP_M` | `0.0625` | DDR: Ø125 mm TPU teker |
+| `IKA_IZ_GENISLIGI_M` | `0.39` | **TAHMİN** — DDR'de yok; insan teyidine kadar (ON_KAYIT §3.3, D-438 ek ile varsayılan kabul) |
+| `IKA_AZAMI_HIZ_MS` | `1.3` | DDR: 4× KGX38 24 V 200 rpm → 200 × π × 0,125 / 60 = 1,309 m/s → beyan 1,3 |
+
+**Okuyucular (sayı yazmaz, AD okur):** `simulation/scripts/ika_nav.py` (`MAX_SPEED`),
+`simulation/mujoco/araclar.py` (`IKA_TEKER_R`, `IKA_IZ_M`, `IKA_VMAX_MS`),
+`ika_surucu_mujoco.MuJoCoSurucu` (`rad/s = v / IKA_TEKER_YARICAP_M`).
+`TURN_GAIN` (1,8) sözleşme sabiti değildir; T213-B MuJoCo ölçümü ile 1,3 m/s tabanda
+korunmuştur (`results/fdr_sprint_20260910/H1/kosum/README_T213B.md`).
+**Kayıtlı kusur (dokunulmadı):** `ika_nav.steer()` geri gitmez — `delta = TURN_GAIN·err`
+`[-base, base]`'e kırpılır, `r = base + delta`, `l = base - delta`; en keskin komutta iç teker **0**,
+hiçbir teker negatif olmaz → yerinde (pivot) dönüş yok, keskin sapmada yay çizer (`WP_RADIUS` 0,5 m
+bu yayı tolere eder; T213-B ölçümüyle sınanır).
+
+**Kilit:** `tests/test_sim_mujoco_zincir.py::A_TekKaynakSabitler` — AST ile ad okunduğu,
+çıplak sayı mutantının yakalandığı, bu tablonun adları andığı denetlenir.
+
 ---
 
 ## 5. Ölçek (`mpp`) sözleşmesi
@@ -440,6 +466,34 @@ tamamlanır ve gerçek link'e `ref_tip`'li ACK yazılır; (2) yarışma kipinde 
 hâlâ REDDEDİLİR (regresyon yok); (3) FDA'da `parasut()` çağrılsa bile link'e `PARACHUTE`
 gitmez; (4) FDA'da `ika_baslat()` `IKA_GO` yazmaz; (5) FIRLATMA etiketi `KALKIŞ` ve ARM
 kilidi hâlâ damgayı reddeder; (6) mutasyon: FDA kontrolü kaldırılınca ilgili test düşer.
+
+#### 6.7.1 Simülasyon istisnası — `sim_hakem` (T213 · ON_KAYIT §5.4 · 2026-09-10)
+
+**Olgu:** Sahada `IHA_LANDED`'in **tek üreticisi** `comms/iha_inis_yayinci.py`'dir (Pixhawk iniş
+kanıtı) ve `IKA_GO` YKS operatörünün **manuel** tetiğidir (§2.2.5, §6.6). MuJoCo görev zinciri
+(`simulation/mujoco/gorev_kosumu.py`) insansız ve Pixhawk'sız koşar; hakem onayı ve iniş olayı
+orada **otomatik** üretilmek zorundadır.
+
+**Sözleşme — istisna, genişletme değil:**
+
+| konu | saha (§6.6 / §6.7) | simülasyon (`simulation/mujoco/sim_hakem.py`) |
+|---|---|---|
+| `IHA_LANDED` üreticisi | yalnız `iha_inis_yayinci` (Pixhawk kanıtı) | `SimHakem`, İHA kinematik profilinin `t_inis` anında (`iha_ucus.UcusProfili`) |
+| `IKA_GO` | YKS operatörü, hakem 2/2 sonrası | `SimHakem`: İKA'nın OPEN_ROUTE ACK kopyası (K8) ∧ `IHA_LANDED` ACK'ı ∧ t ≥ `t_inis` |
+| hakem onayı 1/2 · 2/2 | insan (ekranda kanıt) | otomatik; 2/2 **yine yalnız K8 kanıtıyla** (fail-closed aynen; kanıt yoksa İHA'ya ACK gitmez, IKA_GO çıkmaz) |
+| mesaj alanı | yok | **her** üretilen mesaj (`IHA_LANDED`, `CMD IKA_GO`, `HEARTBEAT`, YKS `ACK`) `"sim": true` taşır |
+| kanıt değeri | saha kanıtı | **saha kanıtı SAYILMAZ**; FDR'ye yalnız "simülasyon ölçümü" etiketiyle girer |
+| yaşadığı yer | `comms/` | **yalnız** `simulation/mujoco/`; üretim kodu (`codes/`, `comms/`, `simulation/scripts/ika_nav.py`, `scripts/`) bu modülü **import etmez** |
+| saat | duvar saati | sim saati dışarıdan enjekte (`saat=`), thread yok, her kontrol tikinde yoklanır |
+| portlar | 5005/5006/5007 | yalnız ephemeral (`127.0.0.1:0`) |
+
+**Alıcı davranışı değişmez:** `IkaReceiver`/`IhaSender` `sim` alanını **yok sayar** (§6.1 bilinmeyen
+alan sözleşmesi); sim mesajı ile saha mesajı alıcıda aynı yoldan işlenir — bu, sim ölçümünün
+alıcı kodunu sahadakiyle **aynı** sınadığını garanti eder. `sim` alanı yalnız kayıt/ayrımdır.
+
+**Kilit:** `tests/test_sim_mujoco_zincir.py::E_SimHakem` — üretilen mesajlarda `sim=true`, saha
+üreticisinde alan **yok**, K8 kanıtsız akışta İHA'ya ACK gitmez ve IKA_GO çıkmaz (mutasyon),
+üretim ağacında `sim_hakem` importu yok (grep), bu alt başlığın varlığı.
 
 ### 6.8 Hakem kanıt kaydının OLAY KÜMESİ — bağlayıcı (şartname §2.2.3 / §6.2 · FDR açık kalem #25)
 

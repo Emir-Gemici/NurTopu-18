@@ -106,13 +106,20 @@ class MuJoCoSurucu(IkaSurucu):
         self.komut_sayisi = 0
         self.son_komut = (0.0, 0.0)
         self._mujoco = mujoco
+        # T213 ÖLÇÜM (10 Eyl sabah): taze MjData'da xpos/xmat SIFIRDIR (mj_forward
+        # koşmadan) → konum_al ilk adımdan önce (0,0,0,yaw=0) döndürüyordu; KB'deki
+        # İKA'nın gerçek pozu/yönü ancak mj_forward sonrası okunur. Kilit: test B.
+        mujoco.mj_forward(model, data)
 
     # ── IkaSurucu sözleşmesi ────────────────────────────────────────────────
     def _hiz_ver(self, sag, sol) -> bool:
-        ws = max(-self.w_maks, min(self.w_maks, float(sag) / self.teker_r))
-        wl = max(-self.w_maks, min(self.w_maks, float(sol) / self.teker_r))
-        if not (math.isfinite(ws) and math.isfinite(wl)):
+        sag, sol = float(sag), float(sol)
+        # Sonluluk KIRPMADAN ÖNCE denetlenir: min(w, nan) Python'da w döndürür,
+        # NaN komut sessizce tam gaz olurdu (T213 ölçümü, test B mutasyonu).
+        if not (math.isfinite(sag) and math.isfinite(sol)):
             return False
+        ws = max(-self.w_maks, min(self.w_maks, sag / self.teker_r))
+        wl = max(-self.w_maks, min(self.w_maks, sol / self.teker_r))
         for i in self.sag_akt:
             self.d.ctrl[i] = ws
         for i in self.sol_akt:
