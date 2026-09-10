@@ -1952,18 +1952,28 @@ okunur JSON depoda (`results/gece_20260907/karisiklik/`).
 > belirtilmelidir."*
 
 Üç istekten **paket yapısı** (§3.3.4.3.1, §3.3.4.3.2) ve **gecikme** (§3.3.4.3.3)
-ölçülmüştür; **veri hızı** ölçülmemiştir:
+ölçülmüştür; ~~**veri hızı** ölçülmemiştir:~~ **veri hızı** 10 Eylül'de **yazılım
+düzeneklerinde** ölçülmüştür (§3.3.4.3.3, "10 Eylül" tablosu); **RF hattında hâlâ
+ÖLÇÜLEMEDİ**:
 
-**ÖLÇÜLEMEDİ:** SiK 433 MHz hattında fiilî veri hızı (bit/s) ve paket/s. §3.3.4.3.3'teki
-sayılar **gecikme** ölçümleridir, veri hızı ölçümü değildir; §3.3.4.3.2'deki tekrar
-aralıkları ise **tasarım sabitleridir**, ölçülmüş akış değildir. Kapanma: 5 Eylül,
-`scripts/sik_rf_olc.py` gerçek radyo çiftiyle koşulduğunda.
+**ÖLÇÜLEMEDİ:** SiK 433 MHz hattında fiilî veri hızı (bit/s) ve paket/s. ~~§3.3.4.3.3'teki
+sayılar **gecikme** ölçümleridir, veri hızı ölçümü değildir;~~ §3.3.4.3.2'deki tekrar
+aralıkları ~~ise~~ **tasarım sabitleridir**, ölçülmüş akış değildir. ~~Kapanma: 5 Eylül,
+`scripts/sik_rf_olc.py` gerçek radyo çiftiyle koşulduğunda.~~
+**10 Eylül (T216):** `scripts/sik_rf_olc.py`'a bayt/paket sayacı ve `veri_hizi` alanı eklendi;
+UDP loopback ve TCP-seri köprüsünde RTT **ve** veri hızı ölçüldü (§3.3.4.3.3 tablo; kaynak
+`results/fdr_sprint_20260910/H2/olcum_*.json`). 5 Eylül'de radyolar bağlandı ama betik
+koşulmadı (D-426 §1); **kapanma:** ekip SiK çiftini taktığında aynı araç
+(`--rol yanki --port COMx` / `--rol olc --port COMy --n 200 --json --cikti …`) — RF satırı o
+koşumun JSON'u olmadan kapanmaz.
 
 ##### 3.3.4.3.1 Çerçeve protokolü (SiK 433 MHz / UDP)
 
 - **Çerçeveleme:** satır sonu (`\n`) ile ayrılmış **tek satır JSON**, UTF-8
-  (`comms/protocol.py:216 encode` / `:222 decode`; 3 Eylül taslağındaki `:193`/`:199`
-  satır numaraları 5 Eylül'de yeniden okundu). `json.dumps(separators=(",", ":"),
+  (~~`comms/protocol.py:216 encode` / `:222 decode`~~ `:229 encode` / `:235 decode` — 10 Eylül
+  okuması: T208 mesaj tipi sabit bloğu `MESAJ_*` (`protocol.py:28-39`) +13 satır kaydırdı;
+  3 Eylül taslağındaki `:193`/`:199` satır numaraları 5 Eylül'de yeniden okunmuştu).
+  `json.dumps(separators=(",", ":"),
   ensure_ascii=False, allow_nan=False)` — NaN çerçeveye giremez. Taşıyıcıdan bağımsızdır.
 - **Parçalı veri güvenli okuyucu:** `FrameReader` bayt akışından tam çerçeveleri ayıklar.
 - **Tampon tavanı:** `CERCEVE_TAMPON_TAVANI = 64 KiB`. SiK hattında gürültü newline
@@ -1980,12 +1990,18 @@ yuvarlı).
 
 | `type` | üretici | alanlar | üreten fonksiyon |
 |---|---|---|---|
-| `OPEN_ROUTE` | İHA | `road` (1=sol, 2=orta, 3=sağ), `label`, `conf`, `ref_xy`, `waypoints` | `open_route` (`protocol.py:41`) |
-| `NO_ROUTE` | İHA | `sebep`, `detay` (isteğe bağlı) | `rota_yok` (`:73`) |
-| `HEARTBEAT` | herkes | `node`; İHA ayrıca `karar_yas` ve `HEARTBEAT_TELEMETRI_ALANLARI` (`:103`: `x, y, alt, hiz, yon, bat, bat_yuzde, uydu, karar_yas, lat, lon, gps_fix, armed, mod, pixhawk_canli`) — bilinmeyen alan **yazılmaz**, sözleşme dışı alan `ValueError` | `heartbeat` (`:113`) |
-| `ACK` | YKS / İKA / İHA | `ref` (seq), `node`; isteğe bağlı `ref_tip`, `ref_cmd`, `sonuc` | `ack` (`:128`) |
-| `CMD` | YKS | `cmd`, `hedef`; isteğe bağlı `oturum` (`[A-Za-z0-9_-]{16,64}`, `:31-34`) | `command` (`:184`) |
-| `IHA_LANDED` | İHA | `node="iha"`, `seq` | `iha_landed` (`:198`) |
+| `OPEN_ROUTE` | İHA | `road` (1=sol, 2=orta, 3=sağ), `label`, `conf`, `ref_xy`, `waypoints` | `open_route` (~~`protocol.py:41`~~ `:54` · 10 Eylül) |
+| `NO_ROUTE` | İHA | `sebep`, `detay` (isteğe bağlı) | `rota_yok` (~~`:73`~~ `:86`) |
+| `HEARTBEAT` | herkes | `node`; İHA ayrıca `karar_yas` ve `HEARTBEAT_TELEMETRI_ALANLARI` (~~`:103`~~ `:116`: `x, y, alt, hiz, yon, bat, bat_yuzde, uydu, karar_yas, lat, lon, gps_fix, armed, mod, pixhawk_canli`) — bilinmeyen alan **yazılmaz**, sözleşme dışı alan `ValueError` | `heartbeat` (~~`:113`~~ `:126`) |
+| `ACK` | YKS / İKA / İHA | `ref` (seq), `node`; isteğe bağlı `ref_tip`, `ref_cmd`, `sonuc` | `ack` (~~`:128`~~ `:141`) |
+| `CMD` | YKS | `cmd`, `hedef`; isteğe bağlı `oturum` (`[A-Za-z0-9_-]{16,64}`, ~~`:31-34`~~ `:44-47`) | `command` (~~`:184`~~ `:197`) |
+| `IHA_LANDED` | İHA | `node="iha"`, `seq` | `iha_landed` (~~`:198`~~ `:211`) |
+
+Tip adları **tek yerden** okunur (T208, 10 Eylül): `protocol.MESAJ_OPEN_ROUTE`, `MESAJ_NO_ROUTE`,
+`MESAJ_HEARTBEAT`, `MESAJ_ACK`, `MESAJ_CMD`, `MESAJ_IHA_LANDED` (`MESAJ_TIPLERI`, `protocol.py:32-39`);
+üreticiler ve alıcılar (`ika_receiver`, `yks_gui`, `komut_tekrar`, `iha_sender`, `iha_komut_alici`, sim
+betikleri) çıplak `"OPEN_ROUTE"` dizgisi yazmaz (madde 16). Tel üzerindeki değer değişmedi; satır atıfları
+yukarıda 10 Eylül okumasıyla güncellendi.
 
 **`karar_yas` semantiği (`CONTRACTS.md` §6 tablosu, D-381):** İHA'nın son **algı kararının**
 yaşı (s, monotonik saat). Alan **yoksa** yaş bilinmiyor demektir; alıcı **taze saymaz** — hat
@@ -2063,7 +2079,7 @@ pymavlink `udp:` sunucusu ölü akrana yazıp hatayı **yutar**; router/Pixhawk 
 başınadır; YKS'nin `IKA_GO` seq'i ile İHA'nın `OPEN_ROUTE` seq'i çakışabilir. `ACK.ref_tip`
 onaylanan mesajın `type`'ıdır (`"OPEN_ROUTE"`, `"NO_ROUTE"`, `"CMD"`, `"IHA_LANDED"`);
 alıcı `ref_tip` varsa `ref` **ve** tiple, yoksa yalnız `ref` ile eşler (geriye uyum). Kural
-iki alıcıda da kodludur: YKS `AckliTekrar.ack_geldi` (`comms/komut_tekrar.py:88-89`) ve İHA
+iki alıcıda da kodludur: YKS `AckliTekrar.ack_geldi` (`comms/komut_tekrar.py:88-89`; 10 Eylül T208 import satırı boş satırın yerine girdi, numara değişmedi) ve İHA
 `IhaSender._tekrarli_gonder` (`comms/iha_sender.py:193-200`) — hub fan-out'unda her tüketici
 herkesin ACK'ini gördüğünden tipsiz eşleme çapraz kabul üretiyordu (ölçüldü, D-405). Kilit:
 `tests/test_faz_b_ack_ref_tip.py` (14 test, 2 mutant yakalandı, D-406).
@@ -2071,7 +2087,7 @@ herkesin ACK'ini gördüğünden tipsiz eşleme çapraz kabul üretiyordu (ölç
 **Kritik komut ACK'i (ARM/DISARM/RTL/LAND/PARACHUTE) güçlü biçimdir:** İHA komut alıcısı
 `ACK(ref=seq, node="iha", ref_tip="CMD", ref_cmd=<cmd>, sonuc="ACCEPTED")` üretir
 (`comms/iha_komut_alici.py:610-612`; `ACK_SONUC_KABUL = "ACCEPTED"`, `protocol.py:26`). YKS
-eyleyici durumunu yalnız `kritik_komut_ack_gecerli_mi` (`protocol.py:150`) geçen ACK ile
+eyleyici durumunu yalnız `kritik_komut_ack_gecerli_mi` (~~`protocol.py:150`~~ `:163` · 10 Eylül) geçen ACK ile
 değiştirir (`comms/yks_gui.py:2019,2034,2051`); `ref_cmd`/`sonuc` taşımayan eski biçim ACK
 tekrarı durdurabilir, eyleyici durumuna kanıt olamaz.
 
@@ -2207,17 +2223,41 @@ makinesi) — 0,20 s paraşüt aralığının altında. Hub zamanlama sabitleri
 `SERI_OKUMA_ZAMAN_ASIMI_S ≤ 0,05`, `UDP_OKUMA_ZAMAN_ASIMI_S ≤ 0,01` testle kilitli
 (`tests/test_faz_b_seri_hub.py`, 31 test).
 
+**10 Eylül (T216) — RTT ve VERİ HIZI birlikte, yazılım düzeneklerinde.** Araç `scripts/sik_rf_olc.py`
+(gerçek CLI, `--cikti` JSON'unu aracın kendisi yazar, ölç ucu ayrı süreç); n = **200** prob; kadanslar
+sözleşmeden (`IKA_GO_TEKRAR_ARALIGI_S` 0,25 s · `PARASUT_TEKRAR_ARALIGI_S` 0,20 s); ACK zaman aşımı 0,5 s.
+Üreteç `results/fdr_sprint_20260910/H2/olcum_kos.py`; ham çıktı `olcum_kos_cikti.txt`, özet `ozet.json`
+(makine Windows 11, Python 3.13.7, pyserial 3.5; 10 Eylül 01:52). Sayaç: gönderilen/alınan **bayt** ve
+**paket** (çözülen çerçeve), süre = ilk prob gönderimi → son ACK/zaman aşımı; kilit
+`tests/test_faz_b_sik_rf_olc.py` (13 test; 3 sayaç mutantı yakalandı — kapı çıktısı T216 kaydında).
+
+| düzenek | kadans | ACK / kayıp | RTT p50 / p95 / maks (ms) | TX B/s · bit/s · pkt/s | RX B/s · bit/s · pkt/s | süre (s) | kaynak JSON (`results/fdr_sprint_20260910/H2/`) |
+|---|---|---|---|---|---|---|---|
+| UDP loopback 127.0.0.1 | IKA_GO 0,25 s | 200/200 · %0 | 0,27 / 0,38 / 0,41 | 322,5 · 2 580 · 4,01 | 314,5 · 2 516 · 4,01 | 49,8 | `olcum_udp_loopback_ikago.json` |
+| UDP loopback 127.0.0.1 | PARAŞÜT 0,20 s | 200/200 · %0 | 0,30 / 0,40 / 1,31 | 403,1 · 3 225 · 5,02 | 393,0 · 3 144 · 5,02 | 39,9 | `olcum_udp_loopback_parasut.json` |
+| TCP-seri köprüsü (`socket://`, iki gerçek pyserial ucu — D-388 kalıbı) | IKA_GO 0,25 s | 200/200 · %0 | 1,33 / 1,83 / 2,16 | 322,5 · 2 580 · 4,01 | 314,5 · 2 516 · 4,01 | 49,8 | `olcum_tcp_seri_koprusu_ikago.json` |
+| TCP-seri köprüsü | PARAŞÜT 0,20 s | 200/200 · %0 | 1,07 / 1,89 / 2,22 | 403,0 · 3 224 · 5,02 | 393,1 · 3 144 · 5,02 | 39,9 | `olcum_tcp_seri_koprusu_parasut.json` |
+| **SiK 433 MHz RF (gerçek radyo çifti)** | — | **ÖLÇÜLEMEDİ** | **ÖLÇÜLEMEDİ** | **ÖLÇÜLEMEDİ** | **ÖLÇÜLEMEDİ** | — | yok — ekip radyoları taktığında aynı araç `--port COMx` (§3.3.4.3.4) |
+
+Okuma kuralı: (1) veri hızı sütunları **kadans yüküdür** (≈ 80 B `CMD` + ≈ 78 B `ACK` çerçeve, 4 pkt/s →
+≈ 320 B/s), hattın **kapasitesi değildir**; 57 600 baud'un kuramsal ≈ 5 760 B/s'si ölçülmedi, tasarım
+hesabıdır. (2) İki uç bayt bayt tutarlıdır: yankının aldığı = ölçün gönderdiği (16 067 B), yankının
+gönderdiği = ölçün aldığı (15 666 B) — `ozet.json` → `yanki`. (3) "UYUMLU" verdikti (p95 < 0,20 s)
+**yalnız bu düzeneklerin** hükmüdür; RF için hüküm yoktur. (4) UDP'de RTT loopback düzeyindedir
+(< 0,5 ms); köprüde ≈ 1–2 ms `socket://` + Windows zamanlayıcı payıdır (D-405 tabanı 0,5–1,1 ms ile uyumlu).
+
 **Bu alt bölümdeki hiçbir sayı RF ölçümü değildir:** kare gecikmesi UDP loopback, seri ACK
-ölçümü seri köprü (RF değil, D-403 §3), hub ölçümü UDP→seri. 5 Eylül'de SiK hattı sahada
-bağlandı (BEYAN, D-426 §1) ama üzerinden ölçüm alınmadı — §3.3.4.3.4.
+ölçümü seri köprü (RF değil, D-403 §3), hub ölçümü UDP→seri, **10 Eylül tablosu UDP loopback ve
+TCP-seri köprüsü**. 5 Eylül'de SiK hattı sahada
+bağlandı (BEYAN, D-426 §1) ama üzerinden ölçüm alınmadı — §3.3.4.3.4; 10 Eylül itibarıyla da alınmadı.
 
 
 ##### 3.3.4.3.4 🔴 ÖLÇÜLEMEDİ — haberleşmede kapatılmamış sayılar
 
 | büyüklük | durum |
 |---|---|
-| **Gerçek SiK 433 MHz RF üzerinde RTT / paket kaybı** | **ÖLÇÜLEMEDİ.** Araç `scripts/sik_rf_olc.py` **yazıldı** (`--rol yanki` / `--rol olc --n 50`), hedef **RTT p95 < 0,20 s** (`PARASUT_TEKRAR_ARALIGI_S`) ve < 0,25 s (`IKA_GO_TEKRAR_ARALIGI_S`); çıkış kodları UYUMLU 0 / UYARI 1 / ÖLÇÜLEMEDİ 2; kayıp için eşik yok, yalnız raporlanır. **3 Eylül:** radyolar kutuda. **5 Eylül:** hat sahada bağlandı (BEYAN, D-426 §1 "~18:45 SiK telemetri baglandi"), betik koşulmadı; `results/` altında ölçüm dosyası **yoktur** (5 Eylül sayımı). |
-| **Veri hızı (bit/s, paket/s)** | **ÖLÇÜLEMEDİ.** Hiçbir betik ölçmez (`sik_rf_olc.py` RTT ve kayıp verir); §3.3.4.3.2'deki 4 pkt/s (`IKA_GO`) ve 5 pkt/s (`PARACHUTE`) tasarım oranlarıdır (`codes/karar_sozlesmesi.py:2076,2098` yorumları), "57600 baud'da ~200 B çerçeve + ACK < 100 ms" da tasarım tahminidir (`:2075-2076`), ölçüm değil |
+| **Gerçek SiK 433 MHz RF üzerinde RTT / paket kaybı** | **ÖLÇÜLEMEDİ.** Araç `scripts/sik_rf_olc.py` **yazıldı** (`--rol yanki` / `--rol olc --n 50`), hedef **RTT p95 < 0,20 s** (`PARASUT_TEKRAR_ARALIGI_S`) ve < 0,25 s (`IKA_GO_TEKRAR_ARALIGI_S`); çıkış kodları UYUMLU 0 / UYARI 1 / ÖLÇÜLEMEDİ 2; kayıp için eşik yok, yalnız raporlanır. **3 Eylül:** radyolar kutuda. **5 Eylül:** hat sahada bağlandı (BEYAN, D-426 §1 "~18:45 SiK telemetri baglandi"), betik koşulmadı; `results/` altında ölçüm dosyası **yoktur** (5 Eylül sayımı). **10 Eylül (T216):** araç veri hızını da sayar ve UDP taşıyıcı (`--tasiyici udp`) kazandı; yazılım düzenekleri ölçüldü (§3.3.4.3.3 "10 Eylül" tablosu, `results/fdr_sprint_20260910/H2/`), **RF'te hâlâ koşulmadı** — `results/` altında SiK RF ölçüm dosyası **yoktur** (10 Eylül sayımı). Kapanma komutu: `--rol yanki --port COMx` / `--rol olc --port COMy --n 200 --json --cikti results/<tarih>/sik_rtt.json`. |
+| **Veri hızı (bit/s, paket/s)** | **RF hattında ÖLÇÜLEMEDİ.** ~~Hiçbir betik ölçmez (`sik_rf_olc.py` RTT ve kayıp verir);~~ **10 Eylül (T216):** `sik_rf_olc.py` artık bayt/s, bit/s ve paket/s sayar (`veri_hizi` alanı; kilit `tests/test_faz_b_sik_rf_olc.py`, 13 test, sayaç mutasyonu yakalandı) ve yazılım düzeneklerinde ölçüldü — §3.3.4.3.3 "10 Eylül" tablosu (UDP loopback / TCP-seri köprüsü: IKA_GO kadansında ≈ 4,0 pkt/s · ≈ 322 B/s TX, PARAŞÜT kadansında ≈ 5,0 pkt/s · ≈ 403 B/s TX; kayıp 0/200). Bunlar **kadans yüküdür, hat kapasitesi değildir** ve **RF değildir**. §3.3.4.3.2'deki 4 pkt/s (`IKA_GO`) ve 5 pkt/s (`PARACHUTE`) tasarım oranları bu ölçümle **loopback'te doğrulandı**; "57600 baud'da ~200 B çerçeve + ACK < 100 ms" (`karar_sozlesmesi.py:2075-2076`) hâlâ tasarım tahminidir — RF'te ölçülmedi |
 | **Menzil** | **ÖLÇÜLEMEDİ.** DDR'deki *">%98, 300 m"* iddiasının repoda kanıtı **yoktur**; 5 Eylül tutanağında (D-426) menzil satırı yok |
 | **SiK telsiz firmware / baud** | **ÖLÇÜLEMEDİ.** Parametre dosyası fabrika 57600 baud bekler; telsizin üzerindeki firmware doğrulanmadı (D-424 §5: "kutusu açılmamış donanım" örüntüsünün açık kalemi) |
 | **Gerçek Pixhawk'ta `COMMAND_ACK` turu** | **ÖLÇÜLEMEDİ.** D-419/D-422 ölçümleri `scripts/sahte_pixhawk.py` iledir; 5 Eylül'de Pixhawk 6C Mission Planner'a bağlıydı, Jetson takılı değildi (D-426 §4); `iha_komut_alici` gerçek karta karşı koşulmadı |
@@ -2390,7 +2430,7 @@ Bölümde geçen her sayının kaynağı. Biçim: **değer** · *dosya yolu* · 
 | Saat ofseti iki kademeli eşik: 2 örnek (bant içi, 30×60 s) / 6 destekleyen örnek (bant dışı, 8 s destek bandı); yerel adım eşiği 8 s; pencere 60 s | `comms/iha_komut_alici.py:149,155,160,176,187,220` · `REVIEW_LOG.md` D-422 §2 | — | 2026-09-04 |
 | Tekrar (replay) çürütmesi: 6 senaryo → `COMMAND_LONG` 1/1/1/1/0/1; 2 saat sapma ve 1970 Jetson 7. basamakta geçer; ileri adım ölü penceresi 60,00 s → 0,25 s; soğuk alıcı maliyeti 3 → 7 paket | `REVIEW_LOG.md` D-422 §1, §4, §5 | amele + 2 bağımsız çürütücü; `git show HEAD:comms/iha_komut_alici.py` ile eski modül yan yana | 2026-09-04 |
 | `test_iha_komut_saat_ve_tekrar` 18 → 42 test (assert 71 → 140, silinen 0); mutasyon: mutlak tavan geri → 17 düştü, `_yerel_saat_adimi` öldürüldü → 5 düştü | `tests/test_iha_komut_saat_ve_tekrar.py` · `REVIEW_LOG.md` D-422 §6 | `grep -c "def test_"` = 42 (5 Eylül) | 2026-09-04 |
-| ACK `ref_tip` iki alıcıda (YKS `ack_geldi`, İHA `_tekrarli_gonder`); kritik ACK `ref_tip="CMD"` + `ref_cmd` + `sonuc="ACCEPTED"`; 14 test, 2 mutant yakalandı | `comms/protocol.py:26,128,150` · `comms/komut_tekrar.py:88-89` · `comms/iha_sender.py:193-200` · `comms/iha_komut_alici.py:610-612` · `tests/test_faz_b_ack_ref_tip.py` · `CONTRACTS.md` §6.6 · `REVIEW_LOG.md` D-406 | — | 2026-09-03 |
+| ACK `ref_tip` iki alıcıda (YKS `ack_geldi`, İHA `_tekrarli_gonder`); kritik ACK `ref_tip="CMD"` + `ref_cmd` + `sonuc="ACCEPTED"`; 14 test, 2 mutant yakalandı | `comms/protocol.py:26,` ~~`128,150`~~ `141,163` (10 Eylül T208) · `comms/komut_tekrar.py:88-89` · `comms/iha_sender.py:193-200` · `comms/iha_komut_alici.py:610-612` · `tests/test_faz_b_ack_ref_tip.py` · `CONTRACTS.md` §6.6 · `REVIEW_LOG.md` D-406 | — | 2026-09-03 |
 | Hakem kanıt kaydı: 16 olay (`KANIT_OLAYLARI`), tekrar aralığı 30 s, ortak alanlar `v`/`ts`/`monotonic_s`/`oturum`/`olay`; 22 test, 6 mutasyon | `comms/yks_gui.py:127,151` · `comms/hakem_kaydi.py:21,79-83,94` · `tests/test_yks_hakem_kanit_olaylari.py` · `CONTRACTS.md` §6.8 · `REVIEW_LOG.md` D-419 §2 | — | 2026-09-04 |
 | 5 Eylül saha YKS kaydı: 1115 satır, 5 farklı olay, 14:29:59 → 19:07:02 (277 dk); `KAMERA_KANIT` 554 · `TELEMETRI_KANIT` 554 (≈ 2 satır/dk = 30 s aralığı) · `UI_OLAYI` 5; `tasiyici="udp"`, `demo=false`; `OTURUM_BITTI` yok | `results/prova/20260905_142958_15092/hakem_log.jsonl` | `yks_gui.py --fda` (D-427 tablosu, PID 15092); sayım Python `json` + `collections.Counter` | 2026-09-05 |
 | 4 Eylül demo kaydı: 16 satır, 9 farklı olay (`ROTA_ALINDI`, `ACK_ALINDI`, `IKA_AKTARIM_KANITI` dâhil), `OTURUM_BITTI` var | `results/prova/20260904_103744_8536/hakem_log.jsonl` | `yks_gui.py --demo` | 2026-09-04 |

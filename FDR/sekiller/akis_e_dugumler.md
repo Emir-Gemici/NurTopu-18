@@ -1,6 +1,6 @@
 # Akış diyagramı (e) — düğüm → dosya:satır tablosu
 
-Kaynak: `FDR/sekiller/akis_e.mmd` · koddan türetildi: commit `f3441b4`, 2026-09-07 · üretici: `scripts/akis_diyagram_dogrula.py --tablo`
+Kaynak: `FDR/sekiller/akis_e.mmd` · koddan türetildi: commit `1792856`, 2026-09-10 · üretici: `scripts/akis_diyagram_dogrula.py --tablo`
 
 Düğüm kuralı: **fonksiyon** = `def ad()` ve satır o tanımın başı; **karar** = koşul metni koddan birebir; **blok** = deyim koddan birebir. Doğrulama sütunu: `tam` = tam satır, `±n` = n satır sapma (tolerans 3). Başka düğüm tipi yoktur.
 
@@ -10,7 +10,7 @@ Düğüm kuralı: **fonksiyon** = `def ad()` ve satır o tanımın başı; **kar
 | 2 | `e01` | blok | sE1 | `bekleme_deadline = saat() + bekleme_suresi` | `simulation/scripts/ika_nav.py:460` | tam |
 | 3 | `e03` | karar | sE1 | `if alindi is None:` | `simulation/scripts/ika_nav.py:468` | tam |
 | 4 | `e04` | blok | sE1 | `return 1` | `simulation/scripts/ika_nav.py:471` | tam |
-| 5 | `e05` | karar | sE1 | `if isinstance(alindi, dict) and alindi.get("type") == "NO_ROUTE":` | `simulation/scripts/ika_nav.py:472` | tam |
+| 5 | `e05` | karar | sE1 | `if isinstance(alindi, dict) and alindi.get("type") == MESAJ_NO_ROUTE:` | `simulation/scripts/ika_nav.py:472` | tam |
 | 6 | `e06` | blok | sE1 | `return 2` | `simulation/scripts/ika_nav.py:474` | tam |
 | 7 | `e08` | karar | sE1 | `if not izin_bekle(receiver, kalan, deadline_monotonic=bekleme_deadline):` | `simulation/scripts/ika_nav.py:478` | tam |
 | 8 | `e09` | blok | sE1 | `return 3` | `simulation/scripts/ika_nav.py:479` | tam |

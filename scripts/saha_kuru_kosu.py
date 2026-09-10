@@ -967,6 +967,7 @@ def _uretim_yolu_telsiz_probu() -> dict | str:
         import iha_sender
         from ika_receiver import IkaReceiver
         from link import UDPLink
+        from protocol import MESAJ_OPEN_ROUTE
     except ImportError as exc:
         return f"HATA: ImportError: {exc}"
 
@@ -1013,7 +1014,7 @@ def _uretim_yolu_telsiz_probu() -> dict | str:
         geldi.wait(5.0)
         msg = rx.latest
         sonuc.update({
-            "open_route_alindi": bool(msg) and msg.get("type") == "OPEN_ROUTE"
+            "open_route_alindi": bool(msg) and msg.get("type") == MESAJ_OPEN_ROUTE
             and msg.get("road") == 2 and msg.get("waypoints", [[None]])[0] == [0.0, 0.0],
             "heartbeat": yayinci.heartbeat_sayisi,
             "ack": sorted(yayinci.gonderilen[0][3]) if yayinci.gonderilen else [],

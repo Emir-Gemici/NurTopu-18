@@ -29,7 +29,7 @@ for _akim in (sys.stdout, sys.stderr):
 # comms (dinamik A* rotasını İHA'dan al)
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "comms"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "codes"))
-from protocol import ROAD_LABEL
+from protocol import ROAD_LABEL, MESAJ_NO_ROUTE
 from karar_sozlesmesi import (IKA_AZAMI_HIZ_MS, IKA_BEKLEME_SURESI_S,
                               IKA_SURUS_SURESI_S)
 
@@ -521,7 +521,7 @@ def ika_gorevi(bind, bekleme_suresi=IKA_BEKLEME_SURESI_S,
         print("[ika_nav] ✗ Geçerli dinamik rota gelmedi (bekleme süresi "
               f"{bekleme_suresi:.0f} s doldu) — İKA hareket etmez")
         return 1
-    if isinstance(alindi, dict) and alindi.get("type") == "NO_ROUTE":
+    if isinstance(alindi, dict) and alindi.get("type") == MESAJ_NO_ROUTE:
         print("[ika_nav] ✗ Rota yok bildirimi alındı — timeout değil, güvenli ret")
         return 2
     route, receiver = alindi

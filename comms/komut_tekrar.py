@@ -11,7 +11,7 @@ Durumlar:
                düğmeyi yeniden açar, operatör tekrar tetikler)
 """
 import time
-
+from protocol import MESAJ_ACK   # T208: mesaj tipi adi tek yerde (CONTRACTS §6)
 BOS, BEKLIYOR, ONAYLANDI, VAZGECILDI = "BOS", "BEKLIYOR", "ONAYLANDI", "VAZGECILDI"
 
 
@@ -81,7 +81,7 @@ class AckliTekrar:
         """
         if self.durum != BEKLIYOR or self.mesaj is None:
             return False
-        if ack_mesaji.get("type") != "ACK":
+        if ack_mesaji.get("type") != MESAJ_ACK:
             return False
         if ack_mesaji.get("ref") != self.mesaj.get("seq"):
             return False
