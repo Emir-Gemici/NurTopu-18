@@ -98,19 +98,29 @@ def poz_oku(csv_path):
     return pozlar
 
 
+BIRLESTIRMELER = ("son_yazar", "nadir_yakin")
+
+
 def mozaik_kur(kare_dir, pozlar, htab_cx, htab_cy, kare_ofset=0, rot_isaret=1.0,
-               debug=False):
+               debug=False, birlestirme="son_yazar"):
     """Tarama karelerini kuzey-yukarı saha haritasına diz → (mozaik BGR, kullanılan_n).
 
     Her karenin yer kapsama genişliği: 2·z·tan(hfov/2)  (z=30, hfov=1.3 → ~45.6 m).
     Kare önce bu genişliğe ölçeklenir, İHA yaw'ına göre kuzey-yukarı döndürülür,
     İHA'nın o anki (x,y) konumu merkez olacak şekilde tuvale yapıştırılır.
-    Sonra gelen kare öncekinin üstüne yazar (serpantin bindirmeli tarar → boşluk kalmaz)."""
+    birlestirme="son_yazar" (VARSAYILAN, üretim): sonra gelen kare öncekinin üstüne yazar
+      (serpantin bindirmeli tarar → boşluk kalmaz).
+    birlestirme="nadir_yakin" (T213-A TEŞHİS): her tuval pikseli, merkezi (nadir noktası) o
+      piksele EN YAKIN kareden alınır → perspektif (yüksek nesnelerin yan yüzleri) en az,
+      sütun dikişleri kare ortasına değil kare kenarına düşer. Varsayılan DEĞİŞMEDİ."""
     import cv2
     import numpy as np
 
     import re
+    if birlestirme not in BIRLESTIRMELER:
+        raise ValueError(f"birlestirme {birlestirme!r} — {BIRLESTIRMELER}")
     canvas = np.full((MOZ_PX, MOZ_PX, 3), BG_GRI, dtype=np.uint8)
+    uzaklik = np.full((MOZ_PX, MOZ_PX), np.inf, dtype=np.float32) if birlestirme == "nadir_yakin" else None
     kareler = sorted(kare_dir.glob("*.jpg"))
     kullanilan = 0
     for sira, kf in enumerate(kareler):
@@ -155,7 +165,16 @@ def mozaik_kur(kare_dir, pozlar, htab_cx, htab_cy, kare_ofset=0, rot_isaret=1.0,
         h = min(ayak_px - sy0, MOZ_PX - dy0)
         if w <= 0 or h <= 0:
             continue
-        canvas[dy0:dy0 + h, dx0:dx0 + w] = img[sy0:sy0 + h, sx0:sx0 + w]
+        if uzaklik is None:
+            canvas[dy0:dy0 + h, dx0:dx0 + w] = img[sy0:sy0 + h, sx0:sx0 + w]
+        else:
+            gy, gx = np.mgrid[dy0:dy0 + h, dx0:dx0 + w]
+            d_yeni = np.hypot(gx - px, gy - py).astype(np.float32)
+            d_eski = uzaklik[dy0:dy0 + h, dx0:dx0 + w]
+            sec = d_yeni < d_eski
+            hedef = canvas[dy0:dy0 + h, dx0:dx0 + w]
+            hedef[sec] = img[sy0:sy0 + h, sx0:sx0 + w][sec]
+            d_eski[sec] = d_yeni[sec]
         kullanilan += 1
         if debug:
             print(f"  kare {k:3d} t={k + kare_ofset:3d}  poz=({x:6.1f},{y:6.1f},{z:4.1f}) "
@@ -244,7 +263,7 @@ def _arac_maskesi(bgr, arac_model, conf=0.25):
 
 def haritala(level_dir, model, htab_cx, htab_cy, conf=0.15,
              kare_ofset=0, rot_isaret=1.0, debug=False, kb_xy=None, hb_xy=None,
-             arac_model=None, arac_conf=0.25):
+             arac_model=None, arac_conf=0.25, birlestirme="son_yazar", hb_yaricap_m=0.0):
     """Bir seviyenin tarama klasörünü işle: mozaik → algı → costmap → rota.
     kb_xy = İKA başlangıç REFERANS noktası (dünya), hb_xy = HB (dünya, önceden bilinir).
     Çıktılar level_dir'e: ortomozaik/algi jpg + route.txt (plugin) + rota.json (İKA'ya
@@ -264,7 +283,8 @@ def haritala(level_dir, model, htab_cx, htab_cy, conf=0.15,
 
     pozlar = poz_oku(poses)
     mozaik, n = mozaik_kur(kare_dir, pozlar, htab_cx, htab_cy,
-                           kare_ofset=kare_ofset, rot_isaret=rot_isaret, debug=debug)
+                           kare_ofset=kare_ofset, rot_isaret=rot_isaret, debug=debug,
+                           birlestirme=birlestirme)
     det["kare_n"] = n
     cv2.imwrite(str(level_dir / "ortomozaik.jpg"), mozaik)
     print(f"[İHA-HARİTA] mozaik: {n} tarama karesi → {level_dir / 'ortomozaik.jpg'}")
@@ -319,8 +339,12 @@ def haritala(level_dir, model, htab_cx, htab_cy, conf=0.15,
     baslangic_xy = kb_xy or (htab_cx, htab_cy - 23.0)
     baslangic = _tohum_maskesi(baslangic_xy, htab_cx, htab_cy,
                                costmap_maskeleri[0].shape)
+    # hb_yaricap_m (T213-A TEŞHİS, varsayılan 0 = üretim: tek piksel HB merkezi): HB pedi
+    # (2×2 m, kırmızı H) model tarafından zemin sayılmıyorsa tek piksel tohum serbest alana
+    # düşmez ve her koridor "geçilemez" olur; >0 verilirse tohum bu yarıçaplı disktir
+    # (brandaya TEMAS ölçütü, CONTRACTS §7.3). Karar mimarın; burada yalnız seçenek.
     hedef = _tohum_maskesi(hb_xy, htab_cx, htab_cy,
-                            costmap_maskeleri[0].shape)
+                            costmap_maskeleri[0].shape, yaricap_m=hb_yaricap_m)
     plan_sonucu = rota_bul(costmap_maskeleri, mpp=MPP,
                            baslangic=baslangic, hedef=hedef, plan=True,
                            yol_sinif_idler=COSTMAP_YOL_KATMANLARI,

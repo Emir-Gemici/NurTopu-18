@@ -216,6 +216,35 @@ class TaramaSozlesmesi(unittest.TestCase):
         bg = np.all(pen == iha_haritala.BG_GRI, axis=2).mean()
         self.assertLess(bg, 0.02)
 
+    def test_mozaik_yer_kaydi_ib_bati_kenari(self):
+        """T213-A KUSUR KAPISI: mozaikteki İHA-İB batı kenarı (x = 27 m) dünya→piksel dönüşümünün
+        dediği sütunda olmalı. T212 profili düz tarama bacağına ±26,2° yatış sızdırıyordu →
+        nadir 14,8 m kayıyor, İB kenarı ~710. sütunda çıkıyordu (beklenen ~1006)."""
+        pozlar = iha_haritala.poz_oku(self.out / "poses.csv")
+        for birlestirme in iha_haritala.BIRLESTIRMELER:
+            moz, _ = iha_haritala.mozaik_kur(self.out / "kareler", pozlar, 0.0, 0.0, birlestirme=birlestirme)
+            mavi = (moz[..., 0] > 150) & (moz[..., 2] < 100)
+            sutun = np.nonzero(mavi.sum(0) > 20)[0]
+            self.assertGreater(len(sutun), 0, f"{birlestirme}: mozaikte İB mavisi yok")
+            beklenen = iha_haritala.dunya_to_piksel((arena_mjcf.IHA_IB_MERKEZ_X - arena_mjcf.IHA_IB_KENAR_M / 2, 0.0),
+                                                    0.0, 0.0)[0]
+            self.assertLess(abs(int(sutun.min()) - beklenen), 20,
+                            f"{birlestirme}: İB batı kenarı {sutun.min()} px, beklenen {beklenen} px (yer kaydı bozuk)")
+
+    def test_tarama_bacaginda_yatis_sifir(self):
+        """Kabul edilen (düz bacak) karelerde roll = 0; dönüş yaylarında ≠ 0 (profil hâlâ yatıyor)."""
+        p = iha_ucus.UcusProfili()
+        kabul, donus = [], []
+        for t in range(0, int(p.t_inis) + 1):
+            pos, yaw, _pitch, roll, faz = p.durum(float(t))
+            if iha_ucus.kare_kabul(pos[0], pos[1], pos[2], yaw):
+                kabul.append(roll)
+            elif faz == "donus" and abs(pos[2] - iha_haritala.SCAN_Z) < 0.1:
+                donus.append(roll)
+        self.assertGreaterEqual(len(kabul), 12)
+        self.assertTrue(all(abs(r) < 1e-9 for r in kabul), f"düz bacakta yatış var: {kabul}")
+        self.assertTrue(donus and all(abs(r) > math.radians(5) for r in donus), "dönüşte yatış yok")
+
     def test_ucus_profili_dunya_disina_cikmaz_ve_ib_ye_iner(self):
         p = iha_ucus.UcusProfili()
         self.assertTrue(np.all(np.abs(p.xyz[:, :2]) < arena.UB_HALF))
@@ -248,6 +277,104 @@ class KameraYonSozlesmesi(unittest.TestCase):
     def test_hfov_sozlesmesi(self):
         self.assertEqual(arena_mjcf.HFOV_RAD, iha_haritala.HFOV)
         self.assertEqual(iha_ucus.SCAN_Z, iha_haritala.SCAN_Z)
+
+
+class Varyantlar(unittest.TestCase):
+    """T213-A (K3-b) render varyantları: taban bayt-eş, v1 yalnız doku, v2 ışık, v3 moloz mesh."""
+
+    def test_varsayilan_v1_ve_taban_t212_sha_es(self):
+        """Karar (RAPOR_K3B §5): varsayılan v1; taban varyantı T212 XML'iyle bayt-eş kalır."""
+        self.assertEqual(arena_mjcf.VARYANT_VARSAYILAN, "v1")
+        self.assertEqual(arena_mjcf.uret(1, "kolay"), arena_mjcf.uret(1, "kolay", varyant="v1"))
+        self.assertNotEqual(arena_mjcf.uret(1, "kolay"), arena_mjcf.uret(1, "kolay", varyant="taban"))
+        ozet = KOK / "results" / "fdr_sprint_20260910" / "H1" / "arena_ozeti_15.json"
+        if ozet.is_file():   # T212 kanıtı: taban varyantı o günkü XML'le bayt-eş kalmalı
+            sha = json.loads(ozet.read_text(encoding="utf-8"))["sha256"]["1_kolay"]
+            self.assertEqual(hashlib.sha256(arena_mjcf.uret(1, "kolay", varyant="taban").encode()).hexdigest(), sha)
+
+    def test_v1_yalniz_doku_dosyalari_degisir(self):
+        import difflib
+        a = arena_mjcf.uret(2, "orta", varyant="taban").splitlines()
+        b = arena_mjcf.uret(2, "orta", varyant="v1").splitlines()
+        fark = [l for l in difflib.unified_diff(a, b, lineterm="", n=0)
+                if l[:1] in "+-" and not l.startswith(("+++", "---"))]
+        self.assertEqual(len(fark), 4, fark)
+        self.assertTrue(all("uretilen/" in l for l in fark), fark)
+
+    def test_v2_isik_golge(self):
+        x1 = arena_mjcf.uret(1, "kolay", varyant="v1")
+        x2 = arena_mjcf.uret(1, "kolay", varyant="v2")
+        self.assertIn('castshadow="true"', x2)
+        self.assertNotEqual(x1, x2)
+        amb = lambda x: float(x.split('<headlight ambient="')[1].split()[0])
+        self.assertLess(amb(x2), amb(x1))
+        dir2 = [float(v) for v in x2.split('<light name="gunes"')[1].split('dir="')[1].split('"')[0].split()]
+        self.assertLess(abs(dir2[2]), 0.75, "v2 güneşi alçak olmalı (uzun gölge)")
+
+    def test_v3_moloz_mesh(self):
+        m = arena_mjcf.yukle(1, "kolay", varyant="v3", kam_res=64)
+        adlar = [mujoco.mj_id2name(m, mujoco.mjtObj.mjOBJ_GEOM, i) or "" for i in range(m.ngeom)]
+        moloz = [i for i, a in enumerate(adlar) if a.startswith(("moloz_", "tikama_", "chicane_"))]
+        self.assertGreater(len(moloz), 50)
+        self.assertTrue(all(m.geom_type[i] == mujoco.mjtGeom.mjGEOM_MESH for i in moloz))
+        self.assertGreaterEqual(m.nmesh, len(moloz) + len(araclar.MESH_ADLARI))
+        k = arena_mjcf.yonerge_kontrol(m, 1, "kolay")
+        self.assertTrue(all(v["ok"] for v in k.values()), k)
+
+    def test_v1_doku_deterministik(self):
+        H = arena.harita(4, "zor")
+        a = arena_mjcf.htab_dokusu(H, 4.0, varyant="v1")
+        b = arena_mjcf.htab_dokusu(H, 4.0, varyant="v1")
+        self.assertTrue(np.array_equal(a, b))
+        self.assertEqual(a.shape, (arena_mjcf.HTAB_DOKU_PX, arena_mjcf.HTAB_DOKU_PX, 3))
+
+    def test_yol_koridor_uv_geometrisi(self):
+        """Merkez hattında |d| ≈ 0, normal boyunca 1 m'de |d| ≈ 1, s artan; uçlar uzatma kadar."""
+        H = arena.harita(1, "kolay")
+        N, mpp = arena_mjcf.HTAB_DOKU_PX, arena.HTAB / arena_mjcf.HTAB_DOKU_PX
+        p = H["paths"][H["open"]]
+        ys, xs, s, d = arena_mjcf.yol_koridor_uv(p, N, mpp, 3.0)
+        d_map = np.full((N, N), np.nan, np.float32); d_map[ys, xs] = d
+        s_map = np.full((N, N), np.nan, np.float32); s_map[ys, xs] = s
+        onceki_s = -1.0
+        for i in range(2, len(p) - 2, 5):
+            x, y = p[i]
+            px, py = int(round((x + 25) / mpp)), int(round((25 - y) / mpp))
+            self.assertLess(abs(d_map[py, px]), 2.5 * mpp, f"nokta {i}: d={d_map[py, px]}")
+            self.assertGreater(s_map[py, px], onceki_s); onceki_s = s_map[py, px]
+            (x1, y1), (x2, y2) = p[i - 1], p[i + 1]
+            L = math.hypot(x2 - x1, y2 - y1)
+            nx, ny = -(y2 - y1) / L, (x2 - x1) / L
+            qx, qy = int(round((x + nx + 25) / mpp)), int(round((25 - (y + ny)) / mpp))
+            self.assertAlmostEqual(abs(float(d_map[qy, qx])), 1.0, delta=0.12)
+        # uzatma: KB'nin 2 m ötesi (yol yönünün tersi) uzatmasız koridor DIŞI, 3 m uzatmayla İÇİ
+        (x0, y0), (x1, y1) = p[0], p[1]
+        L = math.hypot(x1 - x0, y1 - y0)
+        ox, oy = x0 - (x1 - x0) / L * 2.0, y0 - (y1 - y0) / L * 2.0
+        px, py = int(round((ox + 25) / mpp)), int(round((25 - oy) / mpp))
+        self.assertTrue(np.isnan(d_map[py, px]) or not np.isfinite(d_map[py, px]))
+        ys2, xs2, s2, d2 = arena_mjcf.yol_koridor_uv(p, N, mpp, 3.0, uzatma_m=3.0)
+        d_map2 = np.full((N, N), np.nan, np.float32); d_map2[ys2, xs2] = d2
+        self.assertTrue(np.isfinite(d_map2[py, px]) and abs(d_map2[py, px]) < 2.5 * mpp)
+
+    def test_kaynak_olcekleri_gercek(self):
+        """Yol şeridi kırpması fiziksel olarak ~4 m; V1 zemin yaması gerçek ölçekte (büyütme yok)."""
+        yol = arena_mjcf._kaynak_oku("yol_serit_kaynak")
+        self.assertAlmostEqual(yol.shape[1] * arena_mjcf.KAYNAK_MPP["yol_serit_kaynak"], 4.0, delta=0.15)
+        self.assertTrue(3.5 <= arena_mjcf.YOL_GENISLIK_M <= 4.0)
+        mpp = arena.HTAB / arena_mjcf.HTAB_DOKU_PX
+        for z in arena_mjcf.ZEMIN_DOKULARI:
+            olcek = arena_mjcf.KAYNAK_MPP[f"{z}_kaynak"] / mpp
+            k = int(round(arena_mjcf.YAMA_PX_V1 / olcek))          # kaynaktan alınan kenar (px)
+            src = arena_mjcf._kaynak_oku(f"{z}_kaynak")
+            self.assertLess(olcek, 1.0, "kaynak dokudan KÜÇÜLTÜLEREK döşenmeli (büyütme yok)")
+            self.assertLessEqual(k, min(src.shape[:2]), f"{z}: yama {k} px kaynağa sığmıyor")
+
+    def test_mutasyon_bilinmeyen_varyant_reddedilir(self):
+        with self.assertRaises(ValueError):
+            arena_mjcf.uret(1, "kolay", varyant="v9")
+        with self.assertRaises(ValueError):
+            arena_mjcf.htab_dokusu(arena.harita(1, "kolay"), 6.0, varyant="v1", zemin_dokusu="cim")
 
 
 class MeshVarliklari(unittest.TestCase):

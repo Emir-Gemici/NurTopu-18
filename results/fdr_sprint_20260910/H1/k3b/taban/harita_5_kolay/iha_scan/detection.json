@@ -1,0 +1,18 @@
+{
+  "road": null,
+  "label": "yok",
+  "conf": 0.0,
+  "image": "ortomozaik.jpg",
+  "kaynak": "sim-tarama",
+  "kare_n": 15,
+  "trav_px": 10440,
+  "moloz_px": 163203,
+  "arac_px": 0,
+  "engel_px": 163203,
+  "arac_model": null,
+  "wp_n": 0,
+  "rota_durum": "MASKE_YOK",
+  "rota_sebep": "Serbest alanda gecerli kapi bulunamadi.",
+  "darbogaz_m": null,
+  "rota_ihlalleri": []
+}

@@ -198,3 +198,6 @@ firmware/
 # T212 MuJoCo: harita basina uretilen dokular ve tarama kareleri (buyuk, yeniden uretilebilir)
 simulation/mujoco/dokular/uretilen/
 results/fdr_sprint_20260910/H1/**/kareler/
+# T213-A K3-b: varyant koşumlarının harita başına mozaik/algı/önizleme JPGleri (kosum2.sh bayt-eş yeniden üretir)
+results/fdr_sprint_20260910/H1/k3b/*/harita_*/**/*.jpg
+results/fdr_sprint_20260910/H1/k3b/*/harita_*/*.jpg

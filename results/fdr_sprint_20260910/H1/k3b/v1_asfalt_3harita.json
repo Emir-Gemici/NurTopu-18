@@ -1,0 +1,197 @@
+{
+ "kapi": "H1-K3 ÖN-ÖLÇÜM (3 harita; asıl kapı 15 harita ≥ 12/15)",
+ "tarih": "2026-09-10 10:47",
+ "model": {
+  "model_id": "navitas-seg-v36-512",
+  "path": "O:\\navitas\\models\\navitas_seg_v36_best.pt",
+  "kayit_path": "models/navitas_seg_v36_best.pt",
+  "sha256_dosya": "1d1caca6f6da19ea35e69186a048da960ca5188be6ee6d49d6106457cac46911",
+  "sha256_kayit": "1d1caca6f6da19ea35e69186a048da960ca5188be6ee6d49d6106457cac46911",
+  "eslesti": true,
+  "imgsz_kayit": 512
+ },
+ "gpu": {
+  "cuda": true,
+  "cihaz": "NVIDIA GeForce RTX 5080 Laptop GPU",
+  "torch": "2.11.0+cu128"
+ },
+ "conf": 0.15,
+ "obb_arac_maskesi": "KAPALI (sim'de araç yok)",
+ "yol_dokusu": "asfalt",
+ "varyant": "v1",
+ "zemin_dokusu": "zemin_surulmus",
+ "teshis_imgsz": null,
+ "mozaik": "son_yazar",
+ "hb_yaricap_m": 0.0,
+ "kok": "results/fdr_sprint_20260910/H1/k3b/v1_asfalt",
+ "sim_sinir": "İHA uçuşu kinematik; render MuJoCo; dokular gerçek kare kırpması (dokular/KAYNAK.md)",
+ "ozet": {
+  "harita_n": 3,
+  "rota_bulunan": 0,
+  "dogru_etiket": 0,
+  "dogru_orani": 0.0,
+  "htab_gecilebilir_min_maks": [
+   0.2783,
+   0.2981
+  ],
+  "htab_engel_min_maks": [
+   0.0901,
+   0.1256
+  ],
+  "acik_yol_seridinde_gecilebilir_ort": 0.9439,
+  "yol_disi_gecilebilir_ort": 0.0841
+ },
+ "teshis_imgsz_ozet": null,
+ "haritalar": [
+  {
+   "harita": 1,
+   "senaryo": "kolay",
+   "yol_dokusu": "asfalt",
+   "varyant": "v1",
+   "mozaik": "son_yazar",
+   "hb_yaricap_m": 0.0,
+   "zemin_dokusu": "zemin_surulmus",
+   "tarama": {
+    "kare_n": 39,
+    "kabul": 15,
+    "htab_kapsama_orani": 1.0,
+    "res": 1280
+   },
+   "mozaik_kare_n": 15,
+   "gercek_acik_yol": 1,
+   "gercek_etiket": "sol",
+   "model_yol": null,
+   "model_etiket": "yok",
+   "model_guven": 0.0,
+   "rota_durum": "KAPALI_DAR",
+   "rota_sebep": "Hicbir koridor gerekli aciklikta gecilebilir degil.",
+   "wp_n": 0,
+   "darbogaz_m": null,
+   "rota_bulundu": false,
+   "dogru": false,
+   "trav_px": 265542,
+   "moloz_px": 120219,
+   "arac_px": 0,
+   "arac_model": null,
+   "teshis": {
+    "mozaik_gecilebilir_orani": 0.2473,
+    "mozaik_engel_orani": 0.1068,
+    "htab_gecilebilir_orani": 0.2981,
+    "htab_engel_orani": 0.1232,
+    "acik_yol_seridinde_gecilebilir": 0.9391,
+    "acik_yol_seridinde_engel": 0.0568,
+    "kapali_yol_seridinde_gecilebilir": 0.7137,
+    "kapali_yol_seridinde_engel": 0.1855,
+    "yol_disi_zeminde_gecilebilir": 0.0879,
+    "yol_disi_zeminde_engel": 0.1194
+   },
+   "teshis_imgsz": null,
+   "haritala_sure_s": 2.13,
+   "dosyalar": {
+    "ortomozaik.jpg": "results\\fdr_sprint_20260910\\H1\\k3b\\v1_asfalt\\harita_1_kolay\\iha_scan\\ortomozaik.jpg",
+    "algi.jpg": "results\\fdr_sprint_20260910\\H1\\k3b\\v1_asfalt\\harita_1_kolay\\iha_scan\\algi.jpg",
+    "detection.json": "results\\fdr_sprint_20260910\\H1\\k3b\\v1_asfalt\\harita_1_kolay\\iha_scan\\detection.json"
+   }
+  },
+  {
+   "harita": 1,
+   "senaryo": "orta",
+   "yol_dokusu": "asfalt",
+   "varyant": "v1",
+   "mozaik": "son_yazar",
+   "hb_yaricap_m": 0.0,
+   "zemin_dokusu": "zemin_surulmus",
+   "tarama": {
+    "kare_n": 39,
+    "kabul": 15,
+    "htab_kapsama_orani": 1.0,
+    "res": 1280
+   },
+   "mozaik_kare_n": 15,
+   "gercek_acik_yol": 2,
+   "gercek_etiket": "orta",
+   "model_yol": null,
+   "model_etiket": "yok",
+   "model_guven": 0.0,
+   "rota_durum": "KAPALI_DAR",
+   "rota_sebep": "Hicbir koridor gerekli aciklikta gecilebilir degil.",
+   "wp_n": 0,
+   "darbogaz_m": null,
+   "rota_bulundu": false,
+   "dogru": false,
+   "trav_px": 263256,
+   "moloz_px": 128371,
+   "arac_px": 0,
+   "arac_model": null,
+   "teshis": {
+    "mozaik_gecilebilir_orani": 0.2406,
+    "mozaik_engel_orani": 0.1088,
+    "htab_gecilebilir_orani": 0.2893,
+    "htab_engel_orani": 0.1256,
+    "acik_yol_seridinde_gecilebilir": 0.9594,
+    "acik_yol_seridinde_engel": 0.0628,
+    "kapali_yol_seridinde_gecilebilir": 0.6639,
+    "kapali_yol_seridinde_engel": 0.2585,
+    "yol_disi_zeminde_gecilebilir": 0.0862,
+    "yol_disi_zeminde_engel": 0.0942
+   },
+   "teshis_imgsz": null,
+   "haritala_sure_s": 0.59,
+   "dosyalar": {
+    "ortomozaik.jpg": "results\\fdr_sprint_20260910\\H1\\k3b\\v1_asfalt\\harita_1_orta\\iha_scan\\ortomozaik.jpg",
+    "algi.jpg": "results\\fdr_sprint_20260910\\H1\\k3b\\v1_asfalt\\harita_1_orta\\iha_scan\\algi.jpg",
+    "detection.json": "results\\fdr_sprint_20260910\\H1\\k3b\\v1_asfalt\\harita_1_orta\\iha_scan\\detection.json"
+   }
+  },
+  {
+   "harita": 1,
+   "senaryo": "zor",
+   "yol_dokusu": "asfalt",
+   "varyant": "v1",
+   "mozaik": "son_yazar",
+   "hb_yaricap_m": 0.0,
+   "zemin_dokusu": "zemin_surulmus",
+   "tarama": {
+    "kare_n": 39,
+    "kabul": 15,
+    "htab_kapsama_orani": 1.0,
+    "res": 1280
+   },
+   "mozaik_kare_n": 15,
+   "gercek_acik_yol": 3,
+   "gercek_etiket": "sag",
+   "model_yol": null,
+   "model_etiket": "yok",
+   "model_guven": 0.0,
+   "rota_durum": "KAPALI_DAR",
+   "rota_sebep": "Hicbir koridor gerekli aciklikta gecilebilir degil.",
+   "wp_n": 0,
+   "darbogaz_m": null,
+   "rota_bulundu": false,
+   "dogru": false,
+   "trav_px": 250098,
+   "moloz_px": 89748,
+   "arac_px": 0,
+   "arac_model": null,
+   "teshis": {
+    "mozaik_gecilebilir_orani": 0.2315,
+    "mozaik_engel_orani": 0.0805,
+    "htab_gecilebilir_orani": 0.2783,
+    "htab_engel_orani": 0.0901,
+    "acik_yol_seridinde_gecilebilir": 0.9331,
+    "acik_yol_seridinde_engel": 0.1014,
+    "kapali_yol_seridinde_gecilebilir": 0.5593,
+    "kapali_yol_seridinde_engel": 0.3163,
+    "yol_disi_zeminde_gecilebilir": 0.0782,
+    "yol_disi_zeminde_engel": 0.0377
+   },
+   "teshis_imgsz": null,
+   "haritala_sure_s": 0.6,
+   "dosyalar": {
+    "ortomozaik.jpg": "results\\fdr_sprint_20260910\\H1\\k3b\\v1_asfalt\\harita_1_zor\\iha_scan\\ortomozaik.jpg",
+    "algi.jpg": "results\\fdr_sprint_20260910\\H1\\k3b\\v1_asfalt\\harita_1_zor\\iha_scan\\algi.jpg",
+    "detection.json": "results\\fdr_sprint_20260910\\H1\\k3b\\v1_asfalt\\harita_1_zor\\iha_scan\\detection.json"
+   }
+  }
+ ]
+}
