@@ -150,6 +150,21 @@ KANIT_OLAYLARI = (
 # yazılırsa kaydın "kamera 10 dk canlı kaldı" demeye dayanağı olmaz).
 KANIT_TEKRAR_ARALIGI_S = 30.0
 
+# ── K8 erken ACK tamponu (T224 · D-441) ──────────────────────────────────────
+# 🔴 ÖLÇÜLEN KUSUR (T213-B, 10 Eylül, `gt 1 orta 44`): İKA'nın OPEN_ROUTE ACK
+# kopyası YKS'ye OPEN_ROUTE'tan ÖNCE ulaştı (loopback'te İKA, İHA'nın YKS'ye
+# ikinci datagramından hızlı). `_ack_isle` `self.rota` boş/başka seq diye
+# kopyayı ATIYORDU; İHA 'ika' ACK'ını gördüğü için İKA'ya tekrar göndermez,
+# kopya BİR DAHA GELMEZ → hakem ekranında İKA kanıtı yok, 2/2 kilitli.
+# Çözüm (`sim_hakem` kalıbı): erken kopya `ref` ile kısa süre saklanır,
+# OPEN_ROUTE gelince eşlenir. Süre: İHA'nın YKS'ye OPEN_ROUTE tekrar penceresi
+# 8 × 0,25 s = 2 s (`iha_sender._tekrarli_gonder` varsayılanları); 5 s bunun
+# 2,5 katıdır. Süresi dolan kopya ATILIR: bayat bir ACK sonraki rotaya kanıt
+# olamaz (fail-closed). Yalnız `ref_tip="OPEN_ROUTE"` taşıyan kopya
+# tamponlanır; `ref_tip`siz (eski üretici) ACK için anlık eşleme davranışı
+# DEĞİŞMEDİ (CONTRACTS §6.6). Damga MONOTONİK (D-384 sınıfı).
+IKA_ROTA_ACK_ERKEN_TAMPON_S = 5.0
+
 # ── Kanıt kaydı kilidi (fail-closed + fail-visible) ──────────────────────────
 # 🔴 ÖLÇÜLEN KUSUR (2026-09-03): `_kanit_hatasini_goster` `btn_firlat` ve
 # `btn_onay`u BİR KEZ `disabled` yapıyordu, ama düğmeleri çizen periyodik
@@ -775,6 +790,9 @@ class YksArayuz:
         # K8: İKA'nın OPEN_ROUTE ACK kanıtı: seq -> duvar saati. Hakem 2. onayı
         # ancak geçerli rota seq'i bu sözlükte varsa verebilir (fail-closed).
         self.ika_rota_ack = {}
+        # T224 (D-441): OPEN_ROUTE'tan ÖNCE gelen İKA ACK kopyası —
+        # ref -> (duvar saati, monotonik geliş). `IKA_ROTA_ACK_ERKEN_TAMPON_S`.
+        self._erken_ika_rota_ack = {}
         self.arm_acik = None
         self.tespit_onayli = False          # §2.2.3 iki aşamalı onayın 1. adımı
         self.t_iha0 = self.t_iha1 = None    # İHA görev kronometresi
@@ -1613,6 +1631,9 @@ class YksArayuz:
                               "433 MHz TX", "YKS (bu ekran)"))
                 if self.otomatik_onay and not ankor_uyarisi:
                     self.kok.after(2500, self.onayla)
+            # T224 (D-441): İKA'nın ACK kopyası bu rotadan ÖNCE geldiyse
+            # tampondan eşlenir — kanıt olayı ROTA_ALINDI'dan SONRA düşer.
+            self._erken_ika_rota_ack_esle(m["seq"])
             # tekrar-gönderim mekanizması canlı izlensin (jüri: ACK'siz teslim yok)
             self._kutu_yaz(
                 "protokol",
@@ -2077,27 +2098,85 @@ class YksArayuz:
                         f"{self.ika_go_tekrar.deneme} gönderim", "yesil")
             if self.t_ika0 is not None and self.t_ika1 is None:
                 self.btn_hb.config(state="normal", bg=SARI)   # HB TEMAS artık anlamlı
-        if (self.rota and ref == self.rota["seq"]
-                and ref_tip in (None, MESAJ_OPEN_ROUTE)
-                and ref not in self.ika_rota_ack):
-            self.ika_rota_ack[ref] = time.time()
-            damga = time.strftime("%H:%M:%S", time.localtime(self.ika_rota_ack[ref]))
-            # P9c (D-393) — §2.2.3: "Bu aktarımın İHA havada iken tamamlanması
-            # gerekmektedir." Kanıt anında havada/yerde damgası basılır.
-            havada = self._iha_havada_mi()
-            # CONTRACTS §6.8 — K8 kanıtı: 2. onay aşamasının fail-closed
-            # dayanağı budur; ekranda görünmesi yetmez, kayda da düşer.
-            self._kanit_yaz("IKA_AKTARIM_KANITI", seq=ref, iha_havada=havada)
-            self._logla(f"İKA ALDI ✓ OPEN_ROUTE ACK ref={ref} · {damga} "
-                        "(aktarım kanıtı ekranda) · "
-                        + ("İHA HAVADA ✓ (§2.2.3)" if havada else
-                           "⚠ İHA HAVADA DEĞİL — §2.2.3 aktarım havadayken "
-                           "bitmeliydi"),
-                        "yesil" if havada else "sari")
-            if self.tespit_onayli and not self.onaylandi:
-                self._aktarim_onay_dugmesini_kur()
-                if self.otomatik_onay:
-                    self.kok.after(500, self.onayla)
+        if ref_tip in (None, MESAJ_OPEN_ROUTE) and ref not in self.ika_rota_ack:
+            if self.rota and ref == self.rota["seq"]:
+                self._ika_rota_ack_bagla(ref, time.time())
+            elif ref_tip == MESAJ_OPEN_ROUTE:
+                # T224 (D-441): rota henüz yok ya da başka seq — kopya bir
+                # daha gelmeyeceği için ATILMAZ, kısa süre saklanır.
+                self._erken_ika_rota_ack_sakla(ref)
+
+    def _ika_rota_ack_bagla(self, ref, damga, erken=False):
+        """K8 kanıtını ekrana ve kayda bağla — anlık ACK (`_ack_isle`) ile
+        tampondan eşlenen erken ACK (`_erken_ika_rota_ack_esle`) AYNI yolu
+        kullanır; `damga` kopyanın GELİŞ duvar saatidir."""
+        self.ika_rota_ack[ref] = damga
+        damga_metni = time.strftime("%H:%M:%S", time.localtime(damga))
+        # P9c (D-393) — §2.2.3: "Bu aktarımın İHA havada iken tamamlanması
+        # gerekmektedir." Kanıt anında havada/yerde damgası basılır.
+        havada = self._iha_havada_mi()
+        # CONTRACTS §6.8 — K8 kanıtı: 2. onay aşamasının fail-closed
+        # dayanağı budur; ekranda görünmesi yetmez, kayda da düşer.
+        # `erken` alanı yalnız tampondan eşlenince yazılır (anlık satır aynı).
+        alanlar = {"seq": ref, "iha_havada": havada}
+        if erken:
+            alanlar["erken"] = True
+        self._kanit_yaz("IKA_AKTARIM_KANITI", **alanlar)
+        self._logla(f"İKA ALDI ✓ OPEN_ROUTE ACK ref={ref} · {damga_metni} "
+                    + ("(rotadan ÖNCE gelmişti, tampondan eşlendi · T224) "
+                       if erken else "")
+                    + "(aktarım kanıtı ekranda) · "
+                    + ("İHA HAVADA ✓ (§2.2.3)" if havada else
+                       "⚠ İHA HAVADA DEĞİL — §2.2.3 aktarım havadayken "
+                       "bitmeliydi"),
+                    "yesil" if havada else "sari")
+        if self.tespit_onayli and not self.onaylandi:
+            self._aktarim_onay_dugmesini_kur()
+            if self.otomatik_onay:
+                self.kok.after(500, self.onayla)
+
+    def _erken_ika_rota_ack_sakla(self, ref):
+        """OPEN_ROUTE'tan ÖNCE gelen İKA ACK kopyasını kısa süre sakla (T224).
+
+        İlk geliş damgası korunur (kopya yinelenirse üzerine yazılmaz — kanıt
+        zamanı İKA'nın rotayı İLK aldığı andır). Süresi dolmuş kayıtlar her
+        gelişte temizlenir: tampon sınırlı kalır, bayat kopya kanıt olamaz.
+        """
+        simdi = time.monotonic()
+        tampon = getattr(self, "_erken_ika_rota_ack", None)
+        if tampon is None:
+            tampon = self._erken_ika_rota_ack = {}
+        for bayat in [r for r, (_d, t) in tampon.items()
+                      if simdi - t > IKA_ROTA_ACK_ERKEN_TAMPON_S]:
+            del tampon[bayat]
+        if ref in tampon:
+            return
+        tampon[ref] = (time.time(), simdi)
+        self._logla(f"İKA OPEN_ROUTE ACK ref={ref} rotadan ÖNCE geldi — "
+                    f"{IKA_ROTA_ACK_ERKEN_TAMPON_S:.0f} s saklanıyor, OPEN_ROUTE "
+                    "gelince eşlenecek (K8 erken tampon · T224)", "sari")
+
+    def _erken_ika_rota_ack_esle(self, seq):
+        """Kabul edilen OPEN_ROUTE için tampondaki erken ACK'ı bağla (T224).
+
+        Süresi (`IKA_ROTA_ACK_ERKEN_TAMPON_S`) dolmuş kopya kanıt SAYILMAZ ve
+        atılır — fail-closed: hakem 2/2'yi ancak taze kanıtla açar.
+        """
+        tampon = getattr(self, "_erken_ika_rota_ack", None)
+        if not tampon:
+            return False
+        kayit = tampon.pop(seq, None)
+        if kayit is None or seq in self.ika_rota_ack:
+            return False
+        damga, gelis = kayit
+        if time.monotonic() - gelis > IKA_ROTA_ACK_ERKEN_TAMPON_S:
+            self._logla(f"⚠ İKA OPEN_ROUTE ACK ref={seq} tamponda BAYATLADI "
+                        f"(> {IKA_ROTA_ACK_ERKEN_TAMPON_S:.0f} s) — kanıt "
+                        "sayılmadı; 2/2 için İKA'dan yeni ACK gerekir (T224)",
+                        "sari")
+            return False
+        self._ika_rota_ack_bagla(seq, damga, erken=True)
+        return True
 
     # ── Acil durum senaryoları (arıza emniyet tatbikatı) ─────────────────────
     # Davranışlar takım tasarımından: avionics_software.md "Arıza Emniyet
