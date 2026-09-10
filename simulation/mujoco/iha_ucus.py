@@ -130,6 +130,14 @@ class UcusProfili:
                     roll[i] = -math.copysign(math.radians(ROLL_DERECE), dy)   # sola dönüş = sol kanat aşağı
         for _ in range(2):
             roll = np.concatenate([[roll[0]], (roll[:-1] + roll[1:]) / 2.0])
+        # T213-A KUSUR DÜZELTMESİ (10 Eyl, ölçüldü): yumuşatma bir önceki dönüş yayının yatışını
+        # sonraki DÜZ tarama bacağına sızdırıyordu (bacak tek segment → tüm bacak boyunca roll
+        # ±26,2°). 30 m'de 26,2° yatış nadir noktasını 14,8 m yana kaydırır; kare süzgeci yalnız
+        # z ve yaw'a baktığından bu kareler mozaiğe KABUL ediliyor ve içerik ±15 m kaymış
+        # yerleşiyordu (T212 K2/K3 mozaikleri bu hatayla kuruldu). Düz tarama segmentinde roll = 0.
+        for i in range(n):
+            if self.fp[min(i + 1, n - 1)][3] == "tarama":
+                roll[i] = 0.0
         self.yaw, self.pitch, self.roll = yaw, pitch, roll
         self.faz = [p[3] for p in self.fp]
         self.t_parasut = float(self.t[next(i for i, p in enumerate(self.fp) if p[3] == "parasut")])
@@ -194,11 +202,15 @@ def htab_kapsama(pozlar: dict, cx=0.0, cy=0.0, hucre_m=0.25) -> float:
 def tara(harita_id: int, lv: str, seed: int = arena_mjcf.SEED_VARSAYILAN, *,
          out: Path, res: int = arena_mjcf.KAM_RES_VARSAYILAN, fizik: bool = True,
          onizleme: bool = True, max_kare: int | None = None, jpg_kalite: int = 92,
-         onizleme_res: int = 640, yol_dokusu: str = arena_mjcf.YOL_DOKUSU_VARSAYILAN) -> dict:
-    """Uçuşu koş, 1 Hz tarama karelerini + poses.csv + meta.txt yaz. Döner: özet dict."""
+         onizleme_res: int = 640, yol_dokusu: str = arena_mjcf.YOL_DOKUSU_VARSAYILAN,
+         varyant: str = arena_mjcf.VARYANT_VARSAYILAN,
+         zemin_dokusu: str = arena_mjcf.ZEMIN_DOKUSU_VARSAYILAN) -> dict:
+    """Uçuşu koş, 1 Hz tarama karelerini + poses.csv + meta.txt yaz. Döner: özet dict.
+    `varyant`/`zemin_dokusu` (T213-A) arena_mjcf render varyantı; meta.txt'ye yazılır."""
     import cv2
     import mujoco
 
+    arena_mjcf.varyant_dogrula(varyant, zemin_dokusu)
     out = Path(out)
     kare_dir = out / "kareler"
     kare_dir.mkdir(parents=True, exist_ok=True)
@@ -206,7 +218,8 @@ def tara(harita_id: int, lv: str, seed: int = arena_mjcf.SEED_VARSAYILAN, *,
         eski.unlink()
     H = arena.harita(harita_id, lv)
     t0 = time.perf_counter()
-    m = arena_mjcf.yukle(harita_id, lv, seed, kam_res=res, yol_dokusu=yol_dokusu)
+    m = arena_mjcf.yukle(harita_id, lv, seed, kam_res=res, yol_dokusu=yol_dokusu,
+                         varyant=varyant, zemin_dokusu=zemin_dokusu)
     d = mujoco.MjData(m)
     t_yukle = time.perf_counter() - t0
     iha = m.body_mocapid[mujoco.mj_name2id(m, mujoco.mjtObj.mjOBJ_BODY, "iha")]
@@ -290,14 +303,14 @@ def tara(harita_id: int, lv: str, seed: int = arena_mjcf.SEED_VARSAYILAN, *,
         "LEVEL": lv, "MAP": harita_id, "SEED": seed,
         "HTAB_CENTER": "0,0", "KB_XY": f"{kb[0]:.2f},{kb[1]:.2f}", "HB_XY": f"{hb[0]:.2f},{hb[1]:.2f}",
         "SCAN_Z": SCAN_Z, "HFOV": HFOV, "RES": res, "SIM": "mujoco-kinematik",
-        "YOL_DOKUSU": yol_dokusu,
+        "YOL_DOKUSU": yol_dokusu, "VARYANT": varyant, "ZEMIN_DOKUSU": zemin_dokusu,
         "SCAN_END_T": f"{prof.t_tarama_son:.0f}", "LAND_T": f"{prof.t_inis:.0f}",
     }
     (out / "meta.txt").write_text("".join(f"{k}={v}\n" for k, v in meta.items()), encoding="utf-8")
     kabul = sum(kare_kabul(*p) for p in pozlar.values())
     ozet = {
         "harita": harita_id, "senaryo": lv, "seed": seed, "res": res, "fizik": fizik,
-        "yol_dokusu": yol_dokusu,
+        "yol_dokusu": yol_dokusu, "varyant": varyant, "zemin_dokusu": zemin_dokusu,
         "kare_n": n, "kabul_edilen_kare": int(kabul),
         "htab_kapsama_orani": round(htab_kapsama(pozlar), 4),
         "sim_sure_s": round(float(d.time), 2), "t_tarama0": round(prof.t_tarama0, 2),
@@ -307,6 +320,12 @@ def tara(harita_id: int, lv: str, seed: int = arena_mjcf.SEED_VARSAYILAN, *,
         "render_ms_kare_maks": round(float(np.max(render_ms)), 1) if render_ms else None,
         "duvar_saati_s": round(sure, 2), "mjcf_yukleme_ms": round(t_yukle * 1000, 1),
         "poses_sha256": hashlib.sha256((out / "poses.csv").read_bytes()).hexdigest(),
+        # Taranan arenanın kanonik MJCF sha'sı (varyant dâhil): yerleşim kuralı (D-441) öncesi/sonrası
+        # taramalar birbirinden ayrılsın (T213-A tur 1/2 taramalarında bu alan yok = eski yerleşim).
+        "mjcf_kanonik_sha256": hashlib.sha256(arena_mjcf.uret(
+            harita_id, lv, seed, yol_dokusu=yol_dokusu, varyant=varyant,
+            zemin_dokusu=zemin_dokusu).encode("utf-8")).hexdigest(),
+        "acik_yol_pay_m": round(arena_mjcf.ACIK_YOL_PAY_M, 3),
         "onizleme": onizlemeler,
         "sinir": "İHA uçuşu KİNEMATİK (mocap); aerodinamik yok. Kamera renderi gerçek (MuJoCo).",
     }
@@ -325,22 +344,26 @@ def main():
     ap.add_argument("--max-kare", type=int, default=None)
     ap.add_argument("--hepsi", action="store_true", help="15 haritayı tara (kok = --out)")
     ap.add_argument("--yol-dokusu", default=arena_mjcf.YOL_DOKUSU_VARSAYILAN, choices=arena_mjcf.YOL_DOKULARI)
+    ap.add_argument("--varyant", default=arena_mjcf.VARYANT_VARSAYILAN, choices=arena_mjcf.VARYANTLAR,
+                    help="T213-A render varyantı (taban | v1 | v2 | v3)")
+    ap.add_argument("--zemin-dokusu", default=arena_mjcf.ZEMIN_DOKUSU_VARSAYILAN,
+                    choices=arena_mjcf.ZEMIN_DOKULARI, help="v1+ zemin kaynağı")
     a = ap.parse_args()
     kok = Path(a.out) if a.out else KOK / "results" / "fdr_sprint_20260910" / "H1"
+    ek = {"yol_dokusu": a.yol_dokusu, "varyant": a.varyant, "zemin_dokusu": a.zemin_dokusu}
     if a.hepsi:
         rows = []
         for h in range(1, arena.HARITA_N + 1):
             for lv in arena.SCENARIOS:
                 oz = tara(h, lv, a.seed, out=kok / f"harita_{h}_{lv}" / "iha_scan", res=a.res,
-                          fizik=not a.hizli, max_kare=a.max_kare, yol_dokusu=a.yol_dokusu)
+                          fizik=not a.hizli, max_kare=a.max_kare, **ek)
                 print(f"[iha_ucus] harita {h} {lv}: {oz['kare_n']} kare, kabul {oz['kabul_edilen_kare']}, "
                       f"kapsama {oz['htab_kapsama_orani']:.3f}, {oz['render_ms_kare_ort']} ms/kare")
                 rows.append(oz)
         (kok / "tarama_ozeti_15.json").write_text(json.dumps(rows, ensure_ascii=False, indent=1), encoding="utf-8")
         return
     out = (kok / f"harita_{a.map}_{a.level}" if not a.out else Path(a.out)) / "iha_scan"
-    oz = tara(a.map, a.level, a.seed, out=out, res=a.res, fizik=not a.hizli, max_kare=a.max_kare,
-              yol_dokusu=a.yol_dokusu)
+    oz = tara(a.map, a.level, a.seed, out=out, res=a.res, fizik=not a.hizli, max_kare=a.max_kare, **ek)
     print(json.dumps(oz, ensure_ascii=False, indent=1))
 
 

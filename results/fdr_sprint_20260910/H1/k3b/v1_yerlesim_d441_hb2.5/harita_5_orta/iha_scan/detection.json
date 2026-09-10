@@ -1,0 +1,21 @@
+{
+  "road": null,
+  "label": "yok",
+  "conf": 1.0,
+  "image": "ortomozaik.jpg",
+  "kaynak": "sim-tarama",
+  "kare_n": 15,
+  "hb_yaricap_m": 2.5,
+  "birlestirme": "son_yazar",
+  "girdi_dir": "O:\\navitas\\.claude\\worktrees\\wf_e7381c6f-ab1-1\\results\\fdr_sprint_20260910\\H1\\k3b\\v1_yerlesim_d441\\harita_5_orta\\iha_scan",
+  "trav_px": 299792,
+  "moloz_px": 116679,
+  "arac_px": 0,
+  "engel_px": 116679,
+  "arac_model": null,
+  "wp_n": 0,
+  "rota_durum": "DOGRULAMA_BASARISIZ",
+  "rota_sebep": "HB ankoru eklenemedi: fiziksel tohum C-uzayinda gecilebilir degil.",
+  "darbogaz_m": 2.234,
+  "rota_ihlalleri": []
+}

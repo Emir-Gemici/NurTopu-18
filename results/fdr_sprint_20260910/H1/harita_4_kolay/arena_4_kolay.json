@@ -2,6 +2,7 @@
  "harita": 4,
  "senaryo": "kolay",
  "seed": 42,
+ "varyant": "taban",
  "acik_yol": 3,
  "acik_yol_etiket": "sag",
  "kb_xy": [
@@ -25,16 +26,24 @@
   -26.0,
   0.0
  ],
- "mjcf_kanonik_sha256": "4bdb89a86b0729a1f0628f65f9a1ed28f534ab3bbde1e2a280da093d5e38be96",
- "mjcf_bayt": 30565,
+ "mjcf_kanonik_sha256": "5b90a23917eff918c83df09a2991149be8df4db98194cc08193bfb96961a0a5a",
+ "mjcf_bayt": 30637,
  "htab_doku_sha256": "31e1ec1732d3eea16cab603b87c3aada324f2033907bc5c7ab9a624002b2806c",
- "mjcf_uretim_ms": 19.2,
- "mjcf_yukleme_ms": 101.0,
+ "mjcf_uretim_ms": 18.4,
+ "mjcf_yukleme_ms": 104.9,
  "ngeom": 207,
  "nbody": 8,
  "ncam": 5,
  "nu": 4,
  "yonerge": {
+  "acik_yol_koridoru_engelsiz": {
+   "ok": true,
+   "deger": {
+    "aciklik_m": 2.1454,
+    "geom": "bariyer_2",
+    "pay_m": 1.45
+   }
+  },
   "iha_ib_30x30_mavi": {
    "ok": true,
    "deger": {

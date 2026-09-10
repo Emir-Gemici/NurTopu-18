@@ -1,0 +1,281 @@
+{
+ "gorev": "T213-A K3-b render varyantları (üretim modeli v36 DEĞİŞMEDİ)",
+ "esik": "H1-K3 doğru etiket ≥ 12/15 (ON_KAYIT) — değişmedi",
+ "T212_kaydi_15harita": {
+  "harita_n": 15,
+  "rota_bulunan": 0,
+  "dogru_etiket": 0,
+  "dogru_orani": 0.0
+ },
+ "varyantlar": [
+  {
+   "varyant": "taban",
+   "harita_n": 15,
+   "rota_bulunan": 0,
+   "dogru_etiket": 0,
+   "rota_durumlari": [
+    "BELIRSIZ_TEK_KAPI",
+    "KAPALI_DAR",
+    "KAPI_YOK",
+    "MASKE_YOK"
+   ],
+   "htab_gecilebilir_ort": 0.0506,
+   "htab_engel_ort": 0.2849,
+   "acik_yol_gecilebilir_ort": 0.1242,
+   "kapali_yol_gecilebilir_ort": 0.0962,
+   "yol_disi_gecilebilir_ort": 0.0246,
+   "yol_disi_engel_ort": 0.3507,
+   "teshis_imgsz512": {
+    "rota_bulunan": 0,
+    "dogru_etiket": 0
+   },
+   "teshis_hb2_5": {
+    "rota_bulunan": 0,
+    "dogru_etiket": 0,
+    "rota_durumlari": [
+     "BELIRSIZ_TEK_KAPI",
+     "KAPALI_DAR",
+     "KAPI_YOK",
+     "MASKE_YOK"
+    ],
+    "hb_yaricap_m": 2.5,
+    "kok": "results/fdr_sprint_20260910/H1/k3b/taban_hb2.5",
+    "tarama_kaynak": "results/fdr_sprint_20260910/H1/k3b/taban"
+   },
+   "mozaik": "son_yazar",
+   "zemin_dokusu": null,
+   "tarih": "2026-09-10 11:34",
+   "kok": "results/fdr_sprint_20260910/H1/k3b/taban",
+   "kapi": "H1-K3 15 harita (eşik ≥ 12/15)"
+  },
+  {
+   "varyant": "v1",
+   "harita_n": 15,
+   "rota_bulunan": 3,
+   "dogru_etiket": 3,
+   "rota_durumlari": [
+    "ACIK",
+    "KAPALI_DAR"
+   ],
+   "htab_gecilebilir_ort": 0.3441,
+   "htab_engel_ort": 0.1314,
+   "acik_yol_gecilebilir_ort": 0.9727,
+   "kapali_yol_gecilebilir_ort": 0.7138,
+   "yol_disi_gecilebilir_ort": 0.1454,
+   "yol_disi_engel_ort": 0.1468,
+   "teshis_imgsz512": {
+    "rota_bulunan": 4,
+    "dogru_etiket": 4
+   },
+   "teshis_hb2_5": {
+    "rota_bulunan": 3,
+    "dogru_etiket": 3,
+    "rota_durumlari": [
+     "ACIK",
+     "DOGRULAMA_BASARISIZ",
+     "KAPALI_DAR"
+    ],
+    "hb_yaricap_m": 2.5,
+    "kok": "results/fdr_sprint_20260910/H1/k3b/v1_hb2.5",
+    "tarama_kaynak": "results/fdr_sprint_20260910/H1/k3b/v1"
+   },
+   "mozaik": "son_yazar",
+   "zemin_dokusu": "zemin_surulmus",
+   "tarih": "2026-09-10 11:35",
+   "kok": "results/fdr_sprint_20260910/H1/k3b/v1",
+   "kapi": "H1-K3 15 harita (eşik ≥ 12/15)"
+  },
+  {
+   "varyant": "v2",
+   "harita_n": 15,
+   "rota_bulunan": 0,
+   "dogru_etiket": 0,
+   "rota_durumlari": [
+    "KAPALI_DAR"
+   ],
+   "htab_gecilebilir_ort": 0.335,
+   "htab_engel_ort": 0.238,
+   "acik_yol_gecilebilir_ort": 0.9679,
+   "kapali_yol_gecilebilir_ort": 0.6855,
+   "yol_disi_gecilebilir_ort": 0.1413,
+   "yol_disi_engel_ort": 0.2844,
+   "teshis_imgsz512": {
+    "rota_bulunan": 2,
+    "dogru_etiket": 2
+   },
+   "teshis_hb2_5": {
+    "rota_bulunan": 0,
+    "dogru_etiket": 0,
+    "rota_durumlari": [
+     "DOGRULAMA_BASARISIZ",
+     "KAPALI_DAR"
+    ],
+    "hb_yaricap_m": 2.5,
+    "kok": "results/fdr_sprint_20260910/H1/k3b/v2_hb2.5",
+    "tarama_kaynak": "results/fdr_sprint_20260910/H1/k3b/v2"
+   },
+   "mozaik": "son_yazar",
+   "zemin_dokusu": "zemin_surulmus",
+   "tarih": "2026-09-10 11:35",
+   "kok": "results/fdr_sprint_20260910/H1/k3b/v2",
+   "kapi": "H1-K3 15 harita (eşik ≥ 12/15)"
+  },
+  {
+   "varyant": "v3",
+   "harita_n": 15,
+   "rota_bulunan": 0,
+   "dogru_etiket": 0,
+   "rota_durumlari": [
+    "KAPALI_DAR"
+   ],
+   "htab_gecilebilir_ort": 0.3645,
+   "htab_engel_ort": 0.163,
+   "acik_yol_gecilebilir_ort": 0.9744,
+   "kapali_yol_gecilebilir_ort": 0.7575,
+   "yol_disi_gecilebilir_ort": 0.1612,
+   "yol_disi_engel_ort": 0.1803,
+   "teshis_imgsz512": {
+    "rota_bulunan": 4,
+    "dogru_etiket": 4
+   },
+   "teshis_hb2_5": {
+    "rota_bulunan": 0,
+    "dogru_etiket": 0,
+    "rota_durumlari": [
+     "DOGRULAMA_BASARISIZ",
+     "KAPALI_DAR"
+    ],
+    "hb_yaricap_m": 2.5,
+    "kok": "results/fdr_sprint_20260910/H1/k3b/v3_hb2.5",
+    "tarama_kaynak": "results/fdr_sprint_20260910/H1/k3b/v3"
+   },
+   "mozaik": "son_yazar",
+   "zemin_dokusu": "zemin_surulmus",
+   "tarih": "2026-09-10 11:36",
+   "kok": "results/fdr_sprint_20260910/H1/k3b/v3",
+   "kapi": "H1-K3 15 harita (eşik ≥ 12/15)"
+  },
+  {
+   "varyant": "v1 · yerleşim D-441 (açık yol koridoru engelsiz)",
+   "harita_n": 15,
+   "rota_bulunan": 7,
+   "dogru_etiket": 7,
+   "rota_durumlari": [
+    "ACIK",
+    "BELIRSIZ_COKLU",
+    "KAPALI_DAR"
+   ],
+   "htab_gecilebilir_ort": 0.3448,
+   "htab_engel_ort": 0.1239,
+   "acik_yol_gecilebilir_ort": 0.9877,
+   "kapali_yol_gecilebilir_ort": 0.7088,
+   "yol_disi_gecilebilir_ort": 0.1459,
+   "yol_disi_engel_ort": 0.1387,
+   "teshis_imgsz512": {
+    "rota_bulunan": 6,
+    "dogru_etiket": 6
+   },
+   "teshis_hb2_5": {
+    "rota_bulunan": 7,
+    "dogru_etiket": 7,
+    "rota_durumlari": [
+     "ACIK",
+     "BELIRSIZ_COKLU",
+     "DOGRULAMA_BASARISIZ",
+     "KAPALI_DAR"
+    ],
+    "hb_yaricap_m": 2.5,
+    "kok": "results/fdr_sprint_20260910/H1/k3b/v1_yerlesim_d441_hb2.5",
+    "tarama_kaynak": "results/fdr_sprint_20260910/H1/k3b/v1_yerlesim_d441"
+   },
+   "mozaik": "son_yazar",
+   "zemin_dokusu": "zemin_surulmus",
+   "tarih": "2026-09-10 11:37",
+   "kok": "results/fdr_sprint_20260910/H1/k3b/v1_yerlesim_d441",
+   "kapi": "H1-K3 15 harita (eşik ≥ 12/15)"
+  }
+ ],
+ "ek_olcumler": {
+  "v1_asfalt_3harita.json": {
+   "ozet": {
+    "harita_n": 3,
+    "rota_bulunan": 0,
+    "dogru_etiket": 0,
+    "dogru_orani": 0.0,
+    "htab_gecilebilir_min_maks": [
+     0.2783,
+     0.2981
+    ],
+    "htab_engel_min_maks": [
+     0.0901,
+     0.1256
+    ],
+    "acik_yol_seridinde_gecilebilir_ort": 0.9439,
+    "yol_disi_gecilebilir_ort": 0.0841
+   },
+   "rota_durumlari": [
+    "KAPALI_DAR"
+   ],
+   "acik_yol_gecilebilir_ort": 0.9439,
+   "hb_yaricap_m": 0.0,
+   "mozaik": "son_yazar",
+   "yol_dokusu": "asfalt",
+   "zemin_dokusu": "zemin_surulmus"
+  },
+  "v1_15harita_nadir_yakin.json": {
+   "ozet": {
+    "harita_n": 15,
+    "rota_bulunan": 0,
+    "dogru_etiket": 0,
+    "dogru_orani": 0.0,
+    "htab_gecilebilir_min_maks": [
+     0.319,
+     0.3949
+    ],
+    "htab_engel_min_maks": [
+     0.0379,
+     0.1954
+    ],
+    "acik_yol_seridinde_gecilebilir_ort": 0.9863,
+    "yol_disi_gecilebilir_ort": 0.1531
+   },
+   "rota_durumlari": [
+    "BELIRSIZ_COKLU",
+    "BELIRSIZ_TEK_KAPI",
+    "KAPALI_DAR"
+   ],
+   "acik_yol_gecilebilir_ort": 0.9863,
+   "hb_yaricap_m": 0.0,
+   "mozaik": "nadir_yakin",
+   "yol_dokusu": "stabilize",
+   "zemin_dokusu": "zemin_surulmus"
+  },
+  "v1_zemin_toprak_3harita.json": {
+   "ozet": {
+    "harita_n": 3,
+    "rota_bulunan": 0,
+    "dogru_etiket": 0,
+    "dogru_orani": 0.0,
+    "htab_gecilebilir_min_maks": [
+     0.2924,
+     0.3892
+    ],
+    "htab_engel_min_maks": [
+     0.2389,
+     0.3259
+    ],
+    "acik_yol_seridinde_gecilebilir_ort": 0.9837,
+    "yol_disi_gecilebilir_ort": 0.1605
+   },
+   "rota_durumlari": [
+    "BELIRSIZ_TEK_KAPI",
+    "KAPALI_DAR"
+   ],
+   "acik_yol_gecilebilir_ort": 0.9837,
+   "hb_yaricap_m": 0.0,
+   "mozaik": "son_yazar",
+   "yol_dokusu": "stabilize",
+   "zemin_dokusu": "zemin_toprak"
+  }
+ }
+}

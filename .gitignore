@@ -198,6 +198,9 @@ firmware/
 # T212 MuJoCo: harita basina uretilen dokular ve tarama kareleri (buyuk, yeniden uretilebilir)
 simulation/mujoco/dokular/uretilen/
 results/fdr_sprint_20260910/H1/**/kareler/
+# T213-A K3-b: varyant koşumlarının harita başına mozaik/algı/önizleme JPGleri (kosum2.sh içerik-eş yeniden üretir: GPU render, kareler ~%50 bayt-eş, mozaik maks 8 seviye / %0,3 piksel fark; hüküm ve sayılar aynı — çürütücü ölçümü 10 Eyl)
+results/fdr_sprint_20260910/H1/k3b/*/harita_*/**/*.jpg
+results/fdr_sprint_20260910/H1/k3b/*/harita_*/*.jpg
 
 # T220 (K2, 10 Eylul 2026): uretim modelinin KABUL KUMELERI (T66 yatay + T189 acili,
 # 2x260 kare + manifest, toplam 71 MB, DONDURULMUS — parmak izi registry'de) depoya
