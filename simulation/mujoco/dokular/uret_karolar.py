@@ -37,6 +37,8 @@ KARO_PX = 256   # moloz karosu: kırpma bu kenara ölçeklenir, 2×2 aynalı →
 
 # ad → (kaynak dosya, (x0, y0, x1, y1), tür, açıklama)
 # Kaynak yolları eğitim ağacındaki GERÇEK karelerdir (dataset/ git dışı; O:/navitas altında).
+# tür "dondur": kutu = (cx, cy, aci_derece, x0, y0, x1, y1) — kare önce (cx, cy) etrafında
+#   aci_derece (cv2 işareti) döndürülür, sonra (x0, y0, x1, y1) kesilir (yol ekseni dikey olsun diye).
 KAYNAKLAR = {
     "toprak_kaynak": (
         "dataset/dji_kirsal/images/train/dji_20260822170832_0037_d__frame_000170_000006630.jpg",
@@ -58,6 +60,22 @@ KAYNAKLAR = {
         "dataset/rescuenet_11sinif/images/train/11237.jpg",
         (10, 370, 310, 670), "karo",
         "ahşap/beton kırık enkaz, RescueNet eğitim karesi"),
+    # ── T213-A (K3-b) — GERÇEK ÖLÇEKLİ kaynaklar: DJI 0037 kare 3, SRT rel_alt 16,3 m →
+    #    ≈0,59 cm/px (KAYNAK.md §GSD). arena_mjcf v1/v2 varyantları bunları 2,44 cm/px HTAB
+    #    dokusuna KÜÇÜLTEREK döşer (taban dokusundaki 2,3–5,8× büyütme yok).
+    "yol_serit_kaynak": (
+        "dataset/dji_kirsal/images/train/dji_20260822170832_0037_d__frame_000003_000000090.jpg",
+        (766.07, 825.99, 49.51, 483, 927, 1161, 1547), "dondur",
+        "stabilize/çakıl yol yüzeyi, yol ekseni DİKEY (PCA ile 49,51°), tekerlek izli, 678×620 px "
+        "= 4,0 m enine × 3,7 m boyuna; DJI 0037 kare 3 (16,3 m), kişi/gölge dışı pencere"),
+    "banket_kaynak": (
+        "dataset/dji_kirsal/images/train/dji_20260822170832_0037_d__frame_000003_000000090.jpg",
+        (1050, 1500, 1350, 2100), "bolge",
+        "yol kenarı banketi: kahverengi toprak + seyrek kuru ot (yol→zemin geçişi), 300×600 px = 1,8×3,6 m"),
+    "zemin_toprak_kaynak": (
+        "dataset/dji_kirsal/images/train/dji_20260822170832_0037_d__frame_000003_000000090.jpg",
+        (0, 0, 600, 700), "bolge",
+        "açık kahve sıkıştırılmış toprak/kum alanı (şartname s.9 'toprak/kum' zemin), 600×700 px = 3,6×4,1 m"),
 }
 
 
@@ -75,13 +93,18 @@ def _kaynak_yolu(kaynak: str, depo_kok: Path) -> Path | None:
 
 
 def uret(ad: str, depo_kok: Path) -> Path | None:
-    kaynak, (x0, y0, x1, y1), tur, _ = KAYNAKLAR[ad]
+    kaynak, kutu, tur, _ = KAYNAKLAR[ad]
+    x0, y0, x1, y1 = kutu if tur != "dondur" else kutu[3:]
     yol = _kaynak_yolu(kaynak, depo_kok)
     if yol is None:
         print(f"[karo] {ad}: kaynak yok: {kaynak}")
         return None
     im = cv2.imread(str(yol))
-    kes = im[y0:y1, x0:x1]
+    if tur == "dondur":
+        cx, cy, aci, x0, y0, x1, y1 = kutu
+        M = cv2.getRotationMatrix2D((float(cx), float(cy)), float(aci), 1.0)
+        im = cv2.warpAffine(im, M, (im.shape[1], im.shape[0]), flags=cv2.INTER_LINEAR)
+    kes = im[int(y0):int(y1), int(x0):int(x1)]
     dosya = BURASI / f"{ad}.png"
     if tur == "karo":
         kes = cv2.resize(kes, (KARO_PX, KARO_PX), interpolation=cv2.INTER_AREA)
