@@ -59,6 +59,13 @@ doğrudan (Jetson IP 192.168.144.30, `rtsp://192.168.144.30:8554/isaretli`; hava
 4. Camdan cama gecikme: Jetson ekranında kronometre → YKS ekranı birlikte filme alınır (5 ölçüm, p50/maks).
 5. Kurulum provası: YKS + kumanda + HDMI + yakalama kartı + köprü ≤ 15 dk hazırlık içinde.
 
+**Kullanıcı cevapları (10 Eylül 15:3x, D-443 ek):**
+- 1–2: cevap "SIYI Air Unit HDMI Girişinden Ethernet Çıkışına Dönüştürücü" — dönüştürücü **İHA tarafıdır**; kumandanın HDMI çıkışı ve PC'deki USB HDMI yakalama kartı sorusu **AÇIK** (mimar yeniden sordu).
+- 3: mini HDMI → HDMI kablo var. Orin Nano DevKit'te HDMI yok, **DisplayPort** var → DP→HDMI adaptörü yine gerekli; mini HDMI ucu büyük olasılıkla dönüştürücü girişine gider (konektör doğrulanacak).
+- 4: İHA'da Jetson için **12,2 V dönüştürücü** var → HDMI giriş dönüştürücüsü (12 V / 3 W) aynı hattan beslenebilir; regülatörün akım kapasitesi BEYAN GEREKLİ. Hava birimi beslemesi Air Unit Mini aralığına göre.
+- 5: MK15 **5,8 GHz**; telemetri **SiK 433 MHz** (değişmez). BTK 5,8 GHz muafiyeti 25 mW e.i.r.p. riski açık — güç Link Status'tan okunacak.
+- 6: IP ayarları sahada birlikte yapılacak.
+
 ## 4. Eşikler (ön kayıt)
 - YKS: video ve rota paneli aynı ekranda — test ile EVET.
 - Video koptuğunda veri hattı ve onay akışı etkilenmez — test ile EVET.
