@@ -371,7 +371,7 @@ Yönergenin on sekiz maddesi, bugünkü durumu ve doğrulama yöntemiyle:
 | `T03` | Tüm parçalar **detay seviyesinde** tasarlanmış olmalı | **KISMEN.** Görev test uçuşu aracının altı baskı parçası tasarlandı, basıldı ve monte edildi (`dronesolid/Drone_Frame_STL.STL`, `Drone_Arm_STL.STL`, `Lower_Drone_Frame_STL.STL`, `Drone_Legs_STL.STL`, `Drone_Dome_STL.STL`, `GPS_Holder_STL.STL`). Final aracı için **BEYAN GEREKLİ (insan)** | gözle muayene | R1 (test aracı) · rol atanmamış (final) |
 | `T04` | Tasarım kriterleri ayrıntılı | **BEYAN GEREKLİ (insan):** yük faktörü, emniyet katsayısı, kütle hedefi, fırlatma arayüzü kriteri | analiz | rol atanmamış |
 | `T05` | Sistem yerleşimi **üç boyutlu model üzerinden**; aviyonik, itki, güç, haberleşme, faydalı yük, **paraşüt kurtarma sistemi ve fırlatma ara yüzü** dâhil | **BEYAN GEREKLİ (insan).** Repodaki tek 3B İHA gösterimi `simulation/models/iha/model.sdf`'tir ve **CAD değildir**: `mesh` sayısı **0**, gövde silindir/kutu primitiflerinden kuruludur (dosyanın kendi yorumu: *"Gelişmiş primitif tasarım"*). Paraşüt podu ve fırlatma arayüzü modellenmemiştir | gözle muayene | rol atanmamış |
-| `T06` | İHA–İKA–Mancınık **fonksiyonel ve fiziksel ara yüz tablosu** | **BEYAN GEREKLİ (insan):** fiziksel ara yüzler (mancınık kızak, İKA yük yatağı) yok. **Fonksiyonel** ara yüzlerin haberleşme kolu ölçülmüştür ve §3.3.1.1.2 / §3.3.4.3.1'dedir | gözle muayene + test | rol atanmamış (fiziksel) · R7 (fonksiyonel) |
+| `T06` | İHA–İKA–Mancınık **fonksiyonel ve fiziksel ara yüz tablosu** | **KISMEN (10 Eylül, T217).** **Fonksiyonel** sütun **koddan** yazıldı: §3.3.1.3.4 tablosu F1–F11 (mesaj · taşıyıcı · tekrar/ACK · kapı · dosya:satır · kilit testi · ölçüm). ~~**BEYAN GEREKLİ (insan):** fiziksel ara yüzler (mancınık kızak, İKA yük yatağı) yok. **Fonksiyonel** ara yüzlerin haberleşme kolu ölçülmüştür ve §3.3.1.1.2 / §3.3.4.3.1'dedir~~ → **Fiziksel** sütun (mancınık kızağı, İKA yük yatağı, paraşüt bağlantısı) **BEYAN GEREKLİ (insan)** — §3.3.1.3.4 F9–F11 | gözle muayene + test | rol atanmamış (fiziksel) · R7 (fonksiyonel) |
 | `T07` | Tüm **bağlantı elemanları ve yapıştırıcılar** tablosu | **BEYAN GEREKLİ (insan):** cıvata/somun/rondela ölçüleri, yapıştırıcı türü ve kür süresi | gözle muayene | rol atanmamış |
 | `T08` | **Tedarikçiler ve tahmini teslim süreleri** dâhil satın alınacak parça listesi | **KISMEN.** Tedarik edilen aviyonik künye §3.2.1.1'dedir; **tedarikçi adı ve teslim süresi sütunları boştur** → **BEYAN GEREKLİ (insan)**. Bölüm 7 ile aynı tablodan beslenir | gözle muayene | R1 |
 | `T09` | **Parça numaralandırma ve revizyon sistemi** + nihai **BOM** | **BEYAN GEREKLİ (insan):** parça numarası şeması bugün yoktur; STL dosya adları numaralandırma sistemi değildir | gözle muayene | rol atanmamış |
@@ -429,7 +429,7 @@ uçsuz **kurulamaz**, boş iskelet "çalışıyor" görünemez.
 | `T03` | Tüm parçalar detay seviyesinde | **BEYAN GEREKLİ (insan)** | gözle muayene | rol atanmamış |
 | `T04` | Tasarım kriterleri | **BEYAN GEREKLİ (insan):** İKA gövde genişliği yazılımda **0,70 m** varsayılmıştır (`IKA_GENISLIK_M`, §3.3.4.1.6); **fiziksel araç bu değeri doğrulamalıdır** | analiz | R6 |
 | `T05` | Sistem yerleşimi | **BEYAN GEREKLİ (insan)** | gözle muayene | R6 |
-| `T06` | İHA–İKA–Mancınık **ara yüz tablosu** | **BEYAN GEREKLİ (insan)** (fonksiyonel kol için §3.3.1.1.2) | gözle muayene | R6 |
+| `T06` | İHA–İKA–Mancınık **ara yüz tablosu** | **KISMEN (10 Eylül, T217):** fonksiyonel kol koddan §3.3.1.3.4 tablosunda (İKA satırları F1–F5, F7: `OPEN_ROUTE`/`NO_ROUTE`/`HEARTBEAT`/`IHA_LANDED` alımı, `IKA_GO`, ACK); ~~**BEYAN GEREKLİ (insan)** (fonksiyonel kol için §3.3.1.1.2)~~ → fiziksel kol (yük yatağı, İHA ile temas noktası — F10) **BEYAN GEREKLİ (insan)** | gözle muayene | R6 |
 | `T07` | Bağlantı elemanları ve yapıştırıcılar tablosu | **BEYAN GEREKLİ (insan)** | gözle muayene | R6 |
 | `T08` | Tedarikçiler + teslim süreleri | **BEYAN GEREKLİ (insan)** | gözle muayene | R1 |
 | `T09` | Parça numaralandırma + **BOM** | **BEYAN GEREKLİ (insan)** | gözle muayene | R6 |
@@ -451,7 +451,7 @@ primitifidir**, yapısal model değildir.
 | `T03` | Tüm parçalar detay seviyesinde | **BEYAN GEREKLİ (insan)** | gözle muayene | rol atanmamış |
 | `T04` | Tasarım kriterleri | **BEYAN GEREKLİ (insan):** hedef çıkış hızı, kızak uzunluğu, maksimum ivme | analiz | rol atanmamış |
 | `T05` | Sistem yerleşimi | **BEYAN GEREKLİ (insan)** | gözle muayene | rol atanmamış |
-| `T06` | Mancınık–İHA–İKA **ara yüz tablosu** | **BEYAN GEREKLİ (insan):** İHA'nın kızağa bağlanma arayüzü ve ayrılma anı; YKS'deki **FIRLATMA** damgası bu ana bağlıdır (§3.3.4.1.15) | gözle muayene | rol atanmamış |
+| `T06` | Mancınık–İHA–İKA **ara yüz tablosu** | **KISMEN (10 Eylül, T217):** fonksiyonel kol §3.3.1.3.4 F9 — mancınığın yazılımla tek teması YKS **FIRLATMA** damgasıdır (`comms/yks_gui.py:3433 firlatma`; elektriksel/yazılımsal hat **yok**). **BEYAN GEREKLİ (insan):** İHA'nın kızağa bağlanma arayüzü ve ayrılma anı; YKS'deki **FIRLATMA** damgası bu ana bağlıdır (§3.3.4.1.15) | gözle muayene | rol atanmamış |
 | `T07` | Bağlantı elemanları ve yapıştırıcılar | **BEYAN GEREKLİ (insan)** | gözle muayene | rol atanmamış |
 | `T08` | Tedarikçiler + teslim süreleri | **BEYAN GEREKLİ (insan)** | gözle muayene | R1 |
 | `T09` | Parça numaralandırma + **BOM** | **BEYAN GEREKLİ (insan)** | gözle muayene | rol atanmamış |
@@ -492,8 +492,20 @@ yığını. Eksik olan **çizimdir**:
 
 *İHA bağlantı şeması: ölçülen topolojiden çizildi (`REVIEW_LOG.md` D-426/D-428/D-429, parametre dökümü `config/pixhawk/arducopter_fda_20260906.param`, 7 Eylül); güç / PWM / UART / I2C / CSI / RC ayrı renk, legend şemada. **DOĞRULANACAK** hatlar (FCHUB, ESC güç yolu, UBEC → Nano, TELEM2 ↔ Nano UART, CSI) kesik çizgidir — sahada ölçülmedi. Hat başına kaynak: `sekiller/iha_baglanti_kaynaklar.md`; nöbetçi: `tests/test_gece_baglanti_semasi.py`.*
 
-**BEYAN GEREKLİ (insan):** İKA için bağlantı şeması. İKA aviyoniği tedarik edilmediği
-için (§3.2.2) şema **yoktur**.
+~~**BEYAN GEREKLİ (insan):** İKA için bağlantı şeması. İKA aviyoniği tedarik edilmediği
+için (§3.2.2) şema **yoktur**.~~ → **10 Eylül 2026 (T217, ön kayıt H3 · D-439 §3):** İKA şeması
+**DDR tasarımından** çizildi. Ölçülmüş İKA hattı **0/16** — aviyonik tedarik edilmedi; şema saha
+topolojisi değil **tasarım beyanıdır**, bu yüzden her hat kesik çizgidir.
+
+![İKA bağlantı şeması — DDR tasarımı, tedarik yok](sekiller/ika_baglanti.svg)
+
+*İKA bağlantı şeması: DDR aviyonik belgesindeki Şekil 3.3.1.5 (İKA Bağlantı Şeması, pin düzeyi), Şekil 3.3.2.10 (STM32F407 özel kart şematiği), Şekil 3.3.3.2 (güç dağıtımı), Tablo 3.3.3.3 (kablo) ve İKA DDR Tablo 3.2.2.14 BOM'undan çizildi (`rapor/*.docx`, python-docx ile 10 Eylül okundu; görseller mimar tarafından yeniden bakılarak pin adları doğrulandı). Ana güç 22,2 V / regüle 5 V / GND / motor H-köprü / UART / I2C / CSI / enkoder / GPIO / analog ayrı renk, legend şemada. **16 hattın 16'sı kesik = "DDR tasarımı, tedarik yok"; ölçülmüş (düz) hat 0.** DDR'nin kendi içindeki çelişkiler gizlenmedi (⚠ K06 enkoder ön-arka/sol-sağ, K07 RPi5 besleme pin/USB-C, K12 kamera IMX477/IMX708, K13 SiK radyosu STM32 USART2 mi RPi5 mi; kart adı Vet36/Vet06). Hat başına kaynak: `sekiller/ika_baglanti_kaynaklar.md`; üreten `scripts/fdr_ika_baglanti_svg.py`; nöbetçi `tests/test_gece_ika_baglanti_semasi.py`.*
+
+**ÖLÇÜLEMEDİ:** İKA şemasındaki 16 hattın hiçbiri (tedarik yok). Tedarikte kapanma: hat hat tezgâh
+ölçümü ve `ika_baglanti_kaynaklar.md` satırının `ÖLÇÜLDÜ` + tutanak atfıyla güncellenmesi (İHA
+şemasındaki kural; nöbetçi düz çizgiyi ancak o zaman kabul eder). **BEYAN GEREKLİ (insan):** SiK
+radyosunun bağlanma noktası (RPi5 mi, STM32 USART2 köprüsü mü — K13; kodun alıcısı RPi5'te
+çalışır), acil stop butonunun hattı, motor numaralandırması (M1–M4 sol/sağ · ön/arka).
 
 ##### 3.3.1.1.1 İstasyonlar
 
@@ -501,7 +513,7 @@ için (§3.2.2) şema **yoktur**.
 |---|---|---|---|
 | **İHA / görev bilgisayarı** | Jetson Orin Nano Developer Kit 4 GB (D-431; Pixhawk 6C'ye bağlı) | kamera → algı → costmap → A* rota → karar eşikleme → telsiz yayını; iniş kanıtı; komut alımı | `codes/rpi_inference.py`, `comms/iha_sender.py`, `comms/iha_inis_yayinci.py`, `comms/iha_komut_alici.py` |
 | **YKS / hakem ekranı** | saha dizüstü (Tk arayüzü) | canlı rota + ret sebebi gösterimi, iki aşamalı hakem onayı, kronometreler, komut üretimi | `comms/yks_gui.py`, `comms/kamera_istemci.py` |
-| **İKA** | (yarışma günü) diferansiyel sürüş aracı | rota önbelleği, sürüş izni kilidi, waypoint takibi | `comms/ika_receiver.py`, `simulation/scripts/ika_nav.py`, `simulation/scripts/ika_surucu.py` |
+| **İKA** | (yarışma günü) diferansiyel sürüş aracı — DDR tasarımı: Raspberry Pi 5 + STM32F407VET6 özel kart, **tedarik yok** (İKA şeması yukarıda, 10 Eylül) | rota önbelleği, sürüş izni kilidi, waypoint takibi | `comms/ika_receiver.py`, `simulation/scripts/ika_nav.py`, `simulation/scripts/ika_surucu.py` |
 
 Üç istasyon **tek bir mesaj sözleşmesiyle** konuşur: satır sonu (`\n`) ile çerçevelenmiş
 JSON, taşıyıcıdan bağımsız (UDP simülasyon / SiK 433 MHz saha). Sözleşmenin tamamı
@@ -1030,10 +1042,119 @@ arka uçsuz **kurulamaz** — boş bir iskeletin "çalışıyor" görünmesi eng
 
 ##### 3.3.1.3.3 İKA aviyonik entegrasyon planı
 
-**BEYAN GEREKLİ (insan):** İKA aviyonik entegrasyon planı (bilgisayar seçimi, sürücü
+~~**BEYAN GEREKLİ (insan):** İKA aviyonik entegrasyon planı (bilgisayar seçimi, sürücü
 kartı, güç hattı, montaj sırası ve kabul turu). Donanım tedarik edilmediği için plan
 bugün **yazılamaz**; kabul turu betiği hazırdır (`scripts/ika_surucu_kabul.py`, Bölüm 2
-§2.1 R6 satırı). Sorumlu rol: **R6 İKA sorumlusu**.
+§2.1 R6 satırı). Sorumlu rol: **R6 İKA sorumlusu**.~~
+
+**10 Eylül 2026 düzeltmesi (T217; ön kayıt `results/fdr_sprint_20260910/ON_KAYIT.md` H3, D-439 §3).**
+Plan iki koldur ve ikisi aynı cümlede anlatılmaz: **yazılım kolu** koddadır ve aşağıda dosya:satır
+ile yazılıdır; **donanım kolu** (bilgisayar, sürücü kartı, güç hattı, montaj sırası) DDR tasarımı
+olarak §3.3.1.1'deki İKA şemasında durur, **tedarik edilmedi** — o kol için **BEYAN GEREKLİ (insan)**
+kalır (R6). İKA fizikte sürülmedi; aşağıdaki her satır **yazılım ölçümüdür**, saha kanıtı değildir.
+
+**(1) Katman zinciri — alıcı → kilit → navigasyon → sürücü arayüzü → arka uç** (satır numaraları 10 Eylül okuması)
+
+| # | katman | ne yapar (koddan) | üretim kodu | kilit (test) |
+|---|---|---|---|---|
+| 1 | **Alıcı** `IkaReceiver` | Taşıyıcıdan bağımsız (UDP `comms/link.py:14` / SiK seri `:73`) satır-JSON çerçeveleri alır: `OPEN_ROUTE` → `latest` (`comms/ika_receiver.py:234`); `NO_ROUTE` ayrı alana, `latest` **ezilmez** (`:247`); İHA `HEARTBEAT` hat canlılığı (`:261`); `IHA_LANDED` → iniş latch'i (`:266`); `CMD IKA_GO` → izin latch'i, mükerrer alım yalnız ACK'lanır (`:275`). `hb_timeout` 3 s sessizlikte `link_lost` (`:27`, `:294 poll`). Rota ACK'ı gönderene **ve** YKS'ye (K8, `:175 _rota_ack`) | `comms/ika_receiver.py` | `tests/test_ika_go_gate.py`, `tests/test_iha_landed_gate.py`, `tests/test_ika_no_route_recovery.py`, `comms/test_comms.py` |
+| 2 | **Görev kapısı** (`CONTRACTS.md` §7) | `sür ⟺ OPEN_ROUTE ∧ IHA_LANDED ∧ IKA_GO`; iki latch + ortak son tarih `_surus_izni_gecerli_unlocked` (`ika_receiver.py:127`), bekleyen `wait_surus_izni` (`:114`); sıfır-dışı her motor komutu karar kilidi altında `run_if_route_valid` (`:80`) ile geçer — `NO_ROUTE` geldiyse komut düşer | `comms/ika_receiver.py`; `simulation/scripts/ika_nav.py:203 receiver_rota_gecerli`, `:234 receiver_korumali_hiz_gonder`, `:260 receiver_surus_izni_bekle` | `tests/test_p3_ika_surucu.py::T6` (izinsiz sıfır-dışı komut yok), `tests/test_ika_surus_no_route.py`, `tests/test_k5_k6_sure_limitleri.py` |
+| 3 | **Navigasyon** `navigate` | Dünya waypoint'lerini (`route_to_world_waypoints`, `ika_nav.py:144`) 10 Hz döngüde izler (`CTRL_HZ`, `:39`); geçiş yarıçapı 0,5 m, son waypoint 0,3 m (`:37-38`). Her adımda **sürüş son tarihi (K5)**, **sürücü sağlığı** (`:337`), **hat canlılığı** ve **rota kapısı** denetlenir; biri düşerse `send_vel(0,0)` — güvenli duruş (`:304 rota_gecersiz_dur`). Görev sarmalayıcısı `ika_gorevi` (`:437`) iki ayrı son tarihle (bekleme 900 s / sürüş 600 s, `codes/karar_sozlesmesi.py:1981-1982`) 0–4 çıkış kodu döner | `simulation/scripts/ika_nav.py:280 navigate`, `:416 navigate_route`, `:437 ika_gorevi`, `:524 wait_open_route_from_comms` | `tests/test_k5_k6_sure_limitleri.py`, `tests/test_dalga2_k1_k5_k8_kusurlari.py`; akış diyagramı (e) `sekiller/akis_e.svg` |
+| 4 | **Sürücü arayüzü** `IkaSurucu` (`CONTRACTS.md` §7.2) | `hiz_ver(sağ, sol) → bool` (istisna sızmaz), `konum_al() → (x, y, z, yaw)` ya da 4×None, `durdur()`, `saglikli()` = ardışık hata < `ARDISIK_HATA_TAVANI` 3 (`simulation/scripts/ika_surucu.py:34`, sınıf `:44`); `ika_nav.send_vel/get_pose` buraya delege eder (`ika_nav.py:74`, `:82`); aktif sürücü `surucu_ayarla` ile takılır (`:63`) | `simulation/scripts/ika_surucu.py` | `tests/test_p3_ika_surucu.py` (T1 bayt-eşitlik, T3 tavan, T5 zaman aşımı, T7 fail-loud) |
+| 5 | **Arka uç** | `GercekSurucu` (`ika_surucu.py:186`): arka uçsuz kurulum `DONANIM_YOK` ile **düşer** (`:196`) — sessiz iskelet yasak; `GazeboSurucu` (`:79`; `gz` bu makinede yok); `SahteSurucu` (`:157`; test ve kabul); **`MuJoCoSurucu`** (T213-B, `simulation/mujoco/`, aynı arayüz — bu görevde değil, H1-K5 orada ölçülür) | `simulation/scripts/ika_surucu.py`, `scripts/ika_surucu_kabul.py` | `tests/test_faz_b_ika_surucu_kabul.py` (exit 0/1/2 sözleşmesi) |
+
+**(2) Kabul turu K1–K6 — koşuldu (10 Eylül 2026, `scripts/ika_surucu_kabul.py`)**
+
+Betik `CONTRACTS.md` §7.2 sözleşmesini mekanik olarak sınar; sahada `--surucu gercek --arka-uc modul:Sinif`
+ile **aynı adımlar** koşulur. Sahte sürücüyle çıktı birebir
+(`results/fdr_sprint_20260910/H3/ika_surucu_kabul_sahte.txt`, JSON eşi `.json`):
+
+```text
+IKA SURUCU KABUL TURU — surucu=sahte  tavan=3  rampa=0->0.30 m/s / 5 adim / 0.2 s  (MAX_SPEED=2.0 m/s)
+adim  durum    zorunlu  olculen
+K1    GECTI    evet     durdur() -> True: durdur()=True
+K2    GECTI    evet     konum_al() -> 4'lu demet: (0.0, 0.0, 0.0, 0.0)
+K3    GECTI    evet     hiz rampasi 0 -> 0.30 m/s, 5 adim: 5/5 adim; son v=0.30 m/s
+K4    GECTI    evet     durdur() -> True ve saglikli() True: durdur()=True saglikli()=True ika_nav.surucu_saglikli()=True
+K5    GECTI    evet     fail-closed: 3 ardisik ariza -> saglikli() False: ardisik_hata=3 saglikli()=False; tavan-1'de saglikli()=True
+K6    GECTI    evet     basarili hiz_ver sonrasi ardisik_hata == 0: ana surucu ardisik_hata=0; ariza sonrasi hiz_ver=True ardisik_hata=0 saglikli()=True
+SON DURDUR (fail-closed): durdur()=True
+SONUC: GECTI (exit 0)
+```
+
+Aynı betik diğer iki sürücüyle de koşuldu ve **düştüğü yerde düştü diye yazıldı**: `--surucu gazebo`
+→ `gz` PATH'te yok: K1/K3/K4/K6 **DÜŞTÜ**, K5 ATLANDI, `SONUC: DUSTU (exit 1)`
+(`H3/ika_surucu_kabul_gazebo_gz_yok.txt`); `--surucu gercek` → `DONANIM_YOK`, tur **başlamadı**,
+`SONUC: SURUCU_KURULAMADI (exit 2)` (`H3/ika_surucu_kabul_gercek_donanim_yok.txt`). Sahte sürücünün
+6/6'sı **sözleşmenin** kanıtıdır, aracın değil: rampa 0 → 0,30 m/s'de (`RAMPA_HEDEF_MS`, 5 adım,
+`ika_surucu_kabul.py:83-85`) aracın hareketi gerçek/sim sürücüde **GÖZLE TEYİT** ister — betik bu
+satırı basar, yazılım bunu ölçemez. ⚠ Çıktıdaki `MAX_SPEED=2.0 m/s` `ika_nav.py:35` değeridir; DDR
+fiziksel hız 1,3 m/s — üç kopyalı sabit `CONTRACTS.md` §4'e tek kaynak olarak taşınıyor (T213-B,
+D-438 §2f); kabul rampası (0,30) iki değerin de altındadır, sonuç değişmez.
+
+**(3) Donanım gelince izlenecek sıra — DDR tasarımına göre; tedarik tarihi yok, her adım BEYAN GEREKLİ (insan)**
+
+1. **Tezgâh, kart + RPi5:** DDR Hat-3 — STM32 `UART1` (PA9/PA10) ↔ RPi5 `GPIO14/15`, 115200 baud,
+   **Navitas UART v2** çerçevesi `0xAA 0x55 · ID · LEN · PAYLOAD · CRC8` (DDR yazılım Tablo 3.3.5.9 ve
+   Tablo 3.3.5.13; §3.3.1.1 İKA şeması K08). Bu çerçevenin RPi5 tarafı kodda **yoktur**: `GercekSurucu`
+   arka ucu (`hiz_ver` → motor komutu çerçevesi, `konum_al` → enkoder/EKF konumu) yazılır ve
+   `--arka-uc modul:Sinif` ile takılır. DDR'nin "STM32 ↔ RPi5 entegrasyon testi, paket kaybı %0"
+   kabulü (DDR yazılım Tablo 3.3.5.19) burada ölçülür.
+2. **Kabul turu aynı betikle:** `ika_surucu_kabul.py --surucu gercek --arka-uc …` — K1–K6 + **GÖZLE
+   TEYİT** satırı; JSON `results/` altına yazılır.
+3. **Alıcı hattı kararı (K13):** kodun alıcısı RPi5'te Python'dur — SiK ile
+   `comms/ika_receiver.py --serial /dev/ttyUSB0` ya da WiFi ile `--bind 0.0.0.0:5006 --yks <YKS>:5005`
+   (K8 kopyası için `--yks` UDP'de zorunlu, `CONTRACTS.md` §6.6). DDR şeması SiK'i STM32 USART2'ye
+   bağlar; bu kodla uyumsuzdur → **karar insanındır** (`sekiller/ika_baglanti_kaynaklar.md` K13).
+4. **Uçtan uca kuru koşu:** `scripts/saha_kuru_kosu.py` halka 10 (`motor`) SAHİPSİZ → sahipli
+   (§3.3.1.3.1); İHA'dan `OPEN_ROUTE` alımı ve ACK'ın YKS ekranına düşmesi (K8) sahada görülür.
+5. **Kilit sahada:** `IHA_LANDED` ve `IKA_GO` gelmeden tekerin dönmediği gözle teyit edilir
+   (`tests/test_p3_ika_surucu.py::T6`'nın saha ikizi); hat kesilince 3 s içinde durduğu ölçülür.
+6. **Güç/EMI:** DDR'nin planlı testleri (pusula sapması ±5°, İKA DDR Tablo 3.2.2.16; acil kesme ≤ 2 s)
+   bu raporda **ÖLÇÜLEMEDİ**.
+
+**(4) İKA hattı FDR beyanı — protokol (kullanıcı kararı D-439 §2: "kod neyse o")**
+
+| | DDR (`rapor/3.3.5_Yazilim_Mimarisi_MERGED_duzeltmeler.docx` Tablo 3.3.5.9) | **FDR — kodun yaptığı** |
+|---|---|---|
+| protokol | MAVLink v2 (Hat-1 İHA↔YKİ, Hat-2 İKA↔YKİ) | **NAVITAS çerçeve protokolü**: satır sonu ile çerçevelenmiş tek satır JSON (`comms/protocol.py`, §3.3.4.3.1) |
+| topoloji | **iki atlamalı**: İHA → YKİ → İKA | İHA → **YKS ve İKA'ya doğrudan** (`comms/iha_sender.py:92 IhaSender(peers)`, `--ika-hedef`); İKA ACK'ı gönderene **ve** YKS'ye (K8, `comms/ika_receiver.py:175`) |
+| taşıyıcı | SiK V3 433 MHz, NetID 26 | aynı sözleşme UDP (WiFi / simülasyon) **ve** SiK seri üzerinde; SiK kipinde Jetson'da tek port sahibi `comms/seri_hub.py` (`CONTRACTS.md` §7.5) |
+| bütünlük | Hat-3'te CRC8; RF hattında MAVLink CRC | protokolde CRC **yok** — SiK'in kendi hata düzeltmesine güvenilir (§3.3.4.3.1, ölçülmemiş risk) |
+| hat kaybı | 5 s (DDR aviyonik Şekil 3.3.1.11 metni) | `IkaReceiver.hb_timeout` **3 s** (`comms/ika_receiver.py:27`); İHA heartbeat 1 Hz (`codes/karar_sozlesmesi.py:145`) |
+| ölçüm | — | UDP loopback IKA_GO kadansı RTT p50 0,27 / p95 0,38 ms, kayıp %0, 200/200 ACK, 4,01 pkt/s; TCP-seri köprüsü p50 1,33 / p95 1,83 ms (`results/fdr_sprint_20260910/H2/ozet.json`, T216); **RF hattı ÖLÇÜLEMEDİ** |
+
+Değişikliğin gerekçesi: (i) İKA'da uçuş kontrolcüsü ve MAVLink uç noktası **yok** — alıcı RPi5'te
+Python'dur, MAVLink ayrıştırma katmanı eklemek yeni kod ve yeni hata yüzeyi demektir; (ii) şartname
+§2.2.3 hakem onayı **aktarım kanıtı** ister — İKA'nın ACK'ı YKS ekranına düşer (K8, §3.3.4.1.12), iki
+atlamalı planda YKİ'nin yeniden yayını bu kanıtı üretmez; (iii) üç istasyon tek sözleşmeyle konuşur ve
+bu sözleşme `comms/test_comms.py` + `tests/test_faz_b_ack_ref_tip.py` ile kilitlidir; (iv) DDR'deki
+Hat-1/Hat-2 NetID ayrımı korunabilir — SiK kipinde İKA'nın hattı (çok-noktalı SiK mi, WiFi mi)
+topolojiyle karara bağlanır (`CONTRACTS.md` §7.5 son paragraf; **BEYAN GEREKLİ (insan)**).
+
+##### 3.3.1.3.4 İHA–İKA–Mancınık fonksiyonel arayüz tablosu (yönerge `Y-3.2.1-T06` · 10 Eylül 2026, T217)
+
+Yönerge `Y-3.2.1-T06` "fonksiyonel ve fiziksel ara yüz tablosu" ister; §3.2.1.4, §3.2.2 ve §3.2.3'teki
+`T06` satırları **bu tabloya** işaret eder. **Fonksiyonel sütun koddan yazıldı** — her satırda mesaj,
+taşıyıcı, tekrar/ACK kuralı, kapı, üretim kodu (dosya:satır, 10 Eylül okuması), kilit testi ve
+ölçüm vardır. **Fiziksel sütun** (mancınık kızağı, İKA yük yatağı, paraşüt bağlantısı) bu raporda
+**BEYAN GEREKLİ (insan)** olarak durur — üretilmiş mekanik arayüz yoktur (§3.2.1.2, §3.2.3).
+Ölçüm sütunundaki sayılar **yazılım düzeneklerindendir** (UDP loopback / TCP-seri köprüsü, T216);
+RF hattı ve gerçek Pixhawk için ÖLÇÜLEMEDİ satırları §3.3.4.3.4'tedir.
+
+| # | arayüz (yön) | mesaj / sinyal | taşıyıcı | tekrar / ACK | kapı — ne zaman geçerli | üretim kodu | kilit (test) | ölçüm |
+|---|---|---|---|---|---|---|---|---|
+| F1 | İHA → YKS **ve** İKA | `OPEN_ROUTE` (`road`, `label`, `conf`, `ref_xy`, `waypoints`) | UDP (WiFi/sim) ya da SiK 433 MHz seri — aynı çerçeve | 8 × 0,25 s, her akrandan `ACK(ref_tip="OPEN_ROUTE")` gelene dek (`comms/iha_sender.py:171 _tekrarli_gonder`, `:219 send_open_route`); üretimde `KararYayinci` latest-wins kuyruğu (`:301`) | güven kapısı tek yerde, eşik altı `NO_ROUTE` olur (`:219-237`); her karede tam bir mesaj (K1, `CONTRACTS.md` §6.5) | üretici `comms/protocol.py:54 open_route`; alıcılar `comms/ika_receiver.py:234`, `comms/yks_gui.py:1521 _mesaj_isle` | `tests/test_rpi_telsiz_yayin.py`, `comms/test_comms.py`, `tests/test_faz_b_ack_ref_tip.py` | UDP loopback 200/200 ACK, RTT p50 0,27 / p95 0,38 ms (`results/fdr_sprint_20260910/H2/ozet.json`) |
+| F2 | İHA → YKS ve İKA | `NO_ROUTE` (`sebep`, `detay`) | aynı | 8 × 0,25 s (`iha_sender.py:240`) | `latest` **ezilmez**; sürüşteyse güvenli duruş, yeni `OPEN_ROUTE` ile devam (`CONTRACTS.md` §6.1; `ika_nav.py:304`) | `protocol.py:86 rota_yok`; `ika_receiver.py:247` | `tests/test_ika_no_route_recovery.py`, `tests/test_ika_surus_no_route.py` | — (davranış testi) |
+| F3 | İHA → herkes | `HEARTBEAT` (`node`, `karar_yas`, telemetri alanları) | aynı | 1 Hz (`IHA_HEARTBEAT_ARALIK_S`, `codes/karar_sozlesmesi.py:145`), ACK'sız | İKA: 3 s sessizlik → `link_lost` → durur, hat dönünce aynı waypoint'ten (`ika_receiver.py:27`, `:294`); YKS: tazelik özeti, `karar_yas` yoksa taze sayılmaz | `iha_sender.py:247 send_heartbeat`; `protocol.py:126` | `tests/test_ika_go_gate.py`, `tests/test_dalga2_k1_k5_k8_kusurlari.py` | — |
+| F4 | İHA → YKS ve İKA | `IHA_LANDED` (`seq`) | aynı | 8 × 0,25 s (`iha_sender.py:264 send_iha_landed`); üretici `comms/iha_inis_yayinci.py:361` | **Pixhawk kanıtı** `inis_kaniti.yerde_mi` (`comms/inis_kaniti.py:925`: `ON_GROUND` + `relative_alt` < 1 m, 3 ardışık, aynı sysid); İKA latch (`ika_receiver.py:266`); YKS manuel düğmesi latch'i **açmaz** | `protocol.py:211 iha_landed` | `tests/test_iha_landed_gate.py` (`:313`), `tests/test_iha_inis_yayinci.py`, `tests/test_inis_kaniti.py` | gerçek Pixhawk'ta **ÖLÇÜLEMEDİ** (Jetson–Pixhawk MAVLink kapısı, §3.3.1.3.2) |
+| F5 | YKS → İKA | `CMD` (`cmd="IKA_GO"`, `hedef="ika"`) | aynı | aynı `seq` ile 20 × 0,25 s, `ACK(ref_tip="CMD")` gelince durur; üst sınırda KIRMIZI, görev kaybedilmez (`IKA_GO_TEKRAR_*`, `karar_sozlesmesi.py:2081-2082`; `comms/komut_tekrar.py:18 AckliTekrar`) | YKS: `IHA_LANDED` kanıtı **ve** 2/2 hakem onayı olmadan gönderilmez (`yks_gui.py:3487 ika_baslat`, `:3497-3506`); İKA: latch idempotent, her alım ACK'lanır (`ika_receiver.py:275`) | `protocol.py:197 command`; `yks_gui.py:3509` | `tests/test_ika_go_ackli_tekrar.py`, `tests/test_ika_go_gate.py` | IKA_GO kadansında 4,01 pkt/s · 322,5 B/s (H2) |
+| F6 | YKS → İHA | `CMD` (`ARM` / `DISARM` / `RTL` / `LAND` / `PARACHUTE`) | aynı | ARM/DISARM/RTL/LAND 20 × 0,25 s; PARACHUTE 40 × 0,20 s (`karar_sozlesmesi.py:2088-2089`, `:2102-2103`); ACK **yalnız** Pixhawk `COMMAND_ACK(ACCEPTED)` sonrası, pencere 0,5 s (`:2112`) | oturum + `seq` + saat tazeliği; FDA kipinde PARACHUTE gönderilmez (`CONTRACTS.md` §6.7) | `yks_gui.py:3357 acil_komut`, `:3631 parasut`; alıcı `comms/iha_komut_alici.py:303 IhaKomutAlici`, `:510 _aktar` (`DO_PARACHUTE`, `:242`) | `tests/test_faz_b_iha_komut_alici.py`, `tests/test_iha_komut_guvenligi.py`, `tests/test_iha_komut_saat_ve_tekrar.py` | TCP-seri köprüsü RTT p50 1,33 / p95 1,83 ms (H2); Pixhawk'ta **ÖLÇÜLEMEDİ** |
+| F7 | İKA → İHA **ve** YKS | `ACK` (`ref`, `ref_tip`) | aynı; seri hatta ortam yayını | rota ACK'ı gönderene + YKS kopyası (`ika_receiver.py:175 _rota_ack`), kontrol ACK'ı (`:160`) | **K8 aktarım kanıtı:** YKS 2/2 onayı İKA'nın `OPEN_ROUTE` ACK'ını görmeden verilemez (`yks_gui.py:1942 ika_aktarim_kaniti_var`, `:2002 _ack_isle`) | `protocol.py:141 ack` | `tests/test_faz_b_ack_ref_tip.py`, `tests/test_dalga2_k1_k5_k8_kusurlari.py` | 200/200 ACK (H2) |
+| F8 | YKS → İHA | `ACK` (`OPEN_ROUTE` / `NO_ROUTE` / `IHA_LANDED`, `ref_tip`) | aynı | 2/2 hakem onayında tek ACK; İHA tekrarı durdurur | `yks_gui.py:1842 onayla` — ankor, tazelik, K8 kanıtı fail-closed; kanıt kaydı `comms/hakem_kaydi.py` (`CONTRACTS.md` §6.8) | `yks_gui.py:1842` | `tests/test_faz_b_yks_fda_kipi.py`, `tests/test_yks_hakem_kanit_olaylari.py` | — |
+| F9 | Mancınık → İHA / YKS | **fiziksel** ayrılma; yazılımda yalnız YKS `FIRLATMA` zaman damgası (İHA kronometresi) | — | — | ARM kilidi: taze Pixhawk `HEARTBEAT` + `armed` olmadan damga **reddedilir** (`yks_gui.py:3433 firlatma`; FDA kipinde etiket `KALKIŞ`, §3.3.4.1.15) | `yks_gui.py:3433` | `tests/test_faz_b_yks_fda_kipi.py` | mancınıkla elektriksel/yazılımsal hat **yok**; kızak, ayrılma anı, tutma kuvveti **BEYAN GEREKLİ (insan)** |
+| F10 | İHA ↔ İKA (fiziksel) | yük yatağı / temas noktası | — | — | — | — | — | **BEYAN GEREKLİ (insan)** — üretilmiş İKA gövdesi yok (§3.2.2) |
+| F11 | Paraşüt (fiziksel) | `PARACHUTE` komutunun mekanik ucu (F6 → Pixhawk `DO_PARACHUTE` → tetik) | — | — | — | — | — | pod, tetik, yerleşim **BEYAN GEREKLİ (insan)** (§3.2.1.2) |
 
 ### 3.3.2 Elektriksel Tasarım ve Kablolama
 
@@ -2347,6 +2468,13 @@ BEYAN GEREKLI (insan): Sabit kanat IHA icin agirlik-denge, boyut, kontrol
 BEYAN GEREKLI (insan): IKA icin RENK KODLU baglanti semasi — IKA
   aviyonigi tedarik edilmedi. IHA semasi CIZILDI (7 Eylul, olculen
   topoloji): sekiller/iha_baglanti.svg; olculmeyen hatlar DOGRULANACAK.
+  -> 10 Eylul (T217): IKA semasi DDR TASARIMINDAN cizildi —
+  sekiller/ika_baglanti.svg (16 hat, hepsi kesik "DDR tasarimi, tedarik
+  yok"; kaynak sekiller/ika_baglanti_kaynaklar.md; nobetci
+  tests/test_gece_ika_baglanti_semasi.py). Ustteki beyan boyle daralir:
+  OLCULEMEDI: 16 IKA hattinin hicbiri olculmedi (tedarik yok).
+  BEYAN GEREKLI (insan): SiK radyosunun baglanma noktasi (RPi5 mi, STM32
+  USART2 mi — K13), acil stop butonunun hatti, motor numaralandirmasi.
 
 BEYAN GEREKLI (insan): Aviyonik BOM'un birim agirlik, boyut ve fiyat
   sutunlari; Bolum 7 ile AYNI tablodan beslenmelidir.
@@ -2548,3 +2676,6 @@ Bölümde geçen her sayının kaynağı. Biçim: **değer** · *dosya yolu* · 
 | Şartname tam metni (§5.3.1 Tablo 4, §5.3.2) | `results/sartname_bosluk/sartname_metin.txt` satır 683-748 | PDF çıkarımı | 2026-08-26 |
 | Görüntü işleme kanıt paketi (K0–K6, FPS, FP16, yöntem) | `results/fdr/GORUNTU_ISLEME_KANIT.md` | `scripts/olcum/167_fdr_kanit_paketi.py` | 2026-09 |
 | Kuru koşu 4 Eylül: 9 GEÇTİ · 0 DÜŞTÜ · 1 SAHİPSİZ (`motor` — gerçek motor sürücüsü yok; diyagram (e) S1) | `results/saha_kuru_kosu_20260904_095222/ozet.json:263-265, 284-286` | `scripts/saha_kuru_kosu.py` (dizin adı kalıbı; ozet.json üretici alanı taşımıyor) | 2026-09-04 09:52:22 |
+| İKA bağlantı şeması: 16 hat · ölçülmüş 0 · kesik 16 ("DDR tasarımı, tedarik yok"); DDR içi çelişki 5 (K06/K07/K12/K13 + kart adı) | `FDR/sekiller/ika_baglanti.svg` · `FDR/sekiller/ika_baglanti_kaynaklar.md` | `scripts/fdr_ika_baglanti_svg.py` (kaynak `rapor/*.docx`, python-docx okuması + görsel bakış) · nöbetçi `tests/test_gece_ika_baglanti_semasi.py` | 2026-09-10 |
+| İKA sürücü kabul turu K1–K6 **6/6 GEÇTİ** (sahte sürücü, exit 0) · gazebo `gz` yok → K1/K3/K4/K6 DÜŞTÜ (exit 1) · gerçek → DONANIM_YOK (exit 2) | `results/fdr_sprint_20260910/H3/ika_surucu_kabul_sahte.txt` + `.json` · `ika_surucu_kabul_gazebo_gz_yok.txt` · `ika_surucu_kabul_gercek_donanim_yok.txt` | `scripts/ika_surucu_kabul.py --surucu sahte` / `gazebo` / `gercek` | 2026-09-10 |
+| İKA hattı yazılım ölçümü: UDP loopback RTT p50 0,27 / p95 0,38 ms · kayıp %0 · 200/200 ACK · 4,01 pkt/s · 322,5 B/s; TCP-seri köprüsü p50 1,33 / p95 1,83 ms; RF ÖLÇÜLEMEDİ | `results/fdr_sprint_20260910/H2/ozet.json` | `scripts/sik_rf_olc.py` (T216) | 2026-09-10 01:52 |
