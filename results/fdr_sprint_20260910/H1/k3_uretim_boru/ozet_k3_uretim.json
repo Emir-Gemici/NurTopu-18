@@ -1,0 +1,1111 @@
+{
+ "esik": "H1-K3 açık yol etiketi doğru ≥ 12/15 (ön kayıt; gevşetilmez)",
+ "hukum_tanimi": "dogru = İKA ucuna ≥ 1 OPEN_ROUTE ulaştı ∧ ulaşan her OPEN_ROUTE'un yolu açık yol (yanlış yol yayını 0)",
+ "sinir": "SENTETİK: MuJoCo render; İHA uçuşu KİNEMATİK; irtifa poses.csv z (gürültüsüz, MAVLink relative_alt yerine); FOV sim kamerası (74,5°; gerçek IMX477+6 mm ~55°, ÖLÇÜLMEDİ); kamera köprüsü (MJPEG) atlandı, kare döngüsü üretimdir; yayın senkron beklenir (latest-wins kaybı yok); kerteriz beslemesinde döndürme sim tarafındadır.",
+ "beslemeler": {
+  "kerteriz": {
+   "harita_n": 15,
+   "open_route_var_n": 5,
+   "dogru_n": 1,
+   "yanlis_yol_yayini_olan_n": 4,
+   "ilk_open_route_dogru_n": 1,
+   "son_open_route_dogru_n": 2,
+   "son_yayin_no_route_n": 15,
+   "kare_n": 585,
+   "open_route_kare_n": 8,
+   "open_route_tarama_bacaginda_n": 8,
+   "hizali_n": 15,
+   "ack_eksik_n": 0,
+   "no_route_sebepleri": {
+    "UC_BANT_TEMAS_YOK": 257,
+    "ZEMIN_MASKESI_SUPHELI": 134,
+    "MASKE_YOK": 109,
+    "HEDEF_YOK": 60,
+    "GORUS_HATTI_KOPUK": 17
+   },
+   "haritalar": [
+    {
+     "harita": 1,
+     "senaryo": "kolay",
+     "acik_yol": 1,
+     "open_route_n": 2,
+     "open_route_yollari": {
+      "1": 1,
+      "2": 1
+     },
+     "open_route_kareleri": [
+      9,
+      15
+     ],
+     "son_yayin": {
+      "tip": "NO_ROUTE",
+      "seq": 60,
+      "sebep": "MASKE_YOK",
+      "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+     },
+     "open_route_var": true,
+     "dogru": false,
+     "yanlis_yol_yayini_n": 1,
+     "ilk_open_route_dogru": false,
+     "son_open_route_dogru": true,
+     "son_yayin_tipi": "NO_ROUTE",
+     "teshis": {
+      "tarama_bacagi_kare_n": 15,
+      "kb_karede_kare_n": 7,
+      "hb_karede_kare_n": 6,
+      "kb_hb_ayni_karede_kare_n": 0,
+      "or_kare_n": 2,
+      "or_dunya_yolu_dogru_n": 2,
+      "or_etiket_dunya_esit_n": 1,
+      "or_dunya_yollari": {
+       "1": 2
+      },
+      "dunya_yolu_dogru_var": true,
+      "kare_ika_or_tutarli": true
+     },
+     "dosya": "results/fdr_sprint_20260910/H1/k3_uretim_boru/kerteriz/harita_1_kolay.json"
+    },
+    {
+     "harita": 1,
+     "senaryo": "orta",
+     "acik_yol": 2,
+     "open_route_n": 0,
+     "open_route_yollari": {},
+     "open_route_kareleri": [],
+     "son_yayin": {
+      "tip": "NO_ROUTE",
+      "seq": 150,
+      "sebep": "MASKE_YOK",
+      "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+     },
+     "open_route_var": false,
+     "dogru": false,
+     "yanlis_yol_yayini_n": 0,
+     "ilk_open_route_dogru": null,
+     "son_open_route_dogru": null,
+     "son_yayin_tipi": "NO_ROUTE",
+     "teshis": {
+      "tarama_bacagi_kare_n": 15,
+      "kb_karede_kare_n": 7,
+      "hb_karede_kare_n": 6,
+      "kb_hb_ayni_karede_kare_n": 0,
+      "or_kare_n": 0,
+      "or_dunya_yolu_dogru_n": 0,
+      "or_etiket_dunya_esit_n": 0,
+      "or_dunya_yollari": {},
+      "dunya_yolu_dogru_var": false,
+      "kare_ika_or_tutarli": true
+     },
+     "dosya": "results/fdr_sprint_20260910/H1/k3_uretim_boru/kerteriz/harita_1_orta.json"
+    },
+    {
+     "harita": 1,
+     "senaryo": "zor",
+     "acik_yol": 3,
+     "open_route_n": 0,
+     "open_route_yollari": {},
+     "open_route_kareleri": [],
+     "son_yayin": {
+      "tip": "NO_ROUTE",
+      "seq": 240,
+      "sebep": "MASKE_YOK",
+      "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+     },
+     "open_route_var": false,
+     "dogru": false,
+     "yanlis_yol_yayini_n": 0,
+     "ilk_open_route_dogru": null,
+     "son_open_route_dogru": null,
+     "son_yayin_tipi": "NO_ROUTE",
+     "teshis": {
+      "tarama_bacagi_kare_n": 15,
+      "kb_karede_kare_n": 7,
+      "hb_karede_kare_n": 6,
+      "kb_hb_ayni_karede_kare_n": 0,
+      "or_kare_n": 0,
+      "or_dunya_yolu_dogru_n": 0,
+      "or_etiket_dunya_esit_n": 0,
+      "or_dunya_yollari": {},
+      "dunya_yolu_dogru_var": false,
+      "kare_ika_or_tutarli": true
+     },
+     "dosya": "results/fdr_sprint_20260910/H1/k3_uretim_boru/kerteriz/harita_1_zor.json"
+    },
+    {
+     "harita": 2,
+     "senaryo": "kolay",
+     "acik_yol": 1,
+     "open_route_n": 1,
+     "open_route_yollari": {
+      "2": 1
+     },
+     "open_route_kareleri": [
+      9
+     ],
+     "son_yayin": {
+      "tip": "NO_ROUTE",
+      "seq": 330,
+      "sebep": "MASKE_YOK",
+      "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+     },
+     "open_route_var": true,
+     "dogru": false,
+     "yanlis_yol_yayini_n": 1,
+     "ilk_open_route_dogru": false,
+     "son_open_route_dogru": false,
+     "son_yayin_tipi": "NO_ROUTE",
+     "teshis": {
+      "tarama_bacagi_kare_n": 15,
+      "kb_karede_kare_n": 7,
+      "hb_karede_kare_n": 6,
+      "kb_hb_ayni_karede_kare_n": 0,
+      "or_kare_n": 1,
+      "or_dunya_yolu_dogru_n": 1,
+      "or_etiket_dunya_esit_n": 0,
+      "or_dunya_yollari": {
+       "1": 1
+      },
+      "dunya_yolu_dogru_var": true,
+      "kare_ika_or_tutarli": true
+     },
+     "dosya": "results/fdr_sprint_20260910/H1/k3_uretim_boru/kerteriz/harita_2_kolay.json"
+    },
+    {
+     "harita": 2,
+     "senaryo": "orta",
+     "acik_yol": 1,
+     "open_route_n": 1,
+     "open_route_yollari": {
+      "1": 1
+     },
+     "open_route_kareleri": [
+      15
+     ],
+     "son_yayin": {
+      "tip": "NO_ROUTE",
+      "seq": 420,
+      "sebep": "MASKE_YOK",
+      "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+     },
+     "open_route_var": true,
+     "dogru": true,
+     "yanlis_yol_yayini_n": 0,
+     "ilk_open_route_dogru": true,
+     "son_open_route_dogru": true,
+     "son_yayin_tipi": "NO_ROUTE",
+     "teshis": {
+      "tarama_bacagi_kare_n": 15,
+      "kb_karede_kare_n": 7,
+      "hb_karede_kare_n": 6,
+      "kb_hb_ayni_karede_kare_n": 0,
+      "or_kare_n": 1,
+      "or_dunya_yolu_dogru_n": 1,
+      "or_etiket_dunya_esit_n": 1,
+      "or_dunya_yollari": {
+       "1": 1
+      },
+      "dunya_yolu_dogru_var": true,
+      "kare_ika_or_tutarli": true
+     },
+     "dosya": "results/fdr_sprint_20260910/H1/k3_uretim_boru/kerteriz/harita_2_orta.json"
+    },
+    {
+     "harita": 2,
+     "senaryo": "zor",
+     "acik_yol": 3,
+     "open_route_n": 0,
+     "open_route_yollari": {},
+     "open_route_kareleri": [],
+     "son_yayin": {
+      "tip": "NO_ROUTE",
+      "seq": 508,
+      "sebep": "MASKE_YOK",
+      "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+     },
+     "open_route_var": false,
+     "dogru": false,
+     "yanlis_yol_yayini_n": 0,
+     "ilk_open_route_dogru": null,
+     "son_open_route_dogru": null,
+     "son_yayin_tipi": "NO_ROUTE",
+     "teshis": {
+      "tarama_bacagi_kare_n": 15,
+      "kb_karede_kare_n": 7,
+      "hb_karede_kare_n": 6,
+      "kb_hb_ayni_karede_kare_n": 0,
+      "or_kare_n": 0,
+      "or_dunya_yolu_dogru_n": 0,
+      "or_etiket_dunya_esit_n": 0,
+      "or_dunya_yollari": {},
+      "dunya_yolu_dogru_var": false,
+      "kare_ika_or_tutarli": true
+     },
+     "dosya": "results/fdr_sprint_20260910/H1/k3_uretim_boru/kerteriz/harita_2_zor.json"
+    },
+    {
+     "harita": 3,
+     "senaryo": "kolay",
+     "acik_yol": 3,
+     "open_route_n": 0,
+     "open_route_yollari": {},
+     "open_route_kareleri": [],
+     "son_yayin": {
+      "tip": "NO_ROUTE",
+      "seq": 597,
+      "sebep": "MASKE_YOK",
+      "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+     },
+     "open_route_var": false,
+     "dogru": false,
+     "yanlis_yol_yayini_n": 0,
+     "ilk_open_route_dogru": null,
+     "son_open_route_dogru": null,
+     "son_yayin_tipi": "NO_ROUTE",
+     "teshis": {
+      "tarama_bacagi_kare_n": 15,
+      "kb_karede_kare_n": 7,
+      "hb_karede_kare_n": 6,
+      "kb_hb_ayni_karede_kare_n": 0,
+      "or_kare_n": 0,
+      "or_dunya_yolu_dogru_n": 0,
+      "or_etiket_dunya_esit_n": 0,
+      "or_dunya_yollari": {},
+      "dunya_yolu_dogru_var": false,
+      "kare_ika_or_tutarli": true
+     },
+     "dosya": "results/fdr_sprint_20260910/H1/k3_uretim_boru/kerteriz/harita_3_kolay.json"
+    },
+    {
+     "harita": 3,
+     "senaryo": "orta",
+     "acik_yol": 2,
+     "open_route_n": 0,
+     "open_route_yollari": {},
+     "open_route_kareleri": [],
+     "son_yayin": {
+      "tip": "NO_ROUTE",
+      "seq": 687,
+      "sebep": "MASKE_YOK",
+      "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+     },
+     "open_route_var": false,
+     "dogru": false,
+     "yanlis_yol_yayini_n": 0,
+     "ilk_open_route_dogru": null,
+     "son_open_route_dogru": null,
+     "son_yayin_tipi": "NO_ROUTE",
+     "teshis": {
+      "tarama_bacagi_kare_n": 15,
+      "kb_karede_kare_n": 7,
+      "hb_karede_kare_n": 6,
+      "kb_hb_ayni_karede_kare_n": 0,
+      "or_kare_n": 0,
+      "or_dunya_yolu_dogru_n": 0,
+      "or_etiket_dunya_esit_n": 0,
+      "or_dunya_yollari": {},
+      "dunya_yolu_dogru_var": false,
+      "kare_ika_or_tutarli": true
+     },
+     "dosya": "results/fdr_sprint_20260910/H1/k3_uretim_boru/kerteriz/harita_3_orta.json"
+    },
+    {
+     "harita": 3,
+     "senaryo": "zor",
+     "acik_yol": 1,
+     "open_route_n": 0,
+     "open_route_yollari": {},
+     "open_route_kareleri": [],
+     "son_yayin": {
+      "tip": "NO_ROUTE",
+      "seq": 777,
+      "sebep": "MASKE_YOK",
+      "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+     },
+     "open_route_var": false,
+     "dogru": false,
+     "yanlis_yol_yayini_n": 0,
+     "ilk_open_route_dogru": null,
+     "son_open_route_dogru": null,
+     "son_yayin_tipi": "NO_ROUTE",
+     "teshis": {
+      "tarama_bacagi_kare_n": 15,
+      "kb_karede_kare_n": 7,
+      "hb_karede_kare_n": 6,
+      "kb_hb_ayni_karede_kare_n": 0,
+      "or_kare_n": 0,
+      "or_dunya_yolu_dogru_n": 0,
+      "or_etiket_dunya_esit_n": 0,
+      "or_dunya_yollari": {},
+      "dunya_yolu_dogru_var": false,
+      "kare_ika_or_tutarli": true
+     },
+     "dosya": "results/fdr_sprint_20260910/H1/k3_uretim_boru/kerteriz/harita_3_zor.json"
+    },
+    {
+     "harita": 4,
+     "senaryo": "kolay",
+     "acik_yol": 3,
+     "open_route_n": 0,
+     "open_route_yollari": {},
+     "open_route_kareleri": [],
+     "son_yayin": {
+      "tip": "NO_ROUTE",
+      "seq": 867,
+      "sebep": "MASKE_YOK",
+      "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+     },
+     "open_route_var": false,
+     "dogru": false,
+     "yanlis_yol_yayini_n": 0,
+     "ilk_open_route_dogru": null,
+     "son_open_route_dogru": null,
+     "son_yayin_tipi": "NO_ROUTE",
+     "teshis": {
+      "tarama_bacagi_kare_n": 15,
+      "kb_karede_kare_n": 7,
+      "hb_karede_kare_n": 6,
+      "kb_hb_ayni_karede_kare_n": 0,
+      "or_kare_n": 0,
+      "or_dunya_yolu_dogru_n": 0,
+      "or_etiket_dunya_esit_n": 0,
+      "or_dunya_yollari": {},
+      "dunya_yolu_dogru_var": false,
+      "kare_ika_or_tutarli": true
+     },
+     "dosya": "results/fdr_sprint_20260910/H1/k3_uretim_boru/kerteriz/harita_4_kolay.json"
+    },
+    {
+     "harita": 4,
+     "senaryo": "orta",
+     "acik_yol": 3,
+     "open_route_n": 0,
+     "open_route_yollari": {},
+     "open_route_kareleri": [],
+     "son_yayin": {
+      "tip": "NO_ROUTE",
+      "seq": 955,
+      "sebep": "MASKE_YOK",
+      "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+     },
+     "open_route_var": false,
+     "dogru": false,
+     "yanlis_yol_yayini_n": 0,
+     "ilk_open_route_dogru": null,
+     "son_open_route_dogru": null,
+     "son_yayin_tipi": "NO_ROUTE",
+     "teshis": {
+      "tarama_bacagi_kare_n": 15,
+      "kb_karede_kare_n": 7,
+      "hb_karede_kare_n": 6,
+      "kb_hb_ayni_karede_kare_n": 0,
+      "or_kare_n": 0,
+      "or_dunya_yolu_dogru_n": 0,
+      "or_etiket_dunya_esit_n": 0,
+      "or_dunya_yollari": {},
+      "dunya_yolu_dogru_var": false,
+      "kare_ika_or_tutarli": true
+     },
+     "dosya": "results/fdr_sprint_20260910/H1/k3_uretim_boru/kerteriz/harita_4_orta.json"
+    },
+    {
+     "harita": 4,
+     "senaryo": "zor",
+     "acik_yol": 1,
+     "open_route_n": 1,
+     "open_route_yollari": {
+      "2": 1
+     },
+     "open_route_kareleri": [
+      9
+     ],
+     "son_yayin": {
+      "tip": "NO_ROUTE",
+      "seq": 1045,
+      "sebep": "MASKE_YOK",
+      "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+     },
+     "open_route_var": true,
+     "dogru": false,
+     "yanlis_yol_yayini_n": 1,
+     "ilk_open_route_dogru": false,
+     "son_open_route_dogru": false,
+     "son_yayin_tipi": "NO_ROUTE",
+     "teshis": {
+      "tarama_bacagi_kare_n": 15,
+      "kb_karede_kare_n": 7,
+      "hb_karede_kare_n": 6,
+      "kb_hb_ayni_karede_kare_n": 0,
+      "or_kare_n": 1,
+      "or_dunya_yolu_dogru_n": 1,
+      "or_etiket_dunya_esit_n": 0,
+      "or_dunya_yollari": {
+       "1": 1
+      },
+      "dunya_yolu_dogru_var": true,
+      "kare_ika_or_tutarli": true
+     },
+     "dosya": "results/fdr_sprint_20260910/H1/k3_uretim_boru/kerteriz/harita_4_zor.json"
+    },
+    {
+     "harita": 5,
+     "senaryo": "kolay",
+     "acik_yol": 3,
+     "open_route_n": 0,
+     "open_route_yollari": {},
+     "open_route_kareleri": [],
+     "son_yayin": {
+      "tip": "NO_ROUTE",
+      "seq": 1132,
+      "sebep": "MASKE_YOK",
+      "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+     },
+     "open_route_var": false,
+     "dogru": false,
+     "yanlis_yol_yayini_n": 0,
+     "ilk_open_route_dogru": null,
+     "son_open_route_dogru": null,
+     "son_yayin_tipi": "NO_ROUTE",
+     "teshis": {
+      "tarama_bacagi_kare_n": 15,
+      "kb_karede_kare_n": 7,
+      "hb_karede_kare_n": 6,
+      "kb_hb_ayni_karede_kare_n": 0,
+      "or_kare_n": 0,
+      "or_dunya_yolu_dogru_n": 0,
+      "or_etiket_dunya_esit_n": 0,
+      "or_dunya_yollari": {},
+      "dunya_yolu_dogru_var": false,
+      "kare_ika_or_tutarli": true
+     },
+     "dosya": "results/fdr_sprint_20260910/H1/k3_uretim_boru/kerteriz/harita_5_kolay.json"
+    },
+    {
+     "harita": 5,
+     "senaryo": "orta",
+     "acik_yol": 3,
+     "open_route_n": 0,
+     "open_route_yollari": {},
+     "open_route_kareleri": [],
+     "son_yayin": {
+      "tip": "NO_ROUTE",
+      "seq": 1220,
+      "sebep": "MASKE_YOK",
+      "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+     },
+     "open_route_var": false,
+     "dogru": false,
+     "yanlis_yol_yayini_n": 0,
+     "ilk_open_route_dogru": null,
+     "son_open_route_dogru": null,
+     "son_yayin_tipi": "NO_ROUTE",
+     "teshis": {
+      "tarama_bacagi_kare_n": 15,
+      "kb_karede_kare_n": 7,
+      "hb_karede_kare_n": 6,
+      "kb_hb_ayni_karede_kare_n": 0,
+      "or_kare_n": 0,
+      "or_dunya_yolu_dogru_n": 0,
+      "or_etiket_dunya_esit_n": 0,
+      "or_dunya_yollari": {},
+      "dunya_yolu_dogru_var": false,
+      "kare_ika_or_tutarli": true
+     },
+     "dosya": "results/fdr_sprint_20260910/H1/k3_uretim_boru/kerteriz/harita_5_orta.json"
+    },
+    {
+     "harita": 5,
+     "senaryo": "zor",
+     "acik_yol": 2,
+     "open_route_n": 3,
+     "open_route_yollari": {
+      "1": 1,
+      "2": 1,
+      "3": 1
+     },
+     "open_route_kareleri": [
+      9,
+      15,
+      20
+     ],
+     "son_yayin": {
+      "tip": "NO_ROUTE",
+      "seq": 1309,
+      "sebep": "MASKE_YOK",
+      "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+     },
+     "open_route_var": true,
+     "dogru": false,
+     "yanlis_yol_yayini_n": 2,
+     "ilk_open_route_dogru": false,
+     "son_open_route_dogru": false,
+     "son_yayin_tipi": "NO_ROUTE",
+     "teshis": {
+      "tarama_bacagi_kare_n": 15,
+      "kb_karede_kare_n": 7,
+      "hb_karede_kare_n": 6,
+      "kb_hb_ayni_karede_kare_n": 0,
+      "or_kare_n": 3,
+      "or_dunya_yolu_dogru_n": 3,
+      "or_etiket_dunya_esit_n": 1,
+      "or_dunya_yollari": {
+       "2": 3
+      },
+      "dunya_yolu_dogru_var": true,
+      "kare_ika_or_tutarli": true
+     },
+     "dosya": "results/fdr_sprint_20260910/H1/k3_uretim_boru/kerteriz/harita_5_zor.json"
+    }
+   ],
+   "teshis": {
+    "harita_n": 15,
+    "dunya_yolu_dogru_or_olan_harita_n": 5,
+    "or_kare_n": 8,
+    "or_dunya_yolu_dogru_n": 8,
+    "or_etiket_dunya_esit_n": 3,
+    "tarama_bacagi_kare_n": 225,
+    "kb_karede_kare_n": 105,
+    "hb_karede_kare_n": 90,
+    "kb_hb_ayni_karede_kare_n": 0,
+    "kb_hb_ayni_karede_harita_n": 0,
+    "kare_ika_or_tutarli_n": 15
+   }
+  },
+  "ham": {
+   "harita_n": 15,
+   "open_route_var_n": 1,
+   "dogru_n": 0,
+   "yanlis_yol_yayini_olan_n": 1,
+   "ilk_open_route_dogru_n": 0,
+   "son_open_route_dogru_n": 0,
+   "son_yayin_no_route_n": 15,
+   "kare_n": 585,
+   "open_route_kare_n": 1,
+   "open_route_tarama_bacaginda_n": 1,
+   "hizali_n": 15,
+   "ack_eksik_n": 0,
+   "no_route_sebepleri": {
+    "UC_BANT_TEMAS_YOK": 238,
+    "ZEMIN_MASKESI_SUPHELI": 194,
+    "MASKE_YOK": 116,
+    "HEDEF_YOK": 35
+   },
+   "haritalar": [
+    {
+     "harita": 1,
+     "senaryo": "kolay",
+     "acik_yol": 1,
+     "open_route_n": 0,
+     "open_route_yollari": {},
+     "open_route_kareleri": [],
+     "son_yayin": {
+      "tip": "NO_ROUTE",
+      "seq": 103,
+      "sebep": "MASKE_YOK",
+      "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+     },
+     "open_route_var": false,
+     "dogru": false,
+     "yanlis_yol_yayini_n": 0,
+     "ilk_open_route_dogru": null,
+     "son_open_route_dogru": null,
+     "son_yayin_tipi": "NO_ROUTE",
+     "teshis": {
+      "tarama_bacagi_kare_n": 15,
+      "kb_karede_kare_n": 7,
+      "hb_karede_kare_n": 6,
+      "kb_hb_ayni_karede_kare_n": 0,
+      "or_kare_n": 0,
+      "or_dunya_yolu_dogru_n": 0,
+      "or_etiket_dunya_esit_n": 0,
+      "or_dunya_yollari": {},
+      "dunya_yolu_dogru_var": false,
+      "kare_ika_or_tutarli": true
+     },
+     "dosya": "results/fdr_sprint_20260910/H1/k3_uretim_boru/ham/harita_1_kolay.json"
+    },
+    {
+     "harita": 1,
+     "senaryo": "orta",
+     "acik_yol": 2,
+     "open_route_n": 0,
+     "open_route_yollari": {},
+     "open_route_kareleri": [],
+     "son_yayin": {
+      "tip": "NO_ROUTE",
+      "seq": 194,
+      "sebep": "MASKE_YOK",
+      "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+     },
+     "open_route_var": false,
+     "dogru": false,
+     "yanlis_yol_yayini_n": 0,
+     "ilk_open_route_dogru": null,
+     "son_open_route_dogru": null,
+     "son_yayin_tipi": "NO_ROUTE",
+     "teshis": {
+      "tarama_bacagi_kare_n": 15,
+      "kb_karede_kare_n": 7,
+      "hb_karede_kare_n": 6,
+      "kb_hb_ayni_karede_kare_n": 0,
+      "or_kare_n": 0,
+      "or_dunya_yolu_dogru_n": 0,
+      "or_etiket_dunya_esit_n": 0,
+      "or_dunya_yollari": {},
+      "dunya_yolu_dogru_var": false,
+      "kare_ika_or_tutarli": true
+     },
+     "dosya": "results/fdr_sprint_20260910/H1/k3_uretim_boru/ham/harita_1_orta.json"
+    },
+    {
+     "harita": 1,
+     "senaryo": "zor",
+     "acik_yol": 3,
+     "open_route_n": 0,
+     "open_route_yollari": {},
+     "open_route_kareleri": [],
+     "son_yayin": {
+      "tip": "NO_ROUTE",
+      "seq": 284,
+      "sebep": "MASKE_YOK",
+      "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+     },
+     "open_route_var": false,
+     "dogru": false,
+     "yanlis_yol_yayini_n": 0,
+     "ilk_open_route_dogru": null,
+     "son_open_route_dogru": null,
+     "son_yayin_tipi": "NO_ROUTE",
+     "teshis": {
+      "tarama_bacagi_kare_n": 15,
+      "kb_karede_kare_n": 7,
+      "hb_karede_kare_n": 6,
+      "kb_hb_ayni_karede_kare_n": 0,
+      "or_kare_n": 0,
+      "or_dunya_yolu_dogru_n": 0,
+      "or_etiket_dunya_esit_n": 0,
+      "or_dunya_yollari": {},
+      "dunya_yolu_dogru_var": false,
+      "kare_ika_or_tutarli": true
+     },
+     "dosya": "results/fdr_sprint_20260910/H1/k3_uretim_boru/ham/harita_1_zor.json"
+    },
+    {
+     "harita": 2,
+     "senaryo": "kolay",
+     "acik_yol": 1,
+     "open_route_n": 0,
+     "open_route_yollari": {},
+     "open_route_kareleri": [],
+     "son_yayin": {
+      "tip": "NO_ROUTE",
+      "seq": 374,
+      "sebep": "MASKE_YOK",
+      "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+     },
+     "open_route_var": false,
+     "dogru": false,
+     "yanlis_yol_yayini_n": 0,
+     "ilk_open_route_dogru": null,
+     "son_open_route_dogru": null,
+     "son_yayin_tipi": "NO_ROUTE",
+     "teshis": {
+      "tarama_bacagi_kare_n": 15,
+      "kb_karede_kare_n": 7,
+      "hb_karede_kare_n": 6,
+      "kb_hb_ayni_karede_kare_n": 0,
+      "or_kare_n": 0,
+      "or_dunya_yolu_dogru_n": 0,
+      "or_etiket_dunya_esit_n": 0,
+      "or_dunya_yollari": {},
+      "dunya_yolu_dogru_var": false,
+      "kare_ika_or_tutarli": true
+     },
+     "dosya": "results/fdr_sprint_20260910/H1/k3_uretim_boru/ham/harita_2_kolay.json"
+    },
+    {
+     "harita": 2,
+     "senaryo": "orta",
+     "acik_yol": 1,
+     "open_route_n": 0,
+     "open_route_yollari": {},
+     "open_route_kareleri": [],
+     "son_yayin": {
+      "tip": "NO_ROUTE",
+      "seq": 464,
+      "sebep": "MASKE_YOK",
+      "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+     },
+     "open_route_var": false,
+     "dogru": false,
+     "yanlis_yol_yayini_n": 0,
+     "ilk_open_route_dogru": null,
+     "son_open_route_dogru": null,
+     "son_yayin_tipi": "NO_ROUTE",
+     "teshis": {
+      "tarama_bacagi_kare_n": 15,
+      "kb_karede_kare_n": 7,
+      "hb_karede_kare_n": 6,
+      "kb_hb_ayni_karede_kare_n": 0,
+      "or_kare_n": 0,
+      "or_dunya_yolu_dogru_n": 0,
+      "or_etiket_dunya_esit_n": 0,
+      "or_dunya_yollari": {},
+      "dunya_yolu_dogru_var": false,
+      "kare_ika_or_tutarli": true
+     },
+     "dosya": "results/fdr_sprint_20260910/H1/k3_uretim_boru/ham/harita_2_orta.json"
+    },
+    {
+     "harita": 2,
+     "senaryo": "zor",
+     "acik_yol": 3,
+     "open_route_n": 0,
+     "open_route_yollari": {},
+     "open_route_kareleri": [],
+     "son_yayin": {
+      "tip": "NO_ROUTE",
+      "seq": 552,
+      "sebep": "MASKE_YOK",
+      "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+     },
+     "open_route_var": false,
+     "dogru": false,
+     "yanlis_yol_yayini_n": 0,
+     "ilk_open_route_dogru": null,
+     "son_open_route_dogru": null,
+     "son_yayin_tipi": "NO_ROUTE",
+     "teshis": {
+      "tarama_bacagi_kare_n": 15,
+      "kb_karede_kare_n": 7,
+      "hb_karede_kare_n": 6,
+      "kb_hb_ayni_karede_kare_n": 0,
+      "or_kare_n": 0,
+      "or_dunya_yolu_dogru_n": 0,
+      "or_etiket_dunya_esit_n": 0,
+      "or_dunya_yollari": {},
+      "dunya_yolu_dogru_var": false,
+      "kare_ika_or_tutarli": true
+     },
+     "dosya": "results/fdr_sprint_20260910/H1/k3_uretim_boru/ham/harita_2_zor.json"
+    },
+    {
+     "harita": 3,
+     "senaryo": "kolay",
+     "acik_yol": 3,
+     "open_route_n": 0,
+     "open_route_yollari": {},
+     "open_route_kareleri": [],
+     "son_yayin": {
+      "tip": "NO_ROUTE",
+      "seq": 642,
+      "sebep": "MASKE_YOK",
+      "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+     },
+     "open_route_var": false,
+     "dogru": false,
+     "yanlis_yol_yayini_n": 0,
+     "ilk_open_route_dogru": null,
+     "son_open_route_dogru": null,
+     "son_yayin_tipi": "NO_ROUTE",
+     "teshis": {
+      "tarama_bacagi_kare_n": 15,
+      "kb_karede_kare_n": 7,
+      "hb_karede_kare_n": 6,
+      "kb_hb_ayni_karede_kare_n": 0,
+      "or_kare_n": 0,
+      "or_dunya_yolu_dogru_n": 0,
+      "or_etiket_dunya_esit_n": 0,
+      "or_dunya_yollari": {},
+      "dunya_yolu_dogru_var": false,
+      "kare_ika_or_tutarli": true
+     },
+     "dosya": "results/fdr_sprint_20260910/H1/k3_uretim_boru/ham/harita_3_kolay.json"
+    },
+    {
+     "harita": 3,
+     "senaryo": "orta",
+     "acik_yol": 2,
+     "open_route_n": 0,
+     "open_route_yollari": {},
+     "open_route_kareleri": [],
+     "son_yayin": {
+      "tip": "NO_ROUTE",
+      "seq": 732,
+      "sebep": "MASKE_YOK",
+      "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+     },
+     "open_route_var": false,
+     "dogru": false,
+     "yanlis_yol_yayini_n": 0,
+     "ilk_open_route_dogru": null,
+     "son_open_route_dogru": null,
+     "son_yayin_tipi": "NO_ROUTE",
+     "teshis": {
+      "tarama_bacagi_kare_n": 15,
+      "kb_karede_kare_n": 7,
+      "hb_karede_kare_n": 6,
+      "kb_hb_ayni_karede_kare_n": 0,
+      "or_kare_n": 0,
+      "or_dunya_yolu_dogru_n": 0,
+      "or_etiket_dunya_esit_n": 0,
+      "or_dunya_yollari": {},
+      "dunya_yolu_dogru_var": false,
+      "kare_ika_or_tutarli": true
+     },
+     "dosya": "results/fdr_sprint_20260910/H1/k3_uretim_boru/ham/harita_3_orta.json"
+    },
+    {
+     "harita": 3,
+     "senaryo": "zor",
+     "acik_yol": 1,
+     "open_route_n": 0,
+     "open_route_yollari": {},
+     "open_route_kareleri": [],
+     "son_yayin": {
+      "tip": "NO_ROUTE",
+      "seq": 822,
+      "sebep": "MASKE_YOK",
+      "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+     },
+     "open_route_var": false,
+     "dogru": false,
+     "yanlis_yol_yayini_n": 0,
+     "ilk_open_route_dogru": null,
+     "son_open_route_dogru": null,
+     "son_yayin_tipi": "NO_ROUTE",
+     "teshis": {
+      "tarama_bacagi_kare_n": 15,
+      "kb_karede_kare_n": 7,
+      "hb_karede_kare_n": 6,
+      "kb_hb_ayni_karede_kare_n": 0,
+      "or_kare_n": 0,
+      "or_dunya_yolu_dogru_n": 0,
+      "or_etiket_dunya_esit_n": 0,
+      "or_dunya_yollari": {},
+      "dunya_yolu_dogru_var": false,
+      "kare_ika_or_tutarli": true
+     },
+     "dosya": "results/fdr_sprint_20260910/H1/k3_uretim_boru/ham/harita_3_zor.json"
+    },
+    {
+     "harita": 4,
+     "senaryo": "kolay",
+     "acik_yol": 3,
+     "open_route_n": 0,
+     "open_route_yollari": {},
+     "open_route_kareleri": [],
+     "son_yayin": {
+      "tip": "NO_ROUTE",
+      "seq": 911,
+      "sebep": "MASKE_YOK",
+      "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+     },
+     "open_route_var": false,
+     "dogru": false,
+     "yanlis_yol_yayini_n": 0,
+     "ilk_open_route_dogru": null,
+     "son_open_route_dogru": null,
+     "son_yayin_tipi": "NO_ROUTE",
+     "teshis": {
+      "tarama_bacagi_kare_n": 15,
+      "kb_karede_kare_n": 7,
+      "hb_karede_kare_n": 6,
+      "kb_hb_ayni_karede_kare_n": 0,
+      "or_kare_n": 0,
+      "or_dunya_yolu_dogru_n": 0,
+      "or_etiket_dunya_esit_n": 0,
+      "or_dunya_yollari": {},
+      "dunya_yolu_dogru_var": false,
+      "kare_ika_or_tutarli": true
+     },
+     "dosya": "results/fdr_sprint_20260910/H1/k3_uretim_boru/ham/harita_4_kolay.json"
+    },
+    {
+     "harita": 4,
+     "senaryo": "orta",
+     "acik_yol": 3,
+     "open_route_n": 0,
+     "open_route_yollari": {},
+     "open_route_kareleri": [],
+     "son_yayin": {
+      "tip": "NO_ROUTE",
+      "seq": 999,
+      "sebep": "MASKE_YOK",
+      "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+     },
+     "open_route_var": false,
+     "dogru": false,
+     "yanlis_yol_yayini_n": 0,
+     "ilk_open_route_dogru": null,
+     "son_open_route_dogru": null,
+     "son_yayin_tipi": "NO_ROUTE",
+     "teshis": {
+      "tarama_bacagi_kare_n": 15,
+      "kb_karede_kare_n": 7,
+      "hb_karede_kare_n": 6,
+      "kb_hb_ayni_karede_kare_n": 0,
+      "or_kare_n": 0,
+      "or_dunya_yolu_dogru_n": 0,
+      "or_etiket_dunya_esit_n": 0,
+      "or_dunya_yollari": {},
+      "dunya_yolu_dogru_var": false,
+      "kare_ika_or_tutarli": true
+     },
+     "dosya": "results/fdr_sprint_20260910/H1/k3_uretim_boru/ham/harita_4_orta.json"
+    },
+    {
+     "harita": 4,
+     "senaryo": "zor",
+     "acik_yol": 1,
+     "open_route_n": 1,
+     "open_route_yollari": {
+      "2": 1
+     },
+     "open_route_kareleri": [
+      19
+     ],
+     "son_yayin": {
+      "tip": "NO_ROUTE",
+      "seq": 1088,
+      "sebep": "MASKE_YOK",
+      "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+     },
+     "open_route_var": true,
+     "dogru": false,
+     "yanlis_yol_yayini_n": 1,
+     "ilk_open_route_dogru": false,
+     "son_open_route_dogru": false,
+     "son_yayin_tipi": "NO_ROUTE",
+     "teshis": {
+      "tarama_bacagi_kare_n": 15,
+      "kb_karede_kare_n": 7,
+      "hb_karede_kare_n": 6,
+      "kb_hb_ayni_karede_kare_n": 0,
+      "or_kare_n": 1,
+      "or_dunya_yolu_dogru_n": 1,
+      "or_etiket_dunya_esit_n": 0,
+      "or_dunya_yollari": {
+       "1": 1
+      },
+      "dunya_yolu_dogru_var": true,
+      "kare_ika_or_tutarli": true
+     },
+     "dosya": "results/fdr_sprint_20260910/H1/k3_uretim_boru/ham/harita_4_zor.json"
+    },
+    {
+     "harita": 5,
+     "senaryo": "kolay",
+     "acik_yol": 3,
+     "open_route_n": 0,
+     "open_route_yollari": {},
+     "open_route_kareleri": [],
+     "son_yayin": {
+      "tip": "NO_ROUTE",
+      "seq": 1176,
+      "sebep": "MASKE_YOK",
+      "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+     },
+     "open_route_var": false,
+     "dogru": false,
+     "yanlis_yol_yayini_n": 0,
+     "ilk_open_route_dogru": null,
+     "son_open_route_dogru": null,
+     "son_yayin_tipi": "NO_ROUTE",
+     "teshis": {
+      "tarama_bacagi_kare_n": 15,
+      "kb_karede_kare_n": 7,
+      "hb_karede_kare_n": 6,
+      "kb_hb_ayni_karede_kare_n": 0,
+      "or_kare_n": 0,
+      "or_dunya_yolu_dogru_n": 0,
+      "or_etiket_dunya_esit_n": 0,
+      "or_dunya_yollari": {},
+      "dunya_yolu_dogru_var": false,
+      "kare_ika_or_tutarli": true
+     },
+     "dosya": "results/fdr_sprint_20260910/H1/k3_uretim_boru/ham/harita_5_kolay.json"
+    },
+    {
+     "harita": 5,
+     "senaryo": "orta",
+     "acik_yol": 3,
+     "open_route_n": 0,
+     "open_route_yollari": {},
+     "open_route_kareleri": [],
+     "son_yayin": {
+      "tip": "NO_ROUTE",
+      "seq": 1264,
+      "sebep": "MASKE_YOK",
+      "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+     },
+     "open_route_var": false,
+     "dogru": false,
+     "yanlis_yol_yayini_n": 0,
+     "ilk_open_route_dogru": null,
+     "son_open_route_dogru": null,
+     "son_yayin_tipi": "NO_ROUTE",
+     "teshis": {
+      "tarama_bacagi_kare_n": 15,
+      "kb_karede_kare_n": 7,
+      "hb_karede_kare_n": 6,
+      "kb_hb_ayni_karede_kare_n": 0,
+      "or_kare_n": 0,
+      "or_dunya_yolu_dogru_n": 0,
+      "or_etiket_dunya_esit_n": 0,
+      "or_dunya_yollari": {},
+      "dunya_yolu_dogru_var": false,
+      "kare_ika_or_tutarli": true
+     },
+     "dosya": "results/fdr_sprint_20260910/H1/k3_uretim_boru/ham/harita_5_orta.json"
+    },
+    {
+     "harita": 5,
+     "senaryo": "zor",
+     "acik_yol": 2,
+     "open_route_n": 0,
+     "open_route_yollari": {},
+     "open_route_kareleri": [],
+     "son_yayin": {
+      "tip": "NO_ROUTE",
+      "seq": 1353,
+      "sebep": "MASKE_YOK",
+      "detay": "Zemin maskesi 0 piksel; rota analizi yapilamadi."
+     },
+     "open_route_var": false,
+     "dogru": false,
+     "yanlis_yol_yayini_n": 0,
+     "ilk_open_route_dogru": null,
+     "son_open_route_dogru": null,
+     "son_yayin_tipi": "NO_ROUTE",
+     "teshis": {
+      "tarama_bacagi_kare_n": 15,
+      "kb_karede_kare_n": 7,
+      "hb_karede_kare_n": 6,
+      "kb_hb_ayni_karede_kare_n": 0,
+      "or_kare_n": 0,
+      "or_dunya_yolu_dogru_n": 0,
+      "or_etiket_dunya_esit_n": 0,
+      "or_dunya_yollari": {},
+      "dunya_yolu_dogru_var": false,
+      "kare_ika_or_tutarli": true
+     },
+     "dosya": "results/fdr_sprint_20260910/H1/k3_uretim_boru/ham/harita_5_zor.json"
+    }
+   ],
+   "teshis": {
+    "harita_n": 15,
+    "dunya_yolu_dogru_or_olan_harita_n": 1,
+    "or_kare_n": 1,
+    "or_dunya_yolu_dogru_n": 1,
+    "or_etiket_dunya_esit_n": 0,
+    "tarama_bacagi_kare_n": 225,
+    "kb_karede_kare_n": 105,
+    "hb_karede_kare_n": 90,
+    "kb_hb_ayni_karede_kare_n": 0,
+    "kb_hb_ayni_karede_harita_n": 0,
+    "kare_ika_or_tutarli_n": 15
+   }
+  }
+ },
+ "tarih": "2026-09-10 15:31"
+}

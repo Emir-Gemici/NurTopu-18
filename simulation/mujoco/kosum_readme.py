@@ -32,6 +32,11 @@ from karar_sozlesmesi import IKA_IZ_GENISLIGI_M           # noqa: E402
 README_ADI = "README_T213B.md"
 TAKIP_HATA_M = 0.50            # CONTRACTS §4 — üretim planlayıcısının takip payı varsayımı
 ESIK = "≥ 12/15 harita (× 3 tohum) — ON_KAYIT H1-K5; gevşetilmez"
+# T213-B kapsamının kaynakları SABİT: T214-A `gorev_kosumu.ROTA_KAYNAKLARI`'na `uretim` ekledi;
+# bu README o tuple'ı dolaşsaydı T213-B klasörünün README'si (results/, değiştirilmez) bir
+# "uretim ÖLÇÜLMEDİ" satırı kazanır ve bayt-eş kilidi düşerdi. T214-A özeti ayrı üreteçtedir
+# (`t214a_rapor.py`).
+KAYNAKLAR = ("gt", "model")
 
 
 def _kosumlar(out: Path):
@@ -105,7 +110,7 @@ def uret(out: Path) -> str:
     L.append("")
     L.append("| kaynak | n | rota bulundu | rota doğru | OPEN_ROUTE ACK [ika,yks] | IKA_GO ACK | HB içinde | temas var | süre aşımı | **BAŞARI** | harita (3/3) | eşik |")
     L.append("|---|---|---|---|---|---|---|---|---|---|---|---|")
-    for k in gorev_kosumu.ROTA_KAYNAKLARI:
+    for k in KAYNAKLAR:
         o = oz["kaynaklar"].get(k)
         if not o:
             L.append(f"| {k} | 0 | — | — | — | — | — | — | — | **ÖLÇÜLMEDİ** | — | {ESIK} |")
@@ -121,7 +126,7 @@ def uret(out: Path) -> str:
     L.append("")
     L.append("| kaynak | başarılı koşumlar | tüm koşumlar | varış mesafesi (m) | duvar saati toplam (s) |")
     L.append("|---|---|---|---|---|")
-    for k in gorev_kosumu.ROTA_KAYNAKLARI:
+    for k in KAYNAKLAR:
         o = oz["kaynaklar"].get(k)
         if o:
             L.append(f"| {k} | {_dag(o['sure_sim_ika_basarili'])} | {_dag(o['sure_sim_ika_hepsi'])} | "
@@ -131,7 +136,7 @@ def uret(out: Path) -> str:
     L.append("")
     L.append("| kaynak | senaryo | n | başarı | HB içinde | temas var |")
     L.append("|---|---|---|---|---|---|")
-    for k in gorev_kosumu.ROTA_KAYNAKLARI:
+    for k in KAYNAKLAR:
         o = oz["kaynaklar"].get(k)
         if o:
             for lv, sv in o["senaryo"].items():
@@ -147,7 +152,7 @@ def uret(out: Path) -> str:
     L.append("")
     L.append("| kaynak | temas ∧ geçilemez (< yarı gen.) | temas ∧ takip bandı | temas ∧ açıklık ≥ 0,50 (sürücü adayı) | kod 3 (izin yok) | kod 2 (NO_ROUTE) | kod 4 temassız |")
     L.append("|---|---|---|---|---|---|---|")
-    for k in gorev_kosumu.ROTA_KAYNAKLARI:
+    for k in KAYNAKLAR:
         ks_ = [r for r in rs if r["rota_kaynak"] == k]
         if not ks_:
             continue

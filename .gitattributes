@@ -1,2 +1,4 @@
 # kabul kumeleri: baytlar oldugu gibi saklanir (parmak izi kaynakla es olmali) — 10 Eylul, T220
 data/kabul/** -text
+# simulasyon video kanit kosumlari: sha256 kaniti ham baytla hesaplanir (test_sim_mujoco_video :221 LF varsayar) — 10 Eylul, D-449
+results/fdr_sprint_20260910/video/kosum/** -text

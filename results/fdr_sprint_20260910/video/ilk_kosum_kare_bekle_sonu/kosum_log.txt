@@ -1,0 +1,442 @@
+[video] model navitas-seg-v36-512 sha eşleşti=True
+[İHA-HARİTA] mozaik: 15 tarama karesi → O:\navitas\.claude\worktrees\wf_2c28e623-233-7\results\fdr_sprint_20260910\video\kosum\model_1_kolay_44\iha_scan\ortomozaik.jpg
+[İHA-HARİTA] MODEL KARARI: AÇIK YOL SOL (1) güven=1.0  rota 43 nokta → route.txt + rota.json
+[ika_nav] comms dinleniyor (hazır link, port 64651) — İHA açık yolu gönderecek...
+[ika_nav] ✓ İHA'dan dinamik rota ALINDI: SOL (1) conf=1.0 wp=42
+[ika_nav] YKS IKA_GO + İHA iniş kanıtı bekleniyor — İKA güvenli duruşta
+[ika_nav] ✓ IKA_GO ve IHA_LANDED alındı — İKA sürüş izni açık
+[ika_nav] sürüş süresi başladı: 600 s (şartname §6.2 İKA görev süresi)
+
+[ika_nav] Dinamik rota: SOL | 42 segment
+[ika_nav] Başlangıç: (-0.66, -23.02) → Hedef: (-11.16, 21.000000000000004)
+
+[ika_nav] ── Waypoint 1/42: (-1.3, -22.5)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.50m)
+
+[ika_nav] ── Waypoint 2/42: (-2.6, -21.9)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.47m)
+
+[ika_nav] ── Waypoint 3/42: (-4.0, -21.3)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.47m)
+
+[ika_nav] ── Waypoint 4/42: (-5.4, -20.6)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.43m)
+
+[ika_nav] ── Waypoint 5/42: (-6.7, -20.0)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.42m)
+
+[ika_nav] ── Waypoint 6/42: (-7.0, -19.9)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.44m)
+
+[ika_nav] ── Waypoint 7/42: (-8.3, -19.1)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.44m)
+
+[ika_nav] ── Waypoint 8/42: (-9.7, -18.3)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.41m)
+
+[ika_nav] ── Waypoint 9/42: (-11.1, -17.5)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.41m)
+
+[ika_nav] ── Waypoint 10/42: (-12.4, -16.7)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.40m)
+
+[ika_nav] ── Waypoint 11/42: (-13.8, -15.9)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.40m)
+
+[ika_nav] ── Waypoint 12/42: (-14.4, -15.5)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.40m)
+
+[ika_nav] ── Waypoint 13/42: (-15.4, -14.2)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.42m)
+
+[ika_nav] ── Waypoint 14/42: (-15.7, -13.8)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.44m)
+
+[ika_nav] ── Waypoint 15/42: (-16.0, -12.4)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.46m)
+
+[ika_nav] ── Waypoint 16/42: (-16.2, -11.0)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.43m)
+
+[ika_nav] ── Waypoint 17/42: (-16.5, -9.7)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.44m)
+
+[ika_nav] ── Waypoint 18/42: (-16.7, -8.3)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.41m)
+
+[ika_nav] ── Waypoint 19/42: (-17.0, -6.9)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.45m)
+
+[ika_nav] ── Waypoint 20/42: (-17.3, -5.6)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.46m)
+
+[ika_nav] ── Waypoint 21/42: (-17.6, -4.2)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.46m)
+
+[ika_nav] ── Waypoint 22/42: (-17.8, -2.8)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.42m)
+
+[ika_nav] ── Waypoint 23/42: (-17.9, -2.4)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.40m)
+
+[ika_nav] ── Waypoint 24/42: (-17.9, -1.0)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.43m)
+
+[ika_nav] ── Waypoint 25/42: (-17.8, 0.3)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.49m)
+
+[ika_nav] ── Waypoint 26/42: (-17.8, 1.3)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.42m)
+
+[ika_nav] ── Waypoint 27/42: (-17.0, 2.7)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.49m)
+
+[ika_nav] ── Waypoint 28/42: (-16.2, 4.1)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.44m)
+
+[ika_nav] ── Waypoint 29/42: (-15.4, 5.4)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.39m)
+
+[ika_nav] ── Waypoint 30/42: (-14.8, 6.3)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.41m)
+
+[ika_nav] ── Waypoint 31/42: (-14.7, 7.7)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.45m)
+
+[ika_nav] ── Waypoint 32/42: (-14.4, 9.1)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.42m)
+
+[ika_nav] ── Waypoint 33/42: (-14.3, 10.4)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.43m)
+
+[ika_nav] ── Waypoint 34/42: (-14.1, 11.8)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.45m)
+
+[ika_nav] ── Waypoint 35/42: (-13.9, 13.2)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.46m)
+
+[ika_nav] ── Waypoint 36/42: (-13.7, 14.6)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.49m)
+
+[ika_nav] ── Waypoint 37/42: (-13.6, 15.9)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.47m)
+
+[ika_nav] ── Waypoint 38/42: (-13.4, 17.3)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.43m)
+
+[ika_nav] ── Waypoint 39/42: (-12.7, 18.7)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.46m)
+
+[ika_nav] ── Waypoint 40/42: (-12.0, 20.0)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.42m)
+
+[ika_nav] ── Waypoint 41/42: (-11.4, 21.2)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.41m)
+
+[ika_nav] ── Waypoint 42/42: (-11.2, 21.0)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.29m)
+
+[ika_nav] ══ HEDEF BÖLGEYE (HB) ULAŞILDI! ══
+[video] model_1_kolay_44: basari=True kod=0 sure=63.4 varis=0.286 temas=0 kare=2518 (ucus 800) duvar=53 s
+[İHA-HARİTA] mozaik: 15 tarama karesi → O:\navitas\.claude\worktrees\wf_2c28e623-233-7\results\fdr_sprint_20260910\video\kosum\model_3_orta_42\iha_scan\ortomozaik.jpg
+[İHA-HARİTA] MODEL KARARI: AÇIK YOL ORTA (2) güven=0.937  rota 46 nokta → route.txt + rota.json
+[ika_nav] comms dinleniyor (hazır link, port 51537) — İHA açık yolu gönderecek...
+[ika_nav] ✓ İHA'dan dinamik rota ALINDI: ORTA (2) conf=0.937 wp=45
+[ika_nav] YKS IKA_GO + İHA iniş kanıtı bekleniyor — İKA güvenli duruşta
+[ika_nav] ✓ IKA_GO ve IHA_LANDED alındı — İKA sürüş izni açık
+[ika_nav] sürüş süresi başladı: 600 s (şartname §6.2 İKA görev süresi)
+
+[ika_nav] Dinamik rota: ORTA | 45 segment
+[ika_nav] Başlangıç: (0.22, -23.02) → Hedef: (8.48, 21.000000000000004)
+
+[ika_nav] ── Waypoint 1/45: (0.0, -22.5)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.46m)
+
+[ika_nav] ── Waypoint 2/45: (-0.1, -21.2)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.42m)
+
+[ika_nav] ── Waypoint 3/45: (-0.2, -19.8)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.48m)
+
+[ika_nav] ── Waypoint 4/45: (-0.2, -18.4)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.48m)
+
+[ika_nav] ── Waypoint 5/45: (-0.3, -17.1)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.48m)
+
+[ika_nav] ── Waypoint 6/45: (-0.3, -15.7)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.43m)
+
+[ika_nav] ── Waypoint 7/45: (-0.4, -14.3)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.43m)
+
+[ika_nav] ── Waypoint 8/45: (-0.4, -13.8)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.40m)
+
+[ika_nav] ── Waypoint 9/45: (0.3, -12.4)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.50m)
+
+[ika_nav] ── Waypoint 10/45: (0.9, -11.0)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.49m)
+
+[ika_nav] ── Waypoint 11/45: (1.6, -9.7)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.45m)
+
+[ika_nav] ── Waypoint 12/45: (2.2, -8.5)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.44m)
+
+[ika_nav] ── Waypoint 13/45: (2.0, -7.2)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.41m)
+
+[ika_nav] ── Waypoint 14/45: (1.8, -5.8)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.49m)
+
+[ika_nav] ── Waypoint 15/45: (1.6, -4.4)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.45m)
+
+[ika_nav] ── Waypoint 16/45: (1.5, -3.1)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.44m)
+
+[ika_nav] ── Waypoint 17/45: (1.3, -2.0)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.48m)
+
+[ika_nav] ── Waypoint 18/45: (1.4, -0.6)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.42m)
+
+[ika_nav] ── Waypoint 19/45: (1.4, 0.8)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.42m)
+
+[ika_nav] ── Waypoint 20/45: (1.4, 0.8)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.41m)
+
+[ika_nav] ── Waypoint 21/45: (2.8, 2.1)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.48m)
+
+[ika_nav] ── Waypoint 22/45: (2.8, 2.2)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.49m)
+
+[ika_nav] ── Waypoint 23/45: (3.4, 3.6)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.44m)
+
+[ika_nav] ── Waypoint 24/45: (3.5, 3.8)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.48m)
+
+[ika_nav] ── Waypoint 25/45: (3.4, 5.1)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.44m)
+
+[ika_nav] ── Waypoint 26/45: (3.3, 5.9)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.42m)
+
+[ika_nav] ── Waypoint 27/45: (2.0, 7.2)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.42m)
+
+[ika_nav] ── Waypoint 28/45: (0.6, 8.5)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.46m)
+
+[ika_nav] ── Waypoint 29/45: (-0.8, 9.8)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.43m)
+
+[ika_nav] ── Waypoint 30/45: (-1.8, 10.7)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.50m)
+
+[ika_nav] ── Waypoint 31/45: (-2.2, 12.1)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.44m)
+
+[ika_nav] ── Waypoint 32/45: (-2.6, 13.3)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.47m)
+
+[ika_nav] ── Waypoint 33/45: (-2.6, 14.3)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.40m)
+
+[ika_nav] ── Waypoint 34/45: (-1.9, 15.6)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.43m)
+
+[ika_nav] ── Waypoint 35/45: (-1.7, 16.0)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.49m)
+
+[ika_nav] ── Waypoint 36/45: (-0.9, 16.8)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.48m)
+
+[ika_nav] ── Waypoint 37/45: (0.5, 16.9)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.46m)
+
+[ika_nav] ── Waypoint 38/45: (1.9, 16.9)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.44m)
+
+[ika_nav] ── Waypoint 39/45: (2.6, 17.0)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.39m)
+
+[ika_nav] ── Waypoint 40/45: (4.0, 18.2)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.50m)
+
+[ika_nav] ── Waypoint 41/45: (5.4, 19.3)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.47m)
+
+[ika_nav] ── Waypoint 42/45: (6.7, 20.4)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.41m)
+
+[ika_nav] ── Waypoint 43/45: (7.0, 20.6)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.42m)
+
+[ika_nav] ── Waypoint 44/45: (8.2, 21.2)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.42m)
+
+[ika_nav] ── Waypoint 45/45: (8.5, 21.0)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.28m)
+
+[ika_nav] ══ HEDEF BÖLGEYE (HB) ULAŞILDI! ══
+[video] model_3_orta_42: basari=True kod=0 sure=65.7 varis=0.256 temas=0 kare=2576 (ucus 800) duvar=56 s
+[İHA-HARİTA] mozaik: 15 tarama karesi → O:\navitas\.claude\worktrees\wf_2c28e623-233-7\results\fdr_sprint_20260910\video\kosum\model_5_zor_42\iha_scan\ortomozaik.jpg
+[İHA-HARİTA] MODEL KARARI: AÇIK YOL ORTA (2) güven=0.703  rota 42 nokta → route.txt + rota.json
+[ika_nav] comms dinleniyor (hazır link, port 62222) — İHA açık yolu gönderecek...
+[ika_nav] ✓ İHA'dan dinamik rota ALINDI: ORTA (2) conf=0.703 wp=41
+[ika_nav] YKS IKA_GO + İHA iniş kanıtı bekleniyor — İKA güvenli duruşta
+[ika_nav] ✓ IKA_GO ve IHA_LANDED alındı — İKA sürüş izni açık
+[ika_nav] sürüş süresi başladı: 600 s (şartname §6.2 İKA görev süresi)
+
+[ika_nav] Dinamik rota: ORTA | 41 segment
+[ika_nav] Başlangıç: (-4.48, -23.02) → Hedef: (-11.43, 21.000000000000004)
+
+[ika_nav] ── Waypoint 1/41: (-4.2, -22.5)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.47m)
+
+[ika_nav] ── Waypoint 2/41: (-4.2, -21.2)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.39m)
+
+[ika_nav] ── Waypoint 3/41: (-4.2, -19.8)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.44m)
+
+[ika_nav] ── Waypoint 4/41: (-4.2, -18.4)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.44m)
+
+[ika_nav] ── Waypoint 5/41: (-4.2, -17.1)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.40m)
+
+[ika_nav] ── Waypoint 6/41: (-4.3, -15.7)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.47m)
+
+[ika_nav] ── Waypoint 7/41: (-4.3, -14.3)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.41m)
+
+[ika_nav] ── Waypoint 8/41: (-4.3, -13.8)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.49m)
+
+[ika_nav] ── Waypoint 9/41: (-4.7, -12.4)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.44m)
+
+[ika_nav] ── Waypoint 10/41: (-5.0, -11.2)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.45m)
+
+[ika_nav] ── Waypoint 11/41: (-5.0, -9.8)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.43m)
+
+[ika_nav] ── Waypoint 12/41: (-5.0, -8.4)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.48m)
+
+[ika_nav] ── Waypoint 13/41: (-5.0, -8.0)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.49m)
+
+[ika_nav] ── Waypoint 14/41: (-3.8, -6.6)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.43m)
+
+[ika_nav] ── Waypoint 15/41: (-2.6, -5.2)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.46m)
+
+[ika_nav] ── Waypoint 16/41: (-1.3, -3.9)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.46m)
+
+[ika_nav] ── Waypoint 17/41: (-0.1, -2.5)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.42m)
+
+[ika_nav] ── Waypoint 18/41: (1.2, -1.1)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.45m)
+
+[ika_nav] ── Waypoint 19/41: (2.1, -0.2)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.41m)
+
+[ika_nav] ── Waypoint 20/41: (2.6, 1.2)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.48m)
+
+[ika_nav] ── Waypoint 21/41: (3.2, 2.6)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.49m)
+
+[ika_nav] ── Waypoint 22/41: (3.4, 3.3)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.44m)
+
+[ika_nav] ── Waypoint 23/41: (3.5, 4.7)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.42m)
+
+[ika_nav] ── Waypoint 24/41: (3.5, 5.5)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.45m)
+
+[ika_nav] ── Waypoint 25/41: (2.6, 6.8)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.48m)
+
+[ika_nav] ── Waypoint 26/41: (2.0, 7.7)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.41m)
+
+[ika_nav] ── Waypoint 27/41: (0.6, 8.6)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.44m)
+
+[ika_nav] ── Waypoint 28/41: (-0.8, 9.6)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.40m)
+
+[ika_nav] ── Waypoint 29/41: (-2.1, 10.7)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.45m)
+
+[ika_nav] ── Waypoint 30/41: (-2.5, 10.9)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.41m)
+
+[ika_nav] ── Waypoint 31/41: (-3.4, 12.3)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.41m)
+
+[ika_nav] ── Waypoint 32/41: (-4.3, 13.6)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.48m)
+
+[ika_nav] ── Waypoint 33/41: (-5.0, 14.7)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.48m)
+
+[ika_nav] ── Waypoint 34/41: (-5.2, 16.0)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.45m)
+
+[ika_nav] ── Waypoint 35/41: (-5.5, 17.3)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.41m)
+
+[ika_nav] ── Waypoint 36/41: (-6.8, 18.7)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.46m)
+
+[ika_nav] ── Waypoint 37/41: (-7.7, 19.5)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.49m)
+
+[ika_nav] ── Waypoint 38/41: (-9.0, 19.8)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.44m)
+
+[ika_nav] ── Waypoint 39/41: (-10.4, 20.2)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.47m)
+
+[ika_nav] ── Waypoint 40/41: (-11.2, 20.3)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.48m)
+
+[ika_nav] ── Waypoint 41/41: (-11.4, 21.0)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.29m)
+
+[ika_nav] ══ HEDEF BÖLGEYE (HB) ULAŞILDI! ══
+[video] model_5_zor_42: basari=True kod=0 sure=63.4 varis=0.263 temas=0 kare=2518 (ucus 800) duvar=46 s
+[
+ {
+  "birincil": "model_1_kolay_44",
+  "secilen": "model_1_kolay_44",
+  "yedek_nedeni": null
+ },
+ {
+  "birincil": "model_3_orta_42",
+  "secilen": "model_3_orta_42",
+  "yedek_nedeni": null
+ },
+ {
+  "birincil": "model_5_zor_42",
+  "secilen": "model_5_zor_42",
+  "yedek_nedeni": null
+ }
+]
+CIKIS=0

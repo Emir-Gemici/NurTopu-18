@@ -38,7 +38,7 @@ gereksinim kimlikleriyle (`Y-4-M01` … `Y-4-M12`) aynı sırayı izler.
 | `Y-4-M04` | ekipman kabul testleri — İHA ve İKA'daki **tüm** ekipmanlar | §4.4 | YOK |
 | `Y-4-M05` | kumanda ve telemetri **menzil** testleri (sahada) | §4.5 | YOK |
 | `Y-4-M06` | IMU, pusula ve pitot tüpü kalibrasyon kanıtları | §4.6 | YOK |
-| `Y-4-M07` | görev icra simülasyonu + başarı oranları + grafikler + video linki | §4.7 (sahibi **Bölüm 3.3.3**) | YOK |
+| `Y-4-M07` | görev icra simülasyonu + başarı oranları + grafikler + video linki | §4.7 (sahibi **Bölüm 3.3.3**) | ~~YOK~~ **KISMEN** (10 Eylül, T214-A/B: MuJoCo zinciri koşuldu — 105 koşum, 4 grafik, HUD'lu video yerelde; **SENTETİK**; video linki **BEYAN GEREKLİ (insan)**, T222) |
 | `Y-4-M08` | görüntü işleme performansı, benzer koşullarda test sonuçları, doğruluk matrisleri | §4.8 | KISMEN |
 | `Y-4-M09` | haberleşme: paket yapısı, veri hızı, iletişim gecikmesi | §4.9 | KISMEN |
 | `Y-4-M10` | sistem üzerinde gerçekleştirilen **tüm** yer testleri | §4.10 | KISMEN |
@@ -660,9 +660,25 @@ kalibrasyonu zaten flash ile sıfırlanmıştı; 6 Eylül'de yeniden yapıldı �
 (`Y-3.3.3-M01`, `Y-3.3.3-M02`, `Y-3.3.3-M03`) olup Bölüm 4 aynı çalışmayı ikinci
 kez yazmaz.
 
-🔴 **Bugünkü durum, Bölüm 3.3.3 ile birebir aynıdır: yönergenin istediği CAD
+~~🔴 **Bugünkü durum, Bölüm 3.3.3 ile birebir aynıdır: yönergenin istediği CAD
 modelli görev icra simülasyonu çıktıları — başarı oranı, sanal görev süresi,
-grafikler ve ekran kaydı videosu linki — bu raporda YOKTUR.**
+grafikler ve ekran kaydı videosu linki — bu raporda YOKTUR.**~~ *(10 Eylül 2026: geçersizleşti — aşağıdaki özet.)*
+
+**10 Eylül 2026 (T214-A/B) — SENTETİK ölçüm özeti.** Ayrıntı, tablolar, 4 grafik ve video Bölüm 3 §3.3.3'tedir;
+sayılar aynı kaynaklardandır (`results/fdr_sprint_20260910/H1/README_T214A.md`, `results/fdr_sprint_20260910/video/OKUBENI.md`).
+Ortam MuJoCo 3.13; modeller BASİTLEŞTİRİLMİŞ (İHA sabit kanat mesh'i, DDR ölçülü İKA); İHA uçuşu kinematik; hakem
+onayı sim'de otomatik — **saha kanıtı değildir**. Eşikler ön kayıttan (`results/fdr_sprint_20260910/ON_KAYIT.md` H1), gevşetilmedi.
+
+| kapı | ölçüm | eşik | hüküm |
+|---|---|---|---|
+| H1-K3 rota tespiti — üretim modeli, mozaik zinciri | 6/15 doğru (yanlış 0) | ≥ 12/15 | **DÜŞTÜ** |
+| H1-K3 rota tespiti — üretim kare-bazlı boru hattı | 1/15 | ≥ 12/15 | **DÜŞTÜ** |
+| H1-K4 aktarım (YER GERÇEĞİ kolu) — OPEN_ROUTE ACK [ika, yks] · IKA_GO ACK | 45/45 · 45/45 | 15/15 | **GEÇTİ** |
+| H1-K5 İKA otonom sürüş — YER GERÇEĞİ | 45/45 (harita 15/15) | ≥ 12/15 harita | **GEÇTİ** |
+| H1-K5 — ÜRETİM MODELİ | 9/45 (harita 0/15) | ≥ 12/15 harita | **DÜŞTÜ** |
+| H1-K5 — ÜRETİM BORU HATTI | 0/15 (harita 0/15; koşulan 5) | ≥ 12/15 harita | **DÜŞTÜ** |
+| H1-K6 sanal görev süresi (sim; YER GERÇEĞİ başarılı, medyan) | İKA sürüşü 71,3 s · toplam görev 108,6 s; 4 grafik | 45 koşum + 4 grafik | **ÜRETİLDİ** |
+| H1-K7 video | 177,88 s · 25 FPS · HUD · üç kamera; sha256 `35ffc33e2f99c833…` | ≥ 90 s · ≥ 24 FPS | **GEÇTİ** — link **BEYAN GEREKLİ (insan)**, T222 |
 
 Dürüstlük notu: depoda bir Gazebo simülasyon ağacı **vardır**
 (`simulation/scripts/` altında `mission_demo.py`, `ika_nav.py`,
@@ -670,7 +686,7 @@ Dürüstlük notu: depoda bir Gazebo simülasyon ağacı **vardır**
 ağaçtan gelen tek kayıt **D-370**'tir ve o da bir simülasyon başarımı değil,
 **ölçen aracın kendi kusurudur**: `simulation/scripts/ika_nav.py` tamamen
 CRLF olduğu için mutasyon betiğinin deseni hiç uygulanmıyordu (§4.2.2).
-Yani simülasyon ağacından bu rapora giren **hiçbir başarı sayısı yoktur**.
+~~Yani simülasyon ağacından bu rapora giren **hiçbir başarı sayısı yoktur**.~~ *(10 Eylül 2026: Gazebo ağacından yine sayı girmez — önceki tasarım, koşulmadı; yukarıdaki sayılar MuJoCo koşumlarındandır.)*
 
 ⚠ Bu bölümdeki sentetik arena ölçümleri (§4.8.1) **görev icra simülasyonu
 değildir**: CAD modeli, kalkış-iniş ve İKA otonom sürüşü içermez; yalnız
@@ -1658,6 +1674,10 @@ ekran görüntüsü.
 | 17 | **Pil gerilimi MP ↔ multimetre** — 5 Eylül eklendi | ölçülmedi (D-426 §4) → 6 Eylül **ÖLÇÜLDÜ**: multimetre 15,8 V ↔ MP 15,8 (D-428 §1); `BATT_VOLT_MULT,18.18` (`arducopter_fda_20260906.param:143`) | uçuş öncesi | ±0,1 V |
 | 18 | **Motor sırası/yönü** — 5 Eylül eklendi | BEYAN 4/4, video yok (D-426 §1) → 6 Eylül yine BEYAN (liste ve video gelmedi, D-428 §1); tlog: FC çerçevesi = fiziksel çerçeve, mixer ters değil (D-429 §2) — bu motor **yönünü** kanıtlamaz | pervane takılmadan önce | video — §4.13.4 madde 7 |
 
+| 19 | **Görev icra simülasyonu videosunun linki** (`Y-3.3.3-M03`, `Y-4-M07`) | Video 10 Eylül 2026'da üretildi (MuJoCo, SENTETİK; yerel dosya, sha256 `35ffc33e2f99c833…`, §3.3.3.3); yükleme insan işidir — **BEYAN GEREKLİ (insan)** | T222 (insan) | erişilebilir link |
+| 20 | **Üretim modeliyle simülasyonda rota tespiti ve uçtan uca sürüş** (H1-K3, H1-K5) | ÖLÇÜLDÜ ve **DÜŞTÜ** (10 Eylül 2026): rota tespiti mozaik 6/15, kare-bazlı 1/15; sürüş ÜRETİM MODELİ 9/45, ÜRETİM BORU HATTI 0/15 (YER GERÇEĞİ 45/45 GEÇTİ). Eşik gevşetilmedi; sim'e özel eğitim yapılmaz (ON_KAYIT §5.2). Teşhis: kareye göreli şerit etiketi, KB ile HB aynı karede görülmüyor (§3.3.3.2) | — (sonuç rapora olduğu gibi girer; üretim kodu kararı mimarın) | ≥ 12/15 |
+| 21 | **Simülasyonda CAD modelleri ve aerodinamik** | İHA / İKA STL'leri ekipten gelmedi → BASİTLEŞTİRİLMİŞ MODEL (DDR ölçüleri); İHA uçuşu kinematik (mocap) | insan girdisi (ON_KAYIT §3 madde 1–2) | — |
+
 ### 4.13.2 Kapı/test boşlukları — **3'ü kapandı, 3'ü açık**
 
 > Bu tablo silinmez, **üstü çizilir**: kapanan boşluk da kayıttır. 1–3 D-405
@@ -1728,6 +1748,9 @@ Bu maddeler kapanmadan ilgili kayıtlar "tamamlanmış" sayılmaz ve bu raporda 
 7. **BEYAN GEREKLİ (insan):** 5 Eylül motor testinin sıra/yön videosu (D-426 §1,
    ~18:30 satırı "video: BEYAN GEREKLİ") ve ESC sinyal kablosundaki kırmızı
    telin (BEC) durumu (D-426 §4, cevap gelmedi).
+8. **BEYAN GEREKLİ (insan):** görev icra simülasyonu videosunun yükleneceği platform (YouTube liste dışı /
+   Drive) ve erişilebilir link — T222; yerel dosya `results/fdr_sprint_20260910/video/navitas_sim_gorev_20260910.mp4`
+   (sha256 `35ffc33e2f99c8335a7c4fe581cea257e294baea57f6f1edcd1fe1089139347d`, 177,88 s; `results/fdr_sprint_20260910/video/OKUBENI.md`).
 
 ---
 
