@@ -297,7 +297,9 @@ class H1_KucukHaritaYerlesimi(_GercekEkran):
                          slavlar.index(app.kamera_cerceve))
 
     def test_H1b_gorunur_pencerede_harita_video_yaninda_cizili_onay_paneli_daralmadi(self):
-        app = self._kur()
+        # H2c ile aynı DPI sözleşmesi: Tk font ölçeği ve ürün geometrisi
+        # birlikte kurulur; işletim sisteminin örtük ölçeğine dayanılmaz.
+        app = self._kur(olcek=1.0)
         self.kok.deiconify()
         self.kok.update()
         self._pompala(lambda: app.p_karar.winfo_width() > 1, 3.0)
@@ -316,9 +318,26 @@ class H1_KucukHaritaYerlesimi(_GercekEkran):
                          "kamera görünümü onay panelini daralttı")
         # `<Configure>` ile GERÇEK boyutta çizildi: arena kutusu dejenere değil.
         c = app.mini_harita
-        self._pompala(lambda: False, 0.3)
-        arena = [c.coords(i) for i in c.find_all()
-                 if c.type(i) == "rectangle" and c.itemcget(i, "outline") == yks_gui.CIZGI]
+
+        def arena_kutulari():
+            return [c.coords(i) for i in c.find_all()
+                    if c.type(i) == "rectangle"
+                    and c.itemcget(i, "outline") == yks_gui.CIZGI]
+
+        def arena_hazir():
+            kutular = arena_kutulari()
+            return bool(kutular and c.winfo_height() > 1
+                        and kutular[0][2] - kutular[0][0] > yks_gui.S(100))
+
+        # Sabit 0,3 s uyku yerine Configure olayının gerçek sonucunu bekle.
+        # Çizimi elle çağırma: ürün bağı koparsa bu kapı hâlâ düşmelidir.
+        self.assertTrue(self._pompala(arena_hazir, 5.0),
+                        f"küçük harita yerleşmedi: arena={arena_kutulari()}, "
+                        f"tuval={c.winfo_width()}x{c.winfo_height()}, "
+                        f"pencere={self.kok.geometry()}, "
+                        f"tk_scaling={self.kok.tk.call('tk', 'scaling')}, "
+                        f"font={app.f_mini.metrics()}")
+        arena = arena_kutulari()
         self.assertTrue(arena)
         x0, y0, x1, y1 = arena[0]
         self.assertGreater(x1 - x0, yks_gui.S(100), f"küçük harita dejenere: {arena[0]}")
