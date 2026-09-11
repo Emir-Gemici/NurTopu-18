@@ -1,0 +1,159 @@
+# T221-D/T221-D2/T221-D3 gercek dosya mutasyonu · 2026-09-11T12:34:36+00:00
+ref=HEAD · HEAD=874ad16b19faad456e2a4a4256bbd7e913243661 · core.autocrlf=true
+kapi dosyasi tests/test_faz_b_arduplane_sablon.py sha256=e5d2ba0cd5a2673f · git HEAD ile bayt-es=False · git HEAD ile bayt-es=False
+[mutasyonsuz] A18 hatalari (surecte): []
+[R1 README beklenen-yok listesi bosaltildi] config/pixhawk/README.md · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir', 'test_m13_beklenen_yok_bosaltilinca_ya_da_genisletilince_yakalanir', 'test_m14_ikili_taramasi_adi_gosterince_yakalanir', 'test_m21_on_kayit_kabul_komutlar_ve_olumlu_hukum_kilidi'] -> YAKALANDI · geri_yukleme(git cat-file --filters HEAD) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi 'onceden yazilan': VAR
+    A18 hatalari (surecte, 3): ["README beklenen-yok [] != onceden yazilan ['BRD_SER2_RTSCTS'] (liste olcumden sonra degistirilemez)", "olcut 1: SITL'de yuklu README 61 != .param 62 - beklenen-yok 0 = 62", "SITL kabul blogu on kayitli metinle ayni degil"]
+    son satir: FAILED (failures=5)
+[R2 README olcut 1: SITL'de 61 yerine 62 (SITL'de tutamayan eski sayi)] config/pixhawk/README.md · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir', 'test_m21_on_kayit_kabul_komutlar_ve_olumlu_hukum_kilidi'] -> YAKALANDI · geri_yukleme(git cat-file --filters HEAD) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi "olcut 1: SITL'de yuklu": VAR
+    A18 hatalari (surecte, 2): ["olcut 1: SITL'de yuklu README 62 != .param 62 - beklenen-yok 1 = 61", "SITL kabul blogu on kayitli metinle ayni degil"]
+    son satir: FAILED (failures=3)
+[R3 .param'dan TKOFF_ACCEL_CNT satiri silindi (N .param'dan hesaplanir)] config/pixhawk/arduplane_final.param · cikis=1 dusen=['test_a14_kaynak_kaniti_temiz_ve_guncel', 'test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_a2_zorunlu_anahtarlar_var', 'test_a5_mancinik_kalkisi_tutarliligi', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir', 'test_m21_on_kayit_kabul_komutlar_ve_olumlu_hukum_kilidi'] -> YAKALANDI · geri_yukleme(git cat-file --filters HEAD) bayt_es=True sha256=1cce06804179
+    beklenen A18 hatasi 'olcut 1: dosyadaki ad': VAR
+    A18 hatalari (surecte, 3): ["olcut 1: dosyadaki ad README 62 != .param 61", "olcut 1: SITL'de yuklu README 61 != .param 61 - beklenen-yok 1 = 60", "SITL kabul blogu on kayitli metinle ayni degil"]
+    son satir: FAILED (failures=6)
+[R4 yoklama SS6.1: SER2_RTSCTS 0 -> 1 (beklenen-yok olcumle celisir)] results/fdr_sprint_20260910/H8/T221/sitl_yoklama.txt · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir', 'test_m14_ikili_taramasi_adi_gosterince_yakalanir', 'test_m21_on_kayit_kabul_komutlar_ve_olumlu_hukum_kilidi'] -> YAKALANDI · geri_yukleme(git cat-file --filters HEAD) bayt_es=True sha256=8776b2bfae68
+    beklenen A18 hatasi 'olcumle celisir': VAR
+    A18 hatalari (surecte, 1): ["BRD_SER2_RTSCTS: SITL ikilisinde 'SER2_RTSCTS' 1 kez (beklenen-yok olcumle celisir)"]
+    son satir: FAILED (failures=4)
+[R5 README olcut 1 ikili sha'sinin son hanesi degisti] config/pixhawk/README.md · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir', 'test_m21_on_kayit_kabul_komutlar_ve_olumlu_hukum_kilidi'] -> YAKALANDI · geri_yukleme(git cat-file --filters HEAD) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi 'ikili sha': VAR
+    A18 hatalari (surecte, 2): ["SITL kabul blogu on kayitli metinle ayni degil", "ikili sha: README ['639a8381c1d8805a2e252a679f22d72473232ac813c810216d99aaba55e160e8', '639a8381c1d8805a2e252a679f22d72473232ac813c810216d99aaba55e160e9'] != yoklama ['639a8381c1d8805a2e252a679f22d72473232ac813c810216d99aaba55e160e9']"]
+    son satir: FAILED (failures=3)
+[R6 yoklama SS6.1: pozitif kontrol SAFETY_DEFLT 1 -> 0] results/fdr_sprint_20260910/H8/T221/sitl_yoklama.txt · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir', 'test_m21_on_kayit_kabul_komutlar_ve_olumlu_hukum_kilidi'] -> YAKALANDI · geri_yukleme(git cat-file --filters HEAD) bayt_es=True sha256=8776b2bfae68
+    beklenen A18 hatasi 'pozitif kontrol': VAR
+    A18 hatalari (surecte, 1): ["BRD_SER2_RTSCTS: pozitif kontrol 'SAFETY_DEFLT' ikilide gorulmedi (0 kanit sayilmaz)"]
+    son satir: FAILED (failures=3)
+[R7 README 'her eksik ad DUSER' kurali yumusatildi] config/pixhawk/README.md · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir', 'test_m21_on_kayit_kabul_komutlar_ve_olumlu_hukum_kilidi'] -> YAKALANDI · geri_yukleme(git cat-file --filters HEAD) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi 'on kayit cumlesi eksik': VAR
+    A18 hatalari (surecte, 3): ["README SS6.6 on kayit cumlesi eksik: 'listenin dışındaki her eksik ad **DÜŞER**'", "SITL kabul blogu on kayitli metinle ayni degil", "SITL hukum sayimi 'düşer': 2 != 3"]
+    son satir: FAILED (failures=3)
+[R8 README CHUTE_* on hukmunun kayit cumlesi kisaltildi] config/pixhawk/README.md · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir', 'test_m21_on_kayit_kabul_komutlar_ve_olumlu_hukum_kilidi'] -> YAKALANDI · geri_yukleme(git cat-file --filters HEAD) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi 'on kayit cumlesi eksik': VAR
+    A18 hatalari (surecte, 4): ["README SS6.6 on kayit cumlesi eksik: 'SITL paraşütsüz derlenmiş — paraşüt zinciri ÖLÇÜLEMEDİ'", "on hukum paragrafinda yok: 'SITL paraşütsüz derlenmiş — paraşüt zinciri ÖLÇÜLEMEDİ'", "CHUTE_* on hukum paragrafinda on kayitli metin degisti", "SITL hukum sayimi 'ölçülemedi': 4 != 5"]
+    son satir: FAILED (failures=3)
+[R9 README 'olcumden once, D-449' damgasi (2 yer) silindi] config/pixhawk/README.md · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir', 'test_m15_eski_olcut1_cizgisi_kalkinca_ya_da_silinince_yakalanir', 'test_m16_chute_on_hukmu_gevsetilince_yakalanir', 'test_m21_on_kayit_kabul_komutlar_ve_olumlu_hukum_kilidi'] -> YAKALANDI · geri_yukleme(git cat-file --filters HEAD) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi 'on kayit cumlesi eksik': VAR
+    A18 hatalari (surecte, 5): ["README SS6.6 on kayit cumlesi eksik: 'ölçümden önce, D-449'", "cizili eski olcut 1'in hemen ardinda tarih damgasi yok: '(10 Eylül, ölçümden önce, D-449'", "on hukum basliginda tarih damgasi yok: '(10 Eylül, ölçümden önce, D-449):**'", "CHUTE_* on hukum paragrafinda on kayitli metin degisti", "SITL kabul blogu on kayitli metinle ayni degil"]
+    son satir: FAILED (failures=5)
+[R10 README SITL features.txt:139 -> :138] config/pixhawk/README.md · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir', 'test_m21_on_kayit_kabul_komutlar_ve_olumlu_hukum_kilidi'] -> YAKALANDI · geri_yukleme(git cat-file --filters HEAD) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi 'yoklamadaki satirla uyusmuyor': VAR
+    A18 hatalari (surecte, 1): ["SITL_x86_64_linux_gnu/features.txt:138 yoklamadaki satirla uyusmuyor"]
+    son satir: FAILED (failures=3)
+[C2 eski olcut 1'in ~~cizgisi~~ kaldirildi (62 adin 62'si yeniden yururlukte)] config/pixhawk/README.md · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir', 'test_m15_eski_olcut1_cizgisi_kalkinca_ya_da_silinince_yakalanir', 'test_m17_olcut1_chute_enabled_ve_acilis_kosulu_silinince_yakalanir', 'test_m21_on_kayit_kabul_komutlar_ve_olumlu_hukum_kilidi'] -> YAKALANDI · geri_yukleme(git cat-file --filters HEAD) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi 'eski olcut 1 yururlukteki metinde': VAR
+    A18 hatalari (surecte, 6): ["eski olcut 1 yururlukteki metinde (cizgisi kaldirilmis): [\"62 adın 62'si\"]", "eski olcut 1 ~~cizili~~ 0 kez (tam 1: FDR, eski metin silinmez)", "SS6.6'da yalniz eski olcut 1 cizili olabilir (kapanmamis/ek ~~)", "olcut 1 maddesinde 'Açılış `ArduPlane V4.5.7`' 2 kez (tam 1 olmali)", "olcut 1 maddesinde '`param show CHUTE_ENABLED` 1' 2 kez (tam 1 olmali)", "SITL kabul blogu on kayitli metinle ayni degil"]
+    son satir: FAILED (failures=5)
+[C3 on hukum gevsetildi: Olcut 1 DUSER -> OLCULEMEDI] config/pixhawk/README.md · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir', 'test_m16_chute_on_hukmu_gevsetilince_yakalanir', 'test_m21_on_kayit_kabul_komutlar_ve_olumlu_hukum_kilidi'] -> YAKALANDI · geri_yukleme(git cat-file --filters HEAD) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi "on kayit cumlesi eksik: 'Ölçüt 1 **DÜŞER**": VAR
+    A18 hatalari (surecte, 5): ["README SS6.6 on kayit cumlesi eksik: 'Ölçüt 1 **DÜŞER** (`CHUTE_*` beklenen-yok listesine sonradan eklenmez, eşik gevşetilmez)'", "on hukum paragrafinda yok: 'Ölçüt 1 **DÜŞER** (`CHUTE_*` beklenen-yok listesine sonradan eklenmez, eşik gevşetilmez)'", "CHUTE_* on hukum paragrafinda on kayitli metin degisti", "SITL hukum sayimi 'ölçülemedi': 6 != 5", "SITL hukum sayimi 'düşer': 2 != 3"]
+    son satir: FAILED (failures=4)
+[C4 yeni olcut 1'den `param show CHUTE_ENABLED` 1 silindi] config/pixhawk/README.md · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir', 'test_m17_olcut1_chute_enabled_ve_acilis_kosulu_silinince_yakalanir', 'test_m21_on_kayit_kabul_komutlar_ve_olumlu_hukum_kilidi'] -> YAKALANDI · geri_yukleme(git cat-file --filters HEAD) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi "olcut 1 maddesinde '`param show CHUTE_ENABLED` 1' 0 kez": VAR
+    A18 hatalari (surecte, 2): ["olcut 1 maddesinde '`param show CHUTE_ENABLED` 1' 0 kez (tam 1 olmali)", "SITL kabul blogu on kayitli metinle ayni degil"]
+    son satir: FAILED (failures=4)
+[C7 on hukmun 'eklenmez, esik gevsetilmez' parantezi silindi] config/pixhawk/README.md · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir', 'test_m16_chute_on_hukmu_gevsetilince_yakalanir', 'test_m21_on_kayit_kabul_komutlar_ve_olumlu_hukum_kilidi'] -> YAKALANDI · geri_yukleme(git cat-file --filters HEAD) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi "on kayit cumlesi eksik: 'Ölçüt 1 **DÜŞER**": VAR
+    A18 hatalari (surecte, 4): ["README SS6.6 on kayit cumlesi eksik: 'Ölçüt 1 **DÜŞER** (`CHUTE_*` beklenen-yok listesine sonradan eklenmez, eşik gevşetilmez)'", "on hukum paragrafinda yok: 'Ölçüt 1 **DÜŞER** (`CHUTE_*` beklenen-yok listesine sonradan eklenmez, eşik gevşetilmez)'", "CHUTE_* on hukum paragrafinda on kayitli metin degisti", "SITL hukum sayimi 'beklenen-yok': 2 != 3"]
+    son satir: FAILED (failures=4)
+[E1 eski olcut 1 tamamen silindi (FDR: eski metin silinmez, cizilir)] config/pixhawk/README.md · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir', 'test_m15_eski_olcut1_cizgisi_kalkinca_ya_da_silinince_yakalanir', 'test_m21_on_kayit_kabul_komutlar_ve_olumlu_hukum_kilidi'] -> YAKALANDI · geri_yukleme(git cat-file --filters HEAD) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi '~~cizili~~ 0 kez': VAR
+    A18 hatalari (surecte, 2): ["eski olcut 1 ~~cizili~~ 0 kez (tam 1: FDR, eski metin silinmez)", "SS6.6'da yalniz eski olcut 1 cizili olabilir (kapanmamis/ek ~~)"]
+    son satir: FAILED (failures=4)
+[E2 cizgi notundaki tarih damgasi silindi (on hukum basliginda duruyor)] config/pixhawk/README.md · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir', 'test_m15_eski_olcut1_cizgisi_kalkinca_ya_da_silinince_yakalanir', 'test_m21_on_kayit_kabul_komutlar_ve_olumlu_hukum_kilidi'] -> YAKALANDI · geri_yukleme(git cat-file --filters HEAD) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi 'ardinda tarih damgasi yok': VAR
+    A18 hatalari (surecte, 2): ["cizili eski olcut 1'in hemen ardinda tarih damgasi yok: '(10 Eylül, ölçümden önce, D-449'", "SITL kabul blogu on kayitli metinle ayni degil"]
+    son satir: FAILED (failures=4)
+[E3 olcut 1'den acilis surumu `ArduPlane V4.5.7` silindi] config/pixhawk/README.md · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir', 'test_m17_olcut1_chute_enabled_ve_acilis_kosulu_silinince_yakalanir', 'test_m21_on_kayit_kabul_komutlar_ve_olumlu_hukum_kilidi'] -> YAKALANDI · geri_yukleme(git cat-file --filters HEAD) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi "olcut 1 maddesinde 'Açılış `ArduPlane V4.5.7`' 0 kez": VAR
+    A18 hatalari (surecte, 2): ["olcut 1 maddesinde 'Açılış `ArduPlane V4.5.7`' 0 kez (tam 1 olmali)", "SITL kabul blogu on kayitli metinle ayni degil"]
+    son satir: FAILED (failures=4)
+[E4 on hukme celiskili ikinci olcut 1 hukmu eklendi (DUSER cumlesi yerinde)] config/pixhawk/README.md · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir', 'test_m21_on_kayit_kabul_komutlar_ve_olumlu_hukum_kilidi'] -> YAKALANDI · geri_yukleme(git cat-file --filters HEAD) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi 'birden cok kez anilmis': VAR
+    A18 hatalari (surecte, 5): ["on hukum paragrafinda olcut ['1'] birden cok kez anilmis (celiskili hukum)", "on hukum paragrafinda olcut 1..5 tam 1 kez anilmali: ['1', '2', '4', '5', '3', '1']", "CHUTE_* on hukum paragrafinda on kayitli metin degisti", "SS6.6'da on hukum disinda ek/celiskili olcut atfi var", "SITL hukum sayimi 'ölçülemedi': 6 != 5"]
+    son satir: FAILED (failures=3)
+[E5 on hukum paragrafi bolundu (Olcut 1 DUSER cumlesi kosul paragrafindan cikti)] config/pixhawk/README.md · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir', 'test_m16_chute_on_hukmu_gevsetilince_yakalanir', 'test_m19_coklu_olcut_ve_celiskili_hukum_yakalanir', 'test_m21_on_kayit_kabul_komutlar_ve_olumlu_hukum_kilidi'] -> YAKALANDI · geri_yukleme(git cat-file --filters HEAD) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi 'on hukum paragrafinda yok': VAR
+    A18 hatalari (surecte, 4): ["on hukum paragrafinda yok: 'Ölçüt 1 **DÜŞER** (`CHUTE_*` beklenen-yok listesine sonradan eklenmez, eşik gevşetilmez)'", "on hukum paragrafinda yok: 'ölçüt 3 (kalkış kapısı) yine ölçülür'", "on hukum paragrafinda olcut 1..5 tam 1 kez anilmali: []", "CHUTE_* on hukum paragrafinda on kayitli metin degisti"]
+    son satir: FAILED (failures=8)
+[E6 on hukum basligindaki tarih damgasi silindi (cizgi notunda duruyor)] config/pixhawk/README.md · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir', 'test_m16_chute_on_hukmu_gevsetilince_yakalanir', 'test_m21_on_kayit_kabul_komutlar_ve_olumlu_hukum_kilidi'] -> YAKALANDI · geri_yukleme(git cat-file --filters HEAD) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi 'basliginda tarih damgasi yok': VAR
+    A18 hatalari (surecte, 2): ["on hukum basliginda tarih damgasi yok: '(10 Eylül, ölçümden önce, D-449):**'", "CHUTE_* on hukum paragrafinda on kayitli metin degisti"]
+    son satir: FAILED (failures=4)
+[N1 cizili olcut 4/5 OLCULEMEDI + dogrulandi] config/pixhawk/README.md · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir', 'test_m18_cizili_hukum_ve_sonuc_yururlukte_sayilmaz', 'test_m21_on_kayit_kabul_komutlar_ve_olumlu_hukum_kilidi'] -> YAKALANDI · geri_yukleme(git cat-file --filters HEAD) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi 'on kayitli metin degisti': VAR
+    A18 hatalari (surecte, 4): ["SS6.6'da yalniz eski olcut 1 cizili olabilir (kapanmamis/ek ~~)", "CHUTE_* on hukum paragrafinda on kayitli metin degisti", "SITL kosulmamisken olumlu hukum: ['doğrulandı', 'tutar']", "SITL hukum sayimi 'ölçülemedi': 4 != 5"]
+    son satir: FAILED (failures=5)
+[N2 on hukum olcut 2 OLCULEMEDI yerine tutar] config/pixhawk/README.md · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir', 'test_m19_coklu_olcut_ve_celiskili_hukum_yakalanir', 'test_m21_on_kayit_kabul_komutlar_ve_olumlu_hukum_kilidi'] -> YAKALANDI · geri_yukleme(git cat-file --filters HEAD) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi 'on kayitli metin degisti': VAR
+    A18 hatalari (surecte, 3): ["CHUTE_* on hukum paragrafinda on kayitli metin degisti", "SITL kosulmamisken olumlu hukum: ['tutar']", "SITL hukum sayimi 'ölçülemedi': 4 != 5"]
+    son satir: FAILED (failures=4)
+[N3 olcut 4 ve 5 arkasina ikinci olcut 5 hukmu] config/pixhawk/README.md · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir', 'test_m16_chute_on_hukmu_gevsetilince_yakalanir', 'test_m21_on_kayit_kabul_komutlar_ve_olumlu_hukum_kilidi'] -> YAKALANDI · geri_yukleme(git cat-file --filters HEAD) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi 'birden cok kez anilmis': VAR
+    A18 hatalari (surecte, 5): ["on hukum paragrafinda olcut ['5'] birden cok kez anilmis (celiskili hukum)", "on hukum paragrafinda olcut 1..5 tam 1 kez anilmali: ['1', '2', '4', '5', '3', '5']", "CHUTE_* on hukum paragrafinda on kayitli metin degisti", "SS6.6'da on hukum disinda ek/celiskili olcut atfi var", "SITL kosulmamisken olumlu hukum: ['tutar']"]
+    son satir: FAILED (failures=4)
+[N4 eski olcut tipografik kesme ile geri gelir] config/pixhawk/README.md · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir', 'test_m21_on_kayit_kabul_komutlar_ve_olumlu_hukum_kilidi'] -> YAKALANDI · geri_yukleme(git cat-file --filters HEAD) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi 'eski olcut 1 yururlukteki metinde': VAR
+    A18 hatalari (surecte, 2): ["eski olcut 1 yururlukteki metinde (cizgisi kaldirilmis): ['62 adın 62’si']", "SITL kabul blogu on kayitli metinle ayni degil"]
+    son satir: FAILED (failures=3)
+[N4b eski olcut 62 adin tamami olarak geri gelir] config/pixhawk/README.md · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir', 'test_m21_on_kayit_kabul_komutlar_ve_olumlu_hukum_kilidi'] -> YAKALANDI · geri_yukleme(git cat-file --filters HEAD) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi 'eski olcut 1 yururlukteki metinde': VAR
+    A18 hatalari (surecte, 2): ["eski olcut 1 yururlukteki metinde (cizgisi kaldirilmis): ['62 adın tamamı']", "SITL kabul blogu on kayitli metinle ayni degil"]
+    son satir: FAILED (failures=3)
+[N5 CHUTE_ENABLED 1 ya da bos] config/pixhawk/README.md · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir', 'test_m17_olcut1_chute_enabled_ve_acilis_kosulu_silinince_yakalanir', 'test_m21_on_kayit_kabul_komutlar_ve_olumlu_hukum_kilidi'] -> YAKALANDI · geri_yukleme(git cat-file --filters HEAD) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi 'kabul blogu on kayitli': VAR
+    A18 hatalari (surecte, 1): ["SITL kabul blogu on kayitli metinle ayni degil"]
+    son satir: FAILED (failures=4)
+[N6 sonuc KOSULMADI cizildi ve kosuldu yazildi] config/pixhawk/README.md · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir', 'test_m21_on_kayit_kabul_komutlar_ve_olumlu_hukum_kilidi'] -> YAKALANDI · geri_yukleme(git cat-file --filters HEAD) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi 'sonuc cumlesi yururlukte': VAR
+    A18 hatalari (surecte, 4): ["SS6.6'da yalniz eski olcut 1 cizili olabilir (kapanmamis/ek ~~)", "SITL sonuc cumlesi yururlukte tam 1 kez KOŞULMADI demeli", "SITL kosulmamisken olumlu hukum: ['koşuldu', 'doğrulandı']", "SITL hukum sayimi 'koşulmadı': 0 != 1"]
+    son satir: FAILED (failures=3)
+[N7 Olcut 1 DUSER gerekcesi cizildi ve OLCULEMEDI yazildi] config/pixhawk/README.md · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir', 'test_m16_chute_on_hukmu_gevsetilince_yakalanir', 'test_m18_cizili_hukum_ve_sonuc_yururlukte_sayilmaz', 'test_m21_on_kayit_kabul_komutlar_ve_olumlu_hukum_kilidi'] -> YAKALANDI · geri_yukleme(git cat-file --filters HEAD) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi 'on kayit cumlesi eksik': VAR
+    A18 hatalari (surecte, 7): ["README SS6.6 on kayit cumlesi eksik: 'Ölçüt 1 **DÜŞER** (`CHUTE_*` beklenen-yok listesine sonradan eklenmez, eşik gevşetilmez)'", "SS6.6'da yalniz eski olcut 1 cizili olabilir (kapanmamis/ek ~~)", "on hukum paragrafinda yok: 'Ölçüt 1 **DÜŞER** (`CHUTE_*` beklenen-yok listesine sonradan eklenmez, eşik gevşetilmez)'", "CHUTE_* on hukum paragrafinda on kayitli metin degisti", "SITL hukum sayimi 'ölçülemedi': 6 != 5", "SITL hukum sayimi 'düşer': 2 != 3", "SITL hukum sayimi 'beklenen-yok': 2 != 3"]
+    son satir: FAILED (failures=5)
+[N8 kalin sayilar ve tipografik kesmeyle ikinci eski olcut] config/pixhawk/README.md · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir', 'test_m21_on_kayit_kabul_komutlar_ve_olumlu_hukum_kilidi'] -> YAKALANDI · geri_yukleme(git cat-file --filters HEAD) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi 'eski olcut 1 yururlukteki metinde': VAR
+    A18 hatalari (surecte, 2): ["eski olcut 1 yururlukteki metinde (cizgisi kaldirilmis): ['**62** adın **62**’si']", "SITL kabul blogu on kayitli metinle ayni degil"]
+    son satir: FAILED (failures=3)
+[N3b ikinci Olcut 5 hukmu M16 on kosuluna dokunmadan] config/pixhawk/README.md · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir', 'test_m21_on_kayit_kabul_komutlar_ve_olumlu_hukum_kilidi'] -> YAKALANDI · geri_yukleme(git cat-file --filters HEAD) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi 'birden cok kez anilmis': VAR
+    A18 hatalari (surecte, 5): ["on hukum paragrafinda olcut ['5'] birden cok kez anilmis (celiskili hukum)", "on hukum paragrafinda olcut 1..5 tam 1 kez anilmali: ['1', '2', '4', '5', '3', '5']", "CHUTE_* on hukum paragrafinda on kayitli metin degisti", "SS6.6'da on hukum disinda ek/celiskili olcut atfi var", "SITL kosulmamisken olumlu hukum: ['tutar']"]
+    son satir: FAILED (failures=3)
+[N5b CHUTE_ENABLED bos donerse tutar M17 on kosuluna dokunmadan] config/pixhawk/README.md · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir', 'test_m21_on_kayit_kabul_komutlar_ve_olumlu_hukum_kilidi'] -> YAKALANDI · geri_yukleme(git cat-file --filters HEAD) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi 'kabul blogu on kayitli': VAR
+    A18 hatalari (surecte, 2): ["SITL kabul blogu on kayitli metinle ayni degil", "SITL kosulmamisken olumlu hukum: ['tutar']"]
+    son satir: FAILED (failures=3)
+[N4c kontrol eski olcut duz kesmeyle geri gelir] config/pixhawk/README.md · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir', 'test_m21_on_kayit_kabul_komutlar_ve_olumlu_hukum_kilidi'] -> YAKALANDI · geri_yukleme(git cat-file --filters HEAD) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi 'eski olcut 1 yururlukteki metinde': VAR
+    A18 hatalari (surecte, 2): ["eski olcut 1 yururlukteki metinde (cizgisi kaldirilmis): [\"62 adın 62'si\"]", "SITL kabul blogu on kayitli metinle ayni degil"]
+    son satir: FAILED (failures=3)
+[D3a olumlu hukum ikinci paragrafta] config/pixhawk/README.md · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir', 'test_m21_on_kayit_kabul_komutlar_ve_olumlu_hukum_kilidi'] -> YAKALANDI · geri_yukleme(git cat-file --filters HEAD) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi 'olumlu hukum': VAR
+    A18 hatalari (surecte, 1): ["SITL kosulmamisken olumlu hukum: ['doğrulandı']"]
+    son satir: FAILED (failures=3)
+[D3b paragraf disinda olcut 5 muaf] config/pixhawk/README.md · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir', 'test_m21_on_kayit_kabul_komutlar_ve_olumlu_hukum_kilidi'] -> YAKALANDI · geri_yukleme(git cat-file --filters HEAD) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi 'ek/celiskili olcut atfi': VAR
+    A18 hatalari (surecte, 1): ["SS6.6'da on hukum disinda ek/celiskili olcut atfi var"]
+    son satir: FAILED (failures=3)
+[D3c HTML ile KOSULMADI cizildi] config/pixhawk/README.md · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir', 'test_m21_on_kayit_kabul_komutlar_ve_olumlu_hukum_kilidi'] -> YAKALANDI · geri_yukleme(git cat-file --filters HEAD) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi 'HTML cizgisi': VAR
+    A18 hatalari (surecte, 2): ["SS6.6 HTML cizgisi hukum gizleyemez", "SITL sonuc cumlesi yururlukte tam 1 kez KOŞULMADI demeli"]
+    son satir: FAILED (failures=3)
+[D3d parasut servosu yerine gaz cikisi] config/pixhawk/README.md · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir', 'test_m21_on_kayit_kabul_komutlar_ve_olumlu_hukum_kilidi'] -> YAKALANDI · geri_yukleme(git cat-file --filters HEAD) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi 'SIM_PARA_PIN komutu': VAR
+    A18 hatalari (surecte, 1): ["SITL SIM_PARA_PIN komutu ['3'] != [7] (.param/DDR)"]
+    son satir: FAILED (failures=4)
+[D3e mancininik ivmesi degisti] config/pixhawk/README.md · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir', 'test_m21_on_kayit_kabul_komutlar_ve_olumlu_hukum_kilidi'] -> YAKALANDI · geri_yukleme(git cat-file --filters HEAD) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi 'SIM_SHOVE_X komutu': VAR
+    A18 hatalari (surecte, 1): ["SITL SIM_SHOVE_X komutu ['4'] != [46] (.param/DDR)"]
+    son satir: FAILED (failures=4)
+[D3f mancininik suresi degisti] config/pixhawk/README.md · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir', 'test_m21_on_kayit_kabul_komutlar_ve_olumlu_hukum_kilidi'] -> YAKALANDI · geri_yukleme(git cat-file --filters HEAD) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi 'SIM_SHOVE_TIME komutu': VAR
+    A18 hatalari (surecte, 1): ["SITL SIM_SHOVE_TIME komutu ['39'] != [390] (.param/DDR)"]
+    son satir: FAILED (failures=4)
+[OZET] 38/38 YAKALANDI
+[geri yukleme sonrasi] cikis=0 · 3 dosya git HEAD ile bayt-es=True · son satir: OK
+cikis=0

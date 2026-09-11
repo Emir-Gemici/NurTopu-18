@@ -1,0 +1,353 @@
+# NAVITAS - ArduPlane 4.5.7 PARAMETRE SABLONU - yarisma final araci (sabit kanat + mancinik + parasut)
+#
+# NEDEN (T221 / K11): Jetson gelistiricisinin istegi (JETSON_OTURUM_DURUMU_20260909.md SS5 madde 4;
+# D-431 SS4(10): "Jetson tarafi standart MAVLink, govde bagimsiz; ArduPlane parametre seti ve
+# provasi yok"). Depodaki tek parametre dosyasi FDA quad'inindir (arducopter_fda.param, Copter 4.5.7).
+# Final arac (sartname: sabit kanat, yalniz mancinikla firlatma, parasutle zorunlu inis) icin
+# parametreler Mission Planner'da elle tiklanirsa ne tutanak kalir ne test.
+#
+# SURUM: ArduPlane 4.5.7 - etiket Plane-4.5.7 (firmware sunucusu Pixhawk6C/git-version.txt:
+#   commit 0358a9c210bc6c965006f5d6029239b7033616df "Plane: version to 4.5.7"; 10 Eyl okundu).
+#   Firmware: https://firmware.ardupilot.org/Plane/stable-4.5.7/Pixhawk6C/arduplane.apj
+#   (features.txt: HAL_PARACHUTE_ENABLED VAR). D-425 dersi: MP'nin "en son kararli" onerisi bugun
+#   Plane 4.7.1 yukler (Plane/stable/Pixhawk6C/git-version.txt, 10 Eyl) - bu dosya 4.5.7'ye baglidir.
+#
+# BICIM: arducopter_fda.param ile ayni (MP "Full Parameter List > Load from file"):
+#   * parametre satiri  AD,DEGER ; '#' satiri yorum (MP ParamFile.loadParamFile atlar).
+#   * her parametrenin USTUNDE NEDEN + tanimlandigi KAYNAK DOSYA ADI (test A15 kaynak kanitindaki
+#     dosya adiyla karsilastirir).
+#   * "# TEYIT:" Pixhawk'ta GORULMEDEN yuklendi sayilmaz (README SS6.3 ile metin kilidi).
+#   * "# BEYAN:" deger insan beyani / olcumu olmadan TAHMINdir (README SS6.4 ile metin kilidi).
+#
+# KAYNAK KANITI: scripts/ardupilot_param_kaynak.py her AD'i Plane-4.5.7 kaynaginda bulur, DEGER'i
+#   @Values/@Bitmask/@Range'e karsi denetler -> results/fdr_sprint_20260910/H8/T221/
+#   plane457_param_kaynak.json. tests/test_faz_b_arduplane_sablon.py kaniti cevrimdisi kilitler:
+#   bu dosyada bir deger degisip kanit yenilenmezse test DUSER.
+#
+# UCAK VERISI (DDR: rapor/NAVITAS_DDR_Birlesik.docx, rapor/NAVITIAS_DDR_2026_Bolum3_Only (5) (3).docx,
+#   rapor/3.3.1-2-3-4_SON.docx; 10 Eyl python-docx ile okundu). HEPSI TASARIM/HESAP - ucusla
+#   olculmedi, arac uretilmedi (FDR BOLUM_3 SS3.2.1.2 "BEYAN GEREKLI"):
+#   twin-motor (2x T-Motor AT3520 KV850, kanat pilonlari), yuksek kanat, cruciform kuyruk;
+#   MTOW 8,542 kg (CAD), b 2,30 m, S 0,4025 m2; Vs 15,86 / Vc 25 / VA 27,47 / VH 35 m/s;
+#   4x MG996R kontrol yuzeyi servosu + "kurtarma tetik hatti" (6 V servo hatti); 2x T-Motor AT75A;
+#   Tattu 4S 16 Ah; RC TBS Crossfire Nano RX (guvenlik pilotu); SiK V3 433 MHz (Hat-1);
+#   mancinik: bungee, 15 derece, 3,5 m ray, ~18 m/s cikis; parasut ~50 m'de, < 4 m/s.
+#   !! FDR BOLUM_2 (:403) ve BOLUM_7 (:151) sabit kanat motorunu "SunnySky X2216 x2" yazar; DDR itki
+#   secimi AT3520 KV850. Bu dosyada motor modeline bagli DEGER YOK; celiski README SS6.4'te BEYAN.
+#
+# Bu dosyada OLMAYAN her parametre firmware varsayilaninda kalir. Copter -> Plane flash'i TUM
+# parametreleri sifirlar: arducopter_fda.param'dan HICBIR sey tasinmaz, bu dosya tek basina yuklenir.
+# !! SERIAL*/SR*/BRD_*/SERVOn_FUNCTION/Q_ENABLE degisiklikleri YENIDEN BASLATMA ister (@RebootRequired).
+
+# -- ARAC TIPI --
+
+# NEDEN: klasik sabit kanat; QuadPlane (VTOL) DEGIL - sartname "yalnizca mancinik ile firlatilir,
+# dikey kalkis yasak" (OGREN_ADIYAMAN/ozet/H_sartname.md:47). ArduPlane/quadplane.cpp @Param ENABLE
+# @Values 0:Disable. Varsayilan zaten 0; acikca yazilir ki Q_* agaci ve CH5+ motor atamalari acilmasin.
+Q_ENABLE,0
+
+# -- MAVLINK KIMLIGI / SERI HATLAR (CONTRACTS SS7.4; arducopter_fda.param ile AYNI Jetson yazilimi) --
+
+# NEDEN: Jetson alicilari bu sysid'e pinli: comms/iha_komut_alici.py VARSAYILAN_HEDEF_SYSID = 1,
+# scripts/mavlink_dogrula.py VARSAYILAN_BEKLENEN_SYSID = 1. ArduPlane/Parameters.cpp SYSID_THISMAV
+# @Range 1 255 (varsayilan config.h MAV_SYSTEM_ID 1).
+SYSID_THISMAV,1
+# NEDEN: TELEM1 = SiK V3 433 MHz -> YKS (DDR Hat-1). AP_SerialManager.cpp 1_PROTOCOL @Values
+# 2:MAVLink2. Pixhawk 6C hwdef.dat SERIAL_ORDER OTG1 UART7 UART5 ... -> SERIAL1 = UART7 = TELEM1.
+SERIAL1_PROTOCOL,2
+# NEDEN: SiK fabrika hizi 57600 (karar_sozlesmesi K4 notu). AP_SerialManager.cpp 1_BAUD @Values 57:57600.
+SERIAL1_BAUD,57
+# NEDEN: TELEM2 = Jetson UART -> navitas-cogullayici (MAVProxy); DDR 3.3.1 "Pixhawk ile Jetson ...
+# UART uzerinden MAVLink". hwdef SERIAL2 = UART5 = TELEM2. AP_SerialManager.cpp 2_PROTOCOL
+# @CopyFieldsFrom SERIAL1_PROTOCOL -> 2:MAVLink2.
+SERIAL2_PROTOCOL,2
+# NEDEN: jetson_paket/jetson_baslat.sh PIXHAWK_BAUD 57600 - Copter ile ayni Jetson yazilimi, ayni
+# hiz (test A9: iki .param'in ortak Jetson/YKS anahtarlari esit). AP_SerialManager.cpp 2_BAUD 57:57600.
+SERIAL2_BAUD,57
+# NEDEN: Jetson UART 3 telli (TX/RX/GND) - RTS/CTS bagli degil. AP_BoardConfig.cpp SER2_RTSCTS
+# @Values 0:Disabled,1:Enabled,2:Auto; varsayilan 2 (Auto) bagli olmayan hatta TELEM2'yi susturabilir.
+# TEYIT: Pixhawk'ta BRD_SER2_RTSCTS = 0 gorulsun; TELEM2'den HEARTBEAT gelmiyorsa ILK buraya bakilir.
+BRD_SER2_RTSCTS,0
+
+# -- AKIS HIZLARI (karar_sozlesmesi MAVLINK_*_ASGARI_HZ; Copter dosyasiyla ayni sayilar) --
+# !! ArduPlane/GCS_Mavlink.cpp STREAM_*_msgs dizilerinde MSG_EXTENDED_SYS_STATE YOK (grep 0, 10 Eyl):
+#   Copter'daki gibi inis kaniti yalniz MAV_CMD_SET_MESSAGE_INTERVAL ile akar (README SS5 madde 1).
+
+# NEDEN: SiK hatti, YKS haritasi. ArduPlane/GCS_Mavlink.cpp @Param POSITION "GLOBAL_POSITION_INT
+# and LOCAL_POSITION_NED" @Range 0 50. Asgari MAVLINK_KONUM_ASGARI_HZ = 4.
+SR1_POSITION,4
+# NEDEN: ArduPlane/GCS_Mavlink.cpp @Param EXTRA3 (AHRS, SYSTEM_TIME, WIND, BATTERY_STATUS,
+# EKF_STATUS_REPORT, VIBRATION ...). MAVLINK_DURUM_ASGARI_HZ = 1.
+SR1_EXTRA3,1
+# NEDEN: Jetson hatti: MAVLINK_KONUM_ASGARI_HZ x mavlink_dogrula.ISTEK_HIZ_CARPANI = 4 x 2 = 8.
+# ArduPlane/GCS_Mavlink.cpp STREAM_POSITION_msgs = MSG_LOCATION, MSG_LOCAL_POSITION.
+SR2_POSITION,8
+# NEDEN: MAVLINK_DURUM_ASGARI_HZ x ISTEK_HIZ_CARPANI = 2 (EKF/pil durumu). ArduPlane/GCS_Mavlink.cpp EXTRA3.
+SR2_EXTRA3,2
+
+# -- RC --
+
+# NEDEN: final ucagin RC alicisi BEYAN edilmedi; uc aday var: DDR BOM "TBS Crossfire Nano RX" (CRSF,
+# bit 9), eldeki FlySky FS-iA6B (iBUS, bit 2; FDA quad'inda 5 Eyl dogrulandi, D-426), 10 Eyl alinan
+# SIYI MK15 "3 in 1" (D-442; ucus kartina cikis protokolu bildirilmedi). RC_Channels_VarInfo.h
+# _PROTOCOLS @Bitmask 0:All,2:IBUS,3:SBUS,9:CRSF; 1 = All = firmware varsayilani. Alici beyan edilince
+# TEK bite daraltilir (Copter dosyasindaki 4 = iBUS gibi) ve test A11 guncellenir.
+# BEYAN: final ucakta hangi RC alicisi (CRSF / iBUS / MK15) ve Pixhawk RC girisine hangi protokolle.
+# TEYIT: Messages'ta "RCInput: decoding <protokol>" gorulsun; Radio Calibration'da 4 ana kanal oynasin.
+RC_PROTOCOLS,1
+
+# -- SERVO CIKISLARI (DDR 3.3.1: "Motor ESC'leri, servo motorlar ve parasut sistemi Pixhawk'tan
+#    gonderilen PWM sinyalleri ile"; 4x MG996R + kurtarma tetik hatti + 2x ESC = 7 cikis) --
+# libraries/SRV_Channel/SRV_Channel.cpp FUNCTION @Values{Plane}: 0:Disabled, 4:Aileron, 19:Elevator,
+# 21:Rudder, 27:Parachute, 70:Throttle (@RebootRequired). Pixhawk 6C: SERVO1-8 = MAIN 1-8 (IOMCU),
+# SERVO9-16 = AUX 1-8 (FMU, hwdef.dat PWM(1)..PWM(8)). SERVO1-4 dizilimi ArduPlane'in kendi
+# varsayilanidir (ArduPlane/Parameters.cpp:1386-1389 set_default_function CH_1 aileron, CH_2 elevator,
+# CH_3 throttle, CH_4 rudder). KABLOLAMA YAPILMADI: yedi aktif satirin portu BEYAN. Servo yonu
+# (SERVOn_REVERSED) ve uclari (SERVOn_MIN/MAX/TRIM) ucakta ayarlanir - bu dosyada YOK.
+
+# NEDEN: MAIN1 = sol kanatcik servosu (MG996R). SRV_Channel.cpp @Values{Plane} 4:Aileron.
+# BEYAN: sol kanatcik servosunun MAIN1'e takildigi.
+# TEYIT: Pixhawk'ta SERVO1_FUNCTION = 4; FBWA'da ucak saga yatirilinca sol kanatcik ASAGI (yon testi, video).
+SERVO1_FUNCTION,4
+# NEDEN: MAIN2 = irtifa dumeni (elevator) servosu. SRV_Channel.cpp @Values{Plane} 19:Elevator.
+# BEYAN: elevator servosunun MAIN2'ye takildigi.
+# TEYIT: Pixhawk'ta SERVO2_FUNCTION = 19; FBWA'da burun asagi egilince elevator YUKARI.
+SERVO2_FUNCTION,19
+# NEDEN: MAIN3 = sol motor ESC'si (T-Motor AT75A). SRV_Channel.cpp @Values{Plane} 70:Throttle.
+# Iki ESC AYNI gaz sinyalini alir: diferansiyel itki (73:ThrottleLeft/74:ThrottleRight +
+# ArduPlane/Parameters.cpp RUDD_DT_GAIN varsayilan %10) ucus verisi olmadan acilmaz; yon kontrolu
+# DDR'deki istikamet dumeninden (cruciform kuyruk).
+# BEYAN: sol ESC sinyal kablosunun MAIN3'e takildigi.
+# TEYIT: Pixhawk'ta SERVO3_FUNCTION = 70; motor testi (PERVANESIZ) iki motor birlikte, video.
+SERVO3_FUNCTION,70
+# NEDEN: MAIN4 = istikamet dumeni (rudder) servosu. SRV_Channel.cpp @Values{Plane} 21:Rudder.
+# BEYAN: rudder servosunun MAIN4'e takildigi.
+# TEYIT: Pixhawk'ta SERVO4_FUNCTION = 21; sag pedal (RC) -> rudder SAGA.
+SERVO4_FUNCTION,21
+# NEDEN: MAIN5 = sag kanatcik servosu. ArduPlane ayni fonksiyonu birden cok cikisa verir; sag
+# kanatcigin ters hareketi ucakta SERVO5_REVERSED ile ayarlanir. SRV_Channel.cpp @Values{Plane} 4:Aileron.
+# BEYAN: sag kanatcik servosunun MAIN5'e takildigi.
+# TEYIT: Pixhawk'ta SERVO5_FUNCTION = 4; saga yatista sag kanatcik YUKARI (SERVO1'in tersi).
+SERVO5_FUNCTION,4
+# NEDEN: MAIN6 = sag motor ESC'si. SRV_Channel.cpp @Values{Plane} 70:Throttle (SERVO3 ile ayni sinyal).
+# BEYAN: sag ESC sinyal kablosunun MAIN6'ya takildigi.
+# TEYIT: Pixhawk'ta SERVO6_FUNCTION = 70.
+SERVO6_FUNCTION,70
+# NEDEN: MAIN7 = parasut tetik servosu (DDR "kurtarma tetik hatti", 6 V servo hatti).
+# SRV_Channel.cpp @Values{Plane, Copter} 27:Parachute. AP_Parachute.cpp arming_checks: CHUTE_ENABLED 1
+# ve CHUTE_TYPE 10 iken 27 atanmis cikis YOKSA arm oncesi "Chute has no channel" (test A4).
+# BEYAN: parasut mekanizmasinin servo tetigi ve MAIN7'ye takildigi.
+# TEYIT: Pixhawk'ta SERVO7_FUNCTION = 27; yerde servo CHUTE_SERVO_OFF konumunda, kapak kilitli.
+SERVO7_FUNCTION,27
+
+# Bos cikislar: 6 Eylul Copter dokumunde bos cikislara motor fonksiyonu atanmisti (D-428 SS5d).
+# Flash sifirlasa da acikca 0 yazilir ki bos cikisa takilan bir sey komut almasin.
+# NEDEN: MAIN8 bos. SRV_Channel.cpp @Values 0:Disabled.
+SERVO8_FUNCTION,0
+# NEDEN: AUX1 bos. SRV_Channel.cpp @Values 0:Disabled.
+SERVO9_FUNCTION,0
+# NEDEN: AUX2 bos. SRV_Channel.cpp @Values 0:Disabled.
+SERVO10_FUNCTION,0
+# NEDEN: AUX3 bos. SRV_Channel.cpp @Values 0:Disabled.
+SERVO11_FUNCTION,0
+# NEDEN: AUX4 bos. SRV_Channel.cpp @Values 0:Disabled.
+SERVO12_FUNCTION,0
+# NEDEN: AUX5 bos. SRV_Channel.cpp @Values 0:Disabled.
+SERVO13_FUNCTION,0
+# NEDEN: AUX6 bos. SRV_Channel.cpp @Values 0:Disabled.
+SERVO14_FUNCTION,0
+# NEDEN: AUX7 bos. SRV_Channel.cpp @Values 0:Disabled.
+SERVO15_FUNCTION,0
+# NEDEN: AUX8 bos. SRV_Channel.cpp @Values 0:Disabled.
+SERVO16_FUNCTION,0
+
+# -- MANCINIK KALKISI (TKOFF_*) --
+# Mantik (ArduPlane/takeoff.cpp Plane::auto_takeoff_check, Plane-4.5.7): AUTO'da arm'li ve emniyet
+# dugmesi acik ucak (1) GPS 3D fix, (2) TECS ileri ivmesi >= TKOFF_THR_MINACC (TKOFF_ACCEL_CNT kez),
+# (3) sonra TKOFF_THR_DELAY x 0,1 s bekler, (4) bu surenin sonundaki 100 ms pencerede GPS yer hizi >
+# TKOFF_THR_MINSPD ise (0 = kontrol yok) "Triggered AUTO" ve GAZ ACILIR. Pencere kacarsa "Timeout AUTO":
+# firlatma sayilmaz, motor ACILMAZ. Tutum kapisi: pitch -30..45 derece, |roll| < 30 ("Bad launch AUTO").
+# DDR mancinik kinematigi (BEYAN, uretilmedi): 3,5 m ray, ~18 m/s cikis, 15 derece -> sabit ivme
+# varsayimiyla ort. ivme v^2/(2L) = 46,3 m/s2, raydaki sure 2L/v = 0,39 s.
+
+# NEDEN: ivme kapisi ACIK olmali: "Setting this value to 0 disables the acceleration test which means the
+# ground speed check will always be armed which could allow GPS velocity jumps to start the engine" ve
+# "For hand launches and bungee launches this should be set to around 15" (ArduPlane/Parameters.cpp
+# TKOFF_THR_MINACC @Units m/s/s @Range 0 30). 15 = DDR ort. ivmenin ~1/3'u (bungee kuvveti strok
+# sonunda azalsa da esik payla asilir).
+# BEYAN: gercek mancinigin ivme profili (ilk atista .bin IMU kaydi; LOG_BITMASK bit 7).
+# TEYIT: MP'de TKOFF_THR_MINACC = 15 gorulsun; yerde (PERVANESIZ) elle hafif itmek TETIKLEMEMELI.
+TKOFF_THR_MINACC,15
+# NEDEN: ivme kapisindan sonra gaz gecikmesi (1/10 s). ArduPlane/Parameters.cpp TKOFF_THR_DELAY
+# aciklamasi bungee icin "such as 30" (3 s) der - o, halatin UCAGA takili oldugu atistir. Bizde bungee
+# KIZAGI ceker; ucak raydan ~0,39 s'de ayrilir ve cikis hizi 18 m/s stall'in (15,86) yalniz %13
+# ustundedir: 15 derece tirmanista itkisiz ~0,74 s sonra stall (test A5 DDR sayilarindan hesaplar).
+# 5 (0,5 s): ray suresinden uzun (pervane kizaga degmez), ray + stall suresinden (1,13 s) kisa.
+# @Units ds @Range 0 127, varsayilan 2.
+# BEYAN: gercek ray suresi ve cikis hizi (mancinik uretilince ivme kaydindan) - degisirse yeniden hesaplanir.
+TKOFF_THR_DELAY,5
+# NEDEN: GPS hiz kapisi KAPALI. ArduPlane/Parameters.cpp TKOFF_THR_MINSPD: "it is preferable to use
+# the TKOFF_THR_MINACC and TKOFF_THR_DELAY parameters for catapult launches due to the errors associated
+# with GPS measurements ... GPS velocity will lag the real velocity by about 0.5 seconds". takeoff.cpp
+# hiz kapisini gecikmeden sonra YALNIZ 100 ms pencerede sorar: gecikmeli GPS pencereyi kacirirsa motor
+# HIC acilmaz. 0 = kontrol yok (varsayilan), acikca yazilir.
+TKOFF_THR_MINSPD,0
+# NEDEN: kuyruk tekerlegi evresi yok. ArduPlane/Parameters.cpp TKOFF_TDRAG_ELEV: "Set to zero for hand
+# and catapult launch." @Range -100 100.
+TKOFF_TDRAG_ELEV,0
+# NEDEN: ArduPlane/Parameters.cpp TKOFF_TDRAG_SPD1: "This should be set to zero for hand launch and
+# catapult launch." 0 = dogrudan rotasyon.
+TKOFF_TDRAG_SPD1,0
+# NEDEN: ArduPlane/Parameters.cpp TKOFF_ROTATE_SPD: "For hand launch and catapult launches a
+# TKOFF_ROTATE_SPD of zero should be set." takeoff.cpp: 0 iken pitch = gorevin NAV_TAKEOFF param1'i,
+# en az 5 derece ("catapult launch so need at least 5 deg pitch to prevent initial height loss").
+TKOFF_ROTATE_SPD,0
+# NEDEN: tek ivme olayi (mancinik bir kez iter). ArduPlane/Parameters.cpp TKOFF_ACCEL_CNT @Range 1 10,
+# varsayilan 1; > 1 elle sallayarak arm ("shake to arm") icindir.
+TKOFF_ACCEL_CNT,1
+# NEDEN: kalkis zaman asimi yok. ArduPlane/Parameters.cpp TKOFF_TIMEOUT: sifir degilse ve ucak bu surede
+# 4 m/s yer hizina ulasmazsa "the takeoff is aborted and the vehicle disarmed"; sayac tetiklemeden
+# baslar (commands_logic.cpp takeoff_state.start_time_ms). 18 m/s cikista kazanci yok, havada GPS
+# takilmasinda disarm riski var -> 0 (varsayilan) acikca yazilir.
+TKOFF_TIMEOUT,0
+
+# -- HAVA HIZI (AIRSPEED_*) --
+# Plane-4.5.7 varsayilanlari (ArduPlane/config.h): AIRSPEED_CRUISE 12, AIRSPEED_FBW_MIN 9,
+# AIRSPEED_FBW_MAX 22 m/s - seyir ve asgari DDR stall hizinin (15,86 m/s) ALTINDA. Dosyaya yazilmazsa
+# AUTO'da TECS 12 m/s hedefler = stall. Degerler DDR hesabindan (BEYAN; ucusla dogrulanmadi).
+
+# NEDEN: ArduPlane/Parameters.cpp AIRSPEED_MIN: "Should be set to 20% higher than level flight stall
+# speed." DDR Vs 15,86 x 1,2 = 19,03 -> 20 m/s (yukari yuvarlandi). @Range 5 100.
+# BEYAN: stall hizi DDR XFLR5 / CLmax 1,3 hesabidir; ilk ucusta FBWA'da olculur.
+AIRSPEED_MIN,20
+# NEDEN: DDR seyir hizi Vc = 25 m/s (V-n tablosu; Bolum 1 "Vcruise ~24,3-25"). ArduPlane/Parameters.cpp
+# AIRSPEED_CRUISE "Target cruise airspeed in m/s in automatic throttle modes."
+# BEYAN: DDR hesabi; gorev tarama hizi kamera/kare araligiyla birlikte kararlastirilir.
+AIRSPEED_CRUISE,25
+# NEDEN: ArduPlane/Parameters.cpp AIRSPEED_MAX: "slightly less than level flight speed at THR_MAX and also
+# at least 50% above AIRSPEED_MIN to allow for accurate TECS altitude control" -> >= 1,5 x 20 = 30 ve
+# < DDR VH 35 m/s -> 30. !! DDR manevra hizi VA 27,47 m/s'nin USTUNDE: VA ustunde TAM kumanda sapmasi
+# +3 g'yi asabilir; KARAR README SS6.7.
+# BEYAN: DDR hesabi.
+AIRSPEED_MAX,30
+
+# -- PARASUT (CHUTE_*) --
+# Birakma yollari (Plane-4.5.7 kaynagi): (1) gorev DO_PARACHUTE: AP_Mission_Commands.cpp
+# start_command_parachute -> AP_Parachute::release (IRTIFA SORULMAZ); (2) YKS/RC manuel: ArduPlane/
+# GCS_Mavlink.cpp handle_MAV_CMD_DO_PARACHUTE -> parachute.cpp parachute_manual_release (ucak UCTUKTAN
+# SONRA CHUTE_ALT_MIN altinda "Parachute: Too low" -> MAV_RESULT_FAILED); (3) pil kritik (BATT_FS_CRT_ACT
+# 5, events.cpp handle_battery_failsafe); (4) FS_LONG_ACTN 3 (bu dosyada 0); (5) CHUTE_CRT_SINK (bu
+# dosyada 0). Birakma basladigi an ArduPlane/servos.cpp suppress_throttle: "throttle always suppressed
+# in auto-throttle modes after parachute release initiated" -> AUTO/RTL'de motor durur; MANUAL/FBWA'da
+# DURMAZ (pilot gazi keser). Servo CHUTE_DELAY_MS sonra ON'a gider.
+
+# NEDEN: sartname SS2.2.4 inis parasutle ZORUNLU, acilmazsa ucus gecersiz (H_sartname.md:59, :145).
+# AP_Parachute.cpp @Param ENABLED @Values 0:Disabled,1:Enabled.
+# TEYIT: Pixhawk'ta CHUTE_ENABLED = 1 ve arm oncesi "Chute has no channel" mesaji OLMAMALI.
+CHUTE_ENABLED,1
+# NEDEN: DDR "parasut sistemi Pixhawk'tan gonderilen PWM sinyalleri ile" + "kurtarma tetik hatti" (6 V
+# servo hatti) -> servo. AP_Parachute.cpp TYPE @Values 0: Relay,10:Servo.
+# BEYAN: parasut mekanizmasi servo tetikli mi (DDR: "Parasut modeli ... henuz kesinlesmedigi icin" bos).
+CHUTE_TYPE,10
+# NEDEN: AP_Parachute.cpp SERVO_ON "PWM value in microseconds when parachute is released" @Range 1000 2000;
+# varsayilan 1300 (AP_Parachute.h AP_PARACHUTE_SERVO_ON_PWM_DEFAULT). SERVO7 MIN/MAX (1100/1900) icinde;
+# SITL SIM_PARA esigi 1250'nin ustunde (libraries/SITL/SIM_Parachute.cpp).
+# BEYAN: mekanizmanin actigi PWM (yer testinde olculur; DDR test tablosu "komutsuz ayrilma yok").
+CHUTE_SERVO_ON,1300
+# NEDEN: AP_Parachute.cpp SERVO_OFF "PWM value in microseconds when parachute is not released";
+# varsayilan 1100 (AP_Parachute.h). ON'dan farkli olmali (test A4).
+# BEYAN: mekanizmanin kilitli kaldigi PWM.
+CHUTE_SERVO_OFF,1100
+# NEDEN: yalniz MANUEL birakmanin tabani (YKS DO_PARACHUTE, -50 ceza): ArduPlane/parachute.cpp
+# parachute_manual_release ucak ucmussa bu irtifanin altinda reddeder (iha_komut_alici bunu
+# MAV_RESULT_FAILED gorur); gorev ve failsafe birakmasi SORMAZ. AP_Parachute.cpp ALT_MIN "Parachute
+# will not be released below this altitude. 0 to disable alt check." @Units m; varsayilan 10. DDR
+# birakma ~50 m: manuel yedek gorevin birakma noktasinda da calisir (test A17: birakma irtifasi > ALT_MIN).
+CHUTE_ALT_MIN,10
+# NEDEN: AP_Parachute.cpp DELAY_MS "Delay in millseconds between motor stop and chute release"; varsayilan
+# 500 (AP_Parachute.h). servos.cpp gazi birakma aninda bastirir, servo 0,5 s sonra acar: pervaneler
+# yavaslar (DDR test tablosu "komut sonrasi dolasmadan acilma").
+CHUTE_DELAY_MS,500
+# NEDEN: kritik alcalma hizinda otomatik birakma KAPALI. AP_Parachute.cpp CRT_SINK @Range 0 15, varsayilan
+# 0; ArduPlane/parachute.cpp parachute_check (10 Hz) check_sink_rate 1 s asimda BIRAKIR. Normal
+# alcalmayla karismayan esik ucus verisi olmadan secilemez (yanlis birakma = IB disi inis, -5 puan/m)
+# -> KARAR README SS6.7.
+CHUTE_CRT_SINK,0
+# NEDEN: AP_Parachute.cpp OPTIONS @Bitmask 0:hold open forever after release. 0'da servo DELAY_MS +
+# 2000 ms sonra OFF'a doner (AP_Parachute.h AP_PARACHUTE_RELEASE_DURATION_MS): birakma tek atisliktir,
+# geri donen servo kapagi/pimi yeniden kilitleyebilir -> 1 (acik tut).
+# BEYAN: mekanizmanin surekli ON'da tutulmaya uygun oldugu (servo zorlanmasi/akim).
+CHUTE_OPTIONS,1
+
+# -- FAILSAFE --
+# Mantik (Plane-4.5.7): RC kaybi = 1 s gecerli cerceve yok ya da gaz < THR_FS_VALUE (radio.cpp
+# rc_failsafe_active); kisa evre FS_SHORT_TIMEOUT, uzun evre FS_LONG_TIMEOUT (system.cpp
+# check_long_failsafe). GCS kaybi = SYSID_MYGCS (255) heartbeat'i FS_LONG_TIMEOUT boyunca yok -> uzun
+# eylem (events.cpp failsafe_long_on_event). DDR 3.3.1: RC "1,5 saniyeden uzun ... otonom modda ve
+# saglikliysa inis bolgesine yonelir"; heartbeat "5 saniyeden uzun ... arama deseni surdurulur ... aksi
+# halde inis bolgesine yonelip parasutle inis". Sartname: guvenlik pilotu elle alirsa ucus basarisiz
+# (H_sartname.md:156) -> AUTO'da failsafe gorevi BOZMAZ, gorev IB ustunde DO_PARACHUTE ile biter.
+
+# NEDEN: RC kaybi algisi acik. ArduPlane/Parameters.cpp THR_FAILSAFE @Values 1:Enabled ("loss of
+# receiver valid pulses/data, or by the FS bit in receivers that provide it, like SBUS").
+THR_FAILSAFE,1
+# NEDEN: AUTO'da kisa RC kaybinda KIP DEGISMEZ; elle kiplerde CIRCLE. ArduPlane/Parameters.cpp
+# FS_SHORT_ACTN @Values 0:CIRCLE/no change(if already in AUTO|GUIDED|LOITER).
+FS_SHORT_ACTN,0
+# NEDEN: DDR RC failsafe esigi 1,5 s = ArduPlane/Parameters.cpp FS_SHORT_TIMEOUT varsayilani ("This
+# defaults to 1.5 seconds"). @Range 1 100.
+FS_SHORT_TIMEOUT,1.5
+# NEDEN: AUTO'da uzun kayipta DEVAM (DDR "inis bolgesine yonelir" = gorevin kendisi). Elle kiplerde
+# (FBWA test ucusu) 0 -> RTL. ArduPlane/Parameters.cpp FS_LONG_ACTN @Values 0:Continue,1:ReturnToLaunch,
+# 2:Glide,3:Deploy Parachute,4:Auto; events.cpp failsafe_long_on_event AUTO dalinda 0 icin kip degismez.
+# TEYIT: MP aciklamasinda 0 = Continue gorulsun (Copter'in FS_* tablolari FARKLIDIR).
+FS_LONG_ACTN,0
+# NEDEN: DDR heartbeat esigi 5 s = ArduPlane/Parameters.cpp FS_LONG_TIMEOUT varsayilani ("This defaults
+# to 5 seconds"). ArduPlane/AP_Arming.cpp: FS_LONG_TIMEOUT < FS_SHORT_TIMEOUT ise arm reddedilir.
+FS_LONG_TIMEOUT,5
+# NEDEN: GCS heartbeat failsafe acik, her kipte (1). Jetson'daki MAVProxy de sysid 255 heartbeat basar:
+# SiK kopsa bile Jetson yasadikca TETIKLENMEZ (Copter README SS4 ile ayni). AUTO'da eylem FS_LONG_ACTN 0
+# -> devam; elle kiplerde RTL. ArduPlane/Parameters.cpp FS_GCS_ENABL @Values 1:Heartbeat; ayni aciklama:
+# acilirsa "you should enable ARMING_REQUIRED" -> ARMING_REQUIRE 1 (test A6).
+FS_GCS_ENABL,1
+
+# -- PIL --
+
+# NEDEN: guc modulu analog gerilim + akim. AP_BattMonitor_Params.cpp MONITOR @Values 4:Analog Voltage and
+# Current. Olcek (BATT_VOLT_MULT / BATT_AMP_PERVLT) dosyada YOK: DDR BOM "Pixhawk 6C + M8N + PM02", kutudan
+# PM06 cikti (D-426 SS3) ve 6 Eyl akim kanali OLCMEDI (D-440); DDR tepe akim 122 A Matek PDB'den gecer.
+# BEYAN: final ucaktaki guc modulu ve olcekleri (multimetre + pens ampermetre ile dogrulanir).
+BATT_MONITOR,4
+# NEDEN: 4S x 3,60 V = 14,4 V "dusuk" (arducopter_fda.param ile ayni esik). AP_BattMonitor_Params.cpp LOW_VOLT.
+BATT_LOW_VOLT,14.4
+# NEDEN: DDR "IHA (4S, 14,0V + 2 sn debounce) ... parasutle emniyetli inise gecer" -> 14,0 V.
+# AP_BattMonitor_Params.cpp CRT_VOLT. LOW > CRT sirasi test A7 ile kilitli.
+BATT_CRT_VOLT,14.0
+# NEDEN: AP_BattMonitor_Params.cpp LOW_TIMER varsayilan 10 s: "For aircraft with low C batteries it may be
+# necessary to raise this in order to cope with low voltage on long takeoffs." DDR 2 s dedi; 2 s + PARASUT
+# eylemi tam gaz tirmanis cokmesinde yanlis birakma riskidir (FDA aracinda 6 Eyl tam gazda 9,35 V
+# olculdu, D-440) -> 10 s. KARAR README SS6.7.
+BATT_LOW_TIMER,10
+# NEDEN: dusuk pilde eve don (FDR yonergesi Bolum 4 "eve donus" ariza emniyet tepkisi).
+# AP_BattMonitor_Params.cpp FS_LOW_ACT @Values{Plane} 0:None,1:RTL,2:Land... !! Copter tablosunda 1 = Land,
+# 2 = RTL (TERS).
+# TEYIT: MP aciklamasinda 1 = RTL gorulsun.
+BATT_FS_LOW_ACT,1
+# NEDEN: DDR kritik pilde parasut. AP_BattMonitor_Params.cpp FS_CRT_ACT @Values{Plane} 5:Parachute;
+# ArduPlane/events.cpp handle_battery_failsafe Failsafe_Action_Parachute -> parachute_release().
+# TEYIT: MP aciklamasinda 5 = Parachute gorulsun.
+BATT_FS_CRT_ACT,5
+
+# -- ARM / LOG --
+
+# NEDEN: tum arm oncesi kontroller. AP_Arming.cpp CHECK @Bitmask{Plane} 0:All (Plane'de bit 9 Airspeed de
+# icinde). Kapatmak yasak (arducopter_fda.param ile ayni gerekce).
+ARMING_CHECK,1
+# NEDEN: disarm iken ESC'lere minimum PWM; arm yalniz komutla. AP_Arming.cpp REQUIRE @Values 1:minimum PWM
+# when disarmed (Plane varsayilani). FS_GCS_ENABL aciklamasinin sarti (test A6).
+ARMING_REQUIRE,1
+# NEDEN: ArduPlane/Parameters.cpp LOG_BITMASK varsayilani 0xffff (config.h DEFAULT_LOG_BITMASK), aciklama
+# "enable all basic log types by setting this to 65535". 65535'in bit 6 (defines.h MASK_LOG_MODE "no longer
+# used") ve bit 15 (MASK_LOG_ARM_DISARM yorum satiri) @Bitmask'ta TANIMSIZ; yalniz tanimli bitler 0-5,
+# 7-14 = 32703 (etki ayni). Mancinik ivmesi IMU (bit 7) ile .bin'e girer = kalkis kapisinin kaniti.
+LOG_BITMASK,32703
