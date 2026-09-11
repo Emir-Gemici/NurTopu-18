@@ -1,0 +1,28 @@
+# T226-D · test_olcum_ayna_senkronu ORTAM TANISI · 2026-09-10 20:13:41 · HEAD fff299b6
+# Kapida (kapi_ciktisi_t226d.txt) 2 test ATLANDI: worktree'den turetilen canli dizin (<depo>/../navitas-local-train) yok -> OLCULEMEDI.
+# Olcmek icin NAVITAS_OLCUM_KOK=O:/navitas-local-train ile yeniden kosuldu (salt okur; test gercek dosyaya dokunmaz):
+$ NAVITAS_OLCUM_KOK=O:/navitas-local-train python -B -m unittest discover -s tests -p test_olcum_ayna_senkronu.py -v
+Gercek dosyalara DOKUNULMAZ; gecici dizinlerde sinanir. ... ok
+`shallow=False` gercekten icerige bakiyor mu (boyut ayni, icerik farkli). ... ok
+Sifir cift bulunursa yukaridaki test BOS YERE yesil yanar. ... ok
+Test dosyasi kopyalama cagrisi ICERMEZ. ... ok
+test_dizin_YOKSA_cift_YOK_ve_patlamiyor (test_olcum_ayna_senkronu.OlcumAynaSenkronu.test_dizin_YOKSA_cift_YOK_ve_patlamiyor) ... ok
+test_repo_aynasi_canli_betiklerle_BIREBIR (test_olcum_ayna_senkronu.OlcumAynaSenkronu.test_repo_aynasi_canli_betiklerle_BIREBIR) ... FAIL
+Diff is 1808 characters long. Set self.maxDiff to None to see it. : 59 betik AYRISTI. \u26a0 Hangisinin dogru oldugu INSAN KARARIDIR (D-166'da repo, T104'te paket kopyasi dogruydu); test otomatik onarim YAPMAZ. Elle hizalayin ya da `scripts/olcum_ayna.py --uygula --repodan|--canlidan` kullanin.
+Ran 6 tests in 0.022s
+FAILED (failures=1)
+ayna cikis=1
+
+# Tani (ayni cift listesi, testin kendi ayna_ciftleri/ayrisan_ciftler fonksiyonlariyla; CRLF->LF normallestirerek yeniden kiyas):
+canli kok: O:\navitas-local-train · cift 77 · bayt ayrisan 59
+yalniz satir sonu farki: 59 · icerik farki: 0 []
+repo tarafi CRLF olan ayrisan: 59 · canli tarafi CRLF olan: 0
+
+$ git ls-files --eol scripts/olcum | head -3 ; git config core.autocrlf
+i/lf    w/crlf  attr/                 	scripts/olcum/100_t121_etiket_yamasi.py
+i/lf    w/crlf  attr/                 	scripts/olcum/101_t121_ft_kosumu.py
+i/lf    w/crlf  attr/                 	scripts/olcum/102_t121_degerlendirme.py
+true
+$ git diff --name-only master...HEAD -- scripts/olcum   (bos = T226-D dokunmadi)
+# HUKUM: dusus ORTAM KAYNAKLI (worktree checkout'u autocrlf=true ile CRLF yazdi; index LF, canli LF; icerik farki 0).
+# T226-D ile ilgisi yok. Kalici cozum mimar karari (ornek: scripts/olcum/*.py icin .gitattributes eol=lf ya da kiyasta satir sonu normallestirme) — bu iste YAPILMADI.

@@ -1,0 +1,816 @@
+{
+ "olcek": 1.5,
+ "baslangic": "2026-09-10 20:07:20",
+ "kaynak": "sentetik MJPG 1280x720 (kisi yok), dosya kaynagi dongude",
+ "kopru_durum": {
+  "kaynak": "C:\\Users\\yunus\\AppData\\Local\\Temp\\tmpw6q96p3i\\sentetik_t226d.avi",
+  "kaynak_turu": "dosya",
+  "kaynak_acik": true,
+  "kare_sayaci": 5,
+  "dusen_kare": 0,
+  "kodlama_hatasi": 0,
+  "donuk_kare": 0,
+  "donuk_kare_ardisik": 0,
+  "fps": 9.866530508552199,
+  "fps_tavani": 10.0,
+  "kalite": 80,
+  "boyut": [
+   1280,
+   720
+  ],
+  "son_kare_yasi_s": 0.043,
+  "son_hata": null,
+  "acma_denemesi": 1,
+  "acma_sayisi": 1,
+  "istemci_sayisi": 0,
+  "calisma_s": 0.467,
+  "arka_uc": "auto",
+  "arka_uc_adi": null,
+  "kip_istegi": null,
+  "kamera_ayari": null,
+  "cozunurluk_eslesti": null,
+  "port": 53296,
+  "bind_host": "127.0.0.1",
+  "istek_host": "127.0.0.1:53296",
+  "video_url": "http://127.0.0.1:53296/video",
+  "kare_url": "http://127.0.0.1:53296/kare.jpg",
+  "durum_url": "http://127.0.0.1:53296/durum"
+ },
+ "tk_scaling": 1.9980334316617503,
+ "gorunum_donusu": {
+  "ilk": {
+   "sira": [
+    ".!frame3.!frame.!label",
+    ".!frame3.!frame.!frame",
+    ".!frame3.!frame.!canvas",
+    ".!frame3.!frame.!label2",
+    ".!frame3.!frame.!frame4",
+    ".!frame3.!frame.!label3",
+    ".!frame3.!frame.!frame5"
+   ],
+   "y": 102,
+   "h": 725,
+   "pack": {
+    "anchor": "center",
+    "expand": "1",
+    "fill": "both",
+    "ipadx": "0",
+    "ipady": "0",
+    "padx": "10",
+    "pady": "(4, 6)",
+    "side": "top"
+   }
+  },
+  "donus": {
+   "sira": [
+    ".!frame3.!frame.!label",
+    ".!frame3.!frame.!frame",
+    ".!frame3.!frame.!canvas",
+    ".!frame3.!frame.!label2",
+    ".!frame3.!frame.!frame4",
+    ".!frame3.!frame.!label3",
+    ".!frame3.!frame.!frame5"
+   ],
+   "y": 102,
+   "h": 725,
+   "pack": {
+    "anchor": "center",
+    "expand": "1",
+    "fill": "both",
+    "ipadx": "0",
+    "ipady": "0",
+    "padx": "10",
+    "pady": "(4, 6)",
+    "side": "top"
+   }
+  },
+  "ayni": true
+ },
+ "kamera_canli": true,
+ "mini_tuval": [
+  450,
+  495
+ ],
+ "pencere": [
+  1860,
+  1410
+ ],
+ "mini": {
+  "road1": {
+   "tuval": [
+    450,
+    495
+   ],
+   "kesisen": [],
+   "tasan": [],
+   "metinler": [
+    [
+     "■ YEŞİL: açık/geçilebilir   ■ KIRMIZI: kapalı/moloz",
+     [
+      17,
+      57,
+      363,
+      78
+     ],
+     []
+    ],
+    [
+     "1·SOL",
+     [
+      117,
+      458,
+      160,
+      479
+     ],
+     []
+    ],
+    [
+     "2·ORTA",
+     [
+      198,
+      458,
+      252,
+      479
+     ],
+     []
+    ],
+    [
+     "✕",
+     [
+      216,
+      271,
+      234,
+      292
+     ],
+     []
+    ],
+    [
+     "3·SAG",
+     [
+      290,
+      458,
+      334,
+      479
+     ],
+     []
+    ],
+    [
+     "✕",
+     [
+      303,
+      271,
+      321,
+      292
+     ],
+     []
+    ],
+    [
+     "İKA-KB",
+     [
+      242,
+      431,
+      291,
+      452
+     ],
+     []
+    ],
+    [
+     "H",
+     [
+      215,
+      105,
+      235,
+      137
+     ],
+     []
+    ],
+    [
+     "HB (hedef)",
+     [
+      188,
+      85,
+      263,
+      106
+     ],
+     []
+    ],
+    [
+     "ref",
+     [
+      106,
+      417,
+      127,
+      438
+     ],
+     []
+    ],
+    [
+     "SEMATIK GOSTERIM — serit tablosundan turetildi, GPS degil",
+     [
+      17,
+      12,
+      399,
+      54
+     ],
+     []
+    ]
+   ],
+   "ss_mini": "results/fdr_sprint_20260910/H9_MK15/t226/t226d_mini_road1.png",
+   "ss_pencere": "results/fdr_sprint_20260910/H9_MK15/t226/t226d_pencere_road1.png"
+  },
+  "road2": {
+   "tuval": [
+    450,
+    495
+   ],
+   "kesisen": [],
+   "tasan": [],
+   "metinler": [
+    [
+     "■ YEŞİL: açık/geçilebilir   ■ KIRMIZI: kapalı/moloz",
+     [
+      17,
+      57,
+      363,
+      78
+     ],
+     []
+    ],
+    [
+     "1·SOL",
+     [
+      117,
+      458,
+      160,
+      479
+     ],
+     []
+    ],
+    [
+     "✕",
+     [
+      129,
+      271,
+      147,
+      292
+     ],
+     []
+    ],
+    [
+     "2·ORTA",
+     [
+      198,
+      458,
+      252,
+      479
+     ],
+     []
+    ],
+    [
+     "3·SAG",
+     [
+      290,
+      458,
+      334,
+      479
+     ],
+     []
+    ],
+    [
+     "✕",
+     [
+      303,
+      271,
+      321,
+      292
+     ],
+     []
+    ],
+    [
+     "İKA-KB",
+     [
+      242,
+      431,
+      291,
+      452
+     ],
+     []
+    ],
+    [
+     "H",
+     [
+      215,
+      105,
+      235,
+      137
+     ],
+     []
+    ],
+    [
+     "HB (hedef)",
+     [
+      188,
+      85,
+      263,
+      106
+     ],
+     []
+    ],
+    [
+     "ref",
+     [
+      193,
+      417,
+      214,
+      438
+     ],
+     []
+    ],
+    [
+     "SEMATIK GOSTERIM — serit tablosundan turetildi, GPS degil",
+     [
+      17,
+      12,
+      399,
+      54
+     ],
+     []
+    ]
+   ],
+   "ss_mini": "results/fdr_sprint_20260910/H9_MK15/t226/t226d_mini_road2.png"
+  },
+  "road3": {
+   "tuval": [
+    450,
+    495
+   ],
+   "kesisen": [],
+   "tasan": [],
+   "metinler": [
+    [
+     "■ YEŞİL: açık/geçilebilir   ■ KIRMIZI: kapalı/moloz",
+     [
+      17,
+      57,
+      363,
+      78
+     ],
+     []
+    ],
+    [
+     "1·SOL",
+     [
+      117,
+      458,
+      160,
+      479
+     ],
+     []
+    ],
+    [
+     "✕",
+     [
+      129,
+      271,
+      147,
+      292
+     ],
+     []
+    ],
+    [
+     "2·ORTA",
+     [
+      198,
+      458,
+      252,
+      479
+     ],
+     []
+    ],
+    [
+     "✕",
+     [
+      216,
+      271,
+      234,
+      292
+     ],
+     []
+    ],
+    [
+     "3·SAG",
+     [
+      290,
+      458,
+      334,
+      479
+     ],
+     []
+    ],
+    [
+     "İKA-KB",
+     [
+      242,
+      431,
+      291,
+      452
+     ],
+     []
+    ],
+    [
+     "H",
+     [
+      215,
+      105,
+      235,
+      137
+     ],
+     []
+    ],
+    [
+     "HB (hedef)",
+     [
+      188,
+      85,
+      263,
+      106
+     ],
+     []
+    ],
+    [
+     "ref",
+     [
+      323,
+      417,
+      344,
+      438
+     ],
+     []
+    ],
+    [
+     "SEMATIK GOSTERIM — serit tablosundan turetildi, GPS degil",
+     [
+      17,
+      12,
+      399,
+      54
+     ],
+     []
+    ]
+   ],
+   "ss_mini": "results/fdr_sprint_20260910/H9_MK15/t226/t226d_mini_road3.png",
+   "ss_pencere": "results/fdr_sprint_20260910/H9_MK15/t226/t226d_pencere_road3.png"
+  },
+  "no_route": {
+   "tuval": [
+    450,
+    495
+   ],
+   "kesisen": [],
+   "tasan": [],
+   "metinler": [
+    [
+     "1·SOL",
+     [
+      109,
+      460,
+      152,
+      481
+     ],
+     []
+    ],
+    [
+     "2·ORTA",
+     [
+      182,
+      460,
+      236,
+      481
+     ],
+     []
+    ],
+    [
+     "3·SAG",
+     [
+      266,
+      460,
+      310,
+      481
+     ],
+     []
+    ],
+    [
+     "İKA-KB",
+     [
+      226,
+      434,
+      275,
+      455
+     ],
+     []
+    ],
+    [
+     "H",
+     [
+      199,
+      138,
+      219,
+      170
+     ],
+     []
+    ],
+    [
+     "HB (hedef)",
+     [
+      172,
+      118,
+      247,
+      139
+     ],
+     []
+    ],
+    [
+     "ROTA YOK — KORIDOR_DEGIL · İKA GÜVENLİ DURUŞTA\nkoridor genişlik tavanı aşıldı",
+     [
+      17,
+      10,
+      410,
+      52
+     ],
+     []
+    ],
+    [
+     "SEMATIK GOSTERIM — serit tablosundan turetildi, GPS degil",
+     [
+      17,
+      69,
+      399,
+      111
+     ],
+     []
+    ]
+   ],
+   "ss_mini": "results/fdr_sprint_20260910/H9_MK15/t226/t226d_mini_no_route.png"
+  },
+  "no_route_uzun": {
+   "tuval": [
+    450,
+    495
+   ],
+   "kesisen": [],
+   "tasan": [],
+   "metinler": [
+    [
+     "1·SOL",
+     [
+      106,
+      460,
+      149,
+      481
+     ],
+     []
+    ],
+    [
+     "2·ORTA",
+     [
+      176,
+      460,
+      230,
+      481
+     ],
+     []
+    ],
+    [
+     "3·SAG",
+     [
+      257,
+      460,
+      301,
+      481
+     ],
+     []
+    ],
+    [
+     "İKA-KB",
+     [
+      220,
+      435,
+      269,
+      456
+     ],
+     []
+    ],
+    [
+     "H",
+     [
+      193,
+      149,
+      213,
+      181
+     ],
+     []
+    ],
+    [
+     "HB (hedef)",
+     [
+      166,
+      129,
+      241,
+      150
+     ],
+     []
+    ],
+    [
+     "ROTA YOK — KORIDOR_DEGIL · İKA GÜVENLİ DURUŞTA\nkoridor genişlik tavanı aşıldı · şerit 1 moloz · şerit 3 kapalı · costmap güvenli rota üretmedi · İKA başlangıçta bekler",
+     [
+      17,
+      6,
+      420,
+      69
+     ],
+     []
+    ],
+    [
+     "SEMATIK GOSTERIM — serit tablosundan turetildi, GPS degil",
+     [
+      17,
+      81,
+      399,
+      123
+     ],
+     []
+    ]
+   ],
+   "ss_mini": "results/fdr_sprint_20260910/H9_MK15/t226/t226d_mini_no_route_uzun.png"
+  }
+ },
+ "ana_no_route": {
+  "tuval": [
+   1142,
+   725
+  ],
+  "kesisen": [],
+  "tasan": [],
+  "metinler": [
+   [
+    "1·SOL",
+    [
+     158,
+     685,
+     210,
+     713
+    ],
+    []
+   ],
+   [
+    "2·ORTA",
+    [
+     283,
+     685,
+     350,
+     713
+    ],
+    []
+   ],
+   [
+    "3·SAG",
+    [
+     422,
+     685,
+     477,
+     713
+    ],
+    []
+   ],
+   [
+    "İKA-KB",
+    [
+     331,
+     639,
+     394,
+     667
+    ],
+    []
+   ],
+   [
+    "H",
+    [
+     306,
+     149,
+     326,
+     181
+    ],
+    []
+   ],
+   [
+    "HB (hedef)",
+    [
+     270,
+     131,
+     363,
+     159
+    ],
+    []
+   ],
+   [
+    "ROTA YOK — KORIDOR_DEGIL · İKA GÜVENLİ DURUŞTA\nkoridor genişlik tavanı aşıldı",
+    [
+     17,
+     8,
+     508,
+     64
+    ],
+    []
+   ],
+   [
+    "SEMATIK GOSTERIM — serit tablosundan turetildi, GPS degil",
+    [
+     17,
+     78,
+     547,
+     106
+    ],
+    []
+   ],
+   [
+    "İHA-UB 300×300 m",
+    [
+     935,
+     6,
+     1109,
+     34
+    ],
+    [
+     "inset"
+    ]
+   ],
+   [
+    "HTAB",
+    [
+     1006,
+     123,
+     1056,
+     151
+    ],
+    [
+     "inset"
+    ]
+   ],
+   [
+    "İHA-İB",
+    [
+     939,
+     54,
+     997,
+     82
+    ],
+    [
+     "inset"
+    ]
+   ]
+  ],
+  "ss": "results/fdr_sprint_20260910/H9_MK15/t226/t226d_ana_no_route.png"
+ },
+ "kopru_durum_son": {
+  "kaynak": "C:\\Users\\yunus\\AppData\\Local\\Temp\\tmpw6q96p3i\\sentetik_t226d.avi",
+  "kaynak_turu": "dosya",
+  "kaynak_acik": true,
+  "kare_sayaci": 73,
+  "dusen_kare": 0,
+  "kodlama_hatasi": 0,
+  "donuk_kare": 0,
+  "donuk_kare_ardisik": 0,
+  "fps": 9.990144550177131,
+  "fps_tavani": 10.0,
+  "kalite": 80,
+  "boyut": [
+   1280,
+   720
+  ],
+  "son_kare_yasi_s": 0.089,
+  "son_hata": null,
+  "acma_denemesi": 1,
+  "acma_sayisi": 1,
+  "istemci_sayisi": 0,
+  "calisma_s": 7.324,
+  "arka_uc": "auto",
+  "arka_uc_adi": null,
+  "kip_istegi": null,
+  "kamera_ayari": null,
+  "cozunurluk_eslesti": null,
+  "port": 53296,
+  "bind_host": "127.0.0.1",
+  "istek_host": "127.0.0.1:53296",
+  "video_url": "http://127.0.0.1:53296/video",
+  "kare_url": "http://127.0.0.1:53296/kare.jpg",
+  "durum_url": "http://127.0.0.1:53296/durum"
+ },
+ "ozet": {
+  "mini_kesisen_toplam": 0,
+  "mini_tasan_toplam": 0,
+  "ana_no_route_kesisen": 0,
+  "ana_no_route_tasan": 0,
+  "gorunum_donusu_ayni": true,
+  "kamera_canli": true
+ }
+}

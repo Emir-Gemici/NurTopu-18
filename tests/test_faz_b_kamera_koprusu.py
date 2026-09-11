@@ -564,11 +564,17 @@ PY36_MODUL = {
 #: TUTULUR, gevsetilmez; "JetPack 4.6" kunyesi GECERSIZ, tarihce.)
 #: OpenCV 4.1.1 — JetPack 4.6 sistem paketi (python3-opencv). Kopru YALNIZ bu
 #: adlari kullanabilir; 4.5+ ile gelen bir ad da bu kapidan gecemez.
+#: T226 (D-443): `CAP_DSHOW CAP_MSMF` EKLENDI — gevsetme degil envanter
+#: tamamlamasi: OpenCV 4.1.1 `videoio.hpp` `VideoCaptureAPIs` enum'unda #ifdef'siz
+#: (CAP_DSHOW=700, CAP_MSMF=1400; 3.x'ten beri ayni deger); Python baglamasi
+#: enum'u platformdan bagimsiz uretir — Linux derlemesinde sabit VARDIR, secilirse
+#: acilis "backend is not available" ile duser (kopru KIRMIZI log + yeniden deneme).
+#: Deger eslemesi: tests/test_yks_mk15_hakem_ekrani.py K2.
 CV2_41_ADLARI = frozenset("""
     VideoCapture VideoWriter VideoWriter_fourcc imencode imdecode imread imwrite
     error resize cvtColor putText rectangle circle line getBuildInformation
     read isOpened release set get grab retrieve open getBackendName write
-    CAP_ANY CAP_GSTREAMER CAP_FFMPEG CAP_V4L2 CAP_IMAGES
+    CAP_ANY CAP_GSTREAMER CAP_FFMPEG CAP_V4L2 CAP_IMAGES CAP_DSHOW CAP_MSMF
     CAP_PROP_POS_FRAMES CAP_PROP_POS_MSEC CAP_PROP_FRAME_COUNT
     CAP_PROP_FRAME_WIDTH CAP_PROP_FRAME_HEIGHT CAP_PROP_FPS CAP_PROP_BUFFERSIZE
     IMWRITE_JPEG_QUALITY IMREAD_COLOR IMREAD_GRAYSCALE IMREAD_UNCHANGED
