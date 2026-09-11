@@ -146,6 +146,16 @@
 - **Sonuç: ÖLÇÜLECEK (12 Eylül atölye)** → `results/atolye_20260912/A9_fov.txt` · `A9_kare.jpg` · `A9_kamera.txt`
 - `[ ] ÖLÇÜLDÜ  [ ] ÖLÇÜLEMEDİ — neden: …… · saat: …… · kim: ……`
 
+### A9-ek — Kamera kipi (4:3 / 16:9) ve kamera montaj yaw'ı · 10 dk  — *12 Eylül 01:2x, mimar (D-451 §T237-3, D-457)*
+- **Amaç:** iki sayı FDA uçuş planını belirliyor. (1) **Kip:** sensör 4:3 mü veriyor, 16:9 kırpma mı — FDA irtifası (32 m / 40 m) ve yol etiketi kararı buna bağlı (D-457 ön kaydı: **4:3 ölçülürse** alan-ölçekli etiket koşullu açılır; **16:9 ölçülürse** kare-göreli etiket kalır). (2) **Montaj yaw'ı:** görüntünün yukarısı, İHA burnuna göre kaç derece — FDA'da `CONDITION_YAW` bu değerle düzeltilir.
+- **Komut (Jetson), kip:** `v4l2-ctl --list-formats-ext -d /dev/video0 | tee results/atolye_20260912/A9e_kipler.txt` · ayrıca köprü açıkken `curl -s http://127.0.0.1:8080/durum | tee results/atolye_20260912/A9e_durum.json` (alanlar: `boyut`, `kamera_ayari`, `cozunurluk_eslesti`). nvargus kullanılıyorsa açılış günlüğündeki **sensor mode** satırları da aynı dosyaya eklenir.
+- **Kip hükmü:** sensörün tam yüksekliğini veren mod kullanılıyorsa **4:3**; yalnız dikeyde kırpılmış mod varsa **16:9**. En/boy = genişlik/yükseklik olarak yazılır (ör. 4032×3040 → 4:3; 1920×1080 → 16:9 kırpma). Karar: `A9e_kipler.txt`'teki listeyle birlikte tek satır yazılır.
+- **Montaj yaw'ı (ölçüm):** İHA'yı yere sabit bir çizgiye (ör. duvar kenarı) burnu bakacak şekilde koy; kamerayı normal uçuş konumunda çalıştır; `A9_kare.jpg` benzeri tek kare al (`A9e_yaw_kare.jpg`). Karede o çizgi **yukarı** doğruysa 0°, **sağa** doğruysa 90°, **aşağı** 180°, **sola** 270°. Ara açı varsa iletki ya da karedeki çizginin eğiminden hesapla (`derece = atan2` ile) ve nasıl ölçtüğünü yaz.
+- **BEKLENTİ (TAHMİN — ölçüm değil):** montaj yaw'ı 0° ya da 180° (kamera gövdeye burun-kuyruk ekseninde bağlanıyorsa); kip, IMX477 nvargus varsayılanında genellikle tam sensör (4:3) — **ölçülmeden varsayılmaz**.
+- **Kabul:** yok — bu iki kalem **ölçümdür**, kapı değildir. Ölçülemezse FDA planı 16:9 varsayımıyla (40 m) ve montaj yaw'ı **BEYAN GEREKLİ** ile yazılır.
+- **Sonuç: ÖLÇÜLECEK (12 Eylül atölye)** → `results/atolye_20260912/A9e_kipler.txt` · `A9e_durum.json` · `A9e_yaw_kare.jpg` · `A9e_olcum.txt` (iki satır: `KIP=4:3|16:9` ve `MONTAJ_YAW_DERECE=<değer>`)
+- `[ ] ÖLÇÜLDÜ  [ ] ÖLÇÜLEMEDİ — neden: …… · saat: …… · kim: ……`
+
 ### A10 — Jetson canlı kamera FPS (köprü + algı zinciri) · 15 dk
 - **Amaç:** algı zincirinin canlı CSI kaynağıyla kare hızını ölçmek (6 Eylül ölçümü dosya kaynağıydı, kamera bağlı değildi — D-431).
 - **Komut (Jetson):** A9 köprüsü açıkken `python -B codes/kamera_dogrula.py --kaynak http://127.0.0.1:8080/video --kare 60 --zincir --model jetson_paket/models/navitas_seg_v36_best.pt --imgsz 512 | tee results/atolye_20260912/A10_canli_fps.txt` · terminalin fotoğrafı `A10_ekran.jpg`. Model yolu 6 Eylül koşumundaki dosyadır (results/jetson_20260906/jetson_fps_20260906_orin_nano/ozet.json `vakalar[0].model`); yoksa `ls jetson_paket/models/*.pt` (manifest `asil_model_pt`).
