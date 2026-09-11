@@ -99,7 +99,7 @@
 - **Komut (Jetson):** `python -B -u comms/iha_sender.py --serial /dev/ttyUSB0 --baud 57600 --rota-json results/fdr_sprint_20260910/H1/k3b/v1/harita_4_kolay/iha_scan/rota.json --heartbeat-sure 600 | tee results/atolye_20260912/A5_iha.txt` → telefon 60 fps (Jetson terminali + YKS aynı karede) → Jetson'da **Ctrl+C**; 3 tekrar.
 - **(b) İKA sim — YKS kapatılır; Komut (PC):** `& $PY -B -u comms/ika_receiver.py --serial COMx --baud 57600 | Tee-Object -FilePath results/atolye_20260912/A5_ika.txt` → Jetson'da (a)'daki gönderici yeniden → Ctrl+C → gönderici yeniden; 3 tekrar.
 - **Beklenen görüntü:** YKS İHA satırı `hb 0.x sn` → kesince kırmızı `(BAĞLANTI KAYBI!)`; İKA `✓ Açık yol alındı` → `⚠ BAĞLANTI KAYIP (3 sn sessizlik) → GÜVENLİ DURMA` → `✓ Bağlantı geri geldi`.
-- **BEKLENTİ (HESAP — ölçüm değil):** heartbeat aralığı `IHA_HEARTBEAT_ARALIK_S = 1.0` (codes/karar_sozlesmesi.py:145); İKA eşiği `hb_timeout=3.0` (comms/ika_receiver.py:27), YKS eşiği `canli = 0.0 <= yas < 3.0` (comms/yks_gui.py:4015) → son heartbeat kesmeden 0–1 s önce ⇒ gösterge kesmeden 3 − (0…1) = 2–3 s sonra (+ seri okuma zaman aşımı ve YKS ekran tazeleme — BİLİNMİYOR). Metinler: `(BAĞLANTI KAYBI!)` (comms/yks_gui.py:4056), `BAĞLANTI KAYIP` (comms/ika_receiver.py:359).
+- **BEKLENTİ (HESAP — ölçüm değil):** heartbeat aralığı `IHA_HEARTBEAT_ARALIK_S = 1.0` (codes/karar_sozlesmesi.py:145); İKA eşiği `hb_timeout=3.0` (comms/ika_receiver.py:27), YKS eşiği `canli = 0.0 <= yas < 3.0` (comms/yks_gui.py:4373) → son heartbeat kesmeden 0–1 s önce ⇒ gösterge kesmeden 3 − (0…1) = 2–3 s sonra (+ seri okuma zaman aşımı ve YKS ekran tazeleme — BİLİNMİYOR). Metinler: `(BAĞLANTI KAYBI!)` (comms/yks_gui.py:4414), `BAĞLANTI KAYIP` (comms/ika_receiver.py:359).
 - **Kabul (bu kâğıtta ön kayıt; eşik koddaki 3 s + 1 s pay):** 3/3 tekrarda kesme → YKS `(BAĞLANTI KAYBI!)` ≤ 4 s ∧ İKA `GÜVENLİ DURMA` ≤ 4 s ∧ gönderici dönünce ikisi de geri gelir.
 - **Sonuç: ÖLÇÜLECEK (12 Eylül atölye)** → `results/atolye_20260912/A5_hakem_log.jsonl` · `A5_iha.txt` · `A5_ika.txt` · `A5_kesme.mp4`
 - `[ ] ÖLÇÜLDÜ  [ ] ÖLÇÜLEMEDİ — neden: …… · saat: …… · kim: ……`
@@ -144,6 +144,16 @@
 - **BEKLENTİ (HESAP — ölçüm değil):** IMX477 etkin genişlik 6,287 mm (https://www.raspberrypi.com/documentation/accessories/camera.html), lens 6 mm (D-442 ek) → FOV = 2 · atan(6,287 / (2 · 6)) = 2 · atan(0,5239) = 55,3°; beklenen p = 1280 / (2 · 0,5239) · 1,00 / 2,00 = 610,8 px. Sensör kipi görüntüyü kırpıyorsa FOV daha dar (BİLİNMİYOR).
 - **Kabul (SAHA_KOSUM_KAGIDI_20260910.md:20):** FOV_yatay 50–65°; dışındaysa d/s/p yeniden ölçülür.
 - **Sonuç: ÖLÇÜLECEK (12 Eylül atölye)** → `results/atolye_20260912/A9_fov.txt` · `A9_kare.jpg` · `A9_kamera.txt`
+- `[ ] ÖLÇÜLDÜ  [ ] ÖLÇÜLEMEDİ — neden: …… · saat: …… · kim: ……`
+
+### A9-ek — Kamera kipi (4:3 / 16:9) ve kamera montaj yaw'ı · 10 dk  — *12 Eylül 01:2x, mimar (D-451 §T237-3, D-457)*
+- **Amaç:** iki sayı FDA uçuş planını belirliyor. (1) **Kip:** sensör 4:3 mü veriyor, 16:9 kırpma mı — FDA irtifası (32 m / 40 m) ve yol etiketi kararı buna bağlı (D-457 ön kaydı: **4:3 ölçülürse** alan-ölçekli etiket koşullu açılır; **16:9 ölçülürse** kare-göreli etiket kalır). (2) **Montaj yaw'ı:** görüntünün yukarısı, İHA burnuna göre kaç derece — FDA'da `CONDITION_YAW` bu değerle düzeltilir.
+- **Komut (Jetson), kip:** `v4l2-ctl --list-formats-ext -d /dev/video0 | tee results/atolye_20260912/A9e_kipler.txt` · ayrıca köprü açıkken `curl -s http://127.0.0.1:8080/durum | tee results/atolye_20260912/A9e_durum.json` (alanlar: `boyut`, `kamera_ayari`, `cozunurluk_eslesti`). nvargus kullanılıyorsa açılış günlüğündeki **sensor mode** satırları da aynı dosyaya eklenir.
+- **Kip hükmü:** sensörün tam yüksekliğini veren mod kullanılıyorsa **4:3**; yalnız dikeyde kırpılmış mod varsa **16:9**. En/boy = genişlik/yükseklik olarak yazılır (ör. 4032×3040 → 4:3; 1920×1080 → 16:9 kırpma). Karar: `A9e_kipler.txt`'teki listeyle birlikte tek satır yazılır.
+- **Montaj yaw'ı (ölçüm):** İHA'yı yere sabit bir çizgiye (ör. duvar kenarı) burnu bakacak şekilde koy; kamerayı normal uçuş konumunda çalıştır; `A9_kare.jpg` benzeri tek kare al (`A9e_yaw_kare.jpg`). Karede o çizgi **yukarı** doğruysa 0°, **sağa** doğruysa 90°, **aşağı** 180°, **sola** 270°. Ara açı varsa iletki ya da karedeki çizginin eğiminden hesapla (`derece = atan2` ile) ve nasıl ölçtüğünü yaz.
+- **BEKLENTİ (TAHMİN — ölçüm değil):** montaj yaw'ı 0° ya da 180° (kamera gövdeye burun-kuyruk ekseninde bağlanıyorsa); kip, IMX477 nvargus varsayılanında genellikle tam sensör (4:3) — **ölçülmeden varsayılmaz**.
+- **Kabul:** yok — bu iki kalem **ölçümdür**, kapı değildir. Ölçülemezse FDA planı 16:9 varsayımıyla (40 m) ve montaj yaw'ı **BEYAN GEREKLİ** ile yazılır.
+- **Sonuç: ÖLÇÜLECEK (12 Eylül atölye)** → `results/atolye_20260912/A9e_kipler.txt` · `A9e_durum.json` · `A9e_yaw_kare.jpg` · `A9e_olcum.txt` (iki satır: `KIP=4:3|16:9` ve `MONTAJ_YAW_DERECE=<değer>`)
 - `[ ] ÖLÇÜLDÜ  [ ] ÖLÇÜLEMEDİ — neden: …… · saat: …… · kim: ……`
 
 ### A10 — Jetson canlı kamera FPS (köprü + algı zinciri) · 15 dk

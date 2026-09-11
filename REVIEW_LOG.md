@@ -30542,6 +30542,8 @@ PWM'de pervane geçiş frekansı ±%3, 30 s %50 sonrası sıcaklık eşit. Hasar
 
 ### D-451 — T235 TASARIM KARARI (rota dünya çerçevesi): risk (b) rota–KB kayması İKA'lı ana göreve (2027) ait, 2026'da sahada sınanmıyor; risk (a) kare-göreli yol etiketi **Drone ile Görev Test Uçuşunu (FDA)** doğrudan etkiliyor (yanlış güzergâh 0 puan). 🔴 Bugünkü FDA planında bekleme alan merkezinde DEĞİL 5. köşede, yaw komutu yeri yanlış, kamera kipi bilinmiyor. Karar: Aşama 0 = merkezde bekleme + yaw kilidi (görev üreteci) + A0 alan-ölçekli etiket (bayrakla, poz gerektirmez) + hız kapısı + YKS niteleyici ("ORTA" kelime çakışması); A1 poz bağlama yalnız A0 tezgâhı düşerse; B2/B3 2027
 
+> ⬆ **SONRADAN ÇÜRÜTÜLDÜ — D-457 (12 Eylül, ÖLÇÜM):** karar (4)'teki "`CONDITION_YAW` `LOITER_TIME`'dan SONRA" yanlış; SITL'de sonra koyunca yaw 0/499 DÜŞTÜ, önce koyunca 500/500 GEÇTİ. A0/A1 tezgâhı DÜŞTÜ → FDA'da KARE kalır.
+
 **Kaynak:** workflow wf_8f4d860b (salt okuma): Analiz A (kod yolu), B (şartname geometrisi), C (sim kanıtı) → tasarımcı → çürütücü **"DÜZELTMELİ"**. Belgeler depoda: `results/fdr_sprint_20260910/H1/t235/` (`TASARIM_TASLAK.md`, `CURUTUCU_HUKMU.md`, `analiz/`).
 **Olgular (kaynaklı):** (1) Kök neden kod hatası değil sözleşme: `road` içerik genişliğinin üçte birinden (`karar_sozlesmesi.py:42-98`, CONTRACTS §6.2); `ref_xy` sabit [0,0], "sahada dünya çerçevesi yoktur" (CONTRACTS :185-188, :1048), İKA saf öteleme (`ika_nav.py:203`). Sim üretimde olmayan iki yardım veriyor (ref = gerçek KB, kareler kuzey-yukarı döndürülüyor) → T214-A üretim sayıları sahaya göre iyimser üst sınır. (2) Takvim (şartname :336-379): FDR 21.09.2026; Final + FDA **30.09–03.10.2026** (çoklu rotor, 20×20 m, İKA yok, :726-745); İKA'lı yarışma Ağustos–Eylül 2027. (3) 🔴 `config/pixhawk/fda_gorev.waypoints` satır 6 `LOITER_TIME` lat/lon 0,0 = "bulunduğu yerde" (README :84) → İHA 5. waypoint'te (köşe) bekliyor; 32 m'de köşe merkezli kare alanın ancak ~16,8×12,6 m'lik çeyreğini görür. (4) `WP_YAW_BEHAVIOR=2` (`mevcut.param:1013`): `LOITER_TIME` öncesine konan `CONDITION_YAW` yeni NAV'da sıfırlanır → komut `LOITER_TIME`'dan SONRA (ArduPilot kaynak bilgisi; yerelde doğrulanmadı → T236 SITL). (5) Kamera kipi: köprü varsayılanı 1280×720; 16:9 kırpma varsa 32 m'de dikey iz 18,86 m < 20 m → 40 m gerekir (12 Eylül A9/A10'a bağlı). (6) Kare-göreli tanım merkezli karede aralık ≥ 5,59 m ise doğru etiket verir ama payı küçük (6,67 m aralıkta 1,08 m; alan-göreli 3,33 m) — tasarımcının "merkezde bile bozuk" iddiası fazla genellemeydi. (7) Çürütücünün A0'ı: alan-ölçekli merkez referanslı üçte-bir (yalnız `mpp` + W) merkezde beklemede A1 ile hemen hemen aynı payı verir, poz bağlama gerektirmez. (8) Kare zaman damgası yok; köşe bacaklarında 3 m/s × 0,77–0,92 s = 2,3–2,8 m kayma → hız kapısı gerekli. (9) YKS "2·ORTA" basıyor, şartname güzergâhları "Kolay/Orta/Zor" diye adlandırıyor → hakemin yanlış okuma riski. (10) Üretim hedef tohumu HB (kırmızı H) tespitine bağlı (`rpi_inference.py:1684-1699`); FDA'da Hedef Alanı'nın nasıl işaretlendiği şartnamede yok → işaret yoksa her kare `HEDEF_YOK` (🔴 açık soru).
 **Kararlar:** (a) Aşama 0 (FDA): **T235-E** görev üreteci (4 köşe + Başlangıç kenarı + montaj yaw → merkez, β; `LOITER_TIME` merkezde, `CONDITION_YAW` arkasında) + **T236** Windows SITL provası (bulunamazsa ÖLÇÜLEMEDİ); **T235-B** saf çekirdek (A0, A1 karşılaştırma için, hız kapısı yardımcıları) + **T235-D** tezgâh (ön kayıt `results/fdr_sprint_20260910/H1/t235/ON_KAYIT.md`, bu commit'le, ölçümden önce); **T235-C** üretime bağlama (bayrak, varsayılan kapalı, bayt-eş; hız kapısı) — T227-D ve T233 birleştikten sonra (aynı dosya); **T235-A** YKS niteleyici + etiket kelimesi (çıplak "ORTA" yok) — T226-D birleştikten sonra; CONTRACTS değişikliği mimar yazar. (b) A1 poz bağlama FDA'ya ancak ön kayıt §2 karar kuralıyla. (c) B1 reddedildi (madde 15 + hata bütçesi); B2/B3 ön kayıtlı yarışla 2027. (d) İrtifa/kip: 4:3 ise 32 m, 16:9 kırpma ise 40 m (FENCE 50 altında, GSD ~8,2 cm/px@512 — kanıt bandında); görüntü-yukarısı = Başlangıç→Hedef korunur (`rota_ekseni_derece` bağlanmaz). (e) FDR metni T214A-D birleştikten sonra (aynı bölümler): bugünkü DÜŞTÜ + kök neden + planlanan düzeltme ("planlanan, ÖLÇÜLMEDİ").
@@ -30565,3 +30567,131 @@ PWM'de pervane geçiş frekansı ±%3, 30 s %50 sonrası sıcaklık eşit. Hasar
 **Mimar kararları:** (1) Kesinti protokolünün WIP ara commit'leri kabul edilir; birleştirme `--no-ff` ile, squash YAPILMAZ (ara commit'ler kesintinin izi); "tek commit" gerekçesiyle RED verilmez. (2) D-448 düzeltmesi: road3 OPEN_ROUTE'ta ana haritada İKA-KB↔ref kesişimi master'dan geliyor ve "HB (hedef)" H kutusunun kenarına değiyor (T226-D çürütücüsü, 1,0 ve 1,5 ölçek); D-448'in OPEN_ROUTE bayt-eş kuralı bunu donduruyor → hakem ekranı etiket yerleşimi T235-A (YKS niteleyici) ile birlikte yeniden ele alınır. (3) TASARIM §5 hava birimi satırı: lot notu SIYI v1.9 **s.27**'de (s.21/s.24'te yok; T229-D2 amelesi PDF'i açarak doğruladı); HM30 için de "may support 3S to 4S only" → düzeltildi. (4) AKIS-D2 yan bulgusu: T226 dalında `akis_d` d78 düğümü `yks_gui.py:2217` (`ANKOR_YOK`) — doğrusu `BAYAT_TESPIT` çağrısı (tabanda 1894); eski tazeleyicinin mutlak-en-yakın seçimi (|1990−1894| < 105) → T226-D2'de düzeltilir.
 **Master düzeltmesi:** `tests/test_d373_defter_geri_isaret.py` D-445→D-452, D-446→D-450, D-447→D-452 geri işaretlerini bulamıyordu (ATOLYE-2 amelesi ölçtü; push kapısının tam süitini düşürürdü) → üç işaret + D-448→D-454 işareti eklendi.
 **İş:** `devam-3`: T226-D2, T214A-D2, T221-D3 düzeltmeleri; ATOLYE-2 (4cd13ce2), AKIS-D2 (6e4aa437), T229-D2 (08cd8ea8) çürütücüleri; T227-D, T228-D2, T235-B/D, T235-E/T236 DEVAM (WIP c12b9e89, d0900a44, 9fd36d81, 98c3a14f). **Açık (mimar):** A12'nin ikincil koşulları (akım satırı kaynağı ve UYARI durumu) iki belgede farklı — ATOLYE-2 çürütücü sonucundan sonra tek ifade.
+
+### D-455 — KULLANICI DEVRİ: üç yarım uygulama dalının yerel kapıları tamamlandı; ana ağaca birleşmedi, resmi denetim bekliyor
+
+**Tarih/yazan:** 11 Eylül 2026, Codex-1. Yetki: kullanıcının "claude un yarım bıraktığı işi devral"
+talebi. Önceki WIP commit'leri ve kaydedilmemiş değişiklikler korundu. Üretim işi T226-D2,
+T228-D2, T221-D3 ile sınırlı; kalan kesinti işleri HANDOFF.md'nin yeni en üst kaydında.
+Üç görev READY_FOR_REVIEW; resmi mimar onayı değildir. Commit/push/merge yapılmadı.
+
+**T226-D2:** `wf_61640005-665-1`. H2e gerçek Tk/UDP durum geçişi, H4e çizili sözleşme,
+H2c HB/H bbox kilidi tamam. `python.exe -X utf8 -B -m unittest discover -s tests -p
+'test_yks_*.py' -q` → `Ran 233 tests in 35.263s / OK`, exit 0; MK15 39 test üç ardışık OK.
+`.../t226/mutasyon_t226d2.py` → `SONUC: 7 mutasyon; hata=0`, exit 0; N11–N17'nin her biri
+exit 1, SHA256 geri yükleme eş. Semantik akış kapısı: `98 dugum · AYNI 96 · DUZELTILDI 2 ·
+kapsam HATASI 0`, ret kenarları 3/3. SVG yeniden üretildi ve 13 diyagram testi OK.
+
+**Ek bulgu, mimarın incelemesine:** D-454'te d78 için verilen eski çağrı referansı diyagramın
+anlamıyla uyuşmuyordu. `74e6fe64` tabanında d78 BAYAT_TESPIT çağrısına, d83 ANKOR_YOK çağrısına
+bağlı; ancak gelen kenarlar sırasıyla `IKA_ACK_KANITI_YOK` ve `BAYAT_TESPIT`. Güncel ürün kodu
+`comms/yks_gui.py:2248` İKA ACK reddi, `:2226` bayat tespit reddi üretir. Bu yüzden d78→2248,
+d83→2226; d82→2217 ANKOR_YOK kaldı. Kod ve kenarlar değişmedi. Salt-okuma bağımsız kontrol
+aynı eşlemeyi doğruladı. Semantik denetleyicide silinen düğüm ve birlikte değiştirilen
+kenar/çağrı açıklıkları da bulundu, N16/N17 ile yakalandı. Bu kayıt önceki satırları değiştirmez.
+
+**T228-D2:** `wf_c1992b9f-d1a-1`. Claude'un ürün/test WIP'i korundu, iki kanıt koşucusunda
+başarısızlık çıkışı ve hedef assert/test sayımı tamam. `.../t228d/mutasyon_t228d.py
+--hedef-testler --cikti .../mutasyon_devralma_20260911.txt` → 54/54 YAKALANDI, exit 0;
+önce/sonra 62 test OK (1 platform atlaması), dört dosyanın SHA'sı eş. İlgili 14 test kalıbı
+263 test (güncel sonuçlar 259 başarılı + 4 atlama); gerçek T202 tekrar 7/7, exit 0.
+
+**T221-D3:** `wf_b9bb9db5-4d7-2`. 82 satırlık yarım A18 sabitleri denetleyiciye bağlandı;
+ön kayıt/eşikler değişmedi. `... -p test_faz_b_arduplane_sablon.py -q` → `Ran 43 tests in
+0.291s / OK`, exit 0; Pixhawk 16 OK. `.../H8/T221/mutasyon_kos_d.py --ref HEAD --cikti
+.../mutasyon_cikti_d3_20260911.txt` → 38/38 YAKALANDI, exit 0; her mutantta A18'in ilgili
+assert'i ve beklenen hata mesajı var. README/param/yoklama HEAD ile bayt eş. ArduPlane
+SITL KOŞULMADI/ÖLÇÜLEMEDİ hükmü aynen.
+
+**Ortam ve kanıt sınırı:** bütün komutların yorumlayıcısı
+`O:\navitas-local-train\venv\Scripts\python.exe`; tam komutlar/çıktılar ilgili dalın
+`kapi_*20260911*` dosyalarında. Üç dalda genel kapı gerçekten koşuldu: iki kol 15/15,
+exit 0; akış beş diyagram tuttu. T226/T228'in ilk geniş koşuları gitignore varlıkları
+eksik olduğu için exit 1 verdi; kayıtlar korunuyor. Ana depodan yalnız eksik hedeflere
+gerçek altı model (her dalda 328.162.444 bayt, SHA eş), T226'ya ayrıca 88 gerçek görsel
+(49.650.735 bayt) kopyalandı; değiştirilmemiş testlerin gerçek tekrarları OK. Tam depo
+süiti ve fiziksel Jetson/MK15 ölçümü bu turda koşulmadı. İki ayrı Codex örneği kod ve
+ham kanıtı salt-okuma inceledi; bu, Claude'un resmi denetiminin yerine geçirilmedi.
+
+**Kayıp devir bulgusu:** en güncel `devam-3` journal'ı yedi kesilmiş amele ve üç RED
+denetim içeriyor. T236'nın `wf_d450cb9f-ba7-9` dalındaki `H1/t235/sitl/ozet.json`
+ana deftere aktarılmamış: **ArduCopter 4.7.1**, ön kayıt planı yaw LOITER sonrası
+0/499 DÜŞTÜ (konum/irtifa 499/499); LOITER öncesi karşı deney 500/500 GEÇTİ.
+JSON bu turda doğrudan okundu, SITL yeniden koşulmadı. Üretim hedefi 4.5.7 olduğundan
+sürüm karşılaştırması ve karar incelemesi açık; ArduPlane T221 ile karıştırılmaz.
+
+### D-456 — KULLANICI ONAYLI BİRLEŞİM: üç dal master'da; son tam süit 2620 test OK (13 atlama), genel kapı iki kol 15/15; resmi inceleme bekliyor
+
+**Tarih/yazan:** 11 Eylül 2026, Codex-1. Kullanıcının "onay" mesajı üç hazır dalın
+commit ve birleştirilmesine izin verdi. Push yapılmadı. D-455 birleşim öncesi
+durumu anlatır; bu kayıt sonraki işlemleri ekler, eski kayıt değiştirilmedi.
+
+**Git:** devir kayıtları `307cb314`; T226-D2 `72e516f5` → `f80fec8d`,
+T228-D2 `6b9c862c` → `8d3c3fc2`, T221-D3 `fe63c69b` → `d02e3b63`.
+Birleştirmeler `--no-ff`; kesinti WIP commit'leri korunmuştur. Üç dal commit'i
+için `git merge-base --is-ancestor <commit> master` exit 0; üç çalışma ağacında
+`git status --porcelain=v1 --untracked-files=normal` boş, exit 0. Salt-okuma
+bağımsız kontrol de doğruladı; ürün kapsamı dışındaki yedi kesinti dalı alınmadı.
+
+**İlk birleşim kapısı:** `d02e3b63` üzerinde tam süit `Ran 2620 tests in 545.541s /
+FAILED (failures=3, skipped=13)`; genel kapı kol1 15/15, kol2 serit 15/15.
+Ham kayıt `results/push_kapisi/20260911_155724/` altında korunuyor; PowerShell
+araç çıkışı 1. İki hata atölye kâğıdındaki eski YKS 4015/4056 atıfları; gerçek
+ifadeler 4373/4414'te. Yalnız bu iki satır numarası tazelendi, kabul metni aynı.
+Üçüncü hata H1b küçük harita arena genişliği 0: ayrı MK15 39 test ve tüm modülleri
+yükleyip yalnız H1b'yi koşma tekrarları geçti. Kesin ilk tetikleyici saptanmadı.
+
+**Birleşim doğrulaması düzenlemesi `d812b1e2`:** H1b fikstüründe Tk/ürün DPI
+birlikte açık kuruldu; sabit 0,3 s uyku yerine gerçek arena `> S(100)` olana kadar
+en çok 5 s bekleniyor. Çizim elle tetiklenmedi, genişlik/panel/taşma kontrolleri
+gevşetilmedi; ürün kodu değişmedi. Atölye 39 test 1.611s OK, MK15 39 test 21.831s
+OK, exit 0. Gerçek Tk tanısı: 800 ms gecikme 1 test 1.323s OK/exit 0; Configure
+bağı kaldırılınca 300×330 tuvalde arena ölçeği 0, beklenen assert ile 1 test
+5.484s FAILED/exit 1. Kaynak dosyaya mutasyon yazılmadı. Tam komut/ham tanılar
+`results/birlesim_20260911/KANIT.md` ve aynı dizindeki çıktı dosyalarında.
+
+**Son birleşim kapısı gerçekten koşuldu** (`O:\navitas`, HEAD `d812b1e2`):
+
+```powershell
+$env:PYTHONDONTWRITEBYTECODE='1'
+$env:PYTHONUTF8='1'
+& 'O:\navitas-local-train\venv\Scripts\python.exe' -X utf8 -B scripts/push_kapisi.py --kuru
+$gateExit = $LASTEXITCODE
+Write-Output "BIRLESIM_KAPI_EXIT=$gateExit"
+exit $gateExit
+```
+
+Gerçek çıktı: `Ran 2620 tests in 538.782s / OK (skipped=13)`;
+`GENEL KAPI (madde 14): GECTI — kol1 15/15 · kol2 serit 15/15`;
+`KURU: ikisi de yeşil, push edilmedi`; `BIRLESIM_KAPI_EXIT=0`, araç çıkışı 0.
+Ham çıktı `results/push_kapisi/20260911_161757/{tam_suit,genel_kapi}.txt`.
+
+**Sınır:** üç görev READY_FOR_REVIEW; resmi bağımsız Claude onayı değildir,
+`[x]` yapılmadı. Fiziksel MK15/Jetson ve ArduPlane SITL koşulmadı. Kullanıcının
+CAD/saha logu/raporları ve T107 kilidi korundu. Diğer yedi kesinti işi HANDOFF'ta;
+T236 sürüm/yaw ve ATOLYE-2 kabul metni kararları hâlâ açık.
+
+### D-457 — 🔴 ÖLÇÜM MİMARIN KARARINI ÇÜRÜTTÜ: D-451 (4) "CONDITION_YAW LOITER_TIME'dan SONRA" **YANLIŞ** — SITL'de sonra koyunca yaw 0/499 (hata p50 134,8°) DÜŞTÜ, **önce** koyunca 500/500 ve rüzgârlı koşuda da GEÇTİ (hata p50 0,18–0,37°); T235 tezgâhı: A0 DÜŞTÜ (bir nominal hücre %98,33 < %99), A1 DÜŞTÜ (%90–94) → **FDA'da KARE etiketi kalır** (ön kayıt SS2, eşik gevşetilmedi); kamera kipi ölçülmeden önce koşullu kural yazıldı
+
+**Tarih:** 12 Eylül 2026 01:0x, mimar (Claude 2). **Kaynak:** T236 `results/.../H1/t235/sitl/ozet.json` (dal `wf_d450cb9f-ba7-9`, HEAD 9dfc5e15), T235-D `.../t235/olcum/k3_hucre_tablosu.json` + `k1_uygulama.json` (dal `wf_d450cb9f-ba7-8`, HEAD c559c97c). İkisi de **benzetim**, saha ölçümü değil.
+
+**1. Yaw yerleşimi — kararım çürütüldü.** D-451 (4) ve ön kayıt §4, çürütücünün kaynak okumasına dayanarak `CONDITION_YAW`'ı `LOITER_TIME`'dan **sonra** koymuştu (gerekçe: `WP_YAW_BEHAVIOR=2` yeni NAV komutunda yaw'ı sıfırlar). ArduCopter **4.7.1** SITL'de ölçüldü (60 s bekleme, 0,1 s örnekleme, ilk 10 s hariç; eşikler ön kayıttan: konum ≤ 2 m, yaw ≤ ±5°, oran ≥ %90, irtifa ± 1 m):
+
+| koşum | yaw yeri | yaw oranı | yaw hatası p50 | konum/irtifa | hüküm |
+|---|---|---|---|---|---|
+| ön kayıt planı | sonra | **0,0** | **134,76°** | 499/499 · 0,004 m | **DÜŞTÜ** |
+| karşı deney | önce | 1,0 | 0,18° | 500/500 · 0,003 m | GEÇTİ |
+| karşı deney + rüzgâr | önce | 1,0 | 0,37° (azami 1,21°) | 500/500 · 0,019 m | GEÇTİ |
+
+Karşı deney hükmü: `CURUTULDU` — yani çürütücünün kaynak çıkarımı ölçümle yanlışlandı. **Karar:** görev üreteci `CONDITION_YAW`'ı `LOITER_TIME`'dan **ÖNCE** yazar; ön kayıt §4'ün yaw yeri satırı bu ölçümle düzeltilir (eşikler ve kabul ölçütü DEĞİŞMEZ — yalnız plan değişti, kapı değil). **Sınır:** ölçüm 4.7.1'de; üretim hedefi ArduCopter **4.5.7**. Sürüm karşılaştırması yarım → T236-B: 4.5.7 SITL ikilisiyle aynı iki koşum tekrarlanır; tekrarlanamazsa FDA planı 4.5.7 için **ÖLÇÜLEMEDİ** kalır ve yaw yeri Mission Planner simülasyonunda insanca doğrulanır (BEYAN). Bu kayıt, aynı modelin iki örneğinin anlaşmasının kanıt olmadığının (madde 19) üçüncü kez ölçümle gösterilmesidir.
+
+**2. FDA yol etiketi — A0 ve A1 DÜŞTÜ, KARE kalır.** Tezgâh (sentetik maske, 2000 çekiliş/hücre, tohum 20260910; K3n negatif kontrolü üretildi, tezgâh boş değil):
+- **A0** (alan-ölçekli, merkez referanslı): nominal hücreler %99,1 · **%98,333** · %99,517 · %99,1 → koşul 1 DÜŞTÜ (eşik ≥ %99). Koşul 2 (hiçbir hücrede KARE'den kötü değil) geçti, ihlal 0.
+- **A1** (poz izdüşümü): nominal %90,3–94,45 → koşul 1 DÜŞTÜ; koşul 2'de de ihlal var.
+- **K1 uygulama testi** (bağımsız kanıt değil): A1 = dünya **8/8** ve **20/20**; KARE = dünya **3/8** ve **6/20** (negatif kontrol yeniden üretildi) — D-449'un iki üretim riski ölçümle doğrulandı.
+- **Karar (ön kayıt §2 karar kuralı, aynen uygulanır):** FDA'da **KARE etiketi kalır**; A0 ve A1 açılmaz. Eşik gevşetilmez, tezgâh tekrar tekrar koşulmaz. Her durumda YKS etiketin çerçevesini niteler (T235-A) — bu zaten kapının dışındaydı.
+- **Ölçülen ek olgu (kapıyı değiştirmez):** yapılandırma başına A0 sonucu — **4:3@32 m koşul 1 ve 2'yi geçiyor**, 16:9@40 m koşul 1'de düşüyor. Ön kayıt kapıyı iki yapılandırmanın ikisinde birden istemişti, çünkü kamera kipi bilinmiyordu.
+- **YENİ ÖN KAYIT (D-457, kamera kipi ÖLÇÜLMEDEN ÖNCE yazıldı — 12 Eylül A9'dan önce):** 12 Eylül A9'da kamera kipi **4:3 ölçülürse**, FDA yapılandırması 4:3@32 m olur ve A0 yalnız o yapılandırmanın hücreleriyle yeniden hükme bağlanır (ölçüm yeniden koşulmaz; mevcut tablo okunur: koşul 1 ve 2 geçti → A0 **AÇILIR**, bayrakla, varsayılan kapalı). **16:9 ölçülürse A0 açılmaz, KARE kalır.** Kamera kipi ölçülemezse KARE kalır. Bu kural bir gevşetme değildir: eşik (%99) ve koşullar aynıdır, yalnız hangi yapılandırmanın geçerli olduğu 12 Eylül ölçümüyle belirlenir. Kural, ölçümden önce yazıldığı için ön kayıttır; A9 sonucu geldikten sonra DEĞİŞTİRİLMEZ.
+- **16:9@32 m** alan sığma payı < 1,0 m → FDA'da kullanılmaz (ön kayıt §2 alan sığma kuralı; ölçüldü).
+
+**3. İş:** T236-B (4.5.7 SITL tekrarı + üreteçte yaw yeri düzeltmesi), T235-B/D tamamlanması (DUY_JSON eksik, `readme_metni` testle uyuşmuyor), ve kesintide kalan altı iş `devam-4` iş akışında. **T235-C (poz kolu) AÇILMAZ** — A1 DÜŞTÜ (ön kayıt §2 karar kuralı).

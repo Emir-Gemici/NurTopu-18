@@ -1,0 +1,112 @@
+# T226-D kapi ciktisi · 2026-09-11 15:37:47 · O:\navitas-local-train\venv\Scripts\python.exe
+# HEAD 73f62435 (kapi calisma agacinda kosuldu)
+  ayna bayt-es (scripts/ <-> jetson_paket/kod/ kamera_koprusu.py): True
+== test_yks_mk15_hakem_ekrani.py kosu 1/3 (cikis 0, 22.8 s)
+$ -B -m unittest discover -s tests -p test_yks_mk15_hakem_ekrani.py
+  ----------------------------------------------------------------------
+  Ran 39 tests in 22.369s
+  OK
+== test_yks_mk15_hakem_ekrani.py kosu 2/3 (cikis 0, 22.3 s)
+$ -B -m unittest discover -s tests -p test_yks_mk15_hakem_ekrani.py
+  ----------------------------------------------------------------------
+  Ran 39 tests in 21.821s
+  OK
+== test_yks_mk15_hakem_ekrani.py kosu 3/3 (cikis 0, 22.0 s)
+$ -B -m unittest discover -s tests -p test_yks_mk15_hakem_ekrani.py
+  ----------------------------------------------------------------------
+  Ran 39 tests in 21.706s
+  OK
+== test_yks_*.py (cikis 1, 37.2 s)
+$ -B -m unittest discover -s tests -p test_yks_*.py
+  AssertionError: [] is not true : kompozit kume bos listelendi
+  ----------------------------------------------------------------------
+  Ran 233 tests in 34.666s
+  FAILED (failures=1)
+  DUSEN: FAIL: test_kompozit_dizini_listeleniyor (test_yks_gui_uretim_hizasi.KompozitKaynakTests.test_kompozit_dizini_listeleniyor)
+== test_yks_*.py ortam denetimi (dusus yalniz git-ignore'lu kompozit kareler mi?)
+  dusen testler: ['test_kompozit_dizini_listeleniyor']
+  dusenlerin hepsi bilinen ortam-kaynakli kume ['test_kompozit_dizini_listeleniyor']: True
+  bu agacta data/arena_kompozit/images YOK: False
+  ana depoda goruntu: 88 dosya
+  git check-ignore -v data/arena_kompozit/images/train/dji_20260822170832_0037_d__frame_000044_000001470_cp_00.jpg: .gitignore:92:images/	data/arena_kompozit/images/train/dji_20260822170832_0037_d__frame_000044_000001470_cp_00.jpg
+  git ls-files data/arena_kompozit/images: 0 izlenen dosya
+== test_faz_b_kamera_koprusu*.py (cikis 0, 7.3 s)
+$ -B -m unittest discover -s tests -p test_faz_b_kamera_koprusu*.py
+  ............
+  ----------------------------------------------------------------------
+  Ran 12 tests in 6.721s
+  OK
+== test_jetson_comms_paketi.py (cikis 0, 4.3 s)
+$ -B -m unittest discover -s tests -p test_jetson_comms_paketi.py
+  .......
+  ----------------------------------------------------------------------
+  Ran 7 tests in 4.189s
+  OK
+== test_t135_kamera_dogrula_icerik.py (cikis 0, 2.1 s)
+$ -B -m unittest discover -s tests -p test_t135_kamera_dogrula_icerik.py
+  ....
+  ----------------------------------------------------------------------
+  Ran 8 tests in 0.112s
+  OK
+== test_olcum_ayna_senkronu.py (cikis 0, 0.1 s)
+$ -B -m unittest discover -s tests -p test_olcum_ayna_senkronu.py
+  ..s..s
+  ----------------------------------------------------------------------
+  Ran 6 tests in 0.020s
+  OK (skipped=2)
+== test_t202_jetson_paket_butunlugu.py (cikis 1, 4.5 s)
+$ -B -m unittest discover -s tests -p test_t202_jetson_paket_butunlugu.py
+  Care: ya kurulum blogunа eklensin, ya komut degistirilsin. Dosya pakette de yoksa ONCE pakete alinmali (scripts/jetson_paket_hazirla.py KOPYALAR).
+  ----------------------------------------------------------------------
+  Ran 7 tests in 4.381s
+  FAILED (failures=1)
+  DUSEN: FAIL: test_KULLANILAN_HER_YOL_KURULUYOR (test_t202_jetson_paket_butunlugu.KurulumBlogu.test_KULLANILAN_HER_YOL_KURULUYOR)
+== t202 ortam denetimi (dusen kalemler yalniz git-ignore'lu modeller mi?)
+  t202 eksik (bu agac): ['models/navitas_seg_v17_best.pt', 'models/navitas_seg_v17_best_640_fp16.onnx', 'models/navitas_seg_v35_best.pt', 'models/navitas_seg_v35_best_512_fp16.onnx', 'models/navitas_seg_v36_best.pt', 'models/navitas_seg_v36_best_512_fp16.onnx']
+  ana depo models/ adlari (20 dosya) ile ayni kapi: eksik = []
+  bu agacta dusenlerin hepsi models/: True · kamera_koprusu satiri kuruluyor (scripts/kamera_koprusu.py): True
+== test_gece_akis_diyagramlari.py (cikis 0, 0.3 s)
+$ -B -m unittest discover -s tests -p test_gece_akis_diyagramlari.py
+  .............
+  ----------------------------------------------------------------------
+  Ran 13 tests in 0.223s
+  OK
+== comms/test_comms.py (cikis 0, 2.2 s)
+$ -B comms/test_comms.py
+  NO_ROUTE ACK: ['ika', 'yks'] · İKA rota önbelleği korundu · sebep=KAPALI_DAR
+  ✓ TEST GEÇTİ — aktarım + NO_ROUTE ACK + bağlantı-kaybı failsafe çalışıyor
+== genel kapi codes/test_rota_sentetik.py (cikis 0, 3.4 s)
+$ -B codes/test_rota_sentetik.py
+  GENEL KAPI (madde 14): GECTI — kol1 15/15 · kol2 serit 15/15
+  Rota 65 waypoint gerektiriyor (yumusak hedef: 64); azami aralik guvenligi icin seyreltilmedi.
+  Rota 67 waypoint gerektiriyor (yumusak hedef: 64); azami aralik guvenligi icin seyreltilmedi.
+== akis_diyagram_dogrula (cikis 0, 0.1 s)
+$ -B scripts/akis_diyagram_dogrula.py
+  FDR\sekiller\akis_a.mmd: 51 düğüm · 51 tuttu · tam satır 51 · hata 0
+  FDR\sekiller\akis_b.mmd: 68 düğüm · 68 tuttu · tam satır 68 · hata 0
+  FDR\sekiller\akis_c.mmd: 62 düğüm · 62 tuttu · tam satır 62 · hata 0
+  FDR\sekiller\akis_d.mmd: 98 düğüm · 98 tuttu · tam satır 98 · hata 0
+  FDR\sekiller\akis_e.mmd: 70 düğüm · 70 tuttu · tam satır 70 · hata 0
+  SONUÇ: TÜM DÜĞÜMLER TUTTU
+== akis d KAPSAM denetimi (taban 76df4dcb) (cikis 0, 0.4 s)
+$ -B results/fdr_sprint_20260910/H9_MK15/t226/akis_kapsam_t226d.py --taban 76df4dcb
+  FDR/sekiller/akis_d.mmd: taban 76df4dcb · 98 dugum · satiri degisen 96 · AYNI 96 · DUZELTILDI 2 · kapsam HATASI 0 (KAPSAM 0, DEYIM 0, SIRA 0, DOSYA 0, DEYIM_YOK 0, KENAR 0, YENI 0, SILINEN 0, KENAR_KUMESI 0) · KENAR taban 1/3 tutar, yeni 3/3 tutar
+
+## OZET
+GECTI mevcut kamera_koprusu aynasi
+GECTI test_yks_mk15_hakem_ekrani.py kosu 1/3
+GECTI test_yks_mk15_hakem_ekrani.py kosu 2/3
+GECTI test_yks_mk15_hakem_ekrani.py kosu 3/3
+DUSTU test_yks_*.py
+DUSTU test_yks_*.py ORTAM KAYNAKLI: dusus YALNIZ worktree'de olmayan data/arena_kompozit/images
+GECTI test_faz_b_kamera_koprusu*.py
+GECTI test_jetson_comms_paketi.py
+GECTI test_t135_kamera_dogrula_icerik.py
+GECTI test_olcum_ayna_senkronu.py
+DUSTU test_t202_jetson_paket_butunlugu.py
+GECTI t202 ORTAM KAYNAKLI: dusus YALNIZ worktree'de olmayan models/ agirliklari, kamera_koprusu satiri kuruluyor
+GECTI test_gece_akis_diyagramlari.py
+GECTI comms/test_comms.py
+GECTI test_rota_sentetik 15/15
+GECTI akis_diyagram_dogrula
+GECTI akis d kapsam: tazelenen her dugum ayni fonksiyonda (HATA 0)

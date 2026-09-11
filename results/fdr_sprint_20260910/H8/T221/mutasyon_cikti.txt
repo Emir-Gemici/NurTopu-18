@@ -1,0 +1,9 @@
+[G1 TKOFF_THR_MINSPD 0->4 (GPS hiz kapisi)] cikis=1 dusen=['test_a14_kaynak_kaniti_temiz_ve_guncel', 'test_a5_mancinik_kalkisi_tutarliligi', 'test_m1_gps_hiz_kapisi_acilinca_yakalanir'] beklenen=['test_a5_mancinik_kalkisi_tutarliligi', 'test_a14_kaynak_kaniti_temiz_ve_guncel'] -> YAKALANDI · geri_yukleme_bayt_es=True
+    son satir: FAILED (failures=3)
+[G2 SERVO7 parasut -> 0 (Chute has no channel)] cikis=1 dusen=['test_a14_kaynak_kaniti_temiz_ve_guncel', 'test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_a3_servo_fonksiyonlari_ve_cakisma_yok', 'test_a4_parasut_tutarliligi', 'test_m2_parasut_cikisi_silinince_yakalanir'] beklenen=['test_a3_servo_fonksiyonlari_ve_cakisma_yok', 'test_a4_parasut_tutarliligi'] -> YAKALANDI · geri_yukleme_bayt_es=True
+    son satir: FAILED (failures=4, errors=1)
+[G3 README TEYIT listesinden CHUTE_ENABLED silindi] cikis=1 dusen=['test_a16_readme_teyit_ve_beyan_listeleri_param_ile_ayni', 'test_m8_teyit_isareti_silinince_readme_kilidi_kopar'] beklenen=['test_a16_readme_teyit_ve_beyan_listeleri_param_ile_ayni'] -> YAKALANDI · geri_yukleme_bayt_es=True
+    son satir: FAILED (failures=2)
+[G4 gorevden DO_PARACHUTE silindi] cikis=1 dusen=['test_a17_prova_gorevi_yapi_ve_parasut_tutarliligi', 'test_m11_birakma_irtifasi_alt_min_altina_inince_yakalanir'] beklenen=['test_a17_prova_gorevi_yapi_ve_parasut_tutarliligi'] -> YAKALANDI · geri_yukleme_bayt_es=True
+    son satir: FAILED (failures=2)
+[geri yukleme sonrasi] cikis=0 · son satir: OK
