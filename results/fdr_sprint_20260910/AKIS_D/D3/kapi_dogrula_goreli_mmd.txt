@@ -1,0 +1,4 @@
+kapsam tabanı: HEAD = 0916aba6ca7f
+FDR\sekiller\akis_a.mmd: 51 düğüm · 51 tuttu · tam satır 51 · hata 0
+  kapsam (taban HEAD): 51 düğüm karşılaştırıldı · tabanda yok 0 · KAPSAM DEGISTI 0 · TABAN SUPHELI 0 · kapsam hatası 0
+SONUÇ: TÜM DÜĞÜMLER TUTTU
