@@ -1,0 +1,39 @@
+test_m10_pil_kritik_eylemi_copter_tablosuyla_yakalanir (test_faz_b_arduplane_sablon.DenetleyiciGercektenDuser.test_m10_pil_kritik_eylemi_copter_tablosuyla_yakalanir) ... ok
+test_m11_birakma_irtifasi_alt_min_altina_inince_yakalanir (test_faz_b_arduplane_sablon.DenetleyiciGercektenDuser.test_m11_birakma_irtifasi_alt_min_altina_inince_yakalanir) ... ok
+test_m1_gps_hiz_kapisi_acilinca_yakalanir (test_faz_b_arduplane_sablon.DenetleyiciGercektenDuser.test_m1_gps_hiz_kapisi_acilinca_yakalanir) ... ok
+test_m2_parasut_cikisi_silinince_yakalanir (test_faz_b_arduplane_sablon.DenetleyiciGercektenDuser.test_m2_parasut_cikisi_silinince_yakalanir) ... ok
+test_m3_gaz_cikisi_rudder_yapilinca_yakalanir (test_faz_b_arduplane_sablon.DenetleyiciGercektenDuser.test_m3_gaz_cikisi_rudder_yapilinca_yakalanir) ... ok
+test_m4_config_h_hiz_varsayilanlari_yakalanir (test_faz_b_arduplane_sablon.DenetleyiciGercektenDuser.test_m4_config_h_hiz_varsayilanlari_yakalanir) ... ok
+test_m5_uzun_failsafe_rtl_yakalanir (test_faz_b_arduplane_sablon.DenetleyiciGercektenDuser.test_m5_uzun_failsafe_rtl_yakalanir) ... ok
+test_m6_bungee_30_gecikmesi_stall_kapisinda_yakalanir (test_faz_b_arduplane_sablon.DenetleyiciGercektenDuser.test_m6_bungee_30_gecikmesi_stall_kapisinda_yakalanir) ... ok
+test_m7_deger_degisip_kanit_yenilenmezse_yakalanir (test_faz_b_arduplane_sablon.DenetleyiciGercektenDuser.test_m7_deger_degisip_kanit_yenilenmezse_yakalanir) ... ok
+test_m8_teyit_isareti_silinince_readme_kilidi_kopar (test_faz_b_arduplane_sablon.DenetleyiciGercektenDuser.test_m8_teyit_isareti_silinince_readme_kilidi_kopar) ... ok
+test_m9_yorumdan_kaynak_dosyasi_silinince_yakalanir (test_faz_b_arduplane_sablon.DenetleyiciGercektenDuser.test_m9_yorumdan_kaynak_dosyasi_silinince_yakalanir) ... ok
+test_aday_kaynaklar_onekleri (test_faz_b_arduplane_sablon.KaynakBetigi.test_aday_kaynaklar_onekleri) ... ok
+test_bloklar_arac_ozel_alan_ve_bos_satir (test_faz_b_arduplane_sablon.KaynakBetigi.test_bloklar_arac_ozel_alan_ve_bos_satir) ... ok
+test_cozumle_copyfieldsfrom_ve_bulunamayan (test_faz_b_arduplane_sablon.KaynakBetigi.test_cozumle_copyfieldsfrom_ve_bulunamayan) ... ok
+test_deger_denetle_values_bitmask_range (test_faz_b_arduplane_sablon.KaynakBetigi.test_deger_denetle_values_bitmask_range) ... ok
+test_a10_arm (test_faz_b_arduplane_sablon.ParamDosyasi.test_a10_arm) ... ok
+test_a11_rc_protokolu_beyana_bagli (test_faz_b_arduplane_sablon.ParamDosyasi.test_a11_rc_protokolu_beyana_bagli) ... ok
+test_a12_log_bitmask_tanimli_bitler (test_faz_b_arduplane_sablon.ParamDosyasi.test_a12_log_bitmask_tanimli_bitler) ... ok
+test_a13_quadplane_kapali (test_faz_b_arduplane_sablon.ParamDosyasi.test_a13_quadplane_kapali) ... ok
+test_a14_kaynak_kaniti_temiz_ve_guncel (test_faz_b_arduplane_sablon.ParamDosyasi.test_a14_kaynak_kaniti_temiz_ve_guncel) ... ok
+test_a15_yorum_tanim_dosyasini_anar (test_faz_b_arduplane_sablon.ParamDosyasi.test_a15_yorum_tanim_dosyasini_anar) ... ok
+test_a1_ayrisir_ve_nedensiz_parametre_yok (test_faz_b_arduplane_sablon.ParamDosyasi.test_a1_ayrisir_ve_nedensiz_parametre_yok) ... ok
+test_a2_zorunlu_anahtarlar_var (test_faz_b_arduplane_sablon.ParamDosyasi.test_a2_zorunlu_anahtarlar_var) ... ok
+test_a3_servo_fonksiyonlari_ve_cakisma_yok (test_faz_b_arduplane_sablon.ParamDosyasi.test_a3_servo_fonksiyonlari_ve_cakisma_yok) ... ok
+test_a4_parasut_tutarliligi (test_faz_b_arduplane_sablon.ParamDosyasi.test_a4_parasut_tutarliligi) ... ok
+test_a5_mancinik_kalkisi_tutarliligi (test_faz_b_arduplane_sablon.ParamDosyasi.test_a5_mancinik_kalkisi_tutarliligi) ... ok
+test_a6_failsafe (test_faz_b_arduplane_sablon.ParamDosyasi.test_a6_failsafe) ... ok
+test_a7_pil (test_faz_b_arduplane_sablon.ParamDosyasi.test_a7_pil) ... ok
+test_a8_hava_hizi (test_faz_b_arduplane_sablon.ParamDosyasi.test_a8_hava_hizi) ... ok
+test_a9_jetson_yks_sozlesmesi_ve_copter_ile_ortak_anahtarlar (test_faz_b_arduplane_sablon.ParamDosyasi.test_a9_jetson_yks_sozlesmesi_ve_copter_ile_ortak_anahtarlar) ... ok
+test_a16_readme_teyit_ve_beyan_listeleri_param_ile_ayni (test_faz_b_arduplane_sablon.ReadmeVeIsaretler.test_a16_readme_teyit_ve_beyan_listeleri_param_ile_ayni) ... ok
+test_a17_prova_gorevi_yapi_ve_parasut_tutarliligi (test_faz_b_arduplane_sablon.SitlGorevi.test_a17_prova_gorevi_yapi_ve_parasut_tutarliligi) ... ok
+test_a18_sitl_olculemedi_yazili_gecti_yazilmaz (test_faz_b_arduplane_sablon.SitlGorevi.test_a18_sitl_olculemedi_yazili_gecti_yazilmaz) ... ok
+
+----------------------------------------------------------------------
+Ran 33 tests in 0.117s
+
+OK
+cikis=0

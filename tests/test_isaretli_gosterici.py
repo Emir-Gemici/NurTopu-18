@@ -22,17 +22,41 @@ Kapilar:
   G6 CLI: --kuru her kip exit 0 (surecle de); yasak IP -> 2; x11 DISPLAY yok -> 2 (Linux; Windows'ta
      platform enjeksiyonuyla ayni yol); drm gst yok / rtsp gi yok -> 3
   G7 drm gozetmeni (sahte surec): YOK -> kirmizi boru; CANLI -> video; BAYAT -> video DURUR;
-     hemen biten boru -> Argus uyarisi + bekleme (surec dongusu yok)
+     hemen biten boru -> Argus uyarisi, surec dongusu yok. T228-D: saf karar tablosu (HISTEREZIS
+     2 ardisik taze; CANLI'dan cikis ANINDA; baslatma araligi >= 3 s; olen video -> YOK hemen);
+     donmus boru (identity nabzi > 3 s) -> GORUNTU YOK, hic nabiz -> DOGRULANACAK uyarisi; nabiz
+     ayristiricisi (sahte -v ciktisi; toleransli + secici), gercek boru okuyucu, --nabiz-sina;
+     drm_kos baglantisi (-v, stdout BORU, izleyici) gercek KareCekici + sahte HTTP + sahte Popen.
+     T228-D2: yayin 503 olup geri gelince IKINCI video borusu YENI nabiz izleyicisiyle surer (NG);
+     olen video borusunun GORUNTU YOK sebebi 'video borusu kendiliginden bitti (rc=N)' (yayin
+     tazeyse; degilse yayinin kendi sebebi)
   G8 jetson_paket/gosterici: .desktop Exec (bash -n), DRM birimi gozcu kilidi + onkosul + VARSAYILAN
-     KAPALI (systemd/ altinda degil, betik kurmaz), xorg sablonu TAHMIN basligi, kurulum belgesi
+     KAPALI (systemd/ altinda degil, betik kurmaz), xorg sablonu TAHMIN basligi, kurulum belgesi.
+     D-453: kurulum belgesi (markdown) kilitleri YENI icerigi cizili (~~...~~) araliklar AYIKLANMIS
+     metinde arar; §1 kodlayici / §5 / §9'da olculmemis 'doğrulandı/GEÇTİ/ölçüldü' yok; eski
+     metnin cizili durdugu HAM metinde denetlenir. D-454 (T228-D2): yasak/celiski aramalari
+     NORMALLESTIRILMIS metinde ('tutar', karma yazim, kalin parcali / yumusak tireli hukum,
+     tipografik kesme/tirnak); belge GENELINDE olculmemis GECTI yok; §4 sonuclari tam ÖLÇÜLECEK;
+     §5 'N ardışık' / '≥ N s' / '> N s' kodla ayni (celiskili ikinci hukum yok); eski nabizsiz
+     boru canli metinde yok
   G9 paket aynasi: KOPYALAR tasir, bayt-es, kod/ dizininden izole import; kilavuz kopyalar
   G10 jetson_baslat.sh: bash -n; varsayilan kapali (env'de gorunur, --isaretli-yayin YOK); x11 ile rpi
      --isaretli-yayin + gosterici bolumu; T227'siz paket [YOK] + exit 3, T227'li exit 0; gecersiz
      kip / yayin / port cakismasi exit 1; --kur T227'siz kurulu rpi ile HATA ve hic systemctl yok;
      port sabiti gostericiyle AYNI
+  G11 x11 DONGUSU (T228-D): x11_kos'a sahte cv2 + sahte/gercek cekici enjekte edilir (pencere
+     acilmaz) — CANLI iken yayin 503 / erisilemez olunca ILK cizim kirmizi GORUNTU YOK (eski kare
+     yok); tuval kaydi 01_CANLI -> 02_GORUNTU_YOK
 Mutasyon (results/fdr_sprint_20260910/H9_MK15/t228/mutasyon_t228.py): bayat esigi kaldirilirsa,
 yasak IP kontrolu kaldirilirsa, GORUNTU_YOK eski kareyi cizerse, jetson_baslat bayragi vermezse,
---kur T227 denetimi kaldirilirsa bu dosya DUSER.
+--kur T227 denetimi kaldirilirsa bu dosya DUSER. T228-D (t228d/mutasyon_t228d.py): x11 dongusu
+hatayi yok sayarsa (MG), histerezis / baslatma araligi / aninda cikis / boru nabzi esigi
+kaldirilirsa, -v ya da identity dusurulurse, belge kilitleri silinirse DUSER. T228-D2: nabiz
+izleyicisi borular arasi paylasilirsa (NG), belge notlari silinmeden CIZILIRSE ya da olculmemis
+madde 'doğrulandı' tasirsa (NK*), olen videonun sebebi 'yayin dogrulaniyor'a donerse (NS) DUSER.
+D-454 sinifi (NK11-NK21): 'tutar' / karma yazim / kalin parcali / yumusak tireli hukum, §4 sonuc
+hucresi / basligi ve ust hukum cizilmesi, kalin sayili ya da ASCII '>=' ile celiskili ikinci
+hukum, tipografik tirnakla CANLI metne donen eski boru DUSER.
 """
 import contextlib
 import io
@@ -46,6 +70,7 @@ import sys
 import tempfile
 import threading
 import time
+import unicodedata
 import unittest
 import urllib.parse
 from http.server import BaseHTTPRequestHandler, HTTPServer
@@ -143,6 +168,7 @@ class _SahteYayin:
         self.govde = _jpeg()
         self.son_hata = None
         self._kapali = False
+        self.otomatik_sira = False     # T228-D: her 200 yanitinda sira +1 (surekli taze yayin)
         dis = self
 
         class _Ist(BaseHTTPRequestHandler):
@@ -155,6 +181,8 @@ class _SahteYayin:
                     self.end_headers()
                     return
                 if dis.kod == 200:
+                    if dis.otomatik_sira:
+                        dis.sira = str(int(dis.sira or "0") + 1)
                     self.send_response(200)
                     self.send_header("Content-Type", "image/jpeg")
                     self.send_header("Content-Length", str(len(dis.govde)))
@@ -381,13 +409,22 @@ class BoruDizgileri(unittest.TestCase):
     def test_G4_drm_borusu_elemanlar_sirali_ve_parametreler(self):
         b = g.drm_boru()
         self.assertEqual(g.boru_elemanlari(b),
-                         ["souphttpsrc", "multipartdemux", "jpegdec", "nvvidconv", "nvdrmvideosink"])
+                         ["souphttpsrc", "multipartdemux", "jpegdec", "identity", "nvvidconv",
+                          "nvdrmvideosink"])
         for parca in ("location=http://127.0.0.1:8081" + kk.VIDEO_YOLU, "video/x-raw(memory:NVMM)",
-                      "width=1280", "height=720", "nvdrmvideosink set_mode=1"):
+                      "width=1280", "height=720", "nvdrmvideosink set_mode=1",
+                      "jpegdec ! identity name=nabiz silent=false ! nvvidconv"):
             self.assertIn(parca, b)
+        self.assertEqual(g.NABIZ_ADI, "nabiz")
         self.assertNotIn("conn_id", b)
         self.assertIn("nvdrmvideosink set_mode=1 sync=false conn_id=2", g.drm_boru(conn_id=2))
         self.assertNotIn("kmssink", b)
+        # T228-D: -v nabiz satirlarini stdout'a bastirir; --kuru ve drm_kos AYNI argv (tek kaynak)
+        self.assertEqual(g.drm_video_argv("/usr/bin/gst-launch-1.0", conn_id=2),
+                         ["/usr/bin/gst-launch-1.0", "-v", "-e", g.drm_boru(conn_id=2)])
+        self.assertEqual(g.drm_video_argv("gst-launch-1.0", stdbuf="/usr/bin/stdbuf"),
+                         ["/usr/bin/stdbuf", "-oL"] + g.drm_video_argv("gst-launch-1.0"),
+                         "stdbuf oneki: -v satirlari satir tamponlu")
 
     def test_G4_drm_GORUNTU_YOK_borusu_eski_kare_kaynagi_TASIMAZ(self):
         b = g.drm_goruntu_yok_boru('yayin "erisilemiyor"! (x)')
@@ -469,7 +506,11 @@ class Cli(unittest.TestCase):
         _k, out, _e = _cagir(["--kip", "drm", "--kuru", "--conn-id", "3"])
         for satir in g.DRM_ON_KOSUL:
             self.assertIn(satir + "\n", out)
-        self.assertIn("gst-launch-1.0 -e 'souphttpsrc location=http://127.0.0.1:8081/video", out)
+        self.assertIn("gst-launch-1.0 -v -e 'souphttpsrc location=http://127.0.0.1:8081/video", out)
+        self.assertIn("jpegdec ! identity name=nabiz silent=false ! nvvidconv", out)
+        self.assertIn("[DOGRULANACAK] gst-launch-1.0 -v nabiz satiri bicimi", out)
+        self.assertIn("--nabiz-sina", out)
+        self.assertIn("[BILGI] drm_kos video borusunu `stdbuf -oL` onekiyle kosar", out)
         self.assertIn("nvdrmvideosink set_mode=1 sync=false conn_id=3", out)
         self.assertIn("[UYARI] nvidia-drm", out)
         self.assertIn("Argus", out)
@@ -545,13 +586,17 @@ class Cli(unittest.TestCase):
 
 # ── G7 ────────────────────────────────────────────────────────────────────────
 class _SahteSurec:
-    """subprocess.Popen yerine: poll/terminate/kill/wait. `omur` poll sayisi sonra kendiliginden biter."""
+    """subprocess.Popen yerine: poll/terminate/kill/wait. `omur` poll sayisi sonra kendiliginden
+    biter. T228-D: `t` baslama ani (sahte saat), `nabiz` baslamaya gore ilerleyen tampon ofsetleri
+    (s) — `son_nabiz(simdi)` gozetmenin `ilerleme_oku`'suna verilir."""
 
-    def __init__(self, argv, kayit, omur=None):
+    def __init__(self, argv, kayit, omur=None, t=None, nabiz=None):
         self.argv = argv
         self.returncode = None
         self.sonlandirildi = False
         self.kalan = omur
+        self.t = t
+        self.nabiz = nabiz
         kayit.append(self)
 
     def poll(self):
@@ -574,6 +619,15 @@ class _SahteSurec:
             self.returncode = 0
         return self.returncode
 
+    def son_nabiz(self, simdi):
+        gecen = [self.t + o for o in (self.nabiz or ()) if self.t + o <= simdi]
+        return max(gecen) if gecen else None
+
+
+def _tur(surec):
+    """Surecin borusu: video (souphttpsrc) mu, GORUNTU YOK (videotestsrc) mu."""
+    return "video" if "souphttpsrc" in surec.argv[-1] else "yok"
+
 
 YOK = g.EkranDurumu(g.DURUM_YOK, "yayin erisilemiyor", None)
 CANLI = g.EkranDurumu(g.DURUM_CANLI, "", 0.2)
@@ -581,7 +635,9 @@ BAYAT = g.EkranDurumu(g.DURUM_BAYAT, "kare 2.4 s eski (> 2 s)", 2.4)
 
 
 class DrmGozetmen(unittest.TestCase):
-    def _kos(self, durumlar, omur=None):
+    """Sahte saat: her yoklama DRM_YOKLAMA_S (1 s) ilerler; t = yoklama sirasi."""
+
+    def _kos(self, durumlar, omur=None, nabiz=None, ilerleme=False):
         kalan = list(durumlar)
         bitti = {"e": False}
 
@@ -600,12 +656,21 @@ class DrmGozetmen(unittest.TestCase):
 
         kayit = []
         loglar = []
-        video = ["gst-launch-1.0", "-e", g.drm_boru()]
+        video = g.drm_video_argv("gst-launch-1.0")
+
+        def baslat(argv):
+            return _SahteSurec(argv, kayit, omur, t=saat[0],
+                               nabiz=nabiz if argv == video else None)
+
+        ek = {"ilerleme_oku": lambda p: p.son_nabiz(saat[0])} if ilerleme else {}
         n = g.drm_gozetmen(video, lambda sebep: ["gst-launch-1.0", g.drm_goruntu_yok_boru(sebep)],
-                           durum_oku, lambda argv: _SahteSurec(argv, kayit, omur),
-                           lambda: bitti["e"], uyku=uyku, saat=lambda: saat[0],
-                           log=lambda m, kirmizi=False: loglar.append((kirmizi, m)))
+                           durum_oku, baslat, lambda: bitti["e"], uyku=uyku, saat=lambda: saat[0],
+                           log=lambda m, kirmizi=False: loglar.append((kirmizi, m)), **ek)
         return n, kayit, loglar, uykular
+
+    @staticmethod
+    def _baslatmalar(kayit):
+        return [(s.t, _tur(s)) for s in kayit]
 
     def test_G7_yok_kirmizi_canli_video_bayatta_video_DURUR(self):
         n, kayit, loglar, _u = self._kos([YOK, YOK, CANLI, CANLI, CANLI, BAYAT, BAYAT, YOK])
@@ -613,7 +678,7 @@ class DrmGozetmen(unittest.TestCase):
         yok1, video, yok2 = kayit
         self.assertIn("videotestsrc", yok1.argv[-1])
         self.assertNotIn("souphttpsrc", yok1.argv[-1])
-        self.assertEqual(video.argv[:2], ["gst-launch-1.0", "-e"])
+        self.assertEqual(video.argv[:3], ["gst-launch-1.0", "-v", "-e"])
         self.assertIn("souphttpsrc", video.argv[-1])
         self.assertTrue(yok1.sonlandirildi, "yayin gelince kirmizi boru durdurulmali")
         self.assertTrue(video.sonlandirildi,
@@ -621,12 +686,407 @@ class DrmGozetmen(unittest.TestCase):
         self.assertIn("kare 2.4 s eski", yok2.argv[-1])
         self.assertTrue(any(k and "GORUNTU YOK" in m for k, m in loglar), loglar)
 
-    def test_G7_hemen_biten_boru_uyari_ve_bekleme_surec_dongusu_yok(self):
-        n, kayit, loglar, uykular = self._kos([CANLI, CANLI, CANLI, CANLI], omur=0)
+    def test_G7_hemen_biten_boru_uyari_ve_baslatma_sikligi_sinirli(self):
+        n, kayit, loglar, _u = self._kos([CANLI] * 8, omur=0)
+        self.assertEqual(self._baslatmalar(kayit),
+                         [(0.0, "yok"), (3.0, "video"), (4.0, "yok"), (7.0, "video")],
+                         "olen video -> GORUNTU YOK HEMEN; oteki baslatmalar >= {:g} s arayla "
+                         "(surec dongusu yok)".format(g.DRM_ASGARI_ARALIK_S))
         self.assertEqual(n, 4)
-        self.assertEqual(uykular.count(g.DRM_ASGARI_OMUR_S), 3, uykular)
         self.assertGreaterEqual(sum(1 for k, m in loglar if k and "Argus" in m), 3, loglar)
         self.assertFalse(any(s.sonlandirildi for s in kayit), "kendiliginden biten surec oldurulmez")
+
+    def test_G7_olen_video_borusu_GORUNTU_YOK_sebebi_rc_ya_da_yayin_sebebi(self):
+        """T228-D2 (T228-D curutucusu, kucuk bulgu): yayin TAZEYKEN video borusu kendiliginden
+        olurse GORUNTU YOK ekraninda 'yayin dogrulaniyor' DEGIL gercek sebep yazar: 'video borusu
+        kendiliginden bitti (rc=N)'. Yayin da bozuksa yayinin kendi sebebi (kok neden) gosterilir.
+        Ekranda '=' izinli karakter degil (_gst_metni) -> 'rc 1'; log ham sebebi tasir."""
+        _n, kayit, loglar, _u = self._kos([CANLI] * 6, omur=0)
+        self.assertEqual(self._baslatmalar(kayit)[:3], [(0.0, "yok"), (3.0, "video"), (4.0, "yok")])
+        metin = kayit[2].argv[-1]
+        self.assertIn('text="GORUNTU YOK - video borusu kendiliginden bitti (rc 1)"', metin)
+        self.assertNotIn("dogrulaniyor", metin)
+        self.assertTrue(any(k and "GORUNTU YOK borusu basladi (video borusu kendiliginden bitti "
+                                  "(rc=1))" in m for k, m in loglar), loglar)
+        _n, kayit, _l, _u = self._kos([CANLI, CANLI, CANLI, CANLI, YOK, YOK], omur=0)
+        self.assertEqual(self._baslatmalar(kayit)[:3], [(0.0, "yok"), (3.0, "video"), (4.0, "yok")])
+        self.assertIn('text="GORUNTU YOK - yayin erisilemiyor"', kayit[2].argv[-1])
+
+    def test_G7_histerezis_tek_taze_yoklama_videoya_DONMEZ_cikis_ANINDA(self):
+        durumlar = [YOK, YOK, YOK, YOK, CANLI, YOK, CANLI, BAYAT, CANLI, CANLI, CANLI, BAYAT, YOK]
+        _n, kayit, _l, _u = self._kos(durumlar)
+        self.assertEqual(self._baslatmalar(kayit), [(0.0, "yok"), (9.0, "video"), (11.0, "yok")],
+                         "t=4 ve t=6'daki TEK taze yoklama videoyu ACMAZ (aralik dolmus olsa da); "
+                         "t=9 ikinci ARDISIK tazede acilir; t=11 ilk BAYAT'ta aralik (2 s < 3 s) "
+                         "beklenmeden kapanir")
+        video, yok2 = kayit[1], kayit[2]
+        self.assertTrue(video.sonlandirildi)
+        self.assertIn("kare 2.4 s eski", yok2.argv[-1])
+
+    def test_G7_cirpinan_yayin_baslatma_sikligi_sinirli(self):
+        durumlar = [YOK, CANLI, CANLI, CANLI, BAYAT, CANLI, CANLI, BAYAT, CANLI, CANLI, CANLI, CANLI]
+        _n, kayit, _l, _u = self._kos(durumlar)
+        b = self._baslatmalar(kayit)
+        self.assertEqual(b, [(0.0, "yok"), (3.0, "video"), (4.0, "yok"), (9.0, "video")],
+                         "t=2 ve t=6'da 2 ardisik taze var ama son baslatmadan < 3 s: video BEKLER")
+        for (t0, _a), (t1, tur) in zip(b, b[1:]):
+            if tur == "video":
+                self.assertGreaterEqual(t1 - t0, g.DRM_ASGARI_ARALIK_S, b)
+
+    def test_G7_donmus_boru_kare_taze_olsa_da_GORUNTU_YOK(self):
+        _n, kayit, loglar, _u = self._kos([CANLI] * 12, nabiz=[0.5, 1.5, 2.5], ilerleme=True)
+        self.assertEqual(self._baslatmalar(kayit), [(0.0, "yok"), (3.0, "video"), (9.0, "yok")],
+                         "son nabiz t=5.5: t=8'de 2.5 s (donmus DEGIL), t=9'da 3.5 s > 3 s -> "
+                         "GORUNTU YOK; t=11'de 2 ardisik taze ama aralik 2 s < 3 s")
+        self.assertTrue(kayit[1].sonlandirildi, "donmus video borusu durdurulmali")
+        self.assertIn("video borusu ilerlemiyor: son tampon 3.5 s once (> 3 s)", kayit[2].argv[-1])
+        self.assertTrue(any(k and "ilerlemiyor" in m for k, m in loglar), loglar)
+
+    def test_G7_hic_nabiz_yoksa_acilis_payindan_sonra_GORUNTU_YOK_ve_DOGRULANACAK(self):
+        _n, kayit, loglar, _u = self._kos([CANLI] * 9, nabiz=[], ilerleme=True)
+        self.assertEqual(self._baslatmalar(kayit), [(0.0, "yok"), (3.0, "video"), (7.0, "yok")],
+                         "acilis payi 3 s: t=6'da 3,0 s (sinir, donmus DEGIL), t=7'de 4,0 s")
+        self.assertIn("acilistan beri 4.0 s tampon yok (> 3 s)", kayit[2].argv[-1])
+        self.assertTrue(any(k and "HIC nabiz" in m and "DOGRULANACAK" in m for k, m in loglar),
+                        loglar)
+
+    def test_G7_surekli_nabiz_video_borusu_surer(self):
+        _n, kayit, loglar, _u = self._kos([CANLI] * 15, nabiz=[0.5 * i for i in range(1, 60)],
+                                          ilerleme=True)
+        self.assertEqual(self._baslatmalar(kayit), [(0.0, "yok"), (3.0, "video")])
+        self.assertFalse(any("ilerlemiyor" in m for _k, m in loglar), loglar)
+
+    def test_G7_saf_karar_tablosu(self):
+        V, Y = g.BORU_VIDEO, g.BORU_YOK
+        # (calisan, son_boru, taze, ardisik, simdi, son_baslatma_t) -> (boru, baslat, guvenlik)
+        tablo = [
+            ((None, None, False, 0, 0.0, None), (Y, True, False)),   # acilis: GORUNTU YOK hemen
+            ((None, None, True, 1, 0.0, None), (Y, True, False)),    # acilis taze ama 1/2 -> YOK
+            ((Y, Y, True, 1, 10.0, 0.0), (Y, False, False)),         # histerezis: 1 taze yetmez
+            ((Y, Y, True, 2, 10.0, 0.0), (V, True, False)),          # 2 ardisik + aralik -> video
+            ((Y, Y, True, 2, 2.9, 0.0), (Y, False, False)),          # aralik dolmadi -> bekle
+            ((Y, Y, True, 2, 3.0, 0.0), (V, True, False)),           # aralik sinirda (>=) serbest
+            ((V, V, True, 9, 0.1, 0.0), (V, False, False)),          # video surer (yeniden acma yok)
+            ((V, V, False, 0, 0.1, 0.0), (Y, True, True)),           # CANLI'dan cikis ANINDA
+            ((None, V, True, 1, 0.1, 0.0), (Y, True, True)),         # olen video -> YOK hemen
+            ((None, Y, False, 0, 1.0, 0.0), (None, False, False)),   # olen YOK: aralik dolmadan bekle
+            ((None, Y, False, 0, 3.0, 0.0), (Y, True, False)),
+            ((None, Y, True, 2, 3.0, 0.0), (V, True, False)),
+            ((Y, Y, False, 0, 50.0, 0.0), (Y, False, False)),        # YOK surer, gereksiz baslatma yok
+        ]
+        for girdi, beklenen in tablo:
+            with self.subTest(girdi=girdi):
+                self.assertEqual(tuple(g.drm_boru_karari(*girdi)), beklenen)
+        self.assertEqual((g.DRM_CANLI_ARDISIK, g.DRM_ASGARI_ARALIK_S, g.DRM_BORU_DONMA_S),
+                         (2, 3.0, 3.0), "gorev tanimi: 2 ardisik taze, >= 3 s aralik, > 3 s donma")
+
+    def test_G7_boru_donmus_mu_sinir_ve_referans(self):
+        self.assertFalse(g.boru_donmus_mu(10.0, 5.0, 7.0), "son nabiz tam 3,0 s once: sinir DEGIL")
+        self.assertTrue(g.boru_donmus_mu(10.01, 5.0, 7.0))
+        self.assertFalse(g.boru_donmus_mu(8.0, 5.0, None), "acilis payi = esik")
+        self.assertTrue(g.boru_donmus_mu(8.5, 5.0, None))
+        self.assertTrue(g.boru_donmus_mu(8.5, 5.0, 4.0), "baslamadan ONCEKI nabiz tazelik UZATMAZ")
+        self.assertFalse(g.boru_donmus_mu(8.5, 5.0, 6.0))
+
+
+def _nabiz_satiri(pts="0:00:01.234567890", ad="nabiz", bosluk="   "):
+    return ("/GstPipeline:pipeline0/GstIdentity:{a}: last-message = chain{b}******* ({a}:sink) "
+            "(1382400 bytes, dts: none, pts: {p}, duration: none, offset: -1, offset_end: -1, "
+            "flags: 00004040 discont tag-memory , meta: none) 0x7f8c00b1c0").format(
+                a=ad, b=bosluk, p=pts)
+
+
+#: `gst-launch-1.0 -v` ciktisi ORNEGI — GStreamer 1.x (gstidentity.c last-message, gst-launch
+#: deep-notify) kaynak bilgisinden KURULDU; Jetson'da OLCULMEDI (GOSTERICI_KURULUM §5
+#: DOGRULANACAK; sahada `--nabiz-sina`).
+GST_V_ORNEK = [
+    "Setting pipeline to PAUSED ...",
+    "Pipeline is live and does not need PREROLL ...",
+    "/GstPipeline:pipeline0/GstJpegDec:jpegdec0.GstPad:src: caps = video/x-raw, "
+    "format=(string)I420, width=(int)1280, height=(int)720",
+    "/GstPipeline:pipeline0/GstIdentity:nabiz.GstPad:src: caps = video/x-raw, "
+    "format=(string)I420, width=(int)1280, height=(int)720",
+    "/GstPipeline:pipeline0/GstIdentity:nabiz: last-message = event   ******* (nabiz:sink) E "
+    "(type: stream-start (10254), GstEventStreamStart, stream-id=(string)chain0, "
+    "flags=(GstStreamFlags)GST_STREAM_FLAG_NONE, group-id=(uint)1;) 0x7f8c001f20",
+    _nabiz_satiri("0:00:01.000000000"),
+    _nabiz_satiri("0:00:01.500000000"),
+    'Got EOS from element "pipeline0".',
+]
+
+
+class NabizAyristirici(unittest.TestCase):
+    def test_G7_nabiz_ayristir_toleransli_ve_secici(self):
+        A = g.nabiz_ayristir
+        self.assertEqual(A(_nabiz_satiri("0:00:01.234567890")), {"pts_s": 1.23456789})
+        self.assertEqual(A(_nabiz_satiri("1:02:03.5"))["pts_s"], 3723.5)
+        for pts in ("none", "99:99:99.999999999"):
+            with self.subTest(pts=pts):
+                self.assertEqual(A(_nabiz_satiri(pts)), {"pts_s": None}, "NONE zaman -> pts yok")
+        # toleransli: tek bosluk, yol yok (yalniz pad adi), CRLF, satir basi ad, chain-list
+        self.assertIsNotNone(A(_nabiz_satiri(bosluk=" ")))
+        self.assertEqual(A("last-message = chain ******* (nabiz:sink) (100 bytes, pts: 0:00:03.5)"
+                           "\r\n"), {"pts_s": 3.5})
+        self.assertIsNotNone(A("nabiz: last-message = chain-list   ******* (nabiz:sink) (...)"))
+        # secici: olay (stream-start / eos), caps (baska eleman ve nabiz pad'i), baska identity,
+        # benzer ad, EOS bildirimi, bos
+        for satir in (GST_V_ORNEK[0], GST_V_ORNEK[2], GST_V_ORNEK[3], GST_V_ORNEK[4],
+                      "/GstPipeline:pipeline0/GstIdentity:nabiz: last-message = event   ******* "
+                      "(nabiz:sink) E (type: eos (28174), ) 0x1",
+                      _nabiz_satiri(ad="identity0"), _nabiz_satiri(ad="nabizci"), GST_V_ORNEK[-1],
+                      "", "nabiz"):
+            with self.subTest(satir=satir[:70]):
+                self.assertIsNone(A(satir))
+
+    def test_G7_nabiz_izleyici_ayni_ya_da_geri_pts_ilerleme_DEGIL(self):
+        loglar = []
+        iz = g.NabizIzleyici(log=lambda m, kirmizi=False: loglar.append(m))
+        self.assertFalse(iz.besle(GST_V_ORNEK[0], simdi=1.0))
+        self.assertIsNone(iz.son())
+        self.assertTrue(iz.besle(_nabiz_satiri("0:00:01.0"), simdi=2.0))
+        self.assertEqual(iz.son(), 2.0)
+        self.assertFalse(iz.besle(_nabiz_satiri("0:00:01.0"), simdi=3.0), "ayni pts ilerleme DEGIL")
+        self.assertFalse(iz.besle(_nabiz_satiri("0:00:00.5"), simdi=3.5), "geri pts ilerleme DEGIL")
+        self.assertEqual(iz.son(), 2.0)
+        self.assertTrue(iz.besle(_nabiz_satiri("0:00:01.5"), simdi=4.0))
+        self.assertTrue(iz.besle(_nabiz_satiri("none"), simdi=5.0), "pts'siz nabiz ilerleme sayilir")
+        self.assertFalse(iz.besle(GST_V_ORNEK[4], simdi=6.0), "olay satiri nabiz DEGIL")
+        self.assertEqual(iz.son(), 5.0)
+        o = iz.ozet()
+        self.assertEqual((o["nabiz"], o["son_pts"]), (3, 1.5))
+        self.assertIn("gst: Setting pipeline to PAUSED ...", loglar)
+        self.assertEqual(sum("ilk nabiz" in m for m in loglar), 1, loglar)
+
+    def test_G7_nabiz_izleyici_gercek_boruyu_EOFa_kadar_okur(self):
+        satirlar = [GST_V_ORNEK[0]] + [_nabiz_satiri("0:00:0{}.000000000".format(i))
+                                       for i in range(1, 5)]
+        kod = ("import sys, time\n"
+               "for s in {!r}:\n"
+               "    sys.stdout.write(s + '\\n'); sys.stdout.flush(); time.sleep(0.05)\n").format(
+                   satirlar)
+        p = subprocess.Popen([sys.executable, "-B", "-c", kod], stdout=subprocess.PIPE, text=True,
+                             encoding="utf-8", errors="replace", bufsize=1)
+        iz = g.NabizIzleyici(log=_sessiz)
+        iplik = iz.akimi_oku(p.stdout)
+        iplik.join(30)
+        self.assertFalse(iplik.is_alive(), "okuyucu iplik EOF'ta bitmeli")
+        self.assertEqual(p.wait(30), 0)
+        p.stdout.close()
+        o = iz.ozet()
+        self.assertEqual((o["satir"], o["nabiz"], o["son_pts"]), (5, 4, 4.0))
+
+    def test_G7_nabiz_sina_cli_eslesti_0_eslesmedi_1(self):
+        def kos(girdi):
+            return subprocess.run([sys.executable, "-B", str(KANONIK), "--nabiz-sina"],
+                                  input=girdi, capture_output=True, text=True, encoding="utf-8",
+                                  errors="replace", timeout=60)
+        p = kos("\n".join(GST_V_ORNEK) + "\n")
+        self.assertEqual(p.returncode, 0, p.stdout + p.stderr)
+        self.assertIn("NABIZ_SINA: ESLESTI — 8 satir, 2 nabiz", p.stdout)
+        p = kos(GST_V_ORNEK[0] + "\n" + GST_V_ORNEK[4] + "\n")
+        self.assertEqual(p.returncode, g.CIKIS_NABIZ_YOK, p.stdout + p.stderr)
+        self.assertIn("NABIZ_SINA: ESLESMEDI — 2 satir", p.stdout)
+        self.assertIn("DOGRULANACAK", p.stdout)
+        self.assertIn("\n  " + GST_V_ORNEK[0] + "\n", p.stdout, "ilk taninmayan satirlar basilmali")
+
+    def test_G7_nabiz_sina_zamanlama_ZAMANINDA_0_TOPLU_1(self):
+        satirlar = "".join(_nabiz_satiri("0:00:{:012.9f}".format(0.2 * i)) + "\n" for i in range(20))
+        for adim_s, beklenen, parca in (
+                (0.2, 0, "ZAMANINDA: varis yayilimi 3.80 s / pts yayilimi 3.80 s"),
+                (0.0, g.CIKIS_NABIZ_YOK, "NABIZ_SINA: TOPLU"),
+                (0.05, g.CIKIS_NABIZ_YOK, "TAMPONLU")):
+            with self.subTest(adim_s=adim_s):
+                saat = [0.0]
+
+                def saat_oku(adim_s=adim_s):
+                    saat[0] += adim_s
+                    return saat[0]
+
+                cikti = []
+                self.assertEqual(g.nabiz_sina(io.StringIO(satirlar), cikti=cikti.append,
+                                              saat=saat_oku), beklenen, cikti)
+                self.assertIn(parca, "\n".join(cikti))
+        self.assertEqual((g.NABIZ_SINA_ASGARI_PTS_S, g.NABIZ_SINA_VARIS_ORANI), (1.0, 0.5))
+
+    def test_G7_nabiz_sina_gercek_boru_ZAMANINDA_0_TOPLU_1(self):
+        satirlar = [_nabiz_satiri("0:00:{:012.9f}".format(0.2 * i)) for i in range(11)]
+        for bekleme, beklenen, parca in ((0.2, 0, "ZAMANINDA"), (0.0, g.CIKIS_NABIZ_YOK, "TOPLU")):
+            with self.subTest(bekleme=bekleme):
+                cocuk = ("import sys, time\n"
+                         "for s in {!r}:\n"
+                         "    sys.stdout.write(s + '\\n'); sys.stdout.flush(); time.sleep({})\n"
+                         ).format(satirlar, bekleme)
+                p = subprocess.Popen([sys.executable, "-B", "-c", cocuk], stdout=subprocess.PIPE,
+                                     text=True, encoding="utf-8", errors="replace", bufsize=1)
+                cikti = []
+                try:
+                    kod = g.nabiz_sina(p.stdout, cikti=cikti.append)
+                finally:
+                    p.stdout.close()
+                    p.wait(30)
+                self.assertEqual(kod, beklenen, cikti)
+                self.assertIn(parca, "\n".join(cikti))
+
+
+class _SahteGstCiktisi:
+    """`gst-launch-1.0 -v` stdout'u yerine (readline). Once iki baslik satiri, sonra nabiz satirlari:
+    `aralik_s` verilirse surekli (her aralikta bir); verilmezse `adet` nabizdan sonra boru DONAR
+    (readline surec durdurulana kadar bekler, sonra EOF)."""
+
+    def __init__(self, kapandi, aralik_s=None, adet=2):
+        self.kapandi = kapandi
+        self.aralik_s = aralik_s
+        self.adet = adet
+        self.baslik = [GST_V_ORNEK[0], GST_V_ORNEK[3]]
+        self.n = 0
+
+    def readline(self):
+        if self.baslik:
+            return self.baslik.pop(0) + "\n"
+        if self.aralik_s is None and self.n >= self.adet:
+            self.kapandi.wait(30)
+            return ""
+        if self.kapandi.is_set() or (self.aralik_s is not None and self.kapandi.wait(self.aralik_s)):
+            return ""
+        self.n += 1
+        return _nabiz_satiri("0:00:{:012.9f}".format(self.n * 0.1)) + "\n"
+
+
+class _SahtePopen:
+    """subprocess.Popen yerine (drm_kos `baslat=`): argv/kwargs kaydeder; stdout=PIPE istenirse sahte
+    -v ciktisi verir. Surec kendiliginden bitmez."""
+
+    def __init__(self, argv, kayit, aralik_s=None, **kw):
+        self.argv = list(argv)
+        self.kw = kw
+        self.t = time.monotonic()
+        self.returncode = None
+        self.sonlandirildi = False
+        self._kapandi = threading.Event()
+        self.stdout = (_SahteGstCiktisi(self._kapandi, aralik_s)
+                       if kw.get("stdout") == subprocess.PIPE else None)
+        kayit.append(self)
+
+    def poll(self):
+        return self.returncode
+
+    def terminate(self):
+        self.sonlandirildi = True
+        self.returncode = -15
+        self._kapandi.set()
+
+    def kill(self):
+        self.returncode = -9
+        self._kapandi.set()
+
+    def wait(self, timeout=None):
+        return self.returncode
+
+
+class DrmKosNabizBaglantisi(unittest.TestCase):
+    """drm_kos: GERCEK KareCekici + sahte HTTP yayini (her istekte yeni kare -> hep CANLI) + sahte
+    Popen. Video argv'si -v/identity tasir, stdout BORUYA alinir, NabizIzleyici gozetmene baglidir.
+    Sureler hiz icin kucultulur (modul sabitleri; drm_kos onlari CAGRI aninda okur, geri yuklenir)."""
+
+    KUCUK = (("DRM_YOKLAMA_S", 0.05), ("DRM_ASGARI_ARALIK_S", 0.3), ("DRM_BORU_DONMA_S", 0.6))
+
+    def setUp(self):
+        self.y = _SahteYayin()
+        self.addCleanup(self.y.kapat)
+        self.y.otomatik_sira = True
+        for ad, deger in self.KUCUK:
+            self.addCleanup(setattr, g, ad, getattr(g, ad))
+            setattr(g, ad, deger)
+
+    def _kos(self, aralik_s, sure, stdbuf_yolu="", kayit=None):
+        kayit = [] if kayit is None else kayit
+        args = g._parser().parse_args(["--kip", "drm", "--kaynak", self.y.kok, "--sure", str(sure)])
+        out, err = io.StringIO(), io.StringIO()
+        with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+            kod = g.drm_kos(args, baslat=lambda argv, **kw: _SahtePopen(argv, kayit, aralik_s, **kw),
+                            gst_yolu="gst-launch-1.0", stdbuf_yolu=stdbuf_yolu)
+        return kod, kayit, out.getvalue() + err.getvalue()
+
+    def test_G7_drm_kos_ikinci_video_borusu_YENI_nabiz_izleyicisiyle_surer(self):
+        """NG (T228-D curutucusu; REVIEW_LOG D-453): yayin kisa sure 503 olup geri gelince IKINCI
+        video borusu acilir; -v ciktisinda pts (gercek gst-launch gibi) yeniden ~0'dan baslar.
+        Nabiz izleyicisi borular arasinda PAYLASILIRSA 'pts > son_pts' saglanmaz: saglikli ikinci
+        boru 'donmus' sayilir, GORUNTU YOK <-> video dongusu. Dogru kod: her video borusuna YENI
+        NabizIzleyici; ikinci boru cikisa kadar surer. Ilk boru >= ILK_NABIZ nabiz basar (son pts
+        >= 2,4 s) -> paylasimli izleyicide ikinci boru >= 25 x 0,05 s = 1,25 s ilerlemez
+        (> donma esigi 0,6 s): mutant zamanlamadan bagimsiz duser."""
+        ILK_NABIZ, IKINCI_ASGARI = 24, 20
+        kayit, hata = [], []
+
+        def video_nabzi(i, n):
+            return (len(kayit) > i and _tur(kayit[i]) == "video" and kayit[i].stdout is not None
+                    and kayit[i].stdout.n >= n)
+
+        def senaryo():
+            try:
+                if not _bekle(lambda: video_nabzi(1, ILK_NABIZ), tavan_s=15.0, adim_s=0.01):
+                    hata.append("ilk video borusu {} nabza ulasmadi".format(ILK_NABIZ))
+                    return
+                self.y.kod, self.y.son_hata = 503, "kaynak acilamadi"
+                if not _bekle(lambda: len(kayit) >= 3, tavan_s=10.0, adim_s=0.01):
+                    hata.append("yayin 503 iken GORUNTU YOK borusu acilmadi")
+            finally:
+                self.y.kod, self.y.son_hata = 200, None
+
+        iplik = threading.Thread(target=senaryo, daemon=True)
+        iplik.start()
+        kod, _ayni, log = self._kos(aralik_s=0.05, sure=4.5, kayit=kayit)
+        iplik.join(30)
+        self.assertEqual(hata, [], log)
+        self.assertEqual(kod, g.CIKIS_TAMAM, log)
+        self.assertEqual([_tur(s) for s in kayit], ["yok", "video", "yok", "video"],
+                         "ikinci video borusu cikisa kadar SURMELI (donmus sayilmamali)\n" + log)
+        self.assertTrue(kayit[1].sonlandirildi, "yayin 503 olunca ilk video borusu durdurulmali")
+        self.assertIn("yayin HTTP 503", kayit[2].argv[-1])
+        self.assertEqual(kayit[3].argv, g.drm_video_argv("gst-launch-1.0", self.y.kok))
+        self.assertGreaterEqual(kayit[3].stdout.n, IKINCI_ASGARI,
+                                "gozlem penceresi kisa: ikinci boru donma esiginden (0,6 s) uzun "
+                                "gozlenmeli\n" + log)
+        self.assertNotIn("ilerlemiyor", log)
+        self.assertEqual(log.count("ilk nabiz"), 2,
+                         "her video borusunun KENDI izleyicisi ilk nabzini loglar\n" + log)
+
+    def test_G7_drm_kos_donmus_boru_GORUNTU_YOK_borusuna_gecer(self):
+        kod, kayit, log = self._kos(aralik_s=None, sure=2.5)
+        self.assertEqual(kod, g.CIKIS_TAMAM, log)
+        self.assertGreaterEqual(len(kayit), 3, log)
+        self.assertEqual([_tur(s) for s in kayit[:3]], ["yok", "video", "yok"], log)
+        video, yok2 = kayit[1], kayit[2]
+        self.assertEqual(video.argv, g.drm_video_argv("gst-launch-1.0", self.y.kok))
+        self.assertEqual(video.kw.get("stdout"), subprocess.PIPE, "-v ciktisi boruya alinmali")
+        self.assertIsNone(kayit[0].stdout, "GORUNTU YOK borusunun ciktisi boruya ALINMAZ")
+        self.assertTrue(video.sonlandirildi)
+        self.assertIn("video borusu ilerlemiyor", yok2.argv[-1])
+        gecikme = yok2.t - video.t
+        self.assertGreater(gecikme, 0.6, "esikten ONCE kapatildi")
+        self.assertLess(gecikme, 0.6 + 1.0, "donmus boru gec algilandi")
+        self.assertIn("ilk nabiz", log)
+        self.assertIn("gst: Setting pipeline to PAUSED ...", log)
+
+    def test_G7_drm_kos_surekli_nabiz_video_surer(self):
+        kod, kayit, log = self._kos(aralik_s=0.05, sure=2.0)
+        self.assertEqual(kod, g.CIKIS_TAMAM, log)
+        self.assertEqual([_tur(s) for s in kayit], ["yok", "video"], log)
+        self.assertNotIn("ilerlemiyor", log)
+        self.assertTrue(kayit[1].sonlandirildi, "cikista video borusu durdurulur")
+        self.assertIn("[UYARI] stdbuf yok", log)
+
+    def test_G7_drm_kos_stdbuf_onekli_video_borusu(self):
+        kod, kayit, log = self._kos(aralik_s=0.05, sure=1.2, stdbuf_yolu="/usr/bin/stdbuf")
+        self.assertEqual(kod, g.CIKIS_TAMAM, log)
+        self.assertEqual([_tur(s) for s in kayit], ["yok", "video"], log)
+        video = kayit[1]
+        self.assertEqual(video.argv, ["/usr/bin/stdbuf", "-oL"] +
+                         g.drm_video_argv("gst-launch-1.0", self.y.kok))
+        self.assertEqual(video.kw.get("stdout"), subprocess.PIPE)
+        self.assertEqual(kayit[0].argv[0], "gst-launch-1.0", "GORUNTU YOK borusuna onek GEREKMEZ")
+        self.assertNotIn("stdbuf yok", log)
+        self.assertIn("ilk nabiz", log)
 
 
 # ── G8 ────────────────────────────────────────────────────────────────────────
@@ -705,7 +1165,7 @@ class GostericiDosyalari(unittest.TestCase):
             self.assertIn(parca, metin)
 
     def test_G8_kurulum_belgesi_kapsami(self):
-        m = KURULUM.read_text(encoding="utf-8")
+        m = _cizili_ayikla(KURULUM.read_text(encoding="utf-8"))   # D-453: cizili metin sayilmaz
         for parca in ("AutomaticLoginEnable=true", "WaylandEnable=false", "~/.config/autostart",
                       "DisplayPort", "DP→HDMI", "Mini HDMI", "192.168.144.25", "setip.txt",
                       "rtsp://192.168.144.25:8554/main.264", "Camera 1", "EDID", "Argus", "3 fps",
@@ -714,6 +1174,124 @@ class GostericiDosyalari(unittest.TestCase):
             self.assertIn(parca, m)
         for dosya in (DESKTOP, DRM_BIRIM, XORG):
             self.assertIn(dosya.name, m)
+
+    def test_G8_kurulum_T228D_kodek_celiskisi_nabiz_DOGRULANACAK_eski_komut_cizili(self):
+        ham = KURULUM.read_text(encoding="utf-8")
+        m = _cizili_ayikla(ham)   # D-453: YENI icerik cizili araliklar AYIKLANMIS metinde aranir
+        kodlayici = re.search(r"(?m)^\| Kodlayıcı \|.*$", m)
+        self.assertIsNotNone(kodlayici, "§1 Kodlayıcı satiri yok")
+        for parca in ("H.264/H.265 çelişkili", "TASARIM §5", "V1.1", "DOĞRULANACAK"):
+            self.assertIn(parca, kodlayici.group(0))
+        bol5 = _kurulum_bolumu(m, "## 5. DRM kipi", "\n## 6.")
+        self.assertIn(g.komut_metni(g.drm_video_argv("gst-launch-1.0")), bol5,
+                      "§5 video borusu komutu kodla (--kuru) AYNI olmali")
+        for parca in ("identity name=nabiz silent=false", "--nabiz-sina", "2 ardışık", "≥ 3 s",
+                      "> 3 s", "nabız satırı biçimi Jetson'da ÖLÇÜLEMEDİ — DOĞRULANACAK",
+                      "ZAMANINDA", "TOPLU", "`drm_kos` video borusunu `stdbuf -oL` önekiyle koşar",
+                      "`video borusu kendiliginden bitti (rc N)`"):
+            self.assertIn(parca, bol5)
+        self.assertRegex(m, r'(?m)^\| drm kipinde kırmızı "video borusu kendiliginden bitti '
+                            r'\(rc N\)" \|', "§8 sorun giderme satiri (T228-D2)")
+        bol9 = _kurulum_bolumu(m, "## 9. ÖLÇÜLEMEDİ")
+        for parca in ("`gst-launch-1.0 -v` nabız satırı biçimi", "`stdbuf -oL`",
+                      "Dönüştürücünün canlı kodeki (H.264/H.265 çelişkili)"):
+            self.assertIn(parca, bol9, "§9 OLCULEMEDI maddesi dusmemeli ya da cizilmemeli")
+        # D-453/D-454: olculmemis GECTI yok — NORMALLESTIRILMIS metinde aranir ('tutar', karma yazim,
+        # kalin parcali ya da yumusak tireli 'doğrulandı' da sayilir)
+        for ad, metin in (("§1 Kodlayıcı", kodlayici.group(0)), ("§5", bol5), ("§9", bol9)):
+            bulunan = _gecti_bul(metin)
+            self.assertIsNone(bulunan, "{}: '{}' — Jetson'da OLCULMEDI; olculunce bu kilit KANITLA "
+                              "(§4 sonuc sutunu) guncellenir".format(ad, bulunan))
+        self.assertRegex(m, r"(?m)^\| 9 \|.*--nabiz-sina.*\| ÖLÇÜLECEK \|$")
+        # eski komut SILINMEDI, cizildi + tarih (runbook kurali) — HAM metinde denetlenir
+        self.assertRegex(_kurulum_bolumu(ham, "## 5. DRM kipi", "\n## 6."),
+                         r"~~10 Eylül \(T228\): `gst-launch-1\.0 -e 'souphttpsrc[^`]*`~~")
+
+    def test_G8_D453_D454_olculmemis_hukum_celiski_eski_komut(self):
+        """D-453/D-454 (T228-D2): kilitli hukumlere CIZIP ya da BASKA SOZLE donulemez. Metin cizili
+        araliklar ayiklanip NORMALLESTIRILIR (_normal: tipografik kesme/tire, kalin/italik, yumusak
+        tire, Turkce harf katlamasi).
+        (1) Belge GENELINDE olculmemis GECTI yok — tek istisna ust kural cumlesi 'ÖLÇÜLEMEDİ ≠ GEÇTİ'.
+        (2) Ust hukum 'hiçbiri Jetson'da koşulmadı'; §4 basligi 'hepsi şu an ÖLÇÜLEMEDİ'; §4
+            tablosunun 1-9. adimlarinin sonuc hucresi TAM 'ÖLÇÜLECEK'.
+        (3) §5'te CELISKILI ikinci hukum yok: 'N ardışık', '≥ N s' / '>= N s', '> N s' sayilarinin
+            HEPSI koddaki on kayitli sabitlerle ayni (kalin sayi da sayilir).
+        (4) Eski (nabizsiz) video borusu §5 CANLI metninde yok: gst-launch + souphttpsrc tasiyan her
+            satirda '-v' ve identity nabzi var (tipografik tirnakli kopya da yakalanir)."""
+        m = _cizili_ayikla(KURULUM.read_text(encoding="utf-8"))
+        n = _normal(m)
+        kural = _normal("ÖLÇÜLEMEDİ ≠ GEÇTİ")
+        self.assertIn(kural, n, "ust kural cumlesi 'ÖLÇÜLEMEDİ ≠ GEÇTİ' dusmemeli")
+        bulunan = _gecti_bul(n.replace(kural, ""))
+        self.assertIsNone(bulunan, "belgede olculmemis hukum '{}' — Jetson'da hicbir adim KOSULMADI; "
+                          "olculunce §4 sonuc sutunu ve bu kilit KANITLA guncellenir".format(bulunan))
+        self.assertIn("hiçbiri Jetson'da koşulmadı", m, "ust hukum cizilmemeli/degismemeli")
+        bol4 = _kurulum_bolumu(m, "## 4. Doğrulama sırası")
+        self.assertIn("hepsi şu an ÖLÇÜLEMEDİ", bol4.split("\n", 1)[0], "§4 basligi")
+        sonuclar = {int(s.group(1)): s.group(2) for s in
+                    re.finditer(r"(?m)^\|\s*(\d+)\s*\|.*\|([^|\n]*)\|[ \t]*$", bol4)}
+        self.assertTrue(set(range(1, 10)) <= set(sonuclar), "§4 adimlari: {}".format(sorted(sonuclar)))
+        for no, sonuc in sorted(sonuclar.items()):
+            self.assertEqual(_normal(sonuc).strip(), "olculecek", "§4 adim {} sonuc hucresi '{}' — "
+                             "tam ÖLÇÜLECEK olmali".format(no, sonuc.strip()))
+        n5 = _normal(_kurulum_bolumu(m, "## 5. DRM kipi", "\n## 6."))
+        sayi = r"(\d+(?:[.,]\d+)?)"
+        for ad, kalip, sabit in (
+                ("'N ardışık' (DRM_CANLI_ARDISIK)", sayi + r"\s*ardisik", g.DRM_CANLI_ARDISIK),
+                ("'≥ N s' (DRM_ASGARI_ARALIK_S)", r"(?:≥|>=)\s*" + sayi + r"\s*s(?![a-z])",
+                 g.DRM_ASGARI_ARALIK_S),
+                ("'> N s' (DRM_BORU_DONMA_S)", r"(?<![<>=≥≤!-])>(?!=)\s*" + sayi + r"\s*s(?![a-z])",
+                 g.DRM_BORU_DONMA_S)):
+            degerler = [float(x.replace(",", ".")) for x in re.findall(kalip, n5)]
+            self.assertTrue(degerler, "§5'te {} hukmu yok".format(ad))
+            self.assertEqual(set(degerler), {float(sabit)},
+                             "§5'te CELISKILI {} hukmu: {} (kod {})".format(ad, degerler, sabit))
+        borular = [s for s in n5.splitlines() if "gst-launch" in s and "souphttpsrc" in s]
+        self.assertTrue(borular, "§5 video borusu komutu yok")
+        for s in borular:
+            self.assertIn("gst-launch-1.0 -v ", s, "§5 CANLI metinde nabizsiz (eski) video borusu: " + s)
+            self.assertIn("identity name=nabiz silent=false", s, "§5 CANLI metinde nabizsiz boru: " + s)
+
+
+#: D-453 (mimar kurali, 10 Eylul): markdown belge kilitleri YENI icerigi cizili (~~...~~) araliklar
+#: AYIKLANMIS metinde arar — ustu cizilen not ya da OLCULEMEDI/DOGRULANACAK maddesi kilidi GECMEZ;
+#: eski metnin cizili durdugunu denetleyen kilit HAM metinde kalir.
+def _cizili_ayikla(metin):
+    return re.sub(r"~~.*?~~", "", metin, flags=re.S)
+
+
+def _kurulum_bolumu(metin, baslik, bitis="\n## "):
+    return metin.split(baslik, 1)[1].split(bitis, 1)[0]
+
+
+#: D-454 (T221-D2 curutucusu: 'tutar', tipografik kesme ’, 'tamamı', kalin sayilar kilidi deldi):
+#: yasak/celiski aramalari NORMALLESTIRILMIS metinde yapilir — sifir genislikli karakter ve yumusak
+#: tire ayiklanir; NFKD + birlesik isaretler atilir (ğ->g, ş->s, İ->I ...), ı->i; kesme/tirnak
+#: (’ ‘ ‚ ‛ ´ ` ʼ ʹ ′) -> ', tireler (‐ ‑ ‒ – — ― −) -> -, vurgu (* _) ayiklanir, kucuk harf.
+#: '≠' NFKD'de '=' + U+0338'e ayrisir, isaret atilinca '=' olurdu (anlam TERSINE doner) -> once '!='.
+_SIFIR_GENISLIK = dict.fromkeys(map(ord, "\u00ad\u200b\u200c\u200d\u200e\u200f\u2060\ufeff"))
+_KATLA = str.maketrans({**{c: "'" for c in "\u2018\u2019\u201a\u201b\u00b4`\u02bc\u02b9\u2032"},
+                        **{c: "-" for c in "\u2010\u2011\u2012\u2013\u2014\u2015\u2212"},
+                        "\u0131": "i", "*": None, "_": None})
+
+
+def _normal(metin):
+    s = metin.translate(_SIFIR_GENISLIK).replace("\u2260", "!=")  # '≠' (U+2260)
+    s = "".join(c for c in unicodedata.normalize("NFKD", s) if not unicodedata.combining(c))
+    return s.translate(_KATLA).lower()
+
+
+#: Olculmemis GECTI kalibi (D-453/D-454) — _normal() ciktisi uzerinde: OLCULEMEDI/DOGRULANACAK
+#: tasiyan yerlerde bu hukumler ancak Jetson olcumu KANITLA islenince (kilit de o zaman guncellenir)
+#: yazilabilir. 'tutar/tuttu/tutuyor' D-454 (T221-D2 'doğrulandı: tutar') ile eklendi.
+_GECTI_KALIBI = re.compile(r"(?<![a-z0-9])(?:dogrulan(?:di|mistir)|gec(?:ti|mistir)|"
+                           r"olcul(?:du|mustur)|tut(?:ar|tu|uyor)|onaylandi)(?![a-z0-9])")
+
+
+def _gecti_bul(metin):
+    """Normallestirilmis metinde ilk olculmemis GECTI hukmu (yoksa None)."""
+    b = _GECTI_KALIBI.search(_normal(metin))
+    return b.group(0) if b else None
 
 
 # ── G9 ────────────────────────────────────────────────────────────────────────
@@ -872,6 +1450,169 @@ class JetsonBaslatGosterici(unittest.TestCase):
         self.assertEqual(kaynak.hostname, "127.0.0.1")
         self.assertRegex(metin, r'(?m)^GOSTERICI_BETIK="' + re.escape(KANONIK.name) + '"$')
         self.assertIn('GOSTERICI_KIP="${GOSTERICI_KIP:-kapali}"', metin)
+
+
+# ── G11 ───────────────────────────────────────────────────────────────────────
+class _SahteCv:
+    """cv2 yerine (x11_kos `cv=`): pencere ACMAZ. imshow tuvali (ve cizim anindaki saati) saklar;
+    waitKey `adim(cizilen_tuval_sayisi)`'ni cagirir ve onun tus kodunu dondurur."""
+    error = cv2.error
+    WINDOW_NORMAL = cv2.WINDOW_NORMAL
+    WND_PROP_FULLSCREEN = cv2.WND_PROP_FULLSCREEN
+    WINDOW_FULLSCREEN = cv2.WINDOW_FULLSCREEN
+
+    def __init__(self, adim, saat_oku=time.monotonic):
+        self.adim = adim
+        self.saat_oku = saat_oku
+        self.tuvaller = []
+        self.cizim_saatleri = []
+        self.cagrilar = []
+
+    def namedWindow(self, ad, bayrak):
+        self.cagrilar.append(("namedWindow", ad, bayrak))
+
+    def setWindowProperty(self, ad, ozellik, deger):
+        self.cagrilar.append(("setWindowProperty", ad, ozellik, deger))
+
+    def imshow(self, ad, tuval):
+        self.cagrilar.append(("imshow", ad))
+        self.tuvaller.append(np.array(tuval, copy=True))
+        self.cizim_saatleri.append(self.saat_oku())
+
+    def waitKey(self, _ms):
+        return self.adim(len(self.tuvaller))
+
+    def destroyAllWindows(self):
+        self.cagrilar.append(("destroyAllWindows",))
+
+
+class _SahteCekici:
+    """KareCekici arayuzu (iplik YOK); anlik() testin yazdigi durumu dondurur."""
+
+    def __init__(self, kaynak, hz):
+        self.kare_url = kaynak + kk.KARE_YOLU
+        self.hz = hz
+        self.durum = (None, None, None, None)
+        self.olaylar = []
+
+    def start(self):
+        self.olaylar.append("start")
+
+    def anlik(self):
+        return self.durum
+
+    def durdur(self):
+        self.olaylar.append("durdur")
+
+    def join(self, _t=None):
+        self.olaylar.append("join")
+
+    def sayaclar(self):
+        return {"istek": 0, "basari": 0, "yeni_kare": 0, "hata": 0}
+
+
+class X11Dongusu(unittest.TestCase):
+    """T228-D: x11_kos DONGUSU sahte cv2 ile (pencere ACILMAZ). Kilitlenen cagri noktasi:
+    dongudeki `ekran_durumu(saat(), son_t, cekme_hatasi)` — hata None'lanirsa (mutasyon MG) DUSER."""
+
+    HATALAR = ("yayin HTTP 503: kaynak acilamadi (deneme 3)",
+               "yayin erisilemiyor (http://127.0.0.1:8081/kare.jpg): [WinError 10061] baglanti "
+               "reddedildi")
+
+    def test_G11_x11_dongusu_CANLI_iken_503_ya_da_erisilemez_ILK_cizim_GORUNTU_YOK(self):
+        for hata in self.HATALAR:
+            with self.subTest(hata=hata[:30]):
+                saat = [100.0]
+                kare = _yesil_kare()
+                tut = {}
+
+                def uret(kaynak, hz):
+                    c = tut["c"] = _SahteCekici(kaynak, hz)
+                    c.durum = (kare, saat[0] - 0.1, None, "1")          # taze kare: CANLI
+                    return c
+
+                def adim(n, hata=hata):                                  # n: cizilen tuval sayisi
+                    saat[0] += 0.2
+                    c = tut["c"]
+                    if n < 3:
+                        c.durum = (kare, saat[0], None, str(n + 1))      # her cizimde yeni kare
+                    elif n == 3:
+                        c.durum = (kare, c.durum[1], hata, c.durum[3])   # yayin 503/erisilemez;
+                    else:                                                # son kare cekicide KALIR
+                        return ord("q")
+                    return -1
+
+                sahte = _SahteCv(adim, saat_oku=lambda: saat[0])
+                d = tempfile.mkdtemp(prefix="navitas_t228d_x11_")
+                self.addCleanup(shutil.rmtree, d, True)
+                args = g._parser().parse_args(["--tuval-kaydi", d])
+                out, err = io.StringIO(), io.StringIO()
+                with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+                    kod = g.x11_kos(args, ortam={}, platform="win32", saat=lambda: saat[0],
+                                    cv=sahte, cekici_uret=uret)
+                self.assertEqual(kod, g.CIKIS_TAMAM, err.getvalue())
+                self.assertEqual(len(sahte.tuvaller), 4)
+                for t in sahte.tuvaller[:3]:
+                    self.assertEqual(_piksel(t, 360, 640), YESIL, "CANLI iken kare gosterilmeli")
+                ilk = sahte.tuvaller[3]
+                self.assertEqual(_piksel(ilk, 5, 5), g.KIRMIZI_ZEMIN,
+                                 "hatadan sonraki ILK cizim kirmizi GORUNTU YOK degil")
+                self.assertEqual(_yesil_piksel(ilk), 0, "GORUNTU YOK ekraninda eski kare pikseli var")
+                # MG duyarliligi: ayni anda hata yok sayilsaydi ekran CANLI olurdu (kare 0,2 s)
+                self.assertEqual(g.ekran_durumu(sahte.cizim_saatleri[3], tut["c"].durum[1],
+                                                None).durum, g.DURUM_CANLI)
+                self.assertIn("ekran CANLI -> GORUNTU_YOK ({})".format(hata), err.getvalue())
+                self.assertEqual(sorted(os.listdir(d)),
+                                 ["01_CANLI.jpg", "02_GORUNTU_YOK.jpg", "son.jpg"])
+                self.assertEqual(tut["c"].olaylar, ["start", "durdur", "join"])
+                self.assertEqual(sahte.cagrilar[:2],
+                                 [("namedWindow", g.PENCERE_ADI, cv2.WINDOW_NORMAL),
+                                  ("setWindowProperty", g.PENCERE_ADI, cv2.WND_PROP_FULLSCREEN,
+                                   cv2.WINDOW_FULLSCREEN)])
+                self.assertEqual(sahte.cagrilar[-1], ("destroyAllWindows",))
+
+    def test_G11_x11_dongusu_gercek_cekici_gercek_HTTP_CANLI_sonra_503(self):
+        y = _SahteYayin()
+        self.addCleanup(y.kapat)
+        y.otomatik_sira = True
+        tut = {}
+
+        def uret(kaynak, hz):
+            tut["c"] = g.KareCekici(kaynak, hz=hz, log=_sessiz)
+            return tut["c"]
+
+        iz = {"faz": 0, "n_hata": None, "yas": None, "bitis": time.monotonic() + 15.0}
+
+        def adim(n):
+            if time.monotonic() > iz["bitis"]:
+                return ord("q")
+            if iz["faz"] == 0:
+                if _yesil_piksel(sahte.tuvaller[-1]) > 1000:            # CANLI cizildi
+                    y.otomatik_sira = False
+                    y.kod, y.son_hata = 503, "kaynak acilamadi (deneme 3)"
+                    c = tut["c"]
+                    _bekle(lambda: c.anlik()[2] is not None, 3.0, 0.005)
+                    iz["yas"] = time.monotonic() - c.anlik()[1]
+                    iz["n_hata"], iz["faz"] = n, 1
+                else:
+                    time.sleep(0.02)
+                return -1
+            return ord("q")                                             # hatadan sonra TEK cizim
+
+        sahte = _SahteCv(adim)
+        args = g._parser().parse_args(["--kaynak", y.kok, "--hz", "20"])
+        out, err = io.StringIO(), io.StringIO()
+        with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+            kod = g.x11_kos(args, ortam={}, platform="win32", cv=sahte, cekici_uret=uret)
+        self.assertEqual(kod, g.CIKIS_TAMAM, err.getvalue())
+        self.assertEqual(iz["faz"], 1, "CANLI cizim hic olmadi: " + err.getvalue())
+        self.assertEqual(len(sahte.tuvaller), iz["n_hata"] + 1, "hatadan sonra tam BIR cizim")
+        self.assertLess(iz["yas"], g.BAYAT_ESIGI_S, "MG duyarliligi: hata aninda kare taze olmali")
+        ilk = sahte.tuvaller[iz["n_hata"]]
+        self.assertEqual(_piksel(ilk, 5, 5), g.KIRMIZI_ZEMIN)
+        self.assertEqual(_yesil_piksel(ilk), 0, "GORUNTU YOK ekraninda eski kare pikseli var")
+        self.assertIn("HTTP 503", err.getvalue())
+        self.assertFalse(tut["c"].is_alive(), "cekici iplik durdurulmali")
 
 
 if __name__ == "__main__":

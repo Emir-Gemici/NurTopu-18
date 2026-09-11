@@ -539,6 +539,8 @@ ms), `monotonic_s`, `oturum`, `olay`. Aşağıdaki alanlar bunlara **eklenir**.
 | `KRONOMETRE_BITTI` | İHA indi · HB temas · takım hazır | `kron`, `sure_s`, `limit_s`, `asim` |
 | `UI_OLAYI` | `_logla` ile günlüğe yazılan HER satır (ekranda görünen ile kayıt ayrışmasın) | `mesaj`, `seviye` |
 
+**`KAMERA_KANIT.kaynak` (T226 · D-443, 10 Eylül):** `kaynak` = kare URL'si [+ ` [<etiket>]`] — `yks_gui --kamera-etiket` verildiyse `"http://127.0.0.1:8080/kare.jpg [MK15 · HDMI · yakalama]"` biçimi (`yks_gui.kamera_kanit_kaynagi`), verilmediyse yalnız URL, URL yoksa `null`; video karar üretmez, hakem onayı telsiz verisine verilir (§6.7).
+
 **Tekrar (throttle) kuralı — `KAMERA_KANIT` ve `TELEMETRI_KANIT` için, gerekçeli:**
 bu iki olay `_tik` döngüsünden (~8 Hz) üretilir ve `HakemKaydi.yaz` **her satırda
 `fsync`** yapar. Her tikte yazmak Tk geri çağrısını diske bağlar (ekran donar, komut

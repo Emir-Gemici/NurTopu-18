@@ -1,0 +1,200 @@
+{
+  "arka_uc": "auto",
+  "kaynak": "0",
+  "olcek": 1.5,
+  "baslangic": "2026-09-10 15:47:10",
+  "kopru_ilk_kare_s": 1.84,
+  "kopru_durum": {
+    "kaynak": "0",
+    "kaynak_turu": "indeks",
+    "kaynak_acik": true,
+    "kare_sayaci": 20,
+    "dusen_kare": 0,
+    "kodlama_hatasi": 0,
+    "donuk_kare": 0,
+    "donuk_kare_ardisik": 0,
+    "fps": 9.921828005969273,
+    "fps_tavani": 10.0,
+    "kalite": 80,
+    "boyut": [
+      1280,
+      720
+    ],
+    "son_kare_yasi_s": 0.027,
+    "son_hata": null,
+    "acma_denemesi": 1,
+    "acma_sayisi": 1,
+    "istemci_sayisi": 0,
+    "calisma_s": 3.182,
+    "arka_uc": "auto",
+    "arka_uc_adi": "MSMF",
+    "kip_istegi": {
+      "genislik": 1280,
+      "yukseklik": 720,
+      "fps": 30
+    },
+    "kamera_ayari": {
+      "istenen": {
+        "genislik": 1280,
+        "yukseklik": 720,
+        "fps": 30
+      },
+      "set_kabul": {
+        "genislik": true,
+        "yukseklik": true,
+        "fps": true
+      },
+      "surucu": {
+        "genislik": 1280.0,
+        "yukseklik": 720.0,
+        "fps": 30.0
+      },
+      "hata": null
+    },
+    "cozunurluk_eslesti": true,
+    "port": 50433,
+    "bind_host": "127.0.0.1",
+    "istek_host": "127.0.0.1:50433",
+    "video_url": "http://127.0.0.1:50433/video",
+    "kare_url": "http://127.0.0.1:50433/kare.jpg",
+    "durum_url": "http://127.0.0.1:50433/durum"
+  },
+  "rota_islendi": true,
+  "ika_kaniti": true,
+  "yks_canli_oldu": true,
+  "yks_canli": {
+    "durum": "CANLI",
+    "kare_yasi_s": 0.12860060000093654,
+    "kare_sira": 45,
+    "degisen_kare": 12,
+    "gosterilen_resim_px": [
+      670,
+      377
+    ],
+    "mini_harita_ismapped": true,
+    "video_ismapped": true,
+    "onay_dugmesi_ismapped": true,
+    "karar_kutusu": "2 · ORTA",
+    "onay_dugmesi": "2) İKA'YA AKTARIMI ONAYLA → ACK",
+    "baslik": "VİDEO KAYNAĞI: MK15 · HDMI · yakalama   |   karar üretmez — onay telsiz verisine verilir",
+    "mini_x": 1032,
+    "video_x_sag": 1022,
+    "onay_panel_w": 660,
+    "pencere": [
+      1860,
+      1410
+    ],
+    "tespit_onayli_1_2": true
+  },
+  "ss_canli": "results/fdr_sprint_20260910/H9_MK15/t226/e2e_1_canli.png",
+  "kare_yasi_ornek": {
+    "n": 30,
+    "p50_s": 0.107,
+    "maks_s": 0.219,
+    "not": "YKS istemcisinin son DEĞİŞEN kareyi aldığı andan beri geçen süre (köprü→YKS HTTP; camdan cama gecikme DEĞİL)"
+  },
+  "kopru_durum_son": {
+    "kaynak": "0",
+    "kaynak_turu": "indeks",
+    "kaynak_acik": true,
+    "kare_sayaci": 111,
+    "dusen_kare": 0,
+    "kodlama_hatasi": 0,
+    "donuk_kare": 2,
+    "donuk_kare_ardisik": 0,
+    "fps": 9.993773534473467,
+    "fps_tavani": 10.0,
+    "kalite": 80,
+    "boyut": [
+      1280,
+      720
+    ],
+    "son_kare_yasi_s": 0.019,
+    "son_hata": null,
+    "acma_denemesi": 1,
+    "acma_sayisi": 1,
+    "istemci_sayisi": 0,
+    "calisma_s": 12.477,
+    "arka_uc": "auto",
+    "arka_uc_adi": "MSMF",
+    "kip_istegi": {
+      "genislik": 1280,
+      "yukseklik": 720,
+      "fps": 30
+    },
+    "kamera_ayari": {
+      "istenen": {
+        "genislik": 1280,
+        "yukseklik": 720,
+        "fps": 30
+      },
+      "set_kabul": {
+        "genislik": true,
+        "yukseklik": true,
+        "fps": true
+      },
+      "surucu": {
+        "genislik": 1280.0,
+        "yukseklik": 720.0,
+        "fps": 30.0
+      },
+      "hata": null
+    },
+    "cozunurluk_eslesti": true,
+    "port": 50433,
+    "bind_host": "127.0.0.1",
+    "istek_host": "127.0.0.1:50433",
+    "video_url": "http://127.0.0.1:50433/video",
+    "kare_url": "http://127.0.0.1:50433/kare.jpg",
+    "durum_url": "http://127.0.0.1:50433/durum"
+  },
+  "yks_bayat_oldu": true,
+  "bayat_istemci_gecis_s": 1.148,
+  "yks_bayat_ekranda": true,
+  "bayat_ekran_gecis_s": 1.18,
+  "yks_bayat": {
+    "durum": "KARE_BAYAT",
+    "hata": "bağlantı hatası: timed out",
+    "jpeg_yok": true,
+    "foto_temizlendi": true,
+    "bilgi": "KARE_BAYAT · kare yaşı 1.24 sn · http://127.0.0.1:50433/kare.jpg · bağlantı hatası: timed out"
+  },
+  "ss_bayat": "results/fdr_sprint_20260910/H9_MK15/t226/e2e_2_bayat.png",
+  "onay_2_2": true,
+  "iha_ucuna_gelen_ack": [
+    {
+      "ref": 41,
+      "node": "yks",
+      "ref_tip": "OPEN_ROUTE"
+    }
+  ],
+  "ss_onay": "results/fdr_sprint_20260910/H9_MK15/t226/e2e_3_onay_video_kopuk.png",
+  "kamera_kanit": [
+    {
+      "durum": "BAGLANAMADI·KARE_YOK",
+      "degisim": true,
+      "kaynak": "http://127.0.0.1:50433/kare.jpg [MK15 · HDMI · yakalama]",
+      "kare_yasi_s": null,
+      "hata": "kamera henüz bağlanmadı"
+    },
+    {
+      "durum": "CANLI·KARE",
+      "degisim": true,
+      "kaynak": "http://127.0.0.1:50433/kare.jpg [MK15 · HDMI · yakalama]",
+      "kare_yasi_s": 0.174,
+      "hata": null
+    },
+    {
+      "durum": "KARE_BAYAT·KARE_YOK",
+      "degisim": true,
+      "kaynak": "http://127.0.0.1:50433/kare.jpg [MK15 · HDMI · yakalama]",
+      "kare_yasi_s": 1.236,
+      "hata": "bağlantı hatası: timed out"
+    }
+  ],
+  "hakem_olaylari": [
+    "HAKEM_ONAYI_1",
+    "HAKEM_ONAYI_2"
+  ],
+  "log": "results/fdr_sprint_20260910/H9_MK15/t226/e2e_hakem_log.jsonl"
+}

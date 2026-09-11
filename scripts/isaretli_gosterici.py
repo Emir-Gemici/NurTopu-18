@@ -11,10 +11,10 @@ Video GORSEL KANITTIR, KARAR URETMEZ: rota verisi ve hakem onayi SiK 433 MHz'te 
 KIPLER (bosluk arastirmasi `mk15-bosluk`, 10 Eylul — TASARIM §5; kaynaklar GOSTERICI_KURULUM.md):
   x11  VARSAYILAN, birincil: varsayilan X11 masaustu + otomatik oturum + tam ekran cv2 penceresi
        (gdm KAPANMAZ). /kare.jpg ~5 Hz cekilir, ekran 10 Hz cizilir. DISPLAY yoksa cikis 2.
-  drm  secenek: gst-launch-1.0 `souphttpsrc (/video) ! multipartdemux ! jpegdec ! nvvidconv !
-       video/x-raw(memory:NVMM) ! nvdrmvideosink set_mode=1`. Onkosul (root): gdm durur,
-       seat0 kapanir, `modprobe nvidia-drm modeset=1`. KIRMIZI UYARI: DRM acilip gosterici
-       CALISMAZSA Argus ~3 fps'e duser. kmssink KULLANILMAZ.
+  drm  secenek: gst-launch-1.0 -v -e `souphttpsrc (/video) ! multipartdemux ! jpegdec ! identity
+       name=nabiz silent=false ! nvvidconv ! video/x-raw(memory:NVMM) ! nvdrmvideosink set_mode=1`.
+       Onkosul (root): gdm durur, seat0 kapanir, `modprobe nvidia-drm modeset=1`. KIRMIZI UYARI:
+       DRM acilip gosterici CALISMAZSA Argus ~3 fps'e duser. kmssink KULLANILMAZ.
   rtsp YEDEK: donusturucu/DP yolu calismazsa yazilim x264 (Orin Nano'da NVENC YOK) 1280x720 @ 5 fps
        rtsp://<jetson_ip>:8554/isaretli (GstRtspServer; python3-gi + gir1.2-gst-rtsp-server-1.0).
        Jetson IP onerisi 192.168.144.30; SIYI sabitleri .11/.12/.20/.25 REDDEDILIR.
@@ -27,10 +27,17 @@ FAIL-VISIBLE / FAIL-CLOSED — asla eski kareyi taze gibi gostermez:
     503 ya da JPEG cozulemedi -> tam ekran KIRMIZI "GORUNTU YOK" + sebep; eski kare CIZILMEZ.
   * drm kipinde gozetmen /kare.jpg'yi yoklar; kare CANLI degilse video borusunu durdurup
     GORUNTU YOK borusunu acar (nvdrmvideosink son kareyi ekranda birakamaz).
+  * T228-D (drm): /kare.jpg taze ama video borusunun identity nabzi (gst-launch -v)
+    DRM_BORU_DONMA_S'den (3 s) uzun sure durursa da GORUNTU YOK (donmus boru). HISTEREZIS:
+    CANLI'dan cikis ILK kotu yoklamada; donus 2 ARDISIK taze yoklama + son boru baslatmasindan
+    >= 3 s (yeniden baslatma sikligi sinirli). -v satir bicimi Jetson'da OLCULEMEDI ->
+    `--nabiz-sina` ile sahada DOGRULANACAK; eslesmezse drm kipi GORUNTU YOK'ta kalir (fail-closed).
 
 OLCULEMEDI (Jetson bu makinede yok): x11/drm/rtsp'nin Jetson'da kosumu, DP->HDMI->donusturucu
-EDID/HPD, camdan cama gecikme, Jetson CPU yuku. PC'de olculen: boru dizgileri, durum mantigi,
-x11 penceresi (Windows), kuru kosum — tests/test_isaretli_gosterici.py.
+EDID/HPD, camdan cama gecikme, Jetson CPU yuku, gst-launch -v nabiz satiri bicimi (PC'de gst
+yok). PC'de olculen: boru dizgileri, durum mantigi, x11 penceresi (Windows), x11 dongusu (sahte
+cv2), drm gozetmeni (sahte surec), nabiz ayristiricisi (sahte -v ciktisi), kuru kosum —
+tests/test_isaretli_gosterici.py.
 
 Yorumlayici: Jetson'da SISTEM Python'u (/usr/bin/python3: GUI'li python3-opencv, python3-gi).
 venv'in opencv-python-headless'i pencere ACAMAZ. Yalniz stdlib + cv2 + numpy (+ rtsp'de gi).
@@ -40,12 +47,16 @@ Kullanim:
   /usr/bin/python3 scripts/isaretli_gosterici.py --kip drm --kuru      # onkosul + borular
   /usr/bin/python3 scripts/isaretli_gosterici.py --kip rtsp --jetson-ip 192.168.144.30
   ... --sure 3 --tuval-kaydi <dizin>                                    # PC dumani / kanit
+  stdbuf -oL gst-launch-1.0 -v videotestsrc is-live=true num-buffers=20 \
+      ! video/x-raw,framerate=5/1 ! identity name=nabiz silent=false ! fakesink \
+      | /usr/bin/python3 scripts/isaretli_gosterici.py --nabiz-sina    # -v bicim+zamanlama
 """
 import argparse
 import http.client
 import ipaddress
 import json
 import os
+import re
 import shlex
 import shutil
 import signal
@@ -141,15 +152,42 @@ DRM_ON_KOSUL = (
 )
 DRM_YOKLAMA_S = 1.0
 DRM_ASGARI_OMUR_S = 2.0
+#: T228-D HISTEREZIS: GORUNTU YOK'tan video borusuna donus icin gereken ARDISIK taze (CANLI)
+#: yoklama sayisi. CANLI'dan cikis ise ILK bayat/hata/donmus yoklamada (guvenli taraf).
+DRM_CANLI_ARDISIK = 2
+#: T228-D: iki boru baslatmasi arasi asgari sure (CANLI'dan cikis ve olen video borusu HARIC).
+#: nvdrmvideosink her acilista kip kurar (set_mode=1); cirpinan yayin ekrani surekli yeniden
+#: acmasin. Gorev tanimi "ornegin 3 s".
+DRM_ASGARI_ARALIK_S = 3.0
+#: T228-D BORU ILERLEMESI: video borusuna `identity name=nabiz silent=false` + gst-launch -v;
+#: son ilerleyen tampondan (hic yoksa acilistan) bu yana > esik -> boru DONMUS, GORUNTU YOK.
+NABIZ_ADI = "nabiz"
+DRM_BORU_DONMA_S = 3.0
+#: -v ciktisinin nabiz OLMAYAN ilk bu kadar satiri 'gst: ' onekiyle loglanir (gercek bicim
+#: journal'dan okunabilsin — Jetson'da OLCULEMEDI).
+NABIZ_GST_LOG_SINIRI = 40
+#: --nabiz-sina ZAMANLAMA denetimi: pts yayilimi en az bu kadarsa denetlenir; nabiz satirlarinin
+#: varis yayilimi pts yayiliminin bu oranindan kucukse satirlar TOPLU (tamponlu) gelmistir.
+NABIZ_SINA_ASGARI_PTS_S = 1.0
+NABIZ_SINA_VARIS_ORANI = 0.5
 ARGUS_UYARISI = (
     "nvidia-drm yuklenip nvdrmvideosink CALISMAZSA Argus (nvarguscamerasrc) ~3 fps'e duser — "
     "DRM kipi ya surekli calisir ya da hic acilmaz; kamera FPS'i DRM acikken olculmeli "
     "(mk15-bosluk arastirmasi, 10 Eylul)")
 DRM_BAYAT_NOTU = (
     "drm kipinde kareye BAYAT bandi CIZILMEZ (boru /video'yu dogrudan gosterir); gozetmen "
-    "/kare.jpg'yi {:g} s'de bir yoklar, kare {:g} s'den uzun sure yeni degilse video borusunu "
-    "durdurup GORUNTU YOK borusuna gecer (eski kare ekranda birakilmaz)").format(
-        DRM_YOKLAMA_S, BAYAT_ESIGI_S)
+    "/kare.jpg'yi {:g} s'de bir yoklar, kare {:g} s'den uzun sure yeni degilse, yayin "
+    "erisilemezse ya da video borusunun identity nabzi {:g} s'den uzun sure durursa video "
+    "borusunu durdurup GORUNTU YOK borusuna gecer (eski kare ekranda birakilmaz); video "
+    "borusuna donus {} ARDISIK taze yoklama + son baslatmadan >= {:g} s ister").format(
+        DRM_YOKLAMA_S, BAYAT_ESIGI_S, DRM_BORU_DONMA_S, DRM_CANLI_ARDISIK, DRM_ASGARI_ARALIK_S)
+DRM_NABIZ_NOTU = (
+    "gst-launch-1.0 -v nabiz satiri bicimi ve zamanlamasi Jetson'da OLCULEMEDI — DOGRULANACAK "
+    "(GOSTERICI_KURULUM §5): `stdbuf -oL gst-launch-1.0 -v videotestsrc is-live=true "
+    "num-buffers=20 ! video/x-raw,framerate=5/1 ! identity name={} silent=false ! fakesink | "
+    "/usr/bin/python3 ~/navitas/scripts/isaretli_gosterici.py --nabiz-sina` cikis 0 (ESLESTI, "
+    "ZAMANINDA) olmali; ESLESMEDI/TOPLU ise video borusu {:g} s'de bir GORUNTU YOK'a duser "
+    "(fail-closed)").format(NABIZ_ADI, DRM_BORU_DONMA_S)
 DRM_KURULUM_NOTU = (
     "sudo apt install gstreamer1.0-tools gstreamer1.0-plugins-good gstreamer1.0-plugins-base "
     "(souphttpsrc, multipartdemux, jpegdec, textoverlay); nvvidconv/nvdrmvideosink JetPack "
@@ -161,6 +199,7 @@ RTSP_KURULUM_NOTU = (
 CIKIS_TAMAM = 0
 CIKIS_ORTAM = 2          # DISPLAY yok / GUI'siz OpenCV / RTSP adresi baglanamadi (argparse de 2)
 CIKIS_BAGIMLILIK = 3     # gst-launch-1.0 ya da gi/GstRtspServer/eleman yok
+CIKIS_NABIZ_YOK = 1      # --nabiz-sina: stdin'de hic nabiz satiri ayristirilamadi
 
 DURUM_CANLI = "CANLI"
 DURUM_BAYAT = "BAYAT"
@@ -540,20 +579,28 @@ def _durum_logu(onceki, d, onek="ekran", log=None):
                    kirmizi=d.durum == DURUM_YOK)
 
 
-def x11_kos(args, ortam=None, platform=None, saat=time.monotonic):
+def x11_kos(args, ortam=None, platform=None, saat=time.monotonic, cv=cv2,
+            cekici_uret=KareCekici):
+    """x11 kipi: tam ekran pencere dongusu.
+
+    T228-D: `cv` (namedWindow/setWindowProperty/imshow/waitKey/destroyAllWindows/error + pencere
+    sabitleri) ve `cekici_uret(kaynak, hz=...)` (KareCekici arayuzu: start/anlik/durdur/join/
+    sayaclar/kare_url) TEST icin enjekte edilebilir — dongudeki ekran_durumu cagrisi sahte cv2 ile
+    kilitlenir. Varsayilanlarla davranis T228 ile AYNIDIR.
+    """
     hata = ekran_ortami_hatasi(ortam, platform)
     if hata:
         logla("HATA: " + hata, kirmizi=True)
         return CIKIS_ORTAM
     try:
-        cv2.namedWindow(PENCERE_ADI, cv2.WINDOW_NORMAL)
-        cv2.setWindowProperty(PENCERE_ADI, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
-    except cv2.error as exc:
+        cv.namedWindow(PENCERE_ADI, cv.WINDOW_NORMAL)
+        cv.setWindowProperty(PENCERE_ADI, cv.WND_PROP_FULLSCREEN, cv.WINDOW_FULLSCREEN)
+    except cv.error as exc:
         logla("HATA: cv2 penceresi acilamadi ({}) — GUI'siz OpenCV (opencv-python-headless / "
               "venv)? SISTEM Python'u + python3-opencv kullan".format(exc), kirmizi=True)
         return CIKIS_ORTAM
     ekran_koruyucuyu_kapat(platform)
-    cekici = KareCekici(args.kaynak, hz=args.hz)
+    cekici = cekici_uret(args.kaynak, hz=args.hz)
     kayit = TuvalKaydi(args.tuval_kaydi)
     dur = threading.Event()
     eski_sinyal = _sinyal_kur(dur)
@@ -576,9 +623,9 @@ def x11_kos(args, ortam=None, platform=None, saat=time.monotonic):
                 _durum_logu(onceki, d)
                 kayit.durum_degisti(d.durum, tuval)
                 onceki = d.durum
-            cv2.imshow(PENCERE_ADI, tuval)
+            cv.imshow(PENCERE_ADI, tuval)
             cizim += 1
-            tus = cv2.waitKey(max(1, int(1000.0 / CIZIM_HZ))) & 0xFF
+            tus = cv.waitKey(max(1, int(1000.0 / CIZIM_HZ))) & 0xFF
             if tus in (27, ord("q")):
                 logla("klavyeden cikis")
                 break
@@ -588,8 +635,8 @@ def x11_kos(args, ortam=None, platform=None, saat=time.monotonic):
         cekici.durdur()
         cekici.join(2.0)
         try:
-            cv2.destroyAllWindows()
-        except cv2.error:
+            cv.destroyAllWindows()
+        except cv.error:
             pass
         kayit.son(tuval)
         _sinyal_geri(eski_sinyal)
@@ -604,6 +651,16 @@ def x11_kos(args, ortam=None, platform=None, saat=time.monotonic):
 
 
 # ── drm kipi ──────────────────────────────────────────────────────────────────
+#: drm_gozetmen boru turleri (log metinleri de bunlardir)
+BORU_VIDEO = "video"
+BORU_YOK = "GORUNTU YOK"
+
+#: drm_boru_karari donusu: boru = ekranda olmasi gereken boru (None: hic boru yok, bekle);
+#: baslat = simdi yeni surec acilsin (calisan varsa once durdurulur); guvenlik = baslatma
+#: sikligina TAKILMAYAN cikis (CANLI'dan cikis / olen video borusu).
+DrmKarar = namedtuple("DrmKarar", "boru baslat guvenlik")
+
+
 def _drm_sink(conn_id=None):
     return "nvdrmvideosink set_mode=1 sync=false" + (
         " conn_id={}".format(int(conn_id)) if conn_id is not None else "")
@@ -611,10 +668,28 @@ def _drm_sink(conn_id=None):
 
 def drm_boru(kaynak=VARSAYILAN_KAYNAK, genislik=TUVAL_GENISLIK, yukseklik=TUVAL_YUKSEKLIK,
              conn_id=None):
-    """DRM video borusu: /video MJPEG -> NVMM -> nvdrmvideosink (gst-launch-1.0 argumani)."""
+    """DRM video borusu: /video MJPEG -> jpegdec -> identity (nabiz) -> NVMM -> nvdrmvideosink.
+
+    T228-D: `identity name=nabiz silent=false` her tamponda last-message yayar; `gst-launch-1.0
+    -v` bunu stdout'a basar -> gozetmen borunun ILERLEDIGINI izler (NabizIzleyici). identity
+    jpegdec'ten SONRA, sistem belleginde durur (NVMM caps'li identity Jetson'da OLCULEMEDI). Boruda
+    kuyruk yok: souphttpsrc'nin akis ipligi sink'e kadar TEK iplik — sink takilirsa identity de
+    yeni tampon gecirmez, nabiz durur.
+    """
     return ("souphttpsrc location={} is-live=true do-timestamp=true ! multipartdemux ! jpegdec ! "
-            "nvvidconv ! video/x-raw(memory:NVMM),width={},height={} ! {}").format(
-                kaynak_kok(kaynak) + VIDEO_YOLU, int(genislik), int(yukseklik), _drm_sink(conn_id))
+            "identity name={} silent=false ! nvvidconv ! video/x-raw(memory:NVMM),width={},"
+            "height={} ! {}").format(kaynak_kok(kaynak) + VIDEO_YOLU, NABIZ_ADI, int(genislik),
+                                     int(yukseklik), _drm_sink(conn_id))
+
+
+def drm_video_argv(gst="gst-launch-1.0", kaynak=VARSAYILAN_KAYNAK, conn_id=None, stdbuf=None):
+    """Video borusu argv'si — TEK KAYNAK (drm_kos ve --kuru ayni argv'yi kullanir).
+    `-v`: identity nabiz satirlari stdout'a; `-e`: durdurmada EOS. `stdbuf` (yol) verilirse
+    `stdbuf -oL` oneki: stdout boruya bagliyken -v satirlari SATIR tamponlu gelsin — blok tampon
+    nabzi toplu getirip saglikli boruyu 'donmus' gosterirdi (gst-launch'in kendi fflush'i
+    Jetson'da OLCULEMEDI)."""
+    onek = [stdbuf, "-oL"] if stdbuf else []
+    return onek + [gst, "-v", "-e", drm_boru(kaynak, conn_id=conn_id)]
 
 
 _GST_METIN_IZINLI = frozenset(
@@ -665,51 +740,305 @@ def _sureci_durdur(p, zaman_asimi_s=3.0):
     return p.returncode
 
 
+# ── drm boru nabzi (T228-D) ───────────────────────────────────────────────────
+_NABIZ_TUR = re.compile(r"\b(chain|event)\b")
+_NABIZ_PTS = re.compile(r"\bpts\s*[:=]\s*(\d+):(\d{1,2}):(\d{1,2}(?:\.\d+)?)")
+_NABIZ_ELEMAN = {}
+
+
+def _nabiz_eleman_kalibi(ad):
+    k = _NABIZ_ELEMAN.get(ad)
+    if k is None:
+        a = re.escape(ad)
+        # '/...:nabiz' ya da satir basi 'nabiz' (ardindan harf/rakam/'.' YOK -> 'nabizci' ve pad
+        # caps satiri 'nabiz.GstPad:src' sayilmaz) ya da pad adi '(nabiz:sink)'
+        k = _NABIZ_ELEMAN[ad] = re.compile(r"(?:(?:^|[:/]){0}(?![\w.])|\({0}:)".format(a))
+    return k
+
+
+def nabiz_ayristir(satir, ad=NABIZ_ADI):
+    """`gst-launch-1.0 -v` satiri -> None (nabiz degil) ya da {"pts_s": float|None} (saf).
+
+    Jetson'da bicim OLCULEMEDI (GOSTERICI_KURULUM §5 DOGRULANACAK; sahada `--nabiz-sina`) ->
+    TOLERANSLI kural, bosluk/yildiz sayisina bagli DEGIL:
+      * satir `ad` elemanina ait: yolda ':nabiz' (GstIdentity:nabiz), satir basi 'nabiz' ya da
+        pad '(nabiz:'; 'nabizci', 'identity0' ve pad caps satiri ('nabiz.GstPad:src') SAYILMAZ;
+      * degerde once 'chain' gecmeli (tampon); once 'event' geciyorsa (stream-start, segment,
+        eos) ilerleme DEGIL;
+      * 'pts: H:MM:SS.nnnnnnnnn' varsa okunur; 'none' ya da 99:99:99.* (GST_CLOCK_TIME_NONE) -> None.
+    Beklenen bicim (GStreamer 1.x gstidentity.c last-message + gst-launch deep-notify; KAYNAK:
+    kaynak kod bilgisi, Jetson'da OLCULMEDI):
+      /GstPipeline:pipeline0/GstIdentity:nabiz: last-message = chain   ******* (nabiz:sink)
+      (1382400 bytes, dts: none, pts: 0:00:01.234567890, duration: none, ...) 0x7f8c00b1c0
+    """
+    s = str(satir).strip()
+    if not s or ad not in s or not _nabiz_eleman_kalibi(ad).search(s):
+        return None
+    deger = s.split("last-message", 1)[1] if "last-message" in s else s
+    tur = _NABIZ_TUR.search(deger)
+    if tur is None or tur.group(1) != "chain":
+        return None
+    pts = None
+    m = _NABIZ_PTS.search(deger)
+    if m:
+        sa, dk, sn = int(m.group(1)), int(m.group(2)), float(m.group(3))
+        if not (sa == 99 and dk == 99):
+            pts = sa * 3600.0 + dk * 60.0 + sn
+    return {"pts_s": pts}
+
+
+class NabizIzleyici:
+    """`gst-launch-1.0 -v` stdout'unu okur; son ILERLEYEN tamponun (nabiz) zamanini tutar.
+
+    Ilerleme = nabiz satiri VE (pts yok ya da onceki pts'ten BUYUK); ayni/geri pts ilerleme
+    DEGIL. Nabiz olmayan ilk `gst_log_siniri` satir 'gst: ' onekiyle loglanir — Jetson'daki
+    GERCEK -v bicimi journal'dan okunabilsin (GOSTERICI_KURULUM §5 DOGRULANACAK). Okuyucu iplik
+    boruyu SUREKLI bosaltir (dolan stdout borusu gst-launch'i durdurmasin).
+    """
+
+    def __init__(self, ad=NABIZ_ADI, saat=time.monotonic, log=logla,
+                 gst_log_siniri=NABIZ_GST_LOG_SINIRI):
+        self.ad = ad
+        self.saat = saat
+        self.log = log
+        self.gst_log_siniri = int(gst_log_siniri)
+        self.kilit = threading.Lock()
+        self.son_t = None
+        self.son_pts = None
+        self.ilk_pts = None
+        self.pts_ilk_t = None
+        self.pts_son_t = None
+        self.nabiz = 0
+        self.satir_sayisi = 0
+        self.ornek = []
+
+    def besle(self, satir, simdi=None):
+        """Bir -v satiri isle. Donus: bu satir ILERLEME mi (son_t guncellendi mi)."""
+        n = nabiz_ayristir(satir, self.ad)
+        t = self.saat() if simdi is None else simdi
+        yaz = None
+        with self.kilit:
+            self.satir_sayisi += 1
+            ilerledi = False
+            if n is None:
+                if len(self.ornek) < self.gst_log_siniri:
+                    yaz = str(satir).strip()[:300]
+                    if yaz:
+                        self.ornek.append(yaz)
+            else:
+                pts = n["pts_s"]
+                ilerledi = pts is None or self.son_pts is None or pts > self.son_pts
+                if ilerledi:
+                    if pts is not None:
+                        if self.ilk_pts is None:
+                            self.ilk_pts, self.pts_ilk_t = pts, t
+                        self.son_pts, self.pts_son_t = pts, t
+                    self.son_t = t
+                    self.nabiz += 1
+            ilk = ilerledi and self.nabiz == 1
+        if yaz:
+            self.log("gst: " + yaz)
+        if ilk:
+            self.log("DRM video borusu: ilk nabiz (ilerleyen tampon) goruldu")
+        return ilerledi
+
+    def son(self):
+        with self.kilit:
+            return self.son_t
+
+    def ozet(self):
+        with self.kilit:
+            return {"satir": self.satir_sayisi, "nabiz": self.nabiz, "son_pts": self.son_pts,
+                    "ilk_pts": self.ilk_pts, "pts_ilk_t": self.pts_ilk_t,
+                    "pts_son_t": self.pts_son_t, "ornek": list(self.ornek)}
+
+    def akimi_oku(self, akim):
+        """Ayri (daemon) iplikte akimi EOF'a kadar okur; ipligi dondurur."""
+        iplik = threading.Thread(target=self._oku, args=(akim,), name="drm-nabiz", daemon=True)
+        iplik.start()
+        return iplik
+
+    def _oku(self, akim):
+        try:
+            for satir in iter(akim.readline, ""):
+                self.besle(satir)
+        except (OSError, ValueError):   # boru kapandi
+            pass
+
+
+def nabiz_sina(akim, cikti=print, saat=time.monotonic):
+    """--nabiz-sina: stdin'deki `gst-launch-1.0 -v` ciktisini nabiz ayristiricisiyla sina
+    (Jetson'da GERCEK bicim + ZAMANLAMA dogrulamasi, GOSTERICI_KURULUM §4/§5). Hicbir sey acmaz.
+
+    Zamanlama: nabiz satirlarinin VARIS yayilimi pts yayilimiyla kiyaslanir. Canli boruda
+    (videotestsrc is-live=true) satirlar zamaninda gelirse iki yayilim yakindir; cikti blok
+    tamponluysa satirlar TOPLU gelir (varis << pts) -> drm kipinde nabiz gecikir, saglikli boru
+    'donmus' sayilirdi. pts yayilimi < NABIZ_SINA_ASGARI_PTS_S ise zamanlama denetlenemez.
+    Donus: 0 ESLESTI (zamanlama ZAMANINDA ya da denetlenemedi) · 1 hic nabiz yok ya da TOPLU.
+    """
+    iz = NabizIzleyici(saat=saat, log=lambda *_a, **_k: None, gst_log_siniri=5)
+    for satir in iter(akim.readline, ""):
+        iz.besle(satir)
+    o = iz.ozet()
+    if not o["nabiz"]:
+        cikti("NABIZ_SINA: ESLESMEDI — {} satir, HIC nabiz ayristirilamadi: gst-launch-1.0 -v "
+              "bicimi DOGRULANACAK (GOSTERICI_KURULUM §5); drm kipinde video borusu {:g} s'de bir "
+              "GORUNTU YOK'a duser (fail-closed). Ilk taninmayan satirlar:".format(
+                  o["satir"], DRM_BORU_DONMA_S))
+        for s in o["ornek"]:
+            cikti("  " + s)
+        return CIKIS_NABIZ_YOK
+    ozet = "{} satir, {} nabiz (ilerleyen tampon); son pts {}".format(
+        o["satir"], o["nabiz"], "yok" if o["son_pts"] is None else "{:.3f} s".format(o["son_pts"]))
+    pts_yay = None if o["ilk_pts"] is None else o["son_pts"] - o["ilk_pts"]
+    if pts_yay is None or pts_yay < NABIZ_SINA_ASGARI_PTS_S:
+        cikti("NABIZ_SINA: ESLESTI — {}; ZAMANLAMA denetlenemedi (pts yayilimi < {:g} s ya da pts "
+              "yok) — canli boruyla kos (GOSTERICI_KURULUM §5)".format(ozet, NABIZ_SINA_ASGARI_PTS_S))
+        return CIKIS_TAMAM
+    varis = o["pts_son_t"] - o["pts_ilk_t"]
+    if varis < NABIZ_SINA_VARIS_ORANI * pts_yay:
+        cikti("NABIZ_SINA: TOPLU — {}; varis yayilimi {:.2f} s < pts yayilimi {:.2f} s x {:g}: -v "
+              "ciktisi TAMPONLU geliyor -> drm kipinde nabiz gecikir, saglikli boru 'donmus' "
+              "sayilir. `stdbuf -oL gst-launch-1.0 ...` ile yeniden dene; duzelmezse x11 kipinde "
+              "kal".format(ozet, varis, pts_yay, NABIZ_SINA_VARIS_ORANI))
+        return CIKIS_NABIZ_YOK
+    cikti("NABIZ_SINA: ESLESTI — {}; ZAMANINDA: varis yayilimi {:.2f} s / pts yayilimi {:.2f} s"
+          .format(ozet, varis, pts_yay))
+    return CIKIS_TAMAM
+
+
+def boru_donmus_mu(simdi, baslama_t, son_nabiz_t, esik_s=DRM_BORU_DONMA_S):
+    """Saf: video borusu `esik_s`'den UZUN suredir ilerlemedi mi? Referans son nabiz; hic nabiz
+    yoksa borunun baslama ani (acilis payi = esik). Sinirda (== esik) donmus DEGIL."""
+    ref = float(baslama_t) if son_nabiz_t is None else max(float(baslama_t), float(son_nabiz_t))
+    return float(simdi) - ref > esik_s
+
+
+def _donma_sebebi(simdi, baslama_t, son_nabiz_t, esik_s):
+    if son_nabiz_t is None:
+        return "video borusu ilerlemiyor: acilistan beri {:.1f} s tampon yok (> {:g} s)".format(
+            _yukari_ondalik(float(simdi) - float(baslama_t)), esik_s)
+    return "video borusu ilerlemiyor: son tampon {:.1f} s once (> {:g} s)".format(
+        _yukari_ondalik(float(simdi) - max(float(baslama_t), float(son_nabiz_t))), esik_s)
+
+
+def drm_boru_karari(calisan, son_boru, taze, ardisik, simdi, son_baslatma_t,
+                    gerekli_ardisik=DRM_CANLI_ARDISIK, asgari_aralik_s=DRM_ASGARI_ARALIK_S):
+    """Saf DRM karari (T228-D): histerezis + boru yeniden baslatma sikligi.
+
+    calisan : su an CALISAN boru (BORU_VIDEO / BORU_YOK / None = boru yok: acilis ya da boru
+              kendiliginden bitti)
+    son_boru: en son BASLATILAN borunun turu (None = hic)
+    taze    : bu yoklamada kare CANLI mi (video borusu calisiyorsa nabzi da ilerliyor mu)
+    ardisik : bu yoklama DAHIL ardisik taze yoklama sayisi
+    Kurallar:
+      * CANLI'dan (video borusundan) cikis ILK bayat/hata/donmus yoklamada — sikliga takilmaz
+        (guvenli taraf: eski kare ekranda kalmaz);
+      * video borusu kendiliginden bittiyse GORUNTU YOK borusu HEMEN (son kare ekranda kalmasin);
+      * video borusuna donus yalniz `gerekli_ardisik` ARDISIK taze yoklama VE son baslatmadan bu
+        yana >= `asgari_aralik_s` ile (cirpinan yayin nvdrmvideosink'i surekli yeniden acmasin);
+      * GORUNTU YOK borusunun (acilis / olen YOK borusu) yeniden baslatmasi da ayni sikliga
+        tabidir; beklerken calisan boru surer.
+    """
+    serbest = son_baslatma_t is None or (float(simdi) - float(son_baslatma_t)) >= asgari_aralik_s
+    if calisan == BORU_VIDEO:
+        if taze:
+            return DrmKarar(BORU_VIDEO, False, False)
+        return DrmKarar(BORU_YOK, True, True)          # CANLI'dan cikis ANINDA (guvenli taraf)
+    if calisan is None and son_boru == BORU_VIDEO:
+        return DrmKarar(BORU_YOK, True, True)          # olen video borusu: son kare kalmasin
+    istenen = BORU_VIDEO if (taze and ardisik >= gerekli_ardisik) else BORU_YOK
+    if calisan == istenen:
+        return DrmKarar(istenen, False, False)
+    if not serbest:
+        return DrmKarar(calisan, False, False)         # bekle: calisan boru (ya da hic) surer
+    return DrmKarar(istenen, True, False)
+
+
 def drm_gozetmen(video_argv, yok_argv_uret, durum_oku, baslat, bitti, uyku=time.sleep,
                  saat=time.monotonic, log=logla, yoklama_s=DRM_YOKLAMA_S,
-                 asgari_omur_s=DRM_ASGARI_OMUR_S):
+                 asgari_omur_s=DRM_ASGARI_OMUR_S, ilerleme_oku=None,
+                 donma_esigi_s=DRM_BORU_DONMA_S, gerekli_ardisik=DRM_CANLI_ARDISIK,
+                 asgari_aralik_s=DRM_ASGARI_ARALIK_S):
     """drm kipi gozetmeni: yayin CANLI iken video borusu, degilse GORUNTU YOK borusu.
 
-    Hangi boru calisirsa calissin /kare.jpg `yoklama_s`'de bir yoklanir; CANLI<->degil
-    gecisinde calisan boru durdurulur, oteki acilir. Boylece nvdrmvideosink'in son kareyi
-    ekranda birakmasi (eski kare taze gibi) en cok ~bayat esigi + yoklama suresi surer.
-    Kendiliginden `asgari_omur_s`'den once biten boru KIRMIZI + Argus uyarisi ve bekleme
-    (surec dongusu yok). Donus: baslatilan surec sayisi.
+    Her `yoklama_s`'de bir: (1) calisan boru kendiliginden bittiyse KIRMIZI log (omur <
+    `asgari_omur_s` ise Argus uyarisi); olen VIDEO borusunun yerine acilan GORUNTU YOK ekraninin
+    sebebi yayin tazeyse "video borusu kendiliginden bitti (rc=N)" (T228-D2; yayin bayat/yoksa
+    yayinin kendi sebebi); (2) /kare.jpg yoklanir (`durum_oku`); (3) video borusu
+    calisiyorsa `ilerleme_oku(p)` (son nabiz zamani ya da None) ile boru ilerlemesi denetlenir —
+    `donma_esigi_s`'den uzun sure tampon yoksa kare taze olsa da GORUNTU YOK; (4) karar SAF
+    `drm_boru_karari`'ndadir (histerezis + baslatma sikligi). `ilerleme_oku` None ise nabiz
+    denetimi yapilmaz (drm_kos HER ZAMAN verir). Donus: baslatilan surec sayisi.
     """
     sayac = 0
-    while not bitti():
-        d = durum_oku()
-        canli = d.durum == DURUM_CANLI
-        argv = video_argv if canli else yok_argv_uret(d.sebep)
-        t0 = saat()
-        p = baslat(argv)
-        sayac += 1
-        log("DRM {} borusu basladi{}".format(
-            "video" if canli else "GORUNTU YOK", "" if canli else " ({})".format(d.sebep)),
-            kirmizi=not canli)
-        kendiliginden = False
+    p = None
+    calisan = son_boru = None
+    baslama_t = son_baslatma_t = None
+    ardisik = 0
+    onceki_durum = None
+    try:
         while not bitti():
-            if p.poll() is not None:
-                kendiliginden = True
-                break
+            olen_video = None
+            if p is not None and p.poll() is not None:
+                omur = saat() - baslama_t
+                log("DRM {} borusu kendiliginden bitti rc={} omur={:.1f} s".format(
+                    calisan, p.returncode, omur), kirmizi=True)
+                if omur < asgari_omur_s:
+                    log("[UYARI] boru {:.1f} s icinde bitti (gdm/nvidia-drm/EDID?) — {}".format(
+                        omur, ARGUS_UYARISI), kirmizi=True)
+                if calisan == BORU_VIDEO:
+                    ardisik = 0
+                    olen_video = "video borusu kendiliginden bitti (rc={})".format(p.returncode)
+                p, calisan = None, None
+            d = durum_oku()
+            simdi = saat()
+            taze = d.durum == DURUM_CANLI
+            if taze and calisan == BORU_VIDEO and ilerleme_oku is not None:
+                son_nabiz = ilerleme_oku(p)
+                if boru_donmus_mu(simdi, baslama_t, son_nabiz, donma_esigi_s):
+                    d = EkranDurumu(DURUM_YOK, _donma_sebebi(simdi, baslama_t, son_nabiz,
+                                                             donma_esigi_s), d.yas_s)
+                    taze = False
+                    if son_nabiz is None:
+                        log("[UYARI] video borusundan HIC nabiz ayristirilamadi — gst-launch-1.0 "
+                            "-v bicimi DOGRULANACAK (GOSTERICI_KURULUM §5, --nabiz-sina); boru "
+                            "gercekten akmiyor da olabilir", kirmizi=True)
+            ardisik = ardisik + 1 if taze else 0
+            if d.durum != onceki_durum:
+                _durum_logu(onceki_durum, d, onek="DRM yoklama", log=log)
+                onceki_durum = d.durum
+            k = drm_boru_karari(calisan, son_boru, taze, ardisik, simdi, son_baslatma_t,
+                                gerekli_ardisik=gerekli_ardisik, asgari_aralik_s=asgari_aralik_s)
+            if k.baslat:
+                if p is not None:
+                    _sureci_durdur(p)
+                if k.boru == BORU_VIDEO:
+                    argv, sebep = video_argv, ""
+                else:
+                    if d.durum != DURUM_CANLI:
+                        sebep = d.sebep                # yayinin kendi sebebi (kok neden) once gelir
+                    elif olen_video is not None:
+                        sebep = olen_video             # T228-D2: yayin taze ama video borusu OLDU
+                    else:
+                        sebep = "yayin dogrulaniyor ({}/{} ardisik taze yoklama)".format(
+                            ardisik, gerekli_ardisik)
+                    argv = yok_argv_uret(sebep)
+                p = baslat(argv)
+                sayac += 1
+                calisan = son_boru = k.boru
+                baslama_t = son_baslatma_t = saat()
+                log("DRM {} borusu basladi{}".format(
+                    k.boru, " ({})".format(sebep) if sebep else ""), kirmizi=k.boru != BORU_VIDEO)
             uyku(yoklama_s)
-            d2 = durum_oku()
-            if (d2.durum == DURUM_CANLI) != canli:
-                _durum_logu(d.durum, d2, onek="DRM ekran", log=log)
-                break
-        rc = _sureci_durdur(p)
-        if kendiliginden:
-            omur = saat() - t0
-            log("DRM {} borusu kendiliginden bitti rc={} omur={:.1f} s".format(
-                "video" if canli else "GORUNTU YOK", rc, omur), kirmizi=True)
-            if omur < asgari_omur_s:
-                log("[UYARI] boru {:.1f} s icinde bitti (gdm/nvidia-drm/EDID?) — {}".format(
-                    omur, ARGUS_UYARISI), kirmizi=True)
-                uyku(asgari_omur_s)
+    finally:
+        if p is not None:
+            _sureci_durdur(p)
     return sayac
 
 
-def drm_kos(args, baslat=subprocess.Popen, gst_yolu=None, saat=time.monotonic):
+def drm_kos(args, baslat=subprocess.Popen, gst_yolu=None, saat=time.monotonic,
+            stdbuf_yolu=None):
     gst = gst_yolu if gst_yolu is not None else shutil.which("gst-launch-1.0")
     if not gst:
         logla("HATA: gst-launch-1.0 yok — " + DRM_KURULUM_NOTU, kirmizi=True)
@@ -729,10 +1058,39 @@ def drm_kos(args, baslat=subprocess.Popen, gst_yolu=None, saat=time.monotonic):
     def bitti():
         return dur.is_set() or (bitis is not None and saat() >= bitis)
 
-    video = [gst, "-e", drm_boru(args.kaynak, conn_id=args.conn_id)]
+    stdbuf = stdbuf_yolu if stdbuf_yolu is not None else shutil.which("stdbuf")
+    if not stdbuf:
+        logla("[UYARI] stdbuf yok — video borusu -v ciktisi satir tamponu garantisiz (gst-launch "
+              "fflush'i DOGRULANACAK; toplu gelen nabiz saglikli boruyu 'donmus' gosterebilir)",
+              kirmizi=True)
+    video = drm_video_argv(gst, args.kaynak, conn_id=args.conn_id, stdbuf=stdbuf or None)
+    son = {"p": None, "iz": None}
+
+    def boru_baslat(argv):
+        if argv != video:
+            return baslat(argv)
+        # video borusu: -v ciktisi BORUYA; okuyucu iplik nabzi izler ve boruyu bosaltir
+        p = baslat(argv, stdout=subprocess.PIPE, text=True, encoding="utf-8", errors="replace",
+                   bufsize=1)
+        # HER video borusuna YENI izleyici (T228-D2, NG): yeni borunun pts'i ~0'dan baslar; onceki
+        # borunun izleyicisi paylasilirsa 'pts > son_pts' saglanmaz, saglikli boru 'donmus' sayilir
+        iz = NabizIzleyici(saat=saat)
+        iz.akimi_oku(p.stdout)
+        son["p"], son["iz"] = p, iz
+        return p
+
+    def ilerleme_oku(p):
+        return son["iz"].son() if (son["p"] is p and son["iz"] is not None) else None
+
+    logla("DRM gozetmen: yoklama {:g} s · CANLI'ya donus {} ardisik taze yoklama · baslatma "
+          "araligi >= {:g} s · boru nabzi (identity {}) > {:g} s durursa GORUNTU YOK".format(
+              DRM_YOKLAMA_S, DRM_CANLI_ARDISIK, DRM_ASGARI_ARALIK_S, NABIZ_ADI, DRM_BORU_DONMA_S))
     try:
         drm_gozetmen(video, lambda sebep: [gst, drm_goruntu_yok_boru(sebep, conn_id=args.conn_id)],
-                     durum_oku, baslat, bitti, saat=saat)
+                     durum_oku, boru_baslat, bitti, saat=saat, yoklama_s=DRM_YOKLAMA_S,
+                     asgari_omur_s=DRM_ASGARI_OMUR_S, ilerleme_oku=ilerleme_oku,
+                     donma_esigi_s=DRM_BORU_DONMA_S, gerekli_ardisik=DRM_CANLI_ARDISIK,
+                     asgari_aralik_s=DRM_ASGARI_ARALIK_S)
     finally:
         _sinyal_geri(eski_sinyal)
     return CIKIS_TAMAM
@@ -901,14 +1259,20 @@ def kuru_satirlari(args, ortam=None, platform=None, ip_uyarilari=(), gst_bul=shu
         s.append("## on kosul (root; gdm DURUR -> masaustu gider) — birim "
                  "navitas-isaretli-gosterici-drm.service VARSAYILAN KAPALI")
         s.extend(DRM_ON_KOSUL)
-        s.append("## video borusu (yayin CANLI iken)")
-        s.append(komut_metni(["gst-launch-1.0", "-e", drm_boru(args.kaynak, conn_id=args.conn_id)]))
-        s.append("## GORUNTU YOK borusu (yayin yok ya da kare > {:g} s yeni degil)".format(
-            BAYAT_ESIGI_S))
+        s.append("## video borusu (yayin CANLI iken; -v: identity nabiz satirlari gozetmene)")
+        s.append(komut_metni(drm_video_argv("gst-launch-1.0", args.kaynak, conn_id=args.conn_id)))
+        s.append("## GORUNTU YOK borusu (yayin yok, kare > {:g} s yeni degil ya da boru nabzi "
+                 "> {:g} s yok)".format(BAYAT_ESIGI_S, DRM_BORU_DONMA_S))
         s.append(komut_metni(["gst-launch-1.0",
                               drm_goruntu_yok_boru("SEBEP", conn_id=args.conn_id)]))
         s.append("[UYARI] " + ARGUS_UYARISI)
         s.append("[BILGI] " + DRM_BAYAT_NOTU)
+        s.append("[DOGRULANACAK] " + DRM_NABIZ_NOTU)
+        sb = gst_bul("stdbuf")
+        s.append("[BILGI] drm_kos video borusunu `stdbuf -oL` onekiyle kosar (-v satir tamponlu): "
+                 "stdbuf {}".format("VAR ({})".format(sb) if sb else
+                                    "YOK — onek konmaz, gst-launch fflush'ina guvenilir "
+                                    "(DOGRULANACAK)"))
         gst = gst_bul("gst-launch-1.0")
         s.append("[VAR] gst-launch-1.0 ({})".format(gst) if gst else
                  "[YOK] gst-launch-1.0 (PATH) — gercek kosum cikis {}: {}".format(
@@ -961,12 +1325,25 @@ def _parser():
                    default=RTSP_BORU_TUVAL,
                    help="tuval: cizilen ekran (BAYAT/GORUNTU YOK dahil) appsrc ile | http: ham "
                         "/video souphttpsrc")
+    p.add_argument("--nabiz-sina", action="store_true",
+                   help="stdin'deki gst-launch-1.0 -v ciktisini drm nabiz ayristiricisiyla sina "
+                        "(Jetson'da -v bicimi dogrulamasi, GOSTERICI_KURULUM §5); hicbir sey acmaz")
     return p
+
+
+def _stdin_utf8():
+    try:
+        sys.stdin.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, OSError, ValueError):
+        pass
+    return sys.stdin
 
 
 def main(argv=None, ortam=None, platform=None):
     parser = _parser()
     args = parser.parse_args(argv)
+    if args.nabiz_sina:
+        return nabiz_sina(_stdin_utf8())
     try:
         args.kaynak = kaynak_kok(args.kaynak)
     except ValueError as exc:

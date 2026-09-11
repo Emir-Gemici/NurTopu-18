@@ -1,0 +1,26 @@
+KESIF_TEST_SAYISI 2620
+test_H1b_gorunur_pencerede_harita_video_yaninda_cizili_onay_paneli_daralmadi (__main__.main.<locals>.OlculuH1b.test_H1b_gorunur_pencerede_harita_video_yaninda_cizili_onay_paneli_daralmadi) ... MUTASYON Configure bagi kaldirildi
+FAIL
+H1B_OLCUM {"OLCEK": 1.0, "alan": [34, 67, 0], "ekran": [1707, 1067], "font": {"ascent": 11, "descent": 2, "fixed": 0, "linespace": 13}, "mini": [300, 330], "pencere": "1240x940+182+88", "tk_scaling": 1.332282448377581}
+
+======================================================================
+FAIL: test_H1b_gorunur_pencerede_harita_video_yaninda_cizili_onay_paneli_daralmadi (__main__.main.<locals>.OlculuH1b.test_H1b_gorunur_pencerede_harita_video_yaninda_cizili_onay_paneli_daralmadi)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\tests\test_yks_mk15_hakem_ekrani.py", line 334, in test_H1b_gorunur_pencerede_harita_video_yaninda_cizili_onay_paneli_daralmadi
+    self.assertTrue(self._pompala(arena_hazir, 5.0),
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                    f"küçük harita yerleşmedi: arena={arena_kutulari()}, "
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+                    f"tk_scaling={self.kok.tk.call('tk', 'scaling')}, "
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                    f"font={app.f_mini.metrics()}")
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : küçük harita yerleşmedi: arena=[[34.0, 67.0, 34.0, 67.0]], tuval=300x330, pencere=1240x940+182+88, tk_scaling=1.332282448377581, font={'ascent': 11, 'descent': 2, 'linespace': 13, 'fixed': 0}
+
+----------------------------------------------------------------------
+Ran 1 test in 5.484s
+
+FAILED (failures=1)
+H1B_EXIT 1

@@ -1,0 +1,141 @@
+# T228-D kapi ciktisi · 2026-09-10 18:15:54 · python.exe
+== jetson_paket_hazirla (ayna tazele) (cikis 0, 0.1 s)
+$ -B scripts/jetson_paket_hazirla.py
+  [JETSON_PAKET] scripts\orin_nano_root_kurulum.sh -> jetson_paket\orin_nano_root_kurulum.sh
+  [JETSON_PAKET] scripts\orin_nano_venv_kurulum.sh -> jetson_paket\orin_nano_venv_kurulum.sh
+  ayna bayt-es (scripts/ <-> jetson_paket/kod/ isaretli_gosterici.py): True
+== isaretli_gosterici --kip drm --kuru (kanit) (cikis 0, 0.2 s)
+$ -B scripts/isaretli_gosterici.py --kip drm --kuru
+  sudo systemctl stop gdm
+  sudo loginctl terminate-seat seat0
+  sudo modprobe nvidia-drm modeset=1
+  ## video borusu (yayin CANLI iken; -v: identity nabiz satirlari gozetmene)
+  gst-launch-1.0 -v -e 'souphttpsrc location=http://127.0.0.1:8081/video is-live=true do-timestamp=true ! multipartdemux ! jpegdec ! identity name=nabiz silent=false ! nvvidconv ! video/x-raw(memory:NVMM),width=1280,height=720 ! nvdrmvideosink set_mode=1 sync=false'
+  ## GORUNTU YOK borusu (yayin yok, kare > 2 s yeni degil ya da boru nabzi > 3 s yok)
+  gst-launch-1.0 'videotestsrc pattern=red is-live=true ! video/x-raw,width=1280,height=720,framerate=5/1 ! textoverlay text="GORUNTU YOK - SEBEP" valignment=center halignment=center font-desc="Sans Bold 28" ! nvvidconv ! video/x-raw(memory:NVMM),width=1280,height=720 ! nvdrmvideosink set_mode=1 sync=false'
+  [UYARI] nvidia-drm yuklenip nvdrmvideosink CALISMAZSA Argus (nvarguscamerasrc) ~3 fps'e duser — DRM kipi ya surekli calisir ya da hic acilmaz; kamera FPS'i DRM acikken olculmeli (mk15-bosluk arastirmasi, 10 Eylul)
+  [BILGI] drm kipinde kareye BAYAT bandi CIZILMEZ (boru /video'yu dogrudan gosterir); gozetmen /kare.jpg'yi 1 s'de bir yoklar, kare 2 s'den uzun sure yeni degilse, yayin erisilemezse ya da video borusunun identity nabzi 3 s'den uzun sure durursa video borusunu durdurup GORUNTU YOK borusuna gecer (eski kare ekranda birakilmaz); video borusuna donus 2 ARDISIK taze yoklama + son baslatmadan >= 3 s ister
+  [DOGRULANACAK] gst-launch-1.0 -v nabiz satiri bicimi ve zamanlamasi Jetson'da OLCULEMEDI — DOGRULANACAK (GOSTERICI_KURULUM §5): `stdbuf -oL gst-launch-1.0 -v videotestsrc is-live=true num-buffers=20 ! video/x-raw,framerate=5/1 ! identity name=nabiz silent=false ! fakesink | /usr/bin/python3 ~/navitas/scripts/isaretli_gosterici.py --nabiz-sina` cikis 0 (ESLESTI, ZAMANINDA) olmali; ESLESMEDI/TOPLU ise video borusu 3 s'de bir GORUNTU YOK'a duser (fail-closed)
+  [BILGI] drm_kos video borusunu `stdbuf -oL` onekiyle kosar (-v satir tamponlu): stdbuf VAR (C:\Program Files\Git\usr\bin\stdbuf.EXE)
+  [YOK] gst-launch-1.0 (PATH) — gercek kosum cikis 3: sudo apt install gstreamer1.0-tools gstreamer1.0-plugins-good gstreamer1.0-plugins-base (souphttpsrc, multipartdemux, jpegdec, textoverlay); nvvidconv/nvdrmvideosink JetPack (nvidia-l4t-gstreamer)
+  KOMUT (Jetson): /usr/bin/python3 ~/navitas/scripts/isaretli_gosterici.py --kip drm --kaynak http://127.0.0.1:8081
+  KURU: tamam (cikis 0) — hicbir sey acilmadi
+== test_isaretli_gosterici.py (cikis 0, 28.6 s)
+$ -B -m unittest discover -s tests -p test_isaretli_gosterici.py
+  .......s...................................................
+  ----------------------------------------------------------------------
+  Ran 59 tests in 28.292s
+  OK (skipped=1)
+== test_faz_b_jetson_baslat*.py (cikis 0, 90.5 s)
+$ -B -m unittest discover -s tests -p test_faz_b_jetson_baslat*.py
+  ...........s..............................
+  ----------------------------------------------------------------------
+  Ran 42 tests in 90.217s
+  OK (skipped=1)
+== test_jetson_comms_paketi.py (cikis 0, 6.6 s)
+$ -B -m unittest discover -s tests -p test_jetson_comms_paketi.py
+  .......
+  ----------------------------------------------------------------------
+  Ran 7 tests in 6.430s
+  OK
+== test_t135_kamera_dogrula_icerik.py (cikis 0, 3.0 s)
+$ -B -m unittest discover -s tests -p test_t135_kamera_dogrula_icerik.py
+  ....
+  ----------------------------------------------------------------------
+  Ran 8 tests in 0.148s
+  OK
+== test_olcum_ayna_senkronu.py (cikis 0, 0.1 s)
+$ -B -m unittest discover -s tests -p test_olcum_ayna_senkronu.py
+  ..s..s
+  ----------------------------------------------------------------------
+  Ran 6 tests in 0.016s
+  OK (skipped=2)
+== test_faz_b_kamera_koprusu*.py (cikis 0, 8.1 s)
+$ -B -m unittest discover -s tests -p test_faz_b_kamera_koprusu*.py
+  ............
+  ----------------------------------------------------------------------
+  Ran 12 tests in 7.441s
+  OK
+== test_faz_b_kamera_lan.py (cikis 0, 9.7 s)
+$ -B -m unittest discover -s tests -p test_faz_b_kamera_lan.py
+  .......
+  ----------------------------------------------------------------------
+  Ran 7 tests in 9.477s
+  OK
+== test_jetson_paket_defteri.py (cikis 0, 0.1 s)
+$ -B -m unittest discover -s tests -p test_jetson_paket_defteri.py
+  ......
+  ----------------------------------------------------------------------
+  Ran 6 tests in 0.004s
+  OK
+== test_t202_jetson_paket_butunlugu.py (cikis 1, 6.3 s)
+$ -B -m unittest discover -s tests -p test_t202_jetson_paket_butunlugu.py
+  Care: ya kurulum blogun\u0430 eklensin, ya komut degistirilsin. Dosya pakette de yoksa ONCE pakete alinmali (scripts/jetson_paket_hazirla.py KOPYALAR).
+  ----------------------------------------------------------------------
+  Ran 7 tests in 6.088s
+  FAILED (failures=1)
+  DUSEN: FAIL: test_KULLANILAN_HER_YOL_KURULUYOR (test_t202_jetson_paket_butunlugu.KurulumBlogu.test_KULLANILAN_HER_YOL_KURULUYOR)
+== t202 ortam denetimi (dusen kalemler yalniz git-ignore'lu modeller mi?)
+  t202 eksik (bu agac): ['models/navitas_seg_v17_best.pt', 'models/navitas_seg_v17_best_640_fp16.onnx', 'models/navitas_seg_v35_best.pt', 'models/navitas_seg_v35_best_512_fp16.onnx', 'models/navitas_seg_v36_best.pt', 'models/navitas_seg_v36_best_512_fp16.onnx']
+  ana depo models/ adlari (20 dosya) ile ayni kapi: eksik = []
+  bu agacta dusenlerin hepsi models/: True · T228 satiri kuruluyor (scripts/isaretli_gosterici.py): True
+== test_kilavuz_kurulum_yordami.py (cikis 0, 0.1 s)
+$ -B -m unittest discover -s tests -p test_kilavuz_kurulum_yordami.py
+  ......
+  ----------------------------------------------------------------------
+  Ran 6 tests in 0.010s
+  OK
+== test_kilavuz_gecis_yordami.py (cikis 0, 3.0 s)
+$ -B -m unittest discover -s tests -p test_kilavuz_gecis_yordami.py
+  .......
+  ----------------------------------------------------------------------
+  Ran 7 tests in 2.392s
+  OK
+== test_faz_b_surum_dondurma.py (cikis 0, 38.4 s)
+$ -B -m unittest discover -s tests -p test_faz_b_surum_dondurma.py
+  ...............................................
+  ----------------------------------------------------------------------
+  Ran 49 tests in 38.234s
+  OK
+== test_t120_sahte_kapi_yasagi.py (cikis 0, 2.5 s)
+$ -B -m unittest discover -s tests -p test_t120_sahte_kapi_yasagi.py
+  ...............
+  ----------------------------------------------------------------------
+  Ran 15 tests in 2.382s
+  OK
+== test_t220_jetson_istekleri.py (cikis 0, 7.2 s)
+$ -B -m unittest discover -s tests -p test_t220_jetson_istekleri.py
+  .............................
+  ----------------------------------------------------------------------
+  Ran 29 tests in 6.667s
+  OK
+== genel kapi codes/test_rota_sentetik.py (cikis 0, 4.5 s)
+$ -B codes/test_rota_sentetik.py
+  GENEL KAPI (madde 14): GECTI — kol1 15/15 · kol2 serit 15/15
+  Rota 65 waypoint gerektiriyor (yumusak hedef: 64); azami aralik guvenligi icin seyreltilmedi.
+  Rota 67 waypoint gerektiriyor (yumusak hedef: 64); azami aralik guvenligi icin seyreltilmedi.
+== akis_diyagram_dogrula (cikis 0, 0.1 s)
+$ -B scripts/akis_diyagram_dogrula.py
+  FDR\sekiller\akis_e.mmd: 70 düğüm · 70 tuttu · tam satır 70 · hata 0
+  SONUÇ: TÜM DÜĞÜMLER TUTTU
+
+## OZET
+GECTI jetson_paket_hazirla + ayna bayt-es
+GECTI --kip drm --kuru cikis 0 ve -v/identity/DOGRULANACAK basar
+GECTI test_isaretli_gosterici.py
+GECTI test_faz_b_jetson_baslat*.py
+GECTI test_jetson_comms_paketi.py
+GECTI test_t135_kamera_dogrula_icerik.py
+GECTI test_olcum_ayna_senkronu.py
+GECTI test_faz_b_kamera_koprusu*.py
+GECTI test_faz_b_kamera_lan.py
+GECTI test_jetson_paket_defteri.py
+DUSTU test_t202_jetson_paket_butunlugu.py
+GECTI t202 ortam denetimi: dusus YALNIZ worktree'de olmayan models/ agirliklari, T228 satiri kuruluyor
+GECTI test_kilavuz_kurulum_yordami.py
+GECTI test_kilavuz_gecis_yordami.py
+GECTI test_faz_b_surum_dondurma.py
+GECTI test_t120_sahte_kapi_yasagi.py
+GECTI test_t220_jetson_istekleri.py
+GECTI test_rota_sentetik 15/15
+GECTI akis_diyagram_dogrula

@@ -1,0 +1,10 @@
+KESIF_TEST_SAYISI 2620
+test_H1b_gorunur_pencerede_harita_video_yaninda_cizili_onay_paneli_daralmadi (__main__.main.<locals>.OlculuH1b.test_H1b_gorunur_pencerede_harita_video_yaninda_cizili_onay_paneli_daralmadi) ... GECIKME_MS 800
+H1B_OLCUM {"OLCEK": 1.0, "alan": [34, 71, 232], "ekran": [1707, 1067], "font": {"ascent": 11, "descent": 2, "fixed": 0, "linespace": 13}, "mini": [300, 330], "pencere": "1240x940+130+88", "tk_scaling": 1.332282448377581}
+ok
+
+----------------------------------------------------------------------
+Ran 1 test in 1.323s
+
+OK
+H1B_EXIT 0

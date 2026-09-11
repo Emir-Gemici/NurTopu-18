@@ -1,0 +1,2 @@
+[KAMERA_KOPRUSU] t=118539.482 dinliyor http://127.0.0.1:53296/video · kare http://127.0.0.1:53296/kare.jpg · durum http://127.0.0.1:53296/durum · kaynak='C:\\Users\\yunus\\AppData\\Local\\Temp\\tmpw6q96p3i\\sentetik_t226d.avi' [dosya] kalite=80 fps_tavani=10.0 arka_uc=auto kip=-
+[KAMERA_KOPRUSU] t=118539.489 kaynak ACILDI (deneme 1): 'C:\\Users\\yunus\\AppData\\Local\\Temp\\tmpw6q96p3i\\sentetik_t226d.avi' [dosya]

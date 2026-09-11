@@ -1,0 +1,86 @@
+# T221-D/T221-D2 gercek dosya mutasyonu · 2026-09-10T17:14:38+00:00
+ref=index · HEAD=0f4d7d039aff14b30f738187b169ae0c35e223a3 · core.autocrlf=true
+kapi dosyasi tests/test_faz_b_arduplane_sablon.py sha256=b6f05dc874ac7bd1 · git index ile bayt-es=True · git HEAD ile bayt-es=True
+[mutasyonsuz] A18 hatalari (surecte): []
+[R1 README beklenen-yok listesi bosaltildi] config/pixhawk/README.md · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir', 'test_m13_beklenen_yok_bosaltilinca_ya_da_genisletilince_yakalanir', 'test_m14_ikili_taramasi_adi_gosterince_yakalanir'] -> YAKALANDI · geri_yukleme(git cat-file --filters index) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi 'onceden yazilan': VAR
+    A18 hatalari (surecte, 2): ["README beklenen-yok [] != onceden yazilan ['BRD_SER2_RTSCTS'] (liste olcumden sonra degistirilemez)", "olcut 1: SITL'de yuklu README 61 != .param 62 - beklenen-yok 0 = 62"]
+    son satir: FAILED (failures=4)
+[R2 README olcut 1: SITL'de 61 yerine 62 (SITL'de tutamayan eski sayi)] config/pixhawk/README.md · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir'] -> YAKALANDI · geri_yukleme(git cat-file --filters index) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi "olcut 1: SITL'de yuklu": VAR
+    A18 hatalari (surecte, 1): ["olcut 1: SITL'de yuklu README 62 != .param 62 - beklenen-yok 1 = 61"]
+    son satir: FAILED (failures=2)
+[R3 .param'dan TKOFF_ACCEL_CNT satiri silindi (N .param'dan hesaplanir)] config/pixhawk/arduplane_final.param · cikis=1 dusen=['test_a14_kaynak_kaniti_temiz_ve_guncel', 'test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_a2_zorunlu_anahtarlar_var', 'test_a5_mancinik_kalkisi_tutarliligi', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir'] -> YAKALANDI · geri_yukleme(git cat-file --filters index) bayt_es=True sha256=1cce06804179
+    beklenen A18 hatasi 'olcut 1: dosyadaki ad': VAR
+    A18 hatalari (surecte, 2): ["olcut 1: dosyadaki ad README 62 != .param 61", "olcut 1: SITL'de yuklu README 61 != .param 61 - beklenen-yok 1 = 60"]
+    son satir: FAILED (failures=5)
+[R4 yoklama SS6.1: SER2_RTSCTS 0 -> 1 (beklenen-yok olcumle celisir)] results/fdr_sprint_20260910/H8/T221/sitl_yoklama.txt · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir', 'test_m14_ikili_taramasi_adi_gosterince_yakalanir'] -> YAKALANDI · geri_yukleme(git cat-file --filters index) bayt_es=True sha256=8776b2bfae68
+    beklenen A18 hatasi 'olcumle celisir': VAR
+    A18 hatalari (surecte, 1): ["BRD_SER2_RTSCTS: SITL ikilisinde 'SER2_RTSCTS' 1 kez (beklenen-yok olcumle celisir)"]
+    son satir: FAILED (failures=3)
+[R5 README olcut 1 ikili sha'sinin son hanesi degisti] config/pixhawk/README.md · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir'] -> YAKALANDI · geri_yukleme(git cat-file --filters index) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi 'ikili sha': VAR
+    A18 hatalari (surecte, 1): ["ikili sha: README ['639a8381c1d8805a2e252a679f22d72473232ac813c810216d99aaba55e160e8', '639a8381c1d8805a2e252a679f22d72473232ac813c810216d99aaba55e160e9'] != yoklama ['639a8381c1d8805a2e252a679f22d72473232ac813c810216d99aaba55e160e9']"]
+    son satir: FAILED (failures=2)
+[R6 yoklama SS6.1: pozitif kontrol SAFETY_DEFLT 1 -> 0] results/fdr_sprint_20260910/H8/T221/sitl_yoklama.txt · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir'] -> YAKALANDI · geri_yukleme(git cat-file --filters index) bayt_es=True sha256=8776b2bfae68
+    beklenen A18 hatasi 'pozitif kontrol': VAR
+    A18 hatalari (surecte, 1): ["BRD_SER2_RTSCTS: pozitif kontrol 'SAFETY_DEFLT' ikilide gorulmedi (0 kanit sayilmaz)"]
+    son satir: FAILED (failures=2)
+[R7 README 'her eksik ad DUSER' kurali yumusatildi] config/pixhawk/README.md · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir'] -> YAKALANDI · geri_yukleme(git cat-file --filters index) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi 'on kayit cumlesi eksik': VAR
+    A18 hatalari (surecte, 1): ["README SS6.6 on kayit cumlesi eksik: 'listenin dışındaki her eksik ad **DÜŞER**'"]
+    son satir: FAILED (failures=2)
+[R8 README CHUTE_* on hukmunun kayit cumlesi kisaltildi] config/pixhawk/README.md · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir'] -> YAKALANDI · geri_yukleme(git cat-file --filters index) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi 'on kayit cumlesi eksik': VAR
+    A18 hatalari (surecte, 1): ["README SS6.6 on kayit cumlesi eksik: 'SITL paraşütsüz derlenmiş — paraşüt zinciri ÖLÇÜLEMEDİ'"]
+    son satir: FAILED (failures=2)
+[R9 README 'olcumden once, D-449' damgasi (2 yer) silindi] config/pixhawk/README.md · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir'] -> YAKALANDI · geri_yukleme(git cat-file --filters index) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi 'on kayit cumlesi eksik': VAR
+    A18 hatalari (surecte, 1): ["README SS6.6 on kayit cumlesi eksik: 'ölçümden önce, D-449'"]
+    son satir: FAILED (failures=2)
+[R10 README SITL features.txt:139 -> :138] config/pixhawk/README.md · cikis=1 dusen=['test_a18_sitl_olculemedi_yazili_gecti_yazilmaz', 'test_m12_olcut1_sayisi_elle_yazilinca_yakalanir'] -> YAKALANDI · geri_yukleme(git cat-file --filters index) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi 'yoklamadaki satirla uyusmuyor': VAR
+    A18 hatalari (surecte, 1): ["SITL_x86_64_linux_gnu/features.txt:138 yoklamadaki satirla uyusmuyor"]
+    son satir: FAILED (failures=2)
+[C2 eski olcut 1'in ~~cizgisi~~ kaldirildi (62 adin 62'si yeniden yururlukte)] config/pixhawk/README.md · cikis=0 dusen=[] -> KACTI · geri_yukleme(git cat-file --filters index) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi 'eski olcut 1 yururlukteki metinde': YOK
+    A18 hatalari (surecte, 0): []
+    son satir: OK
+[C3 on hukum gevsetildi: Olcut 1 DUSER -> OLCULEMEDI] config/pixhawk/README.md · cikis=0 dusen=[] -> KACTI · geri_yukleme(git cat-file --filters index) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi "on kayit cumlesi eksik: 'Ölçüt 1 **DÜŞER**": YOK
+    A18 hatalari (surecte, 0): []
+    son satir: OK
+[C4 yeni olcut 1'den `param show CHUTE_ENABLED` 1 silindi] config/pixhawk/README.md · cikis=0 dusen=[] -> KACTI · geri_yukleme(git cat-file --filters index) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi "olcut 1 maddesinde '`param show CHUTE_ENABLED` 1' 0 kez": YOK
+    A18 hatalari (surecte, 0): []
+    son satir: OK
+[C7 on hukmun 'eklenmez, esik gevsetilmez' parantezi silindi] config/pixhawk/README.md · cikis=0 dusen=[] -> KACTI · geri_yukleme(git cat-file --filters index) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi "on kayit cumlesi eksik: 'Ölçüt 1 **DÜŞER**": YOK
+    A18 hatalari (surecte, 0): []
+    son satir: OK
+[E1 eski olcut 1 tamamen silindi (FDR: eski metin silinmez, cizilir)] config/pixhawk/README.md · cikis=0 dusen=[] -> KACTI · geri_yukleme(git cat-file --filters index) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi '~~cizili~~ 0 kez': YOK
+    A18 hatalari (surecte, 0): []
+    son satir: OK
+[E2 cizgi notundaki tarih damgasi silindi (on hukum basliginda duruyor)] config/pixhawk/README.md · cikis=0 dusen=[] -> KACTI · geri_yukleme(git cat-file --filters index) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi 'ardinda tarih damgasi yok': YOK
+    A18 hatalari (surecte, 0): []
+    son satir: OK
+[E3 olcut 1'den acilis surumu `ArduPlane V4.5.7` silindi] config/pixhawk/README.md · cikis=0 dusen=[] -> KACTI · geri_yukleme(git cat-file --filters index) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi "olcut 1 maddesinde 'Açılış `ArduPlane V4.5.7`' 0 kez": YOK
+    A18 hatalari (surecte, 0): []
+    son satir: OK
+[E4 on hukme celiskili ikinci olcut 1 hukmu eklendi (DUSER cumlesi yerinde)] config/pixhawk/README.md · cikis=0 dusen=[] -> KACTI · geri_yukleme(git cat-file --filters index) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi 'birden cok kez anilmis': YOK
+    A18 hatalari (surecte, 0): []
+    son satir: OK
+[E5 on hukum paragrafi bolundu (Olcut 1 DUSER cumlesi kosul paragrafindan cikti)] config/pixhawk/README.md · cikis=0 dusen=[] -> KACTI · geri_yukleme(git cat-file --filters index) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi 'on hukum paragrafinda yok': YOK
+    A18 hatalari (surecte, 0): []
+    son satir: OK
+[E6 on hukum basligindaki tarih damgasi silindi (cizgi notunda duruyor)] config/pixhawk/README.md · cikis=0 dusen=[] -> KACTI · geri_yukleme(git cat-file --filters index) bayt_es=True sha256=e2efd44838b6
+    beklenen A18 hatasi 'basliginda tarih damgasi yok': YOK
+    A18 hatalari (surecte, 0): []
+    son satir: OK
+[OZET] 10/20 YAKALANDI
+[geri yukleme sonrasi] cikis=0 · 3 dosya git index ile bayt-es=True · son satir: OK

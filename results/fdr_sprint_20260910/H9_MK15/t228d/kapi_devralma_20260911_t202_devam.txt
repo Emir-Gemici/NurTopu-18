@@ -1,0 +1,61 @@
+# T228-D2 · 2026-09-11 · T202 gercek model dosyalariyla devam kaniti
+
+Onceki kayit korunuyor: kapi_devralma_20260911.txt (+ .raw.txt).
+O kosucu exit 1 dondu: 14 unittest kalibinda toplam 263 test, 4 skip, yalniz T202'de 1 FAIL.
+Sebep: bu worktree'nin jetson_paket/models dizininde alti gitignore model dosyasi yoktu.
+T202'nin mevcut test kodu ve model secimi degistirilmedi.
+
+Kaynak: O:\navitas\jetson_paket\models
+Hedef: O:\navitas\.claude\worktrees\wf_c1992b9f-d1a-1\jetson_paket\models
+Islem: her hedefin bulunmadigi Test-Path -LiteralPath ile dogrulandi; alti dosya
+Copy-Item -LiteralPath ile kopyalandi; Get-FileHash -Algorithm SHA256 ile kaynak/hedef eslesti.
+Ana kaynaga yazilmadi, var olan hedef ezilmedi. Toplam 328162444 bayt. Copy/sha komutu exit 0.
+
+navitas_seg_v17_best.pt
+  Boyut: 54830748
+  SHA256: 8986C300585A05C94FECCCC8B5270C2A5E619051B1FC99640D6AB0DF59896568
+  Kaynak/hedef esit: True
+navitas_seg_v17_best_640_fp16.onnx
+  Boyut: 54599914
+  SHA256: 0E9A49F9C99CB9997278AE51F0B811DA242215F757A55234BF4C3895763EAEF3
+  Kaynak/hedef esit: True
+navitas_seg_v35_best.pt
+  Boyut: 54803804
+  SHA256: E00F6B8E25DD65604755C3CEAD7840AEB0F9A0FF74FEE45E8F5FE9DBF1DD438B
+  Kaynak/hedef esit: True
+navitas_seg_v35_best_512_fp16.onnx
+  Boyut: 54569669
+  SHA256: 248EF808F8BE20D700D089E33C727DCB9E336832CE87304352CD859B463C37D3
+  Kaynak/hedef esit: True
+navitas_seg_v36_best.pt
+  Boyut: 54788636
+  SHA256: 1D1CACA6F6DA19EA35E69186A048DA960CA5188BE6EE6D49D6106457CAC46911
+  Kaynak/hedef esit: True
+navitas_seg_v36_best_512_fp16.onnx
+  Boyut: 54569673
+  SHA256: F4C9F5FE08883D1AECC9B4AC3CE9F98CEA61DE2F5298EDDE5D2C2A7A5056DEAB
+  Kaynak/hedef esit: True
+
+KOMUT (worktree kokunde):
+& 'O:\navitas-local-train\venv\Scripts\python.exe' -B -X utf8 -m unittest discover -s tests -p test_t202_jetson_paket_butunlugu.py -v
+
+test_GIRDI_YOLLARI_KURULUM_DUZENIYLE_UYUMLU (test_t202_jetson_paket_butunlugu.KurulumBlogu.test_GIRDI_YOLLARI_KURULUM_DUZENIYLE_UYUMLU)
+`--girdi` yollari, kurulum blogunun OLUSTURDUGU duzende bulunmali. ... ok
+test_KULLANILAN_HER_YOL_KURULUYOR (test_t202_jetson_paket_butunlugu.KurulumBlogu.test_KULLANILAN_HER_YOL_KURULUYOR) ... ok
+test_MUAF_LISTESI_DAR (test_t202_jetson_paket_butunlugu.KurulumBlogu.test_MUAF_LISTESI_DAR) ... ok
+test_MUTASYON_kurulmayan_yol_YAKALANIR (test_t202_jetson_paket_butunlugu.KurulumBlogu.test_MUTASYON_kurulmayan_yol_YAKALANIR)
+Kapi bos degil: kurulum blogundan bir satir dusse YAKALANMALI. ... ok
+test_PAKET_KODU_KENDI_BASINA_ITHAL_EDILEBILIYOR (test_t202_jetson_paket_butunlugu.KurulumBlogu.test_PAKET_KODU_KENDI_BASINA_ITHAL_EDILEBILIYOR) ... ok
+test_capa_KULLANIM_AYRISTIRILIYOR (test_t202_jetson_paket_butunlugu.KurulumBlogu.test_capa_KULLANIM_AYRISTIRILIYOR) ... ok
+test_capa_KURULUM_BLOGU_AYRISTIRILIYOR (test_t202_jetson_paket_butunlugu.KurulumBlogu.test_capa_KURULUM_BLOGU_AYRISTIRILIYOR)
+Capa: blok okunamazsa asagidaki test BOSA doner. ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 4.790s
+
+OK
+EXIT=0
+
+Son durum: onceki 13 kalip yesil (256 test, 4 skip); gercek T202 tekrar 7/7, exit 0.
+Genel kapi iki kol 15/15, akis dogrulayici ve gosterici aynasi onceki kayitta exit 0.
+Bu tekrar fiziksel Jetson olcumu degildir. Tam depo unittest discover bu gorevde kosulmadi.
