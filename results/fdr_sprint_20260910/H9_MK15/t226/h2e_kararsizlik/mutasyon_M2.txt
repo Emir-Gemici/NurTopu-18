@@ -3,21 +3,21 @@ test_H2e_olcek_1_0 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_0) ...
   test_H2e_olcek_1_0 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_0) (yol=1, olcek=1.0) ... FAIL
   test_H2e_olcek_1_0 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_0) (yol=2, olcek=1.0) ... FAIL
   test_H2e_olcek_1_0 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_0) (yol=3, olcek=1.0) ... FAIL
-H2E_DURUM {"OLCEK": 1.0, "harita": ".!frame3.!frame.!canvas", "harita_wh": [742, 450], "iha_port": 65340, "ika_port": 65341, "link_port": 65339, "olcek": 1.0, "olculu_alan": {}, "rota": 146, "rota_yok": {"sebep": "KORIDOR_DEGIL", "seq": 1239, "type": "NO_ROUTE", "v": 1}, "sayac": {"ACK_TX": 342, "HEARTBEAT": 0, "IHA_LANDED": 0, "NO_ROUTE": 342, "OPEN_ROUTE": 3, "OPEN_ROUTE_RED": 0}, "tk_scaling": 1.332282448377581}
+H2E_DURUM {"OLCEK": 1.0, "harita": ".!frame3.!frame.!canvas", "harita_wh": [742, 450], "iha_port": 59329, "ika_port": 59330, "link_port": 59328, "olcek": 1.0, "olculu_alan": {}, "rota": 146, "rota_yok": {"sebep": "KORIDOR_DEGIL", "seq": 1237, "type": "NO_ROUTE", "v": 1}, "sayac": {"ACK_TX": 340, "HEARTBEAT": 0, "IHA_LANDED": 0, "NO_ROUTE": 340, "OPEN_ROUTE": 3, "OPEN_ROUTE_RED": 0}, "tk_scaling": 1.332282448377581}
 test_H2e_olcek_1_5 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_5) ... 
   test_H2e_olcek_1_5 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_5) (yol=1, olcek=1.5) ... FAIL
   test_H2e_olcek_1_5 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_5) (yol=2, olcek=1.5) ... FAIL
   test_H2e_olcek_1_5 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_5) (yol=3, olcek=1.5) ... FAIL
-H2E_DURUM {"OLCEK": 1.5, "harita": ".!frame3.!frame.!canvas", "harita_wh": [742, 450], "iha_port": 65251, "ika_port": 65252, "link_port": 65250, "olcek": 1.5, "olculu_alan": {".!frame3.!frame.!canvas": [51, 156, 243]}, "rota": 146, "rota_yok": {"sebep": "KORIDOR_DEGIL", "seq": 1233, "type": "NO_ROUTE", "v": 1}, "sayac": {"ACK_TX": 336, "HEARTBEAT": 0, "IHA_LANDED": 0, "NO_ROUTE": 336, "OPEN_ROUTE": 3, "OPEN_ROUTE_RED": 0}, "tk_scaling": 2.0006367663344404}
+H2E_DURUM {"OLCEK": 1.5, "harita": ".!frame3.!frame.!canvas", "harita_wh": [742, 450], "iha_port": 60672, "ika_port": 60673, "link_port": 60671, "olcek": 1.5, "olculu_alan": {".!frame3.!frame.!canvas": [51, 156, 243]}, "rota": 146, "rota_yok": {"sebep": "KORIDOR_DEGIL", "seq": 1237, "type": "NO_ROUTE", "v": 1}, "sayac": {"ACK_TX": 340, "HEARTBEAT": 0, "IHA_LANDED": 0, "NO_ROUTE": 340, "OPEN_ROUTE": 3, "OPEN_ROUTE_RED": 0}, "tk_scaling": 2.0006367663344404}
 
 ======================================================================
 FAIL: test_H2e_olcek_1_0 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_0) (yol=1, olcek=1.0)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 781, in _gecisleri_denetle
+  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 783, in _gecisleri_denetle
     self._mesaj_ver(dict(YOK_ROTA, seq=seq, detay=detay))
     ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 259, in _mesaj_ver
+  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 261, in _mesaj_ver
     self.assertTrue(self._pompala(islendi), mesaj)
     ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 AssertionError: False is not true : {'v': 1, 'type': 'NO_ROUTE', 'seq': 143, 'sebep': 'KORIDOR_DEGIL', 'detay': ''}
@@ -26,10 +26,10 @@ AssertionError: False is not true : {'v': 1, 'type': 'NO_ROUTE', 'seq': 143, 'se
 FAIL: test_H2e_olcek_1_0 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_0) (yol=2, olcek=1.0)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 781, in _gecisleri_denetle
+  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 783, in _gecisleri_denetle
     self._mesaj_ver(dict(YOK_ROTA, seq=seq, detay=detay))
     ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 259, in _mesaj_ver
+  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 261, in _mesaj_ver
     self.assertTrue(self._pompala(islendi), mesaj)
     ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 AssertionError: False is not true : {'v': 1, 'type': 'NO_ROUTE', 'seq': 145, 'sebep': 'KORIDOR_DEGIL', 'detay': ''}
@@ -38,10 +38,10 @@ AssertionError: False is not true : {'v': 1, 'type': 'NO_ROUTE', 'seq': 145, 'se
 FAIL: test_H2e_olcek_1_0 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_0) (yol=3, olcek=1.0)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 781, in _gecisleri_denetle
+  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 783, in _gecisleri_denetle
     self._mesaj_ver(dict(YOK_ROTA, seq=seq, detay=detay))
     ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 259, in _mesaj_ver
+  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 261, in _mesaj_ver
     self.assertTrue(self._pompala(islendi), mesaj)
     ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 AssertionError: False is not true : {'v': 1, 'type': 'NO_ROUTE', 'seq': 147, 'sebep': 'KORIDOR_DEGIL', 'detay': ''}
@@ -50,10 +50,10 @@ AssertionError: False is not true : {'v': 1, 'type': 'NO_ROUTE', 'seq': 147, 'se
 FAIL: test_H2e_olcek_1_5 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_5) (yol=1, olcek=1.5)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 781, in _gecisleri_denetle
+  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 783, in _gecisleri_denetle
     self._mesaj_ver(dict(YOK_ROTA, seq=seq, detay=detay))
     ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 259, in _mesaj_ver
+  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 261, in _mesaj_ver
     self.assertTrue(self._pompala(islendi), mesaj)
     ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 AssertionError: False is not true : {'v': 1, 'type': 'NO_ROUTE', 'seq': 143, 'sebep': 'KORIDOR_DEGIL', 'detay': ''}
@@ -62,10 +62,10 @@ AssertionError: False is not true : {'v': 1, 'type': 'NO_ROUTE', 'seq': 143, 'se
 FAIL: test_H2e_olcek_1_5 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_5) (yol=2, olcek=1.5)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 781, in _gecisleri_denetle
+  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 783, in _gecisleri_denetle
     self._mesaj_ver(dict(YOK_ROTA, seq=seq, detay=detay))
     ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 259, in _mesaj_ver
+  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 261, in _mesaj_ver
     self.assertTrue(self._pompala(islendi), mesaj)
     ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 AssertionError: False is not true : {'v': 1, 'type': 'NO_ROUTE', 'seq': 145, 'sebep': 'KORIDOR_DEGIL', 'detay': ''}
@@ -74,16 +74,16 @@ AssertionError: False is not true : {'v': 1, 'type': 'NO_ROUTE', 'seq': 145, 'se
 FAIL: test_H2e_olcek_1_5 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_5) (yol=3, olcek=1.5)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 781, in _gecisleri_denetle
+  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 783, in _gecisleri_denetle
     self._mesaj_ver(dict(YOK_ROTA, seq=seq, detay=detay))
     ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 259, in _mesaj_ver
+  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 261, in _mesaj_ver
     self.assertTrue(self._pompala(islendi), mesaj)
     ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 AssertionError: False is not true : {'v': 1, 'type': 'NO_ROUTE', 'seq': 147, 'sebep': 'KORIDOR_DEGIL', 'detay': ''}
 
 ----------------------------------------------------------------------
-Ran 2 tests in 32.298s
+Ran 2 tests in 32.181s
 
 FAILED (failures=6)
 H2E_TUR 1/1 DUSTU dusus=6 hata=0

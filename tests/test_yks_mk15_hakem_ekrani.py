@@ -142,8 +142,9 @@ def _dolgulu(tuval, tur, renk):
 
 # ── Gerçek kurucu + gerçek Tk + gerçek UDP (efemer) ─────────────────────────
 class _GercekEkran(unittest.TestCase):
-    # D-454 (12 Eylül, ölçüldü — results/fdr_sprint_20260910/H9_MK15/t226/
-    # h2e_kararsizlik/): İHA ve İKA uçları AYRI geri döngü adreslerinde durur.
+    # T226/H2e kararsızlığı (12 Eylül ölçümü; kanıt results/fdr_sprint_20260910/
+    # H9_MK15/t226/h2e_kararsizlik/KANIT.md — karar numarasını mimar verir):
+    # İHA ve İKA uçları AYRI geri döngü adreslerinde durur.
     # NEDEN: ürünün kaynak kilidi İHA verisi (OPEN_ROUTE/NO_ROUTE/IHA_LANDED)
     # için YALNIZ IP'ye bakar — saha kuralı budur, Jetson efemer port kullanır
     # (`mesaj_kaynagi_dogrula`). Üç uç da 127.0.0.1'deyken kilit hiçbir şey
@@ -235,7 +236,8 @@ class _GercekEkran(unittest.TestCase):
         """OPEN_ROUTE/NO_ROUTE'u gerçek UDP ile ver; ekran o çerçeveyi İŞLEYİP
         BİTİRENE dek bekle (H2c, H2e).
 
-        Hazır koşulu SABİT UYKU DEĞİLDİR (D-454, ölçüldü). İki gerçek koşul:
+        Hazır koşulu SABİT UYKU DEĞİLDİR (12 Eylül ölçümü; kanıt
+        h2e_kararsizlik/KANIT.md). İki gerçek koşul:
           1. giriş kuyruğunda işlenmemiş çerçeve KALMAYACAK (`gelen.empty()`),
           2. ekranın durumu bu çerçevenin TAM karşılığı olacak — OPEN_ROUTE'ta
              `rota` bu seq'e gelecek **ve** `rota_yok` TEMİZLENMİŞ olacak.
@@ -261,7 +263,7 @@ class _GercekEkran(unittest.TestCase):
 
     def _yalniz_bizim_cerceveler(self, app, acik, yok):
         """Sızıntı hükmünden ÖNCEKİ önkoşul: ekran YALNIZ bu testin
-        çerçevelerini işlemiş olmalı (D-454).
+        çerçevelerini işlemiş olmalı (12 Eylül ölçümü).
 
         Ürünün kaynak kilidi İHA verisini IP ile eşler; ayrı geri döngü adresi
         bu testte yabancı çerçeveyi zaten reddettirir. Sayaç denetimi o kilidin
@@ -760,7 +762,7 @@ class H2e_RotaYokSonrasiAnaHarita(_GercekEkran):
                     and (app.harita.winfo_width(), app.harita.winfo_height())
                     == (self.TUVAL_W, self.TUVAL_H))
 
-        # Sabit 0,2 s uyku yerine GERÇEK yerleşim koşulu (D-454; H1b'de aynı
+        # Sabit 0,2 s uyku yerine GERÇEK yerleşim koşulu (H1b'de aynı
         # sınıf `d812b1e2` ile kapandı): ölçülü yerleşim tuval boyutundan
         # türer, yarım yerleşimde ölçüm anlamsızdır.
         self.assertTrue(self._pompala(tuval_hazir, 5.0),

@@ -1,4 +1,4 @@
-"""H2e fikstur duzeltmesinin MUTASYONLA sinanmasi (D-454).
+"""H2e fikstur duzeltmesinin MUTASYONLA sinanmasi (12 Eylul olcumu).
 
 Her mutasyon GERCEK dosyayi (tests/test_yks_mk15_hakem_ekrani.py) kisa sureligine
 bozar, `h2e_tani.py --enjekte-ms` ile YABANCI bir 127.0.0.1 ucundan NO_ROUTE
@@ -11,6 +11,8 @@ Beklenti:
       + eski 0,15 s sabit uyku geri gelir       -> 1  (eski kararsizlik doner)
   M3  yabanci cerceve onkosulu (sayac) silinir  -> 0  (yalniz tani kaybolur;
                                                   adres yalitimi hala tutuyor)
+  M4  duzeltme ONCESI fikstur + seyrek enjeksiyon -> 1 (mimarin 12 Eylul 01:17
+                                                  imzasinin AYNISI)
 Kosum:
   O:\\navitas-local-train\\venv\\Scripts\\python.exe -X utf8 -B mutasyon_h2e.py
 """
