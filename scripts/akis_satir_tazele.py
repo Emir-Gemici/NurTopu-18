@@ -22,16 +22,23 @@ dogrulayici yalniz metni denetledigi icin "TUM DUGUMLER TUTTU" diyordu. Simdi:
      "koddan turetildi <commit> <tarih>" yalniz dosyada hata ve taban uyarisi
      yoksa guncellenir.
 
-TABAN SUPHESI (AKIS-D2, curutucu KUSUR-1). .mmd satirlari her zaman secilen
-tabana gore DEGILDIR: kod commit'lenip .mmd tazelenmediyse satirlar .mmd'ye
-dokunan SON commit'e (L) gore; .mmd onceki bir tazelemeyle (ya da elle)
-degistiyse o dugumun satiri calisma agacina gore olabilir. fd65b427 bu durumda
-varsayilan HEAD ile dugumu SESSIZCE baska fonksiyonda birakiyordu (cikis 0,
-baslik yeniden damgali). Simdi her dugum icin ikinci bir makul taban alinir:
-satiri tabandaki .mmd'de AYNEN duran dugum icin L (L != taban ise), duruyor
-olmayan dugum icin calisma agaci. Dugumun dosyasi iki tabanda ayniysa sonuc
-ozdestir (satir kaydirmayan kod degisikligi supheli DEGIL); degilse iki tabanda
-sonuc (yeni satir / cozulemedi) hesaplanir ve farkliysa:
+TABAN SUPHESI (AKIS-D2, curutucu KUSUR-1 ve KUSUR-A). .mmd satirlari her zaman
+secilen tabana gore DEGILDIR: kod commit'lenip .mmd tazelenmediyse bir dugumun
+satiri O SATIRI YAZAN commit'e (L_n) gore; .mmd onceki bir tazelemeyle (ya da
+elle) degistiyse o dugumun satiri calisma agacina gore olabilir. fd65b427 bu
+durumda varsayilan HEAD ile dugumu SESSIZCE baska fonksiyonda birakiyordu
+(cikis 0, baslik yeniden damgali). Simdi her dugum icin ikinci bir makul taban
+alinir: satiri tabandaki .mmd'de AYNEN duran dugum icin L_n (L_n != taban ise),
+duruyor olmayan dugum icin calisma agaci.
+🔴 L_n dosya duzeyinde DEGIL, `git blame` ile DUGUM BASINA alinir (AKIS-D2 2.
+RED, KUSUR-A): .mmd kod commit'inden SONRA baska bir nedenle (yorum satiri, elle
+eklenen baska dugum) commit'lenirse "dosyaya dokunan son commit" tabanin kendisi
+olur, ikinci taban dusuyor ve kayma yine sessiz kaliyordu — karsi-ornek A (dugum
+f1:8) → C (basa f3, kod commit'i) → D (.mmd'ye yalniz '%% not'): varsayilan
+tazele cikis 0 verip n1'i f3'te birakiyor, basligi yeniden damgaliyordu.
+Dugumun dosyasi iki tabanda ayniysa sonuc ozdestir (satir kaydirmayan kod
+degisikligi supheli DEGIL); degilse iki tabanda sonuc (yeni satir / cozulemedi)
+hesaplanir ve farkliysa:
   --taban VERILMEDIYSE  "TABAN SUPHELI": hicbir dosya yazilmaz, cikis 2
                         (tahmin edilmez; tabani acikca verin);
   --taban VERILDIYSE    "TABAN UYARISI" basilir, tazeleme surer, o .mmd'nin
@@ -200,9 +207,11 @@ def _sonuc_metni(sonuc):
 def taban_suphesi(mmd, kok, kaynak, sha):
     """Sonucu secilen tabana BAGLI dugumler → [rapor]; bos liste = suphe yok (AKIS-D2).
 
-    Dugum satiri tabandaki .mmd'de AYNEN varsa satir .mmd'ye dokunan son commit'e
-    (L) gore yazilmistir → ikinci makul taban L (L != sha ise). Yoksa (onceki
-    tazeleme, elle duzeltme, .mmd tabanda yok) → ikinci makul taban calisma agaci.
+    Dugum satiri tabandaki .mmd'de AYNEN varsa satir O SATIRI YAZAN commit'e (L_n,
+    `git blame`) gore yazilmistir → ikinci makul taban L_n (L_n != sha ise). Yoksa
+    (onceki tazeleme, elle duzeltme, .mmd tabanda yok) → ikinci makul taban calisma
+    agaci. 🔴 L_n dosya duzeyinde alinmaz (KUSUR-A): .mmd kod commit'inden sonra
+    baska bir nedenle commit'lenince dosya duzeyi taban sha'ya esitlenip dusuyordu.
     Dugumun dosyasi ikinci tabanda sha'dakiyle ayniysa sonuc ozdestir; degilse iki
     tabanda dugumu_coz sonucu (yeni satir ya da cozulemedi) karsilastirilir.
     """
@@ -211,16 +220,23 @@ def taban_suphesi(mmd, kok, kaynak, sha):
     except ValueError:
         goreli = None
     mmd_taban = D.taban_icerigi(kok, sha, goreli) if goreli else None
-    son = D.son_degisiklik_commiti(kok, sha, goreli) if mmd_taban is not None else None
-    L = (son, f"{son[:7]} (.mmd'nin son commit'i)") if son is not None and son != sha else None
+    kokenler = D.satir_kokenleri(kok, sha, goreli) if mmd_taban is not None else {}
     W = (None, "calisma agaci (dugum satiri tabandaki .mmd'de yok)")
-    taban_dugum = set()
+    taban_dugum = {}
     if mmd_taban is not None:
-        taban_dugum = {s.strip() for _, s, _ in dugum_satirlari(D.satirlara_bol(mmd_taban))}
+        for k, s, a in dugum_satirlari(D.satirlara_bol(mmd_taban)):
+            taban_dugum.setdefault((a[0], s.strip()), k + 1)
     ham = Path(mmd).read_bytes().decode("utf-8-sig")
     supheler = []
     for _, s, (kimlik, etiket, dosya, eski, _, _) in dugum_satirlari(D.satirlara_bol(ham)):
-        aday = L if s.strip() in taban_dugum else W
+        taban_no = taban_dugum.get((kimlik, s.strip()))
+        koken = kokenler.get(taban_no) if taban_no is not None else None
+        if taban_no is None:
+            aday = W
+        elif koken is not None and koken != sha:
+            aday = (koken, f"{koken[:7]} (dugum satirinin koken commit'i)")
+        else:
+            aday = None
         if aday is None:
             continue
         ref, ad = aday

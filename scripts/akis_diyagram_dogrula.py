@@ -29,13 +29,18 @@ fonksiyondaki aynı metne kaydığında da "tuttu" der (T227: 12 düğüm). `--t
 (karşılaştırılamaz, sayısı basılır). Seçenek verilmezse davranış ve çıktı
 değişmez.
 
-TABAN ŞÜPHESİ (AKIS-D2, çürütücü KUSUR-1): tabandaki .mmd'nin satırları, .mmd'ye
-dokunan SON commit'teki (L) koda göre yazılmıştır. Kod L'den sonra .mmd
-tazelenmeden commit'lendiyse tabanın koduna göre okumak yanlış kapsam verir ve
-KAPSAM DEGISTI kör kalır (çürütücü: taban HEAD'de f3'e kayan düğüm "tuttu").
-L ≠ taban ve düğümün dosyası L ile taban arasında farklıysa tabandaki satırın
-kapsamı L'de de hesaplanır; farklıysa "TABAN SUPHELI" → çıkış 1 (--taban L ile
-de koşun). Satır kaydırmayan kod değişikliği şüpheli DEĞİLDİR (kapsam aynı).
+TABAN ŞÜPHESİ (AKIS-D2, çürütücü KUSUR-1 + KUSUR-A): tabandaki .mmd'nin bir düğüm
+satırı, O SATIRI yazan commit'teki (L_n) koda göre yazılmıştır. Kod L_n'den sonra
+.mmd tazelenmeden commit'lendiyse tabanın koduna göre okumak yanlış kapsam verir
+ve KAPSAM DEGISTI kör kalır (çürütücü: taban HEAD'de f3'e kayan düğüm "tuttu").
+🔴 L_n DÜĞÜM BAŞINA `git blame` ile alınır, dosya düzeyinde DEĞİL (AKIS-D2 2. RED,
+KUSUR-A): .mmd kod commit'inden SONRA başka bir nedenle (yorum satırı, elle
+eklenen başka düğüm) commit'lenince "dosyaya dokunan son commit" tabanın kendisi
+olur, ikinci taban düşer ve kayma yine sessiz kalırdı (karşı-örnek: A → C kod →
+D .mmd yorumu; `git blame` düğüm satırını A'ya bağlar).
+L_n ≠ taban ve düğümün dosyası L_n ile taban arasında farklıysa tabandaki satırın
+kapsamı L_n'de de hesaplanır; farklıysa "TABAN SUPHELI" → çıkış 1 (--taban L_n
+ile de koşun). Satır kaydırmayan kod değişikliği şüpheli DEĞİLDİR (kapsam aynı).
 
 Kullanım:
   python scripts/akis_diyagram_dogrula.py            # 5 diyagramı doğrula
@@ -77,6 +82,8 @@ RE_TANINAN = re.compile(
 RE_OK = re.compile(r'\s*(?:-->|-\.->|==>|---|-\.-)\s*')
 RE_ID = re.compile(r'^[A-Za-z][A-Za-z0-9_]*$')
 RE_BR = re.compile(r'<br\s*/?>')
+# `git blame --porcelain` grup başlığı: <40-hex sha> <eski satır> <yeni satır> [adet]
+RE_BLAME = re.compile(r'^([0-9a-f]{40}) (\d+) (\d+)(?: (\d+))?$')
 
 
 def varlik_coz(metin):
@@ -333,14 +340,45 @@ def taban_icerigi(kok, ref, yol):
     return r.stdout.decode("utf-8-sig", errors="replace")
 
 
-def son_degisiklik_commiti(kok, ref, yol):
-    """<ref>'ten geriye `yol`a (köke göre, '/' ayraçlı) dokunan son commit (tam sha);
-    hiç dokunulmadıysa None. .mmd satırları bu commit'teki koda göre yazılmıştır
-    (tazele + commit akışı; AKIS-D2 taban şüphesi)."""
-    r = subprocess.run(["git", "-C", str(kok), "log", "-1", "--format=%H", ref, "--", yol],
-                       capture_output=True, text=True)
-    sha = r.stdout.strip()
-    return sha if r.returncode == 0 and sha else None
+def satir_kokenleri(kok, ref, yol):
+    """`git blame --porcelain <ref> -- <yol>` → {satır_no: köken_commit}; hata → {}.
+
+    Bir .mmd düğüm satırının KENDİ köken commit'i = o satırı en son yazan commit.
+    🔴 Dosya düzeyindeki "son commit" YETMEZ (AKIS-D2 2. RED, KUSUR-A): .mmd kod
+    commit'inden sonra başka bir nedenle commit'lenince dosya düzeyi seçim tabanın
+    kendisine düşüyor, ikinci taban kayboluyor ve düğümün başka fonksiyona kayması
+    sessiz kalıyordu. Satır numaraları `ref`teki .mmd'ye göredir.
+    """
+    r = subprocess.run(["git", "-C", str(kok), "blame", "--porcelain", ref, "--", yol],
+                       capture_output=True, text=True, encoding="utf-8", errors="replace")
+    if r.returncode != 0:
+        return {}
+    kokenler = {}
+    for s in r.stdout.split("\n"):
+        m = RE_BLAME.match(s.rstrip("\r"))
+        if m:
+            sha, ilk, adet = m.group(1), int(m.group(3)), int(m.group(4) or 1)
+            for k in range(adet):
+                kokenler[ilk + k] = sha
+    return kokenler
+
+
+def mmd_dugum_kokenleri(kok, taban, goreli, taban_mmd):
+    """Tabandaki .mmd'nin her düğümü → SATIRINI yazan commit (tabandan farklıysa).
+
+    → {düğüm_kimliği: köken_commit}; `taban_mmd` None ise boş. Blame'in satır
+    numarası vermediği düğüm atlanır — tahmin edilmez.
+    """
+    if taban_mmd is None:
+        return {}
+    sha = taban_ref_coz(taban, kok)
+    kokenler = satir_kokenleri(kok, taban, goreli)
+    sonuc = {}
+    for t in ayristir(taban_mmd)[0]:
+        k = kokenler.get(t.mmd_satiri)
+        if k is not None and k != sha:
+            sonuc.setdefault(t.kimlik, k)
+    return sonuc
 
 
 class KapsamKaynagi:
@@ -375,13 +413,14 @@ class KapsamKaynagi:
         return self._harita[a]
 
 
-def kapsam_denetle(dugumler, taban_mmd_metni, taban, kaynak, onceki=None):
+def kapsam_denetle(dugumler, taban_mmd_metni, taban, kaynak, oncekiler=None):
     """Çalışma .mmd düğümleri ↔ tabandaki .mmd'nin AYNI ID'li düğümü.
 
     Tabandaki düğümün satırının taban kodundaki kapsamı ile çalışma düğümünün
-    satırının çalışma kodundaki kapsamı karşılaştırılır. `onceki` (tabandaki
-    .mmd'ye dokunan son commit, tabandan farklıysa): düğümün dosyası o commit ile
-    taban arasında değiştiyse tabandaki satırın kapsamı o commit'te de hesaplanır;
+    satırının çalışma kodundaki kapsamı karşılaştırılır. `oncekiler`
+    ({düğüm_kimliği: o düğümün SATIRINI yazan commit}, tabandan farklıysa — dosya
+    düzeyi DEĞİL, bkz. mmd_dugum_kokenleri): düğümün dosyası o commit ile taban
+    arasında değiştiyse tabandaki satırın kapsamı o commit'te de hesaplanır;
     farklıysa "TABAN SUPHELI".
     → (karşılaştırılan, tabanda_yok, hatalar); hatalar "KAPSAM DEGISTI",
     "KAPSAM BELIRSIZ", "KAPSAM OLCULEMEDI" ya da "TABAN SUPHELI" ile başlar
@@ -391,8 +430,10 @@ def kapsam_denetle(dugumler, taban_mmd_metni, taban, kaynak, onceki=None):
     if taban_mmd_metni is not None:
         for t in ayristir(taban_mmd_metni)[0]:
             taban_dugum.setdefault(t.kimlik, t)
+    oncekiler = oncekiler or {}
     karsilastirilan, yeni, hatalar = 0, 0, []
     for d in dugumler:
+        onceki = oncekiler.get(d.kimlik)
         t = taban_dugum.get(d.kimlik)
         if t is None:
             yeni += 1
@@ -429,10 +470,10 @@ def kapsam_denetle(dugumler, taban_mmd_metni, taban, kaynak, onceki=None):
             ko = ho.kapsam(t.satir) if ho is not None else None
             if ko != kt:
                 hatalar.append(
-                    f"TABAN SUPHELI: {d.kimlik}: .mmd {onceki[:7]} commit'inden beri değişmedi, "
-                    f"kod değişti — {yer_t} o commit'te [{kapsam_metni(ko) if ko else 'ölçülemedi'}]"
-                    f", tabanda [{kapsam_metni(kt)}]; .mmd satırları o commit'e göre olabilir "
-                    f"(--taban {onceki[:7]} ile de koşun)")
+                    f"TABAN SUPHELI: {d.kimlik}: düğüm satırı {onceki[:7]} commit'inden beri "
+                    f"değişmedi, kod değişti — {yer_t} o commit'te "
+                    f"[{kapsam_metni(ko) if ko else 'ölçülemedi'}], tabanda [{kapsam_metni(kt)}]; "
+                    f".mmd satırı o commit'e göre olabilir (--taban {onceki[:7]} ile de koşun)")
         karsilastirilan += 1
         if kt[0] != kc[0]:
             hatalar.append(f"KAPSAM DEGISTI: {d.kimlik}: taban {yer_t} [{kapsam_metni(kt)}]"
@@ -456,12 +497,8 @@ def mmd_kapsam_denetle(mmd_yolu, dugumler, kok, taban, kaynak=None):
     except ValueError:
         return 0, 0, [f"KAPSAM OLCULEMEDI: {mmd_yolu} depo kökü dışında"], False
     taban_mmd = taban_icerigi(kok, taban, goreli)
-    onceki = None
-    if taban_mmd is not None:
-        son = son_degisiklik_commiti(kok, taban, goreli)
-        if son is not None and son != taban_ref_coz(taban, kok):
-            onceki = son
-    k, y, h = kapsam_denetle(dugumler, taban_mmd, taban, kaynak, onceki)
+    oncekiler = mmd_dugum_kokenleri(kok, taban, goreli, taban_mmd)
+    k, y, h = kapsam_denetle(dugumler, taban_mmd, taban, kaynak, oncekiler)
     return k, y, h, taban_mmd is not None
 
 
