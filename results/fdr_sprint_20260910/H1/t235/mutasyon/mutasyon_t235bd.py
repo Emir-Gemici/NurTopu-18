@@ -14,9 +14,11 @@ ONBELLEKTEN kosar ve mutasyon "kacmis" gorunur. Bu tuzak bu iste bir kez gercekl
 kosumundan once codes/tests/simulation/jetson_paket altindaki `.pyc`'ler silinir.
 Depoda IZLENEN .pyc dosyalari vardir (models/...) — temizlik yalniz bu dort agaci tarar.
 
-Kullanim:
+Kullanim (ciktiyi AGAC DISINA yaz; dogrudan `mutasyon_ciktisi.txt`'ye yonlendirmek calisma
+agacini kirletir ve betigin kendi temizlik denetimini dusurur):
     O:\\navitas-local-train\\venv\\Scripts\\python.exe -X utf8 \\
-        results/fdr_sprint_20260910/H1/t235/mutasyon/mutasyon_t235bd.py
+        results/fdr_sprint_20260910/H1/t235/mutasyon/mutasyon_t235bd.py > %TEMP%\\mut.txt 2>&1
+    copy %TEMP%\\mut.txt results\\fdr_sprint_20260910\\H1\\t235\\mutasyon\\mutasyon_ciktisi.txt
 """
 import subprocess
 import sys
