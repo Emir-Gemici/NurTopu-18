@@ -11,7 +11,7 @@ cikis=0
 $ -B -m unittest discover -s tests -p test_yks_mk15_hakem_ekrani.py -q
 # MK15 ardisik 1
 ----------------------------------------------------------------------
-Ran 39 tests in 21.702s
+Ran 39 tests in 21.051s
 
 OK
 cikis=0
@@ -20,7 +20,7 @@ cikis=0
 $ -B -m unittest discover -s tests -p test_yks_mk15_hakem_ekrani.py -q
 # MK15 ardisik 2
 ----------------------------------------------------------------------
-Ran 39 tests in 20.987s
+Ran 39 tests in 21.167s
 
 OK
 cikis=0
@@ -29,7 +29,7 @@ cikis=0
 $ -B -m unittest discover -s tests -p test_yks_mk15_hakem_ekrani.py -q
 # MK15 ardisik 3
 ----------------------------------------------------------------------
-Ran 39 tests in 20.919s
+Ran 39 tests in 21.037s
 
 OK
 cikis=0
@@ -38,7 +38,7 @@ cikis=0
 $ -B -m unittest discover -s tests -p test_isaretli_gosterici.py -q
 # test_isaretli_gosterici.py
 ----------------------------------------------------------------------
-Ran 62 tests in 36.975s
+Ran 62 tests in 35.805s
 
 OK (skipped=1)
 cikis=0
@@ -47,7 +47,7 @@ cikis=0
 $ -B -m unittest discover -s tests -p test_faz_b_arduplane_sablon.py -q
 # test_faz_b_arduplane_sablon.py
 ----------------------------------------------------------------------
-Ran 44 tests in 0.701s
+Ran 44 tests in 0.821s
 
 OK
 cikis=0
@@ -61,7 +61,7 @@ KANIT KAYDI HATASI — uçuş/onay başlatma kapatıldı; ARM ve acil komutlar k
 KAMERA KAPATMA HATASI: kamera worker kapanmadi
 KANIT KAYDI KAPATMA HATASI: fsync/kapatma hatasi
 ----------------------------------------------------------------------
-Ran 233 tests in 34.771s
+Ran 233 tests in 34.172s
 
 OK
 cikis=0

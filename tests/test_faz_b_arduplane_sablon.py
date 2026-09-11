@@ -744,6 +744,10 @@ def sitl_hukum_hatalari(metin):
     metin = cizilmemis SS6.6.
     """
     hatalar = []
+    # On kayitli baslik metni OLCULEMEDI hukmunu tasimak ZORUNDADIR: sabiti belgeyle
+    # birlikte degistirip hukmu sessizce dusurme yolu boylece kapali kalir.
+    if SITL_BASLIK_HUKMU not in SITL_BASLIK_METNI:
+        hatalar.append(f"on kayitli SS6.6 basligi {SITL_BASLIK_HUKMU!r} hukmunu tasimiyor")
     baslik = metin.splitlines()[0] if metin else ""
     if not belge_kilidi.on_kayitli_metin_esit(baslik, SITL_BASLIK_METNI):
         hatalar.append(f"SITL basligi on kayitli metinle ayni degil: {baslik!r}")

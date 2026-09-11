@@ -84,7 +84,7 @@ kök `O:\navitas\.claude\worktrees\wf_fabd3bac-230-1`. Ham çıktı: `kapi_cikti
 | adım | sonuç |
 |---|---|
 | `test_belge_kilidi.py` (YENİ) | Ran 42 tests · **OK** · çıkış 0 |
-| `test_yks_mk15_hakem_ekrani.py` **üç ardışık** | 39/39 OK (21,7 s · 21,0 s · 20,9 s) · çıkış 0,0,0 |
+| `test_yks_mk15_hakem_ekrani.py` **üç ardışık** | 39/39 OK (21,1 s · 21,2 s · 21,0 s) · çıkış 0,0,0 |
 | `test_isaretli_gosterici.py` | Ran 62 tests · **OK** (skipped=1) · çıkış 0 |
 | `test_faz_b_arduplane_sablon.py` | Ran 44 tests · **OK** · çıkış 0 |
 | `test_yks_*.py` | Ran 233 tests · **OK** · çıkış 0 |
@@ -106,6 +106,12 @@ yalnız bu T240 dizinini ve yeni betiği gösteriyor, depoya hiçbir veri eklenm
 
 > Kapıyı bu worktree'de yeniden koşacak olan: veri zaten yerinde. Silinmişse
 > `shutil.copytree(r"O:\navitas\data\arena_kompozit\images", <worktree>/data/arena_kompozit/images)`.
+
+### Yan etki taraması (kapının dışında, ayrıca koşuldu)
+
+`-m unittest discover -s tests -p "test_faz_b_*.py" -q` → **Ran 348 tests · OK (skipped=9)** ·
+çıkış 0. Üç test dosyasına bağlı modül zinciri (`tests/test_faz_b_kamera_koprusu.py`,
+`scripts/ardupilot_param_kaynak.py`, `scripts/isaretli_gosterici.py`) bu süpürmede yeşil.
 
 ---
 
