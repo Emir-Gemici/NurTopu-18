@@ -1,0 +1,24 @@
+akis_a.mmd: alt grafik icindeki 26 DEYIM/KARAR dugumunun 0 tanesi baslik kapsaminin DISINDA
+akis_b.mmd: alt grafik icindeki 50 DEYIM/KARAR dugumunun 2 tanesi baslik kapsaminin DISINDA
+    🔴 b10 → comms/iha_komut_alici.py:822 [IhaKomutAlici.calistir] · alt grafik sB2 → comms/iha_komut_alici.py:797 [IhaKomutAlici.poll] · etiket 'while not self._dur.is_set():'
+    🔴 b44 → comms/iha_komut_alici.py:513 [IhaKomutAlici._aktar] · alt grafik sB3 → comms/iha_komut_alici.py:630 [IhaKomutAlici.isle] · etiket 'self.mav.mav.command_long_send('
+akis_c.mmd: alt grafik icindeki 44 DEYIM/KARAR dugumunun 0 tanesi baslik kapsaminin DISINDA
+akis_d.mmd: alt grafik icindeki 68 DEYIM/KARAR dugumunun 4 tanesi baslik kapsaminin DISINDA
+    🔴 d11 → comms/yks_gui.py:4065 [YksArayuz.fda_kipini_uygula] · alt grafik sD1 → comms/yks_gui.py:4791 [main] · etiket 'self.fda_kipi = True ⏎ self.IHA_LIMIT = SARTNAME_FDA_OPERASY'
+    🔴 d71 → comms/yks_gui.py:2182 [YksArayuz._ankor_yok_onayini_kapat] · alt grafik sD6 → comms/yks_gui.py:2197 [YksArayuz.onayla] · etiket 'if self._kanit_kilidi_var():'
+    🔴 d96 → comms/yks_gui.py:4492 [YksArayuz._kanit_kilidi_var] · alt grafik sD7 → comms/yks_gui.py:4568 [YksArayuz._kanit_yaz] · etiket 'return getattr(self, "kanit_kaydi_hatasi", None) is not None'
+    🔴 d112 → comms/yks_gui.py:3931 [YksArayuz.iha_indi] · alt grafik sD9 → comms/yks_gui.py:3937 [YksArayuz.ika_baslat] · etiket 'if not self.onaylandi:'
+akis_e.mmd: alt grafik icindeki 45 DEYIM/KARAR dugumunun 9 tanesi baslik kapsaminin DISINDA
+    🔴 e13 → simulation/scripts/ika_nav.py:450 [navigate] · alt grafik sE1 → simulation/scripts/ika_nav.py:477 [ika_gorevi] · etiket 'send_vel(0, 0)'
+    🔴 e40 → simulation/scripts/ika_nav.py:256 [receiver_ika_go_bekle] · alt grafik sE3 → simulation/scripts/ika_nav.py:265 [receiver_surus_izni_bekle] · etiket 'send_vel(0, 0)'
+    🔴 e42 → comms/ika_receiver.py:127 [IkaReceiver.wait_surus_izni] · alt grafik sE3 → simulation/scripts/ika_nav.py:265 [receiver_surus_izni_bekle] · etiket 'if not self._surus_izni_event.wait(timeout):'
+    🔴 e44 → comms/ika_receiver.py:134 [IkaReceiver._surus_izni_gecerli_unlocked] · alt grafik sE3 → simulation/scripts/ika_nav.py:265 [receiver_surus_izni_bekle] · etiket 'if not self.ika_go or not self.iha_landed:'
+    🔴 e53 → simulation/scripts/ika_nav.py:308 [receiver_surus_izni_bekle] · alt grafik sE4 → simulation/scripts/ika_nav.py:311 [navigate] · etiket 'return False'
+    🔴 e61 → simulation/scripts/ika_nav.py:216 [receiver_rota_gecerli] · alt grafik sE4 → simulation/scripts/ika_nav.py:311 [navigate] · etiket 'if (not getattr(receiver, "ika_go", False)'
+    🔴 e62 → simulation/scripts/ika_nav.py:220 [receiver_rota_gecerli] · alt grafik sE4 → simulation/scripts/ika_nav.py:311 [navigate] · etiket 'if route is None or no_route is not None:'
+    🔴 e71 → comms/ika_receiver.py:96 [IkaReceiver.run_if_route_valid] · alt grafik sE4 → simulation/scripts/ika_nav.py:311 [navigate] · etiket 'if (self.last_rx is None or self.link_lost'
+    🔴 e76 → simulation/scripts/ika_nav.py:64 [surucu] · alt grafik sE5 → simulation/scripts/ika_nav.py:87 [send_vel] · etiket '_SURUCU = ika_surucu.GazeboSurucu()'
+
+TOPLAM: 233 deyim/karar dugumu (77 `def ad()` dugumu muaf) · 15 uyumsuz
+
+HUKUM: bu olcum RAPOR kipidir — cikis kodu DEGISMEDI, .mmd/.svg/_dugumler.md'ye DOKUNULMADI (AKIS-D gorev maddesi 5) ve teslim edilen kapiya bu denetim EKLENMEDI. Duzeltme ve kapinin sertlestirilmesi mimarin D-460 kararinda T226-D3 (akis_d d71/d112) ve T241 (akis_b b10/b44, akis_e) olarak AYRI gorevdir. Bu is (AKIS-D2) yalniz TABAN secimini duzeltir; alt grafik denetimi kapsaminda DEGILDIR ve bu ise DA sayilmamalidir.
