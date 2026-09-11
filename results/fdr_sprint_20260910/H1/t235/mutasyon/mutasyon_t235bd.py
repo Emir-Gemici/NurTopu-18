@@ -60,8 +60,12 @@ MUTASYONLAR = [
      'k1 = bool(k1_sat) and all(s["gecti"] for s in k1_sat)',
      'k1 = all(s["gecti"] for s in k1_sat)', "KapiVeHukumMantigi"),
     ("M12 karar kurali: A1 gecmeden T235-C acilir", TZ,
-     '"t235c_poz_kolu_acilir": bool((not a0) and a1),',
-     '"t235c_poz_kolu_acilir": bool(not a0),', "TezgahYenidenUretim"),
+     '"t235c_poz_kolu_acilir": bool((not t_a0) and t_a1),',
+     '"t235c_poz_kolu_acilir": bool(not t_a0),', "TezgahYenidenUretim"),
+    # NOT: "bugunku_hukum" kaynagini TAM tablodan alt kumeye cevirmek bir mutasyon olarak
+    # LISTELENMEDI: bu veriyle iki kapi ayni ciktigi icin (tam_tablo_kapisiyla_ayni = true,
+    # test bunu ONERMEYLE dogruluyor) fark GOZLENEMEZ. Veriyle yakalanamayan bir degisikligi
+    # "yakalandi" diye yazmak da, kacti diye saymak da yaniltici olurdu.
     # ── belge kilitleri: cizili/varyant/celiski ile delme denemeleri (D-453) ──
     ("M13 ON_KAYIT esigi cizilip gevsetildi (~~ ~~)", OK, "**\u2265 %99,0**",
      "~~**\u2265 %99,0**~~ **\u2265 %98,0**", "OnKayitKilitleri"),

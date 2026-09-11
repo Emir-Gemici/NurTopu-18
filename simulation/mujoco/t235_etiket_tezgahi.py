@@ -430,7 +430,8 @@ def kapi_duyarliligi(k3: dict) -> dict:
             continue
         hucreler.append(dict(kayitli[0], izgara_indeksi=j))
     kapi = kapi_degerlendir(hucreler)
-    a0, a1 = kapi["A0"]["gecti"], kapi["A1"]["gecti"]
+    a0, a1 = kapi["A0"]["gecti"], kapi["A1"]["gecti"]          # 16 hucrelik alt kume
+    t_a0, t_a1 = k3["kapi"]["A0"]["gecti"], k3["kapi"]["A1"]["gecti"]   # TAM tablo (yayinlanan)
     yap = {f"{kip}@{h:g}m": _yapilandirma_kapisi(k3["hucreler"], kip, h) for kip, h in NOMINAL_KIP_H}
     kosullu = {}
     for kip, h in NOMINAL_KIP_H:
@@ -449,11 +450,14 @@ def kapi_duyarliligi(k3: dict) -> dict:
         "A0": _hukum_sozcugu(a0),
         "A1": _hukum_sozcugu(a1),
         "tam_tablo_kapisiyla_ayni": k3["kapi"] == json.loads(json.dumps(kapi)),
+        # Bugunku hukum TAM tablonun kapisindan okunur (yayinlanan hukum odur); yukaridaki
+        # 16 hucrelik alt kume yalniz DUYARLILIK sorusunu yanitlar. Ikisi ayrismis olsaydi
+        # `tam_tablo_kapisiyla_ayni` False olur ve testler duserdi.
         "bugunku_hukum": {
             "A0": k3["hukum"]["A0"], "A1": k3["hukum"]["A1"],
-            "fda_etiketi": "A0" if a0 else ("A1" if a1 else "KARE"),
+            "fda_etiketi": ("A0" if t_a0 else ("A1" if t_a1 else "KARE")),
             # ON_KAYIT SS2 karar kurali: A1 (ve T235-C poz kolu) YALNIZ A0 duser A1 gecerse.
-            "t235c_poz_kolu_acilir": bool((not a0) and a1),
+            "t235c_poz_kolu_acilir": bool((not t_a0) and t_a1),
         },
         "yapilandirma_basina": yap,
         "d457_kosullu": {
