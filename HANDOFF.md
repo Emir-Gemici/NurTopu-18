@@ -1,5 +1,68 @@
 # NAVITAS — DEVİR PROTOKOLÜ
 
+## Devir 2026-09-11 · Claude'un kesilen işi → Codex-1
+
+**Yetki:** kullanıcının "claude un yarım bıraktığı işi devral" talebi. İlk devralma paketindeki
+T226-D2, T228-D2, T221-D3 tamamlandı ve `READY_FOR_REVIEW` olarak kaydedildi. Resmi Claude
+denetimi ve ana ağaca birleştirme yapılmadı. Kod/kanıt çalışma dallarında duruyor; ana ağaca
+bu turda yalnız görev ve devir/inceleme kayıtları yazıldı. Commit/push yapılmadı.
+
+**Tamamlanan üç çalışma ağacı** (ortak kök `O:\navitas\.claude\worktrees\`):
+
+- `wf_61640005-665-1` / HEAD `73f62435`: T226-D2, önceki iki yarım değişiklik korunarak
+  H2e/H4e/H2c ve semantik akış denetimi tamamlandı; d78/d83 ret çağrıları ve SVG tazelendi.
+  `results/fdr_sprint_20260910/H9_MK15/t226/kapi_devralma_20260911_devam.md` tam kanıttır.
+  YKS 233 test OK; MK15 39 test üç ardışık OK; yeni mutasyon 7/7; T202 gerçek tekrar 7/7.
+- `wf_c1992b9f-d1a-1` / HEAD `5a597f99`: T228-D2, mevcut ürün/test WIP'i korundu;
+  kanıt koşucularının hata çıkışı ve hedef assert sayımı tamamlandı. `H9_MK15/t228d/`
+  altındaki `mutasyon_devralma_20260911.txt` ve `kapi_devralma_20260911*.txt` kanıttır.
+  54/54 mutasyon; 14 kalıp 263 test (259 başarılı, 4 atlama); gerçek T202 tekrar 7/7.
+- `wf_b9bb9db5-4d7-2` / HEAD `874ad16b`: T221-D3, yarım A18 ön kayıt sabitleri bağlandı;
+  çizili/çelişkili hüküm ve ölçüt varyantları kilitlendi. `H8/T221/kapi_d3_20260911.md`
+  ve `mutasyon_cikti_d3_20260911.txt` kanıttır. 43 ArduPlane + 16 Pixhawk test OK;
+  38/38 mutasyon. ArduPlane SITL hâlâ KOŞULMADI/ÖLÇÜLEMEDİ.
+
+Üç dalda da genel kapı gerçekten koşuldu: `O:\navitas-local-train\venv\Scripts\python.exe
+-X utf8 -B codes/test_rota_sentetik.py` → `GENEL KAPI (madde 14): GECTI — kol1 15/15 ·
+kol2 serit 15/15`, exit 0. Mutasyonlardan sonra asıl dosyaların bayt eşliği doğrulandı.
+Tam depo süiti ve fiziksel MK15/Jetson ölçümü bu turda koşulmadı; platform/varlık atlamaları
+kanıt dosyalarında açık. T226/T228'de ilk geniş koşudaki eksik varlık hataları korunuyor;
+ana depodan yalnız eksik hedeflere gerçek dosyalar kopyalanarak testler tekrar geçirildi.
+Ek disk: her dalda altı model 328.162.444 bayt; T226'da ayrıca 88 görsel 49.650.735 bayt.
+
+**Kalan kesinti işleri — tamamlanmış sayılmayacak:** son `devam-3` journal'ı
+`C:\Users\yunus\.claude-navitas\projects\O--navitas\3e104177-9b44-4ec7-a18f-1f32ed2c3f72\subagents\workflows\wf_cf0ac6ff-d81\journal.jsonl`
+(10 Eylül 22:26:58; 7 amele kesilmiş, 3 denetçi RED). Eski HANDOFF bu turu içermiyordu.
+
+- **T235-E/T236**, `wf_d450cb9f-ba7-9`, HEAD `9dfc5e15`: gerçek SITL sonucu var.
+  `H1/t235/sitl/ozet.json`: ArduCopter **4.7.1** ön kayıt planı (yaw LOITER sonrası)
+  yaw 0/499 **DÜŞTÜ**; konum/irtifa 499/499. LOITER öncesi karşı deney 500/500 GEÇTİ.
+  Üretim hedefi 4.5.7; kaynak sürüm karşılaştırması yarım, üreteç hâlâ LOITER sonrası
+  yazıyor. Bu ölçüm ArduPlane T221 değildir; kararı ve üretim sürümünü doğrulamadan bağlanmaz.
+- **T235-B/D**, `wf_d450cb9f-ba7-8`, HEAD `c559c97c`: dört yarım dosya; `DUY_JSON`
+  yok, `readme_metni` argümanları testle uyuşmuyor. Mevcut sentetik ölçüm A0/A1 DÜŞTÜ;
+  nominal A0 16:9@40 m %98,33 < %99, K1 28/28. T235-C'ye geçilmez.
+- **ATOLYE-2**, `wf_290ebb2b-6b8-1`, HEAD `4cd13ce2`: RED, 8/13 mutasyon kaçmış;
+  CH5→Land eşanlamlıları, A12 akım/VIBE, A10 p50, A7 video kilitleri açık.
+  Master ile TASARIM.md çatışması ve A12 ikincil koşulları kararı bekliyor.
+- **T227-D**, `wf_61640005-665-2`, HEAD `86550f7f`: README/zamanlama JSON'u yarım;
+  yeni CPU zamanlama ölçümü geçse de **FPS v2 yok**. Eski FPS DÜŞTÜ sonucu korunur.
+- **AKIS-D2**, `wf_61640005-665-3`, HEAD `6e4aa437`: RED; son dosya commit'i yanlış
+  taban seçebiliyor, altı ek mutant kaçıyor. Düğüm bazında köken denetimi gerekli.
+- **T229-D2**, `wf_c1992b9f-d1a-2`, HEAD `08cd8ea8`: RED; lot eşanlamlıları,
+  GECTI tipografisi ve video kopması hükmüyle beş yeni mutant kaçıyor.
+- **T214A-D2**, `wf_b9bb9db5-4d7-1`, HEAD `664df054`: test docstring'ine 13 satır
+  plan eklenmiş; vaat edilen kilitler uygulanmamış.
+
+**Devralanın ilk işi:** üç hazır dalın yukarıdaki kanıtlarını ve `git diff`lerini resmi
+bağımsız incelemeye almak; kendi üretimini kendi onayıyla `[x]` yapmamak. Sonraki üretim
+öncesinde T236 sürüm/yaw bulgusunu ve ATOLYE-2 kabul metni kararını çözmek. Hazır dallar
+birleştirilirse kesinti WIP commit'leri korunur (D-454); birleştirme sonrası tam depo süiti
+ana varlıklarla gerçekten koşulur. Ana ağaçta kullanıcının CAD, saha logu, rapor ve izlenmeyen
+dosyaları var; korunmuştur. T107'nin başka ajana ait kilidine dokunulmadı.
+
+---
+
 > **Bu dosya neden var:** Bu projede iş defalarca **kota bitişiyle** yarıda kaldı.
 > Bir Codex token'ı biterken bir görev zimmetli kaldı; denetim iş akışlarında 25'ten
 > fazla ajan oturum limitine takıldı. Yarım kalan iş, **bırakıldığı yeri anlatmazsa**

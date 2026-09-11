@@ -30565,3 +30565,55 @@ PWM'de pervane geçiş frekansı ±%3, 30 s %50 sonrası sıcaklık eşit. Hasar
 **Mimar kararları:** (1) Kesinti protokolünün WIP ara commit'leri kabul edilir; birleştirme `--no-ff` ile, squash YAPILMAZ (ara commit'ler kesintinin izi); "tek commit" gerekçesiyle RED verilmez. (2) D-448 düzeltmesi: road3 OPEN_ROUTE'ta ana haritada İKA-KB↔ref kesişimi master'dan geliyor ve "HB (hedef)" H kutusunun kenarına değiyor (T226-D çürütücüsü, 1,0 ve 1,5 ölçek); D-448'in OPEN_ROUTE bayt-eş kuralı bunu donduruyor → hakem ekranı etiket yerleşimi T235-A (YKS niteleyici) ile birlikte yeniden ele alınır. (3) TASARIM §5 hava birimi satırı: lot notu SIYI v1.9 **s.27**'de (s.21/s.24'te yok; T229-D2 amelesi PDF'i açarak doğruladı); HM30 için de "may support 3S to 4S only" → düzeltildi. (4) AKIS-D2 yan bulgusu: T226 dalında `akis_d` d78 düğümü `yks_gui.py:2217` (`ANKOR_YOK`) — doğrusu `BAYAT_TESPIT` çağrısı (tabanda 1894); eski tazeleyicinin mutlak-en-yakın seçimi (|1990−1894| < 105) → T226-D2'de düzeltilir.
 **Master düzeltmesi:** `tests/test_d373_defter_geri_isaret.py` D-445→D-452, D-446→D-450, D-447→D-452 geri işaretlerini bulamıyordu (ATOLYE-2 amelesi ölçtü; push kapısının tam süitini düşürürdü) → üç işaret + D-448→D-454 işareti eklendi.
 **İş:** `devam-3`: T226-D2, T214A-D2, T221-D3 düzeltmeleri; ATOLYE-2 (4cd13ce2), AKIS-D2 (6e4aa437), T229-D2 (08cd8ea8) çürütücüleri; T227-D, T228-D2, T235-B/D, T235-E/T236 DEVAM (WIP c12b9e89, d0900a44, 9fd36d81, 98c3a14f). **Açık (mimar):** A12'nin ikincil koşulları (akım satırı kaynağı ve UYARI durumu) iki belgede farklı — ATOLYE-2 çürütücü sonucundan sonra tek ifade.
+
+### D-455 — KULLANICI DEVRİ: üç yarım uygulama dalının yerel kapıları tamamlandı; ana ağaca birleşmedi, resmi denetim bekliyor
+
+**Tarih/yazan:** 11 Eylül 2026, Codex-1. Yetki: kullanıcının "claude un yarım bıraktığı işi devral"
+talebi. Önceki WIP commit'leri ve kaydedilmemiş değişiklikler korundu. Üretim işi T226-D2,
+T228-D2, T221-D3 ile sınırlı; kalan kesinti işleri HANDOFF.md'nin yeni en üst kaydında.
+Üç görev READY_FOR_REVIEW; resmi mimar onayı değildir. Commit/push/merge yapılmadı.
+
+**T226-D2:** `wf_61640005-665-1`. H2e gerçek Tk/UDP durum geçişi, H4e çizili sözleşme,
+H2c HB/H bbox kilidi tamam. `python.exe -X utf8 -B -m unittest discover -s tests -p
+'test_yks_*.py' -q` → `Ran 233 tests in 35.263s / OK`, exit 0; MK15 39 test üç ardışık OK.
+`.../t226/mutasyon_t226d2.py` → `SONUC: 7 mutasyon; hata=0`, exit 0; N11–N17'nin her biri
+exit 1, SHA256 geri yükleme eş. Semantik akış kapısı: `98 dugum · AYNI 96 · DUZELTILDI 2 ·
+kapsam HATASI 0`, ret kenarları 3/3. SVG yeniden üretildi ve 13 diyagram testi OK.
+
+**Ek bulgu, mimarın incelemesine:** D-454'te d78 için verilen eski çağrı referansı diyagramın
+anlamıyla uyuşmuyordu. `74e6fe64` tabanında d78 BAYAT_TESPIT çağrısına, d83 ANKOR_YOK çağrısına
+bağlı; ancak gelen kenarlar sırasıyla `IKA_ACK_KANITI_YOK` ve `BAYAT_TESPIT`. Güncel ürün kodu
+`comms/yks_gui.py:2248` İKA ACK reddi, `:2226` bayat tespit reddi üretir. Bu yüzden d78→2248,
+d83→2226; d82→2217 ANKOR_YOK kaldı. Kod ve kenarlar değişmedi. Salt-okuma bağımsız kontrol
+aynı eşlemeyi doğruladı. Semantik denetleyicide silinen düğüm ve birlikte değiştirilen
+kenar/çağrı açıklıkları da bulundu, N16/N17 ile yakalandı. Bu kayıt önceki satırları değiştirmez.
+
+**T228-D2:** `wf_c1992b9f-d1a-1`. Claude'un ürün/test WIP'i korundu, iki kanıt koşucusunda
+başarısızlık çıkışı ve hedef assert/test sayımı tamam. `.../t228d/mutasyon_t228d.py
+--hedef-testler --cikti .../mutasyon_devralma_20260911.txt` → 54/54 YAKALANDI, exit 0;
+önce/sonra 62 test OK (1 platform atlaması), dört dosyanın SHA'sı eş. İlgili 14 test kalıbı
+263 test (güncel sonuçlar 259 başarılı + 4 atlama); gerçek T202 tekrar 7/7, exit 0.
+
+**T221-D3:** `wf_b9bb9db5-4d7-2`. 82 satırlık yarım A18 sabitleri denetleyiciye bağlandı;
+ön kayıt/eşikler değişmedi. `... -p test_faz_b_arduplane_sablon.py -q` → `Ran 43 tests in
+0.291s / OK`, exit 0; Pixhawk 16 OK. `.../H8/T221/mutasyon_kos_d.py --ref HEAD --cikti
+.../mutasyon_cikti_d3_20260911.txt` → 38/38 YAKALANDI, exit 0; her mutantta A18'in ilgili
+assert'i ve beklenen hata mesajı var. README/param/yoklama HEAD ile bayt eş. ArduPlane
+SITL KOŞULMADI/ÖLÇÜLEMEDİ hükmü aynen.
+
+**Ortam ve kanıt sınırı:** bütün komutların yorumlayıcısı
+`O:\navitas-local-train\venv\Scripts\python.exe`; tam komutlar/çıktılar ilgili dalın
+`kapi_*20260911*` dosyalarında. Üç dalda genel kapı gerçekten koşuldu: iki kol 15/15,
+exit 0; akış beş diyagram tuttu. T226/T228'in ilk geniş koşuları gitignore varlıkları
+eksik olduğu için exit 1 verdi; kayıtlar korunuyor. Ana depodan yalnız eksik hedeflere
+gerçek altı model (her dalda 328.162.444 bayt, SHA eş), T226'ya ayrıca 88 gerçek görsel
+(49.650.735 bayt) kopyalandı; değiştirilmemiş testlerin gerçek tekrarları OK. Tam depo
+süiti ve fiziksel Jetson/MK15 ölçümü bu turda koşulmadı. İki ayrı Codex örneği kod ve
+ham kanıtı salt-okuma inceledi; bu, Claude'un resmi denetiminin yerine geçirilmedi.
+
+**Kayıp devir bulgusu:** en güncel `devam-3` journal'ı yedi kesilmiş amele ve üç RED
+denetim içeriyor. T236'nın `wf_d450cb9f-ba7-9` dalındaki `H1/t235/sitl/ozet.json`
+ana deftere aktarılmamış: **ArduCopter 4.7.1**, ön kayıt planı yaw LOITER sonrası
+0/499 DÜŞTÜ (konum/irtifa 499/499); LOITER öncesi karşı deney 500/500 GEÇTİ.
+JSON bu turda doğrudan okundu, SITL yeniden koşulmadı. Üretim hedefi 4.5.7 olduğundan
+sürüm karşılaştırması ve karar incelemesi açık; ArduPlane T221 ile karıştırılmaz.
