@@ -41,8 +41,17 @@ Kapilar:
       acilis surumu ve `param show CHUTE_ENABLED` 1 TAM 1 kez; CHUTE_* on hukmu paragrafi TAM 1 kez,
       basliginda tarih damgasi, hukum cumleleri ("Olcut 1 DUSER (... eklenmez, esik gevsetilmez)",
       "olcut 3 yine olculur") paragrafin ICINDE, paragrafta her olcut en cok 1 kez anilir
+      T221-D3 (curutucu N1-N8, D-453 mimar kurali: belge kilidi CIZILI ARALIKLAR AYIKLANMIS metinde
+      arar): SS6.6'da TEK ~~cizili~~ aralik vardir ve o da harfi harfine eski olcut 1'dir (kapanmamis
+      ~~ ya da <del>/<s> DUSER); eski olcut 1'in kesme (’ ‘ ´ `) ve soz ("tamamı", "hepsi") varyantlari
+      yururlukte DUSER; kabul olcutleri blogu (olcut 1'in sayilari .param'dan) ve CHUTE_* on hukmu
+      paragrafi ON KAYITLI metinle harfi harfine ayni (bosluk normalize); on hukum 1..5 olcutlerinin
+      her birini TAM 1 kez anar ("ölçüt 4 ve 5", "5. ölçüt", "ÖLÇÜT **5**" acilir); hukum yururlukteki
+      metinde okunur: baslik ÖLÇÜLEMEDİ, "**Sonuç: ... KOŞULMADI.**" tam 1, olumlu hukum sozcugu
+      (doğrulandı, tutar, geçti, koşuldu ...) yok, hukum sozcugu sayimi on kayitli sayida;
+      SIM_PARA_PIN .param'in parasut cikisi, SIM_SHOVE_X/TIME DDR mancinik kinematigi
   A19 ardupilot_param_kaynak.py saf fonksiyonlari (cevrimdisi sentetik kaynak)
-  M1..M17 mutasyonlar: bozulmus kopyada ilgili denetleyici DUSER
+  M1..M21 mutasyonlar: bozulmus kopyada ilgili denetleyici DUSER
 """
 import json
 import math
@@ -221,13 +230,80 @@ SITL_KURAL_IFADELERI = ("listenin dışındaki her eksik ad **DÜŞER**",
 # T221-D2 (curutucu C2): D-449 ONCESI olcut 1 bicimi ("dosyadaki 62 adın 62'si yüklü" - SITL'de hic
 # tutamaz). Yururlukteki metinde BULUNMAZ; ham metinde TAM 1 kez ~~cizili~~ durur ve hemen ardinda
 # "(<SITL_DAMGA>" gelir (FDR kurali: eski metin silinmez, cizilir + tarih). "addan" bicimi de yakalanir;
-# yururlukteki yeni cumle ("addan SITL'de **61**'i") bu desene UYMAZ.
-SITL_ESKI_OLCUT1 = r"dosyadaki\s+\**\d+\**\s+ad(?:ın|dan)\s+\**\d+\**'\w+"
+# yururlukteki yeni cumle ("addan SITL'de **61**'i") bu desene UYMAZ ("addan"dan sonra sayi gelmez).
+# T221-D3 (curutucu N4/N4b/N8, D-453): ayni kural baska sozle ya da tipografik varyantla da DONEMEZ -
+# kesme ’ ‘ ´ ` ʼ (ya da kesmesiz "62 si"), "adın tamamı/hepsi/tümü/bütünü", kalin sayilar,
+# "parametrenin"; "dosyadaki" onekine baglanmaz ("Ayrıca 62 adın 62’si").
+SITL_KESMELER = "'’‘´`ʼ"
+SITL_ESKI_OLCUT1 = (r"\**\d+\**\s+(?:ad|parametre)\w*\s+"
+                    r"(?:\**\d+\**\s*[" + SITL_KESMELER + r"]?\s*\w+|\**(?:tamamı|hepsi|tümü|bütünü)\b)")
+# T221-D3 (curutucu N1/N6): SS6.6'daki TEK ~~cizili~~ aralik budur (bosluk normalize, harfi harfine).
+# Eski metin tarihtir: sayilari .param'dan HESAPLANMAZ ve degistirilemez.
+SITL_ESKI_OLCUT1_METNI = ("Açılış `ArduPlane V4.5.7`; `param show CHUTE_ENABLED` 1 ve dosyadaki 62 adın "
+                          "62'si yüklü.")
 # T221-D2 (curutucu C4): olcut 1 maddesinin yururlukteki metninde TAM 1 kez gecmesi gereken kosullar
 SITL_OLCUT1_KOSULLARI = ("Açılış `ArduPlane V4.5.7`", "`param show CHUTE_ENABLED` 1")
 SITL_KABUL_BASLIGI = "**Kabul ölçütleri"
 # CHUTE_* on hukmu paragrafinin basi: yururlukteki metinde TAM 1 kez, ardindan "(<SITL_DAMGA>):**"
 SITL_ON_HUKUM = "**Ön hüküm — SITL'de `CHUTE_*` yoksa"
+# on hukmun hukum verdigi olcutler: her biri paragrafta TAM 1 kez anilir (T221-D3, curutucu N3b)
+SITL_ON_HUKUM_OLCUTLERI = ("1", "2", "3", "4", "5")
+
+# ── T221-D3: SS6.6 hukmu YURURLUKTEKI metinde (curutucu N6, D-453) ──────────────────────────────
+# Baslik hukmu tasir; sonuc cumlesi TAM 1 kez; hukum sozcuklerinin (tr_kucuk metinde alt dizge) sayisi on
+# kayitli sayidadir: bir hukum cizilir, silinir ya da "kanıtlı" gibi baska sozle degistirilirse sayi
+# tutmaz; ikinci kabul blogu / ikinci on hukum / "beklenen-yok sayılır" notu da sayiyi bozar.
+SITL_BASLIK_HUKMU = "ÖLÇÜLEMEDİ"
+SITL_SONUC = "**Sonuç: ArduPlane SITL provası KOŞULMADI.**"
+SITL_HUKUM_SAYIMI = {"ölçülemedi": 5, "ölçülmedi": 1, "düşer": 3, "koşulmadı": 1, "ölçüldü": 2,
+                     "beklenen-yok": 3, "kabul ölçüt": 1, "ön hüküm": 2}
+# olculmemis provaya yazilamayacak olumlu hukum sozcukleri (tr_kucuk metinde). "tutarlı", "geçerli",
+# "doğrulanacak", "sağlanır" bu desene UYMAZ.
+SITL_OLUMLU_HUKUM = re.compile(
+    r"(?<!\w)(?:geçti\w*|geçer|geçiyor\w*|tutar|tuttu\w*|tutuyor\w*|doğrulandı\w*|doğrulanmış\w*|"
+    r"doğruladı\w*|koşuldu\w*|koşulmuş\w*|sağlandı\w*|başarılı\w*|başarıyla|onaylandı\w*)(?!\w)")
+
+# ── T221-D3: ON KAYITLI METINLER, harfi harfine (curutucu N2/N3b/N5b; bosluk normalize, cizilmemis) ──
+# Kabul blogunda olcut 1'in sayilari .param'dan doldurulur: ⟨N⟩ = .param ad sayisi, ⟨M⟩ = N -
+# |SITL_BEKLENEN_YOK|; ⟨EK⟩ README'deki iyelik ekidir (yalniz dilbilgisi). Cizili eski olcut 1 yururlukte
+# gorunmez; ardindaki tarih notu yururlukteki metnin parcasidir. Bu metinlerden biri degisirse A18 DUSER:
+# on kayitli bir olcut ancak bu sabitle BIRLIKTE, gorunur bir test degisikligiyle degisebilir.
+SITL_KABUL_METNI = """
+**Kabul ölçütleri (önceden yazıldı; biri tutmazsa prova DÜŞER, eşik gevşetilmez):**
+1.
+   *(10 Eylül, ölçümden önce, D-449: `BRD_SER2_RTSCTS` 4.5.7 SITL'de derlenmez — bu ölçüt SITL'de hiç
+   tutamazdı.)*
+   Açılış `ArduPlane V4.5.7`; `param show CHUTE_ENABLED` 1; dosyadaki **⟨N⟩** addan SITL'de **⟨M⟩**'⟨EK⟩
+   yüklü (N − |beklenen-yok|; her ad `param show <AD>` ile sayılır). Önceden yazılmış **beklenen-yok**
+   listesi = {`BRD_SER2_RTSCTS`}. Gerekçe (Plane-4.5.7 kaynağı):
+   `libraries/AP_BoardConfig/AP_BoardConfig.cpp:124` `#ifdef HAL_HAVE_RTSCTS_SERIAL2` (tanım `:131`;
+   dış blok `:113` `#if AP_FEATURE_RTSCTS`). Bu makroyu ChibiOS hwdef üreteci yazar:
+   `libraries/AP_HAL_ChibiOS/hwdef/scripts/chibios_hwdef.py:1899-1903` UART'ın `_RTS` hattı varsa
+   `#define HAL_HAVE_RTSCTS_SERIAL<n>` (`:1929-1930` `AP_FEATURE_RTSCTS 1`); Pixhawk 6C'de
+   `libraries/AP_HAL_ChibiOS/hwdef/Pixhawk6C/hwdef.dat:57-58` `UART5_RTS`/`UART5_CTS`, `:37`
+   `SERIAL_ORDER` → SERIAL2 = UART5. Ölçüm (ikili çalıştırılmadan): 4.5.7 SITL ikilisi
+   (sha256 `639a8381c1d8805a2e252a679f22d72473232ac813c810216d99aaba55e160e9`) `SER2_RTSCTS`
+   dizgesini **0** kez içerir; aynı tablonun koşulsuz adı `SAFETY_DEFLT` (`:171`) 1 kez
+   (`sitl_yoklama.txt` §6.1). SITL bu adı **sessizce** atlar:
+   `libraries/AP_Param/AP_Param.cpp:2313-2316` uyarıyı yalnız `#if ENABLE_DEBUG` ile basar, ikilide
+   `Ignored unknown param` 0 kez — eksik ad günlükten değil `param show` ile görülür. Bu listenin
+   dışındaki her eksik ad **DÜŞER**; liste ölçümden sonra genişletilmez (test A18 README listesini
+   testteki önceden yazılmış kümeyle kilitler).
+2. Arm öncesi mesajlarda `Chute has no channel` yok.
+3. İtiş öncesi 60 s boyunca `Triggered AUTO` yok; itişten sonra `Armed AUTO, xaccel = …` ve 0,6 s
+   içinde `Triggered AUTO`.
+4. Bırakma noktasından (satır 4) sonra `Parachute: Released`, ardından `BANG!  Parachute deployed`.
+5. Bırakmadan sonra `.bin` RCOU'da SERVO3 gaz çıkışı minimumda (`servos.cpp` `suppress_throttle`).
+6. `.bin` + `mavlogdump.py --types MSG,RCOU,CTUN` çıktısı `results/<tarih>_sitl_plane457/` altına.
+"""
+SITL_ON_HUKUM_METNI = """
+**Ön hüküm — SITL'de `CHUTE_*` yoksa (10 Eylül, ölçümden önce, D-449):** koşumda `param show
+CHUTE_ENABLED` boş dönerse prova *"SITL paraşütsüz derlenmiş — paraşüt zinciri ÖLÇÜLEMEDİ"* diye
+kaydedilir. Ölçüt 1 **DÜŞER** (`CHUTE_*` beklenen-yok listesine sonradan eklenmez, eşik gevşetilmez);
+ölçüt 2'nin *"mesaj yok"* koşulu paraşütsüz ikilide kendiliğinden sağlanır → ÖLÇÜLEMEDİ; ölçüt 4 ve 5
+ÖLÇÜLEMEDİ; ölçüt 3 (kalkış kapısı) yine ölçülür. Yukarıdaki `features.txt` ↔ ikili çelişkisi bu
+kaydı değiştirmez.
+"""
 
 
 # ════════════════════════════════════════════════════════════════════════════
@@ -577,6 +653,58 @@ def cizilmemis(metin):
     return re.sub(r"~~.*?~~", "", metin, flags=re.S)
 
 
+def tek_satir(metin):
+    """Satir sarma ve bosluklar on kayitli hukmun anlami degildir."""
+    return " ".join(metin.split())
+
+
+def tr_kucuk(metin):
+    """Turkce buyuk I/İ'yi dogru kuculterek hukum sozcuklerini arar."""
+    return metin.translate(str.maketrans({"I": "ı", "İ": "i"})).lower()
+
+
+def anilan_olcutler(metin):
+    """'olcut 4 ve 5' iki atiftir; kalin numaralar ve '5. olcut' de ayni olcute gider."""
+    duz = tr_kucuk(metin.replace("**", ""))
+    anilan = []
+    for m in re.finditer(r"\bölçüt\s+(\d+(?:\s*(?:ve|ile|,|/)\s*\d+)*)", duz):
+        anilan.extend(re.findall(r"\d+", m.group(1)))
+    anilan.extend(re.findall(r"\b(\d+)\.\s*ölçüt\b", duz))
+    return anilan
+
+
+def sitl_hukum_hatalari(metin):
+    """D-453: OLCULEMEDI/KOŞULMADI yalniz yururlukte sayilir; ikinci hukum kabul edilmez."""
+    hatalar = []
+    baslik = metin.splitlines()[0] if metin else ""
+    if SITL_BASLIK_HUKMU not in baslik:
+        hatalar.append("SITL basliginda yururlukte OLCULEMEDI yok")
+    if metin.count(SITL_SONUC) != 1:
+        hatalar.append("SITL sonuc cumlesi yururlukte tam 1 kez KOŞULMADI demeli")
+    duz = tr_kucuk(metin.replace("**", ""))
+    olumlu = SITL_OLUMLU_HUKUM.findall(duz)
+    if olumlu:
+        hatalar.append(f"SITL kosulmamisken olumlu hukum: {olumlu}")
+    for soz, beklenen in SITL_HUKUM_SAYIMI.items():
+        if duz.count(soz) != beklenen:
+            hatalar.append(f"SITL hukum sayimi {soz!r}: {duz.count(soz)} != {beklenen}")
+    return hatalar
+
+
+def kabul_metni_hatalari(metin, p):
+    """Onceden yazilmis alti kabul maddesi silinemez, gevsetilemez veya cogaltilamaz."""
+    kabul = paragraf(metin, SITL_KABUL_BASLIGI)
+    if metin.count(SITL_KABUL_BASLIGI) != 1 or kabul is None:
+        return ["SITL on kayitli kabul blogu tam 1 kez olmali"]
+    beklenen = (SITL_KABUL_METNI.replace("⟨N⟩", str(len(p)))
+                .replace("⟨M⟩", str(len(set(p) - SITL_BEKLENEN_YOK))))
+    # Iyelik eki yalniz dilbilgisidir; sayilar ise README'den alinmaz.
+    desen = re.escape(tek_satir(beklenen)).replace(re.escape("⟨EK⟩"), r"(?:[ıiuü]|s[ıiuü])")
+    if not re.fullmatch(desen, tek_satir(kabul)):
+        return ["SITL kabul blogu on kayitli metinle ayni degil"]
+    return []
+
+
 def dizge_sayisi(blok, dizge):
     """sitl_yokla.py ikili_tara satiri '  <dizge> <sayi>' -> sayi; satir yoksa None."""
     m = re.search(rf"^  {re.escape(dizge)} +(\d+)[ \t]*$", blok, flags=re.M)
@@ -615,6 +743,13 @@ def eski_olcut1_hatalari(ham, metin):
         hatalar.append(f"eski olcut 1 ~~cizili~~ {len(cizili)} kez (tam 1: FDR, eski metin silinmez)")
     elif not re.search(rf"~~[^~]*?{SITL_ESKI_OLCUT1}[^~]*?~~\s*\*?\({re.escape(SITL_DAMGA)}\W", ham):
         hatalar.append(f"cizili eski olcut 1'in hemen ardinda tarih damgasi yok: '({SITL_DAMGA}'")
+    araliklar = re.findall(r"~~(.*?)~~", ham, flags=re.S)
+    if ham.count("~~") != 2 or len(araliklar) != 1:
+        hatalar.append("SS6.6'da yalniz eski olcut 1 cizili olabilir (kapanmamis/ek ~~)")
+    elif tek_satir(araliklar[0]) != tek_satir(SITL_ESKI_OLCUT1_METNI):
+        hatalar.append("cizili eski olcut 1 on kayitli tarihsel metinle ayni degil")
+    if re.search(r"</?(?:del|s|strike)\b", ham, flags=re.I):
+        hatalar.append("SS6.6 HTML cizgisi hukum gizleyemez")
     return hatalar
 
 
@@ -641,10 +776,17 @@ def on_hukum_hatalari(metin):
         hatalar.append(f"on hukum basliginda tarih damgasi yok: '({SITL_DAMGA}):**'")
     hatalar += [f"on hukum paragrafinda yok: {ifade!r}" for ifade in SITL_ON_HUKUM_IFADELERI
                 if ifade not in on]
-    anilan = re.findall(r"[Öö]lçüt (\d+)", on)
+    anilan = anilan_olcutler(on)
     cok = sorted({n for n in anilan if anilan.count(n) > 1})
     if cok:
         hatalar.append(f"on hukum paragrafinda olcut {cok} birden cok kez anilmis (celiskili hukum)")
+    if sorted(anilan) != sorted(SITL_ON_HUKUM_OLCUTLERI):
+        hatalar.append(f"on hukum paragrafinda olcut 1..5 tam 1 kez anilmali: {anilan}")
+    if tek_satir(on) != tek_satir(SITL_ON_HUKUM_METNI):
+        hatalar.append("CHUTE_* on hukum paragrafinda on kayitli metin degisti")
+    # Paragraf disina tasinan ikinci hukum de ayni kilide tabidir.
+    if sorted(anilan_olcutler(metin)) != sorted(SITL_ON_HUKUM_OLCUTLERI):
+        hatalar.append("SS6.6'da on hukum disinda ek/celiskili olcut atfi var")
     return hatalar
 
 
@@ -682,7 +824,22 @@ def sitl_kabul_hatalari(sitl_bolumu, p, kanit, yoklama):
         if ifade not in metin:
             hatalar.append(f"README SS6.6 on kayit cumlesi eksik: {ifade!r}")
     hatalar += (eski_olcut1_hatalari(sitl_bolumu, metin) + olcut1_hatalari(metin)
-                + on_hukum_hatalari(metin))
+                + on_hukum_hatalari(metin) + kabul_metni_hatalari(metin, p)
+                + sitl_hukum_hatalari(metin))
+    # Prova komutlari .param ve DDR'den gelir; metin icindeki dogru aciklama yanlis komutu ortemez.
+    kanallar = [SERVO_FUNCTION_DESENI.match(ad).group(1)
+                for ad, f in servo_fonksiyonlari(p).items() if f == SERVO_PARASUT]
+    ivme, ray_s, _ = mancinik_kinematigi()
+    komutlar = {"SIM_PARA_ENABLE": "1", "SIM_SHOVE_X": str(round(ivme)),
+                "SIM_SHOVE_TIME": str(round(ray_s * 100) * 10)}
+    if len(kanallar) == 1:
+        komutlar["SIM_PARA_PIN"] = kanallar[0]
+    else:
+        hatalar.append("SITL SIM_PARA_PIN icin tam 1 parasut cikisi olmali")
+    for ad, deger in komutlar.items():
+        degerler = re.findall(rf"^param set {ad} (\S+)[ \t]*$", metin, flags=re.M)
+        if degerler != [deger]:
+            hatalar.append(f"SITL {ad} komutu {degerler} != [{deger}] (.param/DDR)")
     ek = readme_bolumu(yoklama, YOKLAMA_EK)
     if ek is None:
         return hatalar + [f"sitl_yoklama.txt'de {YOKLAMA_EK!r} ek tarama blogu yok"]
@@ -1102,6 +1259,75 @@ class DenetleyiciGercektenDuser(unittest.TestCase):
             self.assertEqual(sitl.count(eski), 1, eski)
             hatalar = sitl_kabul_hatalari(sitl.replace(eski, yeni), p, kanit, yoklama)
             self.assertIn(f"olcut 1 maddesinde {kosul!r} 0 kez (tam 1 olmali)", hatalar)
+
+    def test_m18_cizili_hukum_ve_sonuc_yururlukte_sayilmaz(self):
+        """D-454 N1/N6: dogru metin cizili dururken yanlis hukum yururluge giremez."""
+        sitl, p, kanit, yoklama = self._sitl_girdileri()
+        for eski, yeni, beklenen in (
+                ("ölçüt 4 ve 5\nÖLÇÜLEMEDİ", "~~ölçüt 4 ve 5\nÖLÇÜLEMEDİ~~ doğrulandı: tutar",
+                 "on kayitli metin degisti"),
+                ("KOŞULMADI", "~~KOŞULMADI~~", "sonuc cumlesi yururlukte"),
+                ("KOŞULMADI", "~~KOŞULMADI~~ koşuldu", "olumlu hukum"),
+                ("KOŞULMADI", "<del>KOŞULMADI</del>", "HTML cizgisi"),
+                ("KOŞULMADI", "<s>KOŞULMADI</s>", "HTML cizgisi"),
+                ("KOŞULMADI", "~~KOŞULMADI", "kapanmamis/ek ~~")):
+            with self.subTest(yeni=yeni):
+                self.assertEqual(sitl.count(eski), 1)
+                h = sitl_kabul_hatalari(sitl.replace(eski, yeni), p, kanit, yoklama)
+                self.assertTrue(any(beklenen in x for x in h), h)
+
+    def test_m19_coklu_olcut_ve_celiskili_hukum_yakalanir(self):
+        """D-454 N2/N3: olcut 5 sadece '4 ve 5'te anilsa da ikinci hukmu yakalanir."""
+        sitl, p, kanit, yoklama = self._sitl_girdileri()
+        self.assertEqual(anilan_olcutler(SITL_ON_HUKUM_METNI), ["1", "2", "4", "5", "3"])
+        for ifade in ("Ölçüt 5", "5. ölçüt", "ÖLÇÜT **5**", "Ölçüt 4 ve 5"):
+            with self.subTest(ifade=ifade):
+                bozuk = sitl.replace("kaydı değiştirmez.", f"kaydı değiştirmez. {ifade} tutar.")
+                h = sitl_kabul_hatalari(bozuk, p, kanit, yoklama)
+                self.assertTrue(any("birden cok kez anilmis" in x for x in h), h)
+                disarida = sitl + f"\n\n{ifade} bu durumda muaftır.\n"
+                self.assertTrue(any("ek/celiskili olcut atfi" in x
+                                    for x in sitl_kabul_hatalari(disarida, p, kanit, yoklama)))
+        eski = "kendiliğinden sağlanır → ÖLÇÜLEMEDİ"
+        self.assertEqual(sitl.count(eski), 1)
+        h = sitl_kabul_hatalari(sitl.replace(eski, "kendiliğinden sağlanır → doğrulandı"),
+                               p, kanit, yoklama)
+        self.assertTrue(any("on kayitli metin degisti" in x for x in h), h)
+
+    def test_m20_eski_olcut_tipografik_kesme_ve_tamami_ile_donemez(self):
+        """D-454 N4/N8: kesme ya da sozcuk degisikligiyle 62/62 kosulu geri gelemez."""
+        sitl, p, kanit, yoklama = self._sitl_girdileri()
+        bicimler = [f"62 adın 62{k}si" for k in SITL_KESMELER]
+        bicimler += ["62 adın 62 si", "62 adın 62si", "**62** adın **62**’si"]
+        bicimler += [f"62 {ad} {tum}" for ad in ("adın", "addan", "parametrenin")
+                     for tum in ("tamamı", "hepsi", "tümü", "bütünü")]
+        for ifade in bicimler:
+            with self.subTest(ifade=ifade):
+                h = sitl_kabul_hatalari(sitl + f"\nAyrıca {ifade} yüklü olmalı.\n",
+                                       p, kanit, yoklama)
+                self.assertTrue(any("eski olcut 1 yururlukteki metinde" in x for x in h), h)
+
+    def test_m21_on_kayit_kabul_komutlar_ve_olumlu_hukum_kilidi(self):
+        """Metin/komut tahrifi yakalanir; yalniz satir sarma ve bosluk degisimi kabul edilir."""
+        sitl, p, kanit, yoklama = self._sitl_girdileri()
+        for eski, yeni, beklenen in (
+                ("2. Arm öncesi mesajlarda `Chute has no channel` yok.",
+                 "2. Arm öncesi mesajlarda `Chute has no channel` olabilir.", "kabul blogu on kayitli"),
+                ("0,6 s içinde `Triggered AUTO`", "1,6 s içinde `Triggered AUTO`", "kabul blogu on kayitli"),
+                ("param set SIM_PARA_PIN 7", "param set SIM_PARA_PIN 3", "SIM_PARA_PIN komutu"),
+                ("param set SIM_SHOVE_X 46", "param set SIM_SHOVE_X 4", "SIM_SHOVE_X komutu"),
+                ("param set SIM_SHOVE_TIME 390", "param set SIM_SHOVE_TIME 39", "SIM_SHOVE_TIME komutu")):
+            with self.subTest(yeni=yeni):
+                self.assertEqual(sitl.count(eski), 1)
+                h = sitl_kabul_hatalari(sitl.replace(eski, yeni), p, kanit, yoklama)
+                self.assertTrue(any(beklenen in x for x in h), h)
+        for sonuc in ("DOĞRULANDI", "TUTAR", "Geçti", "koşuldu", "başarılı"):
+            with self.subTest(sonuc=sonuc):
+                h = sitl_kabul_hatalari(sitl + f"\nSITL prova sonucu: {sonuc}.\n", p, kanit, yoklama)
+                self.assertTrue(any("olumlu hukum" in x for x in h), h)
+        sarili = sitl.replace("kaydedilir. Ölçüt", "kaydedilir.\nÖlçüt")
+        sarili = sarili.replace("kendiliğinden sağlanır", "kendiliğinden   sağlanır")
+        self.assertEqual(sitl_kabul_hatalari(sarili, p, kanit, yoklama), [])
 
 
 if __name__ == "__main__":

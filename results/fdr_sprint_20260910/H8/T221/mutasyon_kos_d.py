@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""T221-D/T221-D2 · GERCEK DOSYADA mutasyon: A18'in kilitleri bozuk depoda DUSUYOR mu?
+"""NEDEN: T221-D/D2/D3 · GERCEK DOSYADA mutasyon: A18 bozuk depoda DUSUYOR mu?
 
 Kilitler: README SS6.6 kabul olcutu 1 (sayi .param'dan, beklenen-yok listesi, eski olcut 1'in cizili
 durusu, acilis ve CHUTE_ENABLED kosulu), CHUTE_* on hukmu, sitl_yoklama.txt SS6.1 ek taramasi.
@@ -8,6 +8,8 @@ T221-D2 (10 Eyl, curutucu RED): curutucunun KACAN dort mutanti AYNI metinle ekle
 C2 (eski olcut 1'in ~~cizgisi~~ kaldirildi), C3 (on hukum "Olcut 1 DUSER" -> "OLCULEMEDI"),
 C4 (olcut 1'den `param show CHUTE_ENABLED` 1 silindi), C7 ("eklenmez, esik gevsetilmez" parantezi
 silindi). E1..E6: T221-D2'nin her yeni kilidi icin ayri mutant (kilitsiz A18 bunlari da gecirir).
+T221-D3: D-454 curutucusunun N1..N8 ve N3b/N5b/N4c mutasyonlari birebir; olumlu hukum,
+HTML cizgisi, paragraf disi celiski ve DDR komutlari icin ek kontroller.
 
 Her mutant icin:
   1. calisma kopyasi git'in kayitli haliyle BAYT-ES mi: `git cat-file --filters <ref>:<yol>`
@@ -26,6 +28,7 @@ KULLANIM: python -B results/fdr_sprint_20260910/H8/T221/mutasyon_kos_d.py [--ref
               > results/fdr_sprint_20260910/H8/T221/mutasyon_cikti_d.txt
 """
 import argparse
+import contextlib
 import hashlib
 import json
 import subprocess
@@ -104,6 +107,60 @@ MUTANTLAR = (
     ("E6 on hukum basligindaki tarih damgasi silindi (cizgi notunda duruyor)", README,
      "yoksa (10 Eylül, ölçümden önce, D-449):**", "yoksa (D-449):**", 1,
      "basliginda tarih damgasi yok"),
+    # ── D-454: scratchpad/t221d2_curut/mut_d2.py'deki AYNI desen ve yerine koymalar.
+    ("N1 cizili olcut 4/5 OLCULEMEDI + dogrulandi", README,
+     "ölçüt 4 ve 5\nÖLÇÜLEMEDİ; ölçüt 3", "ölçüt 4 ve 5\n~~ÖLÇÜLEMEDİ~~ (doğrulandı: tutar); ölçüt 3",
+     1, "on kayitli metin degisti"),
+    ("N2 on hukum olcut 2 OLCULEMEDI yerine tutar", README,
+     "kendiliğinden sağlanır → ÖLÇÜLEMEDİ;", "kendiliğinden sağlanır → tutar;", 1,
+     "on kayitli metin degisti"),
+    ("N3 olcut 4 ve 5 arkasina ikinci olcut 5 hukmu", README,
+     "yine ölçülür. Yukarıdaki", "yine ölçülür; ölçüt 5 ise tutar sayılır. Yukarıdaki", 1,
+     "birden cok kez anilmis"),
+    ("N4 eski olcut tipografik kesme ile geri gelir", README,
+     "yüklü (N − |beklenen-yok|;", "yüklü ve dosyadaki 62 adın 62’si de yüklü (N − |beklenen-yok|;",
+     1, "eski olcut 1 yururlukteki metinde"),
+    ("N4b eski olcut 62 adin tamami olarak geri gelir", README,
+     "yüklü (N − |beklenen-yok|;", "yüklü ve dosyadaki 62 adın tamamı da yüklü (N − |beklenen-yok|;",
+     1, "eski olcut 1 yururlukteki metinde"),
+    ("N5 CHUTE_ENABLED 1 ya da bos", README,
+     YENI_OLCUT1_BASI, "Açılış `ArduPlane V4.5.7`; `param show CHUTE_ENABLED` 1 (ya da boş); dosyadaki",
+     1, "kabul blogu on kayitli"),
+    ("N6 sonuc KOSULMADI cizildi ve kosuldu yazildi", README,
+     "**Sonuç: ArduPlane SITL provası KOŞULMADI.**",
+     "~~**Sonuç: ArduPlane SITL provası KOŞULMADI.**~~ **Sonuç: prova koşuldu (doğrulandı).**", 1,
+     "sonuc cumlesi yururlukte"),
+    ("N7 Olcut 1 DUSER gerekcesi cizildi ve OLCULEMEDI yazildi", README,
+     "Ölçüt 1 **DÜŞER** (`CHUTE_*` beklenen-yok listesine sonradan eklenmez, eşik gevşetilmez);",
+     "Ölçüt 1 ~~**DÜŞER** (`CHUTE_*` beklenen-yok listesine sonradan eklenmez, eşik gevşetilmez)~~ ÖLÇÜLEMEDİ;",
+     1, "on kayit cumlesi eksik"),
+    ("N8 kalin sayilar ve tipografik kesmeyle ikinci eski olcut", README,
+     "   Açılış `ArduPlane V4.5.7`; `param show CHUTE_ENABLED` 1; dosyadaki **62**",
+     "   Ayrıca dosyadaki **62** adın **62**’si yüklü. Açılış `ArduPlane V4.5.7`; `param show CHUTE_ENABLED` 1; dosyadaki **62**",
+     1, "eski olcut 1 yururlukteki metinde"),
+    ("N3b ikinci Olcut 5 hukmu M16 on kosuluna dokunmadan", README,
+     "yine ölçülür. Yukarıdaki", "yine ölçülür. Ölçüt 5 ise tutar sayılır. Yukarıdaki", 1,
+     "birden cok kez anilmis"),
+    ("N5b CHUTE_ENABLED bos donerse tutar M17 on kosuluna dokunmadan", README,
+     "listesi = {`BRD_SER2_RTSCTS`}. Gerekçe",
+     "listesi = {`BRD_SER2_RTSCTS`}; `CHUTE_ENABLED` boş dönerse de bu ölçüt tutar. Gerekçe", 1,
+     "kabul blogu on kayitli"),
+    ("N4c kontrol eski olcut duz kesmeyle geri gelir", README,
+     "yüklü (N − |beklenen-yok|;", "yüklü ve dosyadaki 62 adın 62'si de yüklü (N − |beklenen-yok|;",
+     1, "eski olcut 1 yururlukteki metinde"),
+    ("D3a olumlu hukum ikinci paragrafta", README,
+     "kaydı değiştirmez.", "kaydı değiştirmez.\n\nSITL sonucu: DOĞRULANDI.", 1, "olumlu hukum"),
+    ("D3b paragraf disinda olcut 5 muaf", README,
+     "kaydı değiştirmez.", "kaydı değiştirmez.\n\n5. ölçüt bu durumda muaftır.", 1,
+     "ek/celiskili olcut atfi"),
+    ("D3c HTML ile KOSULMADI cizildi", README,
+     "KOŞULMADI.", "<del>KOŞULMADI.</del>", 1, "HTML cizgisi"),
+    ("D3d parasut servosu yerine gaz cikisi", README,
+     "param set SIM_PARA_PIN 7", "param set SIM_PARA_PIN 3", 1, "SIM_PARA_PIN komutu"),
+    ("D3e mancininik ivmesi degisti", README,
+     "param set SIM_SHOVE_X 46", "param set SIM_SHOVE_X 4", 1, "SIM_SHOVE_X komutu"),
+    ("D3f mancininik suresi degisti", README,
+     "param set SIM_SHOVE_TIME 390", "param set SIM_SHOVE_TIME 39", 1, "SIM_SHOVE_TIME komutu"),
 )
 
 
@@ -118,7 +175,7 @@ def git_bayt(ref, yol):
 
 
 def kapi():
-    r = subprocess.run([sys.executable, "-B", "-m", "unittest", "discover", "-s", "tests",
+    r = subprocess.run([sys.executable, "-X", "utf8", "-B", "-m", "unittest", "discover", "-s", "tests",
                         "-p", "test_faz_b_arduplane_sablon.py"],
                        cwd=KOK, capture_output=True, text=True, encoding="utf-8", errors="replace")
     return r.returncode, r.stdout + r.stderr
@@ -137,15 +194,12 @@ def a18_hatalari(tfb):
         return [f"{type(e).__name__}: {e}"]
 
 
-def main(argv=None):
-    ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    ap.add_argument("--ref", default="index", help="'index' (varsayilan) ya da bir rev (HEAD)")
-    a = ap.parse_args(argv)
+def kos(a):
     sys.path.insert(0, str(KOK / "tests"))
     import test_faz_b_arduplane_sablon as tfb  # noqa: E402 - sabitler bir kez; dosyalar her cagrida okunur
     head = git("rev-parse", "HEAD").decode().strip()
     test_bayt = (KOK / TEST).read_bytes()
-    print(f"# T221-D/T221-D2 gercek dosya mutasyonu · "
+    print(f"# T221-D/T221-D2/T221-D3 gercek dosya mutasyonu · "
           f"{datetime.now(timezone.utc).isoformat(timespec='seconds')}")
     print(f"ref={a.ref} · HEAD={head} · core.autocrlf={git('config', 'core.autocrlf').decode().strip()}")
     print(f"kapi dosyasi {TEST} sha256={hashlib.sha256(test_bayt).hexdigest()[:16]} · git {a.ref} ile "
@@ -197,6 +251,21 @@ def main(argv=None):
     print(f"[geri yukleme sonrasi] cikis={kod} · 3 dosya git {a.ref} ile bayt-es={temiz} · "
           f"son satir: {(cikti.strip().splitlines() or [''])[-1]}")
     return sonuc or (0 if kod == 0 and temiz else 1)
+
+
+def main(argv=None):
+    ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    ap.add_argument("--ref", default="index", help="'index' (varsayilan) ya da bir rev (HEAD)")
+    ap.add_argument("--cikti", type=Path, help="UTF-8 ham kanit dosyasi (mevcut dosyayi ezmez)")
+    a = ap.parse_args(argv)
+    if a.cikti is None:
+        return kos(a)
+    with a.cikti.open("x", encoding="utf-8", newline="\n") as akim:
+        with contextlib.redirect_stdout(akim):
+            kod = kos(a)
+            print(f"cikis={kod}")
+    print(f"Kanit: {a.cikti} · cikis={kod}")
+    return kod
 
 
 if __name__ == "__main__":
