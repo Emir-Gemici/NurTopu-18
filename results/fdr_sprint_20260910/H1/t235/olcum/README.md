@@ -144,4 +144,6 @@ O:\navitas-local-train\venv\Scripts\python.exe simulation/mujoco/t235_etiket_tez
 REM yalniz turetme (tezgah KOSULMAZ; kayitli JSON'lardan bu README ve kapi_duyarliligi.json)
 O:\navitas-local-train\venv\Scripts\python.exe simulation/mujoco/t235_etiket_tezgahi.py --turetme
 O:\navitas-local-train\venv\Scripts\python.exe -m unittest discover -s tests -p test_t235_alan_etiketi.py
+REM mutasyon kosucusu (22 mutasyon; ham cikti mutasyon/mutasyon_ciktisi.txt)
+O:\navitas-local-train\venv\Scripts\python.exe -X utf8 results/fdr_sprint_20260910/H1/t235/mutasyon/mutasyon_t235bd.py
 ```

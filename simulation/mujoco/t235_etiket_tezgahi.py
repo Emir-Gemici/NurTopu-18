@@ -806,6 +806,8 @@ def readme_metni(k3: dict, k1: dict | None, duy: dict) -> str:
     L.append("REM yalniz turetme (tezgah KOSULMAZ; kayitli JSON'lardan bu README ve " + DUY_JSON + ")")
     L.append("O:\\navitas-local-train\\venv\\Scripts\\python.exe simulation/mujoco/t235_etiket_tezgahi.py --turetme")
     L.append("O:\\navitas-local-train\\venv\\Scripts\\python.exe -m unittest discover -s tests -p test_t235_alan_etiketi.py")
+    L.append("REM mutasyon kosucusu (22 mutasyon; ham cikti mutasyon/mutasyon_ciktisi.txt)")
+    L.append("O:\\navitas-local-train\\venv\\Scripts\\python.exe -X utf8 results/fdr_sprint_20260910/H1/t235/mutasyon/mutasyon_t235bd.py")
     L.append("```")
     L.append("")
     return "\n".join(L)
