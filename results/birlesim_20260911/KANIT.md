@@ -66,3 +66,51 @@ Tam tanı çıktıları bu dizindedir; testin bozuk çizimi kabul etmediği öl�
 
 ArduPlane SITL ve fiziksel MK15/Jetson ölçümü bu kontroller değildir; yapılmadı.
 Üç görevin resmi bağımsız Claude incelemesi beklemektedir.
+
+## Son tam koşu — geçti (HEAD `d812b1e2`)
+
+```powershell
+$env:PYTHONDONTWRITEBYTECODE='1'
+$env:PYTHONUTF8='1'
+& 'O:\navitas-local-train\venv\Scripts\python.exe' -X utf8 -B scripts/push_kapisi.py --kuru
+$gateExit = $LASTEXITCODE
+Write-Output "BIRLESIM_KAPI_EXIT=$gateExit"
+exit $gateExit
+```
+
+```text
+1/2 tam süit…
+    Ran 2620 tests in 538.782s · OK (skipped=13)
+2/2 genel kapı…
+    GENEL KAPI (madde 14): GECTI — kol1 15/15 · kol2 serit 15/15
+KURU: ikisi de yeşil, push edilmedi · kanıt results\push_kapisi\20260911_161757
+BIRLESIM_KAPI_EXIT=0
+```
+
+Araç çıkışı 0. Ham çıktılar `../push_kapisi/20260911_161757/` altında.
+Atlanan 13 test başarı sayılmadı; koşan 2607 test başarılı. İlk kırmızı koşu
+ve H1b'nin kesin tetikleyicisinin bilinmediği notu bu yeşil sonuçla silinmedi.
+
+## Kayıtlar güncellendikten sonra
+
+```text
+PY -X utf8 -B -m unittest discover -s tests -p test_defter_butunlugu.py -q
+Ran 13 tests in 0.053s
+OK
+DEFTER_EXIT=0
+
+PY -X utf8 -B -m unittest discover -s tests -p test_d373_defter_geri_isaret.py -q
+Ran 6 tests in 0.236s
+OK
+GERI_ISARET_EXIT=0
+```
+
+`git diff --numstat -- REVIEW_LOG.md`: `51 0 REVIEW_LOG.md` — yalnız sona ek.
+Son kullanıcı-dosyası SHA256 kontrolü devralma başıyla aynı:
+
+- `dronesolid/files (3)/Plaka3_Alt_Cerceve.3mf`:
+  `A1DD6138F92362AF7B21729F80A296895CFB9BE5B809FE18089F435D9E9971D1`.
+- `results/prova/20260904_095651_8620/hakem_log.jsonl`:
+  `538C542DF0C88898B8735393B9B3C27484A9A4A76AF3C9DFE396F54A2E558FEB`.
+
+Bu iki önceden değiştirilmiş dosya commit kapsamına alınmadı.

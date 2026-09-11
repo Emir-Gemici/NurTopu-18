@@ -30617,3 +30617,54 @@ ana deftere aktarılmamış: **ArduCopter 4.7.1**, ön kayıt planı yaw LOITER 
 0/499 DÜŞTÜ (konum/irtifa 499/499); LOITER öncesi karşı deney 500/500 GEÇTİ.
 JSON bu turda doğrudan okundu, SITL yeniden koşulmadı. Üretim hedefi 4.5.7 olduğundan
 sürüm karşılaştırması ve karar incelemesi açık; ArduPlane T221 ile karıştırılmaz.
+
+### D-456 — KULLANICI ONAYLI BİRLEŞİM: üç dal master'da; son tam süit 2620 test OK (13 atlama), genel kapı iki kol 15/15; resmi inceleme bekliyor
+
+**Tarih/yazan:** 11 Eylül 2026, Codex-1. Kullanıcının "onay" mesajı üç hazır dalın
+commit ve birleştirilmesine izin verdi. Push yapılmadı. D-455 birleşim öncesi
+durumu anlatır; bu kayıt sonraki işlemleri ekler, eski kayıt değiştirilmedi.
+
+**Git:** devir kayıtları `307cb314`; T226-D2 `72e516f5` → `f80fec8d`,
+T228-D2 `6b9c862c` → `8d3c3fc2`, T221-D3 `fe63c69b` → `d02e3b63`.
+Birleştirmeler `--no-ff`; kesinti WIP commit'leri korunmuştur. Üç dal commit'i
+için `git merge-base --is-ancestor <commit> master` exit 0; üç çalışma ağacında
+`git status --porcelain=v1 --untracked-files=normal` boş, exit 0. Salt-okuma
+bağımsız kontrol de doğruladı; ürün kapsamı dışındaki yedi kesinti dalı alınmadı.
+
+**İlk birleşim kapısı:** `d02e3b63` üzerinde tam süit `Ran 2620 tests in 545.541s /
+FAILED (failures=3, skipped=13)`; genel kapı kol1 15/15, kol2 serit 15/15.
+Ham kayıt `results/push_kapisi/20260911_155724/` altında korunuyor; PowerShell
+araç çıkışı 1. İki hata atölye kâğıdındaki eski YKS 4015/4056 atıfları; gerçek
+ifadeler 4373/4414'te. Yalnız bu iki satır numarası tazelendi, kabul metni aynı.
+Üçüncü hata H1b küçük harita arena genişliği 0: ayrı MK15 39 test ve tüm modülleri
+yükleyip yalnız H1b'yi koşma tekrarları geçti. Kesin ilk tetikleyici saptanmadı.
+
+**Birleşim doğrulaması düzenlemesi `d812b1e2`:** H1b fikstüründe Tk/ürün DPI
+birlikte açık kuruldu; sabit 0,3 s uyku yerine gerçek arena `> S(100)` olana kadar
+en çok 5 s bekleniyor. Çizim elle tetiklenmedi, genişlik/panel/taşma kontrolleri
+gevşetilmedi; ürün kodu değişmedi. Atölye 39 test 1.611s OK, MK15 39 test 21.831s
+OK, exit 0. Gerçek Tk tanısı: 800 ms gecikme 1 test 1.323s OK/exit 0; Configure
+bağı kaldırılınca 300×330 tuvalde arena ölçeği 0, beklenen assert ile 1 test
+5.484s FAILED/exit 1. Kaynak dosyaya mutasyon yazılmadı. Tam komut/ham tanılar
+`results/birlesim_20260911/KANIT.md` ve aynı dizindeki çıktı dosyalarında.
+
+**Son birleşim kapısı gerçekten koşuldu** (`O:\navitas`, HEAD `d812b1e2`):
+
+```powershell
+$env:PYTHONDONTWRITEBYTECODE='1'
+$env:PYTHONUTF8='1'
+& 'O:\navitas-local-train\venv\Scripts\python.exe' -X utf8 -B scripts/push_kapisi.py --kuru
+$gateExit = $LASTEXITCODE
+Write-Output "BIRLESIM_KAPI_EXIT=$gateExit"
+exit $gateExit
+```
+
+Gerçek çıktı: `Ran 2620 tests in 538.782s / OK (skipped=13)`;
+`GENEL KAPI (madde 14): GECTI — kol1 15/15 · kol2 serit 15/15`;
+`KURU: ikisi de yeşil, push edilmedi`; `BIRLESIM_KAPI_EXIT=0`, araç çıkışı 0.
+Ham çıktı `results/push_kapisi/20260911_161757/{tam_suit,genel_kapi}.txt`.
+
+**Sınır:** üç görev READY_FOR_REVIEW; resmi bağımsız Claude onayı değildir,
+`[x]` yapılmadı. Fiziksel MK15/Jetson ve ArduPlane SITL koşulmadı. Kullanıcının
+CAD/saha logu/raporları ve T107 kilidi korundu. Diğer yedi kesinti işi HANDOFF'ta;
+T236 sürüm/yaw ve ATOLYE-2 kabul metni kararları hâlâ açık.

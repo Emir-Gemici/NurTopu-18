@@ -1,5 +1,42 @@
 # NAVITAS — DEVİR PROTOKOLÜ
 
+## Devir 2026-09-11 · Onaylı birleşim tamam, tam süit yeşil
+
+**Yetki:** kullanıcının "onay" mesajı, üç hazır dalın commit ve master'a
+birleştirilmesi içindir. Push yapılmadı. Ara WIP geçmişi `--no-ff` ile korundu.
+
+- Devir kayıtları: `307cb314`.
+- T226-D2: dal commit'i `72e516f5`, master birleşimi `f80fec8d`.
+- T228-D2: dal commit'i `6b9c862c`, master birleşimi `8d3c3fc2`.
+- T221-D3: dal commit'i `fe63c69b`, master birleşimi `d02e3b63`.
+- Birleşim doğrulaması düzenlemesi: `d812b1e2`. Atölye belgesindeki iki YKS
+  satır atfı tazelendi; H1b testinde DPI açık kuruldu ve sabit uyku yerine
+  gerçek çizim hazır koşulu beklendi. Ürün kodu/eşikler bu adımda değişmedi.
+
+**Son gerçek kapı** (`O:\navitas`, test edilen HEAD `d812b1e2`):
+`PYTHONDONTWRITEBYTECODE=1`, `PYTHONUTF8=1` ortamında
+`O:\navitas-local-train\venv\Scripts\python.exe -X utf8 -B scripts/push_kapisi.py --kuru`
+→ `Ran 2620 tests in 538.782s / OK (skipped=13)`;
+`GENEL KAPI (madde 14): GECTI — kol1 15/15 · kol2 serit 15/15`;
+`BIRLESIM_KAPI_EXIT=0`. Ham kanıt: `results/push_kapisi/20260911_161757/`.
+
+İlk birleşim koşusu 3 başarısızlıkla kırmızıydı; ham kayıt
+`results/push_kapisi/20260911_155724/` altında korunuyor. İki bayat atıf düzeldi;
+ilk H1b sıfır-genişlik hatasının kesin tetikleyicisi saptanmadı. Son fikstür,
+800 ms geciken çizimde geçti; Configure bağı kaldırılınca yine düştü.
+Komutlar ve sınırlar: `results/birlesim_20260911/KANIT.md`, defter D-456.
+
+**Durum:** üç görev `READY_FOR_REVIEW`; resmi bağımsız Claude denetimi bekliyor,
+hiçbiri kendi üreticisinin onayıyla `[x]` yapılmadı. ArduPlane SITL ve fiziksel
+MK15/Jetson ölçümü KOŞULMADI. Kullanıcının CAD, saha logu, rapor ve izlenmeyen
+dosyaları korunuyor; T107 kilidine dokunulmadı.
+
+**Devralanın ilk işi:** üç birleşimin bağımsız incelemesi; ardından aşağıdaki
+önceki devirde listelenen **yedi kesinti işi**. O dallar bu birleşime alınmadı.
+T236 sürüm/yaw kararı ile ATOLYE-2 kabul metni kararı hâlâ açık.
+
+---
+
 ## Devir 2026-09-11 · Claude'un kesilen işi → Codex-1
 
 **Yetki:** kullanıcının "claude un yarım bıraktığı işi devral" talebi. İlk devralma paketindeki
