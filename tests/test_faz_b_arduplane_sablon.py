@@ -282,14 +282,14 @@ SITL_OLUMLU_HARIC = ("olculdu",)
 # ve kod citleri tarama DISINDADIR — onlar harfi harfine ayri kilitlidir.
 SITL_HUKUM_ANAHTARLARI = ("prova", "olcut")
 SITL_HUKUM_CUMLELERI = (
-    "'dronekit-sitl' kurulu degil; kurulsa bile 4.5.7 disi 1 surumle prova d-425'in surum "
+    "dronekit-sitl kurulu degil; kurulsa bile 4.5.7 disi 1 surumle prova d-425'in surum "
     "dersine aykiridir.",
     "sonuc: arduplane sitl provasi kosulmadi.",
-    "sitl'de 'chute' parametrelerinin gercekten var oldugu ancak kosumda gorulur - provanin ilk "
+    "sitl'de chute parametrelerinin gercekten var oldugu ancak kosumda gorulur - provanin ilk "
     "kapisi budur.",
     "hakem kosumdur; sonuc olcutlerin altindaki onceden yazilmis on hukumle kaydedilir.",
-    "⚠ sitl 'plane' modeli bizim ucagin aerodinamigi degildir ('models/plane.parm' kucuk model; "
-    "bizim dosya 'airspeed''i ezer, 'rolllimitdeg 65' gibi degerleri o dosyadan kalir): prova "
+    "⚠ sitl plane modeli bizim ucagin aerodinamigi degildir (models/plane.parm kucuk model; "
+    "bizim dosya airspeed'i ezer, rolllimitdeg 65 gibi degerleri o dosyadan kalir): prova "
     "mantigi sinar (kalkis kapisi, parasut zinciri, failsafe), performansi sinamaz.",
 )
 SITL_HUKUM_SAYIMI = {"ölçülemedi": 5, "ölçülmedi": 1, "düşer": 3, "koşulmadı": 1, "ölçüldü": 2,

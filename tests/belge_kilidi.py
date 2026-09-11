@@ -190,10 +190,12 @@ def beyaz_liste_disi_cizik(metin, izinli=()):
 _SIFIR_GENISLIK = dict.fromkeys(
     map(ord, "­​‌‍‎‏⁠﻿"))
 _TIPOGRAFI = str.maketrans({
-    **{c: "'" for c in "‘’‚‛´ʼʹ′`"},
+    **{c: "'" for c in "‘’‚‛´ʼʹ′"},
     **{c: '"' for c in "“”„‟″"},
     **{c: "-" for c in "‐‑‒–—―−"},
-    "*": None, "_": None})
+    # Vurgu isaretleri SOZCUK ICI DAHIL sokulur (backtick markdown kod vurgusudur,
+    # kesme isareti degil): `dogrulandi`, _dogrulandi_, d*ogrulandi* tek bicime iner.
+    "*": None, "_": None, "`": None})
 _TR_KUCUK = str.maketrans({"I": "ı", "İ": "i"})
 _AKSANSIZ = str.maketrans({"ı": "i"})
 
@@ -211,8 +213,10 @@ _SAYI_DESENI = re.compile(_SINIR_ONCE + r"(" + "|".join(
 # Birim es anlamlilari — TEK YON: SOZCUK -> SEMBOL (milisaniye->ms, saniye->s,
 # derece->°). Ek harfleri ([a-z]*) yutulur: "saniyeyi" -> "s".
 # NEDEN: T228 kacani A7/A9 — kilit "s" ariyordu, belgeye "saniye" yazildi.
+# Birim SAYIYA BAGLIDIR (onunde rakam olmali): esik ancak sayiyla anlamlidir ve
+# bu cita "derecelendirme"/"saniyelerce" gibi sozcukleri birime cevirmeyi onler.
 _BIRIM_DESENI = re.compile(
-    _SINIR_ONCE + r"(milisaniye|saniye|derece)[a-z]*" + _SINIR_SONRA)
+    r"(\d+(?:[.,]\d+)?)\s*(milisaniye|saniye|derece)[a-z]*" + _SINIR_SONRA)
 _BIRIMLER = {"milisaniye": "ms", "saniye": "s", "derece": "°"}
 
 # Karsilastirma es anlamlilari -> tek bicim. NEDEN: T228 kacani A7 ("en az 1
@@ -271,7 +275,7 @@ def normalize(metin):
     s = "".join(c for c in unicodedata.normalize("NFKD", s)
                 if not unicodedata.combining(c))
     s = s.translate(_AKSANSIZ)
-    s = _BIRIM_DESENI.sub(lambda m: _BIRIMLER[m.group(1)], s)
+    s = _BIRIM_DESENI.sub(lambda m: "{} {}".format(m.group(1), _BIRIMLER[m.group(2)]), s)
     s = _ONEK_DESENI.sub(lambda m: _ONEK_KARSILIK[m.lastgroup], s)
     s = _SONEK_DESENI.sub(_sonek, s)
     return s
