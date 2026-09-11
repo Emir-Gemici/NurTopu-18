@@ -25,10 +25,17 @@ satir sonucu ve basligi ('tamamı ölçüldü'), ust hukum cizilir; §5'e kalin 
 CELISKILI ikinci hukum yazilir; eski (nabizsiz) boru tipografik tirnakla CANLI metne geri gelir.
 Hedef: test_G8_D453_D454_olculmemis_hukum_celiski_eski_komut (normallestirilmis metin).
 
+--hedef-testler her mutantta yalniz on kayitli hedefleri kosar; baslangic ve bitiste tum test
+dosyasi kosulur. "YAKALANDI" icin hedeflerin hepsi assert ile dusmeli, ERROR olmamali ve secilen
+test sayisi hedef sayisiyla ayni olmali. Kacis/uygulanamayan mutant/bozuk temiz kosum/geri yukleme
+uyusmazligi cikis 1'dir. --cikti eski kaniti koruyarak ayri dosya secer; yanindaki .raw.txt tam
+stdout/stderr'i tutar. Ozet her adimda kaydedilir (oturum yine kesilirse kanit kaybolmaz).
+
 KOSUM (depo kokunden; baska surec bu dosyalari okurken KOSMA):
   O:/navitas-local-train/venv/Scripts/python.exe -B \
       results/fdr_sprint_20260910/H9_MK15/t228d/mutasyon_t228d.py
 """
+import argparse
 import hashlib
 import re
 import subprocess
@@ -263,18 +270,27 @@ SATIRLAR = []
 def yaz(metin):
     print(metin, flush=True)
     SATIRLAR.append(metin)
+    CIKTI.write_text("\n".join(SATIRLAR) + "\n", encoding="utf-8")
 
 
-def kos():
-    p = subprocess.run([PY, "-B", "-X", "utf8", "-m", "unittest", "discover", "-s", "tests",
-                        "-p", TEST], cwd=KOK, capture_output=True, text=True, encoding="utf-8",
+def kos(hedefler=()):
+    argv = [PY, "-B", "-X", "utf8", "-m", "unittest", "discover", "-s", "tests", "-p", TEST]
+    for hedef in hedefler:
+        argv += ["-k", hedef]
+    yaz("KOMUT: " + subprocess.list2cmdline(argv))
+    p = subprocess.run(argv, cwd=KOK, capture_output=True, text=True, encoding="utf-8",
                        errors="replace", timeout=1800)
     cikti = p.stdout + p.stderr
     ran = re.search(r"Ran (\d+) tests?", cikti)
     satirlar = [s for s in cikti.strip().splitlines() if s.strip()]
     son = satirlar[-1] if satirlar else "?"
-    dusen = sorted(set(re.findall(r"^(?:FAIL|ERROR): (test_\w+)", cikti, re.M)))
-    return p.returncode, (ran.group(1) if ran else "?"), son, dusen
+    # Import/ortam/sozdizimi hatasi mutant kaniti DEGIL: hedef assert'i dusmeli.
+    dusen = sorted(set(re.findall(r"^FAIL: (test_\w+)", cikti, re.M)))
+    hatalar = re.findall(r"^ERROR: (.+)$", cikti, re.M)
+    with CIKTI.with_suffix(".raw.txt").open("a", encoding="utf-8") as ham:
+        ham.write("KOMUT: " + subprocess.list2cmdline(argv) + "\n" + cikti +
+                  "\nEXIT={}\n\n".format(p.returncode))
+    return p.returncode, (ran.group(1) if ran else "?"), son, dusen, hatalar
 
 
 def uygula(dosyalar, ciftler, orijinal):
@@ -292,15 +308,34 @@ def uygula(dosyalar, ciftler, orijinal):
 
 
 def main():
-    tum = sorted({y for _a, ds, _c, _h in MUTASYONLAR for y in ds})
+    global CIKTI
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--hedef-testler", action="store_true",
+                    help="Her mutantta yalniz on kayitli hedef testleri kos; temiz kosum tam dosya.")
+    ap.add_argument("--yalniz", action="append", default=[], help="Mutant adinin oneki; tekrarlanabilir.")
+    ap.add_argument("--cikti", type=Path, default=CIKTI, help="Ozet; tam stdout/stderr yaninda .raw.txt.")
+    args = ap.parse_args()
+    CIKTI = args.cikti.resolve()
+    CIKTI.parent.mkdir(parents=True, exist_ok=True)
+    mutantlar = [m for m in MUTASYONLAR if not args.yalniz or
+                 any(m[0].startswith(onek) for onek in args.yalniz)]
+    if not mutantlar:
+        ap.error("Secilen mutant yok")
+    tum = sorted({y for _a, ds, _c, _h in mutantlar for y in ds})
     orijinal = {y: y.read_bytes() for y in tum}
     sha0 = {y: hashlib.sha256(b).hexdigest() for y, b in orijinal.items()}
     yaz("# T228-D + T228-D2 mutasyon ciktisi · {} · {}".format(time.strftime("%Y-%m-%d %H:%M:%S"),
                                                     Path(PY).name))
+    kod, ran, son, dusen, hatalar = kos()
+    yaz("BASLANGIC TEMIZ: cikis={} ran={} son={!r} dusen={} hatalar={}".format(
+        kod, ran, son, dusen, hatalar))
+    if kod != 0 or ran == "0" or ran == "?":
+        yaz("DURDU: mutasyonsuz test dosyasi once gecmeli.")
+        return 1
     yakalanan = 0
     uygulanamayan = 0
     try:
-        for ad, dosyalar, ciftler, hedefler in MUTASYONLAR:
+        for ad, dosyalar, ciftler, hedefler in mutantlar:
             try:
                 uygula(dosyalar, ciftler, orijinal)
             except RuntimeError as exc:
@@ -310,15 +345,16 @@ def main():
                     y.write_bytes(orijinal[y])
                 continue
             try:
-                kod, ran, son, dusen = kos()
+                kod, ran, son, dusen, hatalar = kos(hedefler if args.hedef_testler else ())
             finally:
                 for y in dosyalar:
                     y.write_bytes(orijinal[y])
             durum = {h: ("DUSTU" if h in dusen else "GECTI") for h in hedefler}
-            tuttu = all(v == "DUSTU" for v in durum.values())
+            tuttu = (kod != 0 and not hatalar and all(v == "DUSTU" for v in durum.values())
+                     and (not args.hedef_testler or ran == str(len(hedefler))))
             yakalanan += 1 if tuttu else 0
-            yaz("{}: cikis={} ran={} son={!r} -> {}; hedef={}; dusen={}".format(
-                ad, kod, ran, son, "YAKALANDI" if tuttu else "KACTI", durum, dusen))
+            yaz("{}: cikis={} ran={} son={!r} -> {}; hedef={}; dusen={}; hatalar={}".format(
+                ad, kod, ran, son, "YAKALANDI" if tuttu else "KACTI", durum, dusen, hatalar))
     finally:
         for y, b in orijinal.items():
             y.write_bytes(b)
@@ -326,11 +362,12 @@ def main():
     yaz("geri yukleme sha esit: {} ({})".format(
         esit, ", ".join("{}={}".format(y.relative_to(KOK).as_posix(), sha0[y][:12]) for y in tum)))
     yaz("OZET: {}/{} mutasyon TUM hedef testleriyle yakalandi; uygulanamayan {}".format(
-        yakalanan, len(MUTASYONLAR), uygulanamayan))
-    kod, ran, son, dusen = kos()
+        yakalanan, len(mutantlar), uygulanamayan))
+    kod, ran, son, dusen, hatalar = kos()
     yaz("TEMIZ KOSUM (mutasyonsuz): cikis={} ran={} son={!r} dusen={}".format(kod, ran, son, dusen))
     CIKTI.write_text("\n".join(SATIRLAR) + "\n", encoding="utf-8")
+    return 0 if esit and yakalanan == len(mutantlar) and uygulanamayan == 0 and kod == 0 else 1
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())
