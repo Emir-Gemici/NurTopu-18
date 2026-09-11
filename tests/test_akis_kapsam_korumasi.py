@@ -823,7 +823,9 @@ class K18_DugumKokeniMmdBaskaNedenleCommitlendi(_GeciciDepo):
         super().setUp()
         self.kodu_degistir("def f2(x):\n", F3_BASA + "def f2(x):\n")
         _git(self.kok, "commit", "-q", "-am", "C: basa f3 (.mmd tazelenmedi)")
-        self.mmd.write_bytes(self.mmd.read_bytes() + self.MMD_D_EKI.encode("utf-8"))
+        # Ek satir n1'in ONUNE girer: blame satir eslemesi de kilitlenir (bir satir
+        # kayarsa n1'in kokeni D sanilir ve suphe kaybolur).
+        self.yaz("sekil/akis_t.mmd", self.MMD.replace('  n1["', self.MMD_D_EKI + '  n1["'))
         _git(self.kok, "commit", "-q", "-am", "D: .mmd baska bir nedenle commit'lendi")
 
     def test_varsayilan_taban_supheli_dugum_kokenine_gore(self):
@@ -854,7 +856,7 @@ class K18_DugumKokeniMmdBaskaNedenleCommitlendi(_GeciciDepo):
 
 class K18b_DugumKokeniMmdYeniDugumleCommitlendi(K18_DugumKokeniMmdBaskaNedenleCommitlendi):
     """F4b: D commit'inde .mmd'ye elle YENI bir dugum eklendi (dokunulmayan baska dosyaya
-    atif; n1 satiri yine A'nin). Sonuc ayni olmali."""
+    atif; n1 satiri yine A'nin, ama artik bir satir asagida). Sonuc ayni olmali."""
     EK = {"pkg/b.py": "def g(x):\n    deger = oku(x)\n    return deger\n"}
     MMD_D_EKI = '  n2["deger = oku(x)<br/>pkg/b.py:2"]\n'
 

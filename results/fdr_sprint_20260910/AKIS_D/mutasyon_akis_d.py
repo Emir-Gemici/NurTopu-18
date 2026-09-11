@@ -7,6 +7,11 @@ AKIS-D2 (curutucu RED): M21-M25 curutucunun KACAN N1/N2/N3/N4 mutasyonlari (+ N2
 M26-M34 taban suphesi (KUSUR-1), M35 goreli --mmd; M36-M41 EK (T226-D bulgusu: alt-grafik
 basliklari / tek desen / bicim bayt-es / def basligi). M02/M09/M10 metni yeni koda
 uyarlandi (capa, damga, dugum_ayikla).
+AKIS-D2 2. RED (curutucu KUSUR-A + kacan Y2/Y3/Y14/Y16/X1/X4/Y10): M42-M44 ikinci tabanin
+DUGUM BASINA `git blame` ile alinmasi (dosya duzeyi L, blame satir eslemesi, blame'in
+tabandan okunmasi), M45-M52 sinir/durum kilitleri. M28/M29/M33 metni yeni koda uyarlandi
+(dosya duzeyi L kaldirildi). Kacmasi BEKLENEN tek mutant yok; curutucunun X8'i (L == sha
+iken de ikinci taban) yeni kodda zaten yapiyi geregi olanaksiz — `koken != sha` kosulu.
 GPU yok, model yok. Kullanim: python mutasyon_akis_d.py  (cikti stdout)
 """
 import hashlib
@@ -21,6 +26,27 @@ PY = sys.executable
 TAZELE = DEPO / "scripts" / "akis_satir_tazele.py"
 DOGRULA = DEPO / "scripts" / "akis_diyagram_dogrula.py"
 TEST = "test_akis_kapsam_korumasi.py"
+
+# M42: dugum basina blame → dosya duzeyi "son commit" (KUSUR-A'nin ta kendisi)
+BLAME_ESKI = '''    r = subprocess.run(["git", "-C", str(kok), "blame", "--porcelain", ref, "--", yol],
+                       capture_output=True, text=True, encoding="utf-8", errors="replace")
+    if r.returncode != 0:
+        return {}
+    kokenler = {}
+    for s in r.stdout.split("\\n"):
+        m = RE_BLAME.match(s.rstrip("\\r"))
+        if m:
+            sha, ilk, adet = m.group(1), int(m.group(3)), int(m.group(4) or 1)
+            for k in range(adet):
+                kokenler[ilk + k] = sha
+    return kokenler'''
+BLAME_DOSYA_DUZEYI = '''    r = subprocess.run(["git", "-C", str(kok), "log", "-1", "--format=%H", ref, "--", yol],
+                       capture_output=True, text=True, encoding="utf-8", errors="replace")
+    son = r.stdout.strip()
+    if r.returncode != 0 or not son:
+        return {}
+    n = len((taban_icerigi(kok, ref, yol) or "").split("\\n"))
+    return {k: son for k in range(1, n + 1)}'''
 
 # (ad, dosya, [(eski, yeni), ...], beklenen dusen testlerden en az biri)
 MUTANTLAR = [
@@ -126,12 +152,13 @@ MUTANTLAR = [
     ("M27 tazele: iki tabanin sonucu karsilastirilmiyor", TAZELE,
      [("        if diger[0] != secilen[0]:", "        if False:")],
      ["test_varsayilan_taban_supheli", "test_ikinci_kosu_supheli"]),
-    ("M28 tazele: ikinci taban .mmd'nin son commit'i (L) hic alinmiyor", TAZELE,
-     [("    L = (son, f\"{son[:7]} (.mmd'nin son commit'i)\") if son is not None and son != sha else None",
-       "    L = None")],
-     ["test_varsayilan_taban_supheli"]),
+    ("M28 tazele: ikinci taban (dugum satirinin kokeni) hic alinmiyor", TAZELE,
+     [("    kokenler = D.satir_kokenleri(kok, sha, goreli) if mmd_taban is not None else {}",
+       "    kokenler = {}")],
+     ["test_varsayilan_taban_supheli", "test_dogru_taban_elle_verilince_f1"]),
     ("M29 tazele: tabandaki .mmd'de olmayan dugum icin calisma agaci adayi yok", TAZELE,
-     [("        aday = L if s.strip() in taban_dugum else W", "        aday = L")],
+     [("        if taban_no is None:\n            aday = W",
+       "        if taban_no is None:\n            aday = None")],
      ["test_ikinci_kosu_supheli"]),
     ("M30 tazele: toptan dosya farki supheli (satir kaydirmayan commit yanlis alarm)", TAZELE,
      [("        if diger[0] != secilen[0]:", "        if True:")],
@@ -143,8 +170,9 @@ MUTANTLAR = [
     ("M32 dogrula: TABAN SUPHELI kaldirildi", DOGRULA,
      [("            if ko != kt:", "            if False:")],
      ["test_dogrula_taban_head_supheyi"]),
-    ("M33 dogrula: .mmd'nin son commit'i hic kullanilmiyor", DOGRULA,
-     [("            onceki = son", "            pass")],
+    ("M33 dogrula: dugum koken commit'leri hic kullanilmiyor", DOGRULA,
+     [("    oncekiler = mmd_dugum_kokenleri(kok, taban, goreli, taban_mmd)",
+       "    oncekiler = {}")],
      ["test_dogrula_taban_head_supheyi"]),
     ("M34 dogrula: toptan dosya farki supheli (yanlis alarm)", DOGRULA,
      [("            if ko != kt:", "            if True:")],
@@ -173,6 +201,47 @@ MUTANTLAR = [
     ("M41 tazele: acilis/kapanis uyusmayan satir dugum sayiliyor", TAZELE,
      [("    if (sekil == '[\"') != (kapanis == '\"]'):", "    if False:")],
      ["test_acilis_kapanis_uyusmayan"]),
+    # ── AKIS-D2 2. RED: ikinci taban DUGUM BASINA (curutucu KUSUR-A) ──
+    ("M42 dogrula+tazele: ikinci taban DOSYA duzeyinde (.mmd'ye dokunan son commit) — KUSUR-A",
+     DOGRULA, [(BLAME_ESKI, BLAME_DOSYA_DUZEYI)],
+     ["test_varsayilan_taban_supheli_dugum_kokenine_gore", "test_dogrula_taban_head_supheyi_raporlar"]),
+    ("M43 dogrula+tazele: blame satir eslemesi bir satir kayik", DOGRULA,
+     [("                kokenler[ilk + k] = sha", "                kokenler[ilk + k + 1] = sha")],
+     ["test_varsayilan_taban_supheli_dugum_kokenine_gore", "test_dogrula_taban_head_supheyi_raporlar"]),
+    ("M44 dogrula: dugum kokenleri tabandan degil HEAD'den okunuyor", DOGRULA,
+     [('["git", "-C", str(kok), "blame", "--porcelain", ref, "--", yol]',
+       '["git", "-C", str(kok), "blame", "--porcelain", "HEAD", "--", yol]')],
+     ["test_dogrula_eski_tabanda_koken_tabandan_hesaplanir"]),
+    ("M45 tazele: tabanda pencerenin UST siniri bir eksik", TAZELE,
+     [("    pencere = range(max(1, eski - tolerans), min(len(satirlar), eski + tolerans) + 1)",
+       "    pencere = range(max(1, eski - tolerans), min(len(satirlar), eski + tolerans))")],
+     ["test_eski_arti_tolerans_bulunur"]),
+    ("M46 tazele: tabanda pencerenin ALT siniri bir fazla", TAZELE,
+     [("    pencere = range(max(1, eski - tolerans), min(len(satirlar), eski + tolerans) + 1)",
+       "    pencere = range(max(1, eski - tolerans + 1), min(len(satirlar), eski + tolerans) + 1)")],
+     ["test_eski_eksi_tolerans_bulunur"]),
+    ("M47 tazele: TABANDA ESITLIK denetimi kaldirildi", TAZELE,
+     [("    if len(sirali) > 1 and abs(sirali[0] - eski) == abs(sirali[1] - eski):", "    if False:")],
+     ["test_tabanda_esit_uzak_iki_aday"]),
+    ("M48 tazele: def-kipi eslemesi `async def` onekini tanimiyor", TAZELE,
+     [('r"\\s*(?:async\\s+)?def\\s+"', 'r"\\s*def\\s+"')],
+     ["test_async_def_basligi_kaydirilir"]),
+    ("M49 tazele: RE_ATIF'in `$` capasi yok (orta parcadaki ':N' dosya:satir sanilir)", TAZELE,
+     [("(?:-(\\d+))?$')", "(?:-(\\d+))?')")],
+     ["test_dosya_satir_etiketin_sonundan_okunur"]),
+    ("M50 dogrula: TABAN SUPHELI taban satiri yerine calisma satiriyla hesaplaniyor", DOGRULA,
+     [("            ko = ho.kapsam(t.satir) if ho is not None else None",
+       "            ko = ho.kapsam(d.satir) if ho is not None else None")],
+     ["test_dogrula_supheyi_taban_satiriyla_hesaplar"]),
+    ("M51 tazele: CRLF korunmuyor (LF yaziliyor)", TAZELE,
+     [('    crlf = b"\\r\\n" in ham', "    crlf = False")],
+     ["test_crlf_mmd_crlf_kalir"]),
+    ("M52 tazele: taban dugumu tam satir yerine yalniz ID ile eslestiriliyor", TAZELE,
+     [("            taban_dugum.setdefault((a[0], s.strip()), k + 1)",
+       "            taban_dugum.setdefault((a[0], a[0]), k + 1)"),
+      ("        taban_no = taban_dugum.get((kimlik, s.strip()))",
+       "        taban_no = taban_dugum.get((kimlik, kimlik))")],
+     ["test_ikinci_kosu_supheli"]),
 ]
 
 
