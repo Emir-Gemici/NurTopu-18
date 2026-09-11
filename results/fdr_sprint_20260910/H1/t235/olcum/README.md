@@ -3,7 +3,7 @@
 > ⚠ **BENZETIM (SENTETIK MASKE), SAHA ÖLÇÜMÜ DEĞIL.** Render yok, GPU yok, MuJoCo koşusu yok. Bu klasördeki her sayı *benzetim (sentetik maske), saha ölçümü değil* etiketlidir (K1 satırları: *benzetim (MuJoCo sentetik kareler, yer gerçeği poz), saha ölçümü değil*).
 >
 > Ön kayıt: `results/fdr_sprint_20260910/H1/t235/ON_KAYIT.md` (ölçümden önce yazıldı; eşik, ızgara, çekiliş, tohum değişmedi).
-> Üreteç: `simulation/mujoco/t235_etiket_tezgahi.py` · ham tablo: `k3_hucre_tablosu.json`, `k1_uygulama.json` (bu README aynı koşumdan üretildi).
+> Üreteç: `simulation/mujoco/t235_etiket_tezgahi.py` · ham tablo: `k3_hucre_tablosu.json`, `k1_uygulama.json` (bu README aynı koşumdan üretildi) · türetme: `kapi_duyarliligi.json` (kayıtlı tablodan hesap; yeni çekiliş yok).
 
 ## Hüküm (ON_KAYIT §2 karar kuralı — önceden yazılı; sonuç ne çıktıysa o)
 
@@ -12,7 +12,23 @@
 - YKS etiketin cercevesini niteler (T235-A).
 - Alan sığma payı < 1 m olduğu için FDA'da kullanılmayacak yapılandırma: 16:9@32m (benzetim (sentetik maske), saha ölçümü değil).
 - **K1 (uygulama testi, bağımsız kanıt değil):** A1 dünya yoluyla 28/28 (beklenen 28/28); KARE negatif kontrolü ÜRETİLDİ (kerteriz: 3/8, kosum_tur3_uretim: 6/20) → **GEÇTİ** (benzetim (MuJoCo sentetik kareler, yer gerçeği poz), saha ölçümü değil).
+- **FDA'da yayınlanan yol etiketi: KARE.** **T235-C (poz kolu / A1'in üretime bağlanması) AÇILMAZ** — ON_KAYIT §2 karar kuralı A1'i yalnız "A0 düşer, A1 geçerse" açar.
 - Eşik gevşetilmedi. "GEÇTİ" yalnız bu tezgâh kapısı içindir; saha doğrulaması değildir, FDR'ye "düzeltildi" diye yazılamaz (ON_KAYIT §7).
+
+## Koşullu yeniden hüküm ve duyarlılık (D-457 ön kaydı) — TÜRETME, yeni ölçüm YOK
+
+> ⚠ Bu bölümdeki her sayı `k3_hucre_tablosu.json`'daki **kayıtlı** hücrelerden hesaplandı (`kapi_duyarliligi.json`); tezgâh yeniden koşulmadı, yeni çekiliş üretilmedi. Eşik (%99) ve iki koşul aynıdır; yalnız hangi hücrelerin sayıldığı değişir.
+
+- **Duyarlılık:** kapıya giren 16 hücre tek başına değerlendirildiğinde kapı AYNI çıkıyor (A0: DUSTU, A1: DUSTU) → kapı dışı 20 hücre (s = 5 m ve bilgi hücresi) hükmü taşımadı.
+- **12 Eylül A9'da ölçülen kamera kipinin yapılandırması geçerli sayılır; kapı AYNI eşikle (%99,0 ve KARE'den 0,5 puan) yalnız o yapılandırmanın hücreleriyle kurulur. Ölçüm yeniden koşulmaz; kayıtlı tablo okunur.**
+
+| 12 Eylül A9'da ölçülen kip | yapılandırma | koşul 1 | koşul 2 | A0 | FDA etiketi |
+|---|---|---|---|---|---|
+| 4:3 | 4:3@32m | ✓ | ✓ | **GECTI** | **A0** (bayrakla, varsayılan kapalı) |
+| 16:9 | 16:9@40m | ✗ | ✓ | **DUSTU** | **KARE** |
+| ölçülemezse | — | — | — | — | **KARE** |
+
+A1 aynı ayrımda: 4:3 → DUSTU; 16:9 → DUSTU (hiçbir yapılandırmada geçmiyor → T235-C poz kolu bu tabloyla açılmaz). Tüm satırlar: benzetim (sentetik maske), saha ölçümü değil.
 
 ## Kapı (ON_KAYIT §2)
 
@@ -123,6 +139,9 @@ Veri: `H1/k3_uretim_boru/kerteriz/harita_*.json` (8 OPEN_ROUTE) ve `H1/kosum_tur
 ## Yeniden üretim
 
 ```
+REM tam kosum (tezgah yeniden kosulur — ON KAYIT tohumuyla ayni sayilari uretmelidir)
 O:\navitas-local-train\venv\Scripts\python.exe simulation/mujoco/t235_etiket_tezgahi.py
+REM yalniz turetme (tezgah KOSULMAZ; kayitli JSON'lardan bu README ve kapi_duyarliligi.json)
+O:\navitas-local-train\venv\Scripts\python.exe simulation/mujoco/t235_etiket_tezgahi.py --turetme
 O:\navitas-local-train\venv\Scripts\python.exe -m unittest discover -s tests -p test_t235_alan_etiketi.py
 ```

@@ -34,9 +34,19 @@ import karar_sozlesmesi as ks  # noqa: E402
 
 ON_KAYIT = KOK / "results" / "fdr_sprint_20260910" / "H1" / "t235" / "ON_KAYIT.md"
 
-# Tipografik kesmeler tek bicime (D-453: "’ ´ ` kesme" varyantlari kilidi delemez).
-_KESME = str.maketrans({"’": "'", "‘": "'", "´": "'", "`": "'", "ʼ": "'"})
+# Tipografik kesme/tirnak tek bicime (D-453: "’ ´ ` kesme" varyantlari kilidi delemez).
+_KESME = str.maketrans({"’": "'", "‘": "'", "´": "'", "`": "'", "ʼ": "'",
+                        "“": '"', "”": '"'})
 _SAYI = r"(\d+(?:[.,]\d+)?)"
+# D-453 + 12 Eylul genislemesi: cizili aralik bicimleri. Tek tilde GFM kuralindadir (sinir
+# tildesinin ic yani bosluk OLAMAZ) — yoksa ON_KAYIT'taki "e_c ~ N(0, σ_c²)" dagilim tildeleri
+# yanlislikla aralik sayilirdi.
+_CIZILI = re.compile(r"~~.*?~~|~(?!\s)[^~\n]*?(?<!\s)~"
+                     r"|<del\b[^>]*>.*?</del>|<s\b[^>]*>.*?</s>", re.S | re.I)
+# Kalin/italik isaretleri. `_` yalniz MARKDOWN vurgusu oldugunda silinir: σ_c, kosum_tur3_uretim
+# gibi tanimlayicilardaki alt cizgi KORUNUR.
+_YILDIZ = re.compile(r"\*+")
+_ALTCIZGI = re.compile(r"(?<!\w)_{1,2}(?=\S)|(?<=\S)_{1,2}(?!\w)")
 
 
 def _tezgah():
@@ -45,15 +55,28 @@ def _tezgah():
 
 
 def _cizili_ayikla(metin):
-    """D-453: ~~...~~ araliklari (satir asan dahil) metinden cikarilir."""
-    return re.sub(r"~~.*?~~", "", metin, flags=re.S)
+    """D-453 (+12 Eylul): ~~...~~ (satir asan), tek tilde ~...~, <del>...</del> ve <s>...</s>
+    araliklari metinden CIKARILIR. Ic ice sarmalar icin sabit noktaya kadar yinelenir."""
+    onceki = None
+    while onceki != metin:
+        onceki, metin = metin, _CIZILI.sub("", metin)
+    return metin
+
+
+def _normallestir(metin):
+    """Belge kilitlerinin aradigi NORMALLESTIRILMIS metin (D-453 + 12 Eylul genislemesi):
+    cizili araliklar ayiklanir, kalin/italik isaretleri (**, *, _) kaldirilir, tipografik
+    kesme/tirnak duz karsiligina cevrilir. Boylece "≥ %**98**,0" ya da "≥ %98,0" varyantlari
+    ayni degeri verir ve kilit ikisini de yakalar."""
+    m = _cizili_ayikla(metin).translate(_KESME)
+    return _ALTCIZGI.sub("", _YILDIZ.sub("", m))
 
 
 def _on_kayit_bolum(no):
-    """ON_KAYIT "## <no>." bolum(ler)inin metni: cizili araliklar AYIKLANMIS, kalin isareti (**)
-    kaldirilmis, kesmeler normallesmis. Ayni numarali birden cok bolum varsa HEPSI birlestirilir
-    (sonradan eklenen celisen bir bolum de ayristirmaya girer)."""
-    m = _cizili_ayikla(ON_KAYIT.read_text(encoding="utf-8")).translate(_KESME).replace("**", "")
+    """ON_KAYIT "## <no>." bolum(ler)inin NORMALLESTIRILMIS metni (bkz. `_normallestir`).
+    Ayni numarali birden cok bolum varsa HEPSI birlestirilir (sonradan eklenen celisen bir
+    bolum de ayristirmaya girer)."""
+    m = _normallestir(ON_KAYIT.read_text(encoding="utf-8"))
     bolumler = re.findall(rf"^## {no}\.(.*?)(?=^## |\Z)", m, flags=re.S | re.M)
     if not bolumler:
         raise AssertionError(f"ON_KAYIT SS{no} bulunamadi")
@@ -108,9 +131,30 @@ class OnKayitKilitleri(unittest.TestCase):
     """Kod ve tezgah sabitleri ON_KAYIT'tan (cizili araliklar ayiklanmis, D-453) AYRISTIRILAN
     degerlerle es. Kume esitligi: ayni bolumdeki her deger sayilir."""
 
-    def test_cizili_ayiklama_satir_asar(self):
+    def test_normallestirme_cizili_bicimlerini_ayiklar(self):
+        """D-453 + 12 Eylul genislemesi: ~~...~~ (satir asan), tek tilde, <del>, <s>."""
         self.assertEqual("a  c", _cizili_ayikla("a ~~b\nx~~ c"))
-        self.assertEqual("tohum 42", _cizili_ayikla("tohum ~~20260910~~42").replace("  ", " ").replace("tohum 42", "tohum 42"))
+        for bicim in ("~~20260910~~", "~20260910~", "<del>20260910</del>",
+                      '<s class="x">20260910</s>', "<S>2026<del>09</del>0910</S>"):
+            self.assertEqual("tohum 42", _cizili_ayikla("tohum " + bicim + "42"), bicim)
+
+    def test_normallestirme_dagilim_tildesini_ve_alt_cizgiyi_KORUR(self):
+        """Tek tilde GFM kuralindadir (sinir tildesinin ic yani bosluk olamaz): ON_KAYIT'taki
+        "e_c ~ N(0, s^2)" dagilim tildeleri silinmez. Tanimlayici alt cizgisi de korunur."""
+        metin = "e_c ~ N(0, \u03c3_c\u00b2) her eksende, \u03c3_c \u2208 {0,5; 1,0} m ~ N(0, \u03c3_g\u00b2)"
+        self.assertEqual(metin, _normallestir(metin))
+        self.assertEqual("kosum_tur3_uretim", _normallestir("kosum_tur3_uretim"))
+        b2 = _on_kayit_bolum(2)
+        self.assertIn("\u03c3_c", b2)
+        self.assertIn("tohum 20260910", b2)
+
+    def test_normallestirme_kalin_italik_ve_kesme_varyantlarini_duzler(self):
+        """Ayni deger kalin/italik/tipografik varyantla yazilirsa kilit ayni sayiyi gormeli
+        (sozdizimsel varyant kilidi delemez)."""
+        for varyant in ("\u2265 %**98**,0", "\u2265 %*98*,0", "\u2265 %_98_,0",
+                        "\u2265 %98,0", "\u2265 %__98__,0"):
+            self.assertEqual({98.0}, _sayilar(r"\u2265\s*%\s*" + _SAYI, _normallestir(varyant)), varyant)
+        self.assertEqual("FDA'da 'kod' \"alinti\"", _normallestir("FDA\u2019da `kod` \u201calinti\u201d"))
 
     def test_SS1_A0_siniri_W_bolu_6_ve_FDA_20_m(self):
         b1 = _on_kayit_bolum(1)
@@ -614,18 +658,75 @@ class TezgahYenidenUretim(unittest.TestCase):
         self.assertEqual(self.kayit["hukum"],
                          json.loads(json.dumps(t.hukum_kur(self.kayit["k3n"], kapi, self.kayit["alan_sigma"]))))
 
-    def test_duyarlilik_BILGI_kendi_icinde_tutarli(self):
+    def test_duyarlilik_kayitli_tablodan_TURETILIR_bayt_es(self):
+        """🔴 `kapi_duyarliligi.json` bir OLCUM DEGILDIR: kayitli k3 tablosunun SAF
+        fonksiyonudur (cekilis, rasterleme, rastgelelik yok). Yeniden turetim BAYT-ES olmali;
+        elle yazilmis ya da baska bir kosumdan gelmis tek satir kalamaz."""
+        t = self.t
+        mevcut = (t.CIKTI_DIZIN / t.DUY_JSON).read_text(encoding="utf-8")
+        self.assertEqual(mevcut, t.json_metni(t.kapi_duyarliligi(self.kayit)))
+
+    def test_duyarlilik_kapiya_giren_16_hucre_sayilari_kayittan_KOPYA(self):
         t = self.t
         duy = json.loads((t.CIKTI_DIZIN / t.DUY_JSON).read_text(encoding="utf-8"))
+        self.assertTrue(duy["yeni_olcum_yok"])
         self.assertEqual(16, len(duy["hucreler"]))
+        self.assertEqual(len(t.izgara()) - 16, duy["kapi_disi_hucre_n"])
+        kayitli = {h["hucre"]: h for h in self.kayit["hucreler"]}
         for h in duy["hucreler"]:
             c = t.izgara()[h["izgara_indeksi"]]
             self.assertEqual(t.hucre_anahtari(*c), h["hucre"])
             self.assertTrue(t.hucre_bayraklari(*c)["kapiya_girer"], h["hucre"])
+            self.assertEqual(t.json_metni(kayitli[h["hucre"]]),
+                             t.json_metni({k: v for k, v in h.items() if k != "izgara_indeksi"}),
+                             h["hucre"])
         kapi = t.kapi_degerlendir(duy["hucreler"])
         self.assertEqual(duy["kapi"], json.loads(json.dumps(kapi)))
-        self.assertEqual(("GECTI" if kapi["A0"]["gecti"] else "DUSTU",
-                          "GECTI" if kapi["A1"]["gecti"] else "DUSTU"), (duy["A0"], duy["A1"]))
+        self.assertEqual(("DUSTU" if not kapi["A0"]["gecti"] else "GECTI",
+                          "DUSTU" if not kapi["A1"]["gecti"] else "GECTI"), (duy["A0"], duy["A1"]))
+        # Duyarlilik hukmu: kapi disi 20 hucre (s = 5 m + bilgi hucresi) hukmu TASIMADI.
+        self.assertTrue(duy["tam_tablo_kapisiyla_ayni"])
+        self.assertEqual(self.kayit["kapi"], duy["kapi"])
+
+    def test_D457_kosullu_on_kayit_kayitli_tablodan_TURETILIR(self):
+        """D-457 ön kaydi (kamera kipi olculmeden once yazildi): 4:3 olculurse A0 kosullu
+        ACILIR; 16:9 olculurse ve kip olculemezse KARE kalir. Uc hukum de kayitli tablodan
+        AYNI esikle turetilir — elle yazilmis degil."""
+        t = self.t
+        duy = json.loads((t.CIKTI_DIZIN / t.DUY_JSON).read_text(encoding="utf-8"))
+        d = duy["d457_kosullu"]["kip_olculurse"]
+        self.assertEqual({"4:3", "16:9"}, set(d))
+        self.assertEqual({"yapilandirma": "4:3@32m", "A0": "GECTI", "A1": "DUSTU",
+                          "fda_etiketi": "A0", "a0_bayrakla_acilir": True}, d["4:3"])
+        self.assertEqual({"yapilandirma": "16:9@40m", "A0": "DUSTU", "A1": "DUSTU",
+                          "fda_etiketi": "KARE", "a0_bayrakla_acilir": False}, d["16:9"])
+        self.assertEqual({"fda_etiketi": "KARE", "a0_bayrakla_acilir": False},
+                         duy["d457_kosullu"]["kip_olculemezse"])
+        # Bugunku hukum: A0 ve A1 DUSTU -> KARE kalir, T235-C poz kolu ACILMAZ.
+        self.assertEqual({"A0": "DUSTU", "A1": "DUSTU", "fda_etiketi": "KARE",
+                          "t235c_poz_kolu_acilir": False}, duy["bugunku_hukum"])
+        self.assertEqual({"DUSTU"}, {v["A1"] for v in d.values()})
+        # Yapilandirma kapisi AYNI kapi_degerlendir ile, yalniz hucre kumesi dar.
+        for kip, h in t.NOMINAL_KIP_H:
+            y = duy["yapilandirma_basina"][f"{kip}@{h:g}m"]
+            alt = [c for c in self.kayit["hucreler"] if f"|{kip}@{h:g}m|" in c["hucre"]]
+            self.assertEqual(len(alt), y["hucre_n"])
+            self.assertEqual(y["kapi"], json.loads(json.dumps(t.kapi_degerlendir(alt))))
+
+    def test_D457_esik_gevsetilmedi(self):
+        """Kosullu yeniden hukum bir GEVSETME degildir: esikler ON_KAYIT SS2 sabitleridir ve
+        kosullu dalda da aynen kullanilir (bkz. `test_SS2_tezgah_sabitleri_sayi_olarak`)."""
+        t = self.t
+        duy = json.loads((t.CIKTI_DIZIN / t.DUY_JSON).read_text(encoding="utf-8"))
+        y43 = duy["yapilandirma_basina"]["4:3@32m"]["kapi"]["A0"]
+        oranlar = [sat["oran_yuzde"] for sat in y43["kosul1_nominal_oran"]]
+        self.assertEqual(2, len(oranlar))
+        self.assertTrue(all(o >= t.KAPI_ORAN_YUZDE for o in oranlar), oranlar)
+        self.assertEqual([], y43["kosul2_ihlaller"])
+        # 16:9@40m'de nominal orandan EN AZ biri esigin altinda -> kosullu A0 orada acilmaz.
+        y169 = duy["yapilandirma_basina"]["16:9@40m"]["kapi"]["A0"]
+        self.assertTrue(any(sat["oran_yuzde"] < t.KAPI_ORAN_YUZDE
+                            for sat in y169["kosul1_nominal_oran"]))
 
     def test_README_kayitli_jsonlardan_uretilen_metne_tam_esit(self):
         """README elle duzenlenemez: kayitli uc JSON'dan uretilen metne TAM esit (satir sonu
@@ -636,10 +737,22 @@ class TezgahYenidenUretim(unittest.TestCase):
         duy = json.loads((t.CIKTI_DIZIN / t.DUY_JSON).read_text(encoding="utf-8"))
         mevcut = (t.CIKTI_DIZIN / "README.md").read_text(encoding="utf-8")
         self.assertEqual(t.readme_metni(self.kayit, k1, duy), mevcut)
-        # ek, cizili-ayiklanmis okuma: hukum satiri JSON'daki hukumu tasir
-        ayik = _cizili_ayikla(mevcut)
+        # ek okuma: NORMALLESTIRILMIS metinde hukum JSON'daki hukumdur. Hukum sozcugu cizilip
+        # ("~~DUSTU~~ GECTI", "<del>DUSTU</del>") yerine bir baskasi yazilirsa bu kilit DUSER.
+        duy = json.loads((t.CIKTI_DIZIN / t.DUY_JSON).read_text(encoding="utf-8"))
+        ayik = _normallestir(mevcut)
         self.assertIn(f'A0: {self.kayit["hukum"]["A0"]}', ayik)
         self.assertIn(f'A1: {self.kayit["hukum"]["A1"]}', ayik)
+        self.assertIn(self.kayit["hukum"]["karar"], ayik)
+        bh = duy["bugunku_hukum"]
+        self.assertIn("FDA'da yayınlanan yol etiketi: " + bh["fda_etiketi"] + ".", ayik)
+        self.assertIn("AÇILMAZ" if not bh["t235c_poz_kolu_acilir"] else "AÇILIR", ayik)
+        self.assertNotIn("T235-C (poz kolu / A1'in üretime bağlanması) AÇILIR", ayik)
+        # D-457 kosullu satirlari README'de JSON'daki hukumle ayni
+        for kip, v in duy["d457_kosullu"]["kip_olculurse"].items():
+            self.assertRegex(ayik, rf'\| {re.escape(kip)} \| {re.escape(v["yapilandirma"])} \|'
+                                   rf'[^|]*\|[^|]*\| {v["A0"]} \| {v["fda_etiketi"]}')
+        self.assertIn("tezgâh yeniden koşulmadı, yeni çekiliş üretilmedi", ayik)
 
 
 class K1Uygulama(unittest.TestCase):

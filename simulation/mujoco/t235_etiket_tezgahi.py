@@ -33,6 +33,8 @@ Uygulama secimleri (on kayitta yazili DEGIL; README'de gerekcesiyle yazilir):
 Kullanim:
   venv python simulation/mujoco/t235_etiket_tezgahi.py            # K3 izgarasi + K1 -> H1/t235/olcum/
   venv python simulation/mujoco/t235_etiket_tezgahi.py --yalniz-k1
+  venv python simulation/mujoco/t235_etiket_tezgahi.py --turetme  # tezgahi KOSMADAN: kayitli
+      # JSON'lardan kapi duyarliligi + D-457 kosullu hukmu + README (yeni cekilis YOK)
 """
 
 from __future__ import annotations
@@ -63,11 +65,15 @@ import karar_sozlesmesi as ks  # noqa: E402
 
 ETIKET = "benzetim (sentetik maske), saha ölçümü değil"
 K1_ETIKET = "benzetim (MuJoCo sentetik kareler, yer gerçeği poz), saha ölçümü değil"
+DUY_ETIKET = ("TÜRETME — kayıtlı hücre tablosundan hesaplandı; yeni çekiliş, yeni koşum YOK. "
+              "Sayıların kendisi: benzetim (sentetik maske), saha ölçümü değil")
 ON_KAYIT_YOLU = "results/fdr_sprint_20260910/H1/t235/ON_KAYIT.md"
+D457_YOLU = "REVIEW_LOG.md D-457 (12 Eylül; kamera kipi ÖLÇÜLMEDEN ÖNCE yazıldı)"
 H1 = KOK / "results" / "fdr_sprint_20260910" / "H1"
 CIKTI_DIZIN = H1 / "t235" / "olcum"
 K3_JSON = "k3_hucre_tablosu.json"
 K1_JSON = "k1_uygulama.json"
+DUY_JSON = "kapi_duyarliligi.json"
 
 # ── ON KAYIT SS2 (DEGISMEZ) ─────────────────────────────────────────────────
 TOHUM = 20260910
@@ -387,6 +393,80 @@ def hukum_kur(k3n: dict, kapi: dict, sigma: list[dict]) -> dict:
             "alan_sigma_ile_fda_disi_yapilandirma": kullanilmaz, "etiket": ETIKET}
 
 
+def _hukum_sozcugu(gecti: bool) -> str:
+    return "GECTI" if gecti else "DUSTU"
+
+
+def _yapilandirma_kapisi(hucreler: list[dict], kip: str, h_m: float) -> dict:
+    """Yalniz (kip, h) yapilandirmasinin hucreleriyle ON_KAYIT SS2 kapisi — ayni esik, ayni iki
+    kosul, yalniz hucre kumesi dardir. TURETME: kayitli tablodan okunur, cekilis YOK."""
+    alt = [hc for hc in hucreler if f"|{kip}@{h_m:g}m|" in hc["hucre"]]
+    kapi = kapi_degerlendir(alt)
+    return {"yapilandirma": f"{kip}@{h_m:g}m", "hucre_n": len(alt), "kapi": kapi,
+            "A0": _hukum_sozcugu(kapi["A0"]["gecti"]), "A1": _hukum_sozcugu(kapi["A1"]["gecti"])}
+
+
+def kapi_duyarliligi(k3: dict) -> dict:
+    """Kapinin hangi hucrelere DUYARLI oldugu + D-457 kosullu on kaydinin TURETILMESI.
+
+    🔴 Yeni olcum YOKTUR: girdi kayitli `k3_hucre_tablosu.json` sozlugudur, cikti onun saf bir
+    fonksiyonudur (cekilis, rasterleme, rastgelelik yok). Iki soruya cevap verir:
+
+      1. **Duyarlilik:** kapiya giren 16 hucre TEK BASINA degerlendirildiginde hukum degisiyor mu?
+         Degismiyorsa kapi disi 20 hucre (s = 5 m + bilgi hucresi) hukmu tasimamistir — ON_KAYIT
+         SS2'nin "raporlanir, kapiya girmez" ifadesinin sayisal kaniti.
+      2. **D-457 kosullu on kaydi:** 12 Eylul A9'da kamera kipi olculunce FDA tek yapilandirmaya
+         iner. Her yapilandirma icin kapi AYNI esikle (%99,0 ve 0,5 puan) yeniden kurulur ve
+         hangi kip olculurse hangi etiketin kalacagi SIMDIDEN yazilir. Esik gevsetilmesi degildir;
+         hucre kumesi degisir, olcut degismez.
+    """
+    hucreler = []
+    for j, c in enumerate(izgara()):
+        anahtar = hucre_anahtari(*c)
+        kayitli = [hc for hc in k3["hucreler"] if hc["hucre"] == anahtar]
+        if len(kayitli) != 1:
+            raise ValueError(f"kayitli tabloda {anahtar} tek degil ({len(kayitli)})")
+        if not hucre_bayraklari(*c)["kapiya_girer"]:
+            continue
+        hucreler.append(dict(kayitli[0], izgara_indeksi=j))
+    kapi = kapi_degerlendir(hucreler)
+    a0, a1 = kapi["A0"]["gecti"], kapi["A1"]["gecti"]
+    yap = {f"{kip}@{h:g}m": _yapilandirma_kapisi(k3["hucreler"], kip, h) for kip, h in NOMINAL_KIP_H}
+    kosullu = {}
+    for kip, h in NOMINAL_KIP_H:
+        v = yap[f"{kip}@{h:g}m"]
+        kosullu[kip] = {"yapilandirma": v["yapilandirma"], "A0": v["A0"], "A1": v["A1"],
+                        "fda_etiketi": "A0" if v["A0"] == "GECTI" else "KARE",
+                        "a0_bayrakla_acilir": v["A0"] == "GECTI"}
+    return {
+        "etiket": DUY_ETIKET,
+        "kaynak": K3_JSON,
+        "on_kayit": [ON_KAYIT_YOLU + " SS2", D457_YOLU],
+        "yeni_olcum_yok": True,
+        "hucreler": hucreler,
+        "kapi_disi_hucre_n": len(k3["hucreler"]) - len(hucreler),
+        "kapi": kapi,
+        "A0": _hukum_sozcugu(a0),
+        "A1": _hukum_sozcugu(a1),
+        "tam_tablo_kapisiyla_ayni": k3["kapi"] == json.loads(json.dumps(kapi)),
+        "bugunku_hukum": {
+            "A0": k3["hukum"]["A0"], "A1": k3["hukum"]["A1"],
+            "fda_etiketi": "A0" if a0 else ("A1" if a1 else "KARE"),
+            # ON_KAYIT SS2 karar kurali: A1 (ve T235-C poz kolu) YALNIZ A0 duser A1 gecerse.
+            "t235c_poz_kolu_acilir": bool((not a0) and a1),
+        },
+        "yapilandirma_basina": yap,
+        "d457_kosullu": {
+            "kaynak": D457_YOLU,
+            "kural": ("12 Eylül A9'da ölçülen kamera kipinin yapılandırması geçerli sayılır; kapı "
+                      "AYNI eşikle (%99,0 ve KARE'den 0,5 puan) yalnız o yapılandırmanın hücreleriyle "
+                      "kurulur. Ölçüm yeniden koşulmaz; kayıtlı tablo okunur."),
+            "kip_olculurse": kosullu,
+            "kip_olculemezse": {"fda_etiketi": "KARE", "a0_bayrakla_acilir": False},
+        },
+    }
+
+
 def tezgah_kos(hucre_listesi: list[tuple] | None = None, tuval: int | None = None,
                ilerleme: bool = False) -> dict:
     taban = taban_cekilisler()
@@ -531,7 +611,7 @@ def _yz(b: dict) -> str:
     return f'{b["oran_yuzde"]:.2f} ({b["dogru"]}/{b["sahne_n"]})'
 
 
-def readme_metni(k3: dict, k1: dict | None) -> str:
+def readme_metni(k3: dict, k1: dict | None, duy: dict) -> str:
     L = []
     E = ETIKET
     p = k3["parametreler"]
@@ -542,7 +622,8 @@ def readme_metni(k3: dict, k1: dict | None) -> str:
     L.append(">")
     L.append(f"> Ön kayıt: `{ON_KAYIT_YOLU}` (ölçümden önce yazıldı; eşik, ızgara, çekiliş, tohum değişmedi).")
     L.append("> Üreteç: `simulation/mujoco/t235_etiket_tezgahi.py` · ham tablo: "
-             f"`{K3_JSON}`, `{K1_JSON}` (bu README aynı koşumdan üretildi).")
+             f"`{K3_JSON}`, `{K1_JSON}` (bu README aynı koşumdan üretildi) · türetme: `{DUY_JSON}` "
+             "(kayıtlı tablodan hesap; yeni çekiliş yok).")
     L.append("")
     h = k3["hukum"]
     L.append("## Hüküm (ON_KAYIT §2 karar kuralı — önceden yazılı; sonuç ne çıktıysa o)")
@@ -563,8 +644,39 @@ def readme_metni(k3: dict, k1: dict | None) -> str:
                  f"{'ÜRETİLDİ' if k1['KARE_negatif_kontrol_uretildi'] else 'ÜRETİLMEDİ'} "
                  f"({', '.join(f'{k}: {v[0]}/{v[1]}' for k, v in ((k, (k1['ozet'][k]['KARE=dunya'], k1['ozet'][k]['n'])) for k in k1['ozet']))}) "
                  f"→ **{'GEÇTİ' if k1['gecti'] else 'DÜŞTÜ'}** ({K1_ETIKET}).")
+    bh = duy["bugunku_hukum"]
+    L.append(f"- **FDA'da yayınlanan yol etiketi: {bh['fda_etiketi']}.** "
+             f"**T235-C (poz kolu / A1'in üretime bağlanması) {'AÇILIR' if bh['t235c_poz_kolu_acilir'] else 'AÇILMAZ'}** "
+             "— ON_KAYIT §2 karar kuralı A1'i yalnız \"A0 düşer, A1 geçerse\" açar.")
     L.append("- Eşik gevşetilmedi. \"GEÇTİ\" yalnız bu tezgâh kapısı içindir; saha doğrulaması değildir, "
              "FDR'ye \"düzeltildi\" diye yazılamaz (ON_KAYIT §7).")
+    L.append("")
+    L.append("## Koşullu yeniden hüküm ve duyarlılık (D-457 ön kaydı) — TÜRETME, yeni ölçüm YOK")
+    L.append("")
+    L.append(f"> ⚠ Bu bölümdeki her sayı `{K3_JSON}`'daki **kayıtlı** hücrelerden hesaplandı "
+             f"(`{DUY_JSON}`); tezgâh yeniden koşulmadı, yeni çekiliş üretilmedi. Eşik (%"
+             f"{KAPI_ORAN_YUZDE:g}) ve iki koşul aynıdır; yalnız hangi hücrelerin sayıldığı değişir.")
+    L.append("")
+    L.append(f"- **Duyarlılık:** kapıya giren {len(duy['hucreler'])} hücre tek başına değerlendirildiğinde "
+             f"kapı {'AYNI' if duy['tam_tablo_kapisiyla_ayni'] else 'FARKLI'} çıkıyor "
+             f"(A0: {duy['A0']}, A1: {duy['A1']}) → kapı dışı {duy['kapi_disi_hucre_n']} hücre "
+             f"(s = {'; '.join(f'{v:g}' for v in KAPI_DISI_S_M)} m ve bilgi hücresi) hükmü "
+             f"{'taşımadı' if duy['tam_tablo_kapisiyla_ayni'] else 'DEĞİŞTİRDİ'}.")
+    L.append(f"- **{duy['d457_kosullu']['kural']}**")
+    L.append("")
+    L.append("| 12 Eylül A9'da ölçülen kip | yapılandırma | koşul 1 | koşul 2 | A0 | FDA etiketi |")
+    L.append("|---|---|---|---|---|---|")
+    for kip, v in duy["d457_kosullu"]["kip_olculurse"].items():
+        y = duy["yapilandirma_basina"][v["yapilandirma"]]["kapi"]["A0"]
+        L.append(f'| {kip} | {v["yapilandirma"]} | {"✓" if y["kosul1_gecti"] else "✗"} | '
+                 f'{"✓" if y["kosul2_gecti"] else "✗"} | **{v["A0"]}** | '
+                 f'**{v["fda_etiketi"]}**{" (bayrakla, varsayılan kapalı)" if v["a0_bayrakla_acilir"] else ""} |')
+    ko = duy["d457_kosullu"]["kip_olculemezse"]
+    L.append(f'| ölçülemezse | — | — | — | — | **{ko["fda_etiketi"]}** |')
+    L.append("")
+    L.append("A1 aynı ayrımda: "
+             + "; ".join(f'{kip} → {v["A1"]}' for kip, v in duy["d457_kosullu"]["kip_olculurse"].items())
+             + f" (hiçbir yapılandırmada geçmiyor → T235-C poz kolu bu tabloyla açılmaz). Tüm satırlar: {E}.")
     L.append("")
     L.append("## Kapı (ON_KAYIT §2)")
     L.append("")
@@ -689,7 +801,10 @@ def readme_metni(k3: dict, k1: dict | None) -> str:
     L.append("## Yeniden üretim")
     L.append("")
     L.append("```")
+    L.append("REM tam kosum (tezgah yeniden kosulur — ON KAYIT tohumuyla ayni sayilari uretmelidir)")
     L.append("O:\\navitas-local-train\\venv\\Scripts\\python.exe simulation/mujoco/t235_etiket_tezgahi.py")
+    L.append("REM yalniz turetme (tezgah KOSULMAZ; kayitli JSON'lardan bu README ve " + DUY_JSON + ")")
+    L.append("O:\\navitas-local-train\\venv\\Scripts\\python.exe simulation/mujoco/t235_etiket_tezgahi.py --turetme")
     L.append("O:\\navitas-local-train\\venv\\Scripts\\python.exe -m unittest discover -s tests -p test_t235_alan_etiketi.py")
     L.append("```")
     L.append("")
@@ -705,10 +820,23 @@ def _yaz(yol: Path, metin: str) -> None:
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--yalniz-k1", action="store_true")
+    ap.add_argument("--turetme", action="store_true",
+                    help="tezgahi KOSMADAN kayitli JSON'lardan tureteni (kapi duyarliligi + README) yeniden yaz")
     ap.add_argument("--cikti", default=str(CIKTI_DIZIN))
     a = ap.parse_args(argv)
     out = Path(a.cikti)
     t0 = time.perf_counter()
+    if a.turetme:
+        k3 = json.loads((out / K3_JSON).read_text(encoding="utf-8"))
+        k1 = json.loads((out / K1_JSON).read_text(encoding="utf-8"))
+        duy = kapi_duyarliligi(k3)
+        _yaz(out / DUY_JSON, json_metni(duy))
+        _yaz(out / "README.md", readme_metni(k3, k1, duy))
+        print(f"TURETME (yeni olcum YOK): A0 {duy['A0']} · A1 {duy['A1']} · tam tablo ile ayni "
+              f"{duy['tam_tablo_kapisiyla_ayni']} · D-457 "
+              f"{ {k: v['fda_etiketi'] for k, v in duy['d457_kosullu']['kip_olculurse'].items()} }")
+        print(f"yazildi: {out} ({time.perf_counter() - t0:.1f} s)")
+        return 0
     k1 = k1_kos()
     print(f"K1: A1 {k1['A1_dunya']} · KARE {({k: (o['KARE=dunya'], o['n']) for k, o in k1['ozet'].items()})} "
           f"· yeniden {k1['KARE_yayin_yeniden_uretildi']} · geri donus {k1['kbh_sim_geri_donus_maks_m']:.2e} m "
@@ -716,9 +844,11 @@ def main(argv=None) -> int:
     if a.yalniz_k1:
         return 0
     k3 = tezgah_kos(ilerleme=True)
+    duy = kapi_duyarliligi(k3)
     _yaz(out / K3_JSON, json_metni(k3))
     _yaz(out / K1_JSON, json_metni(k1))
-    _yaz(out / "README.md", readme_metni(k3, k1))
+    _yaz(out / DUY_JSON, json_metni(duy))
+    _yaz(out / "README.md", readme_metni(k3, k1, duy))
     print(f"K3n: {k3['k3n']['gecti']} · A0 {k3['kapi']['A0']['gecti']} · A1 {k3['kapi']['A1']['gecti']}")
     print(f"HUKUM: {k3['hukum']['karar']} ({ETIKET})")
     print(f"yazildi: {out} ({time.perf_counter() - t0:.0f} s)")
