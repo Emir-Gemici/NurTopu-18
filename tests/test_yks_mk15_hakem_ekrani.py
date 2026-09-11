@@ -88,6 +88,7 @@ for _y in (KOK / "comms", KOK / "codes", KOK / "tests", KOK / "scripts"):
     if str(_y) not in sys.path:
         sys.path.insert(0, str(_y))
 
+import belge_kilidi  # noqa: E402  (T240: ORTAK belge kilidi yardimcisi)
 import kamera_koprusu as kk  # noqa: E402
 import yks_gui  # noqa: E402
 from link import UDPLink  # noqa: E402
@@ -99,6 +100,52 @@ GUI_YOLU = KOK / "comms" / "yks_gui.py"
 SOZLESME = KOK / "CONTRACTS.md"
 SEQ = ROTA["seq"]
 ETIKET = "MK15 · HDMI · yakalama"
+
+# ── T240 (D-460 karar 2): CONTRACTS §6.8 ON KAYITLARI ─────────────────────────
+# D-460 denetimi §6.8 kilidinde 4 gercek dosya mutasyonunun kactigini olctu:
+# D1b `<del>`, D1c tek tilde `~...~`, D1d `<s>` (ucu de cizik ayiklamasi yalniz
+# `~~...~~` bildigi icin) ve D1e (kaynak hukmunun ALTINA celiskili ikinci hukum
+# eklenmesi — hicbir kilit paragraf EKLENMESINI gormuyordu).
+SOZLESME_68_BASI = "### 6.8 Hakem kanıt kaydının OLAY KÜMESİ"
+SOZLESME_68_SONU = "### 6.2 `road` sözleşmesi"
+# §6.8'de MESRU cizili aralik YOKTUR: beyaz liste bostur, her cizik hatadir.
+SOZLESME_68_IZINLI_CIZIK = ()
+# §6.8'in kalin baslikli hukum paragraflari — SIRALI ve TAM (D1e). Yeni bir hukum
+# paragrafi eklemek ya da birini cizmek bu demeti bozar.
+SOZLESME_68_HUKUM_BASLIKLARI = (
+    "Olgu (ölçüldü, 2026-09-03)",
+    "Dosya ve ömür",
+    "Ortak alanlar (her satırda, `HakemKaydi.yaz` üretir)",
+    "`KAMERA_KANIT.kaynak` (T226 · D-443, 10 Eylül)",
+    "Tekrar (throttle) kuralı — `KAMERA_KANIT` ve `TELEMETRI_KANIT` için, gerekçeli",
+    "Bağlayıcı ilkeler",
+    "Kanıt kaydı KİLİDİ — fail-closed + fail-visible (bağlayıcı)",
+    "Kilit",
+    "kullanılabilir kalır",
+)
+SOZLESME_68_KALIN_BASLIK = re.compile(r"(?m)^\*\*(.+?):?\*\*")
+# Kaynak hukmunun TAMAMI on kayitlidir; ⟨ÖRNEK⟩ KODDAN (kamera_kanit_kaynagi)
+# doldurulur — belge ile kod ayrisirsa ve hukum baska sozle yazilirsa DUSER.
+SOZLESME_KAYNAK_BASI = "**`KAMERA_KANIT.kaynak` (T226 · D-443, 10 Eylül):**"
+SOZLESME_KAYNAK_HUKMU = (
+    "**`KAMERA_KANIT.kaynak` (T226 · D-443, 10 Eylül):** `kaynak` = kare URL'si "
+    "[+ ` [<etiket>]`] — `yks_gui --kamera-etiket` verildiyse `\"⟨ÖRNEK⟩\"` biçimi "
+    "(`yks_gui.kamera_kanit_kaynagi`), verilmediyse yalnız URL, URL yoksa `null`; "
+    "video karar üretmez, hakem onayı telsiz verisine verilir (§6.7).")
+# Kaynak hukmunun HEMEN ARDINDAN gelmesi gereken paragrafin basi: arasina
+# kalin baslik TASIMAYAN bir hukum paragrafi sokusturulamaz (D1e varyanti).
+SOZLESME_KAYNAK_SONRASI = "**Tekrar (throttle) kuralı"
+
+
+def _sozlesme_68(ham=None):
+    """CONTRACTS §6.8 blogu (ham metin; cizikler AYIKLANMAMIS)."""
+    metin = SOZLESME.read_text(encoding="utf-8") if ham is None else ham
+    bas = metin.index(SOZLESME_68_BASI)
+    return metin[bas:metin.index(SOZLESME_68_SONU, bas)]
+
+
+def _paragraflar(metin):
+    return [p for p in re.split(r"\n[ \t]*\n", metin) if p.strip()]
 
 
 def _olu_port():
@@ -907,18 +954,36 @@ class H4_KameraKanitKaynagi(unittest.TestCase):
         self.assertEqual(f"{self.URL} [{ETIKET}]", f(self.URL, ETIKET))
 
     def test_H4e_contracts_ornegi_kodla_ayni(self):
-        # MİMAR KURALI D-453 (T226-D2, çürütücü D1): belge kilidi yeni içeriği
-        # ÇİZİLİ ARALIKLAR AYIKLANMIŞ metinde arar — `~~…~~` içine alınmış
-        # (geri çekilmiş) cümle, ne başlık ne örnek olarak kilidi karşılar.
-        metin = re.sub(r"~~.*?~~", "", SOZLESME.read_text(encoding="utf-8"),
-                       flags=re.S)
-        bas = metin.index("### 6.8 Hakem kanıt kaydının OLAY KÜMESİ")
-        son = metin.index("### 6.2 `road` sözleşmesi", bas)
-        blok = metin[bas:son]
+        """MİMAR KURALI D-453 (T226-D2, çürütücü D1) + T240 (D-460 karar 2).
+
+        Belge kilidi yeni içeriği ÇİZİLİ ARALIKLAR AYIKLANMIŞ metinde arar; çizme
+        sözdizimi artık `tests/belge_kilidi.py` ile TEK YERDEN gelir (`~~…~~`,
+        tek tilde, `<del>`/`<s>`/`<strike>`). Ayrıca:
+        · beyaz liste dışı HİÇBİR çizik olamaz (§6.8'de meşru çizik yoktur),
+        · kaynak hükmünün TAMAMI ön kayıtlıdır ve örneği KODDAN doldurulur,
+        · §6.8'in kalın başlıklı hüküm paragrafları sıralı+tam ön kayıtlıdır ve
+          kaynak hükmünü `Tekrar (throttle)` paragrafı izler — hükmü geri alan
+          çelişkili ikinci paragraf (D1e) eklenemez.
+        """
+        ham = _sozlesme_68()
+        self.assertEqual([], belge_kilidi.beyaz_liste_disi_cizik(
+            ham, SOZLESME_68_IZINLI_CIZIK), "CONTRACTS §6.8'de beyaz liste dışı çizik")
+        blok = belge_kilidi.cizikleri_ayikla(ham)
         self.assertIn("--kamera-etiket", blok)
         self.assertIn("`KAMERA_KANIT.kaynak`", blok)
         ornek = yks_gui.kamera_kanit_kaynagi(self.URL, ETIKET)
         self.assertIn(f'`"{ornek}"`', blok, "CONTRACTS §6.8 örneği kodla ayrıştı")
+        self.assertEqual(SOZLESME_68_HUKUM_BASLIKLARI,
+                         tuple(SOZLESME_68_KALIN_BASLIK.findall(blok)),
+                         "§6.8 hüküm paragrafı eklendi/silindi/çizildi (D1e sınıfı)")
+        par = _paragraflar(blok)
+        kaynak = [p for p in par if p.startswith(SOZLESME_KAYNAK_BASI)]
+        self.assertEqual(1, len(kaynak), "§6.8 kaynak hükmü paragrafı tam 1 kez olmalı")
+        self.assertTrue(belge_kilidi.on_kayitli_metin_esit(
+            kaynak[0], SOZLESME_KAYNAK_HUKMU.replace("⟨ÖRNEK⟩", ornek)),
+            "§6.8 `KAMERA_KANIT.kaynak` hükmü ön kayıtlı metinle aynı değil")
+        self.assertTrue(par[par.index(kaynak[0]) + 1].startswith(SOZLESME_KAYNAK_SONRASI),
+                        "§6.8 kaynak hükmünün ardına ikinci hüküm paragrafı sokuşturuldu")
 
 
 class H5_VideoOnayiKilitlemez(_GercekEkran):

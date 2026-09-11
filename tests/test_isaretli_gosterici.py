@@ -70,7 +70,6 @@ import sys
 import tempfile
 import threading
 import time
-import unicodedata
 import unittest
 import urllib.parse
 from http.server import BaseHTTPRequestHandler, HTTPServer
@@ -84,6 +83,7 @@ for _y in (KOK / "scripts", KOK / "tests"):
     if str(_y) not in sys.path:
         sys.path.insert(0, str(_y))
 
+import belge_kilidi  # noqa: E402  (T240: ORTAK belge kilidi yardimcisi)
 import isaretli_gosterici as g  # noqa: E402
 import kamera_koprusu as kk  # noqa: E402
 import test_faz_b_jetson_baslat as jb  # noqa: E402  (shim'li sahte Jetson + bash yardimcilari)
@@ -97,6 +97,15 @@ DRM_BIRIM = GOSTERICI_DIZIN / "navitas-isaretli-gosterici-drm.service"
 XORG = GOSTERICI_DIZIN / "xorg-1280x720-edid-yok.conf"
 KURULUM = GOSTERICI_DIZIN / "GOSTERICI_KURULUM.md"
 YESIL = (0, 255, 0)
+
+#: T240 (D-460 karar 2): GOSTERICI_KURULUM.md'deki TEK mesru cizik — FDR kurali geregi silinmeyip
+#: cizilen ve tarihlenen eski (nabizsiz) video borusu komutu. Beyaz liste budur; baska her cizme
+#: isareti test_G8_D453_D454... kilidini DUSURUR.
+KURULUM_IZINLI_CIZIK = (
+    "~~10 Eylül (T228): `gst-launch-1.0 -e 'souphttpsrc location=http://127.0.0.1:8081/video "
+    "is-live=true do-timestamp=true ! multipartdemux ! jpegdec ! nvvidconv ! "
+    "video/x-raw(memory:NVMM),width=1280,height=720 ! nvdrmvideosink set_mode=1 sync=false'`~~",
+)
 
 
 def _sessiz(*_a, **_k):
@@ -1217,8 +1226,15 @@ class GostericiDosyalari(unittest.TestCase):
         (3) §5'te CELISKILI ikinci hukum yok: 'N ardışık', '≥ N s' / '>= N s', '> N s' sayilarinin
             HEPSI koddaki on kayitli sabitlerle ayni (kalin sayi da sayilir).
         (4) Eski (nabizsiz) video borusu §5 CANLI metninde yok: gst-launch + souphttpsrc tasiyan her
-            satirda '-v' ve identity nabzi var (tipografik tirnakli kopya da yakalanir)."""
-        m = _cizili_ayikla(KURULUM.read_text(encoding="utf-8"))
+            satirda '-v' ve identity nabzi var (tipografik tirnakli kopya da yakalanir).
+        (5) T240 (D-460 karar 2): belgede BEYAZ LISTE DISI hicbir cizme isareti yok. Tek mesru cizik
+            §5'teki tarihli eski komut satiridir; tek tilde, <del>/<s>/<strike>, birlesen uzeri
+            cizgi, tilde benzeri isaretler ve stil tasiyabilen HER HTML etiketi kilidi DUSURUR —
+            gelecekteki yeni cizme sozdizimi icin buraya kalip eklemek gerekmez."""
+        ham = KURULUM.read_text(encoding="utf-8")
+        self.assertEqual([], belge_kilidi.beyaz_liste_disi_cizik(ham, KURULUM_IZINLI_CIZIK),
+                         "GOSTERICI_KURULUM'da beyaz liste disi cizik")
+        m = _cizili_ayikla(ham)
         n = _normal(m)
         kural = _normal("ÖLÇÜLEMEDİ ≠ GEÇTİ")
         self.assertIn(kural, n, "ust kural cumlesi 'ÖLÇÜLEMEDİ ≠ GEÇTİ' dusmemeli")
@@ -1253,45 +1269,32 @@ class GostericiDosyalari(unittest.TestCase):
             self.assertIn("identity name=nabiz silent=false", s, "§5 CANLI metinde nabizsiz boru: " + s)
 
 
-#: D-453 (mimar kurali, 10 Eylul): markdown belge kilitleri YENI icerigi cizili (~~...~~) araliklar
-#: AYIKLANMIS metinde arar — ustu cizilen not ya da OLCULEMEDI/DOGRULANACAK maddesi kilidi GECMEZ;
-#: eski metnin cizili durdugunu denetleyen kilit HAM metinde kalir.
-def _cizili_ayikla(metin):
-    return re.sub(r"~~.*?~~", "", metin, flags=re.S)
+#: D-453 (mimar kurali, 10 Eylul) + T240 (D-460 karar 2): markdown belge kilitleri YENI icerigi
+#: CIZILI araliklar AYIKLANMIS metinde arar — ustu cizilen not ya da OLCULEMEDI/DOGRULANACAK maddesi
+#: kilidi GECMEZ; eski metnin cizili durdugunu denetleyen kilit HAM metinde kalir. Cizme sozdizimi
+#: ARTIK TEK YERDEN gelir (tests/belge_kilidi.py): D-460 denetimi eski yerel ayiklayicinin yalniz
+#: `~~...~~` bildigini ve 7 gercek dosya mutasyonunun (A3 tek tilde, A4 <del>, A5 <s>, A6 sayi
+#: yaziyla, A7 "en az", A8 "teyit edildi", A9 "asan") kactigini olctu.
+_cizili_ayikla = belge_kilidi.cizikleri_ayikla
 
 
 def _kurulum_bolumu(metin, baslik, bitis="\n## "):
     return metin.split(baslik, 1)[1].split(bitis, 1)[0]
 
 
-#: D-454 (T221-D2 curutucusu: 'tutar', tipografik kesme ’, 'tamamı', kalin sayilar kilidi deldi):
-#: yasak/celiski aramalari NORMALLESTIRILMIS metinde yapilir — sifir genislikli karakter ve yumusak
-#: tire ayiklanir; NFKD + birlesik isaretler atilir (ğ->g, ş->s, İ->I ...), ı->i; kesme/tirnak
-#: (’ ‘ ‚ ‛ ´ ` ʼ ʹ ′) -> ', tireler (‐ ‑ ‒ – — ― −) -> -, vurgu (* _) ayiklanir, kucuk harf.
-#: '≠' NFKD'de '=' + U+0338'e ayrisir, isaret atilinca '=' olurdu (anlam TERSINE doner) -> once '!='.
-_SIFIR_GENISLIK = dict.fromkeys(map(ord, "\u00ad\u200b\u200c\u200d\u200e\u200f\u2060\ufeff"))
-_KATLA = str.maketrans({**{c: "'" for c in "\u2018\u2019\u201a\u201b\u00b4`\u02bc\u02b9\u2032"},
-                        **{c: "-" for c in "\u2010\u2011\u2012\u2013\u2014\u2015\u2212"},
-                        "\u0131": "i", "*": None, "_": None})
+#: D-454 (T221-D2 curutucusu) + T240: yasak/celiski aramalari NORMALLESTIRILMIS metinde yapilir.
+#: belge_kilidi.normalize: cizikler duser; sifir genislikli karakter ve yumusak tire ayiklanir;
+#: tipografik kesme/tirnak/tire duzlesir; vurgu (* _ backtick) SOZCUK ICI DAHIL sokulur; Turkce sayi
+#: sozcukleri rakama iner ("bir ardisik" -> "1 ardisik", A6); birim es anlamlilari katlanir
+#: ("saniye" -> "s", A7/A9); karsilastirma es anlamlilari tek bicime iner ("en az" -> ≥,
+#: "asan" -> >); NFKD + birlesik isaret atilir (g->g, s->s), i -> i, kucuk harf.
+_normal = belge_kilidi.normalize
 
-
-def _normal(metin):
-    s = metin.translate(_SIFIR_GENISLIK).replace("\u2260", "!=")  # '≠' (U+2260)
-    s = "".join(c for c in unicodedata.normalize("NFKD", s) if not unicodedata.combining(c))
-    return s.translate(_KATLA).lower()
-
-
-#: Olculmemis GECTI kalibi (D-453/D-454) — _normal() ciktisi uzerinde: OLCULEMEDI/DOGRULANACAK
-#: tasiyan yerlerde bu hukumler ancak Jetson olcumu KANITLA islenince (kilit de o zaman guncellenir)
-#: yazilabilir. 'tutar/tuttu/tutuyor' D-454 (T221-D2 'doğrulandı: tutar') ile eklendi.
-_GECTI_KALIBI = re.compile(r"(?<![a-z0-9])(?:dogrulan(?:di|mistir)|gec(?:ti|mistir)|"
-                           r"olcul(?:du|mustur)|tut(?:ar|tu|uyor)|onaylandi)(?![a-z0-9])")
-
-
-def _gecti_bul(metin):
-    """Normallestirilmis metinde ilk olculmemis GECTI hukmu (yoksa None)."""
-    b = _GECTI_KALIBI.search(_normal(metin))
-    return b.group(0) if b else None
+#: Olculmemis GECTI ailesi (D-453/D-454, T240 ile genisletildi) — belge_kilidi.olumlu_hukum_var:
+#: gecti, olculdu, dogrulandi, teyit edil, saglan, basarili, sorunsuz, calisti, uygun bulun,
+#: gozlen, kanitlan, kosuldu, tutar, onaylandi. A8'de "teyit edildi"/"basarili" eski kalibin
+#: disindaydi ve OLCULEMEDI != GECTI kurali dogrudan delinmisti.
+_gecti_bul = belge_kilidi.olumlu_hukum_var
 
 
 # ── G9 ────────────────────────────────────────────────────────────────────────
