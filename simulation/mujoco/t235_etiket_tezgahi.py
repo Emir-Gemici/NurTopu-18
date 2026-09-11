@@ -42,6 +42,7 @@ import json
 import math
 import sys
 import time
+from fractions import Fraction
 from pathlib import Path
 
 import cv2
@@ -210,6 +211,22 @@ def hucre_anahtari(s_m: float, kip: str, h_m: float, sigma_c: float, sigma_psi: 
     return f"s={s_m:g}|{kip}@{h_m:g}m|sc={sigma_c:g}|spsi={sigma_psi:g}"
 
 
+def hucre_bayraklari(s_m: float, kip: str, h_m: float, sigma_c: float, sigma_psi: float) -> dict:
+    """ON_KAYIT SS2 hucre sinifi — TEK tanim (hucre_kos, duyarlilik ve testler buradan okur).
+
+      bilgi_hucresi : (kip, h) = (16:9, 32 m) — raporlanir, kapiya girmez
+      kapiya_girer  : bilgi hucresi degil VE s = 5 m degil ("s = 5 m hucreleri raporlanir,
+                      kapiya girmez") — kosul 2 (KARE - 0,5 puan) bu hucrelerde denetlenir
+      nominal       : kapiya girer VE s in {6,67; 8}, s_c = 1,0 m, s_psi = 5 derece,
+                      (kip, h) in {(4:3, 32), (16:9, 40)} — kosul 1 (>= %99,0) burada denetlenir
+    """
+    bilgi = (kip, h_m) in BILGI_KIP_H
+    kapiya_girer = (not bilgi) and (s_m not in KAPI_DISI_S_M)
+    nominal = (kapiya_girer and s_m in NOMINAL_S_M and sigma_c == NOMINAL_SIGMA_C_M
+               and sigma_psi == NOMINAL_SIGMA_PSI_DERECE and (kip, h_m) in NOMINAL_KIP_H)
+    return {"bilgi_hucresi": bool(bilgi), "kapiya_girer": bool(kapiya_girer), "nominal": bool(nominal)}
+
+
 def _oran(dogru: int, n: int) -> float:
     return round(100.0 * dogru / n, 3)
 
@@ -247,10 +264,8 @@ def hucre_kos(s_m: float, kip: str, h_m: float, sigma_c: float, sigma_psi: float
                 paylar.append(r["A0_pay_m"])
             tam_karede += int(r["alan_tam_karede"])
     sahne_n = 3 * n
-    bilgi = (kip, h_m) in BILGI_KIP_H
-    kapiya_girer = (not bilgi) and (s_m not in KAPI_DISI_S_M)
-    nominal = (kapiya_girer and s_m in NOMINAL_S_M and sigma_c == NOMINAL_SIGMA_C_M
-               and sigma_psi == NOMINAL_SIGMA_PSI_DERECE and (kip, h_m) in NOMINAL_KIP_H)
+    bayrak = hucre_bayraklari(s_m, kip, h_m, sigma_c, sigma_psi)
+    bilgi, kapiya_girer, nominal = bayrak["bilgi_hucresi"], bayrak["kapiya_girer"], bayrak["nominal"]
 
     def blok(say, yok):
         return {"dogru": int(sum(say)), "sahne_n": sahne_n, "oran_yuzde": _oran(sum(say), sahne_n),
@@ -312,11 +327,15 @@ def alan_sigma(tuval: int | None = None) -> list[dict]:
 
 
 def kapi_degerlendir(hucreler: list[dict]) -> dict:
-    """ON_KAYIT SS2 kapisi — tamsayi aritmetigi (yuvarlama kapiyi cevirmez).
-      kosul 1: nominal hucrelerde 100*dogru >= 99*n
+    """ON_KAYIT SS2 kapisi — KESIR aritmetigi (yuvarlama/float kapiyi cevirmez); esikler
+    on kayitli sabitlerden (KAPI_ORAN_YUZDE, KAPI_KARE_FARK_PUAN) okunur, burada ciplak sayi yok.
+      kosul 1: nominal hucrelerde 100*dogru/n >= KAPI_ORAN_YUZDE (99,0)
       kosul 2: kapiya giren HER hucrede (s=5 ve bilgi hucresi haric; A1'de her s_g)
-               100*(dM - dKARE)/n >= -0,5  <=>  200*(dM - dKARE) >= -n
+               100*(dM - dKARE)/n >= -KAPI_KARE_FARK_PUAN (0,5 puan); tam -0,5 puan GECER
+               ("0,5 puandan FAZLA kotu degil")
     """
+    esik_oran = Fraction(str(KAPI_ORAN_YUZDE))
+    esik_fark = Fraction(str(KAPI_KARE_FARK_PUAN))
     sonuc = {}
     for yontem in ("A0", "A1"):
         k1_sat, k2_ihlal, k2_n = [], [], 0
@@ -328,11 +347,11 @@ def kapi_degerlendir(hucreler: list[dict]) -> dict:
                 n = b["sahne_n"]
                 if hc["nominal"] and (yontem == "A0" or ad == f"sigma_g={NOMINAL_SIGMA_G_M:g}"):
                     k1_sat.append({"hucre": hc["hucre"], "blok": ad, "oran_yuzde": b["oran_yuzde"],
-                                   "gecti": 100 * b["dogru"] >= KAPI_ORAN_YUZDE * n})
+                                   "gecti": Fraction(100 * b["dogru"], n) >= esik_oran})
                 if hc["kapiya_girer"]:
                     k2_n += 1
                     fark = b["dogru"] - kare["dogru"]
-                    if 200 * fark < -n:          # KAPI_KARE_FARK_PUAN = 0,5 puan
+                    if Fraction(100 * fark, n) < -esik_fark:
                         k2_ihlal.append({"hucre": hc["hucre"], "blok": ad,
                                          "fark_puan": round(100.0 * fark / n, 3)})
         k1 = bool(k1_sat) and all(s["gecti"] for s in k1_sat)

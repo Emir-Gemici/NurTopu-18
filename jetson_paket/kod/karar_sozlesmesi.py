@@ -2323,14 +2323,18 @@ def alan_serit_yari_genisligi_m(alan_genislik_m):
 
 
 def _t235_x_dizisi(rota_pikselleri):
-    """Rota piksellerinin x'leri (float dizi); bos/sonlu-olmayan -> ``None``."""
+    """Rota pikselleri -> (n, >=2) float dizi; bos, sayisal olmayan, duzensiz
+    ya da sonlu olmayan girdi -> ``None`` (FAIL-CLOSED: istisna FIRLATMAZ)."""
     import numpy as _np
-    if not isinstance(rota_pikselleri, _np.ndarray):
-        rota_pikselleri = list(rota_pikselleri)
-    n = len(rota_pikselleri)
-    if n == 0:
+    try:
+        if not isinstance(rota_pikselleri, _np.ndarray):
+            rota_pikselleri = list(rota_pikselleri)
+        n = len(rota_pikselleri)
+        if n == 0:
+            return None
+        dizi = _np.asarray(rota_pikselleri, dtype=float).reshape(n, -1)
+    except (TypeError, ValueError):
         return None
-    dizi = _np.asarray(rota_pikselleri, dtype=float).reshape(n, -1)
     if dizi.shape[1] < 2 or not _np.all(_np.isfinite(dizi[:, :2])):
         return None
     return dizi
@@ -2354,9 +2358,12 @@ def alan_serit_karari(rota_pikselleri, icerik_x0, icerik_w, mpp,
 
     Sinirlar icerik kutusunun MERKEZINDEN ±(W/6)/mpp pikseldir
     (W = alan genisligi, m; mpp = kare olcegi, `mpp_irtifadan`):
-        x < merkez - b -> 1 (sol) · x < merkez + b -> 2 (orta) · aksi 3 (sag)
-    Karar `rota_serit_karari` ile AYNI kuraldir: rota GOVDESI piksel
-    cogunlugu, beraberlikte KUCUK serit. x piksel koordinati float kiyaslanir.
+        x < merkez - b -> 1 (sol) · x <= merkez + b -> 2 (orta) · aksi 3 (sag)
+    Orta serit KAPALI araliktir: `kbh_serit_karari` (|x| <= W/6 -> 2) ile
+    ayni ve piksel basina serit atamasi merkeze gore x-aynasi SIMETRIKTIR
+    (tam sinirdaki piksel iki yanda da 2). Karar `rota_serit_karari` ile AYNI
+    kuraldir: rota GOVDESI piksel cogunlugu, beraberlikte KUCUK serit (bu
+    beraberlik kurali tanim geregi ayna-simetrik degildir). x float kiyaslanir.
 
     Varsayim (ON_KAYIT SS1, T235-E): IHA alan MERKEZINDE bekler ve goruntunun
     yukarisi Baslangic -> Hedef'tir. Poz, hdg, enlem/boylam GEREKMEZ.
@@ -2391,7 +2398,7 @@ def alan_serit_karari(rota_pikselleri, icerik_x0, icerik_w, mpp,
     sol, sag = merkez - b, merkez + b
     xs = dizi[:, 0]
     karar, sayim = _t235_cogunluk(
-        _np.where(xs < sol, 1, _np.where(xs < sag, 2, 3)))
+        _np.where(xs < sol, 1, _np.where(xs <= sag, 2, 3)))
     medyan = float(_np.median(xs))
     if karar == 1:
         pay_px = sol - medyan
