@@ -49,14 +49,20 @@ def _kanca(yks_gui):
             }))
 
     def ciz(self, tuval=None):
-        OLAYLAR.append((time.monotonic(), "CIZIM", {
+        kayit = {
             "tuval": str(tuval) if tuval is not None else None,
-            "rota_yok": bool(self.rota_yok),
             "rota_yok_seq": ((self.rota_yok or {}).get("seq")
                              if self.rota_yok else None),
+            "detay_uz": len((self.rota_yok or {}).get("detay") or "")
+                        if self.rota_yok else None,
             "gorunum": getattr(self, "gorunum_adi", None),
-        }))
-        return ham_ciz(self, tuval)
+        }
+        try:
+            return ham_ciz(self, tuval)
+        finally:
+            kayit["alan"] = {k: list(v) for k, v in
+                             getattr(self, "_olculu_alan", {}).items()}
+            OLAYLAR.append((time.monotonic(), "CIZIM", kayit))
 
     yks_gui.YksArayuz._mesaj_isle = isle
     yks_gui.YksArayuz._harita_ciz = ciz
@@ -71,6 +77,9 @@ def main():
                     help="tum test modullerini yalniz IMPORT et (kosma)")
     ap.add_argument("--tekrar", type=int, default=1)
     ap.add_argument("--kanca", action="store_true", help="mesaj/cizim gunlugu")
+    ap.add_argument("--enjekte-ms", type=int, default=0,
+                    help="YABANCI bir 127.0.0.1 soketinden bu periyotla "
+                         "NO_ROUTE serp (kaynak kilidi denemesi)")
     ap.add_argument("--cikti", required=True)
     args = ap.parse_args()
 
@@ -100,6 +109,41 @@ def main():
             _kanca(yks_gui)
 
         class TaniliH2e(m.H2e_RotaYokSonrasiAnaHarita):
+            def _kur(self, *a, **kw):
+                app = super()._kur(*a, **kw)
+                if args.enjekte_ms:
+                    self._serp(app)
+                return app
+
+            def _serp(self, _app):
+                """YABANCI uc: yks'nin portuna NO_ROUTE serper (kaynak kilidi
+                yalniz IP'ye bakiyor mu?)."""
+                import threading
+                from link import UDPLink
+                from protocol import encode
+                yabanci = UDPLink(bind=("127.0.0.1", 0), timeout=0.05)
+                hedef = ("127.0.0.1", self.link.port)
+                dur = threading.Event()
+                self.addCleanup(dur.set)
+                self.addCleanup(yabanci.close)
+
+                # `detay` ALANI YOK: sahada `iha_sender.send_no_route(sebep)`
+                # boyle uretir (detay=None -> alan hic konmaz). Bant TEK SATIR
+                # olur; olculu alan 1,0'da (34,189,227), 1,5'te (51,156,243) —
+                # mimarin gordugu degerlerin ta kendisi.
+                yok = {k: v for k, v in m.YOK_ROTA.items() if k != "detay"}
+
+                def kos():
+                    n = 900
+                    while not dur.wait(args.enjekte_ms / 1000.0):
+                        n += 1
+                        try:
+                            yabanci.send(encode(dict(yok, seq=n)), hedef)
+                        except OSError:
+                            return
+
+                threading.Thread(target=kos, daemon=True).start()
+
             def _gecisleri_denetle(self, olcek):
                 del OLAYLAR[:]
                 try:

@@ -1,0 +1,105 @@
+ONCE_DESEN_SAYISI 0
+test_H2e_olcek_1_0 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_0) ... 
+  test_H2e_olcek_1_0 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_0) (yol=1, olcek=1.0) ... FAIL
+  test_H2e_olcek_1_0 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_0) (yol=2, olcek=1.0) ... FAIL
+  test_H2e_olcek_1_0 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_0) (yol=3, olcek=1.0) ... FAIL
+H2E_DURUM {"OLCEK": 1.0, "harita": ".!frame3.!frame.!canvas", "harita_wh": [742, 450], "iha_port": 59207, "ika_port": 59208, "link_port": 59206, "olcek": 1.0, "olculu_alan": {}, "rota": 149, "rota_yok": {"sebep": "KORIDOR_DEGIL", "seq": 938, "type": "NO_ROUTE", "v": 1}, "sayac": {"ACK_TX": 42, "HEARTBEAT": 0, "IHA_LANDED": 0, "NO_ROUTE": 42, "OPEN_ROUTE": 5, "OPEN_ROUTE_RED": 0}, "tk_scaling": 1.332282448377581}
+test_H2e_olcek_1_5 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_5) ... 
+  test_H2e_olcek_1_5 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_5) (yol=1, olcek=1.5) ... FAIL
+  test_H2e_olcek_1_5 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_5) (yol=2, olcek=1.5) ... FAIL
+  test_H2e_olcek_1_5 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_5) (yol=3, olcek=1.5) ... FAIL
+H2E_DURUM {"OLCEK": 1.5, "harita": ".!frame3.!frame.!canvas", "harita_wh": [742, 450], "iha_port": 56814, "ika_port": 56815, "link_port": 56813, "olcek": 1.5, "olculu_alan": {}, "rota": 149, "rota_yok": null, "sayac": {"ACK_TX": 25, "HEARTBEAT": 0, "IHA_LANDED": 0, "NO_ROUTE": 25, "OPEN_ROUTE": 5, "OPEN_ROUTE_RED": 0}, "tk_scaling": 2.0006367663344404}
+
+======================================================================
+FAIL: test_H2e_olcek_1_0 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_0) (yol=1, olcek=1.0)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 791, in _gecisleri_denetle
+    self.assertEqual(ilk, self._cizim(),
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+                     "NO_ROUTE yerleşimi OPEN_ROUTE'a sızdı")
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [('li[10511 chars]e', [34.0, 96.0, 354.0, 416.0], {'activedash':[9794 chars] 0))] != [('li[10511 chars]e', [94.8, 121.6, 133.2, 390.40000000000003], [6548 chars] 0))]
+
+First differing element 23:
+('rectangle', [34.0, 96.0, 354.0, 416.0], {'activedash':[446 chars]None)
+('rectangle', [94.8, 121.6, 133.2, 390.40000000000003], [457 chars]None)
+
+First list contains 7 additional elements.
+First extra element 37:
+('text', [194.0, 88.80000000000001], {'activefill': '', 'activestipple': '', 'anchor': 'center', 'angle': '0.0', 'disabledfill': '', 'disabledstipple': '', 'fill': '#e15241', 'font': 'font4', 'justify': 'left', 'offset': '0,0', 'state': '', 'stipple': '', 'tags': '', 'text': 'HB (hedef)', 'underline': '-1', 'width': '0'}, ('-family', 'Segoe UI', '-size', 10, '-weight', 'normal', '-slant', 'roman', '-underline', 0, '-overstrike', 0))
+
+Diff is 27013 characters long. Set self.maxDiff to None to see it. : NO_ROUTE yerleşimi OPEN_ROUTE'a sızdı
+
+======================================================================
+FAIL: test_H2e_olcek_1_0 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_0) (yol=2, olcek=1.0)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 781, in _gecisleri_denetle
+    self._mesaj_ver(dict(YOK_ROTA, seq=seq, detay=detay))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 259, in _mesaj_ver
+    self.assertTrue(self._pompala(islendi), mesaj)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : {'v': 1, 'type': 'NO_ROUTE', 'seq': 146, 'sebep': 'KORIDOR_DEGIL', 'detay': ''}
+
+======================================================================
+FAIL: test_H2e_olcek_1_0 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_0) (yol=3, olcek=1.0)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 781, in _gecisleri_denetle
+    self._mesaj_ver(dict(YOK_ROTA, seq=seq, detay=detay))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 259, in _mesaj_ver
+    self.assertTrue(self._pompala(islendi), mesaj)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : {'v': 1, 'type': 'NO_ROUTE', 'seq': 150, 'sebep': 'KORIDOR_DEGIL', 'detay': 'Dar koridor nedeniyle rota bulunamadı. Dar koridor nedeniyle rota bulunamadı. Dar koridor nedeniyle rota bulunamadı. Dar koridor nedeniyle rota bulunamadı. Dar koridor nedeniyle rota bulunamadı. Dar koridor nedeniyle rota bulunamadı. Dar koridor nedeniyle rota bulunamadı. Dar koridor nedeniyle rota bulunamadı. Dar koridor nedeniyle rota bulunamadı. Dar koridor nedeniyle rota bulunamadı. Dar koridor nedeniyle rota bulunamadı. Dar koridor nedeniyle rota bulunamadı. Dar koridor nedeniyle rota bulunamadı. Dar koridor nedeniyle rota bulunamadı. Dar koridor nedeniyle rota bulunamadı. Dar koridor nedeniyle rota bulunamadı. '}
+
+======================================================================
+FAIL: test_H2e_olcek_1_5 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_5) (yol=1, olcek=1.5)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 781, in _gecisleri_denetle
+    self._mesaj_ver(dict(YOK_ROTA, seq=seq, detay=detay))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 259, in _mesaj_ver
+    self.assertTrue(self._pompala(islendi), mesaj)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : {'v': 1, 'type': 'NO_ROUTE', 'seq': 143, 'sebep': 'KORIDOR_DEGIL', 'detay': ''}
+
+======================================================================
+FAIL: test_H2e_olcek_1_5 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_5) (yol=2, olcek=1.5)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 793, in _gecisleri_denetle
+    self.assertNotIn(str(app.harita), app._olculu_alan)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: '.!frame3.!frame.!canvas' unexpectedly found in {'.!frame3.!frame.!canvas': (51, 156, 243)}
+
+======================================================================
+FAIL: test_H2e_olcek_1_5 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_5) (yol=3, olcek=1.5)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 791, in _gecisleri_denetle
+    self.assertEqual(ilk, self._cizim(),
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+                     "NO_ROUTE yerleşimi OPEN_ROUTE'a sızdı")
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [('li[21 chars].0, 156.0], {'activedash': '', 'activefill': '[17123 chars] 0))] != [('li[21 chars].0, 144.0], {'activedash': '', 'activefill': '[20276 chars] 0))]
+
+First differing element 0:
+('lin[20 chars].0, 156.0], {'activedash': '', 'activefill': '[376 chars]None)
+('lin[20 chars].0, 144.0], {'activedash': '', 'activefill': '[376 chars]None)
+
+Second list contains 7 additional elements.
+First extra element 37:
+('text', [178.5, 134.20000000000002], {'activefill': '', 'activestipple': '', 'anchor': 'center', 'angle': '0.0', 'disabledfill': '', 'disabledstipple': '', 'fill': '#e15241', 'font': 'font10', 'justify': 'left', 'offset': '0,0', 'state': '', 'stipple': '', 'tags': '', 'text': 'HB (hedef)', 'underline': '-1', 'width': '0'}, ('-family', 'Segoe UI', '-size', 10, '-weight', 'normal', '-slant', 'roman', '-underline', 0, '-overstrike', 0))
+
+Diff is 41781 characters long. Set self.maxDiff to None to see it. : NO_ROUTE yerleşimi OPEN_ROUTE'a sızdı
+
+----------------------------------------------------------------------
+Ran 2 tests in 21.595s
+
+FAILED (failures=6)
+H2E_TUR 1/1 DUSTU dusus=6 hata=0
+H2E_EXIT 1

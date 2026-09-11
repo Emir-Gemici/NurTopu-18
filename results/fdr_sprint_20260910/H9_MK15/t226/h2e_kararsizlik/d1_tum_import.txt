@@ -1,0 +1,315 @@
+KESIF_TEST_SAYISI 2620
+ONCE_DESEN_SAYISI 0
+test_H2e_olcek_1_0 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_0) ... H2E_DURUM {"OLCEK": 1.0, "harita": ".!frame3.!frame.!canvas", "harita_wh": [742, 450], "iha_port": 63647, "ika_port": 63648, "link_port": 63646, "olcek": 1.0, "olculu_alan": {}, "rota": 156, "rota_yok": null, "sayac": {"ACK_TX": 6, "HEARTBEAT": 0, "IHA_LANDED": 0, "NO_ROUTE": 6, "OPEN_ROUTE": 9, "OPEN_ROUTE_RED": 0}, "tk_scaling": 1.332282448377581}
+H2E_OLAY_SAYISI 46
+    0.000 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    0.500 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    0.501 MESAJ {"adr": ["127.0.0.1", 63647], "node": null, "rota_seq": 142, "rota_yok_once": null, "rota_yok_sonra": null, "seq": 142, "tip": "OPEN_ROUTE"}
+    0.707 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    0.777 CIZIM {"alan": {}, "detay_uz": 0, "gorunum": "harita", "rota_yok_seq": 143, "tuval": null}
+    0.780 MESAJ {"adr": ["127.0.0.1", 63647], "node": null, "rota_seq": 142, "rota_yok_once": null, "rota_yok_sonra": 143, "seq": 143, "tip": "NO_ROUTE"}
+    0.960 CIZIM {"alan": {}, "detay_uz": 0, "gorunum": "harita", "rota_yok_seq": 143, "tuval": null}
+    1.057 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    1.057 MESAJ {"adr": ["127.0.0.1", 63647], "node": null, "rota_seq": 144, "rota_yok_once": 143, "rota_yok_sonra": null, "seq": 144, "tip": "OPEN_ROUTE"}
+    1.253 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    1.360 CIZIM {"alan": {".!frame3.!frame.!canvas": [34, 189, 227]}, "detay_uz": 624, "gorunum": "harita", "rota_yok_seq": 145, "tuval": null}
+    1.437 MESAJ {"adr": ["127.0.0.1", 63647], "node": null, "rota_seq": 144, "rota_yok_once": null, "rota_yok_sonra": 145, "seq": 145, "tip": "NO_ROUTE"}
+    1.636 CIZIM {"alan": {".!frame3.!frame.!canvas": [34, 189, 227]}, "detay_uz": 624, "gorunum": "harita", "rota_yok_seq": 145, "tuval": null}
+    1.715 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    1.715 MESAJ {"adr": ["127.0.0.1", 63647], "node": null, "rota_seq": 146, "rota_yok_once": 145, "rota_yok_sonra": null, "seq": 146, "tip": "OPEN_ROUTE"}
+    1.907 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    2.005 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    2.005 MESAJ {"adr": ["127.0.0.1", 63647], "node": null, "rota_seq": 147, "rota_yok_once": null, "rota_yok_sonra": null, "seq": 147, "tip": "OPEN_ROUTE"}
+    2.194 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    2.281 CIZIM {"alan": {}, "detay_uz": 0, "gorunum": "harita", "rota_yok_seq": 148, "tuval": null}
+    2.284 MESAJ {"adr": ["127.0.0.1", 63647], "node": null, "rota_seq": 147, "rota_yok_once": null, "rota_yok_sonra": 148, "seq": 148, "tip": "NO_ROUTE"}
+    2.461 CIZIM {"alan": {}, "detay_uz": 0, "gorunum": "harita", "rota_yok_seq": 148, "tuval": null}
+    2.554 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    2.554 MESAJ {"adr": ["127.0.0.1", 63647], "node": null, "rota_seq": 149, "rota_yok_once": 148, "rota_yok_sonra": null, "seq": 149, "tip": "OPEN_ROUTE"}
+    2.746 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    2.841 CIZIM {"alan": {".!frame3.!frame.!canvas": [34, 189, 227]}, "detay_uz": 624, "gorunum": "harita", "rota_yok_seq": 150, "tuval": null}
+    2.916 MESAJ {"adr": ["127.0.0.1", 63647], "node": null, "rota_seq": 149, "rota_yok_once": null, "rota_yok_sonra": 150, "seq": 150, "tip": "NO_ROUTE"}
+    3.102 CIZIM {"alan": {".!frame3.!frame.!canvas": [34, 189, 227]}, "detay_uz": 624, "gorunum": "harita", "rota_yok_seq": 150, "tuval": null}
+    3.201 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    3.202 MESAJ {"adr": ["127.0.0.1", 63647], "node": null, "rota_seq": 151, "rota_yok_once": 150, "rota_yok_sonra": null, "seq": 151, "tip": "OPEN_ROUTE"}
+    3.396 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    3.492 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    3.492 MESAJ {"adr": ["127.0.0.1", 63647], "node": null, "rota_seq": 152, "rota_yok_once": null, "rota_yok_sonra": null, "seq": 152, "tip": "OPEN_ROUTE"}
+    3.683 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    3.772 CIZIM {"alan": {}, "detay_uz": 0, "gorunum": "harita", "rota_yok_seq": 153, "tuval": null}
+    3.776 MESAJ {"adr": ["127.0.0.1", 63647], "node": null, "rota_seq": 152, "rota_yok_once": null, "rota_yok_sonra": 153, "seq": 153, "tip": "NO_ROUTE"}
+    3.959 CIZIM {"alan": {}, "detay_uz": 0, "gorunum": "harita", "rota_yok_seq": 153, "tuval": null}
+    4.069 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    4.069 MESAJ {"adr": ["127.0.0.1", 63647], "node": null, "rota_seq": 154, "rota_yok_once": 153, "rota_yok_sonra": null, "seq": 154, "tip": "OPEN_ROUTE"}
+    4.269 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    4.362 CIZIM {"alan": {".!frame3.!frame.!canvas": [34, 189, 227]}, "detay_uz": 624, "gorunum": "harita", "rota_yok_seq": 155, "tuval": null}
+    4.528 MESAJ {"adr": ["127.0.0.1", 63647], "node": null, "rota_seq": 154, "rota_yok_once": null, "rota_yok_sonra": 155, "seq": 155, "tip": "NO_ROUTE"}
+    4.726 CIZIM {"alan": {".!frame3.!frame.!canvas": [34, 189, 227]}, "detay_uz": 624, "gorunum": "harita", "rota_yok_seq": 155, "tuval": null}
+    4.810 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    4.811 MESAJ {"adr": ["127.0.0.1", 63647], "node": null, "rota_seq": 156, "rota_yok_once": 155, "rota_yok_sonra": null, "seq": 156, "tip": "OPEN_ROUTE"}
+    5.016 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+ok
+test_H2e_olcek_1_5 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_5) ... H2E_DURUM {"OLCEK": 1.5, "harita": ".!frame3.!frame.!canvas", "harita_wh": [742, 450], "iha_port": 59650, "ika_port": 59651, "link_port": 59649, "olcek": 1.5, "olculu_alan": {}, "rota": 156, "rota_yok": null, "sayac": {"ACK_TX": 6, "HEARTBEAT": 0, "IHA_LANDED": 0, "NO_ROUTE": 6, "OPEN_ROUTE": 9, "OPEN_ROUTE_RED": 0}, "tk_scaling": 2.0006367663344404}
+H2E_OLAY_SAYISI 46
+    0.000 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    0.886 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    0.888 MESAJ {"adr": ["127.0.0.1", 59650], "node": null, "rota_seq": 142, "rota_yok_once": null, "rota_yok_sonra": null, "seq": 142, "tip": "OPEN_ROUTE"}
+    1.158 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    1.187 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 156, 243]}, "detay_uz": 0, "gorunum": "harita", "rota_yok_seq": 143, "tuval": null}
+    1.190 MESAJ {"adr": ["127.0.0.1", 59650], "node": null, "rota_seq": 142, "rota_yok_once": null, "rota_yok_sonra": 143, "seq": 143, "tip": "NO_ROUTE"}
+    1.359 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 156, 243]}, "detay_uz": 0, "gorunum": "harita", "rota_yok_seq": 143, "tuval": null}
+    1.472 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    1.472 MESAJ {"adr": ["127.0.0.1", 59650], "node": null, "rota_seq": 144, "rota_yok_once": 143, "rota_yok_sonra": null, "seq": 144, "tip": "OPEN_ROUTE"}
+    1.673 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    1.769 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 478, 0]}, "detay_uz": 624, "gorunum": "harita", "rota_yok_seq": 145, "tuval": null}
+    1.791 MESAJ {"adr": ["127.0.0.1", 59650], "node": null, "rota_seq": 144, "rota_yok_once": null, "rota_yok_sonra": 145, "seq": 145, "tip": "NO_ROUTE"}
+    2.008 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 478, 0]}, "detay_uz": 624, "gorunum": "harita", "rota_yok_seq": 145, "tuval": null}
+    2.072 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    2.072 MESAJ {"adr": ["127.0.0.1", 59650], "node": null, "rota_seq": 146, "rota_yok_once": 145, "rota_yok_sonra": null, "seq": 146, "tip": "OPEN_ROUTE"}
+    2.262 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    2.359 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    2.360 MESAJ {"adr": ["127.0.0.1", 59650], "node": null, "rota_seq": 147, "rota_yok_once": null, "rota_yok_sonra": null, "seq": 147, "tip": "OPEN_ROUTE"}
+    2.581 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    2.649 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 156, 243]}, "detay_uz": 0, "gorunum": "harita", "rota_yok_seq": 148, "tuval": null}
+    2.658 MESAJ {"adr": ["127.0.0.1", 59650], "node": null, "rota_seq": 147, "rota_yok_once": null, "rota_yok_sonra": 148, "seq": 148, "tip": "NO_ROUTE"}
+    2.852 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 156, 243]}, "detay_uz": 0, "gorunum": "harita", "rota_yok_seq": 148, "tuval": null}
+    2.923 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    2.923 MESAJ {"adr": ["127.0.0.1", 59650], "node": null, "rota_seq": 149, "rota_yok_once": 148, "rota_yok_sonra": null, "seq": 149, "tip": "OPEN_ROUTE"}
+    3.104 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    3.228 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 478, 0]}, "detay_uz": 624, "gorunum": "harita", "rota_yok_seq": 150, "tuval": null}
+    3.258 MESAJ {"adr": ["127.0.0.1", 59650], "node": null, "rota_seq": 149, "rota_yok_once": null, "rota_yok_sonra": 150, "seq": 150, "tip": "NO_ROUTE"}
+    3.473 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 478, 0]}, "detay_uz": 624, "gorunum": "harita", "rota_yok_seq": 150, "tuval": null}
+    3.549 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    3.551 MESAJ {"adr": ["127.0.0.1", 59650], "node": null, "rota_seq": 151, "rota_yok_once": 150, "rota_yok_sonra": null, "seq": 151, "tip": "OPEN_ROUTE"}
+    3.785 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    3.858 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    3.859 MESAJ {"adr": ["127.0.0.1", 59650], "node": null, "rota_seq": 152, "rota_yok_once": null, "rota_yok_sonra": null, "seq": 152, "tip": "OPEN_ROUTE"}
+    4.093 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    4.163 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 156, 243]}, "detay_uz": 0, "gorunum": "harita", "rota_yok_seq": 153, "tuval": null}
+    4.166 MESAJ {"adr": ["127.0.0.1", 59650], "node": null, "rota_seq": 152, "rota_yok_once": null, "rota_yok_sonra": 153, "seq": 153, "tip": "NO_ROUTE"}
+    4.367 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 156, 243]}, "detay_uz": 0, "gorunum": "harita", "rota_yok_seq": 153, "tuval": null}
+    4.441 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    4.441 MESAJ {"adr": ["127.0.0.1", 59650], "node": null, "rota_seq": 154, "rota_yok_once": 153, "rota_yok_sonra": null, "seq": 154, "tip": "OPEN_ROUTE"}
+    4.662 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    4.738 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 478, 0]}, "detay_uz": 624, "gorunum": "harita", "rota_yok_seq": 155, "tuval": null}
+    4.759 MESAJ {"adr": ["127.0.0.1", 59650], "node": null, "rota_seq": 154, "rota_yok_once": null, "rota_yok_sonra": 155, "seq": 155, "tip": "NO_ROUTE"}
+    5.006 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 478, 0]}, "detay_uz": 624, "gorunum": "harita", "rota_yok_seq": 155, "tuval": null}
+    5.135 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    5.140 MESAJ {"adr": ["127.0.0.1", 59650], "node": null, "rota_seq": 156, "rota_yok_once": 155, "rota_yok_sonra": null, "seq": 156, "tip": "OPEN_ROUTE"}
+    5.685 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 11.744s
+
+OK
+H2E_TUR 1/3 OK dusus=0 hata=0
+test_H2e_olcek_1_0 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_0) ... H2E_DURUM {"OLCEK": 1.0, "harita": ".!frame3.!frame.!canvas", "harita_wh": [742, 450], "iha_port": 65231, "ika_port": 65232, "link_port": 65230, "olcek": 1.0, "olculu_alan": {}, "rota": 156, "rota_yok": null, "sayac": {"ACK_TX": 6, "HEARTBEAT": 0, "IHA_LANDED": 0, "NO_ROUTE": 6, "OPEN_ROUTE": 9, "OPEN_ROUTE_RED": 0}, "tk_scaling": 1.332282448377581}
+H2E_OLAY_SAYISI 46
+    0.000 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    0.424 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    0.424 MESAJ {"adr": ["127.0.0.1", 65231], "node": null, "rota_seq": 142, "rota_yok_once": null, "rota_yok_sonra": null, "seq": 142, "tip": "OPEN_ROUTE"}
+    0.629 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    0.699 CIZIM {"alan": {}, "detay_uz": 0, "gorunum": "harita", "rota_yok_seq": 143, "tuval": null}
+    0.704 MESAJ {"adr": ["127.0.0.1", 65231], "node": null, "rota_seq": 142, "rota_yok_once": null, "rota_yok_sonra": 143, "seq": 143, "tip": "NO_ROUTE"}
+    0.885 CIZIM {"alan": {}, "detay_uz": 0, "gorunum": "harita", "rota_yok_seq": 143, "tuval": null}
+    0.978 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    0.978 MESAJ {"adr": ["127.0.0.1", 65231], "node": null, "rota_seq": 144, "rota_yok_once": 143, "rota_yok_sonra": null, "seq": 144, "tip": "OPEN_ROUTE"}
+    1.152 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    1.270 CIZIM {"alan": {".!frame3.!frame.!canvas": [34, 189, 227]}, "detay_uz": 624, "gorunum": "harita", "rota_yok_seq": 145, "tuval": null}
+    1.371 MESAJ {"adr": ["127.0.0.1", 65231], "node": null, "rota_seq": 144, "rota_yok_once": null, "rota_yok_sonra": 145, "seq": 145, "tip": "NO_ROUTE"}
+    1.558 CIZIM {"alan": {".!frame3.!frame.!canvas": [34, 189, 227]}, "detay_uz": 624, "gorunum": "harita", "rota_yok_seq": 145, "tuval": null}
+    1.660 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    1.660 MESAJ {"adr": ["127.0.0.1", 65231], "node": null, "rota_seq": 146, "rota_yok_once": 145, "rota_yok_sonra": null, "seq": 146, "tip": "OPEN_ROUTE"}
+    1.853 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    1.948 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    1.949 MESAJ {"adr": ["127.0.0.1", 65231], "node": null, "rota_seq": 147, "rota_yok_once": null, "rota_yok_sonra": null, "seq": 147, "tip": "OPEN_ROUTE"}
+    2.138 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    2.232 CIZIM {"alan": {}, "detay_uz": 0, "gorunum": "harita", "rota_yok_seq": 148, "tuval": null}
+    2.237 MESAJ {"adr": ["127.0.0.1", 65231], "node": null, "rota_seq": 147, "rota_yok_once": null, "rota_yok_sonra": 148, "seq": 148, "tip": "NO_ROUTE"}
+    2.417 CIZIM {"alan": {}, "detay_uz": 0, "gorunum": "harita", "rota_yok_seq": 148, "tuval": null}
+    2.517 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    2.517 MESAJ {"adr": ["127.0.0.1", 65231], "node": null, "rota_seq": 149, "rota_yok_once": 148, "rota_yok_sonra": null, "seq": 149, "tip": "OPEN_ROUTE"}
+    2.698 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    2.799 CIZIM {"alan": {".!frame3.!frame.!canvas": [34, 189, 227]}, "detay_uz": 624, "gorunum": "harita", "rota_yok_seq": 150, "tuval": null}
+    2.890 MESAJ {"adr": ["127.0.0.1", 65231], "node": null, "rota_seq": 149, "rota_yok_once": null, "rota_yok_sonra": 150, "seq": 150, "tip": "NO_ROUTE"}
+    3.062 CIZIM {"alan": {".!frame3.!frame.!canvas": [34, 189, 227]}, "detay_uz": 624, "gorunum": "harita", "rota_yok_seq": 150, "tuval": null}
+    3.184 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    3.184 MESAJ {"adr": ["127.0.0.1", 65231], "node": null, "rota_seq": 151, "rota_yok_once": 150, "rota_yok_sonra": null, "seq": 151, "tip": "OPEN_ROUTE"}
+    3.386 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    3.485 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    3.486 MESAJ {"adr": ["127.0.0.1", 65231], "node": null, "rota_seq": 152, "rota_yok_once": null, "rota_yok_sonra": null, "seq": 152, "tip": "OPEN_ROUTE"}
+    3.674 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    3.761 CIZIM {"alan": {}, "detay_uz": 0, "gorunum": "harita", "rota_yok_seq": 153, "tuval": null}
+    3.764 MESAJ {"adr": ["127.0.0.1", 65231], "node": null, "rota_seq": 152, "rota_yok_once": null, "rota_yok_sonra": 153, "seq": 153, "tip": "NO_ROUTE"}
+    3.931 CIZIM {"alan": {}, "detay_uz": 0, "gorunum": "harita", "rota_yok_seq": 153, "tuval": null}
+    4.054 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    4.055 MESAJ {"adr": ["127.0.0.1", 65231], "node": null, "rota_seq": 154, "rota_yok_once": 153, "rota_yok_sonra": null, "seq": 154, "tip": "OPEN_ROUTE"}
+    4.300 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    4.391 CIZIM {"alan": {".!frame3.!frame.!canvas": [34, 189, 227]}, "detay_uz": 624, "gorunum": "harita", "rota_yok_seq": 155, "tuval": null}
+    4.467 MESAJ {"adr": ["127.0.0.1", 65231], "node": null, "rota_seq": 154, "rota_yok_once": null, "rota_yok_sonra": 155, "seq": 155, "tip": "NO_ROUTE"}
+    4.658 CIZIM {"alan": {".!frame3.!frame.!canvas": [34, 189, 227]}, "detay_uz": 624, "gorunum": "harita", "rota_yok_seq": 155, "tuval": null}
+    4.759 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    4.760 MESAJ {"adr": ["127.0.0.1", 65231], "node": null, "rota_seq": 156, "rota_yok_once": 155, "rota_yok_sonra": null, "seq": 156, "tip": "OPEN_ROUTE"}
+    4.959 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+ok
+test_H2e_olcek_1_5 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_5) ... H2E_DURUM {"OLCEK": 1.5, "harita": ".!frame3.!frame.!canvas", "harita_wh": [742, 450], "iha_port": 65240, "ika_port": 65241, "link_port": 65239, "olcek": 1.5, "olculu_alan": {}, "rota": 156, "rota_yok": null, "sayac": {"ACK_TX": 6, "HEARTBEAT": 0, "IHA_LANDED": 0, "NO_ROUTE": 6, "OPEN_ROUTE": 9, "OPEN_ROUTE_RED": 0}, "tk_scaling": 2.0006367663344404}
+H2E_OLAY_SAYISI 46
+    0.000 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    0.577 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    0.578 MESAJ {"adr": ["127.0.0.1", 65240], "node": null, "rota_seq": 142, "rota_yok_once": null, "rota_yok_sonra": null, "seq": 142, "tip": "OPEN_ROUTE"}
+    0.831 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    0.878 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 156, 243]}, "detay_uz": 0, "gorunum": "harita", "rota_yok_seq": 143, "tuval": null}
+    0.882 MESAJ {"adr": ["127.0.0.1", 65240], "node": null, "rota_seq": 142, "rota_yok_once": null, "rota_yok_sonra": 143, "seq": 143, "tip": "NO_ROUTE"}
+    1.050 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 156, 243]}, "detay_uz": 0, "gorunum": "harita", "rota_yok_seq": 143, "tuval": null}
+    1.162 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    1.163 MESAJ {"adr": ["127.0.0.1", 65240], "node": null, "rota_seq": 144, "rota_yok_once": 143, "rota_yok_sonra": null, "seq": 144, "tip": "OPEN_ROUTE"}
+    1.360 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    1.439 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 478, 0]}, "detay_uz": 624, "gorunum": "harita", "rota_yok_seq": 145, "tuval": null}
+    1.455 MESAJ {"adr": ["127.0.0.1", 65240], "node": null, "rota_seq": 144, "rota_yok_once": null, "rota_yok_sonra": 145, "seq": 145, "tip": "NO_ROUTE"}
+    1.649 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 478, 0]}, "detay_uz": 624, "gorunum": "harita", "rota_yok_seq": 145, "tuval": null}
+    1.732 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    1.732 MESAJ {"adr": ["127.0.0.1", 65240], "node": null, "rota_seq": 146, "rota_yok_once": 145, "rota_yok_sonra": null, "seq": 146, "tip": "OPEN_ROUTE"}
+    1.910 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    2.006 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    2.007 MESAJ {"adr": ["127.0.0.1", 65240], "node": null, "rota_seq": 147, "rota_yok_once": null, "rota_yok_sonra": null, "seq": 147, "tip": "OPEN_ROUTE"}
+    2.172 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    2.280 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 156, 243]}, "detay_uz": 0, "gorunum": "harita", "rota_yok_seq": 148, "tuval": null}
+    2.283 MESAJ {"adr": ["127.0.0.1", 65240], "node": null, "rota_seq": 147, "rota_yok_once": null, "rota_yok_sonra": 148, "seq": 148, "tip": "NO_ROUTE"}
+    2.468 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 156, 243]}, "detay_uz": 0, "gorunum": "harita", "rota_yok_seq": 148, "tuval": null}
+    2.555 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    2.555 MESAJ {"adr": ["127.0.0.1", 65240], "node": null, "rota_seq": 149, "rota_yok_once": 148, "rota_yok_sonra": null, "seq": 149, "tip": "OPEN_ROUTE"}
+    2.747 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    2.864 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 478, 0]}, "detay_uz": 624, "gorunum": "harita", "rota_yok_seq": 150, "tuval": null}
+    2.884 MESAJ {"adr": ["127.0.0.1", 65240], "node": null, "rota_seq": 149, "rota_yok_once": null, "rota_yok_sonra": 150, "seq": 150, "tip": "NO_ROUTE"}
+    3.072 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 478, 0]}, "detay_uz": 624, "gorunum": "harita", "rota_yok_seq": 150, "tuval": null}
+    3.173 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    3.173 MESAJ {"adr": ["127.0.0.1", 65240], "node": null, "rota_seq": 151, "rota_yok_once": 150, "rota_yok_sonra": null, "seq": 151, "tip": "OPEN_ROUTE"}
+    3.368 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    3.453 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    3.454 MESAJ {"adr": ["127.0.0.1", 65240], "node": null, "rota_seq": 152, "rota_yok_once": null, "rota_yok_sonra": null, "seq": 152, "tip": "OPEN_ROUTE"}
+    3.650 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    3.739 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 156, 243]}, "detay_uz": 0, "gorunum": "harita", "rota_yok_seq": 153, "tuval": null}
+    3.743 MESAJ {"adr": ["127.0.0.1", 65240], "node": null, "rota_seq": 152, "rota_yok_once": null, "rota_yok_sonra": 153, "seq": 153, "tip": "NO_ROUTE"}
+    3.923 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 156, 243]}, "detay_uz": 0, "gorunum": "harita", "rota_yok_seq": 153, "tuval": null}
+    4.017 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    4.017 MESAJ {"adr": ["127.0.0.1", 65240], "node": null, "rota_seq": 154, "rota_yok_once": 153, "rota_yok_sonra": null, "seq": 154, "tip": "OPEN_ROUTE"}
+    4.211 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    4.306 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 478, 0]}, "detay_uz": 624, "gorunum": "harita", "rota_yok_seq": 155, "tuval": null}
+    4.324 MESAJ {"adr": ["127.0.0.1", 65240], "node": null, "rota_seq": 154, "rota_yok_once": null, "rota_yok_sonra": 155, "seq": 155, "tip": "NO_ROUTE"}
+    4.516 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 478, 0]}, "detay_uz": 624, "gorunum": "harita", "rota_yok_seq": 155, "tuval": null}
+    4.617 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    4.619 MESAJ {"adr": ["127.0.0.1", 65240], "node": null, "rota_seq": 156, "rota_yok_once": 155, "rota_yok_sonra": null, "seq": 156, "tip": "OPEN_ROUTE"}
+    4.912 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 10.427s
+
+OK
+H2E_TUR 2/3 OK dusus=0 hata=0
+test_H2e_olcek_1_0 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_0) ... H2E_DURUM {"OLCEK": 1.0, "harita": ".!frame3.!frame.!canvas", "harita_wh": [742, 450], "iha_port": 50477, "ika_port": 50478, "link_port": 50476, "olcek": 1.0, "olculu_alan": {}, "rota": 156, "rota_yok": null, "sayac": {"ACK_TX": 6, "HEARTBEAT": 0, "IHA_LANDED": 0, "NO_ROUTE": 6, "OPEN_ROUTE": 9, "OPEN_ROUTE_RED": 0}, "tk_scaling": 1.332282448377581}
+H2E_OLAY_SAYISI 46
+    0.000 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    0.566 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    0.567 MESAJ {"adr": ["127.0.0.1", 50477], "node": null, "rota_seq": 142, "rota_yok_once": null, "rota_yok_sonra": null, "seq": 142, "tip": "OPEN_ROUTE"}
+    0.774 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    0.850 CIZIM {"alan": {}, "detay_uz": 0, "gorunum": "harita", "rota_yok_seq": 143, "tuval": null}
+    0.854 MESAJ {"adr": ["127.0.0.1", 50477], "node": null, "rota_seq": 142, "rota_yok_once": null, "rota_yok_sonra": 143, "seq": 143, "tip": "NO_ROUTE"}
+    1.040 CIZIM {"alan": {}, "detay_uz": 0, "gorunum": "harita", "rota_yok_seq": 143, "tuval": null}
+    1.136 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    1.136 MESAJ {"adr": ["127.0.0.1", 50477], "node": null, "rota_seq": 144, "rota_yok_once": 143, "rota_yok_sonra": null, "seq": 144, "tip": "OPEN_ROUTE"}
+    1.336 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    1.410 CIZIM {"alan": {".!frame3.!frame.!canvas": [34, 189, 227]}, "detay_uz": 624, "gorunum": "harita", "rota_yok_seq": 145, "tuval": null}
+    1.489 MESAJ {"adr": ["127.0.0.1", 50477], "node": null, "rota_seq": 144, "rota_yok_once": null, "rota_yok_sonra": 145, "seq": 145, "tip": "NO_ROUTE"}
+    1.673 CIZIM {"alan": {".!frame3.!frame.!canvas": [34, 189, 227]}, "detay_uz": 624, "gorunum": "harita", "rota_yok_seq": 145, "tuval": null}
+    1.769 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    1.769 MESAJ {"adr": ["127.0.0.1", 50477], "node": null, "rota_seq": 146, "rota_yok_once": 145, "rota_yok_sonra": null, "seq": 146, "tip": "OPEN_ROUTE"}
+    1.993 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    2.081 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    2.081 MESAJ {"adr": ["127.0.0.1", 50477], "node": null, "rota_seq": 147, "rota_yok_once": null, "rota_yok_sonra": null, "seq": 147, "tip": "OPEN_ROUTE"}
+    2.301 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    2.390 CIZIM {"alan": {}, "detay_uz": 0, "gorunum": "harita", "rota_yok_seq": 148, "tuval": null}
+    2.405 MESAJ {"adr": ["127.0.0.1", 50477], "node": null, "rota_seq": 147, "rota_yok_once": null, "rota_yok_sonra": 148, "seq": 148, "tip": "NO_ROUTE"}
+    2.618 CIZIM {"alan": {}, "detay_uz": 0, "gorunum": "harita", "rota_yok_seq": 148, "tuval": null}
+    2.676 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    2.676 MESAJ {"adr": ["127.0.0.1", 50477], "node": null, "rota_seq": 149, "rota_yok_once": 148, "rota_yok_sonra": null, "seq": 149, "tip": "OPEN_ROUTE"}
+    2.864 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    2.977 CIZIM {"alan": {".!frame3.!frame.!canvas": [34, 189, 227]}, "detay_uz": 624, "gorunum": "harita", "rota_yok_seq": 150, "tuval": null}
+    3.059 MESAJ {"adr": ["127.0.0.1", 50477], "node": null, "rota_seq": 149, "rota_yok_once": null, "rota_yok_sonra": 150, "seq": 150, "tip": "NO_ROUTE"}
+    3.259 CIZIM {"alan": {".!frame3.!frame.!canvas": [34, 189, 227]}, "detay_uz": 624, "gorunum": "harita", "rota_yok_seq": 150, "tuval": null}
+    3.336 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    3.336 MESAJ {"adr": ["127.0.0.1", 50477], "node": null, "rota_seq": 151, "rota_yok_once": 150, "rota_yok_sonra": null, "seq": 151, "tip": "OPEN_ROUTE"}
+    3.582 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    3.655 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    3.655 MESAJ {"adr": ["127.0.0.1", 50477], "node": null, "rota_seq": 152, "rota_yok_once": null, "rota_yok_sonra": null, "seq": 152, "tip": "OPEN_ROUTE"}
+    3.833 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    3.945 CIZIM {"alan": {}, "detay_uz": 0, "gorunum": "harita", "rota_yok_seq": 153, "tuval": null}
+    3.973 MESAJ {"adr": ["127.0.0.1", 50477], "node": null, "rota_seq": 152, "rota_yok_once": null, "rota_yok_sonra": 153, "seq": 153, "tip": "NO_ROUTE"}
+    4.141 CIZIM {"alan": {}, "detay_uz": 0, "gorunum": "harita", "rota_yok_seq": 153, "tuval": null}
+    4.258 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    4.258 MESAJ {"adr": ["127.0.0.1", 50477], "node": null, "rota_seq": 154, "rota_yok_once": 153, "rota_yok_sonra": null, "seq": 154, "tip": "OPEN_ROUTE"}
+    4.526 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    4.583 CIZIM {"alan": {".!frame3.!frame.!canvas": [34, 189, 227]}, "detay_uz": 624, "gorunum": "harita", "rota_yok_seq": 155, "tuval": null}
+    4.699 MESAJ {"adr": ["127.0.0.1", 50477], "node": null, "rota_seq": 154, "rota_yok_once": null, "rota_yok_sonra": 155, "seq": 155, "tip": "NO_ROUTE"}
+    4.917 CIZIM {"alan": {".!frame3.!frame.!canvas": [34, 189, 227]}, "detay_uz": 624, "gorunum": "harita", "rota_yok_seq": 155, "tuval": null}
+    4.971 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    4.972 MESAJ {"adr": ["127.0.0.1", 50477], "node": null, "rota_seq": 156, "rota_yok_once": 155, "rota_yok_sonra": null, "seq": 156, "tip": "OPEN_ROUTE"}
+    5.150 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+ok
+test_H2e_olcek_1_5 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_5) ... H2E_DURUM {"OLCEK": 1.5, "harita": ".!frame3.!frame.!canvas", "harita_wh": [742, 450], "iha_port": 50666, "ika_port": 50667, "link_port": 50665, "olcek": 1.5, "olculu_alan": {}, "rota": 156, "rota_yok": null, "sayac": {"ACK_TX": 6, "HEARTBEAT": 0, "IHA_LANDED": 0, "NO_ROUTE": 6, "OPEN_ROUTE": 9, "OPEN_ROUTE_RED": 0}, "tk_scaling": 2.0006367663344404}
+H2E_OLAY_SAYISI 46
+    0.000 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    0.413 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    0.414 MESAJ {"adr": ["127.0.0.1", 50666], "node": null, "rota_seq": 142, "rota_yok_once": null, "rota_yok_sonra": null, "seq": 142, "tip": "OPEN_ROUTE"}
+    0.635 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    0.705 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 156, 243]}, "detay_uz": 0, "gorunum": "harita", "rota_yok_seq": 143, "tuval": null}
+    0.711 MESAJ {"adr": ["127.0.0.1", 50666], "node": null, "rota_seq": 142, "rota_yok_once": null, "rota_yok_sonra": 143, "seq": 143, "tip": "NO_ROUTE"}
+    0.907 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 156, 243]}, "detay_uz": 0, "gorunum": "harita", "rota_yok_seq": 143, "tuval": null}
+    0.985 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    0.985 MESAJ {"adr": ["127.0.0.1", 50666], "node": null, "rota_seq": 144, "rota_yok_once": 143, "rota_yok_sonra": null, "seq": 144, "tip": "OPEN_ROUTE"}
+    1.184 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    1.268 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 478, 0]}, "detay_uz": 624, "gorunum": "harita", "rota_yok_seq": 145, "tuval": null}
+    1.285 MESAJ {"adr": ["127.0.0.1", 50666], "node": null, "rota_seq": 144, "rota_yok_once": null, "rota_yok_sonra": 145, "seq": 145, "tip": "NO_ROUTE"}
+    1.484 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 478, 0]}, "detay_uz": 624, "gorunum": "harita", "rota_yok_seq": 145, "tuval": null}
+    1.567 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    1.568 MESAJ {"adr": ["127.0.0.1", 50666], "node": null, "rota_seq": 146, "rota_yok_once": 145, "rota_yok_sonra": null, "seq": 146, "tip": "OPEN_ROUTE"}
+    1.765 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    1.842 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    1.843 MESAJ {"adr": ["127.0.0.1", 50666], "node": null, "rota_seq": 147, "rota_yok_once": null, "rota_yok_sonra": null, "seq": 147, "tip": "OPEN_ROUTE"}
+    2.022 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    2.111 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 156, 243]}, "detay_uz": 0, "gorunum": "harita", "rota_yok_seq": 148, "tuval": null}
+    2.114 MESAJ {"adr": ["127.0.0.1", 50666], "node": null, "rota_seq": 147, "rota_yok_once": null, "rota_yok_sonra": 148, "seq": 148, "tip": "NO_ROUTE"}
+    2.289 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 156, 243]}, "detay_uz": 0, "gorunum": "harita", "rota_yok_seq": 148, "tuval": null}
+    2.402 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    2.402 MESAJ {"adr": ["127.0.0.1", 50666], "node": null, "rota_seq": 149, "rota_yok_once": 148, "rota_yok_sonra": null, "seq": 149, "tip": "OPEN_ROUTE"}
+    2.577 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    2.688 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 478, 0]}, "detay_uz": 624, "gorunum": "harita", "rota_yok_seq": 150, "tuval": null}
+    2.708 MESAJ {"adr": ["127.0.0.1", 50666], "node": null, "rota_seq": 149, "rota_yok_once": null, "rota_yok_sonra": 150, "seq": 150, "tip": "NO_ROUTE"}
+    2.902 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 478, 0]}, "detay_uz": 624, "gorunum": "harita", "rota_yok_seq": 150, "tuval": null}
+    2.994 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    2.995 MESAJ {"adr": ["127.0.0.1", 50666], "node": null, "rota_seq": 151, "rota_yok_once": 150, "rota_yok_sonra": null, "seq": 151, "tip": "OPEN_ROUTE"}
+    3.218 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    3.265 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    3.266 MESAJ {"adr": ["127.0.0.1", 50666], "node": null, "rota_seq": 152, "rota_yok_once": null, "rota_yok_sonra": null, "seq": 152, "tip": "OPEN_ROUTE"}
+    3.444 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    3.532 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 156, 243]}, "detay_uz": 0, "gorunum": "harita", "rota_yok_seq": 153, "tuval": null}
+    3.535 MESAJ {"adr": ["127.0.0.1", 50666], "node": null, "rota_seq": 152, "rota_yok_once": null, "rota_yok_sonra": 153, "seq": 153, "tip": "NO_ROUTE"}
+    3.715 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 156, 243]}, "detay_uz": 0, "gorunum": "harita", "rota_yok_seq": 153, "tuval": null}
+    3.810 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    3.811 MESAJ {"adr": ["127.0.0.1", 50666], "node": null, "rota_seq": 154, "rota_yok_once": 153, "rota_yok_sonra": null, "seq": 154, "tip": "OPEN_ROUTE"}
+    4.008 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    4.102 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 478, 0]}, "detay_uz": 624, "gorunum": "harita", "rota_yok_seq": 155, "tuval": null}
+    4.132 MESAJ {"adr": ["127.0.0.1", 50666], "node": null, "rota_seq": 154, "rota_yok_once": null, "rota_yok_sonra": 155, "seq": 155, "tip": "NO_ROUTE"}
+    4.365 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 478, 0]}, "detay_uz": 624, "gorunum": "harita", "rota_yok_seq": 155, "tuval": null}
+    4.431 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+    4.432 MESAJ {"adr": ["127.0.0.1", 50666], "node": null, "rota_seq": 156, "rota_yok_once": 155, "rota_yok_sonra": null, "seq": 156, "tip": "OPEN_ROUTE"}
+    4.637 CIZIM {"alan": {}, "detay_uz": null, "gorunum": "harita", "rota_yok_seq": null, "tuval": null}
+ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 10.270s
+
+OK
+H2E_TUR 3/3 OK dusus=0 hata=0
+H2E_EXIT 0

@@ -1,0 +1,12 @@
+ONCE_DESEN_SAYISI 0
+test_H2e_olcek_1_0 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_0) ... H2E_DURUM {"OLCEK": 1.0, "harita": ".!frame3.!frame.!canvas", "harita_wh": [742, 450], "iha_port": 56803, "ika_port": 56804, "link_port": 56802, "olcek": 1.0, "olculu_alan": {}, "rota": 156, "rota_yok": null, "sayac": {"ACK_TX": 6, "HEARTBEAT": 0, "IHA_LANDED": 0, "NO_ROUTE": 6, "OPEN_ROUTE": 9, "OPEN_ROUTE_RED": 0}, "tk_scaling": 1.332282448377581}
+ok
+test_H2e_olcek_1_5 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_5) ... H2E_DURUM {"OLCEK": 1.5, "harita": ".!frame3.!frame.!canvas", "harita_wh": [742, 450], "iha_port": 50510, "ika_port": 50511, "link_port": 50509, "olcek": 1.5, "olculu_alan": {}, "rota": 156, "rota_yok": null, "sayac": {"ACK_TX": 6, "HEARTBEAT": 0, "IHA_LANDED": 0, "NO_ROUTE": 6, "OPEN_ROUTE": 9, "OPEN_ROUTE_RED": 0}, "tk_scaling": 2.0006367663344404}
+ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 7.745s
+
+OK
+H2E_TUR 1/1 OK dusus=0 hata=0
+H2E_EXIT 0

@@ -142,6 +142,20 @@ def _dolgulu(tuval, tur, renk):
 
 # ── Gerçek kurucu + gerçek Tk + gerçek UDP (efemer) ─────────────────────────
 class _GercekEkran(unittest.TestCase):
+    # D-454 (12 Eylül, ölçüldü — results/fdr_sprint_20260910/H9_MK15/t226/
+    # h2e_kararsizlik/): İHA ve İKA uçları AYRI geri döngü adreslerinde durur.
+    # NEDEN: ürünün kaynak kilidi İHA verisi (OPEN_ROUTE/NO_ROUTE/IHA_LANDED)
+    # için YALNIZ IP'ye bakar — saha kuralı budur, Jetson efemer port kullanır
+    # (`mesaj_kaynagi_dogrula`). Üç uç da 127.0.0.1'deyken kilit hiçbir şey
+    # ayırmaz: AYNI SÜREÇTE koşan başka bir testin/ucun tek bir NO_ROUTE
+    # datagramı bu ekranın `rota_yok`unu ezer ve H2e "NO_ROUTE yerleşimi
+    # OPEN_ROUTE'a sızdı" diye YANLIŞ KIRMIZI verir (enjeksiyon kanıtı:
+    # d3_yabanci_enjeksiyon.txt → 6 alt test kırmızı). Ayrı adres saha
+    # kurulumunun (İHA = başka IP) AYNISIDIR; kapı gevşemez, kilit gerçekten
+    # ölçülür.
+    IHA_ADRESI = "127.0.0.2"
+    IKA_ADRESI = "127.0.0.3"
+
     def _kur(self, kamera_url=None, etiket=ETIKET, olcek=None):
         self.app = None
         self.kok = _tk_kok(self)
@@ -155,16 +169,16 @@ class _GercekEkran(unittest.TestCase):
         self.link = UDPLink(bind=("127.0.0.1", 0), timeout=0.05)
         # Sahte İHA/İKA uçları: kaynak kilidi GERÇEK adreslerle çalışır, ACK
         # gerçek UDP ile İHA ucuna döner (5005/5006/5007'ye bind YOK).
-        self.iha = UDPLink(bind=("127.0.0.1", 0), timeout=0.05)
-        self.ika = UDPLink(bind=("127.0.0.1", 0), timeout=0.05)
+        self.iha = UDPLink(bind=(self.IHA_ADRESI, 0), timeout=0.05)
+        self.ika = UDPLink(bind=(self.IKA_ADRESI, 0), timeout=0.05)
         gecici = tempfile.TemporaryDirectory()
         self.addCleanup(gecici.cleanup)         # LIFO: söküm SONRASI silinir
         self.addCleanup(self._kapat)
         self.log_yolu = Path(gecici.name) / "hakem_log.jsonl"
         self.app = yks_gui.YksArayuz(
             self.kok, self.link, demo=False,
-            ika_peer=("127.0.0.1", self.ika.port),
-            iha_peer=("127.0.0.1", self.iha.port),
+            ika_peer=(self.IKA_ADRESI, self.ika.port),
+            iha_peer=(self.IHA_ADRESI, self.iha.port),
             kamera_url=kamera_url, kamera_etiket=etiket,
             hakem_log_yolu=self.log_yolu)
         self.hedef = ("127.0.0.1", self.link.port)
@@ -218,14 +232,47 @@ class _GercekEkran(unittest.TestCase):
         self.iha.send(encode(dict(ROTA) if mesaj is None else mesaj), self.hedef)
 
     def _mesaj_ver(self, mesaj):
-        """OPEN_ROUTE/NO_ROUTE'u gerçek UDP ile ver; ekran o seq'i işleyene dek
-        bekle (H2c, H2e)."""
+        """OPEN_ROUTE/NO_ROUTE'u gerçek UDP ile ver; ekran o çerçeveyi İŞLEYİP
+        BİTİRENE dek bekle (H2c, H2e).
+
+        Hazır koşulu SABİT UYKU DEĞİLDİR (D-454, ölçüldü). İki gerçek koşul:
+          1. giriş kuyruğunda işlenmemiş çerçeve KALMAYACAK (`gelen.empty()`),
+          2. ekranın durumu bu çerçevenin TAM karşılığı olacak — OPEN_ROUTE'ta
+             `rota` bu seq'e gelecek **ve** `rota_yok` TEMİZLENMİŞ olacak.
+        Eskiden yalnız `rota.seq` bakılır, sonra 0,15 s körlemesine pompalanırdı:
+        o pencerede işlenen herhangi bir NO_ROUTE (başka uçtan gelen tek bir
+        datagram yeter) ölçümü SESSİZCE bozuyor, H2e ürün kusuru yokken
+        "NO_ROUTE yerleşimi sızdı" diyordu. `rota_yok is None` koşulu sızıntıyı
+        gizlemez; tersine, ekran gerçekten o duruma gelmeden ölçüm yapılmasını
+        engeller — sızıntı ölçümü bundan SONRA, çizimin kendisinde aranır."""
         self._rota_gonder(mesaj)
-        alan = "rota" if mesaj["type"] == "OPEN_ROUTE" else "rota_yok"
-        self.assertTrue(self._pompala(
-            lambda: (getattr(self.app, alan) or {}).get("seq") == mesaj["seq"]),
-            mesaj)
-        self._pompala(lambda: False, 0.15)
+        acik = mesaj["type"] == yks_gui.MESAJ_OPEN_ROUTE
+
+        def islendi():
+            app = self.app
+            if not app.gelen.empty():       # çerçeve daha kuyrukta bekliyor
+                return False
+            if acik:
+                return ((app.rota or {}).get("seq") == mesaj["seq"]
+                        and app.rota_yok is None)
+            return (app.rota_yok or {}).get("seq") == mesaj["seq"]
+
+        self.assertTrue(self._pompala(islendi), mesaj)
+
+    def _yalniz_bizim_cerceveler(self, app, acik, yok):
+        """Sızıntı hükmünden ÖNCEKİ önkoşul: ekran YALNIZ bu testin
+        çerçevelerini işlemiş olmalı (D-454).
+
+        Ürünün kaynak kilidi İHA verisini IP ile eşler; ayrı geri döngü adresi
+        bu testte yabancı çerçeveyi zaten reddettirir. Sayaç denetimi o kilidin
+        GERÇEKTEN tuttuğunun kanıtıdır: tutmazsa düşüş "yabancı çerçeve" der,
+        ürünü haksız yere suçlamaz."""
+        self.assertEqual(
+            (acik, yok),
+            (app.sayac[yks_gui.MESAJ_OPEN_ROUTE], app.sayac[yks_gui.MESAJ_NO_ROUTE]),
+            "YABANCI ÇERÇEVE: ekran bu testin göndermediği çerçeve işledi "
+            f"(kaynak reddi={getattr(app, 'kaynak_ret_sayaci', 0)}, "
+            f"rota_yok={app.rota_yok!r})")
 
     def _hb_gonder(self):
         """Gerçek İHA gibi `karar_yas` taşıyan heartbeat (A2/D-381): alan hiç
@@ -700,29 +747,48 @@ class H2e_RotaYokSonrasiAnaHarita(_GercekEkran):
                  if c.type(i) == "text" else None)
                 for i in c.find_all()]
 
+    TUVAL_W, TUVAL_H = 742, 450
+
     def _gecisleri_denetle(self, olcek):
         app = self._kur(olcek=olcek)
         app.harita.pack_configure(expand=False, fill="none")
-        app.harita.configure(width=742, height=450)
+        app.harita.configure(width=self.TUVAL_W, height=self.TUVAL_H)
         self.kok.deiconify()
-        self.assertTrue(self._pompala(app.harita.winfo_ismapped))
-        self._pompala(lambda: False, 0.2)
+
+        def tuval_hazir():
+            return (app.harita.winfo_ismapped()
+                    and (app.harita.winfo_width(), app.harita.winfo_height())
+                    == (self.TUVAL_W, self.TUVAL_H))
+
+        # Sabit 0,2 s uyku yerine GERÇEK yerleşim koşulu (D-454; H1b'de aynı
+        # sınıf `d812b1e2` ile kapandı): ölçülü yerleşim tuval boyutundan
+        # türer, yarım yerleşimde ölçüm anlamsızdır.
+        self.assertTrue(self._pompala(tuval_hazir, 5.0),
+                        f"harita yerleşmedi: {app.harita.winfo_width()}×"
+                        f"{app.harita.winfo_height()} "
+                        f"pencere={self.kok.geometry()}")
         seq = SEQ + 100
+        acik_sayisi = yok_sayisi = 0
         for yol in (1, 2, 3):
             with self.subTest(yol=yol, olcek=olcek):
                 seq += 1
                 mesaj = dict(ROTA, road=yol, seq=seq)
                 self._mesaj_ver(mesaj)
+                acik_sayisi += 1
                 ilk = self._cizim()
                 for detay in ("", "Dar koridor nedeniyle rota bulunamadı. " * 16):
                     seq += 1
                     self._mesaj_ver(dict(YOK_ROTA, seq=seq, detay=detay))
+                    yok_sayisi += 1
                     self._cizim()
                     if detay:
                         self.assertIn(str(app.harita), app._olculu_alan,
-                                      "Önkoşul: uzun NO_ROUTE arena alanını değiştirmeli")
+                                      "Önkoşul: uzun NO_ROUTE arena alanını "
+                                      "değiştirmeli")
                     seq += 1
                     self._mesaj_ver(dict(mesaj, seq=seq))
+                    acik_sayisi += 1
+                    self._yalniz_bizim_cerceveler(app, acik_sayisi, yok_sayisi)
                     self.assertEqual(ilk, self._cizim(),
                                      "NO_ROUTE yerleşimi OPEN_ROUTE'a sızdı")
                     self.assertNotIn(str(app.harita), app._olculu_alan)
