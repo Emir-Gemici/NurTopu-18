@@ -17,6 +17,8 @@ YALNIZ bunlarsa ayrica OLCULUR (kanit), "gecti" sayilmaz — ozet satiri ayri ya
 KOSUM (depo kokunden): O:/navitas-local-train/venv/Scripts/python.exe -B \
     results/fdr_sprint_20260910/H9_MK15/t226/kapi_t226d.py
 """
+import argparse
+import os
 import re
 import shutil
 import subprocess
@@ -70,6 +72,9 @@ def kos(ad, argv, son=4):
     kayit = ["== {} (cikis {}, {:.1f} s)".format(ad, p.returncode, time.monotonic() - t0),
              temizle("$ " + " ".join(argv[1:] if argv[0] == PY else argv))]
     kayit += ["  " + temizle(s) for s in satirlar[-son:]]
+    with CIKTI.with_suffix(".raw.txt").open("a", encoding="utf-8") as ham:
+        ham.write("\n".join(kayit[:2]) + "\n" + temizle(p.stdout + p.stderr)
+                  + f"\nEXIT={p.returncode}\n\n")
     print("\n".join(kayit), flush=True)
     return kayit, p.returncode, p.stdout + p.stderr
 
@@ -159,18 +164,30 @@ def kompozit_ortam_denetimi(dusen):
 
 
 def main():
+    global CIKTI
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--cikti", type=Path, default=CIKTI)
+    ap.add_argument("--ayna-denetle", action="store_true",
+                    help="Paketi yenilemeden mevcut kamera koprusu aynasini denetle.")
+    args = ap.parse_args()
+    CIKTI = args.cikti.resolve()
+    CIKTI.parent.mkdir(parents=True, exist_ok=True)
+    os.environ["PYTHONUTF8"] = "1"
     log = ["# T226-D kapi ciktisi · {} · {}".format(time.strftime("%Y-%m-%d %H:%M:%S"), temizle(PY))]
     head = subprocess.run(["git", "-C", str(KOK), "rev-parse", "--short=8", "HEAD"],
                           capture_output=True, text=True).stdout.strip()
     log.append("# HEAD {} (kapi calisma agacinda kosuldu)".format(head))
     ozet = []
     # 1) paket aynasi: paketleyici kosulur, sonra kod/ kopyasi kanonikle bayt-es mi
-    k, rc, _ = kos("jetson_paket_hazirla (ayna tazele)", [PY, "-B", "scripts/jetson_paket_hazirla.py"], 2)
-    log += k
+    rc = 0
+    if not args.ayna_denetle:
+        k, rc, _ = kos("jetson_paket_hazirla (ayna tazele)", [PY, "-B", "scripts/jetson_paket_hazirla.py"], 2)
+        log += k
     ayna_es = (KOK / "scripts" / "kamera_koprusu.py").read_bytes() == \
         (KOK / "jetson_paket" / "kod" / "kamera_koprusu.py").read_bytes()
     log.append("  ayna bayt-es (scripts/ <-> jetson_paket/kod/ kamera_koprusu.py): {}".format(ayna_es))
-    ozet.append(("jetson_paket_hazirla + kamera_koprusu aynasi", rc == 0 and ayna_es))
+    ozet.append(("mevcut kamera_koprusu aynasi" if args.ayna_denetle else
+                 "jetson_paket_hazirla + kamera_koprusu aynasi", rc == 0 and ayna_es))
     # 2) hakem ekrani testi: 3 ARDISIK kosu (gorunur pencere, gercek Tk)
     for i in range(1, HAKEM_KOSU + 1):
         ad = "test_yks_mk15_hakem_ekrani.py kosu {}/{}".format(i, HAKEM_KOSU)
@@ -225,7 +242,8 @@ def main():
     log += ["{} {}".format("GECTI" if ok else "DUSTU", ad) for ad, ok in ozet]
     CIKTI.write_text("\n".join(log) + "\n", encoding="utf-8")
     print("\n".join(log[-(len(ozet) + 1):]))
+    return 0 if all(ok for _ad, ok in ozet) else 1
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

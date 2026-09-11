@@ -217,6 +217,16 @@ class _GercekEkran(unittest.TestCase):
     def _rota_gonder(self, mesaj=None):
         self.iha.send(encode(dict(ROTA) if mesaj is None else mesaj), self.hedef)
 
+    def _mesaj_ver(self, mesaj):
+        """OPEN_ROUTE/NO_ROUTE'u gerçek UDP ile ver; ekran o seq'i işleyene dek
+        bekle (H2c, H2e)."""
+        self._rota_gonder(mesaj)
+        alan = "rota" if mesaj["type"] == "OPEN_ROUTE" else "rota_yok"
+        self.assertTrue(self._pompala(
+            lambda: (getattr(self.app, alan) or {}).get("seq") == mesaj["seq"]),
+            mesaj)
+        self._pompala(lambda: False, 0.15)
+
     def _hb_gonder(self):
         """Gerçek İHA gibi `karar_yas` taşıyan heartbeat (A2/D-381): alan hiç
         gelmezse tespit TAZE SAYILMAZ ve onay düğmesi kapalı kalır — bu doğru,
@@ -461,14 +471,6 @@ class H2c_EtiketCakismasi(_GercekEkran):
         self._pompala(lambda: False, 0.3)
         return app
 
-    def _mesaj_ver(self, mesaj):
-        self._rota_gonder(mesaj)
-        alan = "rota" if mesaj["type"] == "OPEN_ROUTE" else "rota_yok"
-        self.assertTrue(self._pompala(
-            lambda: (getattr(self.app, alan) or {}).get("seq") == mesaj["seq"]),
-            mesaj)
-        self._pompala(lambda: False, 0.15)
-
     def _bant_denetle(self, c, ad):
         bantlar = _dolgulu(c, "rectangle", yks_gui.KIRMIZI)
         self.assertEqual(1, len(bantlar), f"{ad}: ROTA YOK bandı yok/çok")
@@ -518,8 +520,34 @@ class H2c_EtiketCakismasi(_GercekEkran):
                     f"{ad}: şerit {yol} ({sx0:.0f}..{sx1:.0f}) etiketsiz: {kapali}")
         self.assertEqual([], _kesisen_ciftler(kutular), f"{ad} {boyut}")
         self.assertEqual([], _tasanlar(c, kutular), f"{ad} {boyut}")
+        # T226-D2 (çürütücü O6): küçük haritada "HB (hedef)" H kutusunun
+        # ÜSTÜNDE durur — kutunun Tk bbox'ının (2 px çizgi dahil) üst kenarını
+        # KESMEZ. H ↔ HB metin istisnası bu kuralı delmez. Ölçüldü (T226-D2
+        # tasarım ölçümü): 1,0'da 1 px, 1,5'te 2 px boşluk; eski yerleşim
+        # (hy-20, merkez çapa) 1,5'te HB'yi kutunun üst kenarına indiriyordu.
+        hkutu = self._h_kutusu(c)
+        hb = [b for t, b, _e in kutular if t == "HB (hedef)"]
+        self.assertEqual(1, len(hb), f"{ad}: HB etiketi {hb}")
+        self.assertLessEqual(hb[0][3], hkutu[1],
+                             f"{ad} {boyut}: HB {hb[0]} H kutusunun {hkutu} "
+                             "üst kenarını kesiyor")
         if mesaj is not None and mesaj["type"] == "NO_ROUTE":
             self._bant_denetle(c, f"küçük {ad}")
+
+    def _h_kutusu(self, c):
+        """H kutusunun Tk bbox'ı: "H" metninin merkezinde, KIRMIZI çerçeveli,
+        dolgusuz TEK dikdörtgen (kapalı şerit/bant/arena dolguludur)."""
+        h = [i for i in c.find_all()
+             if c.type(i) == "text" and c.itemcget(i, "text") == "H"]
+        self.assertEqual(1, len(h), "H metni bulunamadı/çok")
+        hx, hy = c.coords(h[0])
+        kutu = [i for i in c.find_all() if c.type(i) == "rectangle"
+                and c.itemcget(i, "outline") == yks_gui.KIRMIZI
+                and c.itemcget(i, "fill") == ""
+                and abs((c.coords(i)[0] + c.coords(i)[2]) / 2 - hx) < 1
+                and abs((c.coords(i)[1] + c.coords(i)[3]) / 2 - hy) < 1]
+        self.assertEqual(1, len(kutu), "H kutusu bulunamadı/çok")
+        return tuple(c.bbox(kutu[0]))
 
     def _ana_denetle(self, ad):
         c = self.app.harita
@@ -639,6 +667,52 @@ class H2d_AnaHaritaMasterIleBaytEs(unittest.TestCase):
             self.skipTest(f"YAPILAMADI: git show {self.MASTER}: {exc!r}")
         veri = json.loads(self.ALTIN.read_text(encoding="utf-8"))
         self.assertEqual(hashlib.sha256(ham).hexdigest(), veri["kaynak_sha256"])
+
+
+class H2e_RotaYokSonrasiAnaHarita(_GercekEkran):
+    """NEDEN: D-454/O5, NO_ROUTE yerleşimi sonraki OPEN_ROUTE'a sızmamalı."""
+
+    def _cizim(self):
+        self.app._harita_ciz()
+        c = self.app.harita
+        return [(c.type(i), c.coords(i),
+                 {ad: bilgi[-1] for ad, bilgi in c.itemconfigure(i).items()},
+                 c.tk.call("font", "actual", c.itemcget(i, "font"))
+                 if c.type(i) == "text" else None)
+                for i in c.find_all()]
+
+    def _gecisleri_denetle(self, olcek):
+        app = self._kur(olcek=olcek)
+        app.harita.pack_configure(expand=False, fill="none")
+        app.harita.configure(width=742, height=450)
+        self.kok.deiconify()
+        self.assertTrue(self._pompala(app.harita.winfo_ismapped))
+        self._pompala(lambda: False, 0.2)
+        seq = SEQ + 100
+        for yol in (1, 2, 3):
+            with self.subTest(yol=yol, olcek=olcek):
+                seq += 1
+                mesaj = dict(ROTA, road=yol, seq=seq)
+                self._mesaj_ver(mesaj)
+                ilk = self._cizim()
+                for detay in ("", "Dar koridor nedeniyle rota bulunamadı. " * 16):
+                    seq += 1
+                    self._mesaj_ver(dict(YOK_ROTA, seq=seq, detay=detay))
+                    self._cizim()
+                    if detay:
+                        self.assertIn(str(app.harita), app._olculu_alan,
+                                      "Önkoşul: uzun NO_ROUTE arena alanını değiştirmeli")
+                    seq += 1
+                    self._mesaj_ver(dict(mesaj, seq=seq))
+                    self.assertEqual(ilk, self._cizim(),
+                                     "NO_ROUTE yerleşimi OPEN_ROUTE'a sızdı")
+                    self.assertNotIn(str(app.harita), app._olculu_alan)
+
+    def test_H2e_olcek_1_0(self):
+        self._gecisleri_denetle(1.0)
+
+    def test_H2e_olcek_1_5(self):
+        self._gecisleri_denetle(1.5)
 
 
 class H6_GorunumDonusSirasi(_GercekEkran):
@@ -814,7 +888,11 @@ class H4_KameraKanitKaynagi(unittest.TestCase):
         self.assertEqual(f"{self.URL} [{ETIKET}]", f(self.URL, ETIKET))
 
     def test_H4e_contracts_ornegi_kodla_ayni(self):
-        metin = SOZLESME.read_text(encoding="utf-8")
+        # MİMAR KURALI D-453 (T226-D2, çürütücü D1): belge kilidi yeni içeriği
+        # ÇİZİLİ ARALIKLAR AYIKLANMIŞ metinde arar — `~~…~~` içine alınmış
+        # (geri çekilmiş) cümle, ne başlık ne örnek olarak kilidi karşılar.
+        metin = re.sub(r"~~.*?~~", "", SOZLESME.read_text(encoding="utf-8"),
+                       flags=re.S)
         bas = metin.index("### 6.8 Hakem kanıt kaydının OLAY KÜMESİ")
         son = metin.index("### 6.2 `road` sözleşmesi", bas)
         blok = metin[bas:son]
