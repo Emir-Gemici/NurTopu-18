@@ -1,0 +1,179 @@
+==============================================================================
+$ -B -m unittest discover -s tests -p test_belge_kilidi.py -q
+# yeni: test_belge_kilidi.py
+----------------------------------------------------------------------
+Ran 42 tests in 0.003s
+
+OK
+cikis=0
+
+==============================================================================
+$ -B -m unittest discover -s tests -p test_yks_mk15_hakem_ekrani.py -q
+# MK15 ardisik 1
+----------------------------------------------------------------------
+Ran 39 tests in 21.702s
+
+OK
+cikis=0
+
+==============================================================================
+$ -B -m unittest discover -s tests -p test_yks_mk15_hakem_ekrani.py -q
+# MK15 ardisik 2
+----------------------------------------------------------------------
+Ran 39 tests in 20.987s
+
+OK
+cikis=0
+
+==============================================================================
+$ -B -m unittest discover -s tests -p test_yks_mk15_hakem_ekrani.py -q
+# MK15 ardisik 3
+----------------------------------------------------------------------
+Ran 39 tests in 20.919s
+
+OK
+cikis=0
+
+==============================================================================
+$ -B -m unittest discover -s tests -p test_isaretli_gosterici.py -q
+# test_isaretli_gosterici.py
+----------------------------------------------------------------------
+Ran 62 tests in 36.975s
+
+OK (skipped=1)
+cikis=0
+
+==============================================================================
+$ -B -m unittest discover -s tests -p test_faz_b_arduplane_sablon.py -q
+# test_faz_b_arduplane_sablon.py
+----------------------------------------------------------------------
+Ran 44 tests in 0.701s
+
+OK
+cikis=0
+
+==============================================================================
+$ -B -m unittest discover -s tests -p test_yks_*.py -q
+# test_yks_*.py
+[T36_KAPI] demo=1 kaynak=kompozit ilk_kare=data/arena_kompozit/images/a.jpg exit=0
+KANIT KAYDI HATASI — uçuş/onay başlatma kapatıldı; ARM ve acil komutlar kullanılabilir: RuntimeError: YKS_ARAYUZ_HAZIR: OSError: disk dolu
+KANIT KAYDI HATASI — uçuş/onay başlatma kapatıldı; ARM ve acil komutlar kullanılabilir: RuntimeError: OLAY_A: OSError: ilk
+KAMERA KAPATMA HATASI: kamera worker kapanmadi
+KANIT KAYDI KAPATMA HATASI: fsync/kapatma hatasi
+----------------------------------------------------------------------
+Ran 233 tests in 34.771s
+
+OK
+cikis=0
+
+==============================================================================
+$ -B codes/test_rota_sentetik.py
+# GENEL KAPI codes/test_rota_sentetik.py
+==============================================================================
+KORIDOR SECIMI — 15 DETERMINISTIK SENTETIK SAHNE (kusursuz maske)
+==============================================================================
+KOL 1 — TANISAL YOL (costmap_path_finder.rota_bul) · sart: TAM PUAN
+harita  senaryo  gercek  tahmin  guven              durum   wp  sonuc
+     1    kolay       1       1  1.000               ACIK   43  OK
+     1     orta       2       2  1.000               ACIK   43  OK
+     1      zor       3       3  0.797               ACIK   67  OK
+     2    kolay       1       1  1.000               ACIK   45  OK
+     2     orta       1       1  1.000               ACIK   64  OK
+     2      zor       3       3  0.797               ACIK   58  OK
+     3    kolay       3       3  1.000               ACIK   44  OK
+     3     orta       2       2  1.000               ACIK   43  OK
+     3      zor       1       1  0.797               ACIK   60  OK
+     4    kolay       3       3  1.000               ACIK   43  OK
+     4     orta       3       3  1.000               ACIK   51  OK
+     4      zor       1       1  0.797               ACIK   48  OK
+     5    kolay       3       3  1.000               ACIK   52  OK
+     5     orta       3       3  1.000               ACIK   49  OK
+     5      zor       2       2  0.797               ACIK   42  OK
+------------------------------------------------------------------------------
+SONUC: 15/15 dogru
+[OK] TUM DETERMINISTIK SAHNELER GECTI
+
+==============================================================================
+KOL 2 — URETIM YOLU (rpi_inference.analyze_path) · AYNI 15 SAHNE
+==============================================================================
+harita  senaryo  gercek   yayin  guven   wp              ret  darbogaz  sonuc
+     1    kolay       1       1  0.822    8             None         2  OK
+     1     orta       2       2  0.731    8             None         2  OK
+     1      zor       3       3  0.662   13             None         2  OK
+     2    kolay       1       1  0.731    8             None         2  OK
+     2     orta       1       1  0.662   10             None         2  OK
+     2      zor       3       3  0.651   10             None         3  OK
+     3    kolay       3       3  0.674    8             None         3  OK
+     3     orta       2       2  0.742   12             None         2  OK
+     3      zor       1       1  0.708   11             None         3  OK
+     4    kolay       3       3  0.708    8             None         2  OK
+     4     orta       3       3  0.753   13             None         3  OK
+     4      zor       1       1  0.742   12             None         2  OK
+     5    kolay       3       3  0.742    8             None         2  OK
+     5     orta       3       3  0.833   10             None         3  OK
+     5      zor       2       2  0.685    9             None         1  OK
+------------------------------------------------------------------------------
+URETIM YOLU: rota uretimi 15/15 · yayinlanan serit 15/15 (esik >= 14/15, ON_KAYIT SS18-B)
+[OK] URETIM YOLU KOLU GECTI
+------------------------------------------------------------------------------
+GENEL KAPI (madde 14): GECTI — kol1 15/15 · kol2 serit 15/15
+Rota 65 waypoint gerektiriyor (yumusak hedef: 64); azami aralik guvenligi icin seyreltilmedi.
+Rota 67 waypoint gerektiriyor (yumusak hedef: 64); azami aralik guvenligi icin seyreltilmedi.
+cikis=0
+
+==============================================================================
+$ -B scripts/belge_kilidi_denetle.py --rapor results/fdr_sprint_20260910/T240/acik_kilitler.md
+# depo denetimi scripts/belge_kilidi_denetle.py
+sertIn`, `count` |
+| `tests/test_166_infer_size_nobetcisi.py` | `assertIn`, `assertNotIn`, `count` |
+| `tests/test_167_fdr_kanit_nobetcisi.py` | `assertIn`, `assertNotIn`, `count` |
+| `tests/test_atolye_test_gunu.py` | `assertIn`, `assertNotIn`, `assertNotRegex`, `assertRegex`, `findall`, `finditer` |
+| `tests/test_b2_fda_butcesi.py` | `assertIn`, `assertNotIn`, `in` |
+| `tests/test_conf_esigi_supurmesi.py` | `assertIn`, `assertNotIn`, `in` |
+| `tests/test_d373_defter_geri_isaret.py` | `assertIn`, `count`, `findall`, `in`, `match`, `search` |
+| `tests/test_defter_butunlugu.py` | `findall` |
+| `tests/test_depo_koku_turetilir.py` | `assertIn`, `assertNotIn`, `in`, `search` |
+| `tests/test_faz_b_bellek_hazirla.py` | `assertIn`, `assertNotIn`, `in` |
+| `tests/test_faz_b_jetson_baslat.py` | `assertIn`, `assertNotIn`, `assertRegex`, `find`, `findall`, `in` |
+| `tests/test_faz_b_kamera_koprusu.py` | `assertIn`, `assertNotIn`, `in`, `search` |
+| `tests/test_faz_b_nano_kurulum.py` | `assertIn`, `assertNotIn`, `count`, `findall`, `in`, `index` |
+| `tests/test_faz_b_pixhawk_sablon.py` | `assertIn`, `assertNotIn`, `find`, `findall`, `in`, `match` |
+| `tests/test_faz_b_surum_dondurma.py` | `assertIn`, `assertNotIn`, `in` |
+| `tests/test_faz_b_yks_fda_kipi.py` | `assertIn`, `in` |
+| `tests/test_fdr_takvim_kapisi.py` | `assertIn`, `assertRegex`, `in`, `index`, `search` |
+| `tests/test_gece_akis_diyagramlari.py` | `assertIn`, `assertNotIn`, `in`, `match` |
+| `tests/test_gece_baglanti_semasi.py` | `assertIn`, `assertNotRegex`, `find`, `findall`, `in`, `index` |
+| `tests/test_gece_sekiller.py` | `assertIn`, `assertRegex`, `find`, `findall`, `in`, `index` |
+| `tests/test_k1_tazelik_damgasi.py` | `assertIn`, `assertNotIn`, `in`, `search` |
+| `tests/test_kilavuz_gecis_yordami.py` | `assertIn`, `find`, `findall`, `in`, `index` |
+| `tests/test_kilavuz_kurulum_yordami.py` | `assertIn`, `in`, `search` |
+| `tests/test_p3_ika_surucu.py` | `assertIn`, `in` |
+| `tests/test_p4_runbook.py` | `assertIn`, `assertNotIn`, `in`, `index` |
+| `tests/test_p5_h1c_damgasi.py` | `assertIn`, `assertNotIn`, `index` |
+| `tests/test_p5_histerezis.py` | `assertNotIn`, `count`, `find`, `in` |
+| `tests/test_pixhawk_firmware_yolu.py` | `assertIn`, `assertNotRegex`, `assertRegex` |
+| `tests/test_runbook_komutlari_kosuyor.py` | `assertIn`, `findall`, `in`, `search` |
+| `tests/test_saha_kosum_kagidi.py` | `assertIn`, `assertNotIn`, `assertNotRegex`, `assertRegex`, `find`, `findall` |
+| `tests/test_sim_mujoco_olcum.py` | `assertIn`, `assertNotIn`, `in` |
+| `tests/test_sim_mujoco_video.py` | `assertIn`, `in` |
+| `tests/test_sim_mujoco_zincir.py` | `assertIn`, `assertNotIn`, `in`, `index`, `search` |
+| `tests/test_t123_gecis_provasi.py` | `assertIn`, `assertNotIn`, `find`, `findall`, `in`, `search` |
+| `tests/test_t132_taban_gorunurlugu.py` | `assertIn`, `assertNotIn`, `in` |
+| `tests/test_t141_rota_yoksa_surme.py` | `assertIn`, `find`, `match`, `search` |
+| `tests/test_t143_turev_ve_kamera.py` | `assertIn`, `in` |
+| `tests/test_t158_kilavuz_kapisi_dongu.py` | `assertIn`, `assertNotIn`, `in` |
+| `tests/test_t163_cozunurluk_sozlesmesi.py` | `assertIn`, `findall`, `in`, `index` |
+| `tests/test_t191_veri_kaynaklari_taze.py` | `assertIn`, `findall`, `in`, `search` |
+| `tests/test_t202_jetson_paket_butunlugu.py` | `assertIn`, `assertNotIn`, `findall`, `in` |
+| `tests/test_uretim_modeli_hizasi.py` | `assertIn`, `assertNotIn`, `findall`, `in`, `match`, `search` |
+| `tests/test_wheels_sayisi_belgelerle_tutarli.py` | `assertIn`, `assertNotRegex`, `in`, `search` |
+| `tests/test_yarisma_adi_kapisi.py` | `assertIn`, `assertRegex`, `in`, `search` |
+| `tests/test_yks_gui_uretim_hizasi.py` | `assertIn`, `assertNotIn`, `findall`, `in` |
+| `tests/test_yks_hakem_kanit_olaylari.py` | `assertIn`, `findall`, `in`, `index` |
+| `tests/test_yks_sik_yordami.py` | `assertIn`, `index`, `search` |
+
+
+rapor yazildi: O:\navitas\.claude\worktrees\wf_fabd3bac-230-1\results\fdr_sprint_20260910\T240\acik_kilitler.md
+cikis=0
+
+HUKUM: TUM ADIMLAR GECTI
