@@ -28,7 +28,7 @@ yazılmaz.
 | `TABLO.md` | iki JSON'dan üretilen okunur tablo |
 | `kosum_ciktisi.txt` | ölçümün ham stdout'u |
 | `kosum_ciktisi_v1_eksik.txt` | **eksik** ilk koşumun ham çıktısı — aşağıya bakınız |
-| `mutasyon_t243.py` · `mutasyon_ciktisi.txt` | nöbetçinin mutasyon kontrolü: gerçek dosyalarda 19 mutasyon (D-466 ile +3), her denemeden sonra sha256 ile bayt-eş geri yükleme |
+| `mutasyon_t243.py` · `mutasyon_ciktisi.txt` | nöbetçinin mutasyon kontrolü: gerçek dosyalarda **26** mutasyon (D-466 ile +3, T243-C ile +7 — nöbetçinin KENDİ sabitleri de hedeftir), her denemeden sonra sha256 ile bayt-eş geri yükleme; son koşum **26/26 yakalandı** |
 | `kapi/` | koşulan kapıların ham çıktıları (genel kapı, `test_fdr*`, protokol, SiK, comms, İKA, akış doğrulayıcı, tam süit) |
 
 ## Ölçülen ne, ölçülmeyen ne

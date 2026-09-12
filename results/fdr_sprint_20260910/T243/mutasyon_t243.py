@@ -14,6 +14,7 @@ RM = KOK / "results" / "fdr_sprint_20260910" / "T243" / "README.md"
 TB = KOK / "results" / "fdr_sprint_20260910" / "T243" / "TABLO.md"
 PROTO = KOK / "comms" / "protocol.py"
 BETIK = KOK / "scripts" / "paket_boyutu_olc.py"
+NOB = KOK / "tests" / "test_t243_paket_boyutu.py"   # nobetcinin KENDISI (T243-C)
 
 MUTASYONLAR = [
     ("M1 FDR boyut tablosu hucresi 365 -> 366", FDR,
@@ -62,7 +63,7 @@ MUTASYONLAR = [
      "    bayt = sum(u.gonderilen_bayt for u in uclar.values())",
      "    bayt = uclar[\"iha\"].gonderilen_bayt"),
     # ── D-466 (curutucu bulgusu): cerceve sayisi ve capraz kilit ────────────
-    ("M17 FDR duyarlilik sayisi eski HATALI degere dondu (cerceve 250 -> 200)",
+    ("M17 FDR CIZILI tarihsel sabit degistirildi (gecmis kaydi bozuldu)",
      FDR,
      "**4003,6 – 4107,2\nB/s**'ye taşınır (paylaşımlı **%69,51 – %71,31**)",
      "**3715,4 – 4003,6\nB/s**'ye taşınır (paylaşımlı **%64,50 – %69,51**)"),
@@ -76,6 +77,37 @@ MUTASYONLAR = [
      '        return kosum["yks_gorulen_tipler"][MESAJ_OPEN_ROUTE]\n'
      '    return (kosum["veri_hizi"]["gonderilen_paket"]\n'
      '            - kosum["heartbeat_sayisi"] * len(kosum["akranlar"]))'),
+    # ── T243-C (ikinci curutucu turu): duyarlilik tablosunun DORT kosumu,
+    #    FDR araliginin alt siniri ve nobetcinin KENDI sabitleri ────────────
+    ("M20 FDR CANLI duyarlilik alt siniri dar araliga dondu (3995,8 -> 4003,6)",
+     FDR,
+     "tamamında **3995,8 – 4107,2 B/s**'ye taşınır (paylaşımlı\n"
+     "**%69,37 – %71,31**)",
+     "tamamında **4003,6 – 4107,2 B/s**'ye taşınır (paylaşımlı\n"
+     "**%69,51 – %71,31**)"),
+    ("M21 betik: duyarlilik tablosu yine yalniz IKI tavan kosumunu yaziyor",
+     BETIK,
+     '    for ad in k["kosumlar"]:\n'
+     '        du = tavan_waypoint_duyarliligi(b, k["kosumlar"][ad])',
+     '    for ad in ("saha_tavan", "udp_tavan"):\n'
+     '        du = tavan_waypoint_duyarliligi(b, k["kosumlar"][ad])'),
+    ("M22 nobetci: DUYARLILIK_KOSUMLARI yine iki tavan kosumu", NOB,
+     'DUYARLILIK_KOSUMLARI = tuple(K["kosumlar"])',
+     'DUYARLILIK_KOSUMLARI = ("saha_tavan", "udp_tavan")'),
+    ("M23 nobetci: KENDI kilit toleransi gevsetildi (%2 -> %50)", NOB,
+     "KILIT_TOLERANS = 0.02", "KILIT_TOLERANS = 0.5"),
+    ("M24 FDR: kilitli duyarlilik blogunun ARKASINA ayni basla IKINCI blok",
+     FDR,
+     "**Bu alt bölümdeki hiçbir sayı RF ölçümü değildir:**",
+     "⚠ **Duyarlılık (HESAP, ölçüm değil):** gözden geçirilmiş değer "
+     "**3715,4 B/s**; ECC açıkken bile ham bütçe aşılmaz.\n\n"
+     "**Bu alt bölümdeki hiçbir sayı RF ölçümü değildir:**"),
+    ("M25 README: duyarlilik araligi yine dar (3995,8 -> 4003,6)", RM,
+     "**3995,8–4107,2 B/s**'ye taşındığını",
+     "**4003,6–4107,2 B/s**'ye taşındığını"),
+    ("M26 TABLO.md: udp_jetson duyarlilik satiri elle silindi", TB,
+     "| `udp_jetson_olculmus` | 482 | 250 | 4080,6 | %70,84 | %141,69 |\n",
+     ""),
 ]
 
 
