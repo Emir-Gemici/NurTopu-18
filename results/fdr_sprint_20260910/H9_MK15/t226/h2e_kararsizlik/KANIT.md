@@ -2,11 +2,20 @@
 
 **İş:** `tests/test_yks_mk15_hakem_ekrani.py::H2e_RotaYokSonrasiAnaHarita`
 tam süitte 6 alt testte düşüyor, tek başına geçiyor.
-**Gözlem (mimar, ana ağaç):** `results/push_kapisi/20260912_011758/tam_suit.txt`
+**Gözlem (mimar, ana ağaç):** `mimar_011758_tam_suit.txt`
 → `Ran 2620 tests · FAILED (failures=6, skipped=12)`; iki hata biçimi
 `:726` "NO_ROUTE yerleşimi OPEN_ROUTE'a sızdı" ve `:728`
 `'.!frame3.!frame.!canvas' unexpectedly found in {...: (34, 189, 227)}`
 (1,5 ölçekte `(51, 156, 243)`).
+
+> **Atıf kaynağı (12 Eyl 06:35, çürütücü KUSUR 1 üzerine düzeltildi).**
+> Bu çıktı mimarın ANA AĞACINDA (`O:\navitas`) `results/push_kapisi/20260912_011758/`
+> altında **izlenmeyen** (untracked) bir dizinde duruyordu; hiçbir commit'te yoktu,
+> yani atıf repodan doğrulanamıyordu (anayasa md. 6 · D-209). İki dosya bu kanıt
+> dizinine **bayt-eş** kopyalandı ve atıflar buraya çevrildi:
+> `mimar_011758_tam_suit.txt` (sha256 `1af052cfdf8bb369…b292b6b4`),
+> `mimar_011758_genel_kapi.txt` (sha256 `64930014f4afe964…c06ad7491`).
+> Ana ağaçtaki özgün dizin commit'lenmedi (orası dalın dışı); izlenen kopya budur.
 
 Yorumlayıcı: `O:\navitas-local-train\venv\Scripts\python.exe -X utf8 -B`.
 Çalışma ağacı: `O:\navitas\.claude\worktrees\wf_56b658bb-aff-1`.
@@ -104,12 +113,14 @@ ile 150 ms olay pompalıyordu. O pencerede işlenen bir NO_ROUTE:
 İlk sürüm burada `mutasyon_M4.txt`ten iki satır alıntılayıp "mimarın
 çıktısının birebir aynısı" diyordu. **İki ayrı hata vardı.**
 
-**Hata 1 — alıntı o dosyada YOK.** Ölçüm (çürütücü, yeniden doğrulandı):
+**Hata 1 — alıntı o dosyada YOK.** Ölçüm (çürütücü, yeniden doğrulandı;
+12 Eyl 06:36'da **kopyalanan dosya adıyla yeniden koşuldu**, ham çıktı
+`atif_grep_cikti.txt`):
 
 ```
 $ grep -c "unexpectedly found" mutasyon_M4.txt
 0
-$ grep -c "unexpectedly found" results/push_kapisi/20260912_011758/tam_suit.txt
+$ grep -c "unexpectedly found" mimar_011758_tam_suit.txt
 4
 ```
 
@@ -125,7 +136,7 @@ AssertionError: False is not true : ekran çerçeveyi TAM işlemedi: {... 'seq':
 AssertionError: False is not true : ekran çerçeveyi TAM işlemedi: {... 'seq': 148 ...} · rota=147 · rota_yok={... 'seq': 940 ...} · kuyruk=0 · kaynak reddi=0
 ```
 
-Mimarın 12 Eylül 01:17 çıktısı (`results/push_kapisi/20260912_011758/tam_suit.txt`):
+Mimarın 12 Eylül 01:17 çıktısı (`mimar_011758_tam_suit.txt`):
 
 ```
 AssertionError: Lists differ: [...34.0, 96.0]...] != [...34.0, 189.0]...]
@@ -200,6 +211,8 @@ yazıldı (`git status` temiz).
 | Tam süit ×3 (düzeltme öncesi) | `results/push_kapisi/20260912_015144`, `…_020233` | H2e düşmedi (yeniden üretilemedi) |
 | Tüm modüller içe aktarılmış ×3 | `d1_tum_import.txt` | OK |
 | 46 Tk modülü önce koşuldu ×2 | `d2_tk_onek.txt` | OK |
+| **Mimarın 01:17 tam süiti** (atıf dayanağı, bayt-eş kopya) | `mimar_011758_tam_suit.txt`, `mimar_011758_genel_kapi.txt` | `Ran 2620 · FAILED (failures=6, skipped=12)`; `grep -c "unexpectedly found"` = **4** (yeniden koşuldu 12 Eyl 06:35) |
+| §2.3 atıf doğrulaması (ham grep çıktısı) | `atif_grep_cikti.txt` | M4 = **0**, mimar çıktısı = **4**; dört satırın dosyadaki satır numaraları (399/408/434/443) + sha256 |
 | Alan ölçümü | `olcum_alan_yalniz.txt` | (34,189,227) / (51,156,243) = tek satır bant |
 | Yabancı enjeksiyon, düzeltme ÖNCESİ | `d3_yabanci_enjeksiyon.txt` | 6 düşüş (aynı imza) |
 | Yabancı enjeksiyon, düzeltme SONRASI | `d4_enjeksiyon_duzeltme_sonrasi.txt` | OK ×2, kabul edilen çerçeve 9/6 (tam) |
