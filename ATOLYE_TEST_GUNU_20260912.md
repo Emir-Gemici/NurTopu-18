@@ -113,7 +113,17 @@
 - **BEKLENTİ (HESAP + BENZER ÖLÇÜM — ölçüm değil):** 57600 baud 8N1 = 10 bit/bayt → 10 / 57600 = 0,174 ms/bayt; çerçeve ≈ 80 B (16070 B / 200 prob, results/fdr_sprint_20260910/H2/ozet.json:139) → seri süre 80 × 0,174 = 13,9 ms her uçta; hava 64 kbps varsayılanı (https://ardupilot.org/copter/docs/common-3dr-radio-advanced-configuration-and-technical-information.html) → 80 × 8 / 64000 = 10 ms (ECC açıksa ≈ 2×); RTT alt sınırı 2 × (13,9 + 10 + 13,9) = 75,6 ms (ECC ile 95,6 ms) + SiK TDM dilim beklemesi (BİLİNMİYOR). BENZER ÖLÇÜM (RADYOSUZ köprü): RTT p50/p95 1,33/1,83 ms (results/fdr_sprint_20260910/H2/ozet.json:131-132), veri hızı 322,5 B/s (results/fdr_sprint_20260910/H2/ozet.json:143) ve 403 B/s (results/fdr_sprint_20260910/H2/ozet.json:189) → kayıpsız hatta ≈ 80 / 0,25 = 320 B/s ve 80 / 0,2 = 400 B/s.
 - **Kabul (betik eşiği, scripts/sik_rf_olc.py:39):** iki kadansta da RTT p95 < min(`IKA_GO_TEKRAR_ARALIGI_S = 0.25` (codes/karar_sozlesmesi.py:2095), `PARASUT_TEKRAR_ARALIGI_S = 0.20` (codes/karar_sozlesmesi.py:2116)) = 200 ms, çıkış 0; kayıp ve veri hızı yalnız raporlanır (scripts/sik_rf_olc.py:43).
 - **Sonuç: ÖLÇÜLECEK (12 Eylül atölye)** → `results/atolye_20260912/A6_sik_ikago.json` · `A6_sik_parasut.json` · `A6_sik_ayar.txt` · `A6_sik_mp_ekrani.png`
-- `[ ] ÖLÇÜLDÜ  [ ] ÖLÇÜLEMEDİ — neden: …… · saat: …… · kim: ……`
+- `[x] ÖLÇÜLDÜ — 13 Eylül, kullanıcı, gerçek 433 MHz çift` · **SONUÇ: DÜŞTÜ (çıkış 1, UYARI).**
+  | kadans | p50 | **p95** | min | maks | eşik | kayıp | veri hızı |
+  |---|---|---|---|---|---|---|---|
+  | İKA_GO 0,25 s | 208,3 | **265,2** | 93,1 | 273,3 | 250 ms | %0 | 318,8 B/s |
+  | PARAŞÜT 0,20 s | 229,2 | **229,6** | 199,1 | 230,8 | 200 ms | %0 | 350,5 B/s |
+  İki koşum tekrarlandı, sayılar yeniden üretildi → **kararlı, gürültü değil.**
+  **Teşhis (D-476):** kayıp %0 ve doluluk %4,4 → darboğaz bant genişliği değil **SiK TDM dilim gecikmesi**.
+  0,20 s'de RTT çakılı sabit (p95−p50 = 0,4 ms), 0,25 s'de testere dişi (probta −21 ms, sonra +90 sararak).
+  Seri payı hesapla ≈28 ms; kalan ≈200 ms radyonun kendi çizelgesi.
+  **Eşik GEVŞETİLMEDİ.** Düzeltme sırası: T263 Air Speed ↑ → T264 ECC kapat → ancak yetmezse T265 tasarım değişikliği.
+  **Kazanç:** "kullanılan veri hızı" artık gerçek RF'te ölçüldü (318,8–350,5 B/s); önceki 322,5 B/s radyosuz köprüydü → Y-3.3.4-M03 kapandı.
 
 ### A7 — Menzil: SiK + MK15 video (açık alan varsa; yoksa ÖLÇÜLEMEDİ — sahada) · 25 dk
 - **Amaç:** SiK ve MK15 videonun görev için gereken mesafede çalışmasını göstermek.
