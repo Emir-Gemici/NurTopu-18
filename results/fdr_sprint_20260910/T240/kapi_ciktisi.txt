@@ -1,7 +1,7 @@
-# T240-B KAPI — 2026-09-12 03:57:57
+# T240-B KAPI — 2026-09-12 04:17:01
 # yorumlayici: O:/navitas-local-train/venv/Scripts/python.exe -X utf8 -B
 # kok        : O:/navitas/.claude/worktrees/wf_fabd3bac-230-1
-# HEAD       : 305875d246c1174f41c31eab1fa96154baf40c7e
+# HEAD       : 94f54347197c22e6170f78f24164834ce64f5904
 
 ==============================================================
 $ O:/navitas-local-train/venv/Scripts/python.exe -X utf8 -B -m unittest discover -s tests -p test_belge_kilidi.py -q
@@ -14,21 +14,21 @@ CIKIS=0
 
 --- MK15 ardisik kosum 1 ---
 ----------------------------------------------------------------------
-Ran 39 tests in 24.892s
+Ran 39 tests in 25.527s
 
 OK
 CIKIS=0
 
 --- MK15 ardisik kosum 2 ---
 ----------------------------------------------------------------------
-Ran 39 tests in 24.015s
+Ran 39 tests in 25.473s
 
 OK
 CIKIS=0
 
 --- MK15 ardisik kosum 3 ---
 ----------------------------------------------------------------------
-Ran 39 tests in 24.486s
+Ran 39 tests in 25.489s
 
 OK
 CIKIS=0
@@ -37,7 +37,7 @@ CIKIS=0
 $ O:/navitas-local-train/venv/Scripts/python.exe -X utf8 -B -m unittest discover -s tests -p test_isaretli_gosterici.py -q
 ==============================================================
 ----------------------------------------------------------------------
-Ran 62 tests in 33.287s
+Ran 62 tests in 36.580s
 
 OK (skipped=1)
 CIKIS=0
@@ -46,7 +46,7 @@ CIKIS=0
 $ O:/navitas-local-train/venv/Scripts/python.exe -X utf8 -B -m unittest discover -s tests -p test_faz_b_arduplane_sablon.py -q
 ==============================================================
 ----------------------------------------------------------------------
-Ran 44 tests in 0.782s
+Ran 44 tests in 1.036s
 
 OK
 CIKIS=0
@@ -55,7 +55,7 @@ CIKIS=0
 $ O:/navitas-local-train/venv/Scripts/python.exe -X utf8 -B -m unittest discover -s tests -p test_t235_alan_etiketi.py -q
 ==============================================================
 ----------------------------------------------------------------------
-Ran 56 tests in 27.285s
+Ran 56 tests in 36.529s
 
 OK
 CIKIS=0
@@ -69,7 +69,7 @@ KAMERA KAPATMA HATASI: kamera worker kapanmadi
 KANIT KAYDI KAPATMA HATASI: fsync/kapatma hatasi
 [T36_KAPI] demo=1 kaynak=kompozit ilk_kare=data/arena_kompozit/images/a.jpg exit=0
 ----------------------------------------------------------------------
-Ran 233 tests in 37.939s
+Ran 233 tests in 40.182s
 
 OK
 CIKIS=0

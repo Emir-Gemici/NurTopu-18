@@ -171,12 +171,13 @@ yoktur**.
 ## 4. Kapı (hepsi gerçekten koşuldu)
 
 Yorumlayıcı `O:\navitas-local-train\venv\Scripts\python.exe -X utf8 -B`,
-kök `O:\navitas\.claude\worktrees\wf_fabd3bac-230-1`. Ham çıktı: `kapi_ciktisi.txt`.
+kök `O:\navitas\.claude\worktrees\wf_fabd3bac-230-1`. Ham çıktı: `kapi_ciktisi.txt`
+(başında koşum anındaki `HEAD` damgalı: **`94f54347`**).
 
 | adım | sonuç |
 |---|---|
 | `test_belge_kilidi.py` | Ran **60** tests · **OK** · çıkış 0 |
-| `test_yks_mk15_hakem_ekrani.py` **üç ardışık** | 39/39 OK (24,9 s · 24,0 s · 24,5 s) · çıkış 0,0,0 |
+| `test_yks_mk15_hakem_ekrani.py` **üç ardışık** | 39/39 OK (25,5 s · 25,5 s · 25,5 s) · çıkış 0,0,0 |
 | `test_isaretli_gosterici.py` | Ran 62 tests · **OK** (skipped=1) · çıkış 0 |
 | `test_faz_b_arduplane_sablon.py` | Ran 44 tests · **OK** · çıkış 0 |
 | `test_t235_alan_etiketi.py` | Ran **56** tests · **OK** · çıkış 0 |
