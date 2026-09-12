@@ -1,10 +1,13 @@
-# T240 mutasyon kaniti — D-460 denetiminde KACAN 19 mutant + 4 kontrol
+# T240 mutasyon kaniti — KACAN 28 mutant + 4 kontrol
+#   19'u D-460 mimar denetiminin, 9'u (Y4/Y4b/Y7a-c/Y5/Y10/Y11/D461)
+#   T240'a RED veren bagimsiz curutucunun kacan mutantidir.
 # yorumlayici: O:\navitas-local-train\venv\Scripts\python.exe
 # depo koku : O:\navitas\.claude\worktrees\wf_fabd3bac-230-1
 
 ## 0. Mutasyonsuz TABAN
   test_faz_b_arduplane_sablon.py         cikis=0  OK
   test_isaretli_gosterici.py             cikis=0  OK (skipped=1)
+  test_t235_alan_etiketi.py              cikis=0  OK
   test_yks_mk15_hakem_ekrani.py          cikis=0  OK
   TABAN: YESIL
 
@@ -32,9 +35,18 @@
   [KACAN] V3 ikinci 'Sonuc' cumlesi          README.md                        cikis=1 -> DUSTU  geri_bayt_es=True sha=e2efd44838b6
   [kontr] W5 duz DOGRULANDI                  README.md                        cikis=1 -> DUSTU  geri_bayt_es=True sha=e2efd44838b6
   [kontr] W8 duz GECTI                       README.md                        cikis=1 -> DUSTU  geri_bayt_es=True sha=e2efd44838b6
+  [KACAN] Y4  &#822; harf harf               CONTRACTS.md                     cikis=1 -> DUSTU  geri_bayt_es=True sha=741a9ca26dde
+  [KACAN] Y4b &#x336; onaltilik              CONTRACTS.md                     cikis=1 -> DUSTU  geri_bayt_es=True sha=741a9ca26dde
+  [KACAN] Y7a celiskili paragraf (kaynak onu) CONTRACTS.md                     cikis=1 -> DUSTU  geri_bayt_es=True sha=741a9ca26dde
+  [KACAN] Y7b celiskili paragraf (ilkeler onu) CONTRACTS.md                     cikis=1 -> DUSTU  geri_bayt_es=True sha=741a9ca26dde
+  [KACAN] Y7c celiskili paragraf (son paragraf onu) CONTRACTS.md                     cikis=1 -> DUSTU  geri_bayt_es=True sha=741a9ca26dde
+  [KACAN] Y5  aile disi es anlamli           GOSTERICI_KURULUM.md             cikis=1 -> DUSTU  geri_bayt_es=True sha=e01d16821d44
+  [KACAN] Y10 esik birimi s -> ms            GOSTERICI_KURULUM.md             cikis=1 -> DUSTU  geri_bayt_es=True sha=e01d16821d44
+  [KACAN] Y11 anahtarsiz README celiskisi    README.md                        cikis=1 -> DUSTU  geri_bayt_es=True sha=e2efd44838b6
+  [KACAN] D461 ikinci gevsetilmis olcut      ON_KAYIT.md                      cikis=1 -> DUSTU  geri_bayt_es=True sha=7840e9331975
 
 ## 2. OZET
-  KACAN mutantlar   : 19/19 DUSTU
+  KACAN mutantlar   : 28/28 DUSTU
   KONTROL mutantlar : 4/4 DUSTU
   geri yukleme      : hepsi bayt-es
   HUKUM             : GECTI

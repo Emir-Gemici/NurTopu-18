@@ -280,17 +280,53 @@ SITL_OLUMLU_HARIC = ("olculdu",)
 # olcut anmaz, yani kara liste onlari ILKECE goremez. Kapali cumle kumesi gorur: "prova" ya da
 # "olcut" gecen her cumle bu demette OLMALIDIR. On kayitli kabul blogu, on hukum paragrafi, baslik
 # ve kod citleri tarama DISINDADIR — onlar harfi harfine ayri kilitlidir.
-SITL_HUKUM_ANAHTARLARI = ("prova", "olcut")
+# T240-B (curutucu kacani Y11): secici ("prova", "olcut") DARDI — "Zincir yerinde; kapilar
+# sorun cikarmadi." ikisini de tasimadigi icin kume DISINDA kaliyor ve KACIYORDU. Secici
+# artik ON KAYITLI ortak listedir (belge_kilidi.HUKUM_SOZCUKLERI, gerekcesi orada yazili) +
+# SS6.6'nin kendi alan sozcukleri. Kume 5 cumleden 18'e cikti; DARALTMA degil GENISLETME.
+SITL_HUKUM_ANAHTARLARI = belge_kilidi.HUKUM_SOZCUKLERI + (
+    "sitl", "zincir", "kapi", "parasut", "surum", "param")
 SITL_HUKUM_CUMLELERI = (
-    "dronekit-sitl kurulu degil; kurulsa bile 4.5.7 disi 1 surumle prova d-425'in surum "
-    "dersine aykiridir.",
+    "olcum (results/fdrsprint20260910/h8/t221/sitlyoklama.txt, uretici ayni dizindeki "
+    "sitlyokla.py; hicbir sey kurmaz, hicbir ikili calistirmaz): simvehicle.py, arduplane, "
+    "mavproxy.py, dronekit-sitl, docker, podman yok; wsl.exe yalniz system32 saplamasi, kayitli "
+    "wsl dagitimi yok; venv'de yalniz pymavlink var.",
+    "firmware sunucusunda 4.5.7 sitl ikilisi yalniz linux icin (sitlx8664linuxgnu, "
+    "sitlarmlinuxgnueabihf); windows yerel ikili yok.",
+    "dronekit-sitl kurulu degil; kurulsa bile 4.5.7 disi 1 surumle prova d-425'in surum dersine "
+    "aykiridir.",
     "sonuc: arduplane sitl provasi kosulmadi.",
+    "adlarin 4.5.7'de var oldugu ve degerlerin tablolara uydugu kaynaktan kanitlidir (§6 tablo); "
+    "ucus mantiginin uctan uca davranisi olculemedi.",
+    "⚠ celiski (olculdu): sitl x8664 features.txt !halparachuteenabled der; ayni ikilide chute ve "
+    "apparachute dizgeleri var (calistirilmadan bayt taramasi, sha256 639a8381...).",
     "sitl'de chute parametrelerinin gercekten var oldugu ancak kosumda gorulur - provanin ilk "
     "kapisi budur.",
+    "satirlar ve oran (olculdu - sitlyoklama.txt §6.1, 10 eylul, t221-d): "
+    "sitlx8664linuxgnu/features.txt:139 !halparachuteenabled der; ama o dosyanin 167 satirinin "
+    "164'u ! ile baslar (pixhawk6c/features.txt:196 halparachuteenabled; orada 308 satirin 72'si "
+    "!).",
+    "ayni sitl ikilisinde yalniz parasutle derlenen 2 mesaj var: chute has no channel 1 kez "
+    "(libraries/apparachute/apparachute.cpp:216; dosya :3 #if halparachuteenabled ... :273 #endif "
+    "blogunda) ve parachute: too low 1 kez (arduplane/parachute.cpp:55; :15 #if parachute == "
+    "enabled ... :68 #endif; arduplane/config.h:219 #define parachute halparachuteenabled). chute "
+    "grup oneki arduplane/parameters.cpp:767'dedir (:764 #if parachute == enabled).",
+    "2 kaynak birbirini yalanlar: dizge sayimi parametre tablosunu kanitlamaz, sitl "
+    "features.txt'i ise neredeyse her ozelligi ! yazar.",
     "hakem kosumdur; sonuc olcutlerin altindaki onceden yazilmis on hukumle kaydedilir.",
-    "⚠ sitl plane modeli bizim ucagin aerodinamigi degildir (models/plane.parm kucuk model; "
-    "bizim dosya airspeed'i ezer, rolllimitdeg 65 gibi degerleri o dosyadan kalir): prova "
-    "mantigi sinar (kalkis kapisi, parasut zinciri, failsafe), performansi sinamaz.",
+    "linux / wsl2 yordami (ubuntu; a yolu x8664 hazir ikili, b yolu kaynaktan - jetson aarch64 "
+    "dahil):",
+    "b) kaynaktan (her linux; jetson orin nano dahil - kurulum betigi jetpack 7.2.1 / ubuntu "
+    "24.04'te olculmedi):",
+    "simvehicle.py -f plane once tools/autotest/models/plane.parm'i, sonra --add-param-file "
+    "dosyasini yukler (--defaults a,b; sonraki kazanir).",
+    "simparapin 7 = parasut servosu (main7): libraries/sitl/simparachute.cpp bu cikis ≥ 1250 pwm "
+    "olunca bang! parachute deployed basar (chuteservoon 1300, off 1100).",
+    "⚠ sitl plane modeli bizim ucagin aerodinamigi degildir (models/plane.parm kucuk model; bizim "
+    "dosya airspeed'i ezer, rolllimitdeg 65 gibi degerleri o dosyadan kalir): prova mantigi sinar "
+    "(kalkis kapisi, parasut zinciri, failsafe), performansi sinamaz.",
+    "sitl plane modelinin kendi firlaticisi (simplane.cpp: -catapult/-bungee cercevelerinde 7.",
+    "cikis bizde parasuttur; mancinik simshove ile benzetilir.",
 )
 SITL_HUKUM_SAYIMI = {"ölçülemedi": 5, "ölçülmedi": 1, "düşer": 3, "koşulmadı": 1, "ölçüldü": 2,
                      "beklenen-yok": 3, "kabul ölçüt": 1, "ön hüküm": 2}

@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
-"""T240 (D-460 karar 2) — KACAN 19 MUTANTIN yeniden kurulup DUSURULDUGUNUN kaniti.
+"""T240 (D-460 karar 2) — KACAN 28 MUTANTIN yeniden kurulup DUSURULDUGUNUN kaniti.
+
+T240-B (D-460 hukmu, bagimsiz curutucu) 9 mutant EKLEDI: Y4/Y4b (HTML varlik
+bicimi), Y7a/b/c (kalin baslik TASIMAYAN celiskili hukum paragrafi, uc AYRI
+yerde), Y5 (aile disi es anlamli), Y10 (esik birimi s->ms), Y11 (anahtar
+sozcuksuz README celiskisi) ve D461 (ikinci gevsetilmis kabul olcutu).
 
 Bagimsiz mimar denetimi (D-460) uc isi REDDETTI; ortak gerekce belge kilitlerinin
 yalniz `~~...~~` ayiklamasiydi ve 19 gercek dosya mutasyonunun 19'u kacmisti:
@@ -34,10 +39,12 @@ PY = sys.executable
 SOZLESME = "CONTRACTS.md"
 KURULUM = "jetson_paket/gosterici/GOSTERICI_KURULUM.md"
 README = "config/pixhawk/README.md"
+ON_KAYIT_T235 = "results/fdr_sprint_20260910/H1/t235/ON_KAYIT.md"
 
 MK15 = "test_yks_mk15_hakem_ekrani.py"
 GOSTERICI = "test_isaretli_gosterici.py"
 ARDUPLANE = "test_faz_b_arduplane_sablon.py"
+T235 = "test_t235_alan_etiketi.py"
 
 # ── mutasyon capalari (her biri ilgili dosyada TAM 1 kez gecer) ────────────────
 C_KAYNAK = ("**`KAMERA_KANIT.kaynak` (T226 · D-443, 10 Eylül):** `kaynak` = kare URL'si "
@@ -55,6 +62,24 @@ K_CAPA = "- **Geri alma:**"      # §5'in son maddesi; yeni "saha kurali" maddel
 
 R_BASLIK = "### 6.6 SITL provası — ÖLÇÜLEMEDİ (bu makine, 10 Eylül)"
 R_CAPA = "ön hükümle kaydedilir."   # SS6.6 GOVDESI (on kayitli kabul/on hukum bloklarinin DISI)
+
+# ── T240-B capalari: bagimsiz curutucunun (D-460 hukmu) kacan mutantlari ──────
+C_Y4_CAPA = "maliyeti 2 satır/dk'dır."
+C_Y4 = "".join(h + "&#822;" for h in "maliyeti") + " 2 satır/dk'dır."
+C_Y4B = "m&#x336;aliyeti 2 satır/dk'dır."
+C_Y7 = ("Not (12 Eylül): `kaynak` alanı artık zorunlu değildir; etiket biçimi bağlayıcı "
+        "sayılmaz ve her durumda `null` yazılabilir.")
+SOZLESME_KAYNAK_BASI_C = "**`KAMERA_KANIT.kaynak` (T226 · D-443, 10 Eylül):**"
+C_ILKELER = "**Bağlayıcı ilkeler:**"
+C_SON_PARAGRAF = "`tests/test_yks_hakem_kaydi.py` `HakemKaydi`nin kendi dayanıklılık kapısıdır"
+
+K_Y5 = ("- **Saha kuralı (12 Eylül):** `-v` nabız satırı biçimi sahada **hatasız yürüdü**; "
+        "kip **kusursuz işledi**.\n")
+K_Y10_ESKI = "ölen GÖRÜNTÜ YOK borusu ≥ 3 s"
+K_Y10_YENI = "ölen GÖRÜNTÜ YOK borusu ≥ 3000 ms"
+
+O_CAPA = "insanca doğrulanır (BEYAN)."
+O_D461 = ("\n- **T236 SITL kapısı (gözden geçirilmiş):** ≤ 4,0 m · ±15° · ≥ %70 · ±3,0 m")
 
 #: (ad, sinif, dosya, eski, yeni, suit) — sinif: "KACAN" (19) ya da "KONTROL" (denetimde dusenler)
 MUTANTLAR = (
@@ -108,6 +133,28 @@ MUTANTLAR = (
      R_CAPA + " SITL prova sonucu: DOĞRULANDI.", ARDUPLANE),
     ("W8 duz GECTI", "KONTROL", README, R_CAPA,
      R_CAPA + " SITL provası GEÇTİ.", ARDUPLANE),
+
+    # ── T240-B: BAGIMSIZ CURUTUCUNUN (D-460 hukmu) KACAN MUTANTLARI ──────────
+    # Y4  : U+0336'nin HTML VARLIK bicimi. Ciplak hali (Y3) DUSUYORDU, varlik hali KACTI.
+    ("Y4  &#822; harf harf", "KACAN", SOZLESME, C_Y4_CAPA, C_Y4, MK15),
+    ("Y4b &#x336; onaltilik", "KACAN", SOZLESME, C_Y4_CAPA, C_Y4B, MK15),
+    # Y7  : kalin baslik TASIMAYAN, kaynak paragrafinin ardina DEGIL baska yere konan
+    #       celiskili hukum paragrafi. Uc AYRI yere ayri ayri sokuldu (curutucunun istegi).
+    ("Y7a celiskili paragraf (kaynak onu)", "KACAN", SOZLESME,
+     SOZLESME_KAYNAK_BASI_C, C_Y7 + "\n\n" + SOZLESME_KAYNAK_BASI_C, MK15),
+    ("Y7b celiskili paragraf (ilkeler onu)", "KACAN", SOZLESME,
+     C_ILKELER, C_Y7 + "\n\n" + C_ILKELER, MK15),
+    ("Y7c celiskili paragraf (son paragraf onu)", "KACAN", SOZLESME,
+     C_SON_PARAGRAF, C_Y7 + "\n\n" + C_SON_PARAGRAF, MK15),
+    # Y5  : olumlu hukum ailesinin DISINDA es anlamli ("hatasiz yurudu / kusursuz isledi").
+    ("Y5  aile disi es anlamli", "KACAN", KURULUM, K_CAPA, K_Y5 + K_CAPA, GOSTERICI),
+    # Y10 : esik BIRIM kaydirmasi; G8'in "≥ N s" kalibi "ms" bicimini HIC gormuyordu.
+    ("Y10 esik birimi s -> ms", "KACAN", KURULUM, K_Y10_ESKI, K_Y10_YENI, GOSTERICI),
+    # Y11 : anahtar sozcuksuz README celiskisi; kapali kumenin SECICISI dardi.
+    ("Y11 anahtarsiz README celiskisi", "KACAN", README, R_CAPA,
+     R_CAPA + " Zincir yerinde; kapılar sorun çıkarmadı.", ARDUPLANE),
+    # D-461: ON KAYIT TEKLIGI — ikinci ve GEVSETILMIS kabul olcutu (T236-B curutucusu).
+    ("D461 ikinci gevsetilmis olcut", "KACAN", ON_KAYIT_T235, O_CAPA, O_CAPA + O_D461, T235),
 )
 
 
@@ -130,7 +177,9 @@ def main():
         print(s)
         kayit.write(s + "\n")
 
-    yaz("# T240 mutasyon kaniti — D-460 denetiminde KACAN 19 mutant + 4 kontrol")
+    yaz("# T240 mutasyon kaniti — KACAN 28 mutant + 4 kontrol")
+    yaz("#   19'u D-460 mimar denetiminin, 9'u (Y4/Y4b/Y7a-c/Y5/Y10/Y11/D461)")
+    yaz("#   T240'a RED veren bagimsiz curutucunun kacan mutantidir.")
     yaz("# yorumlayici: {}".format(PY))
     yaz("# depo koku : {}".format(KOK))
     yaz()
@@ -185,7 +234,7 @@ def main():
     yaz("  KONTROL mutantlar : {}/{} DUSTU".format(kontrol_dusen, kontrol_toplam))
     yaz("  geri yukleme      : {}".format("hepsi bayt-es" if geri_yukleme_ok else "BOZUK"))
     basarili = (taban_ok and geri_yukleme_ok
-                and kacan_dusen == kacan_toplam == 19
+                and kacan_dusen == kacan_toplam == 28
                 and kontrol_dusen == kontrol_toplam)
     yaz("  HUKUM             : {}".format("GECTI" if basarili else "DUSTU"))
 

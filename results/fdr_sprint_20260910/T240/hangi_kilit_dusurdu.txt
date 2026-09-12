@@ -1,0 +1,51 @@
+# T240-B — yeni mutantlari HANGI kilit dusurdu (hata metniyle)
+# yorumlayici: O:\navitas-local-train\venv\Scripts\python.exe
+# depo koku : O:\navitas\.claude\worktrees\wf_fabd3bac-230-1
+
+## Y4  &#822; harf harf
+   dosya=CONTRACTS.md cikis=1 geri_bayt_es=True
+   FAIL: test_H4e_contracts_ornegi_kodla_ayni (test_yks_mk15_hakem_ekrani.H4_KameraKanitKaynagi.test_H4e_contracts_ornegi_kodla_ayni)
+   AssertionError: Lists differ: [] != ['satir 48: beyaz liste disi cizik (birles[1081 chars] a"']
+
+## Y4b &#x336; onaltilik
+   dosya=CONTRACTS.md cikis=1 geri_bayt_es=True
+   FAIL: test_H4e_contracts_ornegi_kodla_ayni (test_yks_mk15_hakem_ekrani.H4_KameraKanitKaynagi.test_H4e_contracts_ornegi_kodla_ayni)
+   AssertionError: Lists differ: [] != ['satir 48: beyaz liste disi cizik (birles[99 chars](\'']
+
+## Y7a baslıksiz paragraf (kaynak onu)
+   dosya=CONTRACTS.md cikis=1 geri_bayt_es=True
+   FAIL: test_H4e_contracts_ornegi_kodla_ayni (test_yks_mk15_hakem_ekrani.H4_KameraKanitKaynagi.test_H4e_contracts_ornegi_kodla_ayni)
+   AssertionError: Tuples differ: ('###[2236 chars]|', 'kamerakanit.kaynak (t226 · d-443, 10 eylu[2407 chars]a).') != ('###[2236 chars]|', 'not (12 eylul): kaynak alani artik zorunl[2529 chars]a).')
+
+## Y7b baslıksiz paragraf (ilkeler onu)
+   dosya=CONTRACTS.md cikis=1 geri_bayt_es=True
+   FAIL: test_H4e_contracts_ornegi_kodla_ayni (test_yks_mk15_hakem_ekrani.H4_KameraKanitKaynagi.test_H4e_contracts_ornegi_kodla_ayni)
+   AssertionError: Tuples differ: ('###[3203 chars].', 'baglayici ilkeler:', '- kanit yazimi hicb[1440 chars]a).') != ('###[3203 chars].', 'not (12 eylul): kaynak alani artik zorunl[1562 chars]a).')
+
+## Y7c baslıksiz paragraf (son paragraf onu)
+   dosya=CONTRACTS.md cikis=1 geri_bayt_es=True
+   FAIL: test_H4e_contracts_ornegi_kodla_ayni (test_yks_mk15_hakem_ekrani.H4_KameraKanitKaynagi.test_H4e_contracts_ornegi_kodla_ayni)
+   AssertionError: Tuples differ: ('###[4569 chars].', 'tests/testykshakemkaydi.py hakemkaydinin [74 chars]a).') != ('###[4569 chars].', 'not (12 eylul): kaynak alani artik zorunl[196 chars]a).')
+
+## Y5  aile disi es anlamli
+   dosya=GOSTERICI_KURULUM.md cikis=1 geri_bayt_es=True
+   FAIL: test_G8_D453_D454_olculmemis_hukum_celiski_eski_komut (test_isaretli_gosterici.GostericiDosyalari.test_G8_D453_D454_olculmemis_hukum_celiski_eski_komut)
+   AssertionError: Tuples differ: ('drm[3179 chars], '- geri alma: sudo systemctl disable --now n[122 chars]t).') != ('drm[3179 chars], '- saha kurali (12 eylul): -v nabiz satiri b[218 chars]t).')
+
+## Y10 esik birimi s -> ms
+   dosya=GOSTERICI_KURULUM.md cikis=1 geri_bayt_es=True
+   FAIL: test_G8_D453_D454_olculmemis_hukum_celiski_eski_komut (test_isaretli_gosterici.GostericiDosyalari.test_G8_D453_D454_olculmemis_hukum_celiski_eski_komut)
+   AssertionError: Tuples differ: ('drm[1480 chars]u ≥ 3 s aralikla yeniden acilir.', 'acilista k[1821 chars]t).') != ('drm[1480 chars]u ≥ 3000 ms aralikla yeniden acilir.', 'acilis[1825 chars]t).')
+
+## Y11 anahtarsiz README celiskisi
+   dosya=README.md cikis=1 geri_bayt_es=True
+   FAIL: test_m12_olcut1_sayisi_elle_yazilinca_yakalanir (test_faz_b_arduplane_sablon.DenetleyiciGercektenDuser.test_m12_olcut1_sayisi_elle_yazilinca_yakalanir)
+   AssertionError: Lists differ: ["SS6.6 on kayitli hukum cumlesi kumesi de[67 chars] []"] != []
+   FAIL: test_m21_on_kayit_kabul_komutlar_ve_olumlu_hukum_kilidi (test_faz_b_arduplane_sablon.DenetleyiciGercektenDuser.test_m21_on_kayit_kabul_komutlar_ve_olumlu_hukum_kilidi)
+
+## D461 ikinci gevsetilmis olcut
+   dosya=ON_KAYIT.md cikis=1 geri_bayt_es=True
+   FAIL: test_SS4_T236_kabul_olcutu_TEKLIGI (test_t235_alan_etiketi.OnKayitKilitleri.test_SS4_T236_kabul_olcutu_TEKLIGI)
+   AssertionError: Lists differ: [] != ["kabul olcutu tekligi: 'T236 SITL kapısı'[480 chars] m'"]
+
+HUKUM: HEPSI DUSTU, geri yukleme bayt-es

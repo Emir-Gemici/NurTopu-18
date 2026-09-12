@@ -6,16 +6,18 @@ cikis her zaman 0. Her markdown dizgesi bir HUKUM kilidi degildir; liste,
 
 | olcum | deger |
 |---|---|
-| taranan test dosyasi | 204 |
-| markdown okuyup dizge arayan | 55 |
-| ortak yardimcidan GECEN | 3 |
-| ACIK (yardimci kullanmayan) | 52 |
+| taranan test dosyasi | 206 |
+| markdown okuyup dizge arayan | 58 |
+| ortak yardimcidan GECEN | 5 |
+| ACIK (yardimci kullanmayan) | 53 |
 | ACIK **ve** kendi cizik kalibi olan (agir) | 4 |
 
 ## 1. Ortak yardimcidan gecenler
 
+- `tests/test_belge_kilidi.py`
 - `tests/test_faz_b_arduplane_sablon.py`
 - `tests/test_isaretli_gosterici.py`
+- `tests/test_t235_alan_etiketi.py`
 - `tests/test_yks_mk15_hakem_ekrani.py`
 
 ## 2. ACIK kilitler — kendi cizik/hukum kalibini tasiyanlar (once bunlar)
@@ -41,6 +43,7 @@ ayri ayri incelenip yardimciya gecirilmelidir.
 | `tests/test_164_fp16_nobetcisi.py` | `assertIn`, `count` |
 | `tests/test_166_infer_size_nobetcisi.py` | `assertIn`, `assertNotIn`, `count` |
 | `tests/test_167_fdr_kanit_nobetcisi.py` | `assertIn`, `assertNotIn`, `count` |
+| `tests/test_akis_kapsam_korumasi.py` | `assertIn`, `assertNotIn`, `assertRegex`, `count`, `match` |
 | `tests/test_atolye_test_gunu.py` | `assertIn`, `assertNotIn`, `assertNotRegex`, `assertRegex`, `findall`, `finditer` |
 | `tests/test_b2_fda_butcesi.py` | `assertIn`, `assertNotIn`, `in` |
 | `tests/test_conf_esigi_supurmesi.py` | `assertIn`, `assertNotIn`, `in` |
