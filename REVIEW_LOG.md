@@ -30936,3 +30936,46 @@ Eşik ≤ 1000 ms → en kötü hâlde **%32,5 pay**, üç senaryoda da geçiyor
 **Tasarım çıktısı:** en büyük kalem radyo değil **oynatma tamponu** → RTSP açılışında `nobuffer`/`low_delay`
 ve UDP taşıyıcı zorunlu (T262). A6 için `results/atolye_20260912/A6_NASIL_YAPILIR.md` (9 bölüm,
 UDP referans koşumu dâhil — radyonun payı yazılımdan ayrılabilsin diye).
+
+### D-476 — 🔴 A6 GERÇEK RF ÖLÇÜMÜ **DÜŞTÜ**: RTT p95 265,2 / 229,6 ms, eşikler 250 / 200 ms. Kayıp %0, hat %95 boş → darboğaz **bant genişliği değil, SiK TDM dilim gecikmesi**. Eşik GEVŞETİLMEDİ.
+
+**Ölçüm (13 Eylül, kullanıcı, gerçek 433 MHz çift, ham çıktı oturumda):**
+
+| kadans | p50 | **p95** | min | maks | eşik | kayıp | veri hızı | çıkış |
+|---|---|---|---|---|---|---|---|---|
+| İKA_GO 0,25 s | 208,3 | **265,2** | 93,1 | 273,3 | 250 ms | %0 | 318,8 B/s | 1 UYARI |
+| PARAŞÜT 0,20 s | 229,2 | **229,6** | 199,1 | 230,8 | 200 ms | %0 | 350,5 B/s | 1 UYARI |
+
+İki koşum tekrarlandı, sayılar yeniden üretildi (p95 265,1 → 265,2; 229,6 → 229,6). **Kararlı, gürültü değil.**
+Dosyalar: `results/atolye_20260912/A6_sik_ikago.json`, `A6_sik_parasut.json`.
+
+**BULGU 1 — kayıp %0, hat boş.** 350,5 B/s = 2804 bit/s; seri hat 57600 bit/s, hava ≈64 kbps →
+**doluluk ≈ %4,4**. Tıkanma yok, çarpışma yok, tekrar yok. Gecikme **yükten kaynaklanmıyor**.
+
+**BULGU 2 — iki kadans taban tabana farklı davranıyor, bu SiK TDM imzasıdır.**
+- 0,20 s'de RTT **çakılı sabit**: 200 örneğin p50–p95 farkı **0,4 ms**, maks 230,8. Prob kadansı radyonun
+  zaman dilimi periyoduyla faz kilitlenmiş → her prob aynı süre bekliyor.
+- 0,25 s'de RTT **testere dişi**: her probta ≈21 ms azalıyor (265,6 → 228,6 → 208,8 → 187,2 → 166,2),
+  sonra ≈+90 ms sıçrayarak sarıyor; ara sıra 93 ms'lik dip. Faz kilitlenmemiş, dilim beklemesi süpürüyor.
+- İki kadansın **aynı ortalama civarında (≈210–230 ms) toplanması** ve yükten bağımsız olması,
+  gecikmenin **SiK TDM dilim beklemesi + seri tamponlama** olduğunu gösteriyor.
+- Seri payı hesabı: 80 B × 0,174 ms/B × 4 geçiş ≈ **28 ms**. Kalan ≈200 ms **radyonun kendi çizelgesi**.
+
+**HÜKÜM — eşik gevşetilmedi.** `IKA_GO_TEKRAR_ARALIGI_S = 0,25` ve `PARASUT_TEKRAR_ARALIGI_S = 0,20`
+sözleşmede **olduğu gibi duruyor**; ölçüm DÜŞTÜ olarak yazıldı. "Ölçüm yüksek çıktı, eşiği büyütelim"
+yapılmadı (D-225 §3 örüntüsü).
+
+**DÜZELTME SIRASI (önce donanım, sonra tasarım):**
+1. **Air Speed yükselt** (T263). TDM dilim süresi hava hızından türer; hızı 2× yapmak dilimi ≈yarıya indirir.
+   Kullanım %4,4 olduğu için bant genişliği feda edilmiyor. Beklenti: p95 ≈110–140 ms → **iki eşik de geçer**.
+   Bedel: menzil. A7'de 425,5 m gereksinimi ayrıca ölçülecek.
+2. **ECC'yi kapat ve tekrar ölç** (T264). ECC hava süresini ≈2× yapar. ⚠ **Mimarın 13 Eylül tavsiyesi
+   düzeltildi:** "ECC açık bırak, bant genişliği bol" demiştim; bant argümanı doğruydu ama **bağlayıcı kısıt
+   bant değil gecikmeymiş**. ECC burada gecikmeye ödenen bir bedeldir; açık/kapalı **ölçümle** seçilecek.
+3. **Ancak 1 ve 2 yetmezse** tekrar aralıkları bir **tasarım değişikliği** olarak büyütülür (T265) —
+   gerekçesi, görev zamanlamasına etkisi ve yeniden doğrulaması yazılarak. Bu, eşiğin gevşetilmesi değil,
+   ölçülen gerçeğe göre tasarımın düzeltilmesidir; ayrı karar kaydıyla yapılır.
+
+**KAZANÇ (yönerge Y-3.3.4-M03).** "Kullanılan veri hızı" artık **gerçek RF üzerinde ölçüldü**:
+**318,8–350,5 B/s** (önceki 322,5 B/s köprü ölçümüydü, radyosuzdu). FDR'deki köprü sayısı bununla
+değiştirilecek; ikisinin %1–9 içinde örtüşmesi köprü modelini de doğruluyor.

@@ -9753,4 +9753,8 @@ _(henüz yok)_
 - [IN_PROGRESS: Mimar] **T260 — FDR boş hücrelerin HESAP ile doldurulması** — A9/A10/A11/A13 ve MK15 zinciri; her sayı türetmesiyle, etiketi **HESAP**. Ölçüm diye yazılmaz (D-473).
 - [ ] **T261 — AltHold'da 30 s askı → `MOT_THST_HOVER` öğrensin** (İNSAN · itki payı bunsuz ÖLÇÜLEMEZ)
 - [ ] **T262 — RTSP video yolunda `nobuffer`/`low_delay` + UDP taşıyıcı** (gecikme bütçesinin en büyük kalemi; A11 HESAP §3)
+- [ ] **T263 — SiK Air Speed yükselt ve A6'yı tekrar ölç** (İNSAN · 🔴 A6 kapısı bunsuz açılmıyor) — MP SiK ekranı, Local+Remote aynı değer, Save Settings; sonra iki A6 koşumu tekrar.
+- [ ] **T264 — ECC kapalı A6 ölçümü** (İNSAN) — ECC hava süresini 2× yapıyor; açık/kapalı kararı ölçümle verilecek (D-476).
+- [ ] **T265 — (yalnız T263/T264 yetmezse) tekrar aralıklarını tasarım kararıyla büyüt** — ayrı karar kaydı, görev zamanlaması etkisi, yeniden doğrulama.
+- [ ] **T266 — FDR veri hızı: köprü 322,5 B/s yerine GERÇEK RF 318,8-350,5 B/s** (Y-3.3.4-M03 gerçek ölçümle kapanıyor)
 
