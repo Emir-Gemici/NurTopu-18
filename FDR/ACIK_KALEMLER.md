@@ -126,7 +126,7 @@ Bu üç kalem için doğru okuma: **"Jetson açılırsa cumartesi kapanır; aç�
 | 38 | **Sensör gereksinimleri, yerleşimleri, test takvimi, test zaman bütçesi** | `Y-4-M03` | yazılım + aviyonik | 4 |
 | 39 | **Üretim hataları ve düzeltici işlem prosedürleri** | `Y-5-M04` | üretim | 5 |
 | 40 | 🔴 **Kol 1–2 / kol 3–4 reçete farkının gerekçesi** — yönerge: *"gerekliliği ispatlanmamış değişiklikler **diskalifiye sebebi** sayılabilecektir"* (SGGS tutarlılık kontrolü, Şubat 2027) | `Y-5-M05` | üretim | 5 |
-| 41 | **Gereksinim uygunluk pasta grafiği / özet görsel** | `Y-6-M06` | mimar (dizgide) | 6 |
+| ~~41~~ | ~~Gereksinim uygunluk pasta grafiği / özet görsel~~ → **KAPANDI (7 Eylül 2026).** §6.6.2 halka grafiği (`sekiller/uygunluk_pasta.svg`) + §6.6.3 çubuk grafiği (`sekiller/uygunluk_yontem.svg`), `scripts/fdr_sekil_uret.py` tablodan üretir, nöbetçi `tests/test_gece_sekiller.py` 11 test (5/5 mutasyon yakalandı) — `BOLUM_6` §6.6 | `Y-6-M06` | mimar (dizgide) | 6 |
 | 42 | **Planlanan ↔ gerçekleşen maliyet karşılaştırması**, bütçe dağılımı (%+sayısal), harcanmamış bütçe planı, fark gerekçesi | `Y-7-M02…M05` | kaptan | 7 |
 | 43 | **Kapak alanlarının KYS teyidi** — takım adı / takım ID / **başvuru ID** | `Y-0-M01` | kaptan | 0 |
 | 44 | **Organizasyon şeması** — icra yetkilerini gösteren şema (isimsiz, rol bazlı) | `Y-2.1-M01` | kaptan | 2 |
