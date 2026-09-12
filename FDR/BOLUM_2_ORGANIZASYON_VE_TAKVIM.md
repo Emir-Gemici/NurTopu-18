@@ -554,7 +554,7 @@ etkisinin hesabı §2.2.5.5'tedir.
 
 | risk | neden gerçek | önlem | durumu |
 |---|---|---|---|
-| **Nano yığını kurulamaz** | v36 YOLOv8m-seg'dir; Nano **CPU**'da 512'de FPS kapısı (**0,61**) düşebilir — ölçülmedi | Çevrimdışı 14/14 aarch64 tekerlek hazır; sıra: CUDA topluluk wheel → ONNX Runtime → CPU torch | açık; 5 Eylül'de ölçülecek. **Eşik gevşetilmez** |
+| **Nano yığını kurulamaz** | ~~v36 YOLOv8m-seg'dir; Nano **CPU**'da 512'de FPS kapısı (**0,61**) düşebilir — ölçülmedi~~ | ~~Çevrimdışı 14/14 aarch64 tekerlek hazır; sıra: CUDA topluluk wheel → ONNX Runtime → CPU torch~~ | ~~açık; 5 Eylül'de ölçülecek. **Eşik gevşetilmez**~~ → **KAPANDI (6 Eylül 2026, D-431; D-462 A9).** Kart beklenenden farklı çıktı (Jetson Orin Nano Developer Kit 4 GB, JetPack 7.2.1, GPU'lu), CPU-yığını riski hiç gerçekleşmedi: `pt` p50/p95 **1,35/1,06 FPS**, `engine` **1,58/1,33 FPS**, eşik **0,61** — **GEÇTİ** (`results/jetson_20260906/jetson_fps_20260906_orin_nano/ozet.json`) |
 | **Yanlış güzergâh = 0 puan** | Şartname §5.3.2 mutlak | Histerezis, tek pas tarama, hakem ekranında güven + sebep | kod hazır (D-396) |
 | **10 dk aşımı** | Şartname §5.3.2 mutlak | Görev planı kötü-durum bütçesi ~3–3,5 dk (hesaplandı, `config/pixhawk/README.md`) | test ile kilitli |
 | **Tek pil** | Ölçülü (10 Ah, iMAX B6) | Günde 2 uçuş planı; 2. pil kararı kaptanda | açık |
