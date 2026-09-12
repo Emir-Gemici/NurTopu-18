@@ -241,6 +241,13 @@ Bu dört dosya **ölçülmedi**, yalnız listelendi: **ÖLÇÜLEMEDİ ≠ GEÇT�
 - **Kapalı kümenin gücü seçicisine bağlıdır** (Y11 dersi). Seçici listeleri
   (`HUKUM_SOZCUKLERI` + bölüme özgü alan sözcükleri) ön kayıtlıdır ve gerekçeleri
   yardımcının docstring'inde yazılıdır; genişletilebilir, **daraltılamaz**.
+- **KAPSAM ÖLÇÜLDÜ, %100 DEĞİL** (iddia edilmiyor): §6.8'in 51 cümlesinin **37'si**
+  kapalı kümededir, **14'ü dışındadır** (tablo ayraç satırı `|---|---|---|`, anahtar
+  sözcük taşımayan dört olay satırı, "1." / "2." madde numaraları, "her tikte yazmak
+  Tk geri çağrısını diske bağlar…" gibi gerekçe cümleleri). §5'te 26 cümlenin **23'ü**
+  kümededir. Küme dışındaki bir satıra **anahtar sözcük taşımayan** bir hüküm
+  yazılabilirse kaçar; bu **ölçülmedi**, yalnız kapsam sayıldı. Seçiciyi genişletmek
+  kümeyi büyütür ve bu boşluğu daraltır.
 - `normalize` **belgelenmiş tek yön** seçer: sözcük → sembol (`saniye`→`s`,
   `milisaniye`→`ms`, `derece`→`°`). Birim kuralı **sayıya bağlıdır**. `ms ↔ s`
   **büyüklük** katlaması YOKTUR; Y10 sınıfını kapatan şey normalize değil, **kapalı
