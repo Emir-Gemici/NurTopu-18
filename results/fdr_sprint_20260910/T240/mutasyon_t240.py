@@ -1,10 +1,17 @@
 # -*- coding: utf-8 -*-
-"""T240 (D-460 karar 2) — KACAN 28 MUTANTIN yeniden kurulup DUSURULDUGUNUN kaniti.
+"""T240 (D-460 karar 2 · D-465) — KACAN 31 MUTANTIN yeniden kurulup DUSURULDUGUNUN kaniti.
 
 T240-B (D-460 hukmu, bagimsiz curutucu) 9 mutant EKLEDI: Y4/Y4b (HTML varlik
 bicimi), Y7a/b/c (kalin baslik TASIMAYAN celiskili hukum paragrafi, uc AYRI
 yerde), Y5 (aile disi es anlamli), Y10 (esik birimi s->ms), Y11 (anahtar
 sozcuksuz README celiskisi) ve D461 (ikinci gevsetilmis kabul olcutu).
+
+T240-C (D-465 hukmu, IKINCI bagimsiz curutucu) 3 mutant EKLEDI: X15/X16/X17 —
+`&#96;` (backtick'in HTML varlik bicimi) ile kurulan SAHTE KOD ARALIGI. T240-B'nin
+duzeltmesi `&#96;`'i cozup kod araligi saniyordu ve icindeki cizigi taramadan
+tamamen gizliyordu; oysa CommonMark/GFM'de varlik referansi YAPI URETMEZ (okuyucuda
+`&#96;` duz backtick KARAKTERIDIR, kod araligi ACMAZ; icindeki `~~` cizgiyi ACAR).
+Bu bir GERILEMEYDI: ayni girdi T240-B ONCESI (64b60ae5) yakalaniyordu.
 
 Bagimsiz mimar denetimi (D-460) uc isi REDDETTI; ortak gerekce belge kilitlerinin
 yalniz `~~...~~` ayiklamasiydi ve 19 gercek dosya mutasyonunun 19'u kacmisti:
@@ -81,6 +88,17 @@ K_Y10_YENI = "ölen GÖRÜNTÜ YOK borusu ≥ 3000 ms"
 O_CAPA = "insanca doğrulanır (BEYAN)."
 O_D461 = ("\n- **T236 SITL kapısı (gözden geçirilmiş):** ≤ 4,0 m · ±15° · ≥ %70 · ±3,0 m")
 
+# ── T240-C capalari: IKINCI bagimsiz curutucunun (D-465 hukmu) kacan mutantlari ──
+# X15/X16/X17: `&#96;` (backtick'in HTML varlik bicimi) ile SAHTE KOD ARALIGI. T240-B'nin
+# ilk surumu `&#96;`'i cozup kod araligi saniyor, icindeki cizik taramadan tamamen
+# gizleniyordu; okuyucuda ise `&#96;` duz backtick KARAKTERIDIR (CommonMark/GFM'de varlik
+# YAPI URETMEZ), kod araligi ACMAZ ve icindeki `~~` cizgiyi ACAR. Yani hukum belgede USTU
+# CIZILI gorunurken testte YURURLUKTE sayiliyordu. Ucu de GOSTERICI_KURULUM §9'a (OLCULEMEDI
+# / ACIK listesi) kuruldu.
+K_X16_CAPA = ("- `gst-launch-1.0 -v` nabız satırı biçimi (DRM gözetmeninin boru ilerlemesi "
+              "denetimi) ve `identity`'nin boruya etkisi, `-v` satırlarının zamanında "
+              "gelmesi / `stdbuf -oL` (T228-D).")
+
 #: (ad, sinif, dosya, eski, yeni, suit) — sinif: "KACAN" (19) ya da "KONTROL" (denetimde dusenler)
 MUTANTLAR = (
     # ── T226 · CONTRACTS §6.8 ────────────────────────────────────────────────
@@ -155,6 +173,17 @@ MUTANTLAR = (
      R_CAPA + " Zincir yerinde; kapılar sorun çıkarmadı.", ARDUPLANE),
     # D-461: ON KAYIT TEKLIGI — ikinci ve GEVSETILMIS kabul olcutu (T236-B curutucusu).
     ("D461 ikinci gevsetilmis olcut", "KACAN", ON_KAYIT_T235, O_CAPA, O_CAPA + O_D461, T235),
+
+    # ── T240-C: IKINCI BAGIMSIZ CURUTUCUNUN (D-465 hukmu) KACAN MUTANTLARI ───
+    # X15 : `&#96;~~...~~&#96;` — sahte kod araligi, ICI cizili (§9 kodek maddesi).
+    ("X15 &#96; sarmali ~~cizik~~", "KACAN", KURULUM, K_A4,
+     "- &#96;~~" + K_A4[2:] + "~~&#96;", GOSTERICI),
+    # X16 : ayni sinif, §9'un `-v` nabiz maddesinde (baska bir OLCULEMEDI maddesi).
+    ("X16 &#96; sarmali nabiz maddesi", "KACAN", KURULUM, K_X16_CAPA,
+     "- &#96;~~" + K_X16_CAPA[2:] + "~~&#96;", GOSTERICI),
+    # X17 : ayni sinif, cizik HTML etiketiyle: `&#96;<s>...</s>&#96;`.
+    ("X17 &#96; sarmali <s>cizik</s>", "KACAN", KURULUM, K_A4,
+     "- &#96;<s>" + K_A4[2:] + "</s>&#96;", GOSTERICI),
 )
 
 
@@ -177,9 +206,10 @@ def main():
         print(s)
         kayit.write(s + "\n")
 
-    yaz("# T240 mutasyon kaniti — KACAN 28 mutant + 4 kontrol")
+    yaz("# T240 mutasyon kaniti — KACAN 31 mutant + 4 kontrol")
     yaz("#   19'u D-460 mimar denetiminin, 9'u (Y4/Y4b/Y7a-c/Y5/Y10/Y11/D461)")
-    yaz("#   T240'a RED veren bagimsiz curutucunun kacan mutantidir.")
+    yaz("#   T240-B'ye, 3'u (X15/X16/X17) T240-B'ye RED veren IKINCI bagimsiz")
+    yaz("#   curutucunun (D-465) kacan mutantidir.")
     yaz("# yorumlayici: {}".format(PY))
     yaz("# depo koku : {}".format(KOK))
     yaz()
@@ -234,7 +264,7 @@ def main():
     yaz("  KONTROL mutantlar : {}/{} DUSTU".format(kontrol_dusen, kontrol_toplam))
     yaz("  geri yukleme      : {}".format("hepsi bayt-es" if geri_yukleme_ok else "BOZUK"))
     basarili = (taban_ok and geri_yukleme_ok
-                and kacan_dusen == kacan_toplam == 28
+                and kacan_dusen == kacan_toplam == 31
                 and kontrol_dusen == kontrol_toplam)
     yaz("  HUKUM             : {}".format("GECTI" if basarili else "DUSTU"))
 

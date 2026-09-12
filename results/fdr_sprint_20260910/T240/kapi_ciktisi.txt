@@ -1,135 +1,65 @@
-# T240-B KAPI — 2026-09-12 04:17:01
-# yorumlayici: O:/navitas-local-train/venv/Scripts/python.exe -X utf8 -B
-# kok        : O:/navitas/.claude/worktrees/wf_fabd3bac-230-1
-# HEAD       : 94f54347197c22e6170f78f24164834ce64f5904
+# T240-C KAPI — 2026-09-12 05:49:23
+# yorumlayici: O:/navitas-local-train/venv/Scripts/python.exe
+# depo koku  : O:/navitas/.claude/worktrees/wf_fabd3bac-230-1
+# HEAD       : 40b0d9d2
 
-==============================================================
-$ O:/navitas-local-train/venv/Scripts/python.exe -X utf8 -B -m unittest discover -s tests -p test_belge_kilidi.py -q
-==============================================================
+== test_belge_kilidi.py  (cikis=0, 1 s)
 ----------------------------------------------------------------------
-Ran 60 tests in 0.011s
+Ran 74 tests in 0.028s
 
 OK
-CIKIS=0
 
---- MK15 ardisik kosum 1 ---
+== MK15 (1/3)  (cikis=0, 24 s)
 ----------------------------------------------------------------------
-Ran 39 tests in 25.527s
+Ran 39 tests in 24.351s
 
 OK
-CIKIS=0
 
---- MK15 ardisik kosum 2 ---
+== MK15 (2/3)  (cikis=0, 25 s)
 ----------------------------------------------------------------------
-Ran 39 tests in 25.473s
+Ran 39 tests in 24.535s
 
 OK
-CIKIS=0
 
---- MK15 ardisik kosum 3 ---
+== MK15 (3/3)  (cikis=0, 26 s)
 ----------------------------------------------------------------------
-Ran 39 tests in 25.489s
+Ran 39 tests in 24.964s
 
 OK
-CIKIS=0
 
-==============================================================
-$ O:/navitas-local-train/venv/Scripts/python.exe -X utf8 -B -m unittest discover -s tests -p test_isaretli_gosterici.py -q
-==============================================================
+== test_isaretli_gosterici.py  (cikis=0, 34 s)
 ----------------------------------------------------------------------
-Ran 62 tests in 36.580s
+Ran 63 tests in 33.989s
 
 OK (skipped=1)
-CIKIS=0
 
-==============================================================
-$ O:/navitas-local-train/venv/Scripts/python.exe -X utf8 -B -m unittest discover -s tests -p test_faz_b_arduplane_sablon.py -q
-==============================================================
+== test_faz_b_arduplane_sablon.py  (cikis=0, 1 s)
 ----------------------------------------------------------------------
-Ran 44 tests in 1.036s
+Ran 45 tests in 0.877s
 
 OK
-CIKIS=0
 
-==============================================================
-$ O:/navitas-local-train/venv/Scripts/python.exe -X utf8 -B -m unittest discover -s tests -p test_t235_alan_etiketi.py -q
-==============================================================
+== test_t235_alan_etiketi.py  (cikis=0, 33 s)
 ----------------------------------------------------------------------
-Ran 56 tests in 36.529s
+Ran 57 tests in 32.652s
 
 OK
-CIKIS=0
 
-==============================================================
-$ O:/navitas-local-train/venv/Scripts/python.exe -X utf8 -B -m unittest discover -s tests -p test_yks_*.py -q
-==============================================================
-KANIT KAYDI HATASI — uçuş/onay başlatma kapatıldı; ARM ve acil komutlar kullanılabilir: RuntimeError: YKS_ARAYUZ_HAZIR: OSError: disk dolu
-KANIT KAYDI HATASI — uçuş/onay başlatma kapatıldı; ARM ve acil komutlar kullanılabilir: RuntimeError: OLAY_A: OSError: ilk
-KAMERA KAPATMA HATASI: kamera worker kapanmadi
-KANIT KAYDI KAPATMA HATASI: fsync/kapatma hatasi
-[T36_KAPI] demo=1 kaynak=kompozit ilk_kare=data/arena_kompozit/images/a.jpg exit=0
+== test_yks_*.py (discover)  (cikis=0, 42 s)
 ----------------------------------------------------------------------
-Ran 233 tests in 40.182s
+Ran 233 tests in 39.312s
 
 OK
-CIKIS=0
 
-==============================================================
-$ O:/navitas-local-train/venv/Scripts/python.exe -X utf8 -B codes/test_rota_sentetik.py
-==============================================================
-
-==============================================================================
-KOL 2 — URETIM YOLU (rpi_inference.analyze_path) · AYNI 15 SAHNE
-==============================================================================
-harita  senaryo  gercek   yayin  guven   wp              ret  darbogaz  sonuc
-     1    kolay       1       1  0.822    8             None         2  OK
-     1     orta       2       2  0.731    8             None         2  OK
-     1      zor       3       3  0.662   13             None         2  OK
-     2    kolay       1       1  0.731    8             None         2  OK
-     2     orta       1       1  0.662   10             None         2  OK
-     2      zor       3       3  0.651   10             None         3  OK
-     3    kolay       3       3  0.674    8             None         3  OK
-     3     orta       2       2  0.742   12             None         2  OK
-     3      zor       1       1  0.708   11             None         3  OK
-     4    kolay       3       3  0.708    8             None         2  OK
-     4     orta       3       3  0.753   13             None         3  OK
-     4      zor       1       1  0.742   12             None         2  OK
-     5    kolay       3       3  0.742    8             None         2  OK
-     5     orta       3       3  0.833   10             None         3  OK
-     5      zor       2       2  0.685    9             None         1  OK
-------------------------------------------------------------------------------
+== GENEL KAPI codes/test_rota_sentetik.py  (cikis=0, 5 s)
 URETIM YOLU: rota uretimi 15/15 · yayinlanan serit 15/15 (esik >= 14/15, ON_KAYIT SS18-B)
 [OK] URETIM YOLU KOLU GECTI
 ------------------------------------------------------------------------------
 GENEL KAPI (madde 14): GECTI — kol1 15/15 · kol2 serit 15/15
-CIKIS=0
 
-==============================================================
-$ O:/navitas-local-train/venv/Scripts/python.exe -X utf8 -B scripts/belge_kilidi_denetle.py --rapor results/fdr_sprint_20260910/T240/acik_kilitler.md
-==============================================================
-| `tests/test_p5_h1c_damgasi.py` | `assertIn`, `assertNotIn`, `index` |
-| `tests/test_p5_histerezis.py` | `assertNotIn`, `count`, `find`, `in` |
-| `tests/test_pixhawk_firmware_yolu.py` | `assertIn`, `assertNotRegex`, `assertRegex` |
-| `tests/test_runbook_komutlari_kosuyor.py` | `assertIn`, `findall`, `in`, `search` |
-| `tests/test_saha_kosum_kagidi.py` | `assertIn`, `assertNotIn`, `assertNotRegex`, `assertRegex`, `find`, `findall` |
-| `tests/test_sim_mujoco_olcum.py` | `assertIn`, `assertNotIn`, `in` |
-| `tests/test_sim_mujoco_video.py` | `assertIn`, `in` |
-| `tests/test_sim_mujoco_zincir.py` | `assertIn`, `assertNotIn`, `in`, `index`, `search` |
-| `tests/test_t123_gecis_provasi.py` | `assertIn`, `assertNotIn`, `find`, `findall`, `in`, `search` |
-| `tests/test_t132_taban_gorunurlugu.py` | `assertIn`, `assertNotIn`, `in` |
-| `tests/test_t141_rota_yoksa_surme.py` | `assertIn`, `find`, `match`, `search` |
-| `tests/test_t143_turev_ve_kamera.py` | `assertIn`, `in` |
-| `tests/test_t158_kilavuz_kapisi_dongu.py` | `assertIn`, `assertNotIn`, `in` |
-| `tests/test_t163_cozunurluk_sozlesmesi.py` | `assertIn`, `findall`, `in`, `index` |
-| `tests/test_t191_veri_kaynaklari_taze.py` | `assertIn`, `findall`, `in`, `search` |
-| `tests/test_t202_jetson_paket_butunlugu.py` | `assertIn`, `assertNotIn`, `findall`, `in` |
-| `tests/test_uretim_modeli_hizasi.py` | `assertIn`, `assertNotIn`, `findall`, `in`, `match`, `search` |
-| `tests/test_wheels_sayisi_belgelerle_tutarli.py` | `assertIn`, `assertNotRegex`, `in`, `search` |
-| `tests/test_yarisma_adi_kapisi.py` | `assertIn`, `assertRegex`, `in`, `search` |
-| `tests/test_yks_gui_uretim_hizasi.py` | `assertIn`, `assertNotIn`, `findall`, `in` |
-| `tests/test_yks_hakem_kanit_olaylari.py` | `assertIn`, `findall`, `in`, `index` |
+== scripts/belge_kilidi_denetle.py  (cikis=0, 1 s)
 | `tests/test_yks_sik_yordami.py` | `assertIn`, `index`, `search` |
 
 
 rapor yazildi: O:\navitas\.claude\worktrees\wf_fabd3bac-230-1\results\fdr_sprint_20260910\T240\acik_kilitler.md
-CIKIS=0
+

@@ -39,6 +39,16 @@ TARAMA_CAGRI = {"assertIn", "assertNotIn", "assertRegex", "assertNotRegex",
 #: cizik ayiklamasini KENDI yazan testin izi — yardimci kullanilmiyorsa agir uyari
 KENDI_CIZIK_IZI = ("~~", "<del", "<s>", "<strike", "strikethrough")
 
+#: D-465 (3): YONTEM SINIFLANDIRMASI. Mimar karari 12 Eylul — olcum HUKMU tasiyan
+#: yuzeyler ON KAYITLI METIN ESITLIGINE cevrilir (kacis yuzeyi YOKTUR); ayiklamali
+#: kilitler yalniz DUSUK DEGERLI yuzeylerde (uzun anlati) kalir ve orada YOKLUK degil
+#: VARLIK denetimi yapar. Bu rapor hangi dosyanin hangi sinifta oldugunu OLCER.
+ESITLIK_YORDAMLARI = ("bloklar", "on_kayitli_metin_esit")
+AYIKLAMA_YORDAMLARI = ("cizikleri_ayikla",)
+DIGER_YORDAMLAR = ("beyaz_liste_disi_cizik", "normalize", "olumlu_hukum_var",
+                   "hukum_cumleleri", "kabul_olcutu_tekligi")
+YORDAMLAR = ESITLIK_YORDAMLARI + AYIKLAMA_YORDAMLARI + DIGER_YORDAMLAR
+
 
 class Tarayici(ast.NodeVisitor):
     def __init__(self):
@@ -47,6 +57,7 @@ class Tarayici(ast.NodeVisitor):
         self.tarama = set()
         self.yardimci = False
         self.kendi_cizik = set()
+        self.yordam = set()
 
     def visit_Import(self, d):
         for a in d.names:
@@ -57,6 +68,14 @@ class Tarayici(ast.NodeVisitor):
     def visit_ImportFrom(self, d):
         if (d.module or "").split(".")[0] == YARDIMCI:
             self.yardimci = True
+            for a in d.names:
+                if a.name in YORDAMLAR:
+                    self.yordam.add(a.name)
+        self.generic_visit(d)
+
+    def visit_Name(self, d):
+        if d.id in YORDAMLAR:
+            self.yordam.add(d.id)
         self.generic_visit(d)
 
     def visit_Constant(self, d):
@@ -71,6 +90,8 @@ class Tarayici(ast.NodeVisitor):
     def visit_Attribute(self, d):
         if d.attr in OKUMA:
             self.okuma = True
+        if d.attr in YORDAMLAR:
+            self.yordam.add(d.attr)
         self.generic_visit(d)
 
     def visit_Call(self, d):
@@ -97,7 +118,8 @@ def denetle(yol):
     t = Tarayici()
     t.visit(agac)
     return {"ad": yol.name, "md": t.md, "okuma": t.okuma, "tarama": sorted(t.tarama),
-            "yardimci": t.yardimci, "kendi_cizik": sorted(t.kendi_cizik)}
+            "yardimci": t.yardimci, "kendi_cizik": sorted(t.kendi_cizik),
+            "yordam": sorted(t.yordam)}
 
 
 def main(argv=None):
@@ -130,13 +152,31 @@ def main(argv=None):
     yaz("| ortak yardimcidan GECEN | {} |".format(len(gecen)))
     yaz("| ACIK (yardimci kullanmayan) | {} |".format(len(acik)))
     yaz("| ACIK **ve** kendi cizik kalibi olan (agir) | {} |".format(len(riskli)))
+    esitlikli = [k for k in gecen if set(k["yordam"]) & set(ESITLIK_YORDAMLARI)]
+    blokcu = [k for k in gecen if "bloklar" in k["yordam"]]
+    yaz("| GECENLERDEN on kayitli METIN ESITLIGI kullanan (D-465) | {} |".format(len(esitlikli)))
+    yaz("| GECENLERDEN BLOK esitligi (`bloklar`) kullanan (D-465 (1)) | {} |".format(len(blokcu)))
     yaz()
-    yaz("## 1. Ortak yardimcidan gecenler")
+    yaz("## 1. Ortak yardimcidan gecenler — YONTEM SINIFI (D-465 (3))")
     yaz()
+    yaz("D-465 (mimar karari, 12 Eylul): olcum HUKMU tasiyan yuzeyler ON KAYITLI METIN")
+    yaz("ESITLIGINE cevrilir — YOKLUK denetiminin kacis yuzeyi SONSUZ, ESITLIGIN kacis")
+    yaz("yuzeyi YOKTUR. Ayiklamali kilitler yalniz DUSUK DEGERLI yuzeylerde kalir ve")
+    yaz("orada YOKLUK degil VARLIK denetimi yapar.")
+    yaz()
+    yaz("| test | ESITLIK | ayiklama | diger yordamlar |")
+    yaz("|---|---|---|---|")
     for k in gecen:
-        yaz("- `tests/{}`".format(k["ad"]))
+        es = [y for y in k["yordam"] if y in ESITLIK_YORDAMLARI]
+        ay = [y for y in k["yordam"] if y in AYIKLAMA_YORDAMLARI]
+        dg = [y for y in k["yordam"] if y in DIGER_YORDAMLAR]
+        yaz("| `tests/{}` | {} | {} | {} |".format(
+            k["ad"],
+            ", ".join("`{}`".format(x) for x in es) or "—",
+            ", ".join("`{}`".format(x) for x in ay) or "—",
+            ", ".join("`{}`".format(x) for x in dg) or "—"))
     if not gecen:
-        yaz("- (yok)")
+        yaz("| (yok) | | | |")
     yaz()
     yaz("## 2. ACIK kilitler — kendi cizik/hukum kalibini tasiyanlar (once bunlar)")
     yaz()

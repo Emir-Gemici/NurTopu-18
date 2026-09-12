@@ -345,12 +345,75 @@ class HtmlVarlikBicimi(unittest.TestCase):
         self.assertTrue(bk.beyaz_liste_disi_cizik("prova m&#x336;aliyet"))
         self.assertTrue(bk.beyaz_liste_disi_cizik("prova m&#X336;aliyet"))
 
-    def test_varlik_bicimli_tilde_cizigi_ayiklanir(self):
-        """`&#126;&#126;...&#126;&#126;` cozulunce `~~...~~` olur: hem ayiklanir hem
-        beyaz liste disi cizik sayilir (ikisi de kilidi tutar)."""
-        self.assertEqual("hukum  sonu",
-                         bk.cizikleri_ayikla("hukum &#126;&#126;eski&#126;&#126; sonu"))
-        self.assertTrue(bk.beyaz_liste_disi_cizik("hukum &#126;&#126;eski&#126;&#126; sonu"))
+    def test_varlik_bicimli_tilde_YAPI_URETMEZ_ama_aday_sayilir(self):
+        """D-465 DUZELTMESI: `&#126;&#126;...&#126;&#126;` CIZGI ACMAZ — ayiklanmaz, ADAY sayilir.
+
+        ONCEKI DAVRANIS (T240-B, e70b3fe6) `&#126;`'i cozup `~~...~~` sanip ARALIGI
+        AYIKLIYORDU. Bu YANLISTI ve kendi kacisini uretmisti: CommonMark/GFM'de varlik
+        referansi YAPI belirten simgenin yerine KULLANILAMAZ — okuyucuda
+        `&#126;&#126;eski&#126;&#126;` duz `~~eski~~` METNI olarak gorunur, ustu CIZILI
+        DEGILDIR. Ayiklamak, cizilmemis bir hukmu testin gozunden DUSURMEK demekti.
+
+        Simdi: metin YERINDE kalir (varlik kilidi ondan kacamaz) ve dort varligin dordu
+        de "yapi ureten varlik bicimi" olarak beyaz liste disi ADAYDIR — yani belgede
+        boyle bir yazim varsa kilit ZATEN duser. Assert sayisi 2 -> 3 (guclendi).
+        """
+        metin = "hukum &#126;&#126;eski&#126;&#126; sonu"
+        self.assertEqual(metin, bk.cizikleri_ayikla(metin),
+                         "varlik bicimli tilde CIZGI ACMAZ: ayiklanmamali")
+        hatalar = bk.beyaz_liste_disi_cizik(metin)
+        self.assertEqual(4, len(hatalar), hatalar)
+        self.assertIn("yapi ureten varlik bicimi &#126;", hatalar[0])
+
+    # ── D-465 / K2: `&#96;` SARMALI POZITIF VAKALAR (curutucunun X15/X16/X17'si) ──
+    #: Her biri gercek dosya mutanti olarak da olculdu (mutasyon_t240.py X15/X16/X17).
+    #: Ortak kok neden: `&#96;` COZULURSE sahte bir KOD ARALIGI acilir ve icindeki cizik
+    #: taramadan tamamen gizlenir; okuyucuda ise `&#96;` duz backtick KARAKTERIDIR, kod
+    #: araligi ACMAZ, icindeki `~~` ise cizgiyi ACAR.
+    VARLIK_SARMALI = (
+        ("&#96; ondalik", "Hüküm: &#96;~~X~~&#96; sonu."),
+        ("&#x60; onaltilik", "Hüküm: &#x60;~~X~~&#x60; sonu."),
+        ("&grave; adli", "Hüküm: &grave;~~X~~&grave; sonu."),
+        ("&#96; + <s>", "Hüküm: &#96;<s>X</s>&#96; sonu."),
+    )
+
+    def test_K2_varlik_sarmali_cizik_ADAY_ve_X_DUSER(self):
+        """`&#96;~~X~~&#96;` ve varyantlari: hata VERMELI ve `cizikleri_ayikla` X'i DUSURMELI."""
+        for ad, metin in self.VARLIK_SARMALI:
+            with self.subTest(ad=ad):
+                hatalar = bk.beyaz_liste_disi_cizik(metin)
+                self.assertTrue(hatalar, "varlik sarmali KACTI: " + ad)
+                self.assertIn("yapi ureten varlik bicimi", " | ".join(hatalar))
+                self.assertNotIn("X", bk.cizikleri_ayikla(metin),
+                                 "sarmalin ICI cizilidir, ayiklanmali: " + ad)
+
+    def test_K2_varlik_bicimli_CIT_kod_araligi_ACMAZ(self):
+        """`&#96;&#96;&#96;` cit bicimi: kod citi ACMAZ, icindeki hukum GIZLENEMEZ."""
+        metin = "&#96;&#96;&#96;\n~~ÖLÇÜLEMEDİ~~\n&#96;&#96;&#96;\n"
+        hatalar = bk.beyaz_liste_disi_cizik(metin)
+        self.assertTrue(hatalar, "varlik bicimli cit KACTI")
+        self.assertEqual(2, sum("tilde" in h for h in hatalar),
+                         "sahte citin ICINDEKI cizik gorulmeli (acilis + kapanis ~~): "
+                         + repr(hatalar))
+        self.assertNotIn("ÖLÇÜLEMEDİ", bk.cizikleri_ayikla(metin))
+
+    def test_K2_GERILEME_KANITI_hukum_sozcugu_yururlukte_SAYILMAZ(self):
+        """Curutucunun gerileme kaniti: `&#96;~~kaynak ... zorunludur~~&#96;` — hukum DUSMELI."""
+        metin = "**Hüküm:** &#96;~~kaynak alanı zorunludur~~&#96; ve boş olamaz."
+        self.assertNotIn("zorunludur", bk.normalize(metin),
+                         "cizili hukum YURURLUKTE sayiliyor (T240-B gerilemesi)")
+        self.assertTrue(bk.beyaz_liste_disi_cizik(metin))
+
+    def test_K2_KUSUR1b_varlik_tildesi_hukum_cumlesini_DUSURMEZ(self):
+        """KUSUR 1b: `&#126;` sarmali celiskili hukum `hukum_cumleleri` demetinden DUSMEMELI.
+
+        Onceki surumde `&#126;` cozulup `~~` olunca `cizikleri_ayikla` cumleyi SILIYORDU ve
+        kapali kume onu HIC gormuyordu. Artik cozulmedigi icin cumle kumede DURUR.
+        """
+        celiski = "&#126;Not (12 Eylül): `kaynak` alanı artık zorunlu değildir.&#126;"
+        cumleler = bk.hukum_cumleleri(celiski)
+        self.assertEqual(1, len(cumleler), cumleler)
+        self.assertIn("kaynak alani artik zorunlu degildir", cumleler[0])
 
     def test_olumlu_hukum_varlik_arkasina_saklanamaz(self):
         """Iki ayri kilit birden tutar ve ikisi de gereklidir.
@@ -377,10 +440,24 @@ class HtmlVarlikBicimi(unittest.TestCase):
             with self.subTest(metin=metin):
                 self.assertEqual([], bk.beyaz_liste_disi_cizik(metin))
 
-    def test_NEGATIF_kacinilan_etiket_ornegi_hayalet_cizik_uretmez(self):
-        """`&lt;s&gt;` markdown'da ETIKET ACMAZ, harfi harfine "<s>" METNI gorunur."""
-        self.assertEqual([], bk.beyaz_liste_disi_cizik(
-            "Ornek: `&lt;s&gt;` yazimi harfi harfine gorunur &lt;s&gt;boyle&lt;/s&gt;."))
+    def test_kacinilan_etiket_ornegi_HAYALET_ETIKET_uretmez_ama_kod_DISINDA_ADAYDIR(self):
+        """`&lt;s&gt;` markdown'da ETIKET ACMAZ; kod ICINDE temiz, kod DISINDA ADAYDIR.
+
+        D-465 DEGISIKLIGI (guclendirme): `&lt;`/`&gt;` eskiden yalniz COZULMUYORDU, yani
+        hicbir kilit onlari GORMUYORDU. Artik `_COZULMEZ` ailesinin tamami (yapi ureten
+        simgelere cozen her varlik) kod DISINDA dogrudan beyaz liste disi ADAYDIR.
+        OLCUM (bu kilidin bagladigi dort belgede, kod araliklari disinda): CONTRACTS 0,
+        GOSTERICI_KURULUM 0, config/pixhawk/README 0, t235 ON_KAYIT 0 mesru varlik —
+        yani bu sertlestirme gercek belgelerde HICBIR yanlis pozitif uretmez (ayrica
+        `scripts/belge_kilidi_denetle.py` ciktisi degismedi).
+        """
+        self.assertEqual([], bk.beyaz_liste_disi_cizik("Ornek: `&lt;s&gt;` kod icinde temiz."))
+        hatalar = bk.beyaz_liste_disi_cizik("Ornek &lt;s&gt;boyle&lt;/s&gt; kod disinda.")
+        self.assertEqual(4, len(hatalar), hatalar)
+        self.assertIn("yapi ureten varlik bicimi", hatalar[0])
+        # ... ama HAYALET ETIKET uretmez: `<s>` etiketi olarak sayilmaz, cizik ayiklanmaz.
+        self.assertNotIn("html etiketi", " | ".join(hatalar))
+        self.assertIn("boyle", bk.cizikleri_ayikla("Ornek &lt;s&gt;boyle&lt;/s&gt; kod disinda."))
 
     def test_NEGATIF_kod_icinde_varlik_cozulmez(self):
         """Kod icinde `&amp;` harfi harfinedir (karar 2'nin varlik ikizi)."""
@@ -396,6 +473,171 @@ class HtmlVarlikBicimi(unittest.TestCase):
         self.assertIn("&#822;", hatalar[0], "baglam HAM metinden gelmeli")
 
 
+class BlokEsitligi(unittest.TestCase):
+    """D-465 (1): `bloklar` — ON KAYITLI METIN ESITLIGI birimi.
+
+    KILIDIN VAROLUS GEREKCESI: YOKLUK denetiminin kacis yuzeyi SONSUZDUR (her yasak
+    bicimin baska bir yazimi vardir), ESITLIK denetiminin kacis yuzeyi YOKTUR. Asagidaki
+    vakalar ikisini YAN YANA olcer: ayni hukmu ALTI ayri sozdizimiyle gizleme girisimi
+    `beyaz_liste_disi_cizik`'in yalniz birinde hata verdigi, EŞITLIGIN ise ALTISINDA da
+    dustugu gosterilir.
+    """
+
+    TABAN = ("## 4. Kabul\n"
+             "\n"
+             "- **T236 kapısı:** yatay **≤ 2,0 m**, zamanın **≥ %90**'ında.\n"
+             "- İkinci madde.\n"
+             "\n"
+             "| alan | kural |\n"
+             "|---|---|\n"
+             "| kaynak | zorunlu |\n"
+             "\n"
+             "```bash\n"
+             "echo bir\n"
+             "\n"
+             "echo iki\n"
+             "```\n")
+
+    def test_yapisal_birimler_ayrilir_ve_SAYILABILIR(self):
+        b = bk.bloklar(self.TABAN)
+        self.assertEqual(7, len(b), b)
+        self.assertEqual("## 4. Kabul", b[0])
+        self.assertIn("- İkinci madde.", b)
+        self.assertIn("| kaynak | zorunlu |", b)
+
+    def test_kod_citinin_ICI_harfi_harfine_korunur(self):
+        """Cit icindeki BOS SATIR blok ACMAZ ve satir sonlari AYNEN durur."""
+        b = bk.bloklar(self.TABAN)
+        cit = [x for x in b if x.startswith("```")]
+        self.assertEqual(1, len(cit), b)
+        self.assertEqual("```bash\necho bir\n\necho iki\n```", cit[0])
+
+    def test_NEGATIF_satir_sarmasi_ve_bosluk_ESITLIGI_BOZMAZ(self):
+        """Bosluk/satir sonu hukmun anlami DEGILDIR (D-465: normallestirme yalniz budur)."""
+        sarmali = self.TABAN.replace("yatay **≤ 2,0 m**, zamanın",
+                                     "yatay **≤ 2,0 m**,\n  zamanın", 1)
+        self.assertEqual(bk.bloklar(self.TABAN), bk.bloklar(sarmali))
+        self.assertEqual(bk.bloklar(self.TABAN),
+                         bk.bloklar(self.TABAN.replace("İkinci madde.",
+                                                       "İkinci   madde.", 1)))
+
+    def test_ALTI_GIZLEME_BICIMI_de_ESITLIGI_DUSURUR(self):
+        """ESITLIK vs YOKLUK — D-465'in gerekcesinin OLCUMU.
+
+        Ayni hukum alti ayri sozdizimiyle geri cekiliyor/gizleniyor. `bloklar` ALTISINDA
+        DA duser; `beyaz_liste_disi_cizik` yalnizca varlik/cizik tasiyanlarda hata verir.
+        Bu fark, olcum hukmu tasiyan yuzeylerin neden ESITLIGE cevrildigini gosterir.
+        """
+        hedef = "| kaynak | zorunlu |"
+        gizlemeler = (
+            ("~~ ile", "| kaynak | ~~zorunlu~~ |"),
+            ("<s> ile", "| kaynak | <s>zorunlu</s> |"),
+            ("&#822; varlik cizgisi", "| kaynak | z&#822;o&#822;runlu |"),
+            ("&#96; sarmali sahte kod araligi", "| kaynak | &#96;~~zorunlu~~&#96; |"),
+            ("HTML yorumu", "| kaynak | <!-- zorunlu --> |"),
+            ("markdown baglantisi", "| kaynak | [zorunlu](#) |"),
+        )
+        taban = bk.bloklar(self.TABAN)
+        for ad, yeni in gizlemeler:
+            with self.subTest(gizleme=ad):
+                self.assertNotEqual(taban, bk.bloklar(self.TABAN.replace(hedef, yeni, 1)),
+                                    "ESITLIK kacirdi: " + ad)
+
+    def test_AYIKLAMA_YOKTUR_cizili_metin_blokta_DURUR(self):
+        """Cizik ayiklamasi saklama yuzeyi acar; bu yuzden `bloklar` AYIKLAMAZ.
+
+        FDR kurali geregi cizili duran ESKI metin blogun ICINDE HAM haliyle kalir —
+        boylece "eski metin silinmez, cizilir" kurali ile on kayit birbirine baglanir.
+        """
+        cizili = self.TABAN.replace("- İkinci madde.", "- ~~İkinci madde (10 Eylül)~~", 1)
+        b = bk.bloklar(cizili)
+        self.assertIn("- ~~İkinci madde (10 Eylül)~~", b)
+        self.assertNotIn("- İkinci madde.", b)
+
+
+# ── D-465 / K4: GERCEK BELGELERIN HARFI HARFINE KOPYASI OLAN CAPALAR ─────────
+# NEDEN: curutucu (KUSUR 3) olctu — birim testi A10 bolumunu TEK SATIRA indirgemis,
+# A7 ve §7.5 capalarindan da birer cumle ATILMISTI; oysa sinif docstring'i capalari
+# "gercek belgelerin metni (harfi harfine kopya)" diye tanitiyordu. Olculenden
+# fazlasini soyleyen beyan yasaktir (D-460 bulgu 3 sinifi). Capalar artik GERCEKTEN
+# tam kopyadir; 12 Eylul 2026'da alinmis ANLIK GORUNTUDUR (canli dosya OKUNMAZ:
+# ATOLYE kagidi 12 Eylul'de INSAN tarafindan doldurulacak ve bu birim testi o
+# doldurmada kirilmamalidir — gercek dosyalarin kilidi kendi suitlerindedir).
+#   kaynak: ATOLYE_TEST_GUNU_20260912.md §A10 · §A7 ; CONTRACTS.md §7.5
+A10_BOLUM = (
+    '### A10 — Jetson canlı kamera FPS (köprü + algı zinciri) · 15 dk\n'
+    '- **Amaç:** algı zincirinin canlı CSI kaynağıyla kare hızını ölçmek (6 Eylül ölçümü dosya kaynağıydı, kamera bağlı değildi — D-431).\n'
+    '- **Komut (Jetson):** A9 köprüsü açıkken `python -B codes/kamera_dogrula.py --kaynak http://127.0.0.1:8080/video --kare 60 --zincir --model jetson_paket/models/navitas_seg_v36_best.pt --imgsz 512 | tee results/atolye_20260912/A10_canli_fps.txt` · terminalin fotoğrafı `A10_ekran.jpg`. Model yolu 6 Eylül koşumundaki dosyadır (results/jetson_20260906/jetson_fps_20260906_orin_nano/ozet.json `vakalar[0].model`); yoksa `ls jetson_paket/models/*.pt` (manifest `asil_model_pt`).\n'
+    '- **Beklenen görüntü:** `okunan kare : 60 (dusen: 0)` · `kare gecikmesi : p50=… ms p95=… ms` · `OLCULEN FPS` · `rota durumlari`.\n'
+    '- **BEKLENTİ (BENZER ÖLÇÜM — ölçüm değil):** aynı kart, pt, imgsz 512, dosya kaynağı: p50/p95 739/942 ms = 1,35/1,06 FPS (results/jetson_20260906/jetson_fps_20260906_orin_nano/ozet.json:69-70, D-431). Canlı kaynakta köprü okuma + JPEG çözme payı eklenir (BİLİNMİYOR) → beklenti ≤ 1,35 FPS.\n'
+    '- **Kabul (FDR/BOLUM_3_SISTEM_SPESIFIKASYONLARI.md:915):** p50 ve p95 ayrı ayrı ≥ 0,61 FPS ⇔ kare gecikmesi p95 ≤ 1000 / 0,61 = 1639 ms (HESAP).\n'
+    '- **Sonuç: ÖLÇÜLECEK (12 Eylül atölye)** → `results/atolye_20260912/A10_canli_fps.txt` · `A10_ekran.jpg`\n'
+    '- `[ ] ÖLÇÜLDÜ  [ ] ÖLÇÜLEMEDİ — neden: …… · saat: …… · kim: ……`\n'
+)
+
+A7_BOLUM = (
+    '### A7 — Menzil: SiK + MK15 video (açık alan varsa; yoksa ÖLÇÜLEMEDİ — sahada) · 25 dk\n'
+    '- **Amaç:** SiK ve MK15 videonun görev için gereken mesafede çalışmasını göstermek.\n'
+    "- **Adımlar:** yankı ucu İHA'nın kendisi (Jetson İHA'daki 12,2 V hattından, pil takılı, **pervanesiz**; hava SiK Jetson USB'de, A6 yankı komutu) uzağa taşınır; iki uçta telefon GPS koordinatı (ekran görüntüsü `A7_konum_<m>.png`); ≈100 m'de ve ulaşılan en uzak noktada — **Komut (PC):** `& $PY -B scripts/sik_rf_olc.py --rol olc --port COMx --baud 57600 --n 200 --aralik 0.2 --cikti results/atolye_20260912/A7_sik_<mesafe>m.json`. A11 zinciri kuruluysa aynı mesafede YKS video panelinin ekran fotoğrafı `A7_mk15_<mesafe>m.png`.\n"
+    '- **Beklenen görüntü:** A6 ile aynı satırlar; YKS video panelinde CANLI görüntü (BAYAT değil).\n'
+    '- **BEKLENTİ (HESAP — ölçüm değil):** gereken mesafe: İHA-UB kenarı `SARTNAME_IHA_UB_KENAR_M = 300.0` (codes/karar_sozlesmesi.py:2017); YKS bir köşedeyse en uzak nokta karşı köşe 300 × √2 = 424,3 m, 32 m kalkış irtifasıyla (config/pixhawk/README.md görev tablosu) eğik √(424,3² + 32²) = 425,5 m; YKS kenar ortasındaysa √(300² + 150²) = 335,4 m. Cihaz menzili: bu çift için ölçüm yok (DDR ">%98, 300 m" iddiasının kanıtı yok — SAHA_KOSUM_KAGIDI_20260910.md:31), MK15 için depoda sayı yok → BİLİNMİYOR; AIR_SPEED düştükçe SiK menzili artar (A6\'daki SiK belgesi).\n'
+    '- **Kabul (bu kâğıtta ön kayıt; RTT eşiği A6 ile aynı):** ölçülen mesafe ≥ 425,5 m\'de `sik_rf_olc` çıkış 0 (p95 < 200 ms) ∧ aynı mesafede YKS videosu CANLI. Daha kısa mesafede ölçüldüyse sonuç "kısmi — d m" yazılır, menzil kabulü ÖLÇÜLEMEDİ.\n'
+    '- **Sonuç: ÖLÇÜLECEK (12 Eylül atölye)** → `results/atolye_20260912/A7_sik_<mesafe>m.json` · `A7_konum_<m>.png` · `A7_mk15_<mesafe>m.png`\n'
+    '- `[ ] ÖLÇÜLDÜ  [ ] ÖLÇÜLEMEDİ — neden: …… · saat: …… · kim: ……`\n'
+)
+
+C75_BOLUM = (
+    '### 7.5 SiK hub — NAVITAS-çerçeve seri çoğullayıcı (Faz B · D-404 · 2026-09-03)\n'
+    '\n'
+    "**Olgu:** SiK (433 MHz) kipinde Jetson'daki üç NAVITAS süreci\n"
+    '(`rpi_inference --telsiz-seri`, `iha_inis_yayinci --serial`,\n'
+    "`iha_komut_alici --serial`) aynı `/dev/ttyUSB0`'ı ister — seri port tek\n"
+    "sahiplidir (§7.4'ün NAVITAS-protokol ikizi). Çözüm `comms/seri_hub.py`:\n"
+    'portu **yalnız hub** açar, tüketiciler kendi UDP kiplerinde kalır\n'
+    '(**tüketici kodu değişmez**).\n'
+    '\n'
+    '| yön | davranış |\n'
+    '|---|---|\n'
+    '| tüketici → seri | Tüketici çerçeveyi hub\'ın UDP soketine (`--bind`, varsayılan `127.0.0.1:5100`) yollar; hub datagramı olduğu gibi seriye yazar ve göndereni "öğrenilen" kümesine ekler |\n'
+    '| seri → tüketiciler | Hub gelen baytları kalıcı `FrameReader` ile **tam çerçeveye** toparlar; her çerçeveyi `encode(decode(...))` ile tek satır yapıp (statik `--tuketici` listesi ∪ öğrenilenler) adreslerinin **hepsine** yayınlar — datagram = çerçeve (D-403 KÜÇÜK-4 ile uyumlu) |\n'
+    '| yalnız-dinleyen tüketici | `--tuketici HOST:PORT` statik listede olmalı (ör. `iha_komut_alici` 5007) — hiç göndermeden de alsın |\n'
+    '| uzun ömürlü tüketici | **KURAL (D-405):** öğrenilen küme sayı tavanlıdır (`OGRENILEN_TAVANI`, en az tazelenen düşer, KIRMIZI log); uzun ömürlü her tüketici (`rpi_inference`, `iha_inis_yayinci`) **statik `--tuketici` ile de verilir** — öğrenme yalnız emniyettir |\n'
+    "| tek sahiplik | Hub UDP ucunu `SO_REUSEADDR`'sız açar (ikinci hub exit 3); seri port `exclusive=True` (Linux flock; ikinci süreç `SerialException`) — çift başlatma **sessiz olamaz** |\n"
+    "| dayanıklılık | Hiçbir çerçeve hub'ı öldürmez: derin iç içe JSON (`RecursionError`), 4096 B üstü datagram, fan-out `OSError` → sayaç + KIRMIZI log, süreç yaşar; `SIGTERM` → `durdur()` (son sayaç satırı journal'a düşer) |\n"
+    '| zamanlama | `SERI_OKUMA_ZAMAN_ASIMI_S ≤ 0,05`, `UDP_OKUMA_ZAMAN_ASIMI_S ≤ 0,01` testle kilitli; UDP→seri p95 < `PARASUT_TEKRAR_ARALIGI_S` (ölçüldü: boşta p50 10,6 / p95 31 ms; 20 Hz seri girişiyle p50 45 ms — Windows) |\n'
+    "| seri arızası | Seri kapatılır, KIRMIZI log, 1 s'de bir yeniden açma; UDP tarafı YAŞAR; arızada UDP'den gelen çerçeveler **düşürülür ve sayılır** (kuyruklanmaz — bayat rota yayınlanmasın) |\n"
+    '\n'
+    '**Topoloji (SiK kipi, Jetson — `jetson_baslat.sh KIP=sik` ile AYNI, test K2\n'
+    'kilitler):** `seri_hub --port /dev/ttyUSB0 --bind 127.0.0.1:5100 --tuketici\n'
+    '127.0.0.1:5007` · `rpi_inference --yks-hedef 127.0.0.1:5100` · `iha_inis_yayinci\n'
+    '--yks 127.0.0.1:5100` · `iha_komut_alici --bind 127.0.0.1:5007`. **Tek hatta\n'
+    "bir kez:** SiK hattında hedef YKS'dir; `--ika-hedef`/`--ika` hub'a VERİLMEZ\n"
+    "(ölçüldü, D-405: İKA ACK'i SiK'ten hiç gelmediği için `IhaSender` 8 tekrar /\n"
+    "2,11 s boşa tekrar ediyordu). İKA'nın hattı (SiK çok-noktalı mı, WiFi\n"
+    '`--ika-hedef <IKA_IP>:5006` mi) **topolojiyle karara bağlanır** (cumartesi).\n'
+    'ACK\'ler §6.6\'daki "ortam yayını" semantiğini korur: YKS\'nin ACK\'i seriden\n'
+    'gelir, hub öğrenilen/statik tüketicilere yayınlar; her tüketici yalnız kendi\n'
+    "`ref`'ini eşler. UDP kipinde (WiFi) hub **kullanılmaz**; süreçler doğrudan\n"
+    'YKS/İKA adresine konuşur. Kilit: `tests/test_faz_b_seri_hub.py` (uçtan uca:\n'
+    'YKS-seri → hub → gerçek `IhaKomutAlici` → ACK → seri).\n'
+    '\n'
+    '---\n'
+    '\n'
+    '## 8. Çözünürlük sözleşmesi\n'
+    '\n'
+    '> **Çıkarım `imgsz` = `config/model_registry.json → profiles.competition.imgsz`\n'
+    '> (bugün **512**). Bu dosyada ÇIPLAK SAYI YAZILMAZ — kilit:\n'
+    '> `tests/test_t163_cozunurluk_sozlesmesi.py`.**\n'
+    '\n'
+    "🔴 **BU BÖLÜM 2026-08-27'DE DÜZELTİLDİ (T163 · D-308).** Önceki hâli kalın harflerle\n"
+    '**"`imgsz` = 640; değiştirmek güvenli DEĞİLDİR"** diyordu — oysa üretim **v27\'den beri\n'
+    "512**'de koşuyordu. Yani sözleşme **kendi üretimini yasaklıyordu**; sahadaki bir kişi bu\n"
+    "satırı okuyup 640'a çevirseydi **kabul edilmemiş** bir çözünürlükte koşacaktı. Bayatlık\n"
+    'JETSON kılavuzunda T154/T157/T158 kapılarıyla kapatılmıştı; **bu dosyaya bakan kapı yoktu**,\n'
+    'artık var.\n'
+)
+
+
 class KabulOlcutuTekligi(unittest.TestCase):
     """D-461 (T236-B curutucusu) — ON KAYIT TEKLIGI kilidi.
 
@@ -404,10 +646,21 @@ class KabulOlcutuTekligi(unittest.TestCase):
     Ayni sinif ATOLYE-2'de (A10/A7) ve T229-D2'de (CONTRACTS §7.5, parantez ICINE konan
     celiskili hukum) ayri ayri olculdu — uc belirtinin tek kok nedeni budur.
 
-    Asagidaki uc capa GERCEK belgelerin metnidir (harfi harfine kopya):
-      · t235 ON_KAYIT §4        — results/fdr_sprint_20260910/H1/t235/ON_KAYIT.md
-      · ATOLYE-2 A10 / A7 kabul — ATOLYE_TEST_GUNU_20260912.md
-      · CONTRACTS §7.5 zamanlama satiri
+    CAPALARIN NE OLDUGU (D-465 / K4 — olculenden fazlasini soyleyen beyan yasak):
+      · `A10_BOLUM`, `A7_BOLUM`, `C75_BOLUM`: ilgili bolumun TAMAMININ, HARFI HARFINE
+        kopyasi (12 Eylul 2026'da alinmis anlik goruntu; testin canli dosyayi OKUMADIGI
+        bilerek secildi — ATOLYE kagidi 12 Eylul'de INSAN tarafindan doldurulacak ve
+        birim testi o doldurmada kirilmamalidir). Kaynaklar:
+          - ATOLYE_TEST_GUNU_20260912.md  §A10, §A7
+          - CONTRACTS.md                  §7.5
+      · `T236_BOLUM`: SENTETIKTIR — t235 ON_KAYIT §4'un TAMAMI DEGILDIR; yalniz kabul
+        SATIRI (`T236_OLCUT`) harfi harfine kopyadir. Gercek §4'un tamami
+        `tests/test_t235_alan_etiketi.py` icinde ON KAYITLI METIN ESITLIGIYLE (D-465)
+        ayrica baglidir.
+
+    BIRIM TESTININ SINIRI: buradaki vakalar YARDIMCININ davranisini olcer. Gercek
+    belgelerin kendisi ilgili suitlerde (test_t235_alan_etiketi, test_yks_mk15...,
+    test_isaretli_gosterici, test_faz_b_arduplane_sablon) kilitlidir.
     """
 
     T236_ADI = "T236 SITL kapısı"
@@ -417,12 +670,33 @@ class KabulOlcutuTekligi(unittest.TestCase):
         "irtifa hedeften **±1,0 m**. SITL koşulamazsa **ÖLÇÜLEMEDİ** (GEÇTİ değil) ve plan ilk "
         "kalkıştan önce Mission Planner simülasyonunda insanca doğrulanır (BEYAN)."
     )
+    #: SENTETIK bolum (gercek §4'un TAMAMI DEGIL) — kabul satiri harfi harfine kopyadir.
     T236_BOLUM = (
         "## 4. FDA görev planı (T235-E) ve SITL (T236)\n"
         "- Görev üreteci: 4 köşe + Başlangıç kenarı + montaj yaw → merkez = köşe ortalaması.\n"
         "  İrtifa (kip, h) seçimine göre, `FENCE` 50 m altında.\n"
         + T236_OLCUT + "\n"
     )
+
+    #: ATOLYE-2 A10'un kabul olcutu DISINDA mesruen tasidigi KARSILASTIRMALI buyukluk:
+    #: "**BEKLENTİ (BENZER ÖLÇÜM — ölçüm değil):** ... → beklenti ≤ 1,35 FPS". Bu satir
+    #: bir KABUL degil BEKLENTIDIR; kural (b) onu rakip esik sanip MUTASYONSUZ yanlis
+    #: pozitif veriyordu (D-465 / K4, curutucu KUSUR 3). ON KAYIT olarak gecilir:
+    #: kara liste gevsetmesi DEGILDIR — yeni bir deger ancak GORUNUR bir test
+    #: degisikligiyle girer ve 1,35 disindaki HER fps degeri yine DUSURUR (asagida
+    #: `test_K4_A10_mesru_buyukluk_ON_KAYITLIDIR_baskasi_DUSER` bunu olcer).
+    A10_MESRU = (("fps", 1.35),)
+
+    A10_ADI = "Kabul (FDR/BOLUM_3_SISTEM_SPESIFIKASYONLARI.md:915)"
+    A7_ADI = "Kabul (bu kâğıtta ön kayıt; RTT eşiği A6 ile aynı)"
+    C75_ADI = "zamanlama"
+
+    @staticmethod
+    def _madde(bolum, onek):
+        """Bolumun `onek` ile baslayan TEK maddesi (harfi harfine, satir sonu haric)."""
+        bulunan = [s for s in bolum.splitlines() if s.startswith(onek)]
+        assert len(bulunan) == 1, (onek, len(bulunan))
+        return bulunan[0]
 
     def test_TABAN_temiz(self):
         self.assertEqual([], bk.kabul_olcutu_tekligi(
@@ -445,48 +719,106 @@ class KabulOlcutuTekligi(unittest.TestCase):
         self.assertIn("rakip esik", birlesik)                    # (b) rakip esik
         self.assertIn("gozden gecirilmis", birlesik)             # (d) celiski sozcugu
 
-    def test_ATOLYE2_A10_yalniz_p50_ile_verilir_DUSER(self):
-        """ATOLYE-2 kacani A10: "T233 birlesmezse kabul YALNIZ p50 ile verilir"."""
-        adi = "Kabul (FDR/BOLUM_3_SISTEM_SPESIFIKASYONLARI.md:915)"
-        olcut = ("- **Kabul (FDR/BOLUM_3_SISTEM_SPESIFIKASYONLARI.md:915):** p50 ve p95 ayrı ayrı "
-                 "≥ 0,61 FPS ⇔ kare gecikmesi p95 ≤ 1000 / 0,61 = 1639 ms (HESAP).")
-        bolum = "### A10 — Jetson canlı kamera FPS · 15 dk\n" + olcut + "\n"
-        self.assertEqual([], bk.kabul_olcutu_tekligi(bolum, adi, olcut))
-        mutant = bolum + "- **Not (12 Eylül):** T233 birleşmezse kabul yalnız p50 ile verilir.\n"
-        hatalar = bk.kabul_olcutu_tekligi(mutant, adi, olcut)
+    def test_K3_rakip_esik_BIRIM_SOZCUGU_ile_yazilinca_DUSER(self):
+        """D-465 / K3 (curutucu KUSUR 2, gercek dosya mutanti X13).
+
+        OLCULEN KACIS: "sahada kabul yatay en cok 4 metre ve zamanin en az yuzde 70'i
+        olarak alinir" — DORT kural birden temiz donuyordu, cunku `normalize` "metre" ve
+        "yuzde"yi katlamiyordu. Simdi katliyor: "4 metre" -> "4 m", "yuzde 70" -> "%70".
+        """
+        mutant = self.T236_BOLUM + ("- **Not (12 Eylül):** sahada kabul yatay en çok "
+                                    "4 metre ve zamanın en az yüzde 70'i olarak alınır.\n")
+        hatalar = bk.kabul_olcutu_tekligi(mutant, self.T236_ADI, self.T236_OLCUT)
+        self.assertTrue(hatalar, "X13 (birim SOZCUGU) KACTI")
+        birlesik = " | ".join(hatalar)
+        self.assertIn("rakip esik ('m')", birlesik)
+        self.assertIn("rakip esik ('%')", birlesik)
+
+    def test_K3_rakip_esik_farkli_ONEK_ile_yazilinca_DUSER(self):
+        """D-465 / K3 (curutucu KUSUR 2, gercek dosya mutanti X14): "≤ 400 cm" = "≤ 4,0 m"."""
+        mutant = self.T236_BOLUM + "- **Not (12 Eylül):** sahada kabul ≤ 400 cm alınır.\n"
+        hatalar = bk.kabul_olcutu_tekligi(mutant, self.T236_ADI, self.T236_OLCUT)
+        self.assertTrue(hatalar, "X14 (cm oneki) KACTI")
+        self.assertIn("rakip esik ('m')", " | ".join(hatalar))
+
+    def test_K3_NEGATIF_onek_katlamasi_ayni_esigi_rakip_saymaz(self):
+        """Ayni esik baska onekle YAZILIRSA rakip DEGILDIR: 2,0 m == 200 cm."""
+        esdeger = self.T236_BOLUM + "- Not: ölçüm penceresi merkezden ≤ 200 cm alınır.\n"
+        self.assertEqual([], bk.kabul_olcutu_tekligi(
+            esdeger, self.T236_ADI, self.T236_OLCUT))
+
+    def test_ATOLYE2_A10_GERCEK_bolum_yalniz_p50_ile_verilir_DUSER(self):
+        """ATOLYE-2 kacani A10: "T233 birlesmezse kabul YALNIZ p50 ile verilir".
+
+        Capa GERCEK A10 bolumunun TAMAMIDIR (kisaltilmis degil).
+        """
+        olcut = self._madde(A10_BOLUM, "- **Kabul (FDR/")
+        self.assertEqual([], bk.kabul_olcutu_tekligi(
+            A10_BOLUM, self.A10_ADI, olcut, self.A10_MESRU),
+            "GERCEK A10 bolumu MUTASYONSUZ temiz olmali (D-465 / K4)")
+        mutant = A10_BOLUM + "- **Not (12 Eylül):** T233 birleşmezse kabul yalnız p50 ile verilir.\n"
+        hatalar = bk.kabul_olcutu_tekligi(mutant, self.A10_ADI, olcut, self.A10_MESRU)
         self.assertTrue(hatalar, "A10 mutanti KACTI")
         self.assertIn("yalniz p50 ile verilir", " | ".join(hatalar))
 
-    def test_ATOLYE2_A7_olcute_kosul_EKLEME_DUSER(self):
+    def test_K4_A10_mesru_buyukluk_ON_KAYITSIZ_YANLIS_POZITIF_verir(self):
+        """OLCULEN OLGU (curutucu KUSUR 3): on kayit VERILMEZSE (b) mutasyonsuz patlar.
+
+        GERCEK A10 bolumunde mesru bir BEKLENTI satiri vardir ("→ beklenti ≤ 1,35 FPS");
+        kural (b) onu rakip esik sanar. Eski birim testi bolumu TEK SATIRA indirgeyerek
+        bunu gizlemisti, sinif docstring'i ise capalari "harfi harfine kopya" diye
+        tanitiyordu — olculenden fazlasini soyleyen beyan. Olgu artik KAYITTADIR ve
+        duzeltmesi `mesru_buyuklukler` ON KAYDIDIR.
+        """
+        olcut = self._madde(A10_BOLUM, "- **Kabul (FDR/")
+        hatalar = bk.kabul_olcutu_tekligi(A10_BOLUM, self.A10_ADI, olcut)
+        self.assertEqual(1, len(hatalar), hatalar)
+        self.assertIn("rakip esik ('fps'): on kayitta [0.61] varken bolumde ayrica [1.35]",
+                      hatalar[0])
+
+    def test_K4_A10_mesru_buyukluk_ON_KAYITLIDIR_baskasi_DUSER(self):
+        """ON KAYIT GEVSETME DEGILDIR: 1,35 disindaki HER fps rakip esigi yine DUSER."""
+        olcut = self._madde(A10_BOLUM, "- **Kabul (FDR/")
+        mutant = A10_BOLUM + "- **Not (12 Eylül):** sahada kabul ≥ 0,40 FPS alınır.\n"
+        hatalar = bk.kabul_olcutu_tekligi(mutant, self.A10_ADI, olcut, self.A10_MESRU)
+        self.assertTrue(hatalar, "on kayit FAZLA sey gecirdi")
+        self.assertIn("rakip esik ('fps'): on kayitta [0.61] varken bolumde ayrica [0.4]",
+                      " | ".join(hatalar))
+
+    def test_ATOLYE2_A7_GERCEK_bolum_olcute_kosul_EKLEME_DUSER(self):
         """ATOLYE-2 kacani A7: olcutun icine "∧ YKS video paneli BAYAT degil" eklenmesi.
 
         Ozgun metin hala ICINDE durdugu icin alt dizge (`in`) kilidi YESIL kalirdi;
-        ON KAYITLI METIN ESITLIGI (kural c) bunu gorur.
+        ON KAYITLI METIN ESITLIGI (kural c) bunu gorur. Capa GERCEK A7 bolumunun
+        TAMAMIDIR — eski surumde olcutun son cumlesi ("Daha kisa mesafede olculduyse
+        ...") ATILMISTI (D-465 / K4).
         """
-        adi = "Kabul (bu kâğıtta ön kayıt; RTT eşiği A6 ile aynı)"
-        olcut = ("- **Kabul (bu kâğıtta ön kayıt; RTT eşiği A6 ile aynı):** ölçülen mesafe "
-                 "≥ 425,5 m'de `sik_rf_olc` çıkış 0 (p95 < 200 ms) ∧ aynı mesafede YKS videosu "
-                 "CANLI.")
-        bolum = "### A7 — Menzil: SiK + MK15 video · 25 dk\n" + olcut + "\n"
-        self.assertEqual([], bk.kabul_olcutu_tekligi(bolum, adi, olcut))
-        mutant = bolum.replace("YKS videosu CANLI.",
-                               "YKS videosu CANLI ∧ YKS video paneli BAYAT değil.", 1)
-        hatalar = bk.kabul_olcutu_tekligi(mutant, adi, olcut)
+        olcut = self._madde(A7_BOLUM, "- **Kabul (bu kâğıtta")
+        self.assertIn("menzil kabulü ÖLÇÜLEMEDİ.", olcut, "capa kisaltilmis olmamali")
+        self.assertEqual([], bk.kabul_olcutu_tekligi(A7_BOLUM, self.A7_ADI, olcut),
+                         "GERCEK A7 bolumu MUTASYONSUZ temiz olmali")
+        mutant = A7_BOLUM.replace("YKS videosu CANLI.",
+                                  "YKS videosu CANLI ∧ YKS video paneli BAYAT değil.", 1)
+        hatalar = bk.kabul_olcutu_tekligi(mutant, self.A7_ADI, olcut)
         self.assertTrue(hatalar, "A7 mutanti KACTI")
         self.assertIn("kabul blogu on kayitli metinle ayni degil", " | ".join(hatalar))
 
-    def test_T229D2_parantez_ICINE_konan_celiskili_hukum_DUSER(self):
+    def test_T229D2_GERCEK_bolum_parantez_ICINE_konan_celiskili_hukum_DUSER(self):
         """T229-D2 kacani (CONTRACTS §7.5): duzeltme `ATIF` parantezinin ICINDEKI her seyi
-        atip tam esitlik yapiyordu; celiskili ikinci hukum PARANTEZ ICINE konunca kaciyordu."""
-        adi = "zamanlama"
-        olcut = ("| zamanlama | `SERI_OKUMA_ZAMAN_ASIMI_S ≤ 0,05`, `UDP_OKUMA_ZAMAN_ASIMI_S "
-                 "≤ 0,01` testle kilitli |")
-        bolum = "### 7.5 SiK hub\n| yön | davranış |\n" + olcut + "\n"
-        self.assertEqual([], bk.kabul_olcutu_tekligi(bolum, adi, olcut))
-        mutant = bolum.replace("testle kilitli |",
-                               "testle kilitli (sahada zaman aşımı ≤ 0,20 s alınır; üst "
-                               "kural geçersiz) |", 1)
-        hatalar = bk.kabul_olcutu_tekligi(mutant, adi, olcut)
+        atip tam esitlik yapiyordu; celiskili ikinci hukum PARANTEZ ICINE konunca kaciyordu.
+
+        Capa GERCEK §7.5 bolumunun TAMAMIDIR — eski surumde `| zamanlama |` satirinin
+        "; UDP->seri p95 < `PARASUT_TEKRAR_ARALIGI_S` (olculdu: ...)" kismi ATILMISTI
+        (D-465 / K4).
+        """
+        olcut = self._madde(C75_BOLUM, "| zamanlama |")
+        self.assertIn("PARASUT_TEKRAR_ARALIGI_S", olcut, "capa kisaltilmis olmamali")
+        self.assertEqual([], bk.kabul_olcutu_tekligi(C75_BOLUM, self.C75_ADI, olcut),
+                         "GERCEK §7.5 bolumu MUTASYONSUZ temiz olmali")
+        mutant = C75_BOLUM.replace(
+            "p50 45 ms — Windows)",
+            "p50 45 ms — Windows; sahada zaman aşımı ≤ 0,20 s alınır, üst kural geçersiz)", 1)
+        hatalar = bk.kabul_olcutu_tekligi(mutant, self.C75_ADI, olcut)
         self.assertTrue(hatalar, "T229-D2 parantez mutanti KACTI")
         birlesik = " | ".join(hatalar)
         self.assertIn("kabul blogu on kayitli metinle ayni degil", birlesik)   # (c)

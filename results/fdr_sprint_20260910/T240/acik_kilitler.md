@@ -11,14 +11,23 @@ cikis her zaman 0. Her markdown dizgesi bir HUKUM kilidi degildir; liste,
 | ortak yardimcidan GECEN | 5 |
 | ACIK (yardimci kullanmayan) | 53 |
 | ACIK **ve** kendi cizik kalibi olan (agir) | 4 |
+| GECENLERDEN on kayitli METIN ESITLIGI kullanan (D-465) | 5 |
+| GECENLERDEN BLOK esitligi (`bloklar`) kullanan (D-465 (1)) | 5 |
 
-## 1. Ortak yardimcidan gecenler
+## 1. Ortak yardimcidan gecenler — YONTEM SINIFI (D-465 (3))
 
-- `tests/test_belge_kilidi.py`
-- `tests/test_faz_b_arduplane_sablon.py`
-- `tests/test_isaretli_gosterici.py`
-- `tests/test_t235_alan_etiketi.py`
-- `tests/test_yks_mk15_hakem_ekrani.py`
+D-465 (mimar karari, 12 Eylul): olcum HUKMU tasiyan yuzeyler ON KAYITLI METIN
+ESITLIGINE cevrilir — YOKLUK denetiminin kacis yuzeyi SONSUZ, ESITLIGIN kacis
+yuzeyi YOKTUR. Ayiklamali kilitler yalniz DUSUK DEGERLI yuzeylerde kalir ve
+orada YOKLUK degil VARLIK denetimi yapar.
+
+| test | ESITLIK | ayiklama | diger yordamlar |
+|---|---|---|---|
+| `tests/test_belge_kilidi.py` | `bloklar`, `on_kayitli_metin_esit` | `cizikleri_ayikla` | `beyaz_liste_disi_cizik`, `hukum_cumleleri`, `kabul_olcutu_tekligi`, `normalize`, `olumlu_hukum_var` |
+| `tests/test_faz_b_arduplane_sablon.py` | `bloklar`, `on_kayitli_metin_esit` | `cizikleri_ayikla` | `beyaz_liste_disi_cizik`, `hukum_cumleleri`, `olumlu_hukum_var` |
+| `tests/test_isaretli_gosterici.py` | `bloklar` | `cizikleri_ayikla` | `beyaz_liste_disi_cizik`, `hukum_cumleleri`, `normalize`, `olumlu_hukum_var` |
+| `tests/test_t235_alan_etiketi.py` | `bloklar` | — | `kabul_olcutu_tekligi` |
+| `tests/test_yks_mk15_hakem_ekrani.py` | `bloklar`, `on_kayitli_metin_esit` | `cizikleri_ayikla` | `beyaz_liste_disi_cizik`, `hukum_cumleleri`, `normalize` |
 
 ## 2. ACIK kilitler — kendi cizik/hukum kalibini tasiyanlar (once bunlar)
 

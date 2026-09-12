@@ -1,90 +1,249 @@
 # T240 — Ortak belge kilidi yardımcısı ve belge kilitlerinin geçirilmesi
 
-**D-460 karar 2 + T240'a verilen RED hükmünün kapatılması (T240-B) + D-461 mimar eki.**
+**D-460 karar 2 → T240-B (RED) → T240-C: D-465 mimar kararı, YÖNTEM DEĞİŞİKLİĞİ.**
 
 Bağımsız mimar denetimi (D-460) T226-D2 · T228-D2 · T221-D3'ü REDDETTİ; ortak gerekçe tekti:
 her test dosyası çizik ayıklamasını **kendi** yazmıştı ve üçü de yalnız `~~...~~` biliyordu.
 Denetimde kurulan **19 gerçek dosya mutasyonunun 19'u kaçmıştı**. T240 o 19 kaçışı kapattı.
+T240 bağımsız çürütücüden RED aldı (5 yeni kaçan); T240-B onları kapattı ve **yine RED aldı**
+(3 yeni kaçan: `&#96;` sarmalı sahte kod aralığı — üstelik bir **GERİLEME**).
 
-**T240'ın kendisi de bağımsız çürütücüden RED aldı** (kapılar yeşil, 19/19 + 4/4 doğrulandı,
-kilit hiçbir yerde gevşemedi — ama çürütücünün 12 yeni mutasyonundan 5'i kaçtı, ikisi işin
-"kapattım" dediği sınıfların **içinde**). T240-B o 5 kaçışı kapatır, **beyanları ölçülene
-çeker** ve D-461'in zorunlu ek kilidini (ön kayıt tekliği) ekler.
+> ## D-465 (mimar kararı, 12 Eylül) — ESİTLİK > YOKLUK
+>
+> Üç turdur her RED **aynı biçimde** geldi: *"şu sözdizimiyle yasak metin geri kondu /
+> hüküm gizlendi."* Bu bir kalıp eksikliği değil, **yöntem hatasıdır**:
+> **YOKLUK (absence) denetiminin kaçış yüzeyi SONSUZDUR; EŞİTLİK denetiminin kaçış
+> yüzeyi YOKTUR.** Ölçüm hükmü taşıyan yüzeyler bu turda ön kayıtlı **METİN EŞİTLİĞİNE**
+> çevrildi: bölümün ham metni testte duran sabite EŞİT olmak zorundadır; bir sözcük
+> değişirse test düşer ve **hangi sözdizimiyle** değiştiği ÖNEMSİZDİR.
+>
+> Bu yüzeylerde normalleştirme **yalnız boşluk/satır sonu** içindir. Çizik/varlık/vurgu
+> **AYIKLAMASI KULLANILMAZ** — ayıklama, saklama yüzeyini açan şeyin ta kendisidir
+> (ayıklanan metin testin gördüğü metinden düşer, yani gizlenir).
 
 Bu belge yalnız **koşulan** komutların çıktısını kaydeder. Ham çıktılar:
-`kapi_ciktisi.txt` (kapı) ve `mutasyon_ciktisi.txt` / `mutasyon_kosum.raw.txt` (mutasyon).
+`kapi_ciktisi.txt` (kapı), `mutasyon_ciktisi.txt` (mutasyon), `hangi_kilit_dusurdu.txt`
+(hangi assert düşürdü), `acik_kilitler.md` (depo denetimi).
 
 ---
 
-## 1. Ne değişti
+## 1. Ne değişti (T240-C)
 
 | dosya | ne |
 |---|---|
-| `tests/belge_kilidi.py` | Ortak yardımcı (yalnız stdlib): `cizikleri_ayikla`, `beyaz_liste_disi_cizik`, `normalize`, `olumlu_hukum_var`, `on_kayitli_metin_esit`, `hukum_cumleleri`, **`kabul_olcutu_tekligi` (YENİ, D-461)**. **T240-B:** `_varliklari_coz` / `_varlik_cozumle` (HTML varlık çözümlemesi, `import html`), ön kayıtlı `HUKUM_SOZCUKLERI` ve `KABUL_CELISKI_SOZCUKLERI` listeleri, cümle sınırına paragraf/madde/tablo satırı eklendi. Her fonksiyonun docstring'inde **hangi ölçülen kaçış** için var olduğu yazılı. |
-| `tests/test_belge_kilidi.py` | Yardımcının kendi kapısı: **42 → 60 test**. Her normalleştirme kuralı için pozitif + negatif vaka; uydurma çizme sözdizimi; **T240-B:** `HtmlVarlikBicimi` (7 test) ve `KabulOlcutuTekligi` (7 test) sınıfları. |
-| `tests/test_yks_mk15_hakem_ekrani.py` | H4e (CONTRACTS §6.8) yardımcıdan geçti; beyaz liste, ön kayıtlı kaynak hükmü (örneği **koddan**), kalın başlıklı paragraf demeti, paragraf komşuluğu. **T240-B:** §6.8'in **kapalı hüküm cümlesi kümesi** (YENİ; 37 cümle, ön kayıtlı). |
-| `tests/test_isaretli_gosterici.py` | `_cizili_ayikla` / `_normal` / `_gecti_bul` yardımcıya bağlı ince kabuk; G8'e belge geneli beyaz liste dışı çizik kilidi. **T240-B:** §5'in **kapalı hüküm cümlesi kümesi** (YENİ; 23 cümle, ön kayıtlı; kod çitleri hariç). |
-| `tests/test_faz_b_arduplane_sablon.py` | §6.6 başlığı ve `**Sonuç: … KOŞULMADI.**` ön kayıtlı metin eşitliğiyle bağlandı; ölçüm etiketleri, olumlu hüküm ailesi ve kapalı cümle kümesi; HTML kara listesi beyaz listeye çevrildi. **T240-B:** kapalı kümenin **SEÇİCİSİ** genişletildi (`("prova","olcut")` → ön kayıtlı `HUKUM_SOZCUKLERI` + alan sözcükleri); küme **5 → 18** cümle. |
-| `tests/test_t235_alan_etiketi.py` | **T240-B (YENİ kullanım):** `ON_KAYIT §4`'e **ön kayıt tekliği** kilidi (`kabul_olcutu_tekligi`) — D-461'in zorunlu ek maddesinin gerçek belge üzerindeki ilk uygulaması. |
-| `scripts/belge_kilidi_denetle.py` | Depo denetimi (kapı DEĞİL, çıkış 0): `tests/` altında markdown okuyup dizge arayan testleri bulur, yardımcıyı **kullanmayanları** raporlar → `acik_kilitler.md`. |
+| `tests/belge_kilidi.py` | **K1:** `_COZULMEZ` yapı üreten simgelerin tamamına genişledi (küçüktür, büyüktür, backtick, tilde, yıldız, alt çizgi, köşeli ayraç, dikey çubuk, diyez, ters bölü); bu varlıklar **çözülmez** ve `beyaz_liste_disi_cizik` içinde **doğrudan aday** sayılır (`_yapi_varliklari`). **D-465 (1):** `bloklar()` — ön kayıtlı metin eşitliği birimi (YENİ). **K3:** `normalize`'a `metre/santimetre/milimetre/kilometre` ve `yüzde` katlaması; `_OLCUT_BIRIMI`'ne `cm\|mm`; `_buyuklukler`'e **önek katlaması** (`_OLCEK`: cm/mm/km→m, ms→s). **K4:** `kabul_olcutu_tekligi(..., mesru_buyuklukler)` ön kaydı. |
+| `tests/test_belge_kilidi.py` | **60 → 74 test**, `self.assert` **110 → 148**. **D-465 (1):** `BlokEsitligi` sınıfı (5 test) — altı ayrı gizleme biçiminin EŞİTLİĞİ düşürdüğü, satır sarması ile çift boşluğun ise **düşürmediği** ölçülür. **K2:** `&#96;~~X~~&#96;` · `&#x60;` · `&grave;` · `&#96;<s>X</s>&#96;` · `&#96;&#96;&#96;` çit biçimi pozitif vakaları + gerileme kanıtı + KUSUR 1b. **K4:** A10/A7/§7.5 çapaları artık **gerçek bölümlerin TAMAMININ harfi harfine kopyası**. |
+| `tests/test_yks_mk15_hakem_ekrani.py` | **D-465:** CONTRACTS §6.8 **32 blok** ön kayıtlı metin eşitliğiyle bağlandı (⟨ÖRNEK⟩ koddan). |
+| `tests/test_isaretli_gosterici.py` | **D-465:** GOSTERICI_KURULUM **§1 (13) · §4 (12) · §5 (17) · §9 (9) = 51 blok** eşitliğe çevrildi (⟨DRM_BORU⟩ koddan); yeni test `test_G8_D465_on_kayitli_metin_esitligi_dort_bolum`. |
+| `tests/test_faz_b_arduplane_sablon.py` | **D-465:** config/pixhawk/README §6.6 **22 blok** eşitliğe çevrildi; yeni test `test_a18b_D465_SS66_on_kayitli_metin_esitligi`. |
+| `tests/test_t235_alan_etiketi.py` | **D-465:** t235 `ON_KAYIT §4` **3 blok** eşitliğe çevrildi; yeni test `test_SS4_ON_KAYITLI_METIN_ESITLIGI_D465`. |
+| `scripts/belge_kilidi_denetle.py` | **D-465 (3):** rapor artık her geçen dosyanın **YÖNTEM SINIFINI** ölçer (EŞİTLİK / ayıklama / diğer). |
+| `results/.../T240/mutasyon_t240.py` | **K5:** X15/X16/X17 gerçek dosya mutantı eklendi: **28 → 31** kaçan. |
+| `results/.../T240/hangi_kilit_dusurdu.py` | **K5:** X15/X16/X17 + X15b/X17b (eski çizik kilidi de düşürüyor mu) eklendi. |
+| `results/.../T240/sinir_olcumu.py` | **YENİ (D-465 (4)):** aynı hükmün **dokuz** gizleme biçimi için EŞİTLİK ile YOKLUK/AYIKLAMA yüzeylerini yan yana ölçer; §10'daki sınır listesinin sayıları buradan gelir. |
 
-**Ürün kodu ve belgelerin baytları değişmedi.** Dört belgenin sha256'sı mutasyon koşumundan
-önce ve sonra aynı: `CONTRACTS.md 741a9ca26dde…`, `GOSTERICI_KURULUM.md e01d16821d44…`,
-`config/pixhawk/README.md e2efd44838b6…`, `…/H1/t235/ON_KAYIT.md 7840e9331975…`.
+**Ürün kodunun ve belgelerin baytları DEĞİŞMEDİ.** Değişen dosyalar YALNIZCA:
+`tests/` (6 dosya), `scripts/belge_kilidi_denetle.py` ve `results/…/T240/`
+(`git diff --name-only <merge> HEAD` ile ölçüldü). Dört kilitli belgenin sha256'sı
+mutasyon koşumundan **önce ve sonra aynı**:
+
+```
+CONTRACTS.md                                       741a9ca26ddeecc55d951dace232db3c485c34293404fbd8749ca431956babbe
+jetson_paket/gosterici/GOSTERICI_KURULUM.md        e01d16821d44ca555cf78f5bebb12be24d738b27cea8e6f4f7cc19d480cbd559
+config/pixhawk/README.md                           e2efd44838b6cd922e4e8e9916d64e335843225703d6326f2d9294d92d9aa2c6
+results/fdr_sprint_20260910/H1/t235/ON_KAYIT.md    7840e933197517a166912b0ebb338f4f3bf99784fa2dbf0844d4f10d61006172
+ATOLYE_TEST_GUNU_20260912.md                       065c97307047bf4d8aa0e0a1c03d38059c0ca525b0f617ddf3937f8cc1ed6512
+```
 
 ---
 
-## 2. T240-B: çürütücünün RED gerekçesi, madde madde
+## 2. K1 — GERİLEMENİN kök nedeni ve düzeltmesi
 
-Çürütücü **beyan edilen her şeyi doğruladı** (kapılar, 19/19 + 4/4, bayt-eşlik, gevşememe),
-ama kendi 12 mutasyonundan 5'i kaçtı. Aşağıda her biri **kapatıldı ve ölçüldü**:
+**Çürütücünün ölçtüğü (X15/X16/X17, gerçek dosya + gerçek süit, çıkış 0):**
+`- Dönüştürücünün canlı kodeki (H.264/H.265 çelişkili).` satırı
+`- &#96;~~Dönüştürücünün canlı kodeki (H.264/H.265 çelişkili).~~&#96;` yapıldığında süit
+**yeşil kaldı.** T240-B'nin `html.unescape` adımı `&#96;`'i çözüyor, `_kod_araliklari`
+**çözülmüş** kopyada sahte bir kod aralığı "görüyor" ve içindeki `~~…~~` taramadan tamamen
+gizleniyordu. Aynı girdi T240-B **ÖNCESİ** sürümde (64b60ae5) yakalanıyordu: **gerileme.**
 
-| # | kaçan | nerede | neden kaçtı | T240-B çözümü (YAPISAL) |
-|---|---|---|---|---|
-| Y4 | `&#822;` (U+0336'nın HTML varlık biçimi), harf harf | CONTRACTS §6.8 | tarayıcı varlık biçimini **hiç görmüyordu**; aynı karakterin çıplak hâli (Y3) DÜŞÜYORDU | `_varliklari_coz`: kod aralıkları maskeliyken `html.unescape`; `cizikleri_ayikla` / `normalize` / `beyaz_liste_disi_cizik` üçü de varlık-çözümlü metni görür |
-| Y4b | `&#x336;` (onaltılık) | CONTRACTS §6.8 | aynı | aynı |
-| Y7 | kalın başlık **TAŞIMAYAN** ve kaynak paragrafının hemen ardına **DEĞİL** başka yere konan çelişkili hüküm paragrafı | CONTRACTS §6.8 | kalın başlık demeti onu saymıyor, tam eşitlik ve komşuluk kilitleri bozulmuyordu | §6.8'e **kapalı hüküm cümlesi kümesi** (T221'de zaten vardı, buraya verilmemişti) |
-| Y5 | aile **dışı** eş anlamlı: "hatasız yürüdü / kusursuz işledi" | GOSTERICI_KURULUM §5 | A8 sınıfı hâlâ **kara listeye** bağlıydı | §5'e **kapalı hüküm cümlesi kümesi** |
-| Y10 | eşik **birim** kaydırması `≥ 3 s` → `≥ 3000 ms` | GOSTERICI_KURULUM §5 | G8'in `(?:≥|>=)\s*(\d+)\s*s` kalıbı "ms" biçimini hiç görmüyordu; §5'teki diğer `≥ 3 s` ayakta kaldığı için `set(degerler)=={3.0}` tutuyordu | aynı kapalı küme: değişen cümle kümeden **düşer** |
-| Y11 | anahtar sözcüksüz README çelişkisi ("Zincir yerinde; kapılar sorun çıkarmadı.") | config/pixhawk/README.md §6.6 | kapalı küme vardı ama **SEÇİCİSİ dardı** (`"prova"`/`"olcut"`) | seçici ön kayıtlı `HUKUM_SOZCUKLERI` + alan sözcüklerine genişletildi |
+**Neden yanlıştı (CommonMark/GFM):** varlık ve sayısal karakter referansları **YAPI belirten
+simgelerin yerine kullanılamaz.** Okuyucu satırı önce yapıya ayırır, varlıkları ancak sonra
+metin içeriği olarak çözer. Yani **çözülmüş bir backtick kod aralığı AÇAMAZ**, çözülmüş bir
+tilde **çizgi AÇAMAZ**: `&#96;` okuyucuda düz bir backtick KARAKTERİDİR, içindeki `~~` ise
+çizgiyi AÇAR. Hüküm belgede ÜSTÜ ÇİZİLİ görünürken testte yürürlükte sayılıyordu.
 
-Y11'i amele `açık_kalan`da bildirmişti; çürütücü de "gizlenmiş kusur değil" dedi — yine de
-**kapatıldı**, çünkü kapalı kümenin gücü seçicisine bağlıdır ve bu ders ölçülmüştür.
+**İki yol vardı; (A) seçildi — gerekçesi kaynakta yazılı:**
 
-### D-461 (mimar eki) — ÖN KAYIT TEKLİĞİ
-
-T236-B çürütücüsü ölçtü: `ON_KAYIT §4`'e **ikinci ve gevşetilmiş** bir kabul ölçütü
-("T236 SITL kapısı (gözden geçirilmiş): ≤ 4,0 m · ±15° · ≥ %70 · ±3,0 m") eklenince
-**hiçbir test düşmüyordu** — bugünkü kilitler yalnız **özgün satırın varlığını** koruyordu,
-ölçütün **tekliğini** değil. `belge_kilidi.kabul_olcutu_tekligi(metin, kapi_adi, on_kayitli_olcut)`
-dört kuralı birden koşar:
-
-| kural | ne | hangi ölçülen kaçış |
+| yol | ne yapar | neden seçilmedi / seçildi |
 |---|---|---|
-| (a) | kapı adı normalleştirilmiş metinde **tam 1 kez** | T236-B: ikinci "T236 SITL kapısı (gözden geçirilmiş)" satırı |
-| (b) | ön kayıtlı ölçütün kısıtladığı her büyüklükte **rakip eşik yok** (aynı birimde farklı sayı) | T236-B: `≤ 4,0 m`, `±15°`, `≥ %70`, `±3,0 m` |
-| (c) | kabul bloğu **ön kayıtlı metin eşitliği** ile bağlı (alt dizge `in` değil) | ATOLYE-2 A7: ölçütün içine "∧ YKS video paneli BAYAT değil" eklenmesi |
-| (d) | kabul yüzeyinde **çelişkili ikinci hüküm sözcüğü yok** (ön kayıtlı liste) | ATOLYE-2 A10 "kabul yalnız p50 ile verilir"; T229-D2 §7.5 parantez içine konan "… geçersiz" |
+| (A) `_COZULMEZ` genişletme | yapı üreten simgeye çözen hiçbir varlık **çözülmez**; kod dışında görünen her biri **doğrudan** beyaz liste dışı adaydır | **SEÇİLDİ** — sınıfın tamamını tek kuralla kapatır: çözülmüş metin yapı üreten HİÇBİR simge KAZANMAZ |
+| (B) `_kod_araliklari`'nı HAM metinde hesaplayıp haritayla taşımak | yalnız **kod aralığı** yanılgısını kapatır | `&#126;` (tilde), `&#42;` (yıldız), `&#124;` (tablo çubuğu) **hâlâ** çözülür ve tarama kopyasında OLMAYAN bir yapı üretir |
 
-Kural (b) **yalnız** ön kayıtlı ölçütün kısıtladığı büyüklüklere bakar: bölümdeki
-karşılaştırmasız sayılar (örneğin "`FENCE` 50 m altında") eşik değil, ölçüm bağlamıdır —
-negatif vaka olarak testte durur.
+**(A)'nın bedeli ölçüldü:** çözülmeyen varlık "görünmez" kalabilirdi. Bu yüzden kod
+**dışındaki** her yapı-varlığı doğrudan hatadır. Meşruluk ölçümü (kod aralıkları dışında):
 
-**Ölçülen sınır (iddia edilmiyor):** T229-D2 çapasında (b) **tetiklenmez**, çünkü ön kayıtlı
-ölçütün eşikleri birimsizdir (birimi sabit adı taşır: `..._ZAMAN_ASIMI_S ≤ 0,05`), mutant ise
-"≤ 0,20 s" yazar. Orada mutantı (c) ve (d) yakalar. Bu, testte **açıkça** `assertNotIn` ile
-kayıtlıdır — ÖLÇÜLEMEDİ ≠ GEÇTİ.
+| belge | kod disi varlik | cozulen | YAPI ureten |
+|---|---|---|---|
+| `CONTRACTS.md` | 0 | 0 | 0 |
+| `jetson_paket/gosterici/GOSTERICI_KURULUM.md` | 4 | 0 | 0 |
+| `config/pixhawk/README.md` | 0 | 0 | 0 |
+| `results/fdr_sprint_20260910/H1/t235/ON_KAYIT.md` | 0 | 0 | 0 |
 
-Bu kilit bu işte **yalnız** t235 `ON_KAYIT §4`'e uygulandı (mimar direktifi); beş işe
-yayılması **T242**'dir.
+Yani bu sertleştirme gerçek belgelerde **hiçbir yanlış pozitif üretmez** (kapı yeşil,
+`belge_kilidi_denetle.py` çıkış 0).
+
+**Gerileme kanıtı, testte:** `&#96;~~kaynak alanı zorunludur~~&#96;` →
+`"zorunludur" in normalize(...)` artık **False** (hüküm DÜŞER);
+`beyaz_liste_disi_cizik` **4 hata** verir.
+
+**KUSUR 1b (ters yön) de kapandı:** `&#126;` artık çözülmediği için `cizikleri_ayikla`
+onu **SİLMEZ**; `&#126;` sarmalı çelişkili hüküm cümlesi `hukum_cumleleri` demetinde
+**DURUR** (testle ölçüldü).
+
+**Davranış değişikliği (güçlendirme, gizlenmiyor):** `&lt;s&gt;` eskiden yalnız
+**çözülmüyordu** — yani hiçbir kilit onu görmüyordu. Artık kod dışında **adaydır**
+(kod içinde temiz). `&#126;&#126;…&#126;&#126;` eskiden **ayıklanıyordu** (yanlıştı: çizgi
+açmaz); artık **ayıklanmaz** ama dört varlığın dördü de adaydır.
 
 ---
 
-## 3. Kaçan 28 mutantın hepsi yeniden kuruldu ve DÜŞTÜ
+## 3. D-465 (1)+(3) — hangi yüzey hangi sınıfta, gerekçesiyle
 
-Koşucu: `results/fdr_sprint_20260910/T240/mutasyon_t240.py`.
-Her mutasyon **tek tek gerçek dosyaya** yazıldı, **ilgili süit gerçekten koşuldu**,
-sonra dosya **sha256 ile bayt-eş** geri yüklendi.
+| yüzey | yöntem | ölçülen gerekçe |
+|---|---|---|
+| CONTRACTS §6.8 (**32 blok**) | **METİN EŞİTLİĞİ** (`bloklar`) | hüküm TABLOSU + bağlayıcı ilkeler; D1b/c/d/e, Y4, Y4b, Y7a/b/c hepsi bu bölümde ölçüldü |
+| GOSTERICI_KURULUM §1 (**13**) | **METİN EŞİTLİĞİ** | §1 Kodlayıcı satırı "H.264/H.265 çelişkili · DOĞRULANACAK" hükmünü taşır |
+| GOSTERICI_KURULUM §4 (**12**) | **METİN EŞİTLİĞİ** | doğrulama tablosunun SONUÇ sütunu (1–9 adım "ÖLÇÜLECEK") bir ölçüm hükmüdür |
+| GOSTERICI_KURULUM §5 (**17**) | **METİN EŞİTLİĞİ** | DRM eşikleri ve histerezis hükümleri; A3/A6/A7/A8/A9, Y5, Y10 burada ölçüldü |
+| GOSTERICI_KURULUM §9 (**9**) | **METİN EŞİTLİĞİ** | ÖLÇÜLEMEDİ/AÇIK listesi; **X15/X16/X17 tam burada kaçmıştı** |
+| config/pixhawk/README §6.6 (**22**) | **METİN EŞİTLİĞİ** | "Sonuç: … KOŞULMADI", ÖLÇÜLEMEDİ başlığı, kabul ölçütleri bloğu; W1/W2/W3/W4/W6/W7, V1/V3, Y11 burada ölçüldü |
+| t235 `ON_KAYIT §4` (**3**) | **METİN EŞİTLİĞİ** | T236 kabul ölçütü; D-461 ve X13/X14 burada ölçüldü |
+| **TOPLAM** | | **108 blok** |
+| aynı dört belgenin uzun anlatı paragrafları ve diğer bölümleri | **ayıklama + VARLIK denetimi** (`cizikleri_ayikla` + `assertIn`) | düşük değerli yüzey: bir komutun/yol adının belgede DURDUĞU denetlenir; burada **YOKLUK iddiası yoktur** |
+| `beyaz_liste_disi_cizik` (belge geneli) | **beyaz liste** (ayıklamasız) | çizme sözdizimi kara listeyle kapanmaz; belgenin TAMAMINDA çalışır, eşitlik yüzeyinin dışında kalan bölümleri de tarar |
+
+### D-465 (2) — ayıklamalı kilitler nerede kaldı (ve neden silinmedi)
+
+**Kural:** ayıklamalı kilitler yalnız düşük değerli yüzeylerde kalır ve orada YOKLUK değil
+VARLIK denetimi yapar. **Uygulanışı ve bir gerilim:**
+
+- **Yetki artık eşitliktedir.** Yukarıdaki yedi yüzeyin hiçbiri artık ayıklamalı/YOKLUK
+  kilidine **dayanmaz**: her birinin BİRİNCİL kilidi metin eşitliğidir.
+- **Var olan YOKLUK assert'leri SİLİNMEDİ** (`olumlu_hukum_var` taramaları, kapalı hüküm
+  cümlesi kümeleri, `kabul_olcutu_tekligi`). Silmek `assert` sayısını düşürürdü ve bu iş
+  için bağlayıcı kural **"kilit GEVŞETİLMEZ"**tir. Bu yüzden **ikinci kat** olarak
+  duruyorlar — ve iki kat birden ölçüldü: `hangi_kilit_dusurdu.py` X15b/X17b vakaları aynı
+  mutantın hem eşitlik hem çizik kilidini düşürdüğünü kaydeder.
+- Bu YOKLUK assert'leri aynı zamanda **eşitliğe çevrilmemiş** bölümleri de tarar (belge
+  geneli). Orada tek kilit onlardır ve **zayıf oldukları §10.2 #3'te yazılıdır.**
+
+Eşitlik yüzeyine çevrilen bloklarda **ayıklama kullanılmaz**; bu yüzden meşru çizik
+(GOSTERICI §5'teki tarihli eski komut, README §6.6'daki çizili eski ölçüt 1) ön kayıtlı
+blokta **HAM hâliyle** durur — FDR kuralı ("eski metin silinmez, çizilir + tarih") bozulmadan
+korunur ve iki ön kayıt birbirine bağlanır (testte `assertIn` ile).
+
+### Ölçüm: eşitlik yüzeyi ne yakalar, ayıklama/YOKLUK yüzeyi ne kaçırır
+
+Üretici: `results/fdr_sprint_20260910/T240/sinir_olcumu.py` (çıkış 0). Aynı hüküm
+(`| kaynak | zorunlu |`) **dokuz** ayrı sözdizimiyle geri çekiliyor/gizleniyor; tablo
+`beyaz_liste_disi_cizik` (çizik taraması), `cizikleri_ayikla` + VARLIK denetimi ve
+**EŞİTLİK** yüzeylerini yan yana koyar. Aynı koşum §2'deki K1 ölçümünü de basar.
+**HAM ÇIKTI:**
+
+```
+# T240-C — ESITLIK vs YOKLUK/AYIKLAMA (D-465 gerekcesinin OLCUMU)
+# taban blok sayisi: 5
+
+| gizleme bicimi | beyaz_liste_disi_cizik hata | ayiklama hukmu DUSURDU | ESITLIK DUSURDU |
+|---|---|---|---|
+| ~~ cift tilde | 2 | EVET | **EVET** |
+| <s> etiketi | 2 | EVET | **EVET** |
+| &#822; varlik cizgisi | 2 | EVET | **EVET** |
+| &#96; sarmali sahte kod araligi | 4 | EVET | **EVET** |
+| &amp;#96; cift kacisli varlik | 4 | EVET | **EVET** |
+| HTML yorumu | 0 | hayir | **EVET** |
+| markdown baglantisi | 0 | hayir | **EVET** |
+| sifir genislikli karakter | 0 | EVET | **EVET** |
+| U+0333 birlesen cift alt cizgi | 0 | EVET | **EVET** |
+
+## MESRU duzenleme (esitligi BOZMAMALI — bosluk hukmun anlami degildir)
+
+  satir sarmasi          esitlik KORUNDU=True
+  cift bosluk            esitlik KORUNDU=True
+
+## K1 OLCUMU — kod ARALIKLARI DISINDA HTML varligi
+
+| belge | kod disi varlik | cozulen | YAPI ureten |
+|---|---|---|---|
+| `CONTRACTS.md` | 0 | 0 | 0 |
+| `jetson_paket/gosterici/GOSTERICI_KURULUM.md` | 4 | 0 | 0 |
+| `config/pixhawk/README.md` | 0 | 0 | 0 |
+| `results/fdr_sprint_20260910/H1/t235/ON_KAYIT.md` | 0 | 0 | 0 |
+
+HUKUM: her gizleme ESITLIKCE yakalandi, mesru duzenleme yanlis pozitif uretmedi, kilitli belgelerde kod disi YAPI VARLIGI yok
+```
+
+**Dokuzunun dokuzunda da EŞİTLİK düşürür.** İki tanesini (HTML yorumu, markdown bağlantısı)
+ne çizik taraması ne de ayıklama görür — yani D-465 ÖNCESİ yöntemle **kaçarlardı**.
+D-465'in gerekçesi budur ve bu tablo onun ölçümüdür. **Meşru düzenleme yanlış pozitif
+üretmez:** satır sarması ve çift boşluk eşitliği **BOZMAZ** — boşluk/satır sonu hükmün
+anlamı değildir.
+
+---
+
+## 4. K3 — birim sözcüğü ve önek kaçışı
+
+| kaçan (çürütücü ölçümü) | neden kaçıyordu | düzeltme |
+|---|---|---|
+| X13 "sahada kabul yatay **en çok 4 metre** ve zamanın **en az yüzde 70**'i" | `normalize` yalnız `saniye/milisaniye/derece` katlıyordu; `metre`/`yüzde` katlanmıyordu → (b) rakip eşiği HİÇ görmüyordu | `_BIRIM_DESENI` + `_YUZDE_DESENI`: `4 metre`→`4 m`, `yüzde 70`→`%70` |
+| X14 "sahada kabul **≤ 400 cm**" | `_OLCUT_BIRIMI` `cm` bilmiyordu; bilse bile `cm` ile `m` **ayrı büyüklük** sayılırdı | `_OLCUT_BIRIMI`'ne `cm\|mm`; `_OLCEK` önek katlaması (cm/mm/km→m, ms→s) |
+
+**Negatif vaka testte durur:** aynı eşik başka önekle yazılırsa **rakip değildir**
+(`≤ 200 cm` == `≤ 2,0 m` → temiz).
+
+**Ölçülen sınır (iddia edilmiyor):** `dk` **bilerek** katlanmaz — "15 dk" bir süre bütçesi,
+"900 s" bir eşik dilidir; bu belgelerde ikisi hiç aynı büyüklüğü anlatmıyor (ölçüldü) ve
+katlansa yalancı alarm üretirdi.
+
+**D-465 notu:** t235 `ON_KAYIT §4` artık **metin eşitliğine** de bağlı olduğu için X13/X14
+sınıfı iki kilitten birden geçer; K3 düzeltmesi, kuralın **eşitliğe çevrilmemiş** yüzeylerde
+(T242'ye taşınan dört belge) de işlemesi için yapıldı.
+
+---
+
+## 5. K4 — çapalar ölçülene çekildi, A10 yanlış pozitifi kapandı
+
+Çürütücünün bulgusu (D-460 bulgu 3 sınıfı): birim testinin sınıf docstring'i çapaları
+*"gerçek belgelerin metni (harfi harfine kopya)"* diye tanıtıyordu; oysa **A10 bölümü tek
+satıra indirgenmişti**, A7 ve §7.5 çapalarından da birer cümle atılmıştı. Üstelik gerçek
+A10 bölümünün TAMAMIYLA koşulduğunda kural (b) **mutasyonsuz yanlış pozitif** veriyordu.
+
+**Yapılan:**
+1. Üç çapa da **gerçek bölümün TAMAMININ harfi harfine kopyası** oldu (`A10_BOLUM`,
+   `A7_BOLUM`, `C75_BOLUM`). Ölçüldü: **A7 ve §7.5 mutasyonsuz TEMİZ.**
+2. A10'un yanlış pozitifi **giderildi**: kaynağı meşru bir
+   `**BEKLENTİ (BENZER ÖLÇÜM — ölçüm değil):** … → beklenti ≤ 1,35 FPS` satırıdır (bir
+   KABUL değil, BEKLENTİdir). `kabul_olcutu_tekligi` artık `mesru_buyuklukler` **ön kaydı**
+   alır: `(("fps", 1.35),)`. Bu bir gevşetme **değildir** — yeni bir değer ancak **görünür
+   bir test değişikliğiyle** girer ve **1,35 dışındaki her fps rakip eşiği yine DÜŞER**
+   (`test_K4_A10_mesru_buyukluk_ON_KAYITLIDIR_baskasi_DUSER` bunu ölçer: `≥ 0,40 FPS` → hata).
+3. Ön kayıt verilmediğinde (b)'nin patladığı **olgu kayda geçti**
+   (`test_K4_A10_mesru_buyukluk_ON_KAYITSIZ_YANLIS_POZITIF_verir`) — ölçülenden fazlasını
+   söyleyen beyan yerine ölçümün kendisi duruyor.
+4. Docstring **ölçülene çekildi**: `T236_BOLUM` çapasının **SENTETİK** olduğu (yalnız kabul
+   SATIRI harfi harfine) açıkça yazıldı; gerçek §4'ün tamamı artık ayrı süitte **eşitlikle**
+   bağlı.
+5. Çapaların **12 Eylül 2026 anlık görüntüsü** olduğu (canlı dosya OKUNMUYOR) ve **neden**
+   öyle olduğu yazıldı: ATOLYE kâğıdı 12 Eylül'de İNSAN tarafından doldurulacaktır; gerçek
+   dosyaların kilidi kendi süitlerindedir, birim testi o doldurmada kırılmamalıdır.
+
+---
+
+## 6. Kaçan 31 mutantın hepsi yeniden kuruldu ve DÜŞTÜ
+
+Koşucu: `results/fdr_sprint_20260910/T240/mutasyon_t240.py`. Her mutasyon **tek tek gerçek
+dosyaya** yazıldı, **ilgili süit gerçekten koşuldu**, sonra dosya **sha256 ile bayt-eş**
+geri yüklendi.
 
 ```
 ## 0. Mutasyonsuz TABAN
@@ -94,96 +253,158 @@ sonra dosya **sha256 ile bayt-eş** geri yüklendi.
   test_yks_mk15_hakem_ekrani.py          cikis=0  OK
   TABAN: YESIL
 
+## 1. Mutasyonlar (her biri gercek dosyaya yazildi, suit kosuldu, sha256 ile geri alindi)
+  [kontr] D1  cift tilde                     CONTRACTS.md                     cikis=1 -> DUSTU  geri_bayt_es=True sha=741a9ca26dde
+  [KACAN] D1b <del>                          CONTRACTS.md                     cikis=1 -> DUSTU  geri_bayt_es=True sha=741a9ca26dde
+  [KACAN] D1c tek tilde                      CONTRACTS.md                     cikis=1 -> DUSTU  geri_bayt_es=True sha=741a9ca26dde
+  [KACAN] D1d <s>                            CONTRACTS.md                     cikis=1 -> DUSTU  geri_bayt_es=True sha=741a9ca26dde
+  [KACAN] D1e celiskili ikinci hukum         CONTRACTS.md                     cikis=1 -> DUSTU  geri_bayt_es=True sha=741a9ca26dde
+  [kontr] D1f tipografik tirnak              CONTRACTS.md                     cikis=1 -> DUSTU  geri_bayt_es=True sha=741a9ca26dde
+  [KACAN] A3 tek tilde                       GOSTERICI_KURULUM.md             cikis=1 -> DUSTU  geri_bayt_es=True sha=e01d16821d44
+  [KACAN] A4 <del>                           GOSTERICI_KURULUM.md             cikis=1 -> DUSTU  geri_bayt_es=True sha=e01d16821d44
+  [KACAN] A5 <s>                             GOSTERICI_KURULUM.md             cikis=1 -> DUSTU  geri_bayt_es=True sha=e01d16821d44
+  [KACAN] A6 sayi yaziyla                    GOSTERICI_KURULUM.md             cikis=1 -> DUSTU  geri_bayt_es=True sha=e01d16821d44
+  [KACAN] A7 'en az' ile esik gevsetme       GOSTERICI_KURULUM.md             cikis=1 -> DUSTU  geri_bayt_es=True sha=e01d16821d44
+  [KACAN] A8 'teyit edildi' / 'basarili'     GOSTERICI_KURULUM.md             cikis=1 -> DUSTU  geri_bayt_es=True sha=e01d16821d44
+  [KACAN] A9 'asan' ile donma esigi          GOSTERICI_KURULUM.md             cikis=1 -> DUSTU  geri_bayt_es=True sha=e01d16821d44
+  [KACAN] W1 baslikta ~OLCULEMEDI~           README.md                        cikis=1 -> DUSTU  geri_bayt_es=True sha=e2efd44838b6
+  [KACAN] W6 ~OLCULEMEDI~ + KANITLANDI       README.md                        cikis=1 -> DUSTU  geri_bayt_es=True sha=e2efd44838b6
+  [KACAN] W2 KANITLANDI                      README.md                        cikis=1 -> DUSTU  geri_bayt_es=True sha=e2efd44838b6
+  [KACAN] W3 _dogrulandi_                    README.md                        cikis=1 -> DUSTU  geri_bayt_es=True sha=e2efd44838b6
+  [KACAN] W4 __kosuldu__                     README.md                        cikis=1 -> DUSTU  geri_bayt_es=True sha=e2efd44838b6
+  [KACAN] W7 'sorunsuz tamamlandi'           README.md                        cikis=1 -> DUSTU  geri_bayt_es=True sha=e2efd44838b6
+  [KACAN] V1 numarasiz celiskili hukum       README.md                        cikis=1 -> DUSTU  geri_bayt_es=True sha=e2efd44838b6
+  [KACAN] V3 ikinci 'Sonuc' cumlesi          README.md                        cikis=1 -> DUSTU  geri_bayt_es=True sha=e2efd44838b6
+  [kontr] W5 duz DOGRULANDI                  README.md                        cikis=1 -> DUSTU  geri_bayt_es=True sha=e2efd44838b6
+  [kontr] W8 duz GECTI                       README.md                        cikis=1 -> DUSTU  geri_bayt_es=True sha=e2efd44838b6
+  [KACAN] Y4  &#822; harf harf               CONTRACTS.md                     cikis=1 -> DUSTU  geri_bayt_es=True sha=741a9ca26dde
+  [KACAN] Y4b &#x336; onaltilik              CONTRACTS.md                     cikis=1 -> DUSTU  geri_bayt_es=True sha=741a9ca26dde
+  [KACAN] Y7a celiskili paragraf (kaynak onu) CONTRACTS.md                     cikis=1 -> DUSTU  geri_bayt_es=True sha=741a9ca26dde
+  [KACAN] Y7b celiskili paragraf (ilkeler onu) CONTRACTS.md                     cikis=1 -> DUSTU  geri_bayt_es=True sha=741a9ca26dde
+  [KACAN] Y7c celiskili paragraf (son paragraf onu) CONTRACTS.md                     cikis=1 -> DUSTU  geri_bayt_es=True sha=741a9ca26dde
+  [KACAN] Y5  aile disi es anlamli           GOSTERICI_KURULUM.md             cikis=1 -> DUSTU  geri_bayt_es=True sha=e01d16821d44
+  [KACAN] Y10 esik birimi s -> ms            GOSTERICI_KURULUM.md             cikis=1 -> DUSTU  geri_bayt_es=True sha=e01d16821d44
+  [KACAN] Y11 anahtarsiz README celiskisi    README.md                        cikis=1 -> DUSTU  geri_bayt_es=True sha=e2efd44838b6
+  [KACAN] D461 ikinci gevsetilmis olcut      ON_KAYIT.md                      cikis=1 -> DUSTU  geri_bayt_es=True sha=7840e9331975
+  [KACAN] X15 &#96; sarmali ~~cizik~~        GOSTERICI_KURULUM.md             cikis=1 -> DUSTU  geri_bayt_es=True sha=e01d16821d44
+  [KACAN] X16 &#96; sarmali nabiz maddesi    GOSTERICI_KURULUM.md             cikis=1 -> DUSTU  geri_bayt_es=True sha=e01d16821d44
+  [KACAN] X17 &#96; sarmali <s>cizik</s>     GOSTERICI_KURULUM.md             cikis=1 -> DUSTU  geri_bayt_es=True sha=e01d16821d44
+
 ## 2. OZET
-  KACAN mutantlar   : 28/28 DUSTU
+  KACAN mutantlar   : 31/31 DUSTU
   KONTROL mutantlar : 4/4 DUSTU
   geri yukleme      : hepsi bayt-es
   HUKUM             : GECTI
+mutasyon cikis=0
 ```
 
-| # | mutant | dosya | kilidi düşüren |
+**Yeni üçü (T240-C):**
+
+| # | mutant | dosya | kilidi düşüren (ölçülen hata metni) |
 |---|---|---|---|
-| 1 | D1b `<del>` | CONTRACTS §6.8 | `cizikleri_ayikla` + `beyaz_liste_disi_cizik` |
-| 2 | D1c tek tilde `~…~` | CONTRACTS §6.8 | aynı |
-| 3 | D1d `<s>` | CONTRACTS §6.8 | aynı |
-| 4 | D1e çelişkili ikinci hüküm (kaynak hükmünün **ALTINA**, kalın başlıkla) | CONTRACTS §6.8 | kalın başlıklı paragraf demeti **ve** kapalı cümle kümesi |
-| 5 | A3 tek tilde | GOSTERICI_KURULUM §5 | `cizikleri_ayikla` + beyaz liste |
-| 6 | A4 `<del>` | GOSTERICI_KURULUM §9 | aynı |
-| 7 | A5 `<s>` | GOSTERICI_KURULUM üst hüküm | aynı |
-| 8 | A6 "**bir** ardışık" | GOSTERICI_KURULUM §5 | `normalize` sayı sözcüğü → rakam |
-| 9 | A7 "**en az 1 saniye**" | GOSTERICI_KURULUM §5 | `normalize` birim + karşılaştırma eş anlamlısı |
-| 10 | A8 "**teyit edildi** / **başarılı**" | GOSTERICI_KURULUM §5 | `olumlu_hukum_var` (genişletilmiş aile) |
-| 11 | A9 "**6 saniyeyi aşan**" | GOSTERICI_KURULUM §5 | `normalize` sonek→önek karşılaştırma |
-| 12 | W1 başlıkta `~ÖLÇÜLEMEDİ~` | README §6.6 | `on_kayitli_metin_esit` (başlık) + beyaz liste |
-| 13 | W6 `~ÖLÇÜLEMEDİ~ · prova KANITLANDI` | README §6.6 | aynı |
-| 14 | W2 "KANITLANDI" | README §6.6 | `olumlu_hukum_var` + cümle kümesi |
-| 15 | W3 `_doğrulandı_` | README §6.6 | `normalize` vurgu sökme (`_` artık harf değil) |
-| 16 | W4 `__koşuldu__` | README §6.6 | aynı |
-| 17 | W7 "sorunsuz tamamlandı; … sağlanmış" | README §6.6 | `olumlu_hukum_var` + cümle kümesi |
-| 18 | V1 numarasız çelişkili hüküm | README §6.6 | kapalı hüküm cümlesi kümesi (tek yakalayan) |
-| 19 | V3 ikinci `**Sonuç …**` cümlesi | README §6.6 | ön kayıtlı Sonuç + cümle kümesi |
-| 20 | **Y4** `&#822;` harf harf | CONTRACTS §6.8 | **varlık çözümlemesi** + beyaz liste |
-| 21 | **Y4b** `&#x336;` onaltılık | CONTRACTS §6.8 | aynı |
-| 22 | **Y7a** başlıksız çelişkili paragraf — kaynak hükmünün **ÖNÜNE** | CONTRACTS §6.8 | **kapalı hüküm cümlesi kümesi** (tek yakalayan) |
-| 23 | **Y7b** aynı paragraf — "Bağlayıcı ilkeler"in önüne | CONTRACTS §6.8 | aynı |
-| 24 | **Y7c** aynı paragraf — son paragrafın önüne | CONTRACTS §6.8 | aynı |
-| 25 | **Y5** aile dışı eş anlamlı | GOSTERICI_KURULUM §5 | **kapalı hüküm cümlesi kümesi** |
-| 26 | **Y10** eşik birimi `3 s` → `3000 ms` | GOSTERICI_KURULUM §5 | aynı |
-| 27 | **Y11** anahtar sözcüksüz çelişki | README §6.6 | kümenin **genişletilmiş seçicisi** |
-| 28 | **D461** ikinci gevşetilmiş kabul ölçütü | `…/H1/t235/ON_KAYIT.md` §4 | **`kabul_olcutu_tekligi`** (a+b+c+d birden) |
+| 29 | **X15** `&#96;~~…~~&#96;` | GOSTERICI_KURULUM §9 kodek maddesi | `bloklar` eşitliği (`Tuples differ: … '- &#96;~~Dönüştürücünün canlı kodeki…'`) **ve** `beyaz_liste_disi_cizik` (`satir 241: … (tilde)`) |
+| 30 | **X16** `&#96;~~…~~&#96;` | GOSTERICI_KURULUM §9 `-v` nabız maddesi | `bloklar` eşitliği |
+| 31 | **X17** `&#96;<s>…</s>&#96;` | GOSTERICI_KURULUM §9 kodek maddesi | `bloklar` eşitliği **ve** `beyaz_liste_disi_cizik` (`… (yapi ureten varlik bicimi &#96;)`) |
 
 **Kontrol mutantları** (denetimde zaten düşenler; koşucunun kendisi sağlam mı):
 D1 çift tilde, D1f tipografik tırnak, W5 düz DOĞRULANDI, W8 düz GEÇTİ → **4/4 DÜŞTÜ**.
 
-### Hangi kilit düşürdü — hata metniyle ÖLÇÜLDÜ (iddia değil)
+**Önceki turun bir hükmü ÖLÇÜMLE DÜZELDİ:** T240-B'de Y7a/b/c'nin "tek yakalayanı" kapalı
+hüküm cümlesi kümesiydi. T240-C'den sonra `hangi_kilit_dusurdu.txt` gösteriyor ki üçünü de
+artık **önce blok eşitliği** düşürüyor (`Tuples differ: … 'Not (12 Eylül): kaynak alanı
+artık zoru…'`); kapalı küme **ikinci** kilit olarak duruyor. Y4/Y4b'yi ise hâlâ
+`beyaz_liste_disi_cizik` düşürüyor (o assert daha önce koşuyor).
 
-"Kapalı cümle kümesi tek yakalayandır" gibi hükümler ancak **hata metniyle** doğrulanabilir.
-`hangi_kilit_dusurdu.py` her yeni mutantı uygular, **tek test metodunu** koşar, `AssertionError`
-metnini kaydeder ve dosyayı sha256 ile bayt-eş geri yükler. Ham çıktı: `hangi_kilit_dusurdu.txt`
-(çıkış 0, "HEPSİ DÜŞTÜ, geri yükleme bayt-eş").
-
-| mutant | düşüren assert (ölçülen hata metni) |
-|---|---|
-| Y4 / Y4b | `assertEqual([], beyaz_liste_disi_cizik(...))` → `['satir 48: beyaz liste disi cizik (birlesen uzeri cizgi) …']` |
-| Y7a / Y7b / Y7c | `assertEqual(beklenen, cumleler)` → `Tuples differ: … != … 'not (12 eylul): kaynak alani artik zorunl…'` — **kalın başlık demeti ve komşuluk assert'leri ondan ÖNCE koşar ve GEÇER**, yani yakalayan tek yapı kapalı kümedir |
-| Y5 / Y10 | §5 kapalı kümesi → `Tuples differ: … '- saha kurali (12 eylul): -v nabiz satiri b…'` / `… '≥ 3000 ms aralikla yeniden acilir.'` |
-| Y11 | `SS6.6 on kayitli hukum cumlesi kumesi degisti` (m12/m21 meta-testleri) |
-| D461 | `kabul olcutu tekligi: 'T236 SITL kapısı' … 2 kez` + rakip eşik + blok eşitsizliği + "gozden gecirilmis" |
-
-### Beyan düzeltmesi (D-460 bulgu 3 sınıfı — "ölçülenden fazlasını söyleme")
-
-Önceki KANIT.md, D1e satırında çözümü "kalın başlıklı hüküm paragrafı demeti (yapısal)"
-diye yazıyordu. **Bu hüküm ölçülenden genişti:** demet yalnız **kalın başlık taşıyan**
-paragrafları sayar; başlıksız bir çelişkili paragraf (Y7) ondan da, ön kayıtlı kaynak
-hükmünden de, komşuluk kilidinden de kaçıyordu (ölçüldü: MK15 **ve** 233 testlik
-`test_yks_*.py` çıkış 0). Doğru ifade tabloda: **D1e'nin ölçülen varyantı** kalın başlıklı
-ve kaynak hükmünün altındaydı; **başlıksız varyantı (Y7) kapalı cümle kümesiyle** kapandı ve
-§6.8'in **üç ayrı yerinde** ayrı ayrı ölçüldü.
-
-Aynı sınıfta yardımcının kendi docstring'i de düzeltildi: "gelecekte çıkacak yeni sözdizimi
-buraya kalıp eklenmeden yakalanır" cümlesi **ölçülen kapsama** çekildi — "düz metin **ve HTML
-varlık biçimindeki** çizme işaretleri, tilde koşuları, tilde benzerleri ve
-`ZARARSIZ_ETIKETLER` dışındaki her etiket"; kapsam dışında kalan bir biçim için **iddia
-yoktur**.
+`hangi_kilit_dusurdu.py` ayrıca **X15b/X17b** vakalarını koşar: aynı mutantlar K1
+düzeltmesinden sonra **eski (ayıklamalı) çizik kilidini de** düşürür — yani iki bağımsız
+kilit birden tutar. Ham çıktı: `hangi_kilit_dusurdu.txt` (çıkış 0).
 
 ---
 
-## 4. Kapı (hepsi gerçekten koşuldu)
+## 7. Kapı (hepsi gerçekten koşuldu)
 
 Yorumlayıcı `O:\navitas-local-train\venv\Scripts\python.exe -X utf8 -B`,
-kök `O:\navitas\.claude\worktrees\wf_fabd3bac-230-1`. Ham çıktı: `kapi_ciktisi.txt`
-(başında koşum anındaki `HEAD` damgalı: **`94f54347`**).
+kök `O:\navitas\.claude\worktrees\wf_fabd3bac-230-1`. Ham çıktı: `kapi_ciktisi.txt`.
 
-| adım | sonuç |
-|---|---|
-| `test_belge_kilidi.py` | Ran **60** tests · **OK** · çıkış 0 |
-| `test_yks_mk15_hakem_ekrani.py` **üç ardışık** | 39/39 OK (25,5 s · 25,5 s · 25,5 s) · çıkış 0,0,0 |
-| `test_isaretli_gosterici.py` | Ran 62 tests · **OK** (skipped=1) · çıkış 0 |
-| `test_faz_b_arduplane_sablon.py` | Ran 44 tests · **OK** · çıkış 0 |
-| `test_t235_alan_etiketi.py` | Ran **56** tests · **OK** · çıkış 0 |
-| `test_yks_*.py` | Ran 233 tests · **OK** · çıkış 0 |
-| **GENEL KAPI** `codes/test_rota_sentetik.py` | `GENEL KAPI (madde 14): GECTI — kol1 15/15 · kol2 serit 15/15` · çıkış 0 |
-| `scripts/belge_kilidi_denetle.py` | çıkış 0 · rapor yazıldı |
+Kapı çıktısındaki `HEAD` damgası (`40b0d9d2`) koşum anındaki **ARA (WIP) commit**'tir;
+ara commit'ler sonunda **tek bir temiz commit'e indirildi**, o yüzden o hash artık
+geçmişte DURMAZ. Kapının koştuğu `tests/` ve `scripts/` **baytları son commit'inkiyle
+AYNIDIR** ve bu taze bir checkout'ta da **doğrulanabilir** — alt ağaç (subtree) sha1'leri:
+
+```
+git rev-parse HEAD:tests     -> 066d259c680d7a2e0c8e0fb6704f5865e3bd9fb5
+git rev-parse HEAD:scripts   -> 7df279f2bac4c2cc24c9073aae318b31ac499ebc
+```
+
+Koşum anındaki `40b0d9d2:tests` ve `40b0d9d2:scripts` bu iki sha1'in **TA KENDİSİYDİ**;
+son commit ile arasındaki tek fark `results/…/T240/` altındaki kanıt dosyalarıdır.
+
+```
+# T240-C KAPI — 2026-09-12 05:49:23
+# yorumlayici: O:/navitas-local-train/venv/Scripts/python.exe
+# depo koku  : O:/navitas/.claude/worktrees/wf_fabd3bac-230-1
+# HEAD       : 40b0d9d2
+
+== test_belge_kilidi.py  (cikis=0, 1 s)
+----------------------------------------------------------------------
+Ran 74 tests in 0.028s
+
+OK
+
+== MK15 (1/3)  (cikis=0, 24 s)
+----------------------------------------------------------------------
+Ran 39 tests in 24.351s
+
+OK
+
+== MK15 (2/3)  (cikis=0, 25 s)
+----------------------------------------------------------------------
+Ran 39 tests in 24.535s
+
+OK
+
+== MK15 (3/3)  (cikis=0, 26 s)
+----------------------------------------------------------------------
+Ran 39 tests in 24.964s
+
+OK
+
+== test_isaretli_gosterici.py  (cikis=0, 34 s)
+----------------------------------------------------------------------
+Ran 63 tests in 33.989s
+
+OK (skipped=1)
+
+== test_faz_b_arduplane_sablon.py  (cikis=0, 1 s)
+----------------------------------------------------------------------
+Ran 45 tests in 0.877s
+
+OK
+
+== test_t235_alan_etiketi.py  (cikis=0, 33 s)
+----------------------------------------------------------------------
+Ran 57 tests in 32.652s
+
+OK
+
+== test_yks_*.py (discover)  (cikis=0, 42 s)
+----------------------------------------------------------------------
+Ran 233 tests in 39.312s
+
+OK
+
+== GENEL KAPI codes/test_rota_sentetik.py  (cikis=0, 5 s)
+URETIM YOLU: rota uretimi 15/15 · yayinlanan serit 15/15 (esik >= 14/15, ON_KAYIT SS18-B)
+[OK] URETIM YOLU KOLU GECTI
+------------------------------------------------------------------------------
+GENEL KAPI (madde 14): GECTI — kol1 15/15 · kol2 serit 15/15
+
+== scripts/belge_kilidi_denetle.py  (cikis=0, 1 s)
+| `tests/test_yks_sik_yordami.py` | `assertIn`, `index`, `search` |
+
+
+rapor yazildi: O:\navitas\.claude\worktrees\wf_fabd3bac-230-1\results\fdr_sprint_20260910\T240\acik_kilitler.md
+```
 
 ### Taşınan koşul (gizlenmiyor)
 
@@ -194,68 +415,117 @@ yeşil. **Birleştirmeden sonra ana ağaçta yeniden koşulmalıdır.** Silinmi�
 
 ---
 
-## 5. Kilit gevşemedi — önce/sonra sayılabilir
+## 8. Kilit gevşemedi — önce/sonra sayılabilir
 
-`self.assert|hatalar.append` sayısı **master → HEAD**:
+`self.assert|hatalar.append` sayısı:
 
-| dosya | master | HEAD |
-|---|---|---|
-| `tests/test_yks_mk15_hakem_ekrani.py` | 214 | **220** |
-| `tests/test_isaretli_gosterici.py` | 369 | **371** |
-| `tests/test_faz_b_arduplane_sablon.py` | 218 | **224** |
-| `tests/test_t235_alan_etiketi.py` | 246 | **248** |
-| `tests/test_belge_kilidi.py` | 0 (yoktu) | **110** |
+| dosya | master | T240-B (e70b3fe6) | **T240-C** |
+|---|---|---|---|
+| `tests/test_yks_mk15_hakem_ekrani.py` | 214 | 220 | **221** |
+| `tests/test_isaretli_gosterici.py` | 369 | 371 | **373** |
+| `tests/test_faz_b_arduplane_sablon.py` | 218 | 224 | **229** |
+| `tests/test_t235_alan_etiketi.py` | 246 | 248 | **250** |
+| `tests/test_belge_kilidi.py` | 0 (yoktu) | 110 | **148** |
+
+Test sayısı: `test_belge_kilidi` **60 → 74**, `test_isaretli_gosterici` **62 → 63**,
+`test_faz_b_arduplane_sablon` **44 → 45**, `test_t235_alan_etiketi` **56 → 57**,
+MK15 **39 → 39** (yeni assert var olan teste eklendi).
 
 Eklenen satırlarda `skip` / `expectedFailure` / `maxDiff` / `sleep(` **araması: 0 sonuç**.
-Kapsam daralması yok; kapalı kümeler **büyüdü**: §6.6 **5 → 18** cümle; §6.8 **yok → 37**;
-§5 **yok → 23**. Hiçbir ön kayıtlı sabit gevşetilmedi, hiçbir kilit satırı silinmedi.
+Hiçbir ön kayıtlı sabit gevşetilmedi, hiçbir kilit satırı silinmedi.
+
+**İki testin BEKLENTİSİ değişti** (gevşeme değil, **düzeltme** — ikisi de kaynağında
+gerekçeli):
+1. `test_varlik_bicimli_tilde_cizigi_ayiklanir` → `..._YAPI_URETMEZ_ama_aday_sayilir`:
+   `&#126;&#126;X&#126;&#126;` **çizgi açmaz**, ayıklanması yanlıştı. Assert 2 → 3.
+2. `test_NEGATIF_kacinilan_etiket_ornegi_hayalet_cizik_uretmez` →
+   `..._HAYALET_ETIKET_uretmez_ama_kod_DISINDA_ADAYDIR`: `&lt;s&gt;` kod dışında artık
+   **hatadır** (önce hiç görülmüyordu). Assert 1 → 5.
 
 ---
 
-## 6. Depo denetimi — hangi kilitler hâlâ açık
+## 9. Depo denetimi — hangi kilitler hâlâ açık
 
 `acik_kilitler.md` (üretici `scripts/belge_kilidi_denetle.py`, salt okuma, AST, **kapı değil**):
 
-| ölçüm | değer |
+```
+| olcum | deger |
 |---|---|
-| taranan test dosyası | 206 |
+| taranan test dosyasi | 206 |
 | markdown okuyup dizge arayan | 58 |
-| ortak yardımcıdan **geçen** | **5** |
-| **AÇIK** (yardımcıyı kullanmayan) | **53** |
-| AÇIK **ve** kaynağında çizme sözdizimi sabiti olan (ağır) | **4** |
-
-Ağır dördü: `test_fdr_bolum4_6eylul_kaniti.py`, `test_fdr_sarkan_atif_kapisi.py`,
-`test_gece_ika_baglanti_semasi.py`, `test_t220_jetson_istekleri.py`.
-Bu dört dosya **ölçülmedi**, yalnız listelendi: **ÖLÇÜLEMEDİ ≠ GEÇTİ**.
+| ortak yardimcidan GECEN | 5 |
+| ACIK (yardimci kullanmayan) | 53 |
+| ACIK **ve** kendi cizik kalibi olan (agir) | 4 |
+| GECENLERDEN on kayitli METIN ESITLIGI kullanan (D-465) | 5 |
+| GECENLERDEN BLOK esitligi (`bloklar`) kullanan (D-465 (1)) | 5 |
+```
 
 ---
 
-## 7. Sınırlar ve açık kalanlar
+## 10. SINIR LİSTESİ — bu kilitler neyi durdurur, neyi DURDURMAZ (D-465 (4))
 
-- **ÖLÇÜLMEDİ:** yukarıdaki 53 açık kilidin hiçbiri mutasyonla sınanmadı. Sayı,
-  "hangi kilitler delinebilir" sorusunun **üst sınırıdır**, kusur sayısı değildir.
-- **ÖLÇÜLMEDİ:** `kabul_olcutu_tekligi` beş işe (T242) uygulanmadı; bu işte **tek** gerçek
-  kullanımı t235 `ON_KAYIT §4`'tür. ATOLYE-2 A10/A7 ve T229-D2 §7.5 mutantları yalnız
-  **birim düzeyinde** (gerçek belge metni kopyalanarak) düşürüldü, o belgelere kilit
-  BAĞLANMADI.
-- **Kapalı kümenin gücü seçicisine bağlıdır** (Y11 dersi). Seçici listeleri
-  (`HUKUM_SOZCUKLERI` + bölüme özgü alan sözcükleri) ön kayıtlıdır ve gerekçeleri
-  yardımcının docstring'inde yazılıdır; genişletilebilir, **daraltılamaz**.
-- **KAPSAM ÖLÇÜLDÜ, %100 DEĞİL** (iddia edilmiyor): §6.8'in 51 cümlesinin **37'si**
-  kapalı kümededir, **14'ü dışındadır** (tablo ayraç satırı `|---|---|---|`, anahtar
-  sözcük taşımayan dört olay satırı, "1." / "2." madde numaraları, "her tikte yazmak
-  Tk geri çağrısını diske bağlar…" gibi gerekçe cümleleri). §5'te 26 cümlenin **23'ü**
-  kümededir. Küme dışındaki bir satıra **anahtar sözcük taşımayan** bir hüküm
-  yazılabilirse kaçar; bu **ölçülmedi**, yalnız kapsam sayıldı. Seçiciyi genişletmek
-  kümeyi büyütür ve bu boşluğu daraltır.
-- `normalize` **belgelenmiş tek yön** seçer: sözcük → sembol (`saniye`→`s`,
-  `milisaniye`→`ms`, `derece`→`°`). Birim kuralı **sayıya bağlıdır**. `ms ↔ s`
-  **büyüklük** katlaması YOKTUR; Y10 sınıfını kapatan şey normalize değil, **kapalı
-  cümle kümesidir** (değişen cümle kümeden düşer).
-- Varlık çözümlemesi `<` ve `>` üreten varlıkları **bilerek çözmez**: `&lt;s&gt;` markdown'da
-  etiket açmaz, harfi harfine görünür; çözseydik kaçınılan bir etiket örneği hayalet çizik
-  olurdu. Negatif vaka testte durur.
-- `cizikleri_ayikla` tek tildede **belgelenmiş bir istisna** taşır: `~<rakam>`
-  ("~3 s", "~8 Hz") yaklaşık işaretidir.
-- **Bağımsızlık (madde 19):** bu işi yazan ajan kendi işini KABUL ETMEZ; kapatma onayı
-  ayrı bir denetimdedir.
+> **Bu kilitler İYİ NİYETLİ AŞINMAYI durdurur: ölçümden sonra belgeye sessizce sızan
+> gevşetme, geri alma, "artık geçti" yazımı, eşik kaydırması, yanlışlıkla silme.
+> EL YAPIMI VARLIK KAÇIŞI ÜRETEN BİR DÜŞMANI DURDURMAZ VE DURDURMASI BEKLENMEZ.**
+> Bu proje bir tehdit modeli değil, bir **doğrulama disiplini** kurar. Aşağıdaki kalan
+> kaçışlar **kovalanmayacaktır**; sayılıp yazılmalarının nedeni, bir sonraki turda
+> "kapatıldı" sanılmamalarıdır.
+
+### 10.1 ÖLÇÜLÜP KAPATILAN kaçış sınıfları (sayı: 31 gerçek dosya mutantı)
+
+| sınıf | mutantlar | adet | yöntem |
+|---|---|---|---|
+| çizme sözdizimi (`~~`, `~`, `<del>`, `<s>`) | D1b, D1c, D1d, A3, A4, A5, W1, W6 | **8** | beyaz liste + ayıklama |
+| HTML **varlık** biçimi (`&#822;`, `&#x336;`) | Y4, Y4b | **2** | varlık çözümlemesi (yalnız KARAKTER tespiti) |
+| **yapı üreten** varlık biçimi (`&#96;`, `&#96;<s>`) | X15, X16, X17 | **3** | `_COZULMEZ` + doğrudan aday (**T240-C**) |
+| olumlu hüküm ailesi + vurgu/yazım varyantı | A8, W2, W3, W4, W7, Y5 | **6** | `olumlu_hukum_var` (geniş aile) + `normalize` vurgu sökme |
+| sayı/birim/karşılaştırma yazımı | A6, A7, A9, Y10 | **4** | `normalize` katlamaları (**K3 ile genişledi**) |
+| anahtar sözcük **taşımayan** çelişkili ikinci hüküm | D1e, V1, V3, Y7a, Y7b, Y7c, Y11 | **7** | kapalı hüküm cümlesi kümesi + **blok eşitliği** |
+| ön kayıtlı eşiğin **ikizi** (ikinci, gevşetilmiş kabul ölçütü) | D461 | **1** | `kabul_olcutu_tekligi` (a+b+c+d) |
+| **TOPLAM** | | **31** | |
+
+Çürütücünün X13/X14'ü (birim sözcüğü / `cm` öneki) koşucuya **eklenmedi** — gerçek dosya
+mutantı sayısı ön kayıtlı 31'dir. İkisi de birim düzeyinde ölçüldü
+(`test_K3_rakip_esik_BIRIM_SOZCUGU_ile_yazilinca_DUSER`,
+`test_K3_rakip_esik_farkli_ONEK_ile_yazilinca_DUSER`) **ve** gerçek §4 artık metin
+eşitliğine bağlı olduğu için o belgede iki kilitten birden geçerler.
+
+### 10.2 KALAN teorik kaçışlar — sayıldı, ölçüldü, KOVALANMAYACAK
+
+| # | kaçış | durum |
+|---|---|---|
+| 1 | **Ön kayıtlı sabiti belgeyle BİRLİKTE değiştirmek.** Eşitlik bunu göremez. | **Tasarım gereği açıktır** — ön kaydın amacı kaçışı imkânsız kılmak değil, **görünür** kılmaktır. Hakemi test değil, **insan denetimi**dir (madde 19: bir iş, onu yazanın onayıyla kapanmaz). |
+| 2 | **Yalnız boşluk/satır sonu taşıyan anlam.** `bloklar` boşluğu normalleştirir; satır sarması ve çift boşluk EŞİTLİĞİ BOZMAZ (ölçüldü). | Bilerek. Kod çitlerinin İÇİ harfi harfine korunur; dört belgede satır sonunun anlam taşıdığı başka blok YOK (ölçüldü). |
+| 3 | **Eşitliğe çevrilmemiş bölümlere** çelişkili hüküm yazmak. CONTRACTS'ta 52, GOSTERICI_KURULUM'da 6, README'de 13 bölüm başlığı eşitlik dışındadır. | Sayıldı. Bu bölümlerde `beyaz_liste_disi_cizik` (belge geneli) ve `olumlu_hukum_var` çalışır; **metin eşitliği yoktur.** T242'nin kapsamı. |
+| 4 | **Depo genelindeki 53 açık kilit** (§9). Hiçbiri mutasyonla sınanmadı. | **ÖLÇÜLEMEDİ ≠ GEÇTİ.** Sayı, "hangi kilitler delinebilir" sorusunun ÜST SINIRIDIR, kusur sayısı değildir. |
+| 5 | **Kapalı hüküm cümlesi kümesinin seçicisi.** §6.8'in 51 cümlesinin 37'si, §5'in 26 cümlesinin 23'ü kümededir. Kümenin dışına **anahtar sözcük taşımayan** bir hüküm yazılabilirdi. | **T240-B'de ÖLÇÜLDÜ: kaçıyordu** — çürütücünün X3'ü (CONTRACTS §6.8, MK15 çıkış 0) ve X7'si (GOSTERICI §5, çıkış 0). **T240-C'de iki bölüm de metin eşitliğine bağlandı; ikisi de YENİDEN ÖLÇÜLDÜ ve artık DÜŞÜYOR** (aşağıdaki ham çıktı). Kapalı küme **ikinci** kilit olarak durur. |
+| 6 | **Kod çitlerinin içeriği** eşitlik bloğunda harfi harfine korunur ama çit **dışındaki** hükümlerle tutarlılığı denetlenmez. | Kod içeriği ayrıca koddan üretilir (⟨DRM_BORU⟩, ⟨ÖRNEK⟩) — o kadarı ölçülü. |
+| 7 | **Markdown okuyucu farkları.** "Varlık YAPI üretmez" kuralı CommonMark/GFM'e dayanır; başka bir işleyici farklı davranırsa analiz değişir. | Kaynak: CommonMark spec "Entity and numeric character references"; GitHub GFM aynı. Başka işleyici **ÖLÇÜLMEDİ**. |
+| 8 | **Görsel/PDF çıktıda gizleme** (CSS, tema, yazı rengi). | Kapsam DIŞI: kilitler markdown KAYNAĞINI okur. |
+| 9 | **Birim testindeki A10/A7/§7.5 çapaları CANLI dosyayla karşılaştırılmaz.** 12 Eylül 2026'da alınmış anlık görüntüdür; ATOLYE kâğıdı değişirse çapa sessizce eskir. | **Bilerek** — ATOLYE kâğıdı 12 Eylül'de İNSAN tarafından doldurulacaktır ve bir yardımcı birim testi o doldurmada kırılmamalıdır. Sınıf docstring'inde açıkça yazılıdır. `ATOLYE_TEST_GUNU_20260912.md` ve `CONTRACTS.md §7.5` **hiçbir süitte metin eşitliğiyle kilitli DEĞİLDİR** — T242'nin kapsamı. |
+
+**X3/X7 yeniden ölçümü** (gerçek dosya + gerçek süit, sha256 ile bayt-eş geri yükleme):
+
+```
+X3 CONTRACTS §6.8 anahtarsiz celiski     cikis=1 -> DUSTU  geri_bayt_es=True
+    AssertionError: Tuples differ: ('###[4574 chars].', '**Bağlayıcı ilkeler:**', '- Kanıt yazımı [1919 chars]a).') != ('###[4574 chars].', 'Not (12 Eylül): etiket biçimi isteğe bağl[2001 chars]a).')
+X7 GOSTERICI §5 anahtarsiz celiski       cikis=1 -> DUSTU  geri_bayt_es=True
+    AssertionError: Tuples differ: ('## [4807 chars]*.", '- **Geri alma:** `sudo systemctl disable[134 chars]t).') != ('## [4807 chars]*.", "- Not (12 Eylül): bu davranış 12 Eylül'd[198 chars]t).')
+```
+
+### 10.3 Ne DEĞİŞMEDİ
+
+- `cizikleri_ayikla` tek tildede **belgelenmiş bir istisna** taşır: `~<rakam>` ("~3 s",
+  "~8 Hz") yaklaşık işaretidir — üç belgede ölçülen tek meşru kullanım budur.
+- `kabul_olcutu_tekligi` kural (b) **yalnız** ön kayıtlı ölçütün kısıtladığı büyüklüklere
+  bakar; karşılaştırmasız sayılar ("`FENCE` 50 m altında") eşik değildir.
+- **Ölçülen sınır (iddia edilmiyor):** T229-D2 çapasında (b) tetiklenmez (ön kayıtlı ölçütün
+  eşikleri birimsizdir); orada mutantı (c) ve (d) yakalar — testte `assertNotIn` ile kayıtlı.
+
+---
+
+## 11. Bağımsızlık
+
+**Madde 19:** bu işi yazan ajan **kendi işini KABUL ETMEZ**. T240-C bir KAPANIŞ turudur
+(mimar kararı D-465): T240 ailesi bundan sonra yeni tur açmaz; kapatma onayı ayrı bir
+denetimdedir.

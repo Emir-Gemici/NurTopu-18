@@ -273,6 +273,45 @@ SITL_OLCUM_ETIKETLERI = (
     "**Satırlar ve oran (ölçüldü — `sitl_yoklama.txt` §6.1, 10 Eylül, T221-D):**",
 )
 SITL_OLUMLU_HARIC = ("olculdu",)
+# ── D-465 (1) · MIMAR KARARI 12 Eylul: YOKLUK yerine ON KAYITLI METIN ESITLIGI ──
+# NEDEN: T240 ailesi uc turdur ayni bicimde RED aldi — "su sozdizimiyle yasak metin geri
+# kondu / hukum gizlendi" (W1 `~OLCULEMEDI~`, Y4 `&#822;`, X15 `&#96;~~...~~&#96;`,
+# anahtar sozcuksuz V1/V3 cumleleri, birim kaydirmasi). YOKLUK denetiminin kacis yuzeyi
+# SONSUZDUR; ESITLIK denetiminin kacis yuzeyi YOKTUR. SS6.6 bir OLCUM HUKMU yuzeyidir
+# ("Sonuc: ... KOSULMADI", OLCULEMEDI, kabul olcutleri blogu); bu yuzden bolumun TAMAMI
+# blok blok ON KAYITLIDIR.
+# Normallestirme YALNIZ bosluk/satir sonudur; cizik/varlik/vurgu AYIKLAMASI YOKTUR —
+# ayiklama, saklama yuzeyi acan seyin kendisidir. Mesru cizik (eski olcut 1) blogun
+# ICINDE HAM haliyle durur: FDR kurali (eski metin silinmez, cizilir + tarih) korunur.
+# SAYILAR HARFI HARFINEDIR (⟨N⟩/⟨M⟩ yerine 62/61): bu bolumun .param ile baglantisi
+# ZATEN `kabul_metni_hatalari` tarafindan kuruluyor (⟨N⟩ = .param ad sayisi). .param
+# degisirse once O kilit duser; blok on kaydinin da elle guncellenmesi gerekir — ON
+# KAYDIN AMACI budur (gorunur test degisikligi olmadan belge degismez).
+SITL_66_BLOKLARI = (
+    '### 6.6 SITL provası — ÖLÇÜLEMEDİ (bu makine, 10 Eylül)',
+    "**Ölçüm** (`results/fdr_sprint_20260910/H8/T221/sitl_yoklama.txt`, üretici aynı dizindeki `sitl_yokla.py`; hiçbir şey kurmaz, hiçbir ikili çalıştırmaz): `sim_vehicle.py`, `arduplane`, `mavproxy.py`, `dronekit-sitl`, docker, podman **YOK**; `wsl.exe` yalnız System32 saplaması, kayıtlı WSL dağıtımı **YOK**; venv'de yalnız `pymavlink` var. Firmware sunucusunda 4.5.7 SITL ikilisi **yalnız Linux** için (`SITL_x86_64_linux_gnu`, `SITL_arm_linux_gnueabihf`); Windows yerel ikili yok. `dronekit-sitl` kurulu değil; kurulsa bile 4.5.7 dışı bir sürümle prova D-425'in sürüm dersine aykırıdır. **Sonuç: ArduPlane SITL provası KOŞULMADI.** Adların 4.5.7'de var olduğu ve değerlerin tablolara uyduğu kaynaktan kanıtlıdır (§6 tablo); uçuş mantığının uçtan uca davranışı **ÖLÇÜLEMEDİ**.",
+    "⚠ Çelişki (ölçüldü): SITL x86_64 `features.txt` `!HAL_PARACHUTE_ENABLED` der; aynı ikilide `CHUTE_` ve `AP_Parachute` dizgeleri var (çalıştırılmadan bayt taraması, sha256 `639a8381…`). SITL'de `CHUTE_*` parametrelerinin gerçekten var olduğu ancak koşumda görülür — provanın ilk kapısı budur.",
+    "**Satırlar ve oran (ölçüldü — `sitl_yoklama.txt` §6.1, 10 Eylül, T221-D):** `SITL_x86_64_linux_gnu/features.txt:139` `!HAL_PARACHUTE_ENABLED` der; ama o dosyanın 167 satırının **164'ü** `!` ile başlar (`Pixhawk6C/features.txt:196` `HAL_PARACHUTE_ENABLED`; orada 308 satırın 72'si `!`). Aynı SITL ikilisinde **yalnız paraşütle derlenen** iki mesaj var: `Chute has no channel` 1 kez (`libraries/AP_Parachute/AP_Parachute.cpp:216`; dosya `:3` `#if HAL_PARACHUTE_ENABLED` … `:273` `#endif` bloğunda) ve `Parachute: Too low` 1 kez (`ArduPlane/parachute.cpp:55`; `:15` `#if PARACHUTE == ENABLED` … `:68` `#endif`; `ArduPlane/config.h:219` `#define PARACHUTE HAL_PARACHUTE_ENABLED`). `CHUTE_` grup öneki `ArduPlane/Parameters.cpp:767`'dedir (`:764` `#if PARACHUTE == ENABLED`). İki kaynak birbirini yalanlar: dizge sayımı parametre tablosunu kanıtlamaz, SITL `features.txt`'i ise neredeyse her özelliği `!` yazar. **Hakem koşumdur**; sonuç ölçütlerin altındaki önceden yazılmış ön hükümle kaydedilir.",
+    '**Linux / WSL2 yordamı** (Ubuntu; A yolu x86_64 hazır ikili, B yolu kaynaktan — Jetson aarch64 dahil):',
+    'A) Hazır 4.5.7 ikilisi (`<DEPO>` = bu deponun kökü):',
+    '```bash\npython3 -m venv ~/sitl && . ~/sitl/bin/activate && pip install MAVProxy pymavlink\nmkdir -p ~/sitl/p457 && cd ~/sitl/p457\nwget https://firmware.ardupilot.org/Plane/stable-4.5.7/SITL_x86_64_linux_gnu/arduplane && chmod +x arduplane\nsha256sum arduplane      # beklenen 639a8381c1d8805a2e252a679f22d72473232ac813c810216d99aaba55e160e9 (10 Eyl)\nwget https://raw.githubusercontent.com/ArduPilot/ardupilot/Plane-4.5.7/Tools/autotest/models/plane.parm\n./arduplane --model plane --home -35.363261,149.165230,584,353 --defaults plane.parm,<DEPO>/config/pixhawk/arduplane_final.param -I0 &\nmavproxy.py --master tcp:127.0.0.1:5760 --console\n```',
+    "B) Kaynaktan (her Linux; Jetson Orin Nano dahil — kurulum betiği JetPack 7.2.1 / Ubuntu 24.04'te ÖLÇÜLMEDİ):",
+    '```bash\ngit clone --branch Plane-4.5.7 --depth 1 --recurse-submodules --shallow-submodules https://github.com/ArduPilot/ardupilot.git\ncd ardupilot && Tools/environment_install/install-prereqs-ubuntu.sh -y && . ~/.profile\n./waf configure --board sitl && ./waf plane\nTools/autotest/sim_vehicle.py -v ArduPlane -f plane -L CMAC --add-param-file=<DEPO>/config/pixhawk/arduplane_final.param --console --map\n```',
+    "`sim_vehicle.py -f plane` önce `Tools/autotest/models/plane.parm`'ı, sonra `--add-param-file` dosyasını yükler (`--defaults a,b`; sonraki kazanır). Her iki yolda MAVProxy'de:",
+    '```text\nparam set SIM_PARA_ENABLE 1\nparam set SIM_PARA_PIN 7\nwp load <DEPO>/config/pixhawk/arduplane_sitl_prova.waypoints\nmode AUTO\narm throttle\nparam set SIM_SHOVE_X 46\nparam set SIM_SHOVE_TIME 390\n```',
+    "`SIM_PARA_PIN 7` = paraşüt servosu (MAIN7): `libraries/SITL/SIM_Parachute.cpp` bu çıkış ≥ 1250 PWM olunca `BANG!  Parachute deployed` basar (`CHUTE_SERVO_ON` 1300, `OFF` 1100). `SIM_SHOVE_X/TIME` gövde x ivmesini verilen ms boyunca ekler (`SIM_Aircraft.cpp` `add_shove_forces`): 46 m/s² × 0,39 s ≈ 18 m/s = DDR mancınığı. Önce `SHOVE_X`, sonra `SHOVE_TIME` (süre yazılınca itiş başlar ve sonunda 0'a döner).",
+    '**Kabul ölçütleri (önceden yazıldı; biri tutmazsa prova DÜŞER, eşik gevşetilmez):**',
+    "1. ~~Açılış `ArduPlane V4.5.7`; `param show CHUTE_ENABLED` 1 ve dosyadaki 62 adın 62'si yüklü.~~ *(10 Eylül, ölçümden önce, D-449: `BRD_SER2_RTSCTS` 4.5.7 SITL'de derlenmez — bu ölçüt SITL'de hiç tutamazdı.)* Açılış `ArduPlane V4.5.7`; `param show CHUTE_ENABLED` 1; dosyadaki **62** addan SITL'de **61**'i yüklü (N − |beklenen-yok|; her ad `param show <AD>` ile sayılır). Önceden yazılmış **beklenen-yok** listesi = {`BRD_SER2_RTSCTS`}. Gerekçe (Plane-4.5.7 kaynağı): `libraries/AP_BoardConfig/AP_BoardConfig.cpp:124` `#ifdef HAL_HAVE_RTSCTS_SERIAL2` (tanım `:131`; dış blok `:113` `#if AP_FEATURE_RTSCTS`). Bu makroyu ChibiOS hwdef üreteci yazar: `libraries/AP_HAL_ChibiOS/hwdef/scripts/chibios_hwdef.py:1899-1903` UART'ın `_RTS` hattı varsa `#define HAL_HAVE_RTSCTS_SERIAL<n>` (`:1929-1930` `AP_FEATURE_RTSCTS 1`); Pixhawk 6C'de `libraries/AP_HAL_ChibiOS/hwdef/Pixhawk6C/hwdef.dat:57-58` `UART5_RTS`/`UART5_CTS`, `:37` `SERIAL_ORDER` → SERIAL2 = UART5. Ölçüm (ikili çalıştırılmadan): 4.5.7 SITL ikilisi (sha256 `639a8381c1d8805a2e252a679f22d72473232ac813c810216d99aaba55e160e9`) `SER2_RTSCTS` dizgesini **0** kez içerir; aynı tablonun koşulsuz adı `SAFETY_DEFLT` (`:171`) 1 kez (`sitl_yoklama.txt` §6.1). SITL bu adı **sessizce** atlar: `libraries/AP_Param/AP_Param.cpp:2313-2316` uyarıyı yalnız `#if ENABLE_DEBUG` ile basar, ikilide `Ignored unknown param` 0 kez — eksik ad günlükten değil `param show` ile görülür. Bu listenin dışındaki her eksik ad **DÜŞER**; liste ölçümden sonra genişletilmez (test A18 README listesini testteki önceden yazılmış kümeyle kilitler).",
+    '2. Arm öncesi mesajlarda `Chute has no channel` yok.',
+    '3. İtiş öncesi 60 s boyunca `Triggered AUTO` yok; itişten sonra `Armed AUTO, xaccel = …` ve 0,6 s içinde `Triggered AUTO`.',
+    '4. Bırakma noktasından (satır 4) sonra `Parachute: Released`, ardından `BANG!  Parachute deployed`.',
+    "5. Bırakmadan sonra `.bin` RCOU'da SERVO3 gaz çıkışı minimumda (`servos.cpp` `suppress_throttle`).",
+    '6. `.bin` + `mavlogdump.py --types MSG,RCOU,CTUN` çıktısı `results/<tarih>_sitl_plane457/` altına.',
+    '**Ön hüküm — SITL\'de `CHUTE_*` yoksa (10 Eylül, ölçümden önce, D-449):** koşumda `param show CHUTE_ENABLED` boş dönerse prova *"SITL paraşütsüz derlenmiş — paraşüt zinciri ÖLÇÜLEMEDİ"* diye kaydedilir. Ölçüt 1 **DÜŞER** (`CHUTE_*` beklenen-yok listesine sonradan eklenmez, eşik gevşetilmez); ölçüt 2\'nin *"mesaj yok"* koşulu paraşütsüz ikilide kendiliğinden sağlanır → ÖLÇÜLEMEDİ; ölçüt 4 ve 5 ÖLÇÜLEMEDİ; ölçüt 3 (kalkış kapısı) yine ölçülür. Yukarıdaki `features.txt` ↔ ikili çelişkisi bu kaydı değiştirmez.',
+    "⚠ SITL `plane` modeli bizim uçağın aerodinamiği değildir (`models/plane.parm` küçük model; bizim dosya `AIRSPEED_*`'ı ezer, `ROLL_LIMIT_DEG 65` gibi değerleri o dosyadan kalır): prova **mantığı** sınar (kalkış kapısı, paraşüt zinciri, failsafe), performansı sınamaz. SITL plane modelinin kendi fırlatıcısı (`SIM_Plane.cpp`: `-catapult`/`-bungee` çerçevelerinde 7. çıkış > 1700 PWM) **kullanılmaz**:",
+    '7. çıkış bizde paraşüttür; mancınık `SIM_SHOVE_*` ile benzetilir.',
+)
+
 # ── T240: SS6.6 hukum tasiyan CUMLE KUMESI kapalidir (kara liste yerine yapisal cozum) ──────────
 # NEDEN: kacan mutantlarin dordu (W2 "KANITLANDI", W7 "sorunsuz tamamlandi; olcutler saglanmis",
 # V1 "biri tutmasa da prova kabul edilir", V3 "SITL zinciri yerinde; prova kapilari sorun cikarmadi")
@@ -1160,6 +1199,39 @@ class SitlGorevi(unittest.TestCase):
         # T221-D (D-449): kabul olcutu 1 SITL'de tutabilir; sayi .param'dan hesaplanir
         self.assertEqual(sitl_kabul_hatalari(sitl, self.p, _kanit(),
                                              SITL_YOKLAMA.read_text(encoding="utf-8")), [])
+
+    def test_a18b_D465_SS66_on_kayitli_metin_esitligi(self):
+        """D-465 (1): SS6.6'nin TAMAMI blok blok ON KAYITLI METIN ESITLIGIYLE baglidir.
+
+        Bu kilit YOKLUK degil ESITLIK denetler: bolumun HAM metni (yalniz bosluk/satir
+        sonu normalize) testte duran sabite ESIT olmak zorundadir. Bir sozcuk eklenir,
+        silinir ya da uzeri cizilirse test DUSER; bunun hangi SOZDIZIMIYLE yapildigi
+        ONEMSIZDIR — `~~X~~`, `~X~`, `<s>X</s>`, `&#822;`, `&#96;~~X~~&#96;` hepsi ayni
+        kapiya carpar.
+
+        OLCULEN KACISLAR ki bu tek kuralla kapanir: W1/W6 (`~OLCULEMEDI~` baslikta),
+        W2/W7 (aile disi olumlu hukum), V1/V3 (anahtar sozcuksuz celiskili ikinci
+        hukum), Y4 (`&#822;`), X15/X16/X17 (`&#96;` sarmali).
+
+        CIZIK AYIKLAMASI BILEREK YOKTUR: ayiklama, saklama yuzeyini acan seydir.
+        Mesru cizik (eski olcut 1) on kayitli blogun ICINDE HAM haliyle durur — FDR
+        kurali (eski metin silinmez, cizilir + tarih) bozulmadan korunur.
+        """
+        sitl = readme_bolumu(_readme(), README_SITL)
+        self.assertIsNotNone(sitl, f"README'de {README_SITL!r} yok")
+        bulunan = belge_kilidi.bloklar(sitl)
+        self.assertEqual(SITL_66_BLOKLARI, bulunan,
+                         "config/pixhawk/README SS6.6 on kayitli metinle ayni degil — "
+                         "fazla: {}; eksik: {}".format(
+                             [b for b in bulunan if b not in SITL_66_BLOKLARI],
+                             [b for b in SITL_66_BLOKLARI if b not in bulunan]))
+        # ON KAYITLAR BIRBIRINE BAGLI: baslik ve sonuc cumlesi sabitleri blok
+        # demetinin ICINDE gecmek zorunda — biri sessizce degistirilemez.
+        self.assertEqual(SITL_BASLIK_METNI, SITL_66_BLOKLARI[0])
+        self.assertTrue(any(SITL_SONUC in b for b in SITL_66_BLOKLARI),
+                        "SS6.6 on kayitli bloklarinda 'Sonuc:' cumlesi yok")
+        self.assertTrue(any(SITL_ESKI_OLCUT1_METNI in b for b in SITL_66_BLOKLARI),
+                        "SS6.6 on kayitli bloklarinda cizili eski olcut 1 yok")
 
 
 class KaynakBetigi(unittest.TestCase):

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""T240-B — her yeni mutanti HANGI kilidin dusurdugunu OLCER (iddia degil, olcum).
+"""T240-B / T240-C — her yeni mutanti HANGI kilidin dusurdugunu OLCER (iddia degil, olcum).
 
 KANIT.md'deki "kapali hukum cumlesi kumesi (tek yakalayan)" gibi hukumler ancak
 hata METNIYLE dogrulanabilir: mutant uygulanir, ilgili tek test METODU kosulur ve
@@ -26,7 +26,7 @@ sys.path.insert(0, str(CIKTI))
 from mutasyon_t240 import (  # noqa: E402
     SOZLESME, KURULUM, README, ON_KAYIT_T235,
     C_Y4_CAPA, C_Y4, C_Y4B, C_Y7, SOZLESME_KAYNAK_BASI_C, C_ILKELER, C_SON_PARAGRAF,
-    K_CAPA, K_Y5, K_Y10_ESKI, K_Y10_YENI, R_CAPA, O_CAPA, O_D461)
+    K_CAPA, K_A4, K_X16_CAPA, K_Y5, K_Y10_ESKI, K_Y10_YENI, R_CAPA, O_CAPA, O_D461)
 
 #: (ad, dosya, eski, yeni, test yolu)
 VAKALAR = (
@@ -51,6 +51,22 @@ VAKALAR = (
      "test_faz_b_arduplane_sablon"),
     ("D461 ikinci gevsetilmis olcut", ON_KAYIT_T235, O_CAPA, O_CAPA + O_D461,
      "test_t235_alan_etiketi.OnKayitKilitleri.test_SS4_T236_kabul_olcutu_TEKLIGI"),
+    # ── T240-C (D-465): `&#96;` sarmali SAHTE KOD ARALIGI ────────────────────
+    ("X15 &#96; sarmali ~~cizik~~", KURULUM, K_A4, "- &#96;~~" + K_A4[2:] + "~~&#96;",
+     "test_isaretli_gosterici.GostericiDosyalari.test_G8_D465_on_kayitli_metin_esitligi_dort_bolum"),
+    ("X16 &#96; sarmali nabiz maddesi", KURULUM, K_X16_CAPA,
+     "- &#96;~~" + K_X16_CAPA[2:] + "~~&#96;",
+     "test_isaretli_gosterici.GostericiDosyalari.test_G8_D465_on_kayitli_metin_esitligi_dort_bolum"),
+    ("X17 &#96; sarmali <s>cizik</s>", KURULUM, K_A4, "- &#96;<s>" + K_A4[2:] + "</s>&#96;",
+     "test_isaretli_gosterici.GostericiDosyalari.test_G8_D465_on_kayitli_metin_esitligi_dort_bolum"),
+    # ... ve ayni uc mutant, ESKI (ayiklamali) kilidi de dusurmeli: K1 duzeltmesinden
+    # sonra `&#96;` COZULMEDIGI icin `beyaz_liste_disi_cizik` onlari DOGRUDAN gorur.
+    ("X15b eski cizik kilidi de dusurur", KURULUM, K_A4, "- &#96;~~" + K_A4[2:] + "~~&#96;",
+     "test_isaretli_gosterici.GostericiDosyalari."
+     "test_G8_D453_D454_olculmemis_hukum_celiski_eski_komut"),
+    ("X17b eski cizik kilidi de dusurur", KURULUM, K_A4, "- &#96;<s>" + K_A4[2:] + "</s>&#96;",
+     "test_isaretli_gosterici.GostericiDosyalari."
+     "test_G8_D453_D454_olculmemis_hukum_celiski_eski_komut"),
 )
 
 
@@ -68,7 +84,7 @@ def main():
         print(s)
         kayit.write(s + "\n")
 
-    yaz("# T240-B — yeni mutantlari HANGI kilit dusurdu (hata metniyle)")
+    yaz("# T240-B / T240-C — yeni mutantlari HANGI kilit dusurdu (hata metniyle)")
     yaz("# yorumlayici: {}".format(PY))
     yaz("# depo koku : {}".format(KOK))
     yaz()

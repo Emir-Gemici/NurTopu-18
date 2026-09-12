@@ -107,6 +107,81 @@ KURULUM_IZINLI_CIZIK = (
     "video/x-raw(memory:NVMM),width=1280,height=720 ! nvdrmvideosink set_mode=1 sync=false'`~~",
 )
 
+# ── D-465 (1) · MIMAR KARARI 12 Eylul: YOKLUK yerine ON KAYITLI METIN ESITLIGI ──
+# NEDEN: T240 ailesi uc turdur ayni bicimde RED aldi — "su sozdizimiyle yasak metin geri
+# kondu / hukum gizlendi". Son tur (curutucu X15/X16/X17) tam da bu belgenin §9'unda
+# oldu: `&#96;~~...~~&#96;` sarmali bir OLCULEMEDI maddesini okuyucuda CIZIP testte
+# YURURLUKTE birakti, cunku `assertIn` YOKLUK degil VARLIK sorar ve ayiklama onu
+# goremedi. YOKLUK denetiminin kacis yuzeyi SONSUZDUR; ESITLIK denetiminin kacis yuzeyi
+# YOKTUR. Bu yuzden olcum HUKMU tasiyan dort bolum (§1 kodlayici/zincir tablosu,
+# §4 dogrulama tablosu — SONUC sutunu, §5 DRM hukumleri, §9 OLCULEMEDI/ACIK listesi)
+# blok blok ON KAYITLIDIR.
+# Normallestirme YALNIZ bosluk/satir sonudur; cizik/varlik/vurgu AYIKLAMASI YOKTUR —
+# `~~X~~`, `<s>X</s>`, `&#822;` ve `&#96;~~X~~&#96;` hepsi ayni kapiya carpar. Kod
+# citlerinin ICI harfi harfine korunur; ⟨DRM_BORU⟩ KODDAN (drm_video_argv) doldurulur.
+KURULUM_1_BLOKLARI = (
+    '## 1. Zincir (İHA tarafı)',
+    '```\nJetson Orin Nano DevKit ─ DisplayPort\n   └─(DP→HDMI adaptör: pasif ya da aktif — NVIDIA resmî destekli)─ HDMI\n        └─(HDMI → mini HDMI kablo; eldeki kablo)─ SIYI HDMI giriş dönüştürücü (giriş Mini HDMI, 12 V / 3 W, 192.168.144.25)\n             └─(LAN&PWR)─ SIYI hava birimi ──RF 5,8 GHz── MK15 kumanda: SIYI FPV "Camera 1"\n                  └─(kumanda HDMI — yalnız Enterprise, ekran aynası)─ USB HDMI yakalama kartı ─ YKS PC\n                       └─ kamera_koprusu --kaynak <indeks> → yks_gui --kamera-url http://127.0.0.1:8080\n```',
+    '| konu | bilgi | kaynak |',
+    '|---|---|---|',
+    '| Orin Nano DevKit görüntü çıkışı | yalnız **DisplayPort**; pasif ve aktif DP→HDMI adaptör resmî destekli | docs.nvidia.com — Orin Nano DevKit "hardware layout" |',
+    '| HDMI giriş dönüştürücü | giriş **Mini HDMI**, **12 V / 3 W**, varsayılan IP **192.168.144.25**, `rtsp://192.168.144.25:8554/main.264` (H.264 — kodek çelişkili, bkz. Kodlayıcı satırı); IP, SD karttaki **`setip.txt`** ile değişir | SIYI dönüştürücü kılavuzu v1.1 |',
+    "| Dönüştürücü beslemesi | 12 V büyük olasılıkla hava biriminin **LAN&PWR** kablosundaki 12V pininden — **DOĞRULANACAK**; yedek: Jetson'un 12,2 V dönüştürücüsü (akım kapasitesi **BEYAN GEREKLİ**, D-443 ek) | araştırma; kullanıcı |",
+    '| Hava birimi | **MK15 Air Unit** (100 g, 1 LAN&PWR, 16,8–75,6 V) **ya da HM30 Air Unit** (74 g, 2 LAN&PWR, 12,6–25,2 V) — hangisi olduğu etiketten okunur. 🔴 **RİSK:** MK15 Air Unit ise 4S yük altında alt sınırın altına iner (6 Eylül tlog 9,35–11,28 V okundu, D-440) | SIYI; D-440 |',
+    '| Kumanda HDMI | yalnız **Enterprise** sürümde; ekranın aynası (ham akış değil) | MK15 kılavuzu v1.9 |',
+    '| SIYI FPV | OSD kapatılabilir; Camera 1 tam ekran | SIYI FPV |',
+    "| Frekans | FCC MK15TX 5745–5825 MHz, iletilen 68,1 mW ≈ **214 mW e.i.r.p.** (5 dBi) > BTK muafiyeti **25 mW e.i.r.p.** — 🔴 **RİSK AÇIK** (Link Status'tan okunur, DDK'ya sorulur) | FCC; BTK |",
+    "| Kodlayıcı | Orin Nano'da **NVENC yok**; x264 30 fps ultrafast çekirdek başı %19–38. Dönüştürücünün canlı kodeki **H.264/H.265 çelişkili** (TASARIM §5; SIYI dönüştürücü kılavuzu V1.1) — §4 adım 5'te VLC'de okunur (**DOĞRULANACAK**) | NVIDIA Jetson Linux R39.2; SIYI dönüştürücü kılavuzu V1.1 |",
+    "| Kamera | JetPack 7.2.1 + IMX477: stok sürücüyle başarı raporu yok; Arducam beta 39.2.0'a bağlı — **12 Eylül ilk test**; yedek USB UVC kamera | araştırma |",
+)
+
+KURULUM_4_BLOKLARI = (
+    '## 4. Doğrulama sırası (12 Eylül atölye — İNSAN; hepsi şu an ÖLÇÜLEMEDİ)',
+    '| # | adım | beklenen | sonuç |',
+    '|---|---|---|---|',
+    '| 1 | `--kuru` (x11, drm, rtsp) | çıkış 0; komutlar basılır | ÖLÇÜLECEK |',
+    '| 2 | Jetson DP → HDMI monitör, yayın kapalı | tam ekran kırmızı `GORUNTU YOK` + "yayin erisilemiyor" | ÖLÇÜLECEK |',
+    '| 3 | `GOSTERICI_KIP=x11` + T227 yayını | CANLI, bindirme okunur | ÖLÇÜLECEK |',
+    '| 4 | `rpi_inference` durdurulur | ≤ 2 s içinde BAYAT, ≤ 5 s içinde GÖRÜNTÜ YOK; yeniden başlayınca CANLI | ÖLÇÜLECEK |',
+    '| 5 | monitör yerine dönüştürücü | VLC `rtsp://192.168.144.25:8554/main.264` görüntü | ÖLÇÜLECEK |',
+    '| 6 | MK15 kumanda Camera 1 | aynı ekran, OSD kapalı | ÖLÇÜLECEK |',
+    '| 7 | camdan cama gecikme (TASARIM §3.4, eşik ≤ 1,0 s) | 5 ölçüm, p50/maks | ÖLÇÜLECEK |',
+    '| 8 | Argus FPS: kamera + gösterici birlikte (drm kipinde ayrıca) | FPS düşmez | ÖLÇÜLECEK |',
+    '| 9 | DRM nabız biçimi + zamanlaması: §5 `--nabiz-sina` komutu (DRM kipinden ÖNCE) | çıkış 0, `NABIZ_SINA: ESLESTI — … 20 nabiz …; ZAMANINDA` | ÖLÇÜLECEK |',
+)
+
+KURULUM_5_BLOKLARI = (
+    '## 5. DRM kipi (seçenek — gdm DURUR, masaüstü gider)',
+    'Önkoşul ve borular: `/usr/bin/python3 ~/navitas/scripts/isaretli_gosterici.py --kip drm --kuru` basar:',
+    '```bash\nsudo systemctl stop gdm\nsudo loginctl terminate-seat seat0\nsudo modprobe nvidia-drm modeset=1\n⟨DRM_BORU⟩\n```',
+    "~~10 Eylül (T228): `gst-launch-1.0 -e 'souphttpsrc location=http://127.0.0.1:8081/video is-live=true do-timestamp=true ! multipartdemux ! jpegdec ! nvvidconv ! video/x-raw(memory:NVMM),width=1280,height=720 ! nvdrmvideosink set_mode=1 sync=false'`~~ → **10 Eylül (T228-D):** `-v` + `identity name=nabiz silent=false` eklendi (boru ilerlemesi izlenir).",
+    'Birim (**varsayılan KAPALI**; `jetson_baslat.sh` kurmaz):',
+    '```bash\nsed -e "s#/home/navitas/navitas#$HOME/navitas#g" -e "s#^User=navitas\\$#User=$USER#" \\\n    gosterici/navitas-isaretli-gosterici-drm.service > /tmp/navitas-isaretli-gosterici-drm.service\nsudo cp /tmp/navitas-isaretli-gosterici-drm.service /etc/systemd/system/\nsudo systemctl daemon-reload\nsudo systemctl start navitas-isaretli-gosterici-drm     # önce dene; kalıcı için: enable\n```',
+    "- `${KAMERA_PYTHON}` ve `${ISARETLI_YAYIN}` `/etc/navitas.env`'den gelir → `jetson_baslat.sh --kur` bu sürümle en az bir kez koşulmuş olmalı.",
+    "- 🔴 **Argus uyarısı:** `nvidia-drm` yüklenip `nvdrmvideosink` **çalışmazsa** Argus (`nvarguscamerasrc`) **~3 fps'e düşer**. DRM ya sürekli çalışır ya hiç açılmaz; kamera FPS'i DRM açıkken ölçülür.",
+    "- JetPack 7.2'de `nvidia-drm` varsayılan denylist'te (`nv-load-display-modules` servisi) — açık `modprobe`'un yükleyip yüklemediği **DOĞRULANACAK**.",
+    "- drm kipinde kareye BAYAT bandı **çizilmez** (boru `/video`'yu doğrudan gösterir). Gözetmen `/kare.jpg`'yi 1 s'de bir yoklar; kare 2 s'den uzun süre yeni değilse video borusunu durdurur ve kırmızı GÖRÜNTÜ YOK borusunu (`videotestsrc pattern=red ! textoverlay`) açar — `nvdrmvideosink` son kareyi ekranda bırakamaz.",
+    "- **Histerezis ve yeniden başlatma sıklığı (T228-D, 10 Eylül):** CANLI'dan (video borusundan) çıkış **ilk** bayat / hata / donmuş yoklamada, bekleme yok (güvenli taraf). Video borusuna dönüş **2 ardışık** taze yoklama **ve** son boru başlatmasından **≥ 3 s** ister — çırpınan yayın `nvdrmvideosink`'i sürekli yeniden açmaz (her açılış `set_mode=1` ile kip kurar). Kendiliğinden ölen video borusunun yerine GÖRÜNTÜ YOK borusu **hemen** açılır — yayın tazeyse ekrandaki sebep `video borusu kendiliginden bitti (rc N)` (journal: `rc=N omur=…`; **T228-D2**, 10 Eylül), yayın bayat/yoksa yayının kendi sebebi; ölen GÖRÜNTÜ YOK borusu ≥ 3 s aralıkla yeniden açılır. Açılışta kırmızı ekran ~3 s görünür (bu kurala göre beklenen).",
+    '- **Boru ilerlemesi — donmuş boru (T228-D):** video borusunda `identity name=nabiz silent=false`; `gst-launch-1.0 -v` her tamponda `…/GstIdentity:nabiz: last-message = chain … (nabiz:sink) … pts: …` biçiminde bir satır basar, gözetmen bunları okur. `/kare.jpg` taze olsa bile video borusu **> 3 s** tampon geçirmezse (açılışta ilk tampon için de 3 s pay) video borusu durur ve GÖRÜNTÜ YOK borusu açılır (sebep "video borusu ilerlemiyor"). `identity`, `jpegdec`\'ten sonra sistem belleğindedir (NVMM caps\'li `identity` **ÖLÇÜLEMEDİ**); boruda kuyruk yok → sink takılırsa nabız da durur.',
+    "- 🔴 **`-v` nabız satırı biçimi Jetson'da ÖLÇÜLEMEDİ — DOĞRULANACAK** (PC'de GStreamer yok; ayrıştırıcı toleranslı: `nabiz` elemanı + önce `chain` kelimesi; `event` / `caps` satırları sayılmaz; `pts` isteğe bağlı). Sahada DRM kipinden **önce** (§4 adım 9):",
+    '  ```bash\n  stdbuf -oL gst-launch-1.0 -v videotestsrc is-live=true num-buffers=20 ! video/x-raw,framerate=5/1 \\\n    ! identity name=nabiz silent=false ! fakesink \\\n    | /usr/bin/python3 ~/navitas/scripts/isaretli_gosterici.py --nabiz-sina\n  ```',
+    'Beklenen (~4 s): `NABIZ_SINA: ESLESTI — … 20 nabiz …; ZAMANINDA: varis yayilimi ≈3,8 s / pts yayilimi 3,80 s`, çıkış 0. **Çıkış 1** iki sebeple: `ESLESMEDI` (biçim farklı) ya da `TOPLU` (satırlar tamponlu, topluca geliyor → sağlıklı boru "donmuş" sayılır). İkisinde de DRM kipi video borusunu her ~3 s\'de bir GÖRÜNTÜ YOK\'a düşürür (fail-closed: eski kare gösterilmez ama canlı görüntü de gelmez) → **x11 kipinde kal**; ekrana basılan satırları bu belgeye yapıştır. DRM çalışırken gerçek satırlar journal\'da `gst:` önekiyle görünür (ilk 40 satır).',
+    "- **Satır tamponu:** `drm_kos` video borusunu `stdbuf -oL` önekiyle koşar (coreutils `stdbuf` varsa; yoksa KIRMIZI uyarı, önek konmaz). Stdout boruya bağlıyken blok tampon nabız satırlarını topluca getirirdi; `gst-launch`'ın kendi `fflush`'ı **ÖLÇÜLEMEDİ**.",
+    '- **Geri alma:** `sudo systemctl disable --now navitas-isaretli-gosterici-drm; sudo modprobe -r nvidia_drm; sudo systemctl start gdm` (`modprobe -r` başarısızsa yeniden başlat).',
+)
+
+KURULUM_9_BLOKLARI = (
+    '## 9. ÖLÇÜLEMEDİ / AÇIK (10 Eylül)',
+    "- x11/drm/rtsp kiplerinin **Jetson'da** koşumu; GNOME autostart'ın `sh -c` Exec ayrıştırması.",
+    '- DP→HDMI→dönüştürücü EDID/HPD davranışı; `set_mode=1` kip seçimi; xorg şablonu.',
+    '- Camdan cama gecikme (eşik ≤ 1,0 s); Jetson CPU yükü (gösterici + x264).',
+    '- Dönüştürücü 12 V besleme yolu; hava birimi modeli ve gerilim aralığı.',
+    "- IMX477'nin JetPack 7.2.1'de çalışması (12 Eylül ilk test; yedek USB UVC).",
+    '- 5,8 GHz güç / BTK 25 mW e.i.r.p. uyumu.',
+    "- `gst-launch-1.0 -v` nabız satırı biçimi (DRM gözetmeninin boru ilerlemesi denetimi) ve `identity`'nin boruya etkisi, `-v` satırlarının zamanında gelmesi / `stdbuf -oL` (T228-D).",
+    '- Dönüştürücünün canlı kodeki (H.264/H.265 çelişkili).',
+)
+
 # ── T240-B (D-460 kacanlari Y5 / Y10): §5'in KAPALI HUKUM CUMLESI KUMESI ─────
 # NEDEN: §5'in bugunku kilitleri KARA LISTEYE bagliydi ve curutucu iki kacis
 # olctu: (Y5) aile disi es anlamli olumlu hukum — "- **Saha kurali (12 Eylul):**
@@ -1285,6 +1360,46 @@ class GostericiDosyalari(unittest.TestCase):
         # eski komut SILINMEDI, cizildi + tarih (runbook kurali) — HAM metinde denetlenir
         self.assertRegex(_kurulum_bolumu(ham, "## 5. DRM kipi", "\n## 6."),
                          r"~~10 Eylül \(T228\): `gst-launch-1\.0 -e 'souphttpsrc[^`]*`~~")
+
+    def test_G8_D465_on_kayitli_metin_esitligi_dort_bolum(self):
+        """D-465 (1): §1/§4/§5/§9'un TAMAMI blok blok ÖN KAYITLI METİN EŞİTLİĞİYLE bağlı.
+
+        Bu kilit YOKLUK değil EŞİTLİK denetler: bölümün HAM metni (yalnız boşluk/satır
+        sonu normalize) testte duran sabite EŞİT olmak zorundadır. Bir sözcük eklenir,
+        silinir ya da üzeri çizilirse test DÜŞER ve bunun hangi SÖZDİZİMİYLE yapıldığı
+        ÖNEMSİZDİR.
+
+        ÖLÇÜLEN KAÇIŞLAR ki bu tek kuralla kapanır: çürütücünün X15/X16/X17'si
+        (§9'daki `- Dönüştürücünün canlı kodeki …` ve `-v` nabız maddeleri
+        `&#96;~~…~~&#96;` / `&#96;<s>…</s>&#96;` ile sarıldı → okuyucuda ÜSTÜ ÇİZİLİ,
+        `assertIn` YEŞİL), D-460 kaçanı Y4 (`&#822;`), Y5 (aile dışı eş anlamlı olumlu
+        hüküm), Y10 (birim kaydırması "≥ 3 s" → "≥ 3000 ms").
+
+        ÇİZİK AYIKLAMASI BİLEREK YOKTUR: ayıklama, saklama yüzeyini açan şeydir.
+        Meşru çizik (§5'teki tarihli eski komut) ön kayıtlı blokta HAM hâliyle durur —
+        FDR kuralı (eski metin silinmez, çizilir) bozulmadan korunur.
+        """
+        ham = KURULUM.read_text(encoding="utf-8")
+        drm = g.komut_metni(g.drm_video_argv("gst-launch-1.0"))
+        for ad, bas, son, on_kayit in (
+                ("§1", "## 1. Zincir (İHA tarafı)", "\n## 2.", KURULUM_1_BLOKLARI),
+                ("§4", "## 4. Doğrulama sırası", "\n## 5.", KURULUM_4_BLOKLARI),
+                ("§5", "## 5. DRM kipi", "\n## 6.", KURULUM_5_BLOKLARI),
+                ("§9", "## 9. ÖLÇÜLEMEDİ", None, KURULUM_9_BLOKLARI)):
+            with self.subTest(bolum=ad):
+                bas_i = ham.index(bas)
+                son_i = ham.index(son, bas_i) if son else len(ham)
+                beklenen = tuple(b.replace("⟨DRM_BORU⟩", drm) for b in on_kayit)
+                bulunan = belge_kilidi.bloklar(ham[bas_i:son_i])
+                self.assertEqual(beklenen, bulunan,
+                                 "GOSTERICI_KURULUM {} ön kayıtlı metinle aynı değil — "
+                                 "fazla: {}; eksik: {}".format(
+                                     ad, [b for b in bulunan if b not in beklenen],
+                                     [b for b in beklenen if b not in bulunan]))
+        # Meşru çizik ön kayıtlı §5 bloğunun İÇİNDEDİR: iki ön kayıt birbirine BAĞLIDIR.
+        self.assertTrue(any(" ".join(KURULUM_IZINLI_CIZIK[0].split()) in b
+                            for b in KURULUM_5_BLOKLARI),
+                        "§5 ön kayıtlı bloklarında meşru (tarihli, çizili) eski komut yok")
 
     def test_G8_D453_D454_olculmemis_hukum_celiski_eski_komut(self):
         """D-453/D-454 (T228-D2): kilitli hukumlere CIZIP ya da BASKA SOZLE donulemez. Metin cizili

@@ -1,4 +1,4 @@
-# T240-B — yeni mutantlari HANGI kilit dusurdu (hata metniyle)
+# T240-B / T240-C — yeni mutantlari HANGI kilit dusurdu (hata metniyle)
 # yorumlayici: O:\navitas-local-train\venv\Scripts\python.exe
 # depo koku : O:\navitas\.claude\worktrees\wf_fabd3bac-230-1
 
@@ -15,17 +15,17 @@
 ## Y7a baslıksiz paragraf (kaynak onu)
    dosya=CONTRACTS.md cikis=1 geri_bayt_es=True
    FAIL: test_H4e_contracts_ornegi_kodla_ayni (test_yks_mk15_hakem_ekrani.H4_KameraKanitKaynagi.test_H4e_contracts_ornegi_kodla_ayni)
-   AssertionError: Tuples differ: ('###[2236 chars]|', 'kamerakanit.kaynak (t226 · d-443, 10 eylu[2407 chars]a).') != ('###[2236 chars]|', 'not (12 eylul): kaynak alani artik zorunl[2529 chars]a).')
+   AssertionError: Tuples differ: ('###[3324 chars]|', '**`KAMERA_KANIT.kaynak` (T226 · D-443, 10[3169 chars]a).') != ('###[3324 chars]|', 'Not (12 Eylül): `kaynak` alanı artık zoru[3295 chars]a).')
 
 ## Y7b baslıksiz paragraf (ilkeler onu)
    dosya=CONTRACTS.md cikis=1 geri_bayt_es=True
    FAIL: test_H4e_contracts_ornegi_kodla_ayni (test_yks_mk15_hakem_ekrani.H4_KameraKanitKaynagi.test_H4e_contracts_ornegi_kodla_ayni)
-   AssertionError: Tuples differ: ('###[3203 chars].', 'baglayici ilkeler:', '- kanit yazimi hicb[1440 chars]a).') != ('###[3203 chars].', 'not (12 eylul): kaynak alani artik zorunl[1562 chars]a).')
+   AssertionError: Tuples differ: ('###[4574 chars].', '**Bağlayıcı ilkeler:**', '- Kanıt yazımı [1919 chars]a).') != ('###[4574 chars].', 'Not (12 Eylül): `kaynak` alanı artık zoru[2045 chars]a).')
 
 ## Y7c baslıksiz paragraf (son paragraf onu)
    dosya=CONTRACTS.md cikis=1 geri_bayt_es=True
    FAIL: test_H4e_contracts_ornegi_kodla_ayni (test_yks_mk15_hakem_ekrani.H4_KameraKanitKaynagi.test_H4e_contracts_ornegi_kodla_ayni)
-   AssertionError: Tuples differ: ('###[4569 chars].', 'tests/testykshakemkaydi.py hakemkaydinin [74 chars]a).') != ('###[4569 chars].', 'not (12 eylul): kaynak alani artik zorunl[196 chars]a).')
+   AssertionError: Tuples differ: ('###[6412 chars]sı). `tests/test_yks_hakem_kaydi.py` `HakemKay[81 chars]a).') != ('###[6412 chars]sı). Not (12 Eylül): `kaynak` alanı artık zoru[207 chars]a).')
 
 ## Y5  aile disi es anlamli
    dosya=GOSTERICI_KURULUM.md cikis=1 geri_bayt_es=True
@@ -47,5 +47,30 @@
    dosya=ON_KAYIT.md cikis=1 geri_bayt_es=True
    FAIL: test_SS4_T236_kabul_olcutu_TEKLIGI (test_t235_alan_etiketi.OnKayitKilitleri.test_SS4_T236_kabul_olcutu_TEKLIGI)
    AssertionError: Lists differ: [] != ["kabul olcutu tekligi: 'T236 SITL kapısı'[480 chars] m'"]
+
+## X15 &#96; sarmali ~~cizik~~
+   dosya=GOSTERICI_KURULUM.md cikis=1 geri_bayt_es=True
+   FAIL: test_G8_D465_on_kayitli_metin_esitligi_dort_bolum (test_isaretli_gosterici.GostericiDosyalari.test_G8_D465_on_kayitli_metin_esitligi_dort_bolum) (bolum='§9')
+   AssertionError: Tuples differ: ('## [672 chars], '- Dönüştürücünün canlı kodeki (H.264/H.265 çelişkili).') != ('## [672 chars], '- &#96;~~Dönüştürücünün canlı kodeki (H.264[22 chars]96;')
+
+## X16 &#96; sarmali nabiz maddesi
+   dosya=GOSTERICI_KURULUM.md cikis=1 geri_bayt_es=True
+   FAIL: test_G8_D465_on_kayitli_metin_esitligi_dort_bolum (test_isaretli_gosterici.GostericiDosyalari.test_G8_D465_on_kayitli_metin_esitligi_dort_bolum) (bolum='§9')
+   AssertionError: Tuples differ: ('## [489 chars], "- `gst-launch-1.0 -v` nabız satırı biçimi ([191 chars]i).') != ('## [489 chars], "- &#96;~~`gst-launch-1.0 -v` nabız satırı b[205 chars]i).')
+
+## X17 &#96; sarmali <s>cizik</s>
+   dosya=GOSTERICI_KURULUM.md cikis=1 geri_bayt_es=True
+   FAIL: test_G8_D465_on_kayitli_metin_esitligi_dort_bolum (test_isaretli_gosterici.GostericiDosyalari.test_G8_D465_on_kayitli_metin_esitligi_dort_bolum) (bolum='§9')
+   AssertionError: Tuples differ: ('## [672 chars], '- Dönüştürücünün canlı kodeki (H.264/H.265 çelişkili).') != ('## [672 chars], '- &#96;<s>Dönüştürücünün canlı kodeki (H.26[25 chars]96;')
+
+## X15b eski cizik kilidi de dusurur
+   dosya=GOSTERICI_KURULUM.md cikis=1 geri_bayt_es=True
+   FAIL: test_G8_D453_D454_olculmemis_hukum_celiski_eski_komut (test_isaretli_gosterici.GostericiDosyalari.test_G8_D453_D454_olculmemis_hukum_celiski_eski_komut)
+   AssertionError: Lists differ: [] != ["satir 241: beyaz liste disi cizik (tilde[434 chars]6;'"]
+
+## X17b eski cizik kilidi de dusurur
+   dosya=GOSTERICI_KURULUM.md cikis=1 geri_bayt_es=True
+   FAIL: test_G8_D453_D454_olculmemis_hukum_celiski_eski_komut (test_isaretli_gosterici.GostericiDosyalari.test_G8_D453_D454_olculmemis_hukum_celiski_eski_komut)
+   AssertionError: Lists differ: [] != ["satir 241: beyaz liste disi cizik (yapi [459 chars]6;'"]
 
 HUKUM: HEPSI DUSTU, geri yukleme bayt-es

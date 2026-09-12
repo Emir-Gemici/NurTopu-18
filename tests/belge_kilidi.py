@@ -31,6 +31,19 @@ TASARIM KARARLARI (hepsi olculmus kacislara dayanir):
   5. ON KAYIT > KARA LISTE. `on_kayitli_metin_esit` bosluk-normalize tam
      esitliktir: bir hukum cumlesi ancak testteki sabitle BIRLIKTE, gorunur bir
      test degisikligiyle degisebilir.
+  6. ESITLIK > YOKLUK (D-465, mimar karari, 12 Eylul — YONTEM DEGISIKLIGI).
+     T240 ailesi uc turdur ayni bicimde RED aldi: "su sozdizimiyle yasak metin
+     geri kondu / hukum gizlendi" (Y4 `&#822;`, sonra `&#96;~~...~~&#96;`, ayrica
+     anahtar sozcuksuz cumle ve birim kaydirmasi). YOKLUK denetiminin kacis
+     yuzeyi SONSUZDUR; ESITLIK denetiminin kacis yuzeyi YOKTUR. Bu yuzden olcum
+     HUKMU tasiyan yuzeyler `bloklar` ile ON KAYITLI METIN ESITLIGINE baglanir:
+     bolumun HAM metni testteki sabite esit olmak zorundadir, hangi sozdiziminin
+     kullanildigi ONEMSIZDIR. Bu yuzeylerde normallestirme YALNIZ
+     bosluk/satir sonu icindir — cizik/varlik/vurgu AYIKLAMASI KULLANILMAZ
+     (ayiklama, saklama yuzeyini acan seyin ta kendisidir).
+     Ayiklamali kilitler (cizikleri_ayikla + `in`) yalniz DUSUK DEGERLI
+     yuzeylerde (uzun anlati paragraflari) kalir ve orada YOKLUK degil VARLIK
+     denetimi yapar.
 
 Yalnizca standart kutuphane (CLAUDE.md madde 4).
 """
@@ -40,9 +53,9 @@ import re
 import unicodedata
 
 __all__ = ["cizikleri_ayikla", "beyaz_liste_disi_cizik", "normalize",
-           "olumlu_hukum_var", "on_kayitli_metin_esit", "hukum_cumleleri",
-           "kabul_olcutu_tekligi", "HARF", "ZARARSIZ_ETIKETLER",
-           "HUKUM_SOZCUKLERI", "KABUL_CELISKI_SOZCUKLERI"]
+           "olumlu_hukum_var", "on_kayitli_metin_esit", "bloklar",
+           "hukum_cumleleri", "kabul_olcutu_tekligi", "HARF",
+           "ZARARSIZ_ETIKETLER", "HUKUM_SOZCUKLERI", "KABUL_CELISKI_SOZCUKLERI"]
 
 # Turkce harfleri kapsayan, ALTCIZGIYI DISLAYAN harf sinifi.
 # NEDEN: T221 kacani W3/W4 — `SITL_OLUMLU_HUKUM` sinirlari `(?<!\w)` idi; `_`
@@ -98,13 +111,40 @@ def _coz(metin, parcalar):
 # (birlesen uzeri cizgi) HTML varlik bicimidir ve tarayici onu HIC gormuyordu.
 # Ayni karakterin ciplak hali DUSUYORDU — kacis yolu yalniz YAZIM bicimiydi.
 _VARLIK = re.compile(r"&(?:#[0-9]{1,7}|#[xX][0-9a-fA-F]{1,6}|[A-Za-z][A-Za-z0-9]{1,31});?")
-#: Cozulmesi YASAK varliklar: cozulmus degeri `<` ya da `>` olanlar.
-#: NEDEN: `&lt;s&gt;` markdown'da ETIKET ACMAZ, harfi harfine "<s>" METNI olarak
-#: gorunur. Cozseydik KACINILAN bir etiket ornegi hayalet cizige donerdi (yanlis
-#: pozitif). Kalan butun varliklar COZULUR — `&#126;` (tilde) dahil: fail-closed
-#: taraf, cunku tilde varligi bu belgelerde mesru bir kullanim degildir ve
-#: cozulunce zaten beyaz liste disi cizik sayilir.
-_COZULMEZ = frozenset("<>")
+#: Cozulmesi YASAK varliklar: cozulmus degeri MARKDOWN YAPISI belirten bir simge
+#: olanlar.
+#:
+#: NEDEN (D-465 · T240-B curutucusunun KUSUR 1'i, GERILEME): CommonMark/GFM'de
+#: varlik ve sayisal karakter referanslari YAPI belirten simgelerin yerine
+#: KULLANILAMAZ. Okuyucu once satiri yapiya ayirir, varliklari ANCAK ondan sonra
+#: metin icerigi olarak cozer. Yani COZULMUS bir backtick KOD ARALIGI ACAMAZ,
+#: cozulmus bir tilde CIZGI ACAMAZ, cozulmus bir `<` ETIKET ACAMAZ: `&#96;` metinde
+#: duz bir backtick KARAKTERI olarak gorunur, kod araligi baslatmaz.
+#:
+#: OLCULEN KACIS (curutucu X15/X16/X17, gercek dosya + gercek suit, cikis 0):
+#: `&#96;~~Donusturucunun canli kodeki~~&#96;` — T240-B'nin ilk surumu `&#96;`'i
+#: cozuyordu, `_kod_araliklari` COZULMUS kopyada bir kod araligi "goruyordu" ve
+#: icindeki `~~...~~` taramadan tamamen gizleniyordu. Okuyucuda USTU CIZILI duran
+#: hukum testte YURURLUKTE sayiliyordu. Ayni girdi T240-B ONCESI surumde (64b60ae5)
+#: DUSUYORDU: gerileme.
+#:
+#: SECILEN COZUM ve GEREKCESI: iki yol vardi.
+#:   (A) yapi ureten karakterlere cozen varliklari HIC cozmemek (bu),
+#:   (B) `_kod_araliklari`'ni HAM metinde hesaplayip haritayla tarama kopyasina
+#:       tasimak.
+#: (A) secildi, cunku (B) yalniz KOD ARALIGI yanilgisini kapatir; `&#126;` ile
+#: yazilmis bir tilde, `&#42;` ile yazilmis bir yildiz ya da `&#124;` ile yazilmis
+#: bir tablo cubugu (B)'de HALA cozulur ve tarama kopyasinda OLMAYAN bir yapi
+#: uretir. (A) sinifin tamamini tek kuralla kapatir: cozulmus metin yapi ureten
+#: HICBIR simge KAZANMAZ, cozum yalniz KARAKTER tespiti icindir (`&#822;`
+#: birlesen uzeri cizgi, `&#8212;` uzun tire ...).
+#: (A)'nin bedeli: `&#96;` gibi bir varlik cozulmedigi icin "gorunmez" kalabilirdi
+#: — bu yuzden `beyaz_liste_disi_cizik` onlari DOGRUDAN beyaz liste disi aday
+#: sayar (asagida). OLCUM (bu kilidin bagladigi dort belgede, kod araliklari
+#: DISINDA): CONTRACTS.md 0, GOSTERICI_KURULUM.md 0 (tek aday `&PWR`, cozulmuyor),
+#: config/pixhawk/README.md 0, t235/ON_KAYIT.md 0 mesru varlik — yani bu adaylarin
+#: kod DISINDA hicbir mesru kullanimi YOKTUR.
+_COZULMEZ = frozenset("<>`~*_[]|#" + chr(92))
 
 
 def _varlik_cozumle(metin):
@@ -144,6 +184,23 @@ def _varlik_cozumle(metin):
 def _varliklari_coz(metin):
     """Kod araliklari korunarak HTML varliklari cozulmus TARAMA kopyasi."""
     return _varlik_cozumle(metin)[0]
+
+
+def _yapi_varliklari(metin):
+    """YAPI ureten bir simgeye cozen (bu yuzden COZULMEYEN) varliklarin (bas, son, ham).
+
+    `_COZULMEZ` gerekcesinin ikinci yarisi: bu varliklar cozulmedigi icin tarama
+    kopyasinda yapi URETMEZLER, ama gorunmez de kalmamalidirlar. Uc belgede kod
+    DISINDA mesru kullanimlari OLCULDU ve SIFIRDIR; dolayisiyla kod disinda
+    gorunen her biri dogrudan beyaz liste disi ADAYDIR (`&#96;~~X~~&#96;` sarmali
+    ancak boyle GORUNUR olur).
+    """
+    bulunan = []
+    for m in _VARLIK.finditer(metin):
+        cozulmus = html.unescape(m.group(0))
+        if cozulmus != m.group(0) and set(cozulmus) & _COZULMEZ:
+            bulunan.append((m.start(), m.end(), m.group(0)))
+    return bulunan
 
 
 # ── 1. cizik ayiklama ─────────────────────────────────────────────────────────
@@ -207,6 +264,11 @@ def beyaz_liste_disi_cizik(metin, izinli=()):
       · tilde kosusu (`~~x~~`, `~x~`, `~~~x~~~`) — "~<rakam>" yaklasik istisnasi disinda
       · birlesen uzeri cizgi U+0335..U+0338 (gorunurde cizili, sozdizimi yok)
       · YUKARIDAKILERIN HTML VARLIK BICIMI (`&#822;`, `&#x336;`) — D-460 kacani Y4
+      · MARKDOWN YAPISI ureten simgelerin varlik bicimi (`&#96;`, `&#126;`, `&#42;`,
+        `&#124;`, `&grave;` ...) — D-465, curutucu kacanlari X15/X16/X17. Bunlar
+        `_COZULMEZ` geregi COZULMEZ (gerekcesi orada); kod DISINDA mesru
+        kullanimlari OLCULDU ve sifirdir, bu yuzden dogrudan ADAYDIR. `&#96;` ile
+        sarilan bir `~~...~~` boylece hem tilde olarak hem varlik olarak gorunur.
       · tilde benzeri isaretler — kopyala-yapistir varyantlari
       · ZARARSIZ_ETIKETLER disindaki HER HTML etiketi — uydurma `<sil>` ya da
         stil tasiyan `<span style="text-decoration:line-through">` dahil
@@ -249,6 +311,8 @@ def beyaz_liste_disi_cizik(metin, izinli=()):
         if len(m.group(0)) == 1 and s < len(tarama) and tarama[s].isdigit():
             continue                      # "~3 s" = yaklasik (belgelenen istisna)
         ekle(b, s, "tilde")
+    for b, s, ham in _yapi_varliklari(tarama):
+        ekle(b, s, "yapi ureten varlik bicimi {}".format(ham))
     for m in _BIRLESEN_CIZGI.finditer(tarama):
         ekle(m.start(), m.end(), "birlesen uzeri cizgi")
     for m in _TILDE_BENZERI.finditer(tarama):
@@ -290,9 +354,22 @@ _SAYI_DESENI = re.compile(_SINIR_ONCE + r"(" + "|".join(
 # NEDEN: T228 kacani A7/A9 — kilit "s" ariyordu, belgeye "saniye" yazildi.
 # Birim SAYIYA BAGLIDIR (onunde rakam olmali): esik ancak sayiyla anlamlidir ve
 # bu cita "derecelendirme"/"saniyelerce" gibi sozcukleri birime cevirmeyi onler.
+#
+# D-465 / K3 (curutucu KUSUR 2): uzunluk birimleri de katlanir. OLCULEN KACIS —
+# t235 ON_KAYIT §4'e "sahada kabul yatay en cok 4 metre ve zamanin en az yuzde
+# 70'i olarak alinir" eklenince `kabul_olcutu_tekligi`'nin DORT kurali birden
+# temiz donuyordu (X13); "≤ 400 cm" ayni sekilde kaciyordu (X14). "metre" ve
+# "yuzde" katlanmadigi icin rakip esik HIC gorulmuyordu.
+# SIRA ONEMLI: "santimetre"/"kilometre"/"milimetre" "metre"den ONCE denenir,
+# yoksa "santi" + "metre" diye bolunur.
 _BIRIM_DESENI = re.compile(
-    r"(\d+(?:[.,]\d+)?)\s*(milisaniye|saniye|derece)[a-z]*" + _SINIR_SONRA)
-_BIRIMLER = {"milisaniye": "ms", "saniye": "s", "derece": "°"}
+    r"(\d+(?:[.,]\d+)?)\s*(milisaniye|santimetre|milimetre|kilometre|saniye|metre|derece)"
+    r"[a-z]*" + _SINIR_SONRA)
+_BIRIMLER = {"milisaniye": "ms", "saniye": "s", "derece": "°",
+             "santimetre": "cm", "milimetre": "mm", "kilometre": "km", "metre": "m"}
+# "yuzde 70" -> "%70". ONEKTIR, sonek degil: _BIRIM_DESENI kalibina girmez.
+# NEDEN: X13 — "zamanin en az yuzde 70'i" yazildiginda % hic gorulmuyordu.
+_YUZDE_DESENI = re.compile(_SINIR_ONCE + r"yuzde\s*(?=\d)")
 
 # Karsilastirma es anlamlilari -> tek bicim. NEDEN: T228 kacani A7 ("en az 1
 # saniye") ve A9 ("6 saniyeyi asan").
@@ -331,8 +408,9 @@ def normalize(metin):
     (** * __ _ backtick) SOZCUK ICI DAHIL sokulur; (4) Turkce kucuk harf (I->ı,
     İ->i) — AKSANLAR HENUZ DURUR; (5) Turkce sayi sozcukleri rakama iner;
     (6) NFKD + birlesen isaretler atilir (g-breve -> g, s-cedilla -> s), noktasiz
-    i -> i; (7) birim es anlamlilari katlanir (saniye->s, milisaniye->ms,
-    derece->derece isareti); (8) karsilastirma es anlamlilari tek bicime iner
+    i -> i; (7) "yuzde <sayi>" -> "%<sayi>" ve birim es anlamlilari katlanir
+    (saniye->s, milisaniye->ms, derece->derece isareti, metre->m, santimetre->cm,
+    milimetre->mm, kilometre->km); (8) karsilastirma es anlamlilari tek bicime iner
     (>= / "en az" / "asgari" / "ve uzeri" -> ≥ ; > / "asan" / "gecen" / "fazla"
     -> > ; <= / "en cok" / "azami" -> ≤), sonek bicimi ("6 saniyeyi asan") ONEK
     bicimine ("> 6 s") cevrilir.
@@ -342,7 +420,8 @@ def normalize(metin):
 
     NEDEN her adim: (3) T221 kacanlari W3 `_dogrulandi_`, W4 `__kosuldu__` ve
     T226 kacani D1f (tipografik tirnak); (5) T228 kacani A6 "bir ardisik";
-    (7)+(8) T228 kacanlari A7 "en az 1 saniye" ve A9 "6 saniyeyi asan".
+    (7)+(8) T228 kacanlari A7 "en az 1 saniye" ve A9 "6 saniyeyi asan", ayrica
+    D-465/K3 kacanlari X13 ("en cok 4 metre", "en az yuzde 70") ve X14 ("≤ 400 cm").
     """
     s = cizikleri_ayikla(metin)
     s = s.translate(_SIFIR_GENISLIK).replace("≠", "!=")
@@ -352,6 +431,7 @@ def normalize(metin):
     s = "".join(c for c in unicodedata.normalize("NFKD", s)
                 if not unicodedata.combining(c))
     s = s.translate(_AKSANSIZ)
+    s = _YUZDE_DESENI.sub("%", s)
     s = _BIRIM_DESENI.sub(lambda m: "{} {}".format(m.group(1), _BIRIMLER[m.group(2)]), s)
     s = _ONEK_DESENI.sub(lambda m: _ONEK_KARSILIK[m.lastgroup], s)
     s = _SONEK_DESENI.sub(_sonek, s)
@@ -405,6 +485,50 @@ def on_kayitli_metin_esit(metin, beklenen):
     `~OLCULEMEDI~` gecmisti.
     """
     return " ".join(metin.split()) == " ".join(beklenen.split())
+
+
+# ── 5b. BLOK ESITLIGI — D-465 (1) ─────────────────────────────────────────────
+#: Blok siniri: `_CUMLE_SONU` / `_MADDE_BASI` ile AYNI yapisal birimler (paragraf,
+#: liste maddesi, tablo satiri) + baslik satiri. Kod citleri MASKELIYKEN bolunur:
+#: bir cit icindeki bos satir blok acmaz ve citin ICI harfi harfine korunur.
+_BLOK_SINIRI = re.compile(r"\n[ \t]*\n"
+                          r"|\n(?=[ \t]*(?:[-*+]|\d+\.)[ \t])"
+                          r"|\n(?=[ \t]*\|)"
+                          r"|(?<=\|)[ \t]*\n"
+                          r"|\n(?=[ \t]*#{1,6}[ \t])")
+
+
+def bloklar(metin):
+    """Bolumun ON KAYITLI METIN ESITLIGI birimleri: bosluk-normalize HAM bloklar.
+
+    D-465 (mimar karari, 12 Eylul) — YONTEM DEGISIKLIGI. Uc turdur her RED ayni
+    bicimde geldi: "su sozdizimiyle yasak metin geri kondu / hukum gizlendi".
+    YOKLUK (absence) denetiminin kacis yuzeyi SONSUZDUR — yasaklanan her bicimin
+    bir baska yazimi vardir (`~~`, `<s>`, `&#822;`, `&#96;~~...~~&#96;`, anahtar
+    sozcuksuz cumle, birim kaydirmasi ...). ESITLIK denetiminin kacis yuzeyi
+    YOKTUR: bolumun metni testte duran on kayitli sabite ESIT olmak zorundadir;
+    bir sozcuk, bir karakter degisirse test DUSER ve hangi SOZDIZIMIYLE degistigi
+    ONEMSIZDIR.
+
+    Bu yuzden olcum hukmu tasiyan yuzeyler (kabul olcutu bloklari, "Sonuc:"
+    cumleleri, on kayit bolumleri, hukum tablolari) buradan gecer.
+
+    NORMALLESTIRME YALNIZ BOSLUK/SATIR SONU ICINDIR — bilerek. Cizik ayiklamasi,
+    varlik cozumlemesi ve vurgu sokme BURADA KULLANILMAZ: ayiklama, tam da
+    "saklama yuzeyi" acan seydir (ayiklanan sey testin gordugu metinden DUSER).
+    Ham metin karsilastirildigi icin `~~x~~`, `<s>x</s>`, `&#96;~~x~~&#96;` ve
+    `&#822;` sarmali — hepsi ayni sekilde, tek kuralla DUSURUR.
+
+    Bloklama NEDEN: tek bir devasa dize yerine yapisal birimler karsilastirilir;
+    boylece (i) hangi blogun degistigi hata metninde okunur, (ii) bir belgede
+    kilitlenen blok SAYISI sayilabilir ve KANIT.md'de beyan edilebilir.
+
+    Doner: bosluk-normallestirilmis blok demeti. Kod araliklarinin ICI (satir
+    sonlari dahil) harfi harfine korunur.
+    """
+    maskeli, parcalar = _maskele(metin)
+    return tuple(_coz(" ".join(p.split()), parcalar)
+                 for p in _BLOK_SINIRI.split(maskeli) if p.strip())
 
 
 # ── 6. hukum cumleleri ────────────────────────────────────────────────────────
@@ -492,10 +616,19 @@ _KABUL_CELISKI = re.compile("|".join(KABUL_CELISKI_SOZCUKLERI))
 # Esik ifadesi: karsilastirma isareti + sayi + (birim). Sayi ZORUNLUDUR —
 # karsilastirmasiz "50 m" (ornegin "FENCE 50 m altinda") esik degildir, olcum
 # baglamidir; rakip esik ancak KARSILASTIRMALI ikinci ifadedir.
-_OLCUT_BIRIMI = r"m/s|ms|s|°|km|m|px|fps|hz|v|a|dk|db|b/s"
+_OLCUT_BIRIMI = r"m/s|ms|cm|mm|b/s|km|dk|db|s|°|m|px|fps|hz|v|a"
 _OLCUT_DESENI = re.compile(
     r"(?:≥|≤|>|<|±)\s*±?\s*(?P<yuzde>%)?\s*(?P<sayi>\d+(?:[.,]\d+)?)\s*"
     r"(?P<birim>%|" + _OLCUT_BIRIMI + r")?" + _SINIR_SONRA)
+
+#: ONEK KATLAMASI (D-465 / K3, curutucu kacani X14): "≤ 400 cm" ile "≤ 4,0 m"
+#: AYNI esiktir; birim adi farkli oldugu icin kural (b) ikisini ayri buyukluk
+#: sayiyor ve rakip esik kaciyordu. Katlanan aile SAYILIDIR ve OLCULDU:
+#: uzunluk (cm/mm/km -> m) ve sure (ms -> s). "dk" BILEREK katlanmaz: "15 dk"
+#: sure butcesi, "900 s" ise esik dili degildir; ikisi bu belgelerde hic ayni
+#: buyuklugu anlatmiyor (olculdu) ve katlansa yalanci alarm uretirdi.
+_OLCEK = {"cm": ("m", 0.01), "mm": ("m", 0.001), "km": ("m", 1000.0),
+          "ms": ("s", 0.001)}
 
 #: Madde siniri `_CUMLE_SONU` ile AYNI yapisal birimleri kullanir (paragraf, liste
 #: maddesi, tablo satiri) — kabul blogu bunlardan biridir. Tablo satiri da birimdir:
@@ -506,12 +639,25 @@ _MADDE_BASI = re.compile(r"\n[ \t]*\n"
                          r"|(?<=\|)[ \t]*\n")
 
 
+def _olcek(birim, deger):
+    """(birim, deger) ciftini TEMEL birime cevirir: 400 cm -> (m, 4.0); 200 ms -> (s, 0.2)."""
+    if birim in _OLCEK:
+        temel, kat = _OLCEK[birim]
+        return temel, round(deger * kat, 9)
+    return birim, round(deger, 9)
+
+
 def _buyuklukler(metin):
-    """{birim: {deger, ...}} — KARSILASTIRMALI esik ifadeleri (normallestirilmis metin)."""
+    """{birim: {deger, ...}} — KARSILASTIRMALI esik ifadeleri (normallestirilmis metin).
+
+    Birimler TEMEL birime katlanir (`_OLCEK`): "≤ 400 cm" ile "≤ 4,0 m" ayni
+    buyukluge iner, boylece ONEK degistirerek rakip esik gizlenemez (X14).
+    """
     kume = {}
     for m in _OLCUT_DESENI.finditer(metin):
         birim = "%" if m.group("yuzde") else (m.group("birim") or "")
-        kume.setdefault(birim, set()).add(float(m.group("sayi").replace(",", ".")))
+        birim, deger = _olcek(birim, float(m.group("sayi").replace(",", ".")))
+        kume.setdefault(birim, set()).add(deger)
     return kume
 
 
@@ -520,12 +666,21 @@ def _maddeler(metin):
     return [p for p in _MADDE_BASI.split(metin) if p.strip()]
 
 
-def kabul_olcutu_tekligi(metin, kapi_adi, on_kayitli_olcut):
+def kabul_olcutu_tekligi(metin, kapi_adi, on_kayitli_olcut, mesru_buyuklukler=()):
     """ON KAYIT TEKLIGI kilidi (D-461). Doner: hata metinleri listesi (bos = temiz).
 
     `metin`            : kabul YUZEYI (ornegin ON_KAYIT'in ilgili bolumu).
     `kapi_adi`         : kapinin adi, belgedeki yaziliyla ("T236 SITL kapisi").
     `on_kayitli_olcut` : kabul blogunun ON KAYITLI TAM metni.
+    `mesru_buyuklukler`: kural (b) icin ON KAYITLI istisna ciftleri — ((birim,
+                         deger), ...). Bolumde kabul olcutu DISINDA, baska bir
+                         nedenle mesruen gecen karsilastirmali buyuklukler.
+                         Ornek: ATOLYE-2 A10'da "BEKLENTI (BENZER OLCUM — olcum
+                         DEGIL): ... → beklenti ≤ 1,35 FPS" satiri. Bu bir KARA
+                         LISTE GEVSETMESI DEGIL, bir ON KAYITTIR: yeni bir deger
+                         ancak testte gorunur bir degisiklikle girer ve kalan
+                         HER rakip esik yine DUSURUR (olculdu: A10'da 1,35 FPS
+                         disindaki her fps degeri hata verir).
 
     Dort kural (hepsi D-461'de olculmus bir kacisa karsilik gelir):
       (a) TEKLIK — `kapi_adi` normallestirilmis metinde TAM BIR KEZ gecmeli.
@@ -559,8 +714,12 @@ def kabul_olcutu_tekligi(metin, kapi_adi, on_kayitli_olcut):
 
     olcut_buyukluk = _buyuklukler(n_olcut)
     bolum_buyukluk = _buyuklukler(n)
+    mesru = {}
+    for birim, deger in mesru_buyuklukler:
+        b, d = _olcek(birim, float(deger))
+        mesru.setdefault(b, set()).add(d)
     for birim, degerler in sorted(olcut_buyukluk.items()):
-        fazla = sorted(bolum_buyukluk.get(birim, set()) - degerler)
+        fazla = sorted(bolum_buyukluk.get(birim, set()) - degerler - mesru.get(birim, set()))
         if fazla:
             hatalar.append("rakip esik ({!r}): on kayitta {} varken bolumde ayrica {}"
                            .format(birim or "birimsiz", sorted(degerler), fazla))

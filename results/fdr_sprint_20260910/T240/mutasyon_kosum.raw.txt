@@ -1,6 +1,7 @@
-# T240 mutasyon kaniti — KACAN 28 mutant + 4 kontrol
+# T240 mutasyon kaniti — KACAN 31 mutant + 4 kontrol
 #   19'u D-460 mimar denetiminin, 9'u (Y4/Y4b/Y7a-c/Y5/Y10/Y11/D461)
-#   T240'a RED veren bagimsiz curutucunun kacan mutantidir.
+#   T240-B'ye, 3'u (X15/X16/X17) T240-B'ye RED veren IKINCI bagimsiz
+#   curutucunun (D-465) kacan mutantidir.
 # yorumlayici: O:\navitas-local-train\venv\Scripts\python.exe
 # depo koku : O:\navitas\.claude\worktrees\wf_fabd3bac-230-1
 
@@ -44,9 +45,13 @@
   [KACAN] Y10 esik birimi s -> ms            GOSTERICI_KURULUM.md             cikis=1 -> DUSTU  geri_bayt_es=True sha=e01d16821d44
   [KACAN] Y11 anahtarsiz README celiskisi    README.md                        cikis=1 -> DUSTU  geri_bayt_es=True sha=e2efd44838b6
   [KACAN] D461 ikinci gevsetilmis olcut      ON_KAYIT.md                      cikis=1 -> DUSTU  geri_bayt_es=True sha=7840e9331975
+  [KACAN] X15 &#96; sarmali ~~cizik~~        GOSTERICI_KURULUM.md             cikis=1 -> DUSTU  geri_bayt_es=True sha=e01d16821d44
+  [KACAN] X16 &#96; sarmali nabiz maddesi    GOSTERICI_KURULUM.md             cikis=1 -> DUSTU  geri_bayt_es=True sha=e01d16821d44
+  [KACAN] X17 &#96; sarmali <s>cizik</s>     GOSTERICI_KURULUM.md             cikis=1 -> DUSTU  geri_bayt_es=True sha=e01d16821d44
 
 ## 2. OZET
-  KACAN mutantlar   : 28/28 DUSTU
+  KACAN mutantlar   : 31/31 DUSTU
   KONTROL mutantlar : 4/4 DUSTU
   geri yukleme      : hepsi bayt-es
   HUKUM             : GECTI
+mutasyon cikis=0
