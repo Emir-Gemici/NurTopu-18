@@ -23,6 +23,11 @@ varyant"). 13 mutant:
       <del>…</del> ile cizilip yerine "dogrulandı" yazilir
   MZ3 D-463 (a) — D-303 DUSTU hukmu CIPLAK U+0336 birlestirici cizikle cizilir
   MZ4 D-463 (a) — durustluk cumlesi HTML VARLIGI (&#822;) ile cizilir
+  MY1..MY6 D-466 / T244-B — CURUTUCUNUN KACAN ALTI CUMLESI, kilitli kesitlerin
+      DISINA konur (Bolum 3'te §3.4 basligindan once, Bolum 4'te kapanis
+      paragrafindan once). Eski sozluk kilidi bunlarin 6/6'sini kaciriyordu;
+      yeni YAPISAL kilit (K1 sayi tasiyan kabul olcutu / K2 kip bicimi) hepsini
+      dusurmelidir. Hedef test: test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL.
 
 "YAKALANDI" yalniz kapi DUSTUYSE (ERROR degil, assert ile) ve secilen hedef testlerin
 hepsi dustuyse yazilir. Kacis / uygulanamayan mutant / bozuk temiz kosum / geri yukleme
@@ -61,6 +66,7 @@ T8 = "test_T8_varyant_sayilari_artefakttan"
 T3C = "test_T3c_d303_dustu_uc_yerde_de_olumluya_CEVRILMEMIS"
 TC = "test_celiskili_ikinci_hukum_HICBIR_yuzeyde_yok"
 TB = "test_cizme_isareti_beyaz_liste"
+T9A = "test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL"   # D-466 yapisal kabul kilidi
 
 DURUSTLUK = ("İkisi de rotanın lehinedir ve üretim kodunda karşılığı yoktur; "
              "**bu yüzden üretim sayıları sahaya göre İYİMSER ÜST SINIRDIR**")
@@ -108,6 +114,24 @@ MUTASYONLAR = [
      (T3C, TB)),
     ("MZ4 D-463(a) HTML VARLIGI: §3.3.3.2 durustluk cumlesi &#822; ile cizildi", B3,
      [(DURUSTLUK, "".join(c + "&#822;" for c in DURUSTLUK))], (T7, TB)),
+    ("MY1 D-466 KACAN CUMLE (kilitli kesit DISI): Not (12 Eylül): D-303 için %3'lük ikinci ora", B3,
+     [('## 3.4 Yönerge dışı ek kanıt',
+       "Not (12 Eylül): D-303 için %3'lük ikinci oransal eşik de kabul sayılır; engine bu eşikle GEÇER." + "\n\n" + '## 3.4 Yönerge dışı ek kanıt')], (T9A,)),
+    ("MY2 D-466 KACAN CUMLE (kilitli kesit DISI): Not: H1 için ham çevrilmenin %60'ı da kabul ", B4,
+     [('**Kanıtlanmamış olan tek şey en önemlisidir:',
+       "Not: H1 için ham çevrilmenin %60'ı da kabul eşiği sayılır." + "\n\n" + '**Kanıtlanmamış olan tek şey en önemlisidir:')], (T9A,)),
+    ("MY3 D-466 KACAN CUMLE (kilitli kesit DISI): Revize edilmiş kabul kapısı: engine kabul ed", B3,
+     [('## 3.4 Yönerge dışı ek kanıt',
+       'Revize edilmiş kabul kapısı: engine kabul edilir.' + "\n\n" + '## 3.4 Yönerge dışı ek kanıt')], (T9A,)),
+    ("MY4 D-466 KACAN CUMLE (kilitli kesit DISI): RC failsafe sonucu tekrar değerlendirildiğin", B4,
+     [('**Kanıtlanmamış olan tek şey en önemlisidir:',
+       'RC failsafe sonucu tekrar değerlendirildiğinde GEÇTİ sayılmalıdır.' + "\n\n" + '**Kanıtlanmamış olan tek şey en önemlisidir:')], (T9A,)),
+    ("MY5 D-466 KACAN CUMLE (kilitli kesit DISI): Bu bölümdeki ÖLÇÜLEMEDİ kalemleri beyanla ka", B3,
+     [('## 3.4 Yönerge dışı ek kanıt',
+       'Bu bölümdeki ÖLÇÜLEMEDİ kalemleri beyanla kapatılabilir.' + "\n\n" + '## 3.4 Yönerge dışı ek kanıt')], (T9A,)),
+    ("MY6 D-466 KACAN CUMLE (kilitli kesit DISI): D-303 oransal eşiği yerine %3'lük ikinci eşi", B4,
+     [('**Kanıtlanmamış olan tek şey en önemlisidir:',
+       "D-303 oransal eşiği yerine %3'lük ikinci eşik de kabul sayılır." + "\n\n" + '**Kanıtlanmamış olan tek şey en önemlisidir:')], (T9A,)),
 ]
 
 SATIRLAR = []

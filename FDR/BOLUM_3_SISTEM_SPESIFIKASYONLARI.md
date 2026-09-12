@@ -722,7 +722,7 @@ sonu, gerekçe yorumda):
 >
 > ⚠ **6 Eylül durumu (D-431, 12 Eylül'de eklendi — D-462 A1):** Jetson Orin Nano o gün kuruldu
 > ve kartta koştu, ama **Pixhawk Jetson'a bağlı değildi**: `jetson_baslat.sh --kuru` çıktısında
-> dosya/kullanıcı/yorumlayıcı `[VAR]`, tek `[YOK]` satırı `Pixhawk seri /dev/ttyACM0` (udp kipi;
+> dosya/kullanıcı/yorumlayıcı `[VAR]`, ~~tek `[YOK]` satırı~~ `Pixhawk seri /dev/ttyACM0` (12 Eylül düzeltmesi — D-466: `jetson_baslat_kuru2.log`'da **tek** `[YOK]`, ilk kuru koşumda **iki** (`mavproxy.py` PATH'te de yok); ikisinde de aynı çıkış kodu; udp kipi;
 > sik kipinde ayrıca `/dev/ttyUSB0`) ve betik **çıkış 3** verdi
 > (`results/jetson_20260906/jetson_log_20260906/jetson_baslat_kuru.log`,
 > `jetson_baslat_kuru2.log`). Yani çoğullayıcı ve üç UDP ucu **6 Eylül'de de** gerçek kart
@@ -1066,7 +1066,7 @@ arka uçsuz **kurulamaz** — boş bir iskeletin "çalışıyor" görünmesi eng
 | Kayıt defteri | v36 `.pt` `eslesti`, `.engine` `turev_eslesti` |
 | T17 FPS (120 örnek) | pt **1,35/1,06** · engine **1,58/1,33** FPS, eşik 0,61 → **GEÇTİ** |
 | Engine↔pt denkliği | F1 0 · F2 0,9953 · **D-303 oransal 3/126 DÜŞTÜ** → uçuş `.pt` |
-| `jetson_baslat.sh --kuru` | `[YOK]` yalnız `/dev/ttyACM0` → çıkış 3 — Pixhawk bağlı değil, MAVLink kapısı **ÖLÇÜLEMEDİ** |
+| `jetson_baslat.sh --kuru` | ~~`[YOK]` yalnız~~ `/dev/ttyACM0` → çıkış 3 (12 Eylül düzeltmesi — D-466: `jetson_baslat_kuru2.log`'da **tek** `[YOK]`, ilk kuru koşumda **iki** (`mavproxy.py` PATH'te de yok); ikisinde de aynı çıkış kodu) — Pixhawk bağlı değil, MAVLink kapısı **ÖLÇÜLEMEDİ** |
 | Tam süit (kartta) | `Ran 2121` · F5 E30 S8 — 26'sı ortam (`O:\` yolları, PC'deki kümeler), kalanı D-431'de sınıflandırılmış |
 
 
