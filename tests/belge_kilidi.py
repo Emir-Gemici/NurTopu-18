@@ -47,23 +47,14 @@ TASARIM KARARLARI (hepsi olculmus kacislara dayanir):
 
 Yalnizca standart kutuphane (CLAUDE.md madde 4).
 
-<<<<<<< HEAD
-KESIF MUAFIYETI: test DEGIL, ORTAK yardimci modul — `cizikleri_ayikla`,
-  `beyaz_liste_disi_cizik`, `bloklar`, `olumlu_hukum_var` ve `HUKUM_SOZCUKLERI`
-  test_belge_kilidi, test_yks_mk15_hakem_ekrani, test_isaretli_gosterici,
-  test_faz_b_arduplane_sablon ve test_t235_alan_etiketi tarafindan ice alinir;
-  kendi basina kapi degildir (T120 kurali: `test_` onekli olmayan dosya test
-  tasimaz). Kendi kapisi `tests/test_belge_kilidi.py`dir.
-KOSUM: O:\\navitas-local-train\\venv\\Scripts\\python.exe -X utf8 -B -m unittest discover -s tests -p "test_belge_kilidi.py"  (tests/belge_kilidi.py bu kosumda ice alinir; 74 test)
-=======
-KESIF MUAFIYETI: test DEGIL, YARDIMCI modul — kendi basina kapi degildir
-(T120 kurali: `test_` onekli olmayan dosya test tasimaz). `belge_kilidi.py`
-yordamlarini `tests/test_belge_kilidi.py` (74 test) sinar; kullanicilari
-test_faz_b_arduplane_sablon, test_isaretli_gosterici, test_t235_alan_etiketi,
-test_t243_paket_boyutu ve test_yks_mk15_hakem_ekrani'dir.
-KOSUM: python -X utf8 -B -m unittest discover -s tests -p test_belge_kilidi.py   # tests/belge_kilidi.py kilidi
-(yorumlayici: O:/navitas-local-train/venv/Scripts/python.exe — CLAUDE.md madde 13)
->>>>>>> worktree-wf_88f63745-bff-1
+KESIF MUAFIYETI: test DEGIL, ORTAK yardimci modul — kendi basina kapi degildir
+(T120 kurali: `test_` onekli olmayan dosya test tasimaz). `cizikleri_ayikla`,
+`beyaz_liste_disi_cizik`, `bloklar`, `normalize`, `olumlu_hukum_var` ve
+`HUKUM_SOZCUKLERI` su testler tarafindan ice alinir: test_belge_kilidi,
+test_yks_mk15_hakem_ekrani, test_isaretli_gosterici, test_faz_b_arduplane_sablon,
+test_t235_alan_etiketi ve test_t243_paket_boyutu. Kendi kapisi
+`tests/test_belge_kilidi.py`dir (74 test).
+KOSUM: O:\\navitas-local-train\\venv\\Scripts\\python.exe -X utf8 -B -m unittest discover -s tests -p "test_belge_kilidi.py"  (tests/belge_kilidi.py bu kosumda ice alinir)
 """
 
 import html
