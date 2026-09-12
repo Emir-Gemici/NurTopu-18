@@ -1,0 +1,68 @@
+ESKI arac: master:scripts/akis_satir_tazele.py = 56598f53 Birlestirme entegrasyonu: data/kabul kaynak baytlariyla yeniden alindi (-text, T1
+
+====================================================================================================
+G1 T226: taban 9472ba47 → calisma 77853afb · hakem 77853afb:FDR/sekiller/akis_d.mmd
+kod dosyalari ['comms/hakem_kaydi.py', 'comms/yks_gui.py'] · degisen ['comms/yks_gui.py']
+
+-- 1. ESKI tazeleyici (master) cikis=0
+      ? ('d57', 'comms/yks_gui.py:1702', 'self._kanit_yaz(<br/>"IHA_INIS_KANITI", seq=seq,')
+-- 2. YENI tazeleyici (varsayilan taban) cikis=0
+   taban: HEAD = 16132312baed (varsayilan — taban suphesi engeller)
+   SONUC: 96 dugum tazelendi · 0 hata
+
+-- 3. dugum | taban [kapsam] | ESKI | YENI | HAKEM   (yalniz farkli olanlar + TUM basliklar)
+   sD1  (baslik) | comms/yks_gui.py:4433 [main] | 4433 [demo_besle.iha] FARKLI | 4560 [main] ok | 4560 [main]
+   d11           | comms/yks_gui.py:3707 [YksArayuz.fda_kipini_uygula] | 3707 [YksArayuz.ika_baslat] FARKLI | 3834 [YksArayuz.fda_kipini_uygula] ok | 3834 [YksArayuz.fda_kipini_uygula]
+   sD2  (baslik) | comms/yks_gui.py:1456 [YksArayuz._dinle] | 1456 [YksArayuz._harita_ciz] FARKLI | 1561 [YksArayuz._dinle] ok | 1561 [YksArayuz._dinle]
+   sD3  (baslik) | comms/yks_gui.py:1483 [YksArayuz._tik] | 1483 [YksArayuz._harita_ciz] FARKLI | 1588 [YksArayuz._tik] ok | 1588 [YksArayuz._tik]
+   sD4  (baslik) | comms/yks_gui.py:1541 [YksArayuz._mesaj_isle] | 1541 [YksArayuz._inset_ciz] FARKLI | 1646 [YksArayuz._mesaj_isle] ok | 1646 [YksArayuz._mesaj_isle]
+   d57           | comms/yks_gui.py:1702 [YksArayuz._mesaj_isle] | 1702 [YksArayuz._mesaj_isle] FARKLI | 1807 [YksArayuz._mesaj_isle] ok | 1807 [YksArayuz._mesaj_isle]
+   sD5  (baslik) | comms/yks_gui.py:2025 [YksArayuz._ack_isle] | 2025 [YksArayuz.onayla] FARKLI | 2130 [YksArayuz._ack_isle] ok | 2130 [YksArayuz._ack_isle]
+   sD10 (baslik) | comms/yks_gui.py:2111 [YksArayuz._ika_rota_ack_bagla] | 2111 [YksArayuz._aktarim_onay_dugmesini_kur] FARKLI | 2216 [YksArayuz._ika_rota_ack_bagla] ok | 2216 [YksArayuz._ika_rota_ack_bagla]
+   sD11 (baslik) | comms/yks_gui.py:2142 [YksArayuz._erken_ika_rota_ack_sakla] | 2142 [YksArayuz._ack_isle] FARKLI | 2247 [YksArayuz._erken_ika_rota_ack_sakla] ok | 2247 [YksArayuz._erken_ika_rota_ack_sakla]
+   sD12 (baslik) | comms/yks_gui.py:2172 [YksArayuz._erken_ika_rota_ack_esle] | 2172 [YksArayuz._ack_isle] FARKLI | 2277 [YksArayuz._erken_ika_rota_ack_esle] ok | 2277 [YksArayuz._erken_ika_rota_ack_esle]
+   sD6  (baslik) | comms/yks_gui.py:1865 [YksArayuz.onayla] | 1865 [YksArayuz._mesaj_isle] FARKLI | 1970 [YksArayuz.onayla] ok | 1970 [YksArayuz.onayla]
+   d78           | comms/yks_gui.py:1894 [YksArayuz.onayla] | 1990 [YksArayuz.onayla] ok | 1999 [YksArayuz.onayla] FARKLI | 1990 [YksArayuz.onayla]
+   sD7  (baslik) | comms/yks_gui.py:4210 [YksArayuz._kanit_yaz] | 4210 [YksArayuz._durum_tazele] FARKLI | 4337 [YksArayuz._kanit_yaz] ok | 4337 [YksArayuz._kanit_yaz]
+   sD8  (baslik) | comms/yks_gui.py:3525 [YksArayuz.firlatma] | 3525 [YksArayuz._arm_tik] FARKLI | 3652 [YksArayuz.firlatma] ok | 3652 [YksArayuz.firlatma]
+   sD9  (baslik) | comms/yks_gui.py:3579 [YksArayuz.ika_baslat] | 3579 [YksArayuz.acil_komut] FARKLI | 3706 [YksArayuz.ika_baslat] ok | 3706 [YksArayuz.ika_baslat]
+
+OZET G1 T226 (98 dugum, 12 alt-grafik basligi): ESKI hakemden farkli 14 (baslik 12: ['sD1', 'sD2', 'sD3', 'sD4', 'sD5', 'sD10', 'sD11', 'sD12', 'sD6', 'sD7', 'sD8', 'sD9'])
+OZET G1 T226 (98 dugum, 12 alt-grafik basligi): YENI hakemden farkli 1 ['d78'] (baslik 0) · YENI kapsam disi 0 [] · hakemde yok []
+-- 4. dogrula ESKI aracin ciktisina: seceneksiz gecti=False · --taban HEAD gecti=False · hata satiri 41, alt-grafik basligina ait 36
+   HATA: sD1: 'def main()' comms/yks_gui.py:4433±3 içinde YOK
+   HATA: sD2: 'def YksArayuz._dinle()' comms/yks_gui.py:1456±3 içinde YOK
+   HATA: sD3: 'def YksArayuz._tik()' comms/yks_gui.py:1483±3 içinde YOK
+
+====================================================================================================
+G2 T226-D: taban 77853afb → calisma 15ad56d0 · hakem 15ad56d0:FDR/sekiller/akis_d.mmd
+kod dosyalari ['comms/hakem_kaydi.py', 'comms/yks_gui.py'] · degisen ['comms/yks_gui.py']
+
+-- 1. ESKI tazeleyici (master) cikis=0
+      ? ('d57', 'comms/yks_gui.py:1807', 'self._kanit_yaz(<br/>"IHA_INIS_KANITI", seq=seq,')
+-- 2. YENI tazeleyici (varsayilan taban) cikis=0
+   taban: HEAD = f9a084cb651f (varsayilan — taban suphesi engeller)
+   SONUC: 96 dugum tazelendi · 0 hata
+
+-- 3. dugum | taban [kapsam] | ESKI | YENI | HAKEM   (yalniz farkli olanlar + TUM basliklar)
+   sD1  (baslik) | comms/yks_gui.py:4560 [main] | 4560 [YksArayuz._kanit_hatasini_goster] FARKLI | 4791 [main] ok | 4791 [main]
+   d11           | comms/yks_gui.py:3834 [YksArayuz.fda_kipini_uygula] | 3834 [YksArayuz.acil_komut] FARKLI | 4065 [YksArayuz.fda_kipini_uygula] ok | 4065 [YksArayuz.fda_kipini_uygula]
+   sD2  (baslik) | comms/yks_gui.py:1561 [YksArayuz._dinle] | 1561 [YksArayuz._harita_ciz] FARKLI | 1788 [YksArayuz._dinle] ok | 1788 [YksArayuz._dinle]
+   sD3  (baslik) | comms/yks_gui.py:1588 [YksArayuz._tik] | 1588 [YksArayuz._harita_ciz] FARKLI | 1815 [YksArayuz._tik] ok | 1815 [YksArayuz._tik]
+   sD4  (baslik) | comms/yks_gui.py:1646 [YksArayuz._mesaj_isle] | 1646 [YksArayuz._harita_ciz] FARKLI | 1873 [YksArayuz._mesaj_isle] ok | 1873 [YksArayuz._mesaj_isle]
+   d57           | comms/yks_gui.py:1807 [YksArayuz._mesaj_isle] | 1807 [YksArayuz._dinle] FARKLI | 2034 [YksArayuz._mesaj_isle] ok | 2034 [YksArayuz._mesaj_isle]
+   sD5  (baslik) | comms/yks_gui.py:2130 [YksArayuz._ack_isle] | 2130 [YksArayuz._mesaj_isle] FARKLI | 2357 [YksArayuz._ack_isle] ok | 2357 [YksArayuz._ack_isle]
+   sD10 (baslik) | comms/yks_gui.py:2216 [YksArayuz._ika_rota_ack_bagla] | 2216 [YksArayuz.onayla] FARKLI | 2443 [YksArayuz._ika_rota_ack_bagla] ok | 2443 [YksArayuz._ika_rota_ack_bagla]
+   sD11 (baslik) | comms/yks_gui.py:2247 [YksArayuz._erken_ika_rota_ack_sakla] | 2247 [YksArayuz.onayla] FARKLI | 2474 [YksArayuz._erken_ika_rota_ack_sakla] ok | 2474 [YksArayuz._erken_ika_rota_ack_sakla]
+   sD12 (baslik) | comms/yks_gui.py:2277 [YksArayuz._erken_ika_rota_ack_esle] | 2277 [YksArayuz.onayla] FARKLI | 2504 [YksArayuz._erken_ika_rota_ack_esle] ok | 2504 [YksArayuz._erken_ika_rota_ack_esle]
+   sD6  (baslik) | comms/yks_gui.py:1970 [YksArayuz.onayla] | 1970 [YksArayuz._mesaj_isle] FARKLI | 2197 [YksArayuz.onayla] ok | 2197 [YksArayuz.onayla]
+   sD7  (baslik) | comms/yks_gui.py:4337 [YksArayuz._kanit_yaz] | 4337 [YksArayuz._tespiti_yaslandir] FARKLI | 4568 [YksArayuz._kanit_yaz] ok | 4568 [YksArayuz._kanit_yaz]
+   sD8  (baslik) | comms/yks_gui.py:3652 [YksArayuz.firlatma] | 3652 [YksArayuz._arm_ui_uygula] FARKLI | 3883 [YksArayuz.firlatma] ok | 3883 [YksArayuz.firlatma]
+   sD9  (baslik) | comms/yks_gui.py:3706 [YksArayuz.ika_baslat] | 3706 [YksArayuz.arm_degistir] FARKLI | 3937 [YksArayuz.ika_baslat] ok | 3937 [YksArayuz.ika_baslat]
+
+OZET G2 T226-D (98 dugum, 12 alt-grafik basligi): ESKI hakemden farkli 14 (baslik 12: ['sD1', 'sD2', 'sD3', 'sD4', 'sD5', 'sD10', 'sD11', 'sD12', 'sD6', 'sD7', 'sD8', 'sD9'])
+OZET G2 T226-D (98 dugum, 12 alt-grafik basligi): YENI hakemden farkli 0 [] (baslik 0) · YENI kapsam disi 0 [] · hakemde yok []
+-- 4. dogrula ESKI aracin ciktisina: seceneksiz gecti=False · --taban HEAD gecti=False · hata satiri 42, alt-grafik basligina ait 36
+   HATA: sD1: 'def main()' comms/yks_gui.py:4560±3 içinde YOK
+   HATA: sD2: 'def YksArayuz._dinle()' comms/yks_gui.py:1561±3 içinde YOK
+   HATA: sD3: 'def YksArayuz._tik()' comms/yks_gui.py:1588±3 içinde YOK

@@ -1,0 +1,103 @@
+
+==== F1 satir kaydirmayan commit: f2 satir icerigi
+tazele varsayilan --kuru rc 0
+taban: HEAD = 42c94baccafb (varsayilan — taban suphesi engeller)
+akis_t.mmd: 0 dugum tazelenecek (KURU — dosya yazilmadi); cozulemeyen 0
+SONUC: 0 dugum tazelenecek (KURU — dosya yazilmadi) · 0 hata
+dogrula --taban HEAD rc 0
+kapsam tabanı: HEAD = 42c94baccafb
+sekil\akis_t.mmd: 1 düğüm · 1 tuttu · tam satır 1 · hata 0
+  kapsam (taban HEAD): 1 düğüm karşılaştırıldı · tabanda yok 0 · KAPSAM DEGISTI 0 · TABAN SUPHELI 0 · kapsam hatası 0
+SONUÇ: TÜM DÜĞÜMLER TUTTU
+
+==== F2 dugumun altina ekleme commit
+tazele varsayilan --kuru rc 0
+taban: HEAD = cff71522a616 (varsayilan — taban suphesi engeller)
+akis_t.mmd: 0 dugum tazelenecek (KURU — dosya yazilmadi); cozulemeyen 0
+SONUC: 0 dugum tazelenecek (KURU — dosya yazilmadi) · 0 hata
+dogrula --taban HEAD rc 0
+kapsam tabanı: HEAD = cff71522a616
+sekil\akis_t.mmd: 1 düğüm · 1 tuttu · tam satır 1 · hata 0
+  kapsam (taban HEAD): 1 düğüm karşılaştırıldı · tabanda yok 0 · KAPSAM DEGISTI 0 · TABAN SUPHELI 0 · kapsam hatası 0
+SONUÇ: TÜM DÜĞÜMLER TUTTU
+
+==== F3 f1 icinde dugumun ustune ekleme commit (ayni kapsam)
+dogrula --taban HEAD (tazeleme oncesi) rc 0
+kapsam tabanı: HEAD = e723effb769e
+sekil\akis_t.mmd: 1 düğüm · 1 tuttu · tam satır 0 · hata 0
+  kapsam (taban HEAD): 1 düğüm karşılaştırıldı · tabanda yok 0 · KAPSAM DEGISTI 0 · TABAN SUPHELI 0 · kapsam hatası 0
+SONUÇ: TÜM DÜĞÜMLER TUTTU
+tazele varsayilan rc 0
+taban: HEAD = e723effb769e (varsayilan — taban suphesi engeller)
+akis_t.mmd: 1 dugum tazelendi; cozulemeyen 0
+   n1: pkg/mod.py:8 -> 9  [f1]
+SONUC: 1 dugum tazelendi · 0 hata
+   [bagimsiz ast] n1 -> satir 9 -> f1; baslik: %% koddan turetildi e723eff 2026-09-12
+F5 durum gecisi: commit sonrasi ikinci kosu --kuru rc 0
+taban: HEAD = e880f38a91de (varsayilan — taban suphesi engeller)
+akis_t.mmd: 0 dugum tazelenecek (KURU — dosya yazilmadi); cozulemeyen 0
+SONUC: 0 dugum tazelenecek (KURU — dosya yazilmadi) · 0 hata
+
+==== F4 kod commit C, sonra .mmd yalniz yorum satiriyla commit D (n1 satiri A'dan beri ayni)
+git log: c0dd1ea D mmd yorum
+f50d0c9 C f3 eklendi
+d425c6c A taban
+n1 satirinin blame commit'i: ^d425c6c6348caa03cff2640393b70dbb10a1999 (c 2026-09-12 01:51
+tazele varsayilan (yazar) rc 2
+taban: HEAD = c0dd1ea1b9d2 (varsayilan — taban suphesi engeller)
+TABAN SUPHELI: akis_t.mmd: n1: pkg/mod.py:8 — sonuc tabana bagli: secilen taban c0dd1ea → 8 [f3] · d425c6c (dugum satirinin koken commit'i) → 19 [f1]
+SONUC: TABAN SUPHELI (1 dugum) — hicbir dosya yazilmadi. Sonuc tabana bagli: .mmd satirlarinin ait oldugu tabani --taban ile acikca verin (.mmd degismediyse son commit'i; onceki bir tazelemeyle degistiyse .mmd'yi git checkout ile geri alip yeniden kosun).
+mmd bayt-es: True
+   [bagimsiz ast] n1 -> satir 8 -> f3; baslik: %% koddan turetildi 0000000 2026-09-10
+dogrula --taban HEAD rc 1
+kapsam tabanı: HEAD = c0dd1ea1b9d2
+sekil\akis_t.mmd: 1 düğüm · 1 tuttu · tam satır 1 · hata 0
+  kapsam (taban HEAD): 1 düğüm karşılaştırıldı · tabanda yok 0 · KAPSAM DEGISTI 0 · TABAN SUPHELI 1 · kapsam hatası 1
+  TABAN SUPHELI: n1: düğüm satırı d425c6c commit'inden beri değişmedi, kod değişti — pkg/mod.py:8 o commit'te [f1], tabanda [f3]; .mmd satırı o commit'e göre olabilir (--taban d425c6c ile de koşun)
+SONUÇ: HATA VAR
+dogrula seceneksiz rc 0
+sekil\akis_t.mmd: 1 düğüm · 1 tuttu · tam satır 1 · hata 0
+SONUÇ: TÜM DÜĞÜMLER TUTTU
+dogrula --taban HEAD~2 (A, dogru taban) rc 1
+kapsam tabanı: HEAD~2 = d425c6c6348c
+sekil\akis_t.mmd: 1 düğüm · 1 tuttu · tam satır 1 · hata 0
+  kapsam (taban HEAD~2): 1 düğüm karşılaştırıldı · tabanda yok 0 · KAPSAM DEGISTI 1 · TABAN SUPHELI 0 · kapsam hatası 1
+  KAPSAM DEGISTI: n1: taban pkg/mod.py:8 [f1] → çalışma pkg/mod.py:8 [f3]
+SONUÇ: HATA VAR
+tazele --taban HEAD~2 --kuru rc 0
+taban: HEAD~2 = d425c6c6348c (elle verildi — taban suphesi yalniz uyarir)
+akis_t.mmd: 1 dugum tazelenecek (KURU — dosya yazilmadi); cozulemeyen 0
+   n1: pkg/mod.py:8 -> 19  [f1]
+SONUC: 1 dugum tazelenecek (KURU — dosya yazilmadi) · 0 hata
+
+==== F4b kod commit C, sonra .mmd'ye yeni dugum n2 eklenip commit D
+tazele varsayilan (yazar) rc 2
+taban: HEAD = 800d0ec3049c (varsayilan — taban suphesi engeller)
+TABAN SUPHELI: akis_t.mmd: n1: pkg/mod.py:8 — sonuc tabana bagli: secilen taban 800d0ec → 8 [f3] · 052937b (dugum satirinin koken commit'i) → 19 [f1]
+SONUC: TABAN SUPHELI (1 dugum) — hicbir dosya yazilmadi. Sonuc tabana bagli: .mmd satirlarinin ait oldugu tabani --taban ile acikca verin (.mmd degismediyse son commit'i; onceki bir tazelemeyle degistiyse .mmd'yi git checkout ile geri alip yeniden kosun).
+   [bagimsiz ast] n1 -> satir 8 -> f3; baslik: %% koddan turetildi 0000000 2026-09-10
+dogrula --taban HEAD rc 1
+kapsam tabanı: HEAD = 800d0ec3049c
+sekil\akis_t.mmd: 2 düğüm · 2 tuttu · tam satır 2 · hata 0
+  kapsam (taban HEAD): 2 düğüm karşılaştırıldı · tabanda yok 0 · KAPSAM DEGISTI 0 · TABAN SUPHELI 1 · kapsam hatası 1
+  TABAN SUPHELI: n1: düğüm satırı 052937b commit'inden beri değişmedi, kod değişti — pkg/mod.py:8 o commit'te [f1], tabanda [f3]; .mmd satırı o commit'e göre olabilir (--taban 052937b ile de koşun)
+SONUÇ: HATA VAR
+
+==== F6 KUSUR-1 deposunda --taban HEAD~1 ile dogru tazeleme, commit'siz; dogrula --taban HEAD
+tazele --taban HEAD~1 rc 0
+taban: HEAD~1 = 052937bda7e1 (elle verildi — taban suphesi yalniz uyarir)
+akis_t.mmd: 1 dugum tazelendi; cozulemeyen 0
+   n1: pkg/mod.py:8 -> 19  [f1]
+SONUC: 1 dugum tazelendi · 0 hata
+   [bagimsiz ast] n1 -> satir 19 -> f1; baslik: %% koddan turetildi 80e0431 2026-09-12
+dogrula --taban HEAD rc 1
+kapsam tabanı: HEAD = 80e04312918d
+sekil\akis_t.mmd: 1 düğüm · 1 tuttu · tam satır 1 · hata 0
+  kapsam (taban HEAD): 1 düğüm karşılaştırıldı · tabanda yok 0 · KAPSAM DEGISTI 1 · TABAN SUPHELI 1 · kapsam hatası 2
+  TABAN SUPHELI: n1: düğüm satırı 052937b commit'inden beri değişmedi, kod değişti — pkg/mod.py:8 o commit'te [f1], tabanda [f3]; .mmd satırı o commit'e göre olabilir (--taban 052937b ile de koşun)
+  KAPSAM DEGISTI: n1: taban pkg/mod.py:8 [f3] → çalışma pkg/mod.py:19 [f1]
+SONUÇ: HATA VAR
+tazele varsayilan --kuru (ikinci kosu) rc 0
+taban: HEAD = 80e04312918d (varsayilan — taban suphesi engeller)
+akis_t.mmd: 0 dugum tazelenecek (KURU — dosya yazilmadi); cozulemeyen 0
+SONUC: 0 dugum tazelenecek (KURU — dosya yazilmadi) · 0 hata

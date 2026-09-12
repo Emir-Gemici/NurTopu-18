@@ -1,0 +1,120 @@
+
+==== S1 KUSUR-1: kod commit'li, varsayilan taban
+tazele varsayilan rc 2
+taban: HEAD = 669c326e1e7b (varsayilan — taban suphesi engeller)
+TABAN SUPHELI: akis_t.mmd: n1: pkg/mod.py:8 — sonuc tabana bagli: secilen taban 669c326 → 8 [f3] · ae176e4 (dugum satirinin koken commit'i) → 19 [f1]
+SONUC: TABAN SUPHELI (1 dugum) — hicbir dosya yazilmadi. Sonuc tabana bagli: .mmd satirlarinin ait oldugu tabani --taban ile acikca verin (.mmd degismediyse son commit'i; onceki bir tazelemeyle degistiyse .mmd'yi git checkout ile geri alip yeniden kosun).
+mmd bayt-es: True
+tazele --taban HEAD~1 --kuru rc 0
+taban: HEAD~1 = ae176e4a8999 (elle verildi — taban suphesi yalniz uyarir)
+akis_t.mmd: 1 dugum tazelenecek (KURU — dosya yazilmadi); cozulemeyen 0
+   n1: pkg/mod.py:8 -> 19  [f1]
+SONUC: 1 dugum tazelenecek (KURU — dosya yazilmadi) · 0 hata
+dogrula --taban HEAD rc 1
+kapsam tabanı: HEAD = 669c326e1e7b
+sekil\akis_t.mmd: 1 düğüm · 1 tuttu · tam satır 1 · hata 0
+  kapsam (taban HEAD): 1 düğüm karşılaştırıldı · tabanda yok 0 · KAPSAM DEGISTI 0 · TABAN SUPHELI 1 · kapsam hatası 1
+  TABAN SUPHELI: n1: düğüm satırı ae176e4 commit'inden beri değişmedi, kod değişti — pkg/mod.py:8 o commit'te [f1], tabanda [f3]; .mmd satırı o commit'e göre olabilir (--taban ae176e4 ile de koşun)
+SONUÇ: HATA VAR
+dogrula --taban HEAD~1 rc 1
+kapsam tabanı: HEAD~1 = ae176e4a8999
+sekil\akis_t.mmd: 1 düğüm · 1 tuttu · tam satır 1 · hata 0
+  kapsam (taban HEAD~1): 1 düğüm karşılaştırıldı · tabanda yok 0 · KAPSAM DEGISTI 1 · TABAN SUPHELI 0 · kapsam hatası 1
+  KAPSAM DEGISTI: n1: taban pkg/mod.py:8 [f1] → çalışma pkg/mod.py:8 [f3]
+SONUÇ: HATA VAR
+
+==== S2 L'den sonra iki kod commit'i
+varsayilan rc 2
+taban: HEAD = 0e9bdac4bf29 (varsayilan — taban suphesi engeller)
+TABAN SUPHELI: akis_t.mmd: n1: pkg/mod.py:8 — sonuc tabana bagli: secilen taban 0e9bdac → 10 [f3] · 6de541a (dugum satirinin koken commit'i) → 21 [f1]
+SONUC: TABAN SUPHELI (1 dugum) — hicbir dosya yazilmadi. Sonuc tabana bagli: .mmd satirlarinin ait oldugu tabani --taban ile acikca verin (.mmd degismediyse son commit'i; onceki bir tazelemeyle degistiyse .mmd'yi git checkout ile geri alip yeniden kosun).
+--taban HEAD~2 rc 0
+taban: HEAD~2 = 6de541ac5ead (elle verildi — taban suphesi yalniz uyarir)
+akis_t.mmd: 1 dugum tazelenecek (KURU — dosya yazilmadi); cozulemeyen 0
+   n1: pkg/mod.py:8 -> 21  [f1]
+SONUC: 1 dugum tazelenecek (KURU — dosya yazilmadi) · 0 hata
+
+==== S3 subgraph basligi + kod commit'li
+varsayilan rc 2
+taban: HEAD = c14db1bf2344 (varsayilan — taban suphesi engeller)
+TABAN SUPHELI: akis_t.mmd: s1: pkg/mod.py:6 — sonuc tabana bagli: secilen taban c14db1b → cozulemedi (TABANDA TUTMUYOR) · b164ec3 (dugum satirinin koken commit'i) → 17 [f1]
+TABAN SUPHELI: akis_t.mmd: n1: pkg/mod.py:8 — sonuc tabana bagli: secilen taban c14db1b → 8 [f3] · b164ec3 (dugum satirinin koken commit'i) → 19 [f1]
+TABAN SUPHELI: akis_t.mmd: s2: pkg/mod.py:1 — sonuc tabana bagli: secilen taban c14db1b → cozulemedi (TABANDA TUTMUYOR) · b164ec3 (dugum satirinin koken commit'i) → 12 [f2]
+TABAN SUPHELI: akis_t.mmd: n2: pkg/mod.py:3 — sonuc tabana bagli: secilen taban c14db1b → cozulemedi (TABANDA TUTMUYOR) · b164ec3 (dugum satirinin koken commit'i) → 14 [f2]
+SONUC: TABAN SUPHELI (4 dugum) — hicbir dosya yazilmadi. Sonuc tabana bagli: .mmd satirlarinin ait oldugu tabani --taban ile acikca verin (.mmd degismediyse son commit'i; onceki bir tazelemeyle degistiyse .mmd'yi git checkout ile geri alip yeniden kosun).
+bayt-es True
+--taban HEAD~1 rc 0
+taban: HEAD~1 = b164ec3a0578 (elle verildi — taban suphesi yalniz uyarir)
+akis_t.mmd: 4 dugum tazelendi; cozulemeyen 0
+   s1: pkg/mod.py:6 -> 17  [f1]
+   n1: pkg/mod.py:8 -> 19  [f1]
+   s2: pkg/mod.py:1 -> 12  [f2]
+   n2: pkg/mod.py:3 -> 14  [f2]
+SONUC: 4 dugum tazelendi · 0 hata
+%% koddan turetildi c14db1b 2026-09-12
+flowchart TD
+  subgraph s1["def f1()<br/>pkg/mod.py:17"]
+    n1["sonuc = hesapla(x)<br/>pkg/mod.py:19"]
+  end
+  subgraph s2 ["def f2()<br />pkg/mod.py:12"]
+    n2["return sonuc<br>pkg/mod.py:14"]
+  end
+
+dogrula seceneksiz rc 0
+sekil\akis_t.mmd: 4 düğüm · 4 tuttu · tam satır 4 · hata 0
+SONUÇ: TÜM DÜĞÜMLER TUTTU
+
+==== S4 subgraph basligi Sinif.metot, calisma agaci; yeni vs master tazele
+MASTER tazele rc 0
+akis_t.mmd: 1 dugum tazelendi; bulunamayan 0
+%% koddan turetildi 844c04f 2026-09-12
+flowchart TD
+  subgraph sB["def B._tik()<br/>pkg/mod.py:10"]
+    b1["m = oku()<br/>pkg/mod.py:3"]
+  end
+  subgraph sA ["def A._tik()<br />pkg/mod.py:2"]
+    a1["m = oku()<br>pkg/mod.py:3"]
+  end
+
+YENI tazele rc 0
+taban: HEAD = 844c04f0342b (varsayilan — taban suphesi engeller)
+akis_t.mmd: 2 dugum tazelendi; cozulemeyen 0
+   sB: pkg/mod.py:10 -> 20  [B._tik]
+   b1: pkg/mod.py:11 -> 21  [B._tik]
+SONUC: 2 dugum tazelendi · 0 hata
+%% koddan turetildi 844c04f 2026-09-12
+flowchart TD
+  subgraph sB["def B._tik()<br/>pkg/mod.py:20"]
+    b1["m = oku()<br/>pkg/mod.py:21"]
+  end
+  subgraph sA ["def A._tik()<br />pkg/mod.py:2"]
+    a1["m = oku()<br>pkg/mod.py:3"]
+  end
+
+dogrula --taban HEAD rc 0
+kapsam tabanı: HEAD = 844c04f0342b
+sekil\akis_t.mmd: 4 düğüm · 4 tuttu · tam satır 4 · hata 0
+  kapsam (taban HEAD): 4 düğüm karşılaştırıldı · tabanda yok 0 · KAPSAM DEGISTI 0 · TABAN SUPHELI 0 · kapsam hatası 0
+SONUÇ: TÜM DÜĞÜMLER TUTTU
+kaydirilmis baslik dogrula seceneksiz rc 0
+sekil\akis_t.mmd: 4 düğüm · 4 tuttu · tam satır 4 · hata 0
+SONUÇ: TÜM DÜĞÜMLER TUTTU
+kaydirilmis baslik dogrula --taban HEAD rc 1
+kapsam tabanı: HEAD = 844c04f0342b
+sekil\akis_t.mmd: 4 düğüm · 4 tuttu · tam satır 4 · hata 0
+  kapsam (taban HEAD): 4 düğüm karşılaştırıldı · tabanda yok 0 · KAPSAM DEGISTI 1 · TABAN SUPHELI 0 · kapsam hatası 1
+  KAPSAM DEGISTI: sB: taban pkg/mod.py:10 [B._tik] → çalışma pkg/mod.py:2 [A._tik]
+SONUÇ: HATA VAR
+
+==== S5 elle eklenen dugum calisma agacina gore
+varsayilan rc 2
+taban: HEAD = 8fbb694bb06b (varsayilan — taban suphesi engeller)
+TABAN SUPHELI: akis_t.mmd: n7: pkg/mod.py:8 — sonuc tabana bagli: secilen taban 8fbb694 → 19 [f1] · calisma agaci (dugum satiri tabandaki .mmd'de yok) → 8 [f3]
+SONUC: TABAN SUPHELI (1 dugum) — hicbir dosya yazilmadi. Sonuc tabana bagli: .mmd satirlarinin ait oldugu tabani --taban ile acikca verin (.mmd degismediyse son commit'i; onceki bir tazelemeyle degistiyse .mmd'yi git checkout ile geri alip yeniden kosun).
+--taban HEAD rc 0
+taban: HEAD = 8fbb694bb06b (elle verildi — taban suphesi yalniz uyarir)
+TABAN UYARISI: akis_t.mmd: n7: pkg/mod.py:8 — sonuc tabana bagli: secilen taban 8fbb694 → 19 [f1] · calisma agaci (dugum satiri tabandaki .mmd'de yok) → 8 [f3]
+akis_t.mmd: 2 dugum tazelenecek (KURU — dosya yazilmadi); cozulemeyen 0
+   n1: pkg/mod.py:8 -> 19  [f1]
+   n7: pkg/mod.py:8 -> 19  [f1]
+SONUC: 2 dugum tazelenecek (KURU — dosya yazilmadi) · 0 hata

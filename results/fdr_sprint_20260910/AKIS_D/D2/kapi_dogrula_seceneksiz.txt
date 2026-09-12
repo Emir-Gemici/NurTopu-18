@@ -1,0 +1,10 @@
+$ python scripts/akis_diyagram_dogrula.py   (seceneksiz)
+FDR\sekiller\akis_a.mmd: 51 düğüm · 51 tuttu · tam satır 51 · hata 0
+FDR\sekiller\akis_b.mmd: 68 düğüm · 68 tuttu · tam satır 68 · hata 0
+FDR\sekiller\akis_c.mmd: 62 düğüm · 62 tuttu · tam satır 62 · hata 0
+FDR\sekiller\akis_d.mmd: 98 düğüm · 98 tuttu · tam satır 98 · hata 0
+FDR\sekiller\akis_e.mmd: 70 düğüm · 70 tuttu · tam satır 70 · hata 0
+SONUÇ: TÜM DÜĞÜMLER TUTTU
+cikis=0
+--- master:scripts/akis_diyagram_dogrula.py ciktisiyla karsilastirma (gecici kopya, kosuldu, silindi):
+cmp: BAYT-ES (417 bayt, sha256 a2e8d1126eb11d33)

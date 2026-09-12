@@ -1,0 +1,7 @@
+$ python -m unittest discover -s tests -p test_gece_akis_diyagramlari.py
+.............
+----------------------------------------------------------------------
+Ran 13 tests in 0.236s
+
+OK
+cikis=0
