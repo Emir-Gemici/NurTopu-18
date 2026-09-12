@@ -1,0 +1,8 @@
+ONCE  (tam_suit_2.txt) : Ran 2782 tests in 577.418s · FAILED (failures=11, errors=11, skipped=34) · 22 dusuk
+SONRA (tam_suit_6.txt): Ran 2793 tests in 564.222s · FAILED (failures=12, errors=11, skipped=34) · 23 dusuk
+SONRAKI kosumda YENI dusuk: 1
+  + FAIL: test_kapi_ciktilari_yerinde_ve_hukumleri_dosyadan (test_t243_paket_boyutu.ReadmeSayilariArtefakttan.test_kapi_ciktilari_yerinde_ve_hukumleri_dosyadan)
+SONRAKI kosumda GECEN (onceki dusuk): 0
+test_t243_paket_boyutu kaynakli dusuk: 1
+  ! FAIL: test_kapi_ciktilari_yerinde_ve_hukumleri_dosyadan (test_t243_paket_boyutu.ReadmeSayilariArtefakttan.test_kapi_ciktilari_yerinde_ve_hukumleri_dosyadan)
+SONUC: test_t243_paket_boyutu modulunden DUSUK VAR

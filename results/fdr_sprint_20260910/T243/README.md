@@ -168,16 +168,34 @@ kümesinin `kapi/tam_suit_2.txt` (düzeltme öncesi) kümesinden **farkı**:
 |---|---|---|
 | `tam_suit_3.txt` | +`test_13_gercek_mavlink_hedefi_sahte_pixhawk_command_long_alir` | **süit içi kararsızlık**: modül tek başına 3/3 GEÇER (`kapi/kararsiz_faz_b_iha_komut_alici.txt`), aynı test `tam_suit_4` ve `tam_suit_5` koşumlarında düşmedi |
 | `tam_suit_4.txt` | +`test_tam_suit_3_dusuk_kumesi_ONCEKIYLE_AYNI` | **testin kendi kusuru**: tam süit çıktısını okuyan bir nöbetçi testi yazmıştım; koşum sırasına bağlıydı. **Kaldırıldı** — aşağıya bakınız |
-| `tam_suit_5.txt` | fark için o dosyaya bakınız | son hâl; T243 modülünden düşük YOK |
+| `tam_suit_5.txt` | +`test_D466_SONRASI_tam_suit_te_T243_dusugu_YOK` | aynı kusurun ikinci biçimi: testi yeniden yazdım, **yine** kendi koşumunda düştü |
+| `tam_suit_6.txt` | +`test_kapi_ciktilari_yerinde_ve_hukumleri_dosyadan` | **bootstrap**: o koşum sırasında `kapi/suit_kiyas.txt` henüz üretilmemişti |
+| `tam_suit_7.txt` | — | son koşum; karşılaştırma `kapi/suit_kiyas.txt` |
 
-🔴 **Kaldırılan test — kayda geçer.** İlk denemede tam süit düşük kümesini
-`tam_suit_2` ile karşılaştıran bir nöbetçi testi yazıldı. Test, tam süit
-**içinde** koşarken okuduğu dosyanın o anda yazılmakta olduğunu göremiyordu ve
-kendi koşumunda düşüyordu; sonraki koşumda da bir önceki koşumun kararsız
-düşüğünü gördüğü için düştü. **Tam küme eşitliği kararsız bir ölçüttür ve
-kilit olamaz.** Yerine ölçülen şey daraltıldı: *bu işin dokunduğu modül tam
-süit içinde hiç düşük üretmiyor mu?* — `tam_suit_5.txt` üzerinde ölçülür.
-Eski çıktılar silinmedi; iki başarısız deneme de yukarıdaki tabloda durur.
+🔴 **Kaldırılan test ve öğrenilen sınır — kayda geçer (silinmedi).** Tam süit
+düşük kümesini `tam_suit_2` ile karşılaştıran bir nöbetçi testi yazıldı;
+**iki kez**, iki ayrı biçimde, kendi koşumunda düştü (`tam_suit_4`,
+`tam_suit_5`). Sebep yapısaldır: tam süit çıktısını **okuyan** bir test, o
+çıktıyı **üreten** koşumun içinde koşar ve kabuk yönlendirmesi dosyayı başta
+boşalttığı için yarım dosya görür. Hükmü koda kilitlemek ise sonsuz gerilemeye
+girer: hüküm bir sonraki koşuma, o koşum da hükme bağlanır (`tam_suit_6`
+bootstrap düşüğü bunu gösterir).
+
+Ölçüm bu yüzden **süitin dışına** alındı — `taban_kiyas.py` kalıbı:
+
+```
+venv\Scripts\python.exe -X utf8 -B \
+  results/fdr_sprint_20260910/T243/kapi/suit_kiyas.py \
+  --once tam_suit_2.txt --sonra tam_suit_7.txt
+```
+
+Çıktı `kapi/suit_kiyas.txt`. Nöbetçi **aracı ve donmuş ham çıktıları**
+kilitler; **hükmü kilitlemez** — hüküm tek komutla yeniden üretilebilir.
+Ölçüt de daraltıldı: tam küme eşitliği değil, *bu işin dokunduğu modül
+(`test_t243_paket_boyutu`) tam süit içinde hiç düşük üretiyor mu?*
+
+⚠ **Bunlar bu işin kendi kusurlarıydı ve gizlenmedi:** üç başarısız deneme
+(`tam_suit_4`, `tam_suit_5`, `tam_suit_6`) ham çıktılarıyla dizinde durur.
 
 ⚠ **Sınır (kapatılmadı):** süit içi kararsızlık bu işte **çözülmedi**, yalnız
 ölçüldü ve sayıldı. `test_13_...` tek başına geçer, süitte bazen düşer; sebebi
