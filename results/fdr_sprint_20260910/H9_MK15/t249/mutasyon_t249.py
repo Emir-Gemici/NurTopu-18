@@ -24,10 +24,13 @@ TEST = KOK / "tests" / "test_yks_mk15_hakem_ekrani.py"
 KOSUCU = CIK / "kos_dpi.py"
 PY = sys.executable
 
+# T250: `_ana_denetle` artik ONCE dogal, SONRA civilenmis tuvalde kosuyor; bu
+# yuzden 'civileme geri alinir' mutasyonu artik YALNIZ civileme cagrisini
+# hedefler (dogal kapsam noktasi yerinde kalir). Geri alinan hal = H2f'in
+# ekrandan TUREYEN tuvalde olculmesi, yani RED oncesi master davranisi.
 CIVILEME_GERI = (
-    '        self.app.gorunum("harita")\n'
+    "        # ÇİVİLENMİŞ tuval: H2f kalıntı sayısı buradan hüküm verir.\n"
     "        self._ana_tuvali_civile(olcek)\n",
-    '        self.app.gorunum("harita")\n'
     "        self.assertTrue(self._pompala(self.app.harita.winfo_ismapped, 3.0))\n",
 )
 

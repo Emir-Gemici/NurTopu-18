@@ -1,0 +1,6 @@
+M0 mutasyon yok (DPI ACIK): beklenen=0 gercek=0
+M1 TAM GERI ALMA: civileme yok + sabit uyku geri: beklenen=1 gercek=1
+M2 yalniz CIVILEME geri alinir (gercek hazir kosulu kalir): beklenen=1 gercek=1
+M3 yalniz SABIT UYKU geri gelir (civileme kalir): beklenen=0 gercek=0
+M4 mutasyon yok (DPI KAPALI, denetim): beklenen=0 gercek=0
+MUTASYON_SONUC GECTI

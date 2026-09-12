@@ -79,6 +79,7 @@ Düzeltme sonrası: `dogrulama_duzeltme_sonrasi.txt` → `Ran 2 tests … OK`.
 |---|---|
 | `test_T248_no_route_sonrasi_tekrarli_open_route_haritayi_tazeler` | durum DEĞİŞTİYSE ekran TAZELENİR (bant gider, `_olculu_alan` boşalır) |
 | `test_T248b_durum_degismeyen_tekrar_haritayi_yeniden_cizmez` | durum DEĞİŞMEDİYSE **8 tekrar kopyası için hiç çizim yapılmaz** |
+| `test_T248c_kamera_gorunumunde_kucuk_harita_da_tazelenir` | **T250 (çürütücü kapsam gözlemi)**: düzeltme `_harita_ciz()`i ARGÜMANSIZ çağırdığı için kamera görünümündeki KÜÇÜK harita da tazelenir (`comms/yks_gui.py:1561-1565`); bu yol RED'e kadar ölçülmüyordu |
 
 ## 4. Mutasyon
 
@@ -89,10 +90,17 @@ Düzeltme sonrası: `dogrulama_duzeltme_sonrasi.txt` → `Ran 2 tests … OK`.
 | N0 | yok | 0 | **0** |
 | N1 | ÜRÜN: `elif rota_yok_temizlendi: self._harita_ciz()` SİLİNİR (düzeltme öncesi) | 1 | **1** |
 | N2 | ÜRÜN: çizim KOŞULSUZ (`else:`) — her tekrarda yeniden çiz | 1 | **1** |
+| N3 | **T250**: ÜRÜN: tazeleme YALNIZ ana tuvale daraltılır (`_harita_ciz(self.harita)`) — küçük harita bayat kalır | 1 | **1** |
 
 `MUTASYON_SONUC GECTI`. N1 kusurun yakalandığını, N2 "gereksiz yeniden çizim
 yapma" kuralının da gerçekten ölçüldüğünü gösterir — yani kapı tek yönlü bir
 "her ihtimale karşı çiz" çözümünü kabul etmez.
+
+**N3 neyi öğretir (T250).** N3 ana harita yolunu BOZMAZ: T248 ve T248b o
+koşumda **YEŞİL** kalır, yalnız T248c düşer —
+`AssertionError: Lists differ: [] != ['ROTA YOK — KORIDOR_DEGIL · İKA GÜVENLİ D…ldı']`
+(`mutasyon_N3.txt`). Yani T248c ayrı bir ürün yolunu ölçüyor; küçük harita
+tazelemesi artık ölçülmemiş değil, **kilitli**.
 
 ## 5. `comms/` değişikliğinin yan kapıları
 
@@ -102,6 +110,7 @@ yapma" kuralının da gerçekten ölçüldüğünü gösterir — yani kapı tek
 | ayna testleri (`test_olcum_ayna_senkronu`, `test_t202_jetson_paket_butunlugu`, `test_jetson_paket_defteri`, `test_imgsz_tek_kaynak`, `test_t191_veri_kaynaklari_taze`) | hepsi OK |
 | `scripts/akis_diyagram_dogrula.py` | satır kayması yüzünden BAYATLADI → `akis_satir_tazele.py --taban 776f0254~1` (75 düğüm tazelendi, `akis_satir_tazele.txt`) + d47 elle düzeltildi → `SONUÇ: TÜM DÜĞÜMLER TUTTU` |
 | `FDR/sekiller/akis_d.mmd` | yeni ürün dalı için **iki düğüm eklendi** (`d59` karar, `d59b` çizim); okuma notu `akis_kapsam_OKUBENI.md` |
+| `akis_kapsam_t226d.py --taban 776f0254~1` **EXIT=1 beklentisi** | **T250**: düzyazı beyan ÖN KAYDA bağlandı — `akis_kapsam_beklenen.py` `[YENI]` kümesinin TAM OLARAK `{d59→yks_gui.py:1973, d59b→yks_gui.py:1981}` olduğunu, diğer tüm hata türlerinin 0 olduğunu ve çıkışın 1 olduğunu denetler; `--mutasyon` ile pin'in boş olmadığı gösterildi (d59b düğümü silinince küme değişti, pin YAKALADI). Çıktı: `akis_kapsam_beklenen_cikti.txt` → `AKIS_KAPSAM_BEKLENEN GECTI` |
 | `tests/test_akis_kapsam_korumasi.py`, `test_fdr_sarkan_atif_kapisi.py` | OK |
 
 ## 6. Mimarın dikkatine — kapatılmayan bir kalem

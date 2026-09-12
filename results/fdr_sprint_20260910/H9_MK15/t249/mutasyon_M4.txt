@@ -3,6 +3,6 @@ test_H2c_olcek_1_0 (test_yks_mk15_hakem_ekrani.H2c_EtiketCakismasi.test_H2c_olce
 test_H2c_olcek_1_5_hakem_ekrani (test_yks_mk15_hakem_ekrani.H2c_EtiketCakismasi.test_H2c_olcek_1_5_hakem_ekrani) ... ok
 
 ----------------------------------------------------------------------
-Ran 2 tests in 4.762s
+Ran 2 tests in 4.120s
 
 OK

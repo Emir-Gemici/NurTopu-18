@@ -22,3 +22,32 @@ Ayrıca `--taban` tazelemesinin **bir yanlış eşlemesi elle düzeltildi**:
 eklediği yorum bloğu yüzünden deyim 1920'ye kaydı; `akis_diyagram_dogrula`
 bunu `DEYIM_YOK` ile yakaladı ve atıf 1920 yapıldı. Tazeleme çıktısı:
 `akis_satir_tazele.txt` (75 düğüm tazelendi).
+
+## ÖN KAYIT (T250, 12 Eyl — düzyazı beyan makineye bağlandı)
+
+Yukarıdaki "EXIT=1 beklenendir" cümlesi bir **beyandır**, denetlenmedikçe
+bir sonraki değişiklikte sessizce yanlışlaşır (üçüncü bir `[YENI]` düğüm
+girse kimse fark etmezdi). `akis_kapsam_beklenen.py` beklentiyi ön kayda
+bağlar ve denetler:
+
+- çıkış kodu **1** olmalı,
+- `[YENI]` kümesi TAM OLARAK `{d59 → comms/yks_gui.py:1973,
+  d59b → comms/yks_gui.py:1981}` olmalı,
+- özet satırındaki diğer bütün hata türleri **0** olmalı
+  (`ALTGRAFIK/KAPSAM/DEYIM/SIRA/DOSYA/DEYIM_YOK/KENAR/SILINEN/KENAR_KUMESI`).
+
+`--mutasyon` pinin boş olmadığını ölçer: `FDR/sekiller/akis_d.mmd`den `d59b`
+düğüm satırı geçici olarak silinir (sha256 ile bayt-eş geri yazılır) ve
+gözlenen kümenin gerçekten değiştiği gösterilir.
+
+Koşum (`akis_kapsam_beklenen_cikti.txt`):
+
+```
+[PIN] exit=1 (beklenen 1)
+[PIN] gozlenen YENI kumesi = [('d59', 'comms/yks_gui.py:1973'), ('d59b', 'comms/yks_gui.py:1981')]
+[PIN] TUTTU
+[MUTASYON] d59b dugum satiri SILINDI
+[MUTASYON] exit=1 · YENI kumesi=[('d59', 'comms/yks_gui.py:1973')]
+[MUTASYON] pin YAKALADI
+AKIS_KAPSAM_BEKLENEN GECTI
+```

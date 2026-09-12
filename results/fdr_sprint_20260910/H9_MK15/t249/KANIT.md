@@ -19,13 +19,23 @@ Yorumlayıcı: `O:\navitas-local-train\venv\Scripts\python.exe -X utf8 -B`.
 ### 1.1 Sabit uyku hiçbir şey beklemiyordu
 
 `tani_h2f.py` H2f ölçüm noktasını **2 s boyunca 20 ms aralıkla** örnekledi
-(tuval genişliği × yüksekliği × kesişim sayısı; yalnız DEĞİŞİM noktaları):
+(tuval genişliği × yüksekliği × kesişim sayısı; yalnız DEĞİŞİM noktaları).
+Ham çıktı **repodadır**: `tani_h2f_cikti.txt` (çürütücü KUSUR 3 üzerine
+12 Eyl 06:4x'te yeniden koşuldu; `--dpi`li ikizi `tani_h2f_dpi_cikti.txt`):
 
 ```
 olcek=1.0 road=1: 95 ornek, degisim noktalari=[(0.0, 742, 450, 0)]
+olcek=1.0 road=2: 94 ornek, degisim noktalari=[(0.0, 742, 450, 0)]
 olcek=1.0 road=3: 94 ornek, degisim noktalari=[(0.0, 742, 450, 1)]
-olcek=1.5 road=3: 94 ornek, degisim noktalari=[(0.0, 945, 630, 1)]
+olcek=1.5 road=1: 95 ornek, degisim noktalari=[(0.0, 945, 630, 0)]
+olcek=1.5 road=2: 93 ornek, degisim noktalari=[(0.0, 945, 630, 0)]
+olcek=1.5 road=3: 93 ornek, degisim noktalari=[(0.0, 945, 630, 1)]
 ```
+
+⚠ Alıntıdaki `N ornek` sayısı (93–95) koşum hızına bağlıdır ve koşumdan koşuma
+±2 oynar — ölçümün İDDİASI o sayı değil, **değişim noktası listesinin tek
+elemanlı ve `t = 0,000`'da olmasıdır**. Yukarıdaki üç satır
+`tani_h2f_cikti.txt`ten alınmıştır (sayılar o dosyadaki koşumun sayılarıdır).
 
 Altı durumun **altısında da** doğru değer daha `t = 0,000`'da hazır ve 2 s
 boyunca **hiç değişmiyor**. Sebebi ürün kaynağındadır: `_harita_ciz()`
@@ -50,13 +60,24 @@ w, h = min(S(1240), int(sw * 0.92)), min(S(940), int(sh * 0.90))
 | 0 (UNAWARE) | 1707 × 1067 | 95,9 |
 | 1/2 (AWARE) | **2560 × 1600** | 143,9 |
 
-Sonuç, aynı `tani_h2f.py` ile `--dpi` bayrağıyla ölçüldü:
+Sonuç ilk olarak `tani_h2f.py --dpi` ile, **DÜZELTME ÖNCESİ ağaçta** ölçüldü:
+ana tuval 1,5 ölçekte `1142 × 725` çıkıyor ve H2f kalıntısı kayboluyordu.
 
-```
-[dpi] SetProcessDpiAwareness(1) -> 0
-  olcek=1.5 road=1: [(0.0, 1142, 725, 0)]
-  olcek=1.5 road=3: [(0.0, 1142, 725, 0)]     <- kalinti KAYBOLUYOR
-```
+⚠ **ATIF DÜZELTMESİ (12 Eyl, çürütücü KUSUR 3).** Ağaç artık ÇİVİLİ olduğu için
+`tani_h2f.py --dpi` bugün 1142 × 725 DEĞİL `945 × 630` yazar — bu, çivilemenin
+işe yaradığının kendisidir, ama §1.2'nin dayanağı olamaz. O yüzden bu bölümün
+dayanağı **repodaki üç dosyaya** çevrildi (üçü de 1142 × 725'i BUGÜNKÜ ağaçta
+yeniden üretir):
+
+| Dosya | Nasıl üretildi | Alıntı |
+|---|---|---|
+| `mutasyon_M1.txt` | çivileme + sabit uyku TAM GERİ ALINIR, DPI AÇIK | `AssertionError: 1 != 0 : ana road3 1142x725: KALINTI KESİŞİM SAYISI DEĞİŞTİ (beklenen 1, ölçülen 0): []` |
+| `kapsam_izi_dpili_cikti.txt` | `kapsam_izi.py --dpi` (SetProcessDpiAwareness taklidi) | `olcek=1.5 ad='no_route_uzun DOĞAL' tuval=1142x725 civili=False` |
+| `kapsam_izi_mujoco_cikti.txt` | `kapsam_izi.py --mujoco` — **gerçek mekanizma**: MuJoCo modülü önce koşar, `[DPI] mujoco SONRASI = 2` | `olcek=1.5 ad='no_route DOĞAL' tuval=1142x725 civili=False` |
+
+Bugünkü çivili ağacın `--dpi` koşumu (`tani_h2f_dpi_cikti.txt`) ise
+`olcek=1.5 road=3: ... [(0.001, 945, 630, 1)]` yazar: DPI açıkken bile tuval
+945 × 630, kalıntı sayısı 1 — **çivilemenin ölçümü**.
 
 1142 × 725 — **çürütücünün gördüğü boyutun ta kendisi**. Ana harita büyüyünce
 "İKA-KB" ↔ "ref" kalıntı kesişimi kayboluyor ve `beklenen 1, ölçülen 0` düşüşü
@@ -106,6 +127,45 @@ varlığına bağlıydı.
    `<Configure>` bağı YOKTUR, yani boyut değişince ürün kendiliğinden yeniden
    çizmez ve eski boyuta göre hesaplanmış yerleşim ölçülürdü (bu, çivilemenin
    ilk denemesinde GERÇEKTEN düşüş verdi — ölçüldü, düzeltildi).
+
+   🔴 **KAPSAM BEYANI (T250 — çürütücü KUSUR 2 üzerine, 12 Eyl).** Çivilemenin
+   ilk sürümü `_ana_denetle`i DE çivilenmiş tuvale taşımıştı; bedeli, ana
+   haritanın ROTA YOK yerleşiminin **ekrandan TÜREYEN** tuvalde (süreç DPI
+   farkındalığı açıkken 1,5 ölçekte ölçüldü: **1142 × 725**) artık hiç
+   ölçülmemesiydi — hakemin sahada gerçekten gördüğü yüzey odur. Bu daralma
+   **beyan edilmemişti**; çürütücü RED gerekçesi yaptı ve haklıydı.
+
+   **Kapanış (a şıkkı — kapsam GERİ KAZANILDI, bırakılmadı):** `_h2c` artık
+   `_ana_denetle`i İKİ yüzeyde koşar — ÖNCE ekrandan türeyen DOĞAL tuvalde
+   (`ana_no_route_uzun_DOGAL`, `ana_no_route_DOGAL`), SONRA çivilenmiş tuvalde
+   (`ana_no_route_uzun`, `ana_no_route`). H2f kalıntı SAYI kilidi hükmünü
+   **yalnız çivilenmiş** tuvalde verir (sayı kilidi ölçek-bağımlıdır);
+   `_ana_denetle`in üç iddiası (kesişen çift YOK, taşma YOK, tek ROTA YOK
+   bandı) ölçek-BAĞIMSIZDIR, o yüzden iki yüzeyde de koşabilir.
+
+   **Ölçüm (`kapsam_izi.py`, `_ana_denetle` sarmalanıp tuval boyutu yazdırıldı):**
+
+   | Koşum | dosya | 1,0 yüzeyleri | 1,5 yüzeyleri |
+   |---|---|---|---|
+   | DPI KAPALI | `kapsam_izi_dpisiz_cikti.txt` | 742×450 | 945×630 |
+   | DPI AÇIK (taklit) | `kapsam_izi_dpili_cikti.txt` | 742×450 | **945×630 + 1142×725** |
+   | **MuJoCo** (gerçek mekanizma, `[DPI] mujoco SONRASI = 2`) | `kapsam_izi_mujoco_cikti.txt` | 742×450 | **945×630 + 1142×725** |
+
+   Üç koşum da YEŞİL; `TOPLAM _ana_denetle cagrisi = 8` (RED'den önce 4'tü).
+
+   **Kapsam noktası GERÇEKTEN ölçüyor mu? (`kapsam_mutasyonu.py`)** Sağlam
+   üründe yeşil koşmak tek başına bir şey kanıtlamaz. Bu yüzden YALNIZ geniş
+   tuvalde görünen sentetik bir ürün kusuru enjekte edildi (ana haritada tuval
+   ≥ 1000 px ise ikinci, sahte bir `ROTA YOK — …` metni çizilir; enjeksiyon
+   süreç içindedir, ürün kaynağı DEĞİŞMEZ) ve iki kurgu karşılaştırıldı:
+
+   | Kurgu | Ne | Sonuç |
+   |---|---|---|
+   | `YENI` | HEAD: `_ana_denetle` doğal + çivili | **KIRMIZI** — `ana no_route_uzun DOĞAL 1142x725` ve `ana no_route DOĞAL 1142x725` |
+   | `ESKI` | RED edilen hâl: yalnız çivili 945×630 | **YEŞİL** — kusuru HİÇ göremiyor |
+
+   `KAPSAM_MUTASYON_SONUC GECTI` (`kapsam_mutasyonu_cikti.txt`). Yani daralan
+   yüzey gerçek bir kör noktaydı ve kapatıldı — T252'ye devredilmedi.
 2. **DÖRT SABİT UYKU KALDIRILDI** (`_pompala(lambda: False, …)`):
    - `_olcekli_kur`: 0,2 s ve 0,3 s → `_yerlesim_durdu(...)`
    - `_ana_open_route_kalinti`: 0,2 s → çivilenmiş tuval koşulu
@@ -119,13 +179,22 @@ varlığına bağlıydı.
    oturuyor ve 1,5 s boyunca değişmiyor — yani uyku hiçbir şey eklemiyor, yalnız
    ölçümü zamana bağlıyordu.)
 
-Hiçbir assert gevşetilmedi (net assert **artışı**), kapsam daraltılmadı,
-`skip`/`expectedFailure` yok, ön kayıtlı eşik değişmedi, yeni bağımlılık yok.
+Hiçbir assert gevşetilmedi (net assert **artışı**), `skip`/`expectedFailure`
+yok, ön kayıtlı eşik değişmedi, yeni bağımlılık yok.
+
+⚠ **Kapsam hakkında ölçülene çekilmiş beyan.** Bu belgenin RED'den önceki
+sürümü burada "kapsam daraltılmadı" diyordu; bu **YANLIŞTI** — §2.1'deki
+KAPSAM BEYANI'na bakınız. Bugünkü doğru cümle: ana haritanın ROTA YOK
+yerleşimi artık **iki** yüzeyde ölçülüyor (doğal + çivilenmiş), yani kapsam
+RED öncesi master'a göre DARALMADI, **genişledi**; H2f kalıntı sayı kilidi ise
+beyan edilmiş tek bir yüzeyde (çivilenmiş) hüküm veriyor.
 
 ## 3. Mutasyon — kilidin GERÇEKTEN neye dayandığı
 
 `mutasyon_t249.py` (bayt-tam bozma + `finally` içinde sha256 ile geri yazma),
-koşum yüzeyi `kos_dpi.py` (DPI AÇIK = tam süitin durumu):
+koşum yüzeyi `kos_dpi.py` (DPI AÇIK = tam süitin durumu). T250'den sonra
+`CIVILEME_GERI` deseni YALNIZ `_ana_tuvali_civile(olcek)` çağrısını hedefler
+(doğal kapsam noktası yerinde kalır) ve **matris bu ağaçta yeniden koşuldu**:
 
 | # | Mutasyon | Beklenen | Gerçek | Ne öğretir |
 |---|---|---|---|---|
@@ -172,7 +241,9 @@ taşır — yani kilit gerçekten farkındalık açıkken ölçüldü.
 | Dosya | Ne |
 |---|---|
 | `probe_yerlesim.py` · `probe_yerlesim_cikti.txt` | pencere/tuval yerleşiminin zaman izi (sabit uykunun bir şey beklemediğinin ölçümü) |
-| `tani_h2f.py` | H2f ölçüm noktasının zaman izi (`--dpi`, `--yuk`) |
+| `tani_h2f.py` · `tani_h2f_cikti.txt` · `tani_h2f_dpi_cikti.txt` | H2f ölçüm noktasının zaman izi (`--dpi`, `--yuk`) — §1.1'in ham çıktısı (çürütücü KUSUR 3 üzerine 12 Eyl'de yeniden koşuldu) |
+| `kapsam_izi.py` · `kapsam_izi_dpisiz_cikti.txt` · `kapsam_izi_dpili_cikti.txt` · `kapsam_izi_mujoco_cikti.txt` | **T250**: `_ana_denetle` hangi tuval boyutlarında koşuyor — kapsamın geri kazanıldığının ölçümü (§2.1) |
+| `kapsam_mutasyonu.py` · `kapsam_mutasyonu_cikti.txt` | **T250**: geri kazanılan kapsam noktası gerçekten ölçüyor mu — sentetik geniş-tuval kusuru enjeksiyonu (YENI KIRMIZI / ESKI YEŞİL) |
 | `dpi_izi.py` · `dpi_izi_cikti.txt` | tam süitte farkındalık geçişinin ATFI |
 | `kos_dpi.py` | modülü DPI farkındalığı AÇIKKEN koşar |
 | `birlikte.py` | MuJoCo + hakem modülü aynı süreçte (tam süit sırası) |
