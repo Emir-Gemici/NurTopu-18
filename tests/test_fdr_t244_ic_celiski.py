@@ -26,6 +26,10 @@ yeniden bağlar ve çelişkinin sessizce geri gelmesini engeller.
       §3.3.3.2 hem §4.7'de ve ÇİZİLMEMİŞ; kod satırları doğrulanır
   T8  §3.3.4.2.8 (a) SENTETİK ışık/gölge kesiti: v2/v3 sayıları `k3b` artefaktından;
       "saha değil" ve D-441 öncesi yerleşim sınırı yazılı; §4.8 ve §4.8.4 tazelenmiş
+  T9  KABUL ÖLÇÜTÜ BİÇİMİ (D-466, T244-B): iki bölümün TAMAMINDA yapısal kabul
+      kilidi — hem KAPSAMA (48/48 mutant düşer) hem SINIR (6 sınıf kaçar)
+      mutasyonla ölçülür; yanlış pozitif 5 meşru düzenlemeyle sınanır
+  T10 kuru koşum `[YOK]` sayısı log'dan okunup rapora bağlanır (D-466 kusur 3)
   M1…M9  kurallar sentetik metinle iki yönde sınanır (boş kapı olmasın)
 
 BELGE KİLİDİ (D-453 / D-460 / D-461 / D-463): tüm aramalar **normalleştirilmiş**

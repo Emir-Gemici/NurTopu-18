@@ -65,3 +65,12 @@
    [B-KARARSIZ] FAIL test_yks_mk15_hakem_ekrani.test_H2c_olcek_1_5_hakem_ekrani -> 1 != 0 : ana road3 1142x725: KALINTI KESİŞİM SAYISI DEĞİŞTİ (beklenen 1, ölçülen 0): []
 
 SAYIM: tam_suit.txt/A-ORTAM=21, tam_suit.txt/B-KARARSIZ=1, tam_suit_tekrar.txt/A-ORTAM=21, tam_suit_tekrar.txt/B-KARARSIZ=1
+
+== T244-B (12 Eylul 2026, D-466) :: tam_suit_t244b.txt :: Ran 2774 tests in 607.808s
+   FAILED (failures=11, errors=11, skipped=34)
+   -> AYNI 22 DUSUS, ayni sekiz modul (test_imgsz_tek_kaynak 2 · test_model_registry 1 ·
+      test_saha_parametrik 7 · test_t123_gecis_provasi 4 · test_t202_jetson_paket_butunlugu 1 ·
+      test_t38_kuru_kosu_fiksturu 5 · test_yks_gui_uretim_hizasi 1 · test_yks_mk15_hakem_ekrani 1).
+      T244-B'nin dokundugu modullerin (test_fdr* · test_gece* · test_d373*) hicbirinde dusus YOK.
+      Test sayisi 2768 -> 2774: T244-B'nin ekledigi alti nobetci (T9a..T9e + T10).
+      A) ORTAM ve B) MASTER KAYNAKLI KARARSIZ KAPI siniflandirmasi degismedi.

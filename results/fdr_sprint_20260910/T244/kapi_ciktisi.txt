@@ -1,122 +1,44 @@
-# T244 kapi ciktisi · 2026-09-12 04:50:41 · python.exe
+=== T244-B KAPI KOSUMU 2026-09-12 06:07 — worktree wf_88f63745-bff-2 ===
+PY: O:/navitas-local-train/venv/Scripts/python.exe -X utf8 -B
 
-==============================================================================
-KAPI: test_fdr*
-KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr*.py
-EXIT: 0
-------------------------------------------------------------------------------
-......................................................................
+--- unittest discover -s tests -p test_fdr*.py ---
 ----------------------------------------------------------------------
-Ran 70 tests in 0.388s
+Ran 76 tests in 8.447s
 
 OK
+cikis=0
 
-==============================================================================
-KAPI: test_gece*
-KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_gece*.py
-EXIT: 0
-------------------------------------------------------------------------------
-................................................................
+--- unittest discover -s tests -p test_gece*.py ---
 ----------------------------------------------------------------------
-Ran 64 tests in 2.177s
+Ran 64 tests in 2.597s
 
 OK
+cikis=0
 
-==============================================================================
-KAPI: test_d373*
-KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_d373*.py
-EXIT: 0
-------------------------------------------------------------------------------
-......
+--- unittest discover -s tests -p test_d373*.py ---
 ----------------------------------------------------------------------
-Ran 6 tests in 0.124s
+Ran 6 tests in 0.160s
 
 OK
+cikis=0
 
-==============================================================================
-KAPI: acik_kalem --dogrula
-KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 scripts/fdr_acik_kalem_cikar.py --dogrula
-EXIT: 0
-------------------------------------------------------------------------------
+--- YENI NOBETCILER: tests/test_fdr_t244_ic_celiski.py tek basina ---
+test_T10_log_YOK_sayilari_ve_rapor_HIZALI (test_fdr_t244_ic_celiski.T10_KuruKosumYokSayisi.test_T10_log_YOK_sayilari_ve_rapor_HIZALI) ... ok
+test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL (test_fdr_t244_ic_celiski.T9_KabulOlcutuBicimiKilidi.test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL)
+test_T9b_on_kayit_OLU_girdi_tasimaz (test_fdr_t244_ic_celiski.T9_KabulOlcutuBicimiKilidi.test_T9b_on_kayit_OLU_girdi_tasimaz)
+test_T9c_KACAN_cumleler_HER_KONUMDA_duser (test_fdr_t244_ic_celiski.T9_KabulOlcutuBicimiKilidi.test_T9c_KACAN_cumleler_HER_KONUMDA_duser)
+test_T9d_MESRU_duzenleme_YANLIS_POZITIF_uretmez (test_fdr_t244_ic_celiski.T9_KabulOlcutuBicimiKilidi.test_T9d_MESRU_duzenleme_YANLIS_POZITIF_uretmez)
+test_T9e_SINIR_kapanmayan_sinif_SAYILARAK_yazildi (test_fdr_t244_ic_celiski.T9_KabulOlcutuBicimiKilidi.test_T9e_SINIR_kapanmayan_sinif_SAYILARAK_yazildi)
+Ran 44 tests in 8.262s
+
+OK
+cikis=0
+
+--- scripts/fdr_acik_kalem_cikar.py --dogrula ---
 GUNCEL — 565 açık kalem satırı
+cikis=0
 
-==============================================================================
-KAPI: test_seri_pixhawk_kilidi
-KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_seri_pixhawk_kilidi.py
-EXIT: 0
-------------------------------------------------------------------------------
-.............
-----------------------------------------------------------------------
-Ran 13 tests in 0.014s
-
-OK
-
-==============================================================================
-KAPI: test_p5_h1c_damgasi
-KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_p5_h1c_damgasi.py
-EXIT: 0
-------------------------------------------------------------------------------
-.......................
-----------------------------------------------------------------------
-Ran 23 tests in 0.015s
-
-OK
-
-==============================================================================
-KAPI: GENEL KAPI (madde 14)
-KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 codes/test_rota_sentetik.py
-EXIT: 0
-------------------------------------------------------------------------------
-==============================================================================
-KORIDOR SECIMI — 15 DETERMINISTIK SENTETIK SAHNE (kusursuz maske)
-==============================================================================
-KOL 1 — TANISAL YOL (costmap_path_finder.rota_bul) · sart: TAM PUAN
-harita  senaryo  gercek  tahmin  guven              durum   wp  sonuc
-     1    kolay       1       1  1.000               ACIK   43  OK
-     1     orta       2       2  1.000               ACIK   43  OK
-     1      zor       3       3  0.797               ACIK   67  OK
-     2    kolay       1       1  1.000               ACIK   45  OK
-     2     orta       1       1  1.000               ACIK   64  OK
-     2      zor       3       3  0.797               ACIK   58  OK
-     3    kolay       3       3  1.000               ACIK   44  OK
-     3     orta       2       2  1.000               ACIK   43  OK
-     3      zor       1       1  0.797               ACIK   60  OK
-     4    kolay       3       3  1.000               ACIK   43  OK
-     4     orta       3       3  1.000               ACIK   51  OK
-     4      zor       1       1  0.797               ACIK   48  OK
-     5    kolay       3       3  1.000               ACIK   52  OK
-     5     orta       3       3  1.000               ACIK   49  OK
-     5      zor       2       2  0.797               ACIK   42  OK
-------------------------------------------------------------------------------
-SONUC: 15/15 dogru
-[OK] TUM DETERMINISTIK SAHNELER GECTI
-
-==============================================================================
-KOL 2 — URETIM YOLU (rpi_inference.analyze_path) · AYNI 15 SAHNE
-==============================================================================
-harita  senaryo  gercek   yayin  guven   wp              ret  darbogaz  sonuc
-     1    kolay       1       1  0.822    8             None         2  OK
-     1     orta       2       2  0.731    8             None         2  OK
-     1      zor       3       3  0.662   13             None         2  OK
-     2    kolay       1       1  0.731    8             None         2  OK
-     2     orta       1       1  0.662   10             None         2  OK
-     2      zor       3       3  0.651   10             None         3  OK
-     3    kolay       3       3  0.674    8             None         3  OK
-     3     orta       2       2  0.742   12             None         2  OK
-     3      zor       1       1  0.708   11             None         3  OK
-     4    kolay       3       3  0.708    8             None         2  OK
-     4     orta       3       3  0.753   13             None         3  OK
-     4      zor       1       1  0.742   12             None         2  OK
-     5    kolay       3       3  0.742    8             None         2  OK
-     5     orta       3       3  0.833   10             None         3  OK
-     5      zor       2       2  0.685    9             None         1  OK
-------------------------------------------------------------------------------
-URETIM YOLU: rota uretimi 15/15 · yayinlanan serit 15/15 (esik >= 14/15, ON_KAYIT SS18-B)
-[OK] URETIM YOLU KOLU GECTI
+--- GENEL KAPI codes/test_rota_sentetik.py ---
 ------------------------------------------------------------------------------
 GENEL KAPI (madde 14): GECTI — kol1 15/15 · kol2 serit 15/15
-Rota 65 waypoint gerektiriyor (yumusak hedef: 64); azami aralik guvenligi icin seyreltilmedi.
-Rota 67 waypoint gerektiriyor (yumusak hedef: 64); azami aralik guvenligi icin seyreltilmedi.
-
-==============================================================================
-OZET: 7/7 kapi GECTI
+cikis=0
