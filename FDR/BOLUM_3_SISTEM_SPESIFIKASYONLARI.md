@@ -2223,7 +2223,9 @@ düzeneklerinde** ölçülmüştür (§3.3.4.3.3, "10 Eylül" tablosu); **RF hat
 
 **ÖLÇÜLEMEDİ:** SiK 433 MHz hattında fiilî veri hızı (bit/s) ve paket/s. ~~§3.3.4.3.3'teki
 sayılar **gecikme** ölçümleridir, veri hızı ölçümü değildir;~~ §3.3.4.3.2'deki tekrar
-aralıkları ~~ise~~ **tasarım sabitleridir**, ölçülmüş akış değildir. ~~Kapanma: 5 Eylül,
+aralıkları ~~ise~~ **tasarım sabitleridir**, ~~ölçülmüş akış değildir~~ — **12 Eylül
+(T243 · D-462 C): bu sabitlerin hatta ürettiği yük ÖLÇÜLDÜ** (§3.3.4.3.3 "12 Eylül"
+tablosu); aralıkların **kendisi** hâlâ tasarım sabitidir. ~~Kapanma: 5 Eylül,
 `scripts/sik_rf_olc.py` gerçek radyo çiftiyle koşulduğunda.~~
 **10 Eylül (T216):** `scripts/sik_rf_olc.py`'a bayt/paket sayacı ve `veri_hizi` alanı eklendi;
 UDP loopback ve TCP-seri köprüsünde RTT **ve** veri hızı ölçüldü (§3.3.4.3.3 tablo; kaynak
@@ -2231,6 +2233,15 @@ UDP loopback ve TCP-seri köprüsünde RTT **ve** veri hızı ölçüldü (§3.3
 koşulmadı (D-426 §1); **kapanma:** ekip SiK çiftini taktığında aynı araç
 (`--rol yanki --port COMx` / `--rol olc --port COMy --n 200 --json --cikti …`) — RF satırı o
 koşumun JSON'u olmadan kapanmaz.
+
+**12 Eylül (T243 · D-462 C).** Yönergenin *"nihai yapı"* isteği için **mesaj tipi başına
+paket boyutu tablosu** ölçüldü (§3.3.4.3.1), *"veri hızı"* isteği için de **gerçek görev
+karışımı** — `OPEN_ROUTE` + tam telemetrili `HEARTBEAT` + alıcı ACK'leri — ölçüldü
+(§3.3.4.3.3, "12 Eylül" tablosu). Ölçüm yine bir **yazılım düzeneğidir** (UDP loopback);
+**RF satırı değişmedi** (§3.3.4.3.4). Ön kayıt ölçümden önce yazıldı
+(`results/fdr_sprint_20260910/T243/ON_KAYIT.md`), araç `scripts/paket_boyutu_olc.py`,
+çıktılar `results/fdr_sprint_20260910/T243/`, nöbetçi `tests/test_t243_paket_boyutu.py`
+(FDR'deki her sayıyı JSON'dan yeniden hesaplar).
 
 ##### 3.3.4.3.1 Çerçeve protokolü (SiK 433 MHz / UDP)
 
@@ -2267,6 +2278,37 @@ Tip adları **tek yerden** okunur (T208, 10 Eylül): `protocol.MESAJ_OPEN_ROUTE`
 üreticiler ve alıcılar (`ika_receiver`, `yks_gui`, `komut_tekrar`, `iha_sender`, `iha_komut_alici`, sim
 betikleri) çıplak `"OPEN_ROUTE"` dizgisi yazmaz (madde 16). Tel üzerindeki değer değişmedi; satır atıfları
 yukarıda 10 Eylül okumasıyla güncellendi.
+
+**ÖLÇÜLEN çerçeve boyutları (12 Eylül · T243 · D-462 C — yönerge Y-3.3.4-M03 "nihai
+yapı" isteği).** Sayılar `comms/protocol.py` üreticileri çağrılıp `len(encode(msg))` ile
+**sayıldı**; elle bayt hesabı ya da biçim tahmini yok. Ölçüm için `t` ve `seq`
+alanlarının **genişliği** sabitlendi (`t` = 1789000000.123, `seq` = 1000); alanlar
+kaldırılmadı. Kaynak `results/fdr_sprint_20260910/T243/paket_boyutu.json`, üretilen tablo
+`results/fdr_sprint_20260910/T243/TABLO.md`, üreteç `scripts/paket_boyutu_olc.py`.
+
+| `type` | asgari alanla (B) | örnek çerçeve (B) | örnek çerçevenin değişken içeriği |
+|---|---:|---:|---|
+| `IHA_LANDED` | 71 | 71 | değişken alanı yok |
+| `ACK` | 64 | 87 | `ref_tip = "OPEN_ROUTE"` |
+| `NO_ROUTE` | 77 | 117 | `sebep` + `detay` |
+| `CMD` | 80 | 124 | `oturum` (32 karakter) |
+| `HEARTBEAT` | 70 | 273 | tam telemetri, 15 alan |
+| `OPEN_ROUTE` | 125 | 365 | 21 waypoint'li üretim rotası |
+
+`OPEN_ROUTE` waypoint sayısıyla doğrusal büyür: üretim yolunda **11,5 B/waypoint**, en
+geniş ondalık gösterimde **16,0 B/waypoint**; 1 waypoint 139 B, 20 waypoint 354 B,
+sözleşme tavanı `MAX_WAYPOINTS` = 64 waypoint **847 B** (en geniş gösterimde 1159 B).
+`conf` alanının ondalığı float32'den genişlerse aynı çerçeve 365 → **377 B** olur. Tam
+telemetrili `HEARTBEAT`'te en pahalı alanlar `pixhawk_canli` **21 B**, `karar_yas` /
+`lat` / `lon` **17 B**; alansız asgari `HEARTBEAT` **70 B**. `seq` her ondalık basamak
+için **+1 B** getirir; gerçek saat altında 200 örnekte aynı çerçeve **271–273 B**
+arasında oynadı (`t` = `round(time.time(), 3)` ve sondaki sıfırlar JSON'da kısalır). Her
+çerçeve `decode()` ile geri okunup yeniden çerçevelendiğinde **bayt-eş** çıktı.
+
+⚠ Kodda tekrar aralığının gerekçesi olarak yazılı *"57600 baud'da ~200 B çerçeve"* notu
+(`codes/karar_sozlesmesi.py:2089-2090`) ölçümle **yanlışlandı**: görev karışımının iki
+çerçevesi bu tahminin üstündedir (`HEARTBEAT` 273 B, `OPEN_ROUTE` 365 B). Not bir tasarım
+gerekçesidir ve kayıtta durur; **ölçülen** değerler yukarıdaki tablodadır.
 
 **`karar_yas` semantiği (`CONTRACTS.md` §6 tablosu, D-381):** İHA'nın son **algı kararının**
 yaşı (s, monotonik saat). Alan **yoksa** yaş bilinmiyor demektir; alıcı **taze saymaz** — hat
@@ -2511,6 +2553,55 @@ gönderdiği = ölçün aldığı (15 666 B) — `ozet.json` → `yanki`. (3) "U
 **yalnız bu düzeneklerin** hükmüdür; RF için hüküm yoktur. (4) UDP'de RTT loopback düzeyindedir
 (< 0,5 ms); köprüde ≈ 1–2 ms `socket://` + Windows zamanlayıcı payıdır (D-405 tabanı 0,5–1,1 ms ile uyumlu).
 
+**12 Eylül (T243) — GERÇEK GÖREV KARIŞIMININ veri hızı.** 10 Eylül tablosu tek tip prob
+çerçevesinin (`CMD` → `ACK`) kadans yüküydü. Burada ölçülen, üretim yollarının
+(`comms/iha_sender.py` `IhaSender` + `KararYayinci`; `comms/ika_receiver.py`
+`IkaReceiver`) gerçek görev trafiğidir: `OPEN_ROUTE` (21 waypoint) + 1 Hz tam telemetrili
+`HEARTBEAT` + alıcı ACK'leri. Taşıyıcı UDP loopback (ephemeral port); pencere kadans
+başına **60 s**; `HEARTBEAT` kadansı sözleşmeden (`IHA_HEARTBEAT_ARALIK_S` = 1,0 s). İki
+yapılandırma: `saha` = SiK seri yolunun UDP ikizi (tek yayın ortamı, `wait_ack=False` —
+`yayinci_kur` seri dalı) ve `udp` = dev/sim yolu (`ika` + `yks` akranları,
+`wait_ack=True`). İki karar kadansı: **1,353 Hz** (Jetson Orin Nano `pt` p50 739,076 ms
+ölçümünden — §3.3.1.1.15) ve **2,0 Hz** (ölçülen kadans **değil**, tavan senaryosu).
+Kaynak `results/fdr_sprint_20260910/T243/gorev_veri_hizi.json`.
+
+| koşum | beslenen karar | yayınlanan karar | HEARTBEAT | İHA TX (B/s) | İHA TX (pkt/s) | tepe TX (B/s) | İHA RX (B/s) | ortak ortam (B/s) | paylaşımlı doluluk |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| `saha` · 1,353 Hz | 82 | 61 | 60 | 1722,3 | 4,996 | 1728 | 0,0 | 2063,1 | %35,82 |
+| `saha` · 2,0 Hz | 120 | 61 | 60 | 1726,6 | 4,996 | 1728 | 0,0 | 2071,0 | %35,95 |
+| `udp` · 1,353 Hz | 82 | 50 | 60 | 1995,5 | 5,976 | 2364 | 69,4 | 2134,3 | %37,05 |
+| `udp` · 2,0 Hz | 120 | 50 | 60 | 2008,7 | 6,014 | 2364 | 69,9 | 2148,5 | %37,30 |
+
+Doluluk **hesaptır, ölçüm değildir**: 57600 baud 8N1 = 10 bit/bayt → ham **5760 B/s**,
+bayt başına **0,174 ms**. SiK'in hava arayüzü TDM'dir ve iki yön aynı kanalı paylaşır;
+bu yüzden paylaşımlı sütun **tüm uçların gönderdiği** baytların toplamıdır (İHA yayını +
+alıcı ACK'leri). **Telsizin ECC ayarı ÖLÇÜLEMEDİ** — SiK ayar sayfası hiç okunmadı
+(`results/atolye_20260912/SONUC_SABLONU.md` A6 satırı boş, `A6_sik_ayar.txt` yok). ECC
+açıkken etkin hava hızının yarıya indiği bilgisi `ATOLYE_TEST_GUNU_20260912.md` A6
+satırında *"HESAP + BENZER ÖLÇÜM — ölçüm değil"* etiketiyle durur; o varsayımla aynı
+trafik **%71,64 – %74,60** doluluk verir. Hangisinin geçerli olduğu telsiz ayarı okunana
+kadar **bilinmiyordur**.
+
+Görev süresi boyunca toplam — **EKSTRAPOLASYON** (ölçülen ortalama B/s × şartname §6.2
+süresi; 900 s'lik koşum **yapılmadı**): İHA 900 s'de **1 550 097 – 1 807 864 B**, İKA
+600 s'de **1 033 398 – 1 205 243 B**.
+
+🔴 **Bu ölçümün asıl bulgusu bir veri hızı değil, bir YAYIN TAVANIDIR: ≈ 1 karar/s.**
+Karar besleme kadansı 1,353 → 2,0 Hz'e çıkarıldığında **yayınlanan** karar sayısı
+değişmedi (`saha` 61 → 61, `udp` 50 → 50). Sebep hat değil **gönderim tasarımıdır**:
+`IhaSender._tekrarli_gonder` her kararı `repeat=4 × interval=0,25 s` = **1,0 s** boyunca
+tutar; `KararYayinci`'nin latest-wins yuvası o sürede gelen kararları düşürür. Bu,
+D-383'te ölçülen *"karar ipliğinin çevrimi ≥ 0,3 s → yayın hızı ~3,3/s"* kusurunun aynı
+ailesidir ve §3.3.4.3.2'deki tekrar parametreleriyle doğrudan bağlıdır. `udp` kolunda
+etken görünür durumdadır: YKS `OPEN_ROUTE`'a ACK **üretmez** (hakem 2/2'ye bağlıdır,
+`CONTRACTS.md` §6.6), bu yüzden her karar tekrar turunun tamamını koşar — YKS ucu 60 s'de
+**200** `OPEN_ROUTE` çerçevesi gördü (50 karar × 4 tur).
+
+⚠ **Duyarlılık (HESAP, ölçüm değil):** rota sözleşme tavanındaki waypoint sayısına
+(`MAX_WAYPOINTS` = 64) çıkarsa ortak ortam yükü **3715,4 – 4003,6 B/s**'ye taşınır
+(paylaşımlı %64,50 – %69,51) ve ECC açık varsayımıyla ham bütçe **aşılır**. Bu bir ölçüm
+değildir: ölçülen çerçeve boyutu farkı (482 B) × ölçülen çerçeve sayısıdır.
+
 **Bu alt bölümdeki hiçbir sayı RF ölçümü değildir:** kare gecikmesi UDP loopback, seri ACK
 ölçümü seri köprü (RF değil, D-403 §3), hub ölçümü UDP→seri, **10 Eylül tablosu UDP loopback ve
 TCP-seri köprüsü**. 5 Eylül'de SiK hattı sahada
@@ -2522,9 +2613,9 @@ bağlandı (BEYAN, D-426 §1) ama üzerinden ölçüm alınmadı — §3.3.4.3.4
 | büyüklük | durum |
 |---|---|
 | **Gerçek SiK 433 MHz RF üzerinde RTT / paket kaybı** | **ÖLÇÜLEMEDİ.** Araç `scripts/sik_rf_olc.py` **yazıldı** (`--rol yanki` / `--rol olc --n 50`), hedef **RTT p95 < 0,20 s** (`PARASUT_TEKRAR_ARALIGI_S`) ve < 0,25 s (`IKA_GO_TEKRAR_ARALIGI_S`); çıkış kodları UYUMLU 0 / UYARI 1 / ÖLÇÜLEMEDİ 2; kayıp için eşik yok, yalnız raporlanır. **3 Eylül:** radyolar kutuda. **5 Eylül:** hat sahada bağlandı (BEYAN, D-426 §1 "~18:45 SiK telemetri baglandi"), betik koşulmadı; `results/` altında ölçüm dosyası **yoktur** (5 Eylül sayımı). **10 Eylül (T216):** araç veri hızını da sayar ve UDP taşıyıcı (`--tasiyici udp`) kazandı; yazılım düzenekleri ölçüldü (§3.3.4.3.3 "10 Eylül" tablosu, `results/fdr_sprint_20260910/H2/`), **RF'te hâlâ koşulmadı** — `results/` altında SiK RF ölçüm dosyası **yoktur** (10 Eylül sayımı). Kapanma komutu: `--rol yanki --port COMx` / `--rol olc --port COMy --n 200 --json --cikti results/<tarih>/sik_rtt.json`. |
-| **Veri hızı (bit/s, paket/s)** | **RF hattında ÖLÇÜLEMEDİ.** ~~Hiçbir betik ölçmez (`sik_rf_olc.py` RTT ve kayıp verir);~~ **10 Eylül (T216):** `sik_rf_olc.py` artık bayt/s, bit/s ve paket/s sayar (`veri_hizi` alanı; kilit `tests/test_faz_b_sik_rf_olc.py`, 13 test, sayaç mutasyonu yakalandı) ve yazılım düzeneklerinde ölçüldü — §3.3.4.3.3 "10 Eylül" tablosu (UDP loopback / TCP-seri köprüsü: IKA_GO kadansında ≈ 4,0 pkt/s · ≈ 322 B/s TX, PARAŞÜT kadansında ≈ 5,0 pkt/s · ≈ 403 B/s TX; kayıp 0/200). Bunlar **kadans yüküdür, hat kapasitesi değildir** ve **RF değildir**. §3.3.4.3.2'deki 4 pkt/s (`IKA_GO`) ve 5 pkt/s (`PARACHUTE`) tasarım oranları bu ölçümle **loopback'te doğrulandı**; "57600 baud'da ~200 B çerçeve + ACK < 100 ms" (~~`karar_sozlesmesi.py:2075-2076`~~ `karar_sozlesmesi.py:2089-2090`) hâlâ tasarım tahminidir — RF'te ölçülmedi |
+| **Veri hızı (bit/s, paket/s)** | **RF hattında ÖLÇÜLEMEDİ.** ~~Hiçbir betik ölçmez (`sik_rf_olc.py` RTT ve kayıp verir);~~ **10 Eylül (T216):** `sik_rf_olc.py` artık bayt/s, bit/s ve paket/s sayar (`veri_hizi` alanı; kilit `tests/test_faz_b_sik_rf_olc.py`, 13 test, sayaç mutasyonu yakalandı) ve yazılım düzeneklerinde ölçüldü — §3.3.4.3.3 "10 Eylül" tablosu (UDP loopback / TCP-seri köprüsü: IKA_GO kadansında ≈ 4,0 pkt/s · ≈ 322 B/s TX, PARAŞÜT kadansında ≈ 5,0 pkt/s · ≈ 403 B/s TX; kayıp 0/200). Bunlar **kadans yüküdür, hat kapasitesi değildir** ve **RF değildir**. §3.3.4.3.2'deki 4 pkt/s (`IKA_GO`) ve 5 pkt/s (`PARACHUTE`) tasarım oranları bu ölçümle **loopback'te doğrulandı**; "57600 baud'da ~200 B çerçeve + ACK < 100 ms" (~~`karar_sozlesmesi.py:2075-2076`~~ `karar_sozlesmesi.py:2089-2090`) hâlâ tasarım tahminidir — RF'te ölçülmedi. **12 Eylül (T243 · D-462 C):** gerçek görev karışımının veri hızı ölçüldü (§3.3.4.3.3 "12 Eylül" tablosu) ve mesaj tipi başına paket boyutu tablosu çıkarıldı (§3.3.4.3.1); tahminin **~200 B çerçeve** kısmı ölçümle **yanlışlandı** (`HEARTBEAT` 273 B, `OPEN_ROUTE` 365 B), **ACK < 100 ms** kısmı RF'te hâlâ ölçülmedi. Ölçüm yine UDP loopback'tir; `results/` altında SiK RF ölçüm dosyası **yoktur** (12 Eylül sayımı) |
 | **Menzil** | **ÖLÇÜLEMEDİ.** DDR'deki *">%98, 300 m"* iddiasının repoda kanıtı **yoktur**; 5 Eylül tutanağında (D-426) menzil satırı yok |
-| **SiK telsiz firmware / baud** | **ÖLÇÜLEMEDİ.** Parametre dosyası fabrika 57600 baud bekler; telsizin üzerindeki firmware doğrulanmadı (D-424 §5: "kutusu açılmamış donanım" örüntüsünün açık kalemi) |
+| **SiK telsiz firmware / baud** | **ÖLÇÜLEMEDİ.** Parametre dosyası fabrika 57600 baud bekler; telsizin üzerindeki firmware doğrulanmadı (D-424 §5: "kutusu açılmamış donanım" örüntüsünün açık kalemi). **12 Eylül (T243 · D-462 C):** bu satır **hava hızı (Air Speed) ve ECC ayarını** da kapsar; ikisi de okunmadı (`results/atolye_20260912/SONUC_SABLONU.md` A6 satırı boş, `A6_sik_ayar.txt` yok). Hat doluluğu bu yüzden §3.3.4.3.3'te iki sütunla verilir (ECC kapalı ham bütçe / ECC açık yarı bütçe) ve hangisinin geçerli olduğu **bilinmiyordur** |
 | **Gerçek Pixhawk'ta `COMMAND_ACK` turu** | **ÖLÇÜLEMEDİ.** D-419/D-422 ölçümleri `scripts/sahte_pixhawk.py` iledir; 5 Eylül'de Pixhawk 6C Mission Planner'a bağlıydı, Jetson takılı değildi (D-426 §4); `iha_komut_alici` gerçek karta karşı koşulmadı |
 | **B2-G2 hükmü** (p95 ≤ 1 s heartbeat dönemi) | yalnız **UDP loopback** yapılandırmasının hükmüdür. Üretim seri varsayılanlarıyla (`wait_ack=False`, 4×0,25 s) çevrim 1,0 s ve G2 **geçmezdi**. Bu satır kayıtta böyle durur |
 | **Gerçek kamera yakalama gecikmesi** | **ÖLÇÜLEMEDİ** (CSI köprüsü Nano'da koşulmadı) |
