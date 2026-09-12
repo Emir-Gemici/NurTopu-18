@@ -1,0 +1,110 @@
+  CAGRI_GOVDESI d11 (comms/yks_gui.py:4079 [YksArayuz.fda_kipini_uygula]): altgrafik sD1 [main] disinda ama HEMEN onceki cagri dugumu d10 [YksArayuz.fda_kipini_uygula] bu kapsami gosteriyor
+  CAGRI_GOVDESI d96 (comms/yks_gui.py:4506 [YksArayuz._kanit_kilidi_var]): altgrafik sD7 [YksArayuz._kanit_yaz] disinda ama HEMEN onceki cagri dugumu d95 [YksArayuz._kanit_kilidi_var] bu kapsami gosteriyor
+FDR/sekiller/akis_d.mmd: ALTGRAFIK 0 (70 deyim dugumu denetlendi, 2 CAGRI_GOVDESI bagisik)
+  AYNI d00: comms/yks_gui.py:4792 -> 4806 [main] #1 "ap = argparse.ArgumentParser(description='Navitas YKS hakem…"
+  AYNI d01: comms/yks_gui.py:4868 -> 4882 [main] #1 'if not args.serial and (not args.demo) and (not args.iha):'
+  AYNI d02: comms/yks_gui.py:4880 -> 4894 [main] #1 'if args.serial:'
+  AYNI d03: comms/yks_gui.py:4881 -> 4895 [main] #1 'link = SerialLink(args.serial, args.baud)'
+  AYNI d04: comms/yks_gui.py:500 -> 500 [yks_udp_linki_ac] #1 'def yks_udp_linki_ac'
+  AYNI d05: comms/yks_gui.py:547 -> 547 [yki_oturum_kunyesi] #1 'def yki_oturum_kunyesi'
+  AYNI d06: comms/hakem_kaydi.py:21 -> 21 [varsayilan_hakem_log_yolu] #1 'def varsayilan_hakem_log_yolu'
+  AYNI d07: comms/yks_gui.py:789 -> 789 [YksArayuz.__init__] #1 'def __init__'
+  AYNI d08: comms/yks_gui.py:968 -> 968 [YksArayuz._arayuz_kur] #1 'def _arayuz_kur'
+  AYNI d09: comms/yks_gui.py:4947 -> 4961 [main] #1 'if args.fda:'
+  AYNI d10: comms/yks_gui.py:4057 -> 4071 [YksArayuz.fda_kipini_uygula] #1 'def fda_kipini_uygula'
+  AYNI d11: comms/yks_gui.py:4065 -> 4079 [YksArayuz.fda_kipini_uygula] #1 'self.fda_kipi = True'
+  AYNI d12: comms/yks_gui.py:4999 -> 5013 [main] #1 'kok.mainloop()'
+  AYNI d13: comms/yks_gui.py:4765 -> 4779 [kapanis_kaynaklarini_temizle] #1 'def kapanis_kaynaklarini_temizle'
+  AYNI d20: comms/yks_gui.py:1791 -> 1791 [YksArayuz._dinle] #1 'd, adr = self.link.recv()'
+  AYNI d21: comms/yks_gui.py:1798 -> 1798 [YksArayuz._dinle] #1 'if soket is None or soket.fileno() == -1:'
+  AYNI d22: comms/yks_gui.py:1811 -> 1811 [YksArayuz._dinle] #1 'for m in okuyucu.feed(d):'
+  AYNI d23: comms/yks_gui.py:1812 -> 1812 [YksArayuz._dinle] #1 'self.gelen.put((m, adr))'
+  AYNI d30: comms/yks_gui.py:1816 -> 1816 [YksArayuz._tik] #1 'while not self.gelen.empty():'
+  AYNI d31: comms/yks_gui.py:2979 -> 2993 [YksArayuz._kamera_tazele] #1 'def _kamera_tazele'
+  AYNI d32: comms/yks_gui.py:4357 -> 4371 [YksArayuz._durum_tazele] #1 'def _durum_tazele'
+  AYNI d33: comms/yks_gui.py:1855 -> 1855 [YksArayuz._tik] #1 'self.kok.after(120, self._tik)'
+  AYNI d40: comms/yks_gui.py:1874 -> 1874 [YksArayuz._mesaj_isle] #1 "if getattr(self, 'protokol_kilidi', False):"
+  AYNI d41: comms/yks_gui.py:1883 -> 1883 [YksArayuz._mesaj_isle] #1 "if getattr(self, 'kaynak_kilidi', False):"
+  AYNI d42: comms/yks_gui.py:739 -> 739 [mesaj_kaynagi_dogrula] #1 'def mesaj_kaynagi_dogrula'
+  AYNI d43: comms/yks_gui.py:1895 -> 1895 [YksArayuz._mesaj_isle] #1 'if tip == MESAJ_OPEN_ROUTE:'
+  AYNI d44: comms/yks_gui.py:1897 -> 1897 [YksArayuz._mesaj_isle] #1 'if guven_reddi is not None:'
+  AYNI d45: comms/yks_gui.py:2142 -> 2156 [YksArayuz._open_route_guven_reddini_goster] #1 'def _open_route_guven_reddini_goster'
+  AYNI d46: comms/yks_gui.py:1902 -> 1902 [YksArayuz._mesaj_isle] #1 'self.rota, self.rota_adr = (m, adr)'
+  AYNI d47: comms/yks_gui.py:1915 -> 1920 [YksArayuz._mesaj_isle] #1 'if yeni:'
+  AYNI d48: comms/yks_gui.py:1921 -> 1926 [YksArayuz._mesaj_isle] #1 "self._kanit_yaz('ROTA_ALINDI', seq=m.get('seq'), road=m.get…"
+  AYNI d49: comms/yks_gui.py:1975 -> 1989 [YksArayuz._mesaj_isle] #1 'if tip == MESAJ_NO_ROUTE:'
+  AYNI d50: comms/yks_gui.py:1998 -> 2012 [YksArayuz._mesaj_isle] #1 "self._kanit_yaz('ROTA_YOK', seq=m.get('seq'), sebep=sebep, …"
+  AYNI d51: comms/yks_gui.py:2015 -> 2029 [YksArayuz._mesaj_isle] #1 'if tip == MESAJ_ACK:'
+  AYNI d52: comms/yks_gui.py:2017 -> 2031 [YksArayuz._mesaj_isle] #1 'if tip == MESAJ_IHA_LANDED:'
+  AYNI d53: comms/yks_gui.py:2029 -> 2043 [YksArayuz._mesaj_isle] #1 'if seq != self.iha_landed_seq:'
+  AYNI d54: comms/yks_gui.py:2030 -> 2044 [YksArayuz._mesaj_isle] #1 'self.iha_landed_seq = seq'
+  AYNI d55: comms/yks_gui.py:3920 -> 3934 [YksArayuz.iha_indi] #1 'def iha_indi'
+  AYNI d56: comms/yks_gui.py:2052 -> 2066 [YksArayuz._mesaj_isle] #1 'if tip == MESAJ_HEARTBEAT:'
+  AYNI d57: comms/yks_gui.py:2034 -> 2048 [YksArayuz._mesaj_isle] #1 "self._kanit_yaz('IHA_INIS_KANITI', seq=seq, ika_rota_ack_va…"
+  AYNI d58: comms/yks_gui.py:1970 -> 1984 [YksArayuz._mesaj_isle] #1 "self._erken_ika_rota_ack_esle(m['seq'])"
+  HATA d59 [YENI]: tabanda yok -> comms/yks_gui.py:1973
+  AYNI d60: comms/yks_gui.py:2367 -> 2381 [YksArayuz._ack_isle] #1 "self._kanit_yaz('ACK_ALINDI', node=m.get('node'), ref=ref, …"
+  AYNI d61: comms/yks_gui.py:2369 -> 2383 [YksArayuz._ack_isle] #1 "if m.get('node') == 'iha':"
+  AYNI d62: comms/yks_gui.py:2423 -> 2437 [YksArayuz._ack_isle] #1 "if m.get('node') != 'ika':"
+  AYNI d63: comms/yks_gui.py:2427 -> 2441 [YksArayuz._ack_isle] #1 'if self.ika_go_tekrar.ack_geldi(m):'
+  AYNI d64: comms/yks_gui.py:2435 -> 2449 [YksArayuz._ack_isle] #1 'if ref_tip in (None, MESAJ_OPEN_ROUTE) and ref not in self.…'
+  AYNI d65: comms/yks_gui.py:2460 -> 2474 [YksArayuz._ika_rota_ack_bagla] #1 "self._kanit_yaz('IKA_AKTARIM_KANITI', **alanlar)"
+  AYNI d66: comms/yks_gui.py:2469 -> 2483 [YksArayuz._ika_rota_ack_bagla] #1 'if self.tespit_onayli and (not self.onaylandi):'
+  AYNI d67: comms/yks_gui.py:2330 -> 2344 [YksArayuz._aktarim_onay_dugmesini_kur] #1 'def _aktarim_onay_dugmesini_kur'
+  AYNI d68: comms/yks_gui.py:2436 -> 2450 [YksArayuz._ack_isle] #1 "if self.rota and ref == self.rota['seq']:"
+  AYNI d69: comms/yks_gui.py:2438 -> 2452 [YksArayuz._ack_isle] #1 'if ref_tip == MESAJ_OPEN_ROUTE:'
+  AYNI d70: comms/yks_gui.py:2200 -> 2214 [YksArayuz.onayla] #1 'if not self.rota or self.rota_yok or self.onaylandi:'
+  AYNI d71: comms/yks_gui.py:2207 -> 2221 [YksArayuz.onayla] #1 'if self._kanit_kilidi_var():'
+  AYNI d72: comms/yks_gui.py:2215 -> 2229 [YksArayuz.onayla] #1 'if rota_ankor_uyarisi(self.rota):'
+  AYNI d73: comms/yks_gui.py:2223 -> 2237 [YksArayuz.onayla] #1 'if self._tespiti_yaslandir():'
+  AYNI d74: comms/yks_gui.py:2229 -> 2243 [YksArayuz.onayla] #1 'if not self.tespit_onayli:'
+  AYNI d75: comms/yks_gui.py:2230 -> 2244 [YksArayuz.onayla] #1 'self.tespit_onayli = True'
+  AYNI d76: comms/yks_gui.py:2233 -> 2247 [YksArayuz.onayla] #1 "self._kanit_yaz('HAKEM_ONAYI_1', seq=self.rota.get('seq'), …"
+  AYNI d77: comms/yks_gui.py:2244 -> 2258 [YksArayuz.onayla] #1 'if not self.fda_kipi and (not self.ika_aktarim_kaniti_var()…'
+  AYNI d78: comms/yks_gui.py:2248 -> 2262 [YksArayuz.onayla] #1 "self._kanit_yaz('HAKEM_ONAYI_REDDI', seq=self.rota.get('seq…"
+  AYNI d79: comms/yks_gui.py:2255 -> 2269 [YksArayuz.onayla] #1 "rota_ack = ack(self.rota['seq'], 'yks', self.rota.get('type…"
+  AYNI d80: comms/yks_gui.py:2261 -> 2275 [YksArayuz.onayla] #1 'self.onaylandi = True'
+  AYNI d81: comms/yks_gui.py:2277 -> 2291 [YksArayuz.onayla] #1 "self._kanit_yaz('HAKEM_ONAYI_2', seq=self.rota.get('seq'), …"
+  AYNI d82: comms/yks_gui.py:2217 -> 2231 [YksArayuz.onayla] #1 "self._kanit_yaz('HAKEM_ONAYI_REDDI', seq=self.rota.get('seq…"
+  AYNI d83: comms/yks_gui.py:2226 -> 2240 [YksArayuz.onayla] #1 "self._kanit_yaz('HAKEM_ONAYI_REDDI', seq=self.rota.get('seq…"
+  AYNI d84: comms/yks_gui.py:2458 -> 2472 [YksArayuz._ika_rota_ack_bagla] #1 'if erken:'
+  AYNI d85: comms/yks_gui.py:2494 -> 2508 [YksArayuz._erken_ika_rota_ack_sakla] #1 'tampon[ref] = (time.time(), simdi, self._iha_havada_mi())'
+  AYNI d86: comms/yks_gui.py:2513 -> 2527 [YksArayuz._erken_ika_rota_ack_esle] #1 'kayit = tampon.pop(seq, None)'
+  AYNI d87: comms/yks_gui.py:2514 -> 2528 [YksArayuz._erken_ika_rota_ack_esle] #1 'if kayit is None or seq in self.ika_rota_ack:'
+  AYNI d88: comms/yks_gui.py:2517 -> 2531 [YksArayuz._erken_ika_rota_ack_esle] #1 'if time.monotonic() - gelis > IKA_ROTA_ACK_ERKEN_TAMPON_S:'
+  AYNI d89: comms/yks_gui.py:2523 -> 2537 [YksArayuz._erken_ika_rota_ack_esle] #1 'self._ika_rota_ack_bagla(seq, damga, havada, erken=True)'
+  AYNI d90: comms/yks_gui.py:168 -> 168 [<modul>] #1 "KANIT_OLAYLARI = ('YKS_ARAYUZ_HAZIR', 'ROTA_ALINDI', 'ROTA_…"
+  AYNI d91: comms/yks_gui.py:4570 -> 4584 [YksArayuz._kanit_yaz] #1 'if kayit is None or self._kanit_kilidi_var():'
+  AYNI d92: comms/hakem_kaydi.py:96 -> 96 [HakemKaydi.yaz] #1 'def yaz'
+  AYNI d93: comms/yks_gui.py:4574 -> 4588 [YksArayuz._kanit_yaz] #1 'except Exception as exc:'
+  AYNI d94: comms/yks_gui.py:4544 -> 4558 [YksArayuz._kanit_hatasini_goster] #1 'def _kanit_hatasini_goster'
+  AYNI d95: comms/yks_gui.py:4479 -> 4493 [YksArayuz._kanit_kilidi_var] #1 'def _kanit_kilidi_var'
+  AYNI d96: comms/yks_gui.py:4492 -> 4506 [YksArayuz._kanit_kilidi_var] #1 "return getattr(self, 'kanit_kaydi_hatasi', None) is not None"
+  AYNI sD1: comms/yks_gui.py:4791 -> 4805 [main] #1 'def main'
+  AYNI sD2: comms/yks_gui.py:1788 -> 1788 [YksArayuz._dinle] #1 'def _dinle'
+  AYNI sD3: comms/yks_gui.py:1815 -> 1815 [YksArayuz._tik] #1 'def _tik'
+  AYNI sD4: comms/yks_gui.py:1873 -> 1873 [YksArayuz._mesaj_isle] #1 'def _mesaj_isle'
+  AYNI sD5: comms/yks_gui.py:2357 -> 2371 [YksArayuz._ack_isle] #1 'def _ack_isle'
+  AYNI sD6: comms/yks_gui.py:2197 -> 2211 [YksArayuz.onayla] #1 'def onayla'
+  AYNI sD7: comms/yks_gui.py:4568 -> 4582 [YksArayuz._kanit_yaz] #1 'def _kanit_yaz'
+  AYNI sD8: comms/yks_gui.py:3883 -> 3897 [YksArayuz.firlatma] #1 'def firlatma'
+  AYNI sD9: comms/yks_gui.py:3937 -> 3951 [YksArayuz.ika_baslat] #1 'def ika_baslat'
+  AYNI d100: comms/yks_gui.py:3890 -> 3904 [YksArayuz.firlatma] #1 'if self._kanit_kilidi_var():'
+  AYNI d101: comms/yks_gui.py:3899 -> 3913 [YksArayuz.firlatma] #1 "if not self._arm_durumu_taze_mi() or getattr(self, 'arm_bek…"
+  AYNI d102: comms/yks_gui.py:3911 -> 3925 [YksArayuz.firlatma] #1 'self.t_iha0 = time.monotonic()'
+  AYNI d103: comms/yks_gui.py:3914 -> 3928 [YksArayuz.firlatma] #1 "self._kanit_yaz('KRONOMETRE_BASLADI', kron='iha', limit_s=s…"
+  AYNI d110: comms/yks_gui.py:3940 -> 3954 [YksArayuz.ika_baslat] #1 'if self.fda_kipi:'
+  AYNI d111: comms/yks_gui.py:3947 -> 3961 [YksArayuz.ika_baslat] #1 'if self.iha_landed_seq is None:'
+  AYNI d112: comms/yks_gui.py:3952 -> 3966 [YksArayuz.ika_baslat] #1 'if not self.onaylandi:'
+  AYNI d113: comms/yks_gui.py:3959 -> 3973 [YksArayuz.ika_baslat] #1 "komut_mesaji = command('IKA_GO', 'ika')"
+  HATA d59b [YENI]: tabanda yok -> comms/yks_gui.py:1981
+  AYNI sD10: comms/yks_gui.py:2443 -> 2457 [YksArayuz._ika_rota_ack_bagla] #1 'def _ika_rota_ack_bagla'
+  AYNI sD11: comms/yks_gui.py:2474 -> 2488 [YksArayuz._erken_ika_rota_ack_sakla] #1 'def _erken_ika_rota_ack_sakla'
+  AYNI sD12: comms/yks_gui.py:2504 -> 2518 [YksArayuz._erken_ika_rota_ack_esle] #1 'def _erken_ika_rota_ack_esle'
+  KENAR taban d72 -evet: ANKOR_YOK-> d82 (comms/yks_gui.py:2217): TUTAR
+  KENAR taban d73 -evet: BAYAT_TESPIT-> d83 (comms/yks_gui.py:2226): TUTAR
+  KENAR taban d77 -evet: IKA_ACK_KANITI_YOK-> d78 (comms/yks_gui.py:2248): TUTAR
+  KENAR yeni  d72 -evet: ANKOR_YOK-> d82 (comms/yks_gui.py:2231): TUTAR
+  KENAR yeni  d73 -evet: BAYAT_TESPIT-> d83 (comms/yks_gui.py:2240): TUTAR
+  KENAR yeni  d77 -evet: IKA_ACK_KANITI_YOK-> d78 (comms/yks_gui.py:2262): TUTAR
+FDR/sekiller/akis_d.mmd: taban 776f0254~1 · 100 dugum · satiri degisen 76 · AYNI 98 · DUZELTILDI 0 · kapsam HATASI 2 (ALTGRAFIK 0, KAPSAM 0, DEYIM 0, SIRA 0, DOSYA 0, DEYIM_YOK 0, KENAR 0, YENI 2, SILINEN 0, KENAR_KUMESI 0) · KENAR taban 3/3 tutar, yeni 3/3 tutar

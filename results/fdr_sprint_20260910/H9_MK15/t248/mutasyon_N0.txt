@@ -1,0 +1,7 @@
+test_T248_no_route_sonrasi_tekrarli_open_route_haritayi_tazeler (test_yks_mk15_hakem_ekrani.H2g_TekrarliOpenRouteHaritayiTazeler.test_T248_no_route_sonrasi_tekrarli_open_route_haritayi_tazeler) ... ok
+test_T248b_durum_degismeyen_tekrar_haritayi_yeniden_cizmez (test_yks_mk15_hakem_ekrani.H2g_TekrarliOpenRouteHaritayiTazeler.test_T248b_durum_degismeyen_tekrar_haritayi_yeniden_cizmez) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 2.122s
+
+OK
