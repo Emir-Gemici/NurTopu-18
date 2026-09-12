@@ -20,7 +20,7 @@
 
 | tarih | ne | bizim işimiz |
 |---|---|---|
-| **21.09.2026 · 17.00** | **FDR son teslim** | rapor bitmiş ve gönderilmiş olmalı |
+| 🔴 **14.09.2026 · 17.00** (~~21.09.2026 · 17.00~~) | **FDR son teslim — TARİH ÖNE ÇEKİLDİ** | rapor **ve sunum** bitmiş ve sisteme yüklenmiş olmalı. Kaynak: resmî yarışma sayfası, 12 Eylül 2026 okuması: `teknofest.org/tr/yarismalar/ileri-otonom-sistemler-tasarim-ve-operasyon-yarismasi/` → "FDR Son Teslim Tarihi **14.09.2026 - 17.00**"; soru-cevap oturumu D-475 `[10:01]` "14'ünün ertelenme ihtimali maalesef yok" |
 | **21.09.2026 (aynı gün)** | takımın **Adıyaman provası** | uçuş provası, hakem yok |
 | **30.09 – 03.10.2026** | **resmî Drone ile Görev Test Uçuşu** (§5.3.2) | tek atış, hakem önünde |
 

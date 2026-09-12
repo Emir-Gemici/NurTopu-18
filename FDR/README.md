@@ -51,7 +51,7 @@ metni: `results/fdr_sablon/fdr_yonerge_metin.txt`
 
 | tarih | ne |
 |---|---|
-| **21.09.2026 · 17.00** | **FDR SON TESLİM** — bu raporun teslim anı |
+| 🔴 **14.09.2026 · 17.00** (~~21.09.2026 · 17.00~~) | **FDR SON TESLİM — bir hafta öne çekildi**; rapor **ve sunum** birlikte yüklenir. Kaynak: resmî yarışma sayfası, 12 Eylül 2026 okuması: `teknofest.org/tr/yarismalar/ileri-otonom-sistemler-tasarim-ve-operasyon-yarismasi/` → "FDR Son Teslim Tarihi **14.09.2026 - 17.00**"; soru-cevap oturumu D-475 `[10:01]` "14'ünün ertelenme ihtimali maalesef yok" |
 | **30.09 – 03.10.2026** | **Final Değerlendirme Aşaması**: FDS sunumları + **Drone ile Görev Test Uçuşu** (§5.3.2, tek atış) |
 | 04.10.2026 | FDR sonuçları ve maddi destek açıklaması |
 | 05.02.2027 · 17.00 | SGGS son teslim |

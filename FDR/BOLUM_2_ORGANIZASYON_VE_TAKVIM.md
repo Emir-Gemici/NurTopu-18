@@ -427,7 +427,7 @@ beyan edilen toplam **2293 g**). Bugünkü gerçek künye kullanıcı beyanıdı
 
 | olay | şartname resmî tarihi | takım planı |
 |---|---|---|
-| FDR son teslim | **21.09.2026 – 17.00** | rapor bu tarihe yetiştirilir |
+| FDR son teslim | 🔴 **14.09.2026 – 17.00** (~~21.09.2026 – 17.00~~) | **TARİH DEĞİŞTİ** — rapor **ve sunum** bu tarihe yetiştirilir. Kaynak: resmî yarışma sayfası, 12 Eylül 2026 okuması: `teknofest.org/tr/yarismalar/ileri-otonom-sistemler-tasarim-ve-operasyon-yarismasi/` → "FDR Son Teslim Tarihi **14.09.2026 - 17.00**"; soru-cevap oturumu D-475 `[10:01]` "14'ünün ertelenme ihtimali maalesef yok" |
 | FDA (FDS + Drone ile Görev Test Uçuşu) | **30.09 – 03.10.2026** | **tek atış** — `SAHA_RUNBOOK.md` başlık satırı |
 | FDR sonuçları | 04.10.2026 | — |
 | SGGS son teslim | 05.02.2027 | Bölüm 7'deki BOM bu sunumun temelidir |

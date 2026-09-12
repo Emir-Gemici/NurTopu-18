@@ -85,6 +85,24 @@ class BelgeKapisi(unittest.TestCase):
                 self.assertRegex(metin, r"30\.09\s*[–-]\s*0?3\.10\.2026")
                 self.assertIn("FDR", metin)
 
+    def test_T5_guncel_teslim_tarihi_14_eylul_belgelerde(self):
+        """D-476: teslim 14.09.2026 – 17.00'ye ÖNE ÇEKİLDİ (resmî yarışma sayfası).
+
+        Şartname PDF'i hâlâ 21.09.2026 diyor (T1 onu kilitler ve DOĞRUDUR —
+        şartname o tarihte öyle yazmıştı). Değişen şey organizasyonun sonraki
+        duyurusudur. Bu kilit, güncel tarihin belgelerden **sessizce düşmesini**
+        engeller; eski tarih üstü çizili KALIR (silinmez, madde 6)."""
+        for p_ in (KOK / "FDR" / "README.md", KOK / "SAHA_HAZIRLIK_PLANI_20260903.md",
+                   KOK / "FDR" / "BOLUM_2_ORGANIZASYON_VE_TAKVIM.md"):
+            metin = p_.read_text(encoding="utf-8")
+            with self.subTest(dosya=p_.name):
+                self.assertIn("14.09.2026", metin,
+                              "güncel FDR teslim tarihi belgeden düşmüş")
+                self.assertIn("21.09.2026", metin,
+                              "eski tarih silinmiş — üstü çizili KALMALI (madde 6)")
+                self.assertRegex(metin, r"~~[^~]*21\.09\.2026[^~]*~~",
+                                 "eski tarih üstü çizili değil")
+
     def test_T4_ucus_penceresi_kaybolmadi(self):
         gecen = [p.name for p in BELGELER if p.is_file()
                  and re.search(r"30 Eylül[^\n]{0,12}3 Ekim|30\.09", p.read_text(encoding="utf-8"))]

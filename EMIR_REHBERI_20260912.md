@@ -9,32 +9,40 @@
 
 ---
 
-## 0. 🔴 ÖNCE BUNU OKU — takvim değişmiş olabilir
+## 0. 🔴 TESLİM: **14 EYLÜL 2026, SAAT 17.00** — DOĞRULANDI
 
-Soru-cevap oturumunda organizasyon şunu söylüyor (otomatik transkript,
-`results/soru_cevap_20260912/transkript_otomatik.txt`):
+Artık tahmin değil. **TEKNOFEST'in resmî yarışma sayfasındaki teslim tablosu** (12 Eylül
+2026 okuması, `teknofest.org/tr/yarismalar/ileri-otonom-sistemler-tasarim-ve-operasyon-yarismasi/`):
 
-| dakika | söylenen |
+| belge | son teslim |
 |---|---|
-| `[01:32]` | "Biliyorsunuz **14'ünde** normalde raporlar teslim edilecekti." |
-| `[01:57]` | "**14'ünde**… **sunumlarınızla raporlarınızla birlikte** sisteme yüklemeniz bizim için çok önemli." |
-| `[10:01]` | "**14'ünün ertelenme ihtimali maalesef yok.**" |
-| `[26:41]` | "Buradaki **bir haftalık erkene çekilme**…" |
+| **FDR** | **14.09.2026 – 17.00** |
 
-Depodaki bütün belgeler (ve `tests/test_fdr_takvim_kapisi.py` adlı bir kapı testi)
-**21.09.2026** diyor. İkisi aynı anda doğru olamaz.
+Şartname PDF'i 21.09.2026 diyordu; organizasyon tarihi **bir hafta öne çekti**
+(soru-cevap oturumu `[26:41]` "bir haftalık erkene çekilme", `[10:01]` "ertelenme
+ihtimali maalesef yok"). Depodaki belgeler düzeltildi (eski tarih üstü çizili kaldı),
+kapı testi yeni tarihi kilitliyor (`tests/test_fdr_takvim_kapisi.py` 5/5).
 
-**Senden istenen (T258):**
-1. Organizasyonun duyurusunu/e-postasını bul → **14 mü 21 mi, yazılı kaynakla** teyit et.
-2. Sonucu bana/ekibe bildir. Yazılım tarafı tarihi ancak yazılı kaynakla değiştirir
-   (eski tarih silinmez, üstü çizilir — bu deponun kuralı).
+**Yani: pazartesi 17.00. Bugün cumartesi. İki gün var.**
 
-**Ayrıca (T259): rapordan AYRI bir SUNUM isteniyor** — depoda hiç izi yok.
-`[09:28]` "teknik ve ayrıntılı", `[11:17]` **şablon** kullanılacak, `[22:17]` **15 dakika**,
-salı günü yüz yüze, sıra **kura** ile. `[04:16]` değerlendirme **gönderdiğiniz sunum**
-üzerinden yapılacak. → **Şablonu indir**, kimin sunacağına karar ver.
+### Rapor TEK BAŞINA yetmiyor — SUNUM da aynı anda yüklenecek
 
----
+Resmî sunum şablonu **indirildi ve depoya kondu**:
+`FDR/sablon/TEKNOFEST_2026_IOS_Final_Sunum_Sablonu.pptx`
+(kaynak: `cdn.teknofest.org/media/upload/userFormUpload/2026_taslak_kDfAV.pptx`)
+
+**4 slayt:** kapak (PROJE ADI · KONU BAŞLIĞI · TAKIM ADI · **TAKIM ID** · **BAŞVURU ID**;
+şablon "değişiklik yapılmamalıdır" diyor) · **TAKIM YAPISI** (danışman + kaptan + 5 üye;
+her biri için görev ve eğitim bilgisi) · içerik düzeni · teşekkür.
+
+⚠ **Dikkat:** FDR **raporunda** isim yasak (yönerge Bölüm 2.1, rol bazlı) — ama **sunum
+şablonu isim istiyor**. İkisi farklı belge, raporun kuralını sunuma taşıma.
+
+Sunumla ilgili söylenenler: `[09:28]` "teknik ve ayrıntılı", `[22:17]` **15 dakika**,
+salı günü yüz yüze, sıra **kura** ile; `[04:16]` değerlendirme **gönderdiğin** sunum
+üzerinden yapılacak (alanda senin gönderdiğin dosya açılacak).
+
+**Senden:** kapak alanları (TAKIM ID, BAŞVURU ID), takım yapısı slaytı, kim sunacak kararı.
 
 ## 1. T236 — FDA görev provası (SITL). "Windows gerekiyor" DOĞRU DEĞİL
 

@@ -30974,3 +30974,40 @@ Düşen 6 alt test yalnız `tests/test_yks_mk15_hakem_ekrani.py` `H2e_RotaYokSon
 **Açılan işler:** **T258** (14 Eylül takvim düzeltmesi + kapı testi), **T259** (sunum — yeni çıktı), **T260** (3-yol kilidi mimari kararı). **Kapanan:** T257.
 **Kod değişmedi:** bu kayıt bir transkript/analiz işidir; genel kapı 15/15 GEÇTİ.
 **Genel kapı:** 15/15 GEÇTİ (üretim kodu değişmedi, yalnız test dosyası).
+
+
+---
+
+### D-476 — ✅ TESLİM TARİHİ RESMÎ KAYNAKLA DOĞRULANDI: **FDR 14.09.2026 – 17.00** (D-475'in transkript bulgusu teyit edildi); **sunum şablonu bulundu ve depoya alındı**
+
+**Tarih:** 12 Eylül 2026 · Mimar.
+**Kaynak (yazılı, otomatik transkript DEĞİL):** TEKNOFEST resmî yarışma sayfası
+`teknofest.org/tr/yarismalar/ileri-otonom-sistemler-tasarim-ve-operasyon-yarismasi/`
+(12 Eylül 2026 okuması) — teslim tablosu: ÖDR 26.04.2026 · DDR 15.07.2026 ·
+**FDR 14.09.2026 – 17.00** · SGGS 05.02.2027 · UHDR 16.04.2027.
+
+**1. Çelişki çözüldü (şartname vs güncel duyuru).** `results/sartname_bosluk/sartname_metin.txt`
+(şartname PDF'i) **21.09.2026** diyor ve `tests/test_fdr_takvim_kapisi.py` T1 bunu doğru
+biçimde kilitliyor — **şartname o tarihte gerçekten öyle yazıyordu**. Değişen şey
+organizasyonun sonraki duyurusudur: tarih **bir hafta öne çekildi**. Soru-cevap oturumu
+bunu sözle de söylüyor (D-475 `[26:41]` "bir haftalık erkene çekilme", `[10:01]`
+"14'ünün ertelenme ihtimali maalesef yok"). **İki kaynak da doğru, biri eski.**
+
+**2. Belgeler güncellendi — eski tarih SİLİNMEDİ (madde 6).** `FDR/README.md`,
+`SAHA_HAZIRLIK_PLANI_20260903.md`, `FDR/BOLUM_2` §2.2.8 takvim satırlarında eski tarih
+**üstü çizili** kaldı, yanına yeni tarih + kaynak yazıldı. `tests/test_fdr_takvim_kapisi.py`'ye
+**T5** eklendi: üç belgede hem `14.09.2026` bulunmalı, hem `21.09.2026` **üstü çizili**
+biçimde durmalı — yani ne yeni tarih sessizce düşebilir, ne eski tarih sessizce silinebilir.
+Kapı **5/5 OK** (eski dört kilit bozulmadı).
+
+**3. Sunum şablonu bulundu** (D-475 §2'de "depoda izi yok" denen çıktı):
+`FDR/sablon/TEKNOFEST_2026_IOS_Final_Sunum_Sablonu.pptx` (12 MB, sha256 `bbb5f88ffb75a69a…`,
+kaynak `cdn.teknofest.org/media/upload/userFormUpload/2026_taslak_kDfAV.pptx`). **4 slayt:**
+kapak (PROJE ADI/TAKIM ID/BAŞVURU ID — "değişiklik yapılmamalıdır" notuyla), **TAKIM YAPISI**
+(danışman + kaptan + 5 üye; görev ve eğitim bilgisi), içerik düzeni, teşekkür.
+⚠ **İsim kuralı çatışması kaydedildi:** FDR raporunda kişisel veri yönerge Bölüm 2.1 gereği
+yasak (rol bazlı anlatım), **ama sunum şablonu slayt 2'de isim/eğitim bilgisi İSTİYOR** —
+raporun kuralı sunuma taşınmaz (`FDR/sablon/OKUBENI.md`).
+
+**Durum:** T258 **KAPANDI** (tarih artık yazılı kaynakla sabit). T259 (sunumun kendisi)
+açık — şablon geldi, **içerik yazılmadı**; teslime **2 gün** var.
