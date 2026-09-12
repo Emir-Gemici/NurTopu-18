@@ -1,0 +1,318 @@
+{
+  "kunye": {
+    "etiket": "olcum",
+    "is": "T243",
+    "kayit": "D-462 C · yonerge Y-3.3.4-M03",
+    "on_kayit": "results/fdr_sprint_20260910/T243/ON_KAYIT.md",
+    "arac": "scripts/paket_boyutu_olc.py",
+    "tohum": 20260912,
+    "zaman": "2026-09-12T03:35:05",
+    "makine": "Windows-11-10.0.26200-SP0",
+    "python": "3.13.7",
+    "tasiyici_notu": "UDP loopback 127.0.0.1 (ephemeral port). RF DEGILDIR: SiK 433 MHz hattinin veri hizi hala OLCULEMEDI.",
+    "sabit_zaman": 1789000000.123,
+    "sabit_seq": 1000,
+    "protokol_surumu": 1,
+    "rapor_doluluk_esigi_yuzde": 80.0
+  },
+  "kadanslar_hz": {
+    "jetson_olculmus": 1.353,
+    "tavan": 2.0
+  },
+  "kadans_kaynagi": {
+    "jetson_olculmus": "results/jetson_20260906/jetson_fps_20260906_orin_nano/ozet.json vakalar[0].metrikler_ms.toplam_ms.p50 = 739.076 ms",
+    "tavan": "olculen kadans DEGIL; ust sinir senaryosu (ON_KAYIT SS2.2)"
+  },
+  "kosumlar": {
+    "saha_jetson_olculmus": {
+      "yapilandirma": "saha",
+      "wait_ack": false,
+      "akranlar": [
+        "broadcast"
+      ],
+      "karar_kadansi_hz": 1.353,
+      "heartbeat_araligi_s": 1.0,
+      "pencere_s": 60.0,
+      "waypoint_sayisi": 21,
+      "beslenen_karar": 82,
+      "yayinlanan_karar": 61,
+      "yayinlanan_karar_tipleri": {
+        "OPEN_ROUTE": 61
+      },
+      "heartbeat_sayisi": 60,
+      "yayinci_hatalari": [],
+      "veri_hizi": {
+        "sure_s": 60.851879299996654,
+        "gonderilen_bayt": 104807,
+        "alinan_bayt": 0,
+        "gonderilen_paket": 304,
+        "alinan_paket": 0,
+        "gonderilen_bayt_s": 1722.329716117835,
+        "alinan_bayt_s": 0.0,
+        "gonderilen_bit_s": 13778.63772894268,
+        "alinan_bit_s": 0.0,
+        "gonderilen_paket_s": 4.995737247510394,
+        "alinan_paket_s": 0.0,
+        "not": "Prob kadansindaki (aralik_s) FIILI akis; hat kapasitesi degil. sure_s = ilk prob gonderimi -> son prob ACK/zaman asimi. alinan_paket = cozulen cerceve sayisi (ACK + diger trafik).",
+        "tepe_gonderilen_bayt_s": 1728,
+        "kova_sayisi": 60
+      },
+      "hat_yuku": {
+        "sure_s": 60.85211179999169,
+        "gonderilen_bayt": 125547,
+        "alinan_bayt": 0,
+        "gonderilen_paket": 548,
+        "alinan_paket": 0,
+        "gonderilen_bayt_s": 2063.1494337065415,
+        "alinan_bayt_s": 0.0,
+        "gonderilen_bit_s": 16505.19546965233,
+        "alinan_bit_s": 0.0,
+        "gonderilen_paket_s": 9.005439314927356,
+        "alinan_paket_s": 0.0,
+        "not": "ORTAK ORTAM yuku: tum uclarin GONDERDIGI bayt/paket toplami (IHA yayini + alici ACK'leri). Alinan sutunu bu hesapta kullanilmaz; cift saymayi onlemek icin sifirdir."
+      },
+      "uc_basina_gonderilen_bayt": {
+        "iha": 104807,
+        "ika": 20740
+      },
+      "kadans_adi": "jetson_olculmus",
+      "doluluk": {
+        "ham_bayt_s": 5760.0,
+        "ms_basina_bayt": 0.1736,
+        "tek_yon_yuzde": 29.9,
+        "paylasimli_yuzde": 35.82,
+        "ecc_acikken_paylasimli_yuzde": 71.64,
+        "ecc_durumu": "OLCULEMEDI",
+        "not": "Doluluk HESAPTIR (57600 8N1 = 10 bit/bayt -> 5760 B/s). SiK hava arayuzu TDM ile iki yon arasinda PAYLASILIR; hava hizi (Air Speed) ve ECC ayari OKUNMAMISTIR (results/atolye_20260912/SONUC_SABLONU.md A6 satiri bos). ECC acikken etkin hiz yariya iner — kaynak ATOLYE_TEST_GUNU_20260912.md A6 'HESAP + BENZER OLCUM - olcum degil' satiri; varsayim degil, ALINTIDIR."
+      },
+      "gorev_toplami": {
+        "yontem": "EKSTRAPOLASYON (olculen ortalama B/s x sure); 900 s'lik kosum YAPILMADI",
+        "iha_gorev_suresi_s": 900.0,
+        "ika_gorev_suresi_s": 600.0,
+        "iha_toplam_bayt": 1550097,
+        "ika_toplam_bayt": 1033398
+      }
+    },
+    "saha_tavan": {
+      "yapilandirma": "saha",
+      "wait_ack": false,
+      "akranlar": [
+        "broadcast"
+      ],
+      "karar_kadansi_hz": 2.0,
+      "heartbeat_araligi_s": 1.0,
+      "pencere_s": 60.0,
+      "waypoint_sayisi": 21,
+      "beslenen_karar": 120,
+      "yayinlanan_karar": 61,
+      "yayinlanan_karar_tipleri": {
+        "OPEN_ROUTE": 61
+      },
+      "heartbeat_sayisi": 60,
+      "yayinci_hatalari": [],
+      "veri_hizi": {
+        "sure_s": 60.85346889999346,
+        "gonderilen_bayt": 105071,
+        "alinan_bayt": 0,
+        "gonderilen_paket": 304,
+        "alinan_paket": 0,
+        "gonderilen_bayt_s": 1726.6230158986268,
+        "alinan_bayt_s": 0.0,
+        "gonderilen_bit_s": 13812.984127189015,
+        "alinan_bit_s": 0.0,
+        "gonderilen_paket_s": 4.995606750037427,
+        "alinan_paket_s": 0.0,
+        "not": "Prob kadansindaki (aralik_s) FIILI akis; hat kapasitesi degil. sure_s = ilk prob gonderimi -> son prob ACK/zaman asimi. alinan_paket = cozulen cerceve sayisi (ACK + diger trafik).",
+        "tepe_gonderilen_bayt_s": 1728,
+        "kova_sayisi": 60
+      },
+      "hat_yuku": {
+        "sure_s": 60.85364519999712,
+        "gonderilen_bayt": 126027,
+        "alinan_bayt": 0,
+        "gonderilen_paket": 548,
+        "alinan_paket": 0,
+        "gonderilen_bayt_s": 2070.9852234128116,
+        "alinan_bayt_s": 0.0,
+        "gonderilen_bit_s": 16567.881787302493,
+        "alinan_bit_s": 0.0,
+        "gonderilen_paket_s": 9.005212394409298,
+        "alinan_paket_s": 0.0,
+        "not": "ORTAK ORTAM yuku: tum uclarin GONDERDIGI bayt/paket toplami (IHA yayini + alici ACK'leri). Alinan sutunu bu hesapta kullanilmaz; cift saymayi onlemek icin sifirdir."
+      },
+      "uc_basina_gonderilen_bayt": {
+        "iha": 105071,
+        "ika": 20956
+      },
+      "kadans_adi": "tavan",
+      "doluluk": {
+        "ham_bayt_s": 5760.0,
+        "ms_basina_bayt": 0.1736,
+        "tek_yon_yuzde": 29.98,
+        "paylasimli_yuzde": 35.95,
+        "ecc_acikken_paylasimli_yuzde": 71.91,
+        "ecc_durumu": "OLCULEMEDI",
+        "not": "Doluluk HESAPTIR (57600 8N1 = 10 bit/bayt -> 5760 B/s). SiK hava arayuzu TDM ile iki yon arasinda PAYLASILIR; hava hizi (Air Speed) ve ECC ayari OKUNMAMISTIR (results/atolye_20260912/SONUC_SABLONU.md A6 satiri bos). ECC acikken etkin hiz yariya iner — kaynak ATOLYE_TEST_GUNU_20260912.md A6 'HESAP + BENZER OLCUM - olcum degil' satiri; varsayim degil, ALINTIDIR."
+      },
+      "gorev_toplami": {
+        "yontem": "EKSTRAPOLASYON (olculen ortalama B/s x sure); 900 s'lik kosum YAPILMADI",
+        "iha_gorev_suresi_s": 900.0,
+        "ika_gorev_suresi_s": 600.0,
+        "iha_toplam_bayt": 1553961,
+        "ika_toplam_bayt": 1035974
+      }
+    },
+    "udp_jetson_olculmus": {
+      "yapilandirma": "udp",
+      "wait_ack": true,
+      "akranlar": [
+        "ika",
+        "yks"
+      ],
+      "karar_kadansi_hz": 1.353,
+      "heartbeat_araligi_s": 1.0,
+      "pencere_s": 60.0,
+      "waypoint_sayisi": 21,
+      "beslenen_karar": 82,
+      "yayinlanan_karar": 50,
+      "yayinlanan_karar_tipleri": {
+        "OPEN_ROUTE": 50
+      },
+      "heartbeat_sayisi": 60,
+      "yayinci_hatalari": [],
+      "veri_hizi": {
+        "sure_s": 61.91184939999948,
+        "gonderilen_bayt": 123547,
+        "alinan_bayt": 4296,
+        "gonderilen_paket": 370,
+        "alinan_paket": 50,
+        "gonderilen_bayt_s": 1995.5307618383151,
+        "alinan_bayt_s": 69.38897871140054,
+        "gonderilen_bit_s": 15964.246094706521,
+        "alinan_bit_s": 555.1118296912043,
+        "gonderilen_paket_s": 5.976238855497718,
+        "alinan_paket_s": 0.8075998453375295,
+        "not": "Prob kadansindaki (aralik_s) FIILI akis; hat kapasitesi degil. sure_s = ilk prob gonderimi -> son prob ACK/zaman asimi. alinan_paket = cozulen cerceve sayisi (ACK + diger trafik).",
+        "tepe_gonderilen_bayt_s": 2364,
+        "kova_sayisi": 61
+      },
+      "hat_yuku": {
+        "sure_s": 61.911963799997466,
+        "gonderilen_bayt": 132139,
+        "alinan_bayt": 0,
+        "gonderilen_paket": 470,
+        "alinan_paket": 0,
+        "gonderilen_bayt_s": 2134.304775517481,
+        "alinan_bayt_s": 0.0,
+        "gonderilen_bit_s": 17074.43820413985,
+        "alinan_bit_s": 0.0,
+        "gonderilen_paket_s": 7.591424518826509,
+        "alinan_paket_s": 0.0,
+        "not": "ORTAK ORTAM yuku: tum uclarin GONDERDIGI bayt/paket toplami (IHA yayini + alici ACK'leri). Alinan sutunu bu hesapta kullanilmaz; cift saymayi onlemek icin sifirdir."
+      },
+      "uc_basina_gonderilen_bayt": {
+        "iha": 123547,
+        "ika": 8592,
+        "yks": 0
+      },
+      "yks_gorulen_tipler": {
+        "HEARTBEAT": 60,
+        "OPEN_ROUTE": 200,
+        "ACK": 50
+      },
+      "kadans_adi": "jetson_olculmus",
+      "doluluk": {
+        "ham_bayt_s": 5760.0,
+        "ms_basina_bayt": 0.1736,
+        "tek_yon_yuzde": 34.64,
+        "paylasimli_yuzde": 37.05,
+        "ecc_acikken_paylasimli_yuzde": 74.11,
+        "ecc_durumu": "OLCULEMEDI",
+        "not": "Doluluk HESAPTIR (57600 8N1 = 10 bit/bayt -> 5760 B/s). SiK hava arayuzu TDM ile iki yon arasinda PAYLASILIR; hava hizi (Air Speed) ve ECC ayari OKUNMAMISTIR (results/atolye_20260912/SONUC_SABLONU.md A6 satiri bos). ECC acikken etkin hiz yariya iner — kaynak ATOLYE_TEST_GUNU_20260912.md A6 'HESAP + BENZER OLCUM - olcum degil' satiri; varsayim degil, ALINTIDIR."
+      },
+      "gorev_toplami": {
+        "yontem": "EKSTRAPOLASYON (olculen ortalama B/s x sure); 900 s'lik kosum YAPILMADI",
+        "iha_gorev_suresi_s": 900.0,
+        "ika_gorev_suresi_s": 600.0,
+        "iha_toplam_bayt": 1795978,
+        "ika_toplam_bayt": 1197318
+      }
+    },
+    "udp_tavan": {
+      "yapilandirma": "udp",
+      "wait_ack": true,
+      "akranlar": [
+        "ika",
+        "yks"
+      ],
+      "karar_kadansi_hz": 2.0,
+      "heartbeat_araligi_s": 1.0,
+      "pencere_s": 60.0,
+      "waypoint_sayisi": 21,
+      "beslenen_karar": 120,
+      "yayinlanan_karar": 50,
+      "yayinlanan_karar_tipleri": {
+        "OPEN_ROUTE": 50
+      },
+      "heartbeat_sayisi": 60,
+      "yayinci_hatalari": [],
+      "veri_hizi": {
+        "sure_s": 61.52122329999111,
+        "gonderilen_bayt": 123580,
+        "alinan_bayt": 4300,
+        "gonderilen_paket": 370,
+        "alinan_paket": 50,
+        "gonderilen_bayt_s": 2008.7376903641293,
+        "alinan_bayt_s": 69.89457896557498,
+        "gonderilen_bit_s": 16069.901522913035,
+        "alinan_bit_s": 559.1566317245998,
+        "gonderilen_paket_s": 6.01418470168901,
+        "alinan_paket_s": 0.8127276623904068,
+        "not": "Prob kadansindaki (aralik_s) FIILI akis; hat kapasitesi degil. sure_s = ilk prob gonderimi -> son prob ACK/zaman asimi. alinan_paket = cozulen cerceve sayisi (ACK + diger trafik).",
+        "tepe_gonderilen_bayt_s": 2364,
+        "kova_sayisi": 61
+      },
+      "hat_yuku": {
+        "sure_s": 61.52149260000442,
+        "gonderilen_bayt": 132180,
+        "alinan_bayt": 0,
+        "gonderilen_paket": 470,
+        "alinan_paket": 0,
+        "gonderilen_bayt_s": 2148.517443479427,
+        "alinan_bayt_s": 0.0,
+        "gonderilen_bit_s": 17188.139547835417,
+        "alinan_bit_s": 0.0,
+        "gonderilen_paket_s": 7.639606585227196,
+        "alinan_paket_s": 0.0,
+        "not": "ORTAK ORTAM yuku: tum uclarin GONDERDIGI bayt/paket toplami (IHA yayini + alici ACK'leri). Alinan sutunu bu hesapta kullanilmaz; cift saymayi onlemek icin sifirdir."
+      },
+      "uc_basina_gonderilen_bayt": {
+        "iha": 123580,
+        "ika": 8600,
+        "yks": 0
+      },
+      "yks_gorulen_tipler": {
+        "HEARTBEAT": 60,
+        "OPEN_ROUTE": 200,
+        "ACK": 50
+      },
+      "kadans_adi": "tavan",
+      "doluluk": {
+        "ham_bayt_s": 5760.0,
+        "ms_basina_bayt": 0.1736,
+        "tek_yon_yuzde": 34.87,
+        "paylasimli_yuzde": 37.3,
+        "ecc_acikken_paylasimli_yuzde": 74.6,
+        "ecc_durumu": "OLCULEMEDI",
+        "not": "Doluluk HESAPTIR (57600 8N1 = 10 bit/bayt -> 5760 B/s). SiK hava arayuzu TDM ile iki yon arasinda PAYLASILIR; hava hizi (Air Speed) ve ECC ayari OKUNMAMISTIR (results/atolye_20260912/SONUC_SABLONU.md A6 satiri bos). ECC acikken etkin hiz yariya iner — kaynak ATOLYE_TEST_GUNU_20260912.md A6 'HESAP + BENZER OLCUM - olcum degil' satiri; varsayim degil, ALINTIDIR."
+      },
+      "gorev_toplami": {
+        "yontem": "EKSTRAPOLASYON (olculen ortalama B/s x sure); 900 s'lik kosum YAPILMADI",
+        "iha_gorev_suresi_s": 900.0,
+        "ika_gorev_suresi_s": 600.0,
+        "iha_toplam_bayt": 1807864,
+        "ika_toplam_bayt": 1205243
+      }
+    }
+  }
+}
