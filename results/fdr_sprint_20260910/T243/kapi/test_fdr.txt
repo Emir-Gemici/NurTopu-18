@@ -1,37 +1,5 @@
-...................................................................FF.......
-======================================================================
-FAIL: test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL (test_fdr_t244_ic_celiski.T9_KabulOlcutuBicimiKilidi.test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL)
-YANLIŞ POZİTİF ÖLÇÜMÜ: dokunulmamış belgelerde kilit YEŞİL olmalı.
+............................................................................
 ----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "O:\navitas\.claude\worktrees\wf_88f63745-bff-1\tests\test_fdr_t244_ic_celiski.py", line 973, in test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL
-    self.assertEqual([], kabul_ihlalleri(oku(p)), p.name)
-    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: Lists differ: [] != [(('K1',), '| VERI HIZI (BIT/S, PAKET/S) |[1177 chars] |')]
+Ran 76 tests in 6.822s
 
-Second list contains 1 additional elements.
-First extra element 0:
-(('K1',), '| VERI HIZI (BIT/S, PAKET/S) | RF HATTINDA OLCULEMEDI. HICBIR BETIK OLCMEZ ( SIK RF OLC.PY RTT VE KAYIP VERIR); 10 EYLUL (T216): SIK RF OLC.PY ARTIK BAYT/S, BIT/S VE PAKET/S SAYAR ( VERI HIZI ALANI; KILIT TESTS/TEST FAZ B SIK RF OLC.PY , 13 TEST, SAYAC MUTASYONU YAKALANDI) VE YAZILIM DUZENEKLERINDE OLCULDU - §3.3.4.3.3 "10 EYLUL" TABLOSU (UDP LOOPBACK / TCP-SERI KOPRUSU: IKA GO KADANSINDA ≈ 4,0 PKT/S · ≈ 322 B/S TX, PARASUT KADANSINDA ≈ 5,0 PKT/S · ≈ 403 B/S TX; KAYIP 0/200). BUNLAR KADANS YUKUDUR, HAT KAPASITESI DEGILDIR VE RF DEGILDIR . §3.3.4.3.2\'DEKI 4 PKT/S ( IKA GO ) VE 5 PKT/S ( PARACHUTE ) TASARIM ORANLARI BU OLCUMLE LOOPBACK\'TE OLUMLU_HUKUM ; "57600 BAUD\'DA 200 B CERCEVE + ACK < 100 MS" ( KARAR SOZLESMESI.PY:2075-2076 KARAR SOZLESMESI.PY:2089-2090 ) HALA TASARIM TAHMINIDIR - RF\'TE OLCULEMEDI. 12 EYLUL (T243 · D-462 C): GERCEK GOREV KARISIMININ VERI HIZI OLCULDU (§3.3.4.3.3 "12 EYLUL" TABLOSU) VE MESAJ TIPI BASINA PAKET BOYUTU TABLOSU CIKARILDI (§3.3.4.3.1); TAHMININ 200 B CERCEVE KISMI OLCUMLE YANLISLANDI ( HEARTBEAT 273 B, OPEN ROUTE 365 B), ACK < 100 MS KISMI RF\'TE HALA OLCULEMEDI. OLCUM YINE UDP LOOPBACK\'TIR; RESULTS/ ALTINDA SIK RF OLCUM DOSYASI YOKTUR (12 EYLUL SAYIMI) |')
-
-Diff is 1343 characters long. Set self.maxDiff to None to see it. : BOLUM_3_SISTEM_SPESIFIKASYONLARI.md
-
-======================================================================
-FAIL: test_T9b_on_kayit_OLU_girdi_tasimaz (test_fdr_t244_ic_celiski.T9_KabulOlcutuBicimiKilidi.test_T9b_on_kayit_OLU_girdi_tasimaz)
-Beyaz listedeki her dizgi belgede GERÇEKTEN var; sayısı ön kayıtlı.
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "O:\navitas\.claude\worktrees\wf_88f63745-bff-1\tests\test_fdr_t244_ic_celiski.py", line 980, in test_T9b_on_kayit_OLU_girdi_tasimaz
-    self.assertEqual([], [b for b in ON_KAYITLI_KABUL_BIRIMLERI if b not in bulunan])
-    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: Lists differ: [] != ['| VERI HIZI (BIT/S, PAKET/S) | RF HATTIN[774 chars]I |']
-
-Second list contains 1 additional elements.
-First extra element 0:
-'| VERI HIZI (BIT/S, PAKET/S) | RF HATTINDA OLCULEMEDI. HICBIR BETIK OLCMEZ ( SIK RF OLC.PY RTT VE KAYIP VERIR); 10 EYLUL (T216): SIK RF OLC.PY ARTIK BAYT/S, BIT/S VE PAKET/S SAYAR ( VERI HIZI ALANI; KILIT TESTS/TEST FAZ B SIK RF OLC.PY , 13 TEST, SAYAC MUTASYONU YAKALANDI) VE YAZILIM DUZENEKLERINDE OLCULDU - §3.3.4.3.3 "10 EYLUL" TABLOSU (UDP LOOPBACK / TCP-SERI KOPRUSU: IKA GO KADANSINDA ≈ 4,0 PKT/S · ≈ 322 B/S TX, PARASUT KADANSINDA ≈ 5,0 PKT/S · ≈ 403 B/S TX; KAYIP 0/200). BUNLAR KADANS YUKUDUR, HAT KAPASITESI DEGILDIR VE RF DEGILDIR . §3.3.4.3.2\'DEKI 4 PKT/S ( IKA GO ) VE 5 PKT/S ( PARACHUTE ) TASARIM ORANLARI BU OLCUMLE LOOPBACK\'TE OLUMLU_HUKUM ; "57600 BAUD\'DA 200 B CERCEVE + ACK < 100 MS" ( KARAR SOZLESMESI.PY:2075-2076 KARAR SOZLESMESI.PY:2089-2090 ) HALA TASARIM TAHMINIDIR - RF\'TE OLCULEMEDI |'
-
-Diff is 887 characters long. Set self.maxDiff to None to see it.
-
-----------------------------------------------------------------------
-Ran 76 tests in 7.710s
-
-FAILED (failures=2)
+OK

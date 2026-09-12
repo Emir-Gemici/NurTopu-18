@@ -46,6 +46,14 @@ TASARIM KARARLARI (hepsi olculmus kacislara dayanir):
      denetimi yapar.
 
 Yalnizca standart kutuphane (CLAUDE.md madde 4).
+
+KESIF MUAFIYETI: test DEGIL, YARDIMCI modul — kendi basina kapi degildir
+(T120 kurali: `test_` onekli olmayan dosya test tasimaz). `belge_kilidi.py`
+yordamlarini `tests/test_belge_kilidi.py` (74 test) sinar; kullanicilari
+test_faz_b_arduplane_sablon, test_isaretli_gosterici, test_t235_alan_etiketi,
+test_t243_paket_boyutu ve test_yks_mk15_hakem_ekrani'dir.
+KOSUM: python -X utf8 -B -m unittest discover -s tests -p test_belge_kilidi.py   # tests/belge_kilidi.py kilidi
+(yorumlayici: O:/navitas-local-train/venv/Scripts/python.exe — CLAUDE.md madde 13)
 """
 
 import html

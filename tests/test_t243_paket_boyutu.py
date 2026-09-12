@@ -1046,14 +1046,24 @@ class ReadmeSayilariArtefakttan(unittest.TestCase):
     def test_kapi_ciktilari_yerinde_ve_hukumleri_dosyadan(self):
         """README'deki kapi hukumleri `kapi/` ham ciktilarindan dogrulanir."""
         kapi = DIZIN / "kapi"
+        # 🔴 T243-C: unittest ciktilarinin hukmu ALT DIZGE ile aranmaz.
+        #    OLCULDU: eski surum `assertIn("OK", ...)` yapiyordu ve normallesmis
+        #    metinde "OK" dizgisi "YOKTUR" icinde gectigi icin DUSMUS bir kapi
+        #    ciktisi (FAILED) da gecti. Hukum artik SATIR BASINA CIVILENIR ve
+        #    ayrica FAILED satiri bulunmamalidir.
+        unittest_ciktilari = ("test_fdr.txt", "test_faz_b_protocol.txt",
+                              "test_sik_genis.txt", "test_comms.txt",
+                              "test_iha_sender.txt", "test_ika.txt")
+        for ad in unittest_ciktilari:
+            yol = kapi / ad
+            self.assertTrue(yol.is_file(), f"kapi ciktisi yok: {yol}")
+            ham = yol.read_text(encoding="utf-8", errors="replace")
+            self.assertRegex(ham, r"(?m)^OK(?:$|\s)",
+                             f"{ad}: unittest HUKMU (OK satiri) yok")
+            self.assertNotRegex(ham, r"(?m)^FAILED\b",
+                                f"{ad}: DUSMUS kosum kapi ciktisi olarak duruyor")
         beklenen = {
             "genel_kapi.txt": "GENEL KAPI (madde 14): GECTI",
-            "test_fdr.txt": "OK",
-            "test_faz_b_protocol.txt": "OK",
-            "test_sik_genis.txt": "OK",
-            "test_comms.txt": "OK",
-            "test_iha_sender.txt": "OK",
-            "test_ika.txt": "OK",
             "akis_diyagram.txt": "TÜM DÜĞÜMLER TUTTU",
             "taban_kiyas.txt": "T243 kaynakli YENI dusuk YOK",
         }
@@ -1070,7 +1080,11 @@ class ReadmeSayilariArtefakttan(unittest.TestCase):
         # uretilir (kapi/suit_kiyas.py, README'de).
         for ad in ("tam_suit_3.txt", "tam_suit_4.txt", "tam_suit_5.txt",
                    "tam_suit_6.txt", "kararsiz_faz_b_iha_komut_alici.txt",
-                   "suit_kiyas.py", "suit_kiyas.txt"):
+                   "suit_kiyas.py", "suit_kiyas.txt",
+                   # T243-C olcum artefaktlari (hepsi DONMUS, kosum sirasinda
+                   # uretilen dosya EKLENMEZ — yukaridaki D-466 notu)
+                   "kilit_penceresi.txt", "sinir_probu.py", "sinir_probu.txt",
+                   "mutasyon_t244_birlesim.txt"):
             self.assertTrue((kapi / ad).is_file(), f"kanit dosyasi yok: {ad}")
         for ifade in ("tam_suit_6.txt", "suit_kiyas.txt",
                       "kararsiz_faz_b_iha_komut_alici.txt"):

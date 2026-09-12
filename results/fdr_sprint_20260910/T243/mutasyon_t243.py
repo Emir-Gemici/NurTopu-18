@@ -15,6 +15,8 @@ TB = KOK / "results" / "fdr_sprint_20260910" / "T243" / "TABLO.md"
 PROTO = KOK / "comms" / "protocol.py"
 BETIK = KOK / "scripts" / "paket_boyutu_olc.py"
 NOB = KOK / "tests" / "test_t243_paket_boyutu.py"   # nobetcinin KENDISI (T243-C)
+KAPI_FDR = (KOK / "results" / "fdr_sprint_20260910" / "T243" / "kapi"
+            / "test_fdr.txt")
 
 MUTASYONLAR = [
     ("M1 FDR boyut tablosu hucresi 365 -> 366", FDR,
@@ -108,6 +110,11 @@ MUTASYONLAR = [
     ("M26 TABLO.md: udp_jetson duyarlilik satiri elle silindi", TB,
      "| `udp_jetson_olculmus` | 482 | 250 | 4080,6 | %70,84 | %141,69 |\n",
      ""),
+    # 🔴 T243-C: eski kilit `assertIn("OK", ...)` idi ve normallesmis metinde
+    #    "OK" dizgisi "YOKTUR" icinde gectigi icin DUSMUS bir kapi ciktisi da
+    #    geciyordu (olculdu). Hukum artik satir basina civili.
+    ("M27 kapi ciktisi DUSMUS kosumla degistirildi (OK satiri -> FAILED)",
+     KAPI_FDR, "\nOK\n", "\nFAILED (failures=2)\n"),
 ]
 
 

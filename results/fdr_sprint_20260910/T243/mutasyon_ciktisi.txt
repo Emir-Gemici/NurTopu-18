@@ -25,5 +25,6 @@ TABAN: rc=0 · OK
   [YAKALANDI] M24 FDR: kilitli duyarlilik blogunun ARKASINA ayni basla IKINCI blok · FAILED (failures=1) · FAIL: test_duyarlilik_paragrafi_ON_KAYITLI_METNE_ESIT
   [YAKALANDI] M25 README: duyarlilik araligi yine dar (3995,8 -> 4003,6) · FAILED (failures=1) · FAIL: test_README_duyarlilik_araligi_DORT_KOSUMU_KAPSAR
   [YAKALANDI] M26 TABLO.md: udp_jetson duyarlilik satiri elle silindi · FAILED (failures=2) · FAIL: test_duyarlilik_satiri_TABLOda_bagimsiz_hesapla_ayni; FAIL: test_tablo_json_lardan_yeniden_uretilir
-SONUC: 26/26 mutasyon yakalandi
+  [YAKALANDI] M27 kapi ciktisi DUSMUS kosumla degistirildi (OK satiri -> FAILED) · FAILED (failures=1) · FAIL: test_kapi_ciktilari_yerinde_ve_hukumleri_dosyadan
+SONUC: 27/27 mutasyon yakalandi
 GERI YUKLEME SONRASI: rc=0 · OK

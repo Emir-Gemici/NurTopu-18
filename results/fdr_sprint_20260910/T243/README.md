@@ -28,8 +28,11 @@ yazılmaz.
 | `TABLO.md` | iki JSON'dan üretilen okunur tablo |
 | `kosum_ciktisi.txt` | ölçümün ham stdout'u |
 | `kosum_ciktisi_v1_eksik.txt` | **eksik** ilk koşumun ham çıktısı — aşağıya bakınız |
-| `mutasyon_t243.py` · `mutasyon_ciktisi.txt` | nöbetçinin mutasyon kontrolü: gerçek dosyalarda **26** mutasyon (D-466 ile +3, T243-C ile +7 — nöbetçinin KENDİ sabitleri de hedeftir), her denemeden sonra sha256 ile bayt-eş geri yükleme; son koşum **26/26 yakalandı** |
+| `mutasyon_t243.py` · `mutasyon_ciktisi.txt` | nöbetçinin mutasyon kontrolü: gerçek dosyalarda **27** mutasyon (D-466 ile +3, T243-C ile +8 — nöbetçinin KENDİ sabitleri ve kapı çıktıları da hedeftir), her denemeden sonra sha256 ile bayt-eş geri yükleme; son koşum **27/27 yakalandı** |
 | `kapi/` | koşulan kapıların ham çıktıları (genel kapı, `test_fdr*`, protokol, SiK, comms, İKA, akış doğrulayıcı, tam süit) |
+| `kapi/kilit_penceresi.txt` | **T243-C**: çapraz kilidin ayırt etme penceresinin bağımsız ölçümü (betiğin fonksiyonları çağrılmadan) |
+| `kapi/sinir_probu.py` · `kapi/sinir_probu.txt` | **T243-C**: metin eşitliğinin kapsam sınırı — çürütücünün S1/S2/S3 probları gerçek dosyada yeniden koşuldu (2 kaçtı, 1 yakalandı) |
+| `kapi/mutasyon_t244_birlesim.txt` | **T243-C**: birleşim sonrası T244'ün KENDİ mutasyon kontrolü — 19/19 yakalandı (ön kayıt güncellemesi kilidi gevşetmedi) |
 
 ## Ölçülen ne, ölçülmeyen ne
 
@@ -118,6 +121,36 @@ gösteriyordu**. Düzeltme:
   eski nöbetçi aynı hatalı fonksiyonu yeniden koşuyordu) ve duyarlılık paragrafı
   D-465 uyarınca **metin eşitliğine** bağlıdır.
 
+## 12 Eylül ikinci düzeltmesi (T243-C) — kanıt yüzeyi
+
+İkinci bağımsız çürütücü turu düzeltmenin **özünü sağlam** buldu (15 sayı
+bağımsız aritmetikle yeniden hesaplandı, çapraz kilit davranışsal, nöbetçi
+bağımsız, 19+20 mutasyonun öldürücülerinin hepsi yakalandı) ama **üç kanıt
+yüzeyi kusuru** için RED verdi. Üçü de kapatıldı:
+
+| kusur | ne yanlıştı | ne yapıldı | kanıt |
+|---|---|---|---|
+| K1 | Beyan `udp_jetson` duyarlılığını *"kanıt: TABLO.md §8"* diye gösteriyordu; `4080,6` · `%70,84` · `%141,69` dizgileri **depoda hiçbir dosyada yoktu** | `scripts/paket_boyutu_olc.py` §8 döngüsü `("saha_tavan","udp_tavan")` yerine `k["kosumlar"]` üzerinden geçer; `--kip tablo` yeniden koşuldu | `TABLO.md` §8 ilk tablo **dört** satır |
+| K2 | FDR §3.3.4.3.3 aralığı `4003,6 – 4107,2 B/s` diyordu; aynı bölümün **dört koşumluk** tablosunun gerçek aralığı `3995,8 – 4107,2`. Alt sınır **7,8 B/s yüksek** — yön *riski az gösterme*. D-465 metin eşitliği bu eksik kapsamlı cümleyi **kilitliyordu** | Aralık dört koşuma genişletildi; eski cümle **silinmedi**, ikinci bir ~~çizik~~ + tarih + D atfı ile durur. Ön kayıtlı şablon ve `DUYARLILIK_KOSUMLARI = tuple(K["kosumlar"])` güncellendi | FDR §3.3.4.3.3; M20/M22/M25 |
+| K3 | Beyanın gösterdiği aritmetik kendi sayısını üretmiyordu: `… / 61,91 s` → 4094,9, beyan edilen 4107,2 değil | Doğru süre `udp_tavan` `hat_yuku.sure_s` = **61,52149 s**'dir (61,91196 s `udp_jetson_olculmus`'ındır). Betik zaten doğrusunu kullanıyordu; kusur **yalnız beyan metnindeydi** ve düzeltildi | `gorev_veri_hizi.json` |
+
+**Ayrıca kapatılan bir sınır (çürütücünün S3 probu):** `_paragraf` ilk eşleşmeyi
+döndürdüğü için kilitli bloğun arkasına **aynı başla** ikinci bir paragraf
+eklenince kilit ilk bloğu görüp geçiyordu. Blok ayırma kanonik yardımcıya
+(`tests/belge_kilidi.py` → `bloklar()`, D-468) taşındı ve **tek eşleşme** şartı
+eklendi; M24 bunu ölçer. Denetim raporunda (`scripts/belge_kilidi_denetle.py`)
+ortak yardımcıdan geçen dosya sayısı **5 → 6**, kendi çizik kalıbı olan ağır
+dosya sayısı **6 → 5** oldu.
+
+**Birleşim çarpışması (T243 ↔ T244-B) — ölçüldü ve kapatıldı.** Master'la
+birleşme sonrası `tests/test_fdr_t244_ic_celiski.py` T9a/T9b düşüyordu: T244-B
+ön kaydı §3.3.4.3.4 "veri hızı" satırını **T243 dalının eklemesi olmadan**
+almıştı. Düşük **benim değişikliklerimden önce de** vardı (birleşim commit'i
+`531f4fb1`'de aynı iki düşük ölçüldü). Ön kayıt belgenin güncel metnine
+getirildi — eklenen kısım **salt eklemedir** ve bir ÖLÇÜLEMEDİ'yi olumluya
+çevirmez. T244'ün kendi mutasyon kontrolü bu değişiklikten sonra da
+**19/19** yakalar (`kapi/mutasyon_t244_birlesim.txt`).
+
 ## İlk koşum neden değiştirildi (şeffaflık)
 
 İlk koşum (`kosum_ciktisi_v1_eksik.txt`, aynı pencere, aynı kadanslar) ortak
@@ -152,11 +185,14 @@ sayıyı iyileştirmedi, **kötüleştirdi**; ilk çıktı silinmedi, bu dizinde
    Gross hata (250 → 200) sapma **+%24,41** verir ve kesin yakalanır. "Çapraz
    kilitlenir" ifadesi bundan fazlasını söylemez: kilit **gross** hata
    kilididir, birkaç çerçevelik sapmayı görmez.
-7. **Metin eşitliği (D-465/D-468) BLOĞU dondurur, BÖLÜMÜ değil.** Kilitli
-   bloğun *dışına* çelişkili ikinci bir hüküm eklenebilir; çürütücü üç prob
-   kurdu, üçü de kaçtı. T243-C bunlardan yalnız birini kapattı (aynı başla
-   eklenen **ikinci kopya** artık düşürür — nöbetçi tek eşleşme arar); geri
-   kalanı T244 ailesinin (çelişkili cümle süpürgesi) konusudur.
+7. **Metin eşitliği (D-465/D-468) BLOĞU dondurur, BÖLÜMÜ değil — ölçüldü**
+   (`kapi/sinir_probu.py`, çıktısı `kapi/sinir_probu.txt`). Çürütücünün üç
+   probu gerçek dosyada yeniden kuruldu: **S1** (farklı başla *"gözden
+   geçirilmiş duyarlılık … ham bütçe aşılmaz"*) **KAÇTI**, **S2** (farklı başla
+   *"yayın tavanı KAPATILDI"*) **KAÇTI**, **S3** (aynı başla ikinci/ikiz blok)
+   **YAKALANDI** — T243-C'nin *tek eşleşme* şartı bunu kapattı. Yani kilit,
+   bloğun **ikizini** görür, bloğun **dışındaki** çelişkili yeni hükmü görmez;
+   o T244 ailesinin (çelişkili cümle süpürgesi) konusudur.
 8. **`gorev_veri_hizi.json` yeniden üretilemez bir zamanlama ölçümüdür.** Tek
    yönlü kurcalanması yakalanır (TABLO.md yeniden üretilip karşılaştırıldığı
    için), JSON + FDR birlikte kurcalanması da yakalandı; ama JSON + FDR +
@@ -164,7 +200,12 @@ sayıyı iyileştirmedi, **kötüleştirdi**; ilk çıktı silinmedi, bu dizinde
    kaçıştır.
 9. **Nöbetçinin kendi `KILIT_TOLERANS` sabiti** tek başına gevşetilse hiçbir
    test düşmüyordu (ölü yüzey). T243-C bunu tek satırlık bir ön kayıtla
-   kapattı: `test_KILIT_TOLERANS_ON_KAYITLI`.
+   kapattı: `test_KILIT_TOLERANS_ON_KAYITLI` (mutasyon M23).
+10. **Kapı çıktılarının hükmü ALT DİZGE ile aranıyordu — ölçülüp kapatıldı.**
+   Eski kilit `assertIn("OK", …)` idi; normalleştirilmiş metinde `OK` dizgisi
+   **`YOKTUR` kelimesinin içinde** geçtiği için **düşmüş** bir kapı çıktısı
+   (`FAILED (failures=2)`) da geçiyordu. Hüküm artık satır başına çivilidir
+   (`^OK` aranır, `^FAILED` yasaktır); mutasyon **M27** bunu ölçer.
 
 ## Koşulan kapılar
 
@@ -202,8 +243,9 @@ D-466 düzeltmesinden sonra tam süit **üç kez** koşuldu; ham çıktılar
 `kapi/tam_suit_3.txt`, `kapi/tam_suit_4.txt`, `kapi/tam_suit_5.txt`. Test
 sayısı 2782 → 2794 (nöbetçiye eklenen D-466 kilitleri); bu sayı
 `tam_suit_3/4/5` koşumlarınındır — kendi kusuru yüzünden kaldırılan iki test
-sonrası **son durum 2793**'tür (`tam_suit_6`, `tam_suit_7` ve bağımsız
-çürütücü koşumu). Düşen `FAIL:`/`ERROR:`
+sonrası **2793** oldu (`tam_suit_6`, `tam_suit_7` ve bağımsız çürütücü koşumu).
+**T243-C'de master birleştirildikten sonra** (T240 · T244-B · T226-D3 ·
+AKIS-D2 · T235-B/D) sayı **2918**'dir: `kapi/tam_suit_8.txt`. Düşen `FAIL:`/`ERROR:`
 kümesinin `kapi/tam_suit_2.txt` (düzeltme öncesi) kümesinden **farkı**:
 
 | koşum | tam_suit_2'ye göre fark | ne olduğu |
@@ -212,7 +254,8 @@ kümesinin `kapi/tam_suit_2.txt` (düzeltme öncesi) kümesinden **farkı**:
 | `tam_suit_4.txt` | +`test_tam_suit_3_dusuk_kumesi_ONCEKIYLE_AYNI` | **testin kendi kusuru**: tam süit çıktısını okuyan bir nöbetçi testi yazmıştım; koşum sırasına bağlıydı. **Kaldırıldı** — aşağıya bakınız |
 | `tam_suit_5.txt` | +`test_D466_SONRASI_tam_suit_te_T243_dusugu_YOK` | aynı kusurun ikinci biçimi: testi yeniden yazdım, **yine** kendi koşumunda düştü |
 | `tam_suit_6.txt` | +`test_kapi_ciktilari_yerinde_ve_hukumleri_dosyadan` | **bootstrap**: o koşum sırasında `kapi/suit_kiyas.txt` henüz üretilmemişti |
-| `tam_suit_7.txt` | — | son koşum; karşılaştırma `kapi/suit_kiyas.txt` |
+| `tam_suit_7.txt` | — | son D-466 koşumu; karşılaştırma `kapi/suit_kiyas.txt` |
+| `tam_suit_8.txt` (**T243-C, master birleşimi sonrası**) | +`test_tests_altinda_sahte_kapi_YOK` | **birleşimin getirdiği düşük, T243-C'den değil**: master'ın `tests/belge_kilidi.py` yardımcı modülü (D-468) sıfır test topluyor ve T120 muafiyet işareti taşımıyordu. Düşük **birleşim commit'i `531f4fb1`'de de ölçüldü** (değişikliklerimden önce). Kural neyi istiyorsa o yapıldı: modül docstring'ine `KESIF MUAFIYETI:` + `KOSUM:` eklendi |
 
 🔴 **Kaldırılan test ve öğrenilen sınır — kayda geçer (silinmedi).** Tam süit
 düşük kümesini `tam_suit_2` ile karşılaştıran bir nöbetçi testi yazıldı;
