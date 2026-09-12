@@ -116,7 +116,9 @@ KAYNAK_NOBETCISI = [
     ("FDR/BOLUM_3_SISTEM_SPESIFIKASYONLARI.md", 318, "4,8 A"),
     ("FDR/BOLUM_3_SISTEM_SPESIFIKASYONLARI.md", 319, "6,5 A"),
     ("FDR/BOLUM_3_SISTEM_SPESIFIKASYONLARI.md", 320, "8,7 A"),
-    ("FDR/BOLUM_3_SISTEM_SPESIFIKASYONLARI.md", 915, "0,61 FPS"),
+    # T244 (12 Eylül 2026): §3.3.1.1.8 ve §3.3.4.x düzeltmeleri bu satırı 915 -> 929 kaydırdı
+    # (D-462 A1/A2/A3 süpürgesi). Kaynak metin degismedi; yalniz satir numarasi tazelendi.
+    ("FDR/BOLUM_3_SISTEM_SPESIFIKASYONLARI.md", 929, "0,61 FPS"),
     ("results/fdr_sprint_20260910/H2/ozet.json", 131, "1.3252"),
     ("results/fdr_sprint_20260910/H2/ozet.json", 132, "1.8318"),
     ("results/fdr_sprint_20260910/H2/ozet.json", 139, "16070"),

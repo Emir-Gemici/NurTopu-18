@@ -69,6 +69,7 @@ for _y in (KOK / "codes", KOK / "comms", KOK / "scripts", KOK / "tests"):
 from pymavlink import mavutil  # noqa: E402
 
 import ardupilot_param_kaynak as apk  # noqa: E402
+import belge_kilidi  # noqa: E402  (T240: ORTAK belge kilidi yardimcisi)
 import iha_komut_alici  # noqa: E402
 import mavlink_dogrula  # noqa: E402
 from karar_sozlesmesi import (MAVLINK_DURUM_ASGARI_HZ,  # noqa: E402
@@ -255,6 +256,117 @@ SITL_ON_HUKUM_OLCUTLERI = ("1", "2", "3", "4", "5")
 # tutmaz; ikinci kabul blogu / ikinci on hukum / "beklenen-yok sayılır" notu da sayiyi bozar.
 SITL_BASLIK_HUKMU = "ÖLÇÜLEMEDİ"
 SITL_SONUC = "**Sonuç: ArduPlane SITL provası KOŞULMADI.**"
+# ── T240 (D-460 karar 2): baslik ve sonuc cumlesi ON KAYITLI METIN ESITLIGIYLE baglanir ─────────
+# NEDEN: D-460 denetimi 8 gercek dosya mutasyonunun kactigini olctu. Baslik hukmu ALT DIZGE (`in`)
+# ile bakildigi icin W1 (`~ÖLÇÜLEMEDİ~`) ve W6 (`~ÖLÇÜLEMEDİ~ · prova KANITLANDI`) gecti; sonuc
+# cumlesi de yalnizca SAYILIYORDU, yani metni degismedigi surece yanina ikinci bir "**Sonuç (11
+# Eylül): ...**" (V3) eklenebiliyordu.
+SITL_BASLIK_METNI = "### 6.6 SITL provası — ÖLÇÜLEMEDİ (bu makine, 10 Eylül)"
+SITL_SONUC_DESENI = re.compile(r"\*\*Sonuç(?:(?!\*\*).)*\*\*", re.S)
+# SS6.6'da MESRU cizili aralik TEK: eski olcut 1. Beyaz liste budur (T240).
+SITL_IZINLI_CIZIK_DESENI = re.compile(r"~~.*?~~", re.S)
+# "olculdu" SS6.6'da YAPILMIS bir olcumun etiketidir (sitl_yoklama.txt); iki yerde gecer ve
+# SITL_HUKUM_SAYIMI["ölçüldü"] == 2 ile SAYICA cakilidir, etiket metinleri de asagida on kayitlidir.
+# Bu yuzden olumlu hukum taramasindan HARIC tutulur — gevsetme degil, kilidin yer degistirmesidir.
+SITL_OLCUM_ETIKETLERI = (
+    "⚠ Çelişki (ölçüldü):",
+    "**Satırlar ve oran (ölçüldü — `sitl_yoklama.txt` §6.1, 10 Eylül, T221-D):**",
+)
+SITL_OLUMLU_HARIC = ("olculdu",)
+# ── D-465 (1) · MIMAR KARARI 12 Eylul: YOKLUK yerine ON KAYITLI METIN ESITLIGI ──
+# NEDEN: T240 ailesi uc turdur ayni bicimde RED aldi — "su sozdizimiyle yasak metin geri
+# kondu / hukum gizlendi" (W1 `~OLCULEMEDI~`, Y4 `&#822;`, X15 `&#96;~~...~~&#96;`,
+# anahtar sozcuksuz V1/V3 cumleleri, birim kaydirmasi). YOKLUK denetiminin kacis yuzeyi
+# SONSUZDUR; ESITLIK denetiminin kacis yuzeyi YOKTUR. SS6.6 bir OLCUM HUKMU yuzeyidir
+# ("Sonuc: ... KOSULMADI", OLCULEMEDI, kabul olcutleri blogu); bu yuzden bolumun TAMAMI
+# blok blok ON KAYITLIDIR.
+# Normallestirme YALNIZ bosluk/satir sonudur; cizik/varlik/vurgu AYIKLAMASI YOKTUR —
+# ayiklama, saklama yuzeyi acan seyin kendisidir. Mesru cizik (eski olcut 1) blogun
+# ICINDE HAM haliyle durur: FDR kurali (eski metin silinmez, cizilir + tarih) korunur.
+# SAYILAR HARFI HARFINEDIR (⟨N⟩/⟨M⟩ yerine 62/61): bu bolumun .param ile baglantisi
+# ZATEN `kabul_metni_hatalari` tarafindan kuruluyor (⟨N⟩ = .param ad sayisi). .param
+# degisirse once O kilit duser; blok on kaydinin da elle guncellenmesi gerekir — ON
+# KAYDIN AMACI budur (gorunur test degisikligi olmadan belge degismez).
+SITL_66_BLOKLARI = (
+    '### 6.6 SITL provası — ÖLÇÜLEMEDİ (bu makine, 10 Eylül)',
+    "**Ölçüm** (`results/fdr_sprint_20260910/H8/T221/sitl_yoklama.txt`, üretici aynı dizindeki `sitl_yokla.py`; hiçbir şey kurmaz, hiçbir ikili çalıştırmaz): `sim_vehicle.py`, `arduplane`, `mavproxy.py`, `dronekit-sitl`, docker, podman **YOK**; `wsl.exe` yalnız System32 saplaması, kayıtlı WSL dağıtımı **YOK**; venv'de yalnız `pymavlink` var. Firmware sunucusunda 4.5.7 SITL ikilisi **yalnız Linux** için (`SITL_x86_64_linux_gnu`, `SITL_arm_linux_gnueabihf`); Windows yerel ikili yok. `dronekit-sitl` kurulu değil; kurulsa bile 4.5.7 dışı bir sürümle prova D-425'in sürüm dersine aykırıdır. **Sonuç: ArduPlane SITL provası KOŞULMADI.** Adların 4.5.7'de var olduğu ve değerlerin tablolara uyduğu kaynaktan kanıtlıdır (§6 tablo); uçuş mantığının uçtan uca davranışı **ÖLÇÜLEMEDİ**.",
+    "⚠ Çelişki (ölçüldü): SITL x86_64 `features.txt` `!HAL_PARACHUTE_ENABLED` der; aynı ikilide `CHUTE_` ve `AP_Parachute` dizgeleri var (çalıştırılmadan bayt taraması, sha256 `639a8381…`). SITL'de `CHUTE_*` parametrelerinin gerçekten var olduğu ancak koşumda görülür — provanın ilk kapısı budur.",
+    "**Satırlar ve oran (ölçüldü — `sitl_yoklama.txt` §6.1, 10 Eylül, T221-D):** `SITL_x86_64_linux_gnu/features.txt:139` `!HAL_PARACHUTE_ENABLED` der; ama o dosyanın 167 satırının **164'ü** `!` ile başlar (`Pixhawk6C/features.txt:196` `HAL_PARACHUTE_ENABLED`; orada 308 satırın 72'si `!`). Aynı SITL ikilisinde **yalnız paraşütle derlenen** iki mesaj var: `Chute has no channel` 1 kez (`libraries/AP_Parachute/AP_Parachute.cpp:216`; dosya `:3` `#if HAL_PARACHUTE_ENABLED` … `:273` `#endif` bloğunda) ve `Parachute: Too low` 1 kez (`ArduPlane/parachute.cpp:55`; `:15` `#if PARACHUTE == ENABLED` … `:68` `#endif`; `ArduPlane/config.h:219` `#define PARACHUTE HAL_PARACHUTE_ENABLED`). `CHUTE_` grup öneki `ArduPlane/Parameters.cpp:767`'dedir (`:764` `#if PARACHUTE == ENABLED`). İki kaynak birbirini yalanlar: dizge sayımı parametre tablosunu kanıtlamaz, SITL `features.txt`'i ise neredeyse her özelliği `!` yazar. **Hakem koşumdur**; sonuç ölçütlerin altındaki önceden yazılmış ön hükümle kaydedilir.",
+    '**Linux / WSL2 yordamı** (Ubuntu; A yolu x86_64 hazır ikili, B yolu kaynaktan — Jetson aarch64 dahil):',
+    'A) Hazır 4.5.7 ikilisi (`<DEPO>` = bu deponun kökü):',
+    '```bash\npython3 -m venv ~/sitl && . ~/sitl/bin/activate && pip install MAVProxy pymavlink\nmkdir -p ~/sitl/p457 && cd ~/sitl/p457\nwget https://firmware.ardupilot.org/Plane/stable-4.5.7/SITL_x86_64_linux_gnu/arduplane && chmod +x arduplane\nsha256sum arduplane      # beklenen 639a8381c1d8805a2e252a679f22d72473232ac813c810216d99aaba55e160e9 (10 Eyl)\nwget https://raw.githubusercontent.com/ArduPilot/ardupilot/Plane-4.5.7/Tools/autotest/models/plane.parm\n./arduplane --model plane --home -35.363261,149.165230,584,353 --defaults plane.parm,<DEPO>/config/pixhawk/arduplane_final.param -I0 &\nmavproxy.py --master tcp:127.0.0.1:5760 --console\n```',
+    "B) Kaynaktan (her Linux; Jetson Orin Nano dahil — kurulum betiği JetPack 7.2.1 / Ubuntu 24.04'te ÖLÇÜLMEDİ):",
+    '```bash\ngit clone --branch Plane-4.5.7 --depth 1 --recurse-submodules --shallow-submodules https://github.com/ArduPilot/ardupilot.git\ncd ardupilot && Tools/environment_install/install-prereqs-ubuntu.sh -y && . ~/.profile\n./waf configure --board sitl && ./waf plane\nTools/autotest/sim_vehicle.py -v ArduPlane -f plane -L CMAC --add-param-file=<DEPO>/config/pixhawk/arduplane_final.param --console --map\n```',
+    "`sim_vehicle.py -f plane` önce `Tools/autotest/models/plane.parm`'ı, sonra `--add-param-file` dosyasını yükler (`--defaults a,b`; sonraki kazanır). Her iki yolda MAVProxy'de:",
+    '```text\nparam set SIM_PARA_ENABLE 1\nparam set SIM_PARA_PIN 7\nwp load <DEPO>/config/pixhawk/arduplane_sitl_prova.waypoints\nmode AUTO\narm throttle\nparam set SIM_SHOVE_X 46\nparam set SIM_SHOVE_TIME 390\n```',
+    "`SIM_PARA_PIN 7` = paraşüt servosu (MAIN7): `libraries/SITL/SIM_Parachute.cpp` bu çıkış ≥ 1250 PWM olunca `BANG!  Parachute deployed` basar (`CHUTE_SERVO_ON` 1300, `OFF` 1100). `SIM_SHOVE_X/TIME` gövde x ivmesini verilen ms boyunca ekler (`SIM_Aircraft.cpp` `add_shove_forces`): 46 m/s² × 0,39 s ≈ 18 m/s = DDR mancınığı. Önce `SHOVE_X`, sonra `SHOVE_TIME` (süre yazılınca itiş başlar ve sonunda 0'a döner).",
+    '**Kabul ölçütleri (önceden yazıldı; biri tutmazsa prova DÜŞER, eşik gevşetilmez):**',
+    "1. ~~Açılış `ArduPlane V4.5.7`; `param show CHUTE_ENABLED` 1 ve dosyadaki 62 adın 62'si yüklü.~~ *(10 Eylül, ölçümden önce, D-449: `BRD_SER2_RTSCTS` 4.5.7 SITL'de derlenmez — bu ölçüt SITL'de hiç tutamazdı.)* Açılış `ArduPlane V4.5.7`; `param show CHUTE_ENABLED` 1; dosyadaki **62** addan SITL'de **61**'i yüklü (N − |beklenen-yok|; her ad `param show <AD>` ile sayılır). Önceden yazılmış **beklenen-yok** listesi = {`BRD_SER2_RTSCTS`}. Gerekçe (Plane-4.5.7 kaynağı): `libraries/AP_BoardConfig/AP_BoardConfig.cpp:124` `#ifdef HAL_HAVE_RTSCTS_SERIAL2` (tanım `:131`; dış blok `:113` `#if AP_FEATURE_RTSCTS`). Bu makroyu ChibiOS hwdef üreteci yazar: `libraries/AP_HAL_ChibiOS/hwdef/scripts/chibios_hwdef.py:1899-1903` UART'ın `_RTS` hattı varsa `#define HAL_HAVE_RTSCTS_SERIAL<n>` (`:1929-1930` `AP_FEATURE_RTSCTS 1`); Pixhawk 6C'de `libraries/AP_HAL_ChibiOS/hwdef/Pixhawk6C/hwdef.dat:57-58` `UART5_RTS`/`UART5_CTS`, `:37` `SERIAL_ORDER` → SERIAL2 = UART5. Ölçüm (ikili çalıştırılmadan): 4.5.7 SITL ikilisi (sha256 `639a8381c1d8805a2e252a679f22d72473232ac813c810216d99aaba55e160e9`) `SER2_RTSCTS` dizgesini **0** kez içerir; aynı tablonun koşulsuz adı `SAFETY_DEFLT` (`:171`) 1 kez (`sitl_yoklama.txt` §6.1). SITL bu adı **sessizce** atlar: `libraries/AP_Param/AP_Param.cpp:2313-2316` uyarıyı yalnız `#if ENABLE_DEBUG` ile basar, ikilide `Ignored unknown param` 0 kez — eksik ad günlükten değil `param show` ile görülür. Bu listenin dışındaki her eksik ad **DÜŞER**; liste ölçümden sonra genişletilmez (test A18 README listesini testteki önceden yazılmış kümeyle kilitler).",
+    '2. Arm öncesi mesajlarda `Chute has no channel` yok.',
+    '3. İtiş öncesi 60 s boyunca `Triggered AUTO` yok; itişten sonra `Armed AUTO, xaccel = …` ve 0,6 s içinde `Triggered AUTO`.',
+    '4. Bırakma noktasından (satır 4) sonra `Parachute: Released`, ardından `BANG!  Parachute deployed`.',
+    "5. Bırakmadan sonra `.bin` RCOU'da SERVO3 gaz çıkışı minimumda (`servos.cpp` `suppress_throttle`).",
+    '6. `.bin` + `mavlogdump.py --types MSG,RCOU,CTUN` çıktısı `results/<tarih>_sitl_plane457/` altına.',
+    '**Ön hüküm — SITL\'de `CHUTE_*` yoksa (10 Eylül, ölçümden önce, D-449):** koşumda `param show CHUTE_ENABLED` boş dönerse prova *"SITL paraşütsüz derlenmiş — paraşüt zinciri ÖLÇÜLEMEDİ"* diye kaydedilir. Ölçüt 1 **DÜŞER** (`CHUTE_*` beklenen-yok listesine sonradan eklenmez, eşik gevşetilmez); ölçüt 2\'nin *"mesaj yok"* koşulu paraşütsüz ikilide kendiliğinden sağlanır → ÖLÇÜLEMEDİ; ölçüt 4 ve 5 ÖLÇÜLEMEDİ; ölçüt 3 (kalkış kapısı) yine ölçülür. Yukarıdaki `features.txt` ↔ ikili çelişkisi bu kaydı değiştirmez.',
+    "⚠ SITL `plane` modeli bizim uçağın aerodinamiği değildir (`models/plane.parm` küçük model; bizim dosya `AIRSPEED_*`'ı ezer, `ROLL_LIMIT_DEG 65` gibi değerleri o dosyadan kalır): prova **mantığı** sınar (kalkış kapısı, paraşüt zinciri, failsafe), performansı sınamaz. SITL plane modelinin kendi fırlatıcısı (`SIM_Plane.cpp`: `-catapult`/`-bungee` çerçevelerinde 7. çıkış > 1700 PWM) **kullanılmaz**:",
+    '7. çıkış bizde paraşüttür; mancınık `SIM_SHOVE_*` ile benzetilir.',
+)
+
+# ── T240: SS6.6 hukum tasiyan CUMLE KUMESI kapalidir (kara liste yerine yapisal cozum) ──────────
+# NEDEN: kacan mutantlarin dordu (W2 "KANITLANDI", W7 "sorunsuz tamamlandi; olcutler saglanmis",
+# V1 "biri tutmasa da prova kabul edilir", V3 "SITL zinciri yerinde; prova kapilari sorun cikarmadi")
+# celiskili IKINCI HUKUM cumleleridir; V1 ve V3 hicbir olumlu hukum sozcugu tasimaz ve numarali
+# olcut anmaz, yani kara liste onlari ILKECE goremez. Kapali cumle kumesi gorur: "prova" ya da
+# "olcut" gecen her cumle bu demette OLMALIDIR. On kayitli kabul blogu, on hukum paragrafi, baslik
+# ve kod citleri tarama DISINDADIR — onlar harfi harfine ayri kilitlidir.
+# T240-B (curutucu kacani Y11): secici ("prova", "olcut") DARDI — "Zincir yerinde; kapilar
+# sorun cikarmadi." ikisini de tasimadigi icin kume DISINDA kaliyor ve KACIYORDU. Secici
+# artik ON KAYITLI ortak listedir (belge_kilidi.HUKUM_SOZCUKLERI, gerekcesi orada yazili) +
+# SS6.6'nin kendi alan sozcukleri. Kume 5 cumleden 18'e cikti; DARALTMA degil GENISLETME.
+SITL_HUKUM_ANAHTARLARI = belge_kilidi.HUKUM_SOZCUKLERI + (
+    "sitl", "zincir", "kapi", "parasut", "surum", "param")
+SITL_HUKUM_CUMLELERI = (
+    "olcum (results/fdrsprint20260910/h8/t221/sitlyoklama.txt, uretici ayni dizindeki "
+    "sitlyokla.py; hicbir sey kurmaz, hicbir ikili calistirmaz): simvehicle.py, arduplane, "
+    "mavproxy.py, dronekit-sitl, docker, podman yok; wsl.exe yalniz system32 saplamasi, kayitli "
+    "wsl dagitimi yok; venv'de yalniz pymavlink var.",
+    "firmware sunucusunda 4.5.7 sitl ikilisi yalniz linux icin (sitlx8664linuxgnu, "
+    "sitlarmlinuxgnueabihf); windows yerel ikili yok.",
+    "dronekit-sitl kurulu degil; kurulsa bile 4.5.7 disi 1 surumle prova d-425'in surum dersine "
+    "aykiridir.",
+    "sonuc: arduplane sitl provasi kosulmadi.",
+    "adlarin 4.5.7'de var oldugu ve degerlerin tablolara uydugu kaynaktan kanitlidir (§6 tablo); "
+    "ucus mantiginin uctan uca davranisi olculemedi.",
+    "⚠ celiski (olculdu): sitl x8664 features.txt !halparachuteenabled der; ayni ikilide chute ve "
+    "apparachute dizgeleri var (calistirilmadan bayt taramasi, sha256 639a8381...).",
+    "sitl'de chute parametrelerinin gercekten var oldugu ancak kosumda gorulur - provanin ilk "
+    "kapisi budur.",
+    "satirlar ve oran (olculdu - sitlyoklama.txt §6.1, 10 eylul, t221-d): "
+    "sitlx8664linuxgnu/features.txt:139 !halparachuteenabled der; ama o dosyanin 167 satirinin "
+    "164'u ! ile baslar (pixhawk6c/features.txt:196 halparachuteenabled; orada 308 satirin 72'si "
+    "!).",
+    "ayni sitl ikilisinde yalniz parasutle derlenen 2 mesaj var: chute has no channel 1 kez "
+    "(libraries/apparachute/apparachute.cpp:216; dosya :3 #if halparachuteenabled ... :273 #endif "
+    "blogunda) ve parachute: too low 1 kez (arduplane/parachute.cpp:55; :15 #if parachute == "
+    "enabled ... :68 #endif; arduplane/config.h:219 #define parachute halparachuteenabled). chute "
+    "grup oneki arduplane/parameters.cpp:767'dedir (:764 #if parachute == enabled).",
+    "2 kaynak birbirini yalanlar: dizge sayimi parametre tablosunu kanitlamaz, sitl "
+    "features.txt'i ise neredeyse her ozelligi ! yazar.",
+    "hakem kosumdur; sonuc olcutlerin altindaki onceden yazilmis on hukumle kaydedilir.",
+    "linux / wsl2 yordami (ubuntu; a yolu x8664 hazir ikili, b yolu kaynaktan - jetson aarch64 "
+    "dahil):",
+    "b) kaynaktan (her linux; jetson orin nano dahil - kurulum betigi jetpack 7.2.1 / ubuntu "
+    "24.04'te olculmedi):",
+    "simvehicle.py -f plane once tools/autotest/models/plane.parm'i, sonra --add-param-file "
+    "dosyasini yukler (--defaults a,b; sonraki kazanir).",
+    "simparapin 7 = parasut servosu (main7): libraries/sitl/simparachute.cpp bu cikis ≥ 1250 pwm "
+    "olunca bang! parachute deployed basar (chuteservoon 1300, off 1100).",
+    "⚠ sitl plane modeli bizim ucagin aerodinamigi degildir (models/plane.parm kucuk model; bizim "
+    "dosya airspeed'i ezer, rolllimitdeg 65 gibi degerleri o dosyadan kalir): prova mantigi sinar "
+    "(kalkis kapisi, parasut zinciri, failsafe), performansi sinamaz.",
+    "sitl plane modelinin kendi firlaticisi (simplane.cpp: -catapult/-bungee cercevelerinde 7.",
+    "cikis bizde parasuttur; mancinik simshove ile benzetilir.",
+)
 SITL_HUKUM_SAYIMI = {"ölçülemedi": 5, "ölçülmedi": 1, "düşer": 3, "koşulmadı": 1, "ölçüldü": 2,
                      "beklenen-yok": 3, "kabul ölçüt": 1, "ön hüküm": 2}
 # olculmemis provaya yazilamayacak olumlu hukum sozcukleri (tr_kucuk metinde). "tutarlı", "geçerli",
@@ -649,8 +761,28 @@ def gorev_hatalari(satirlar, p):
 
 
 def cizilmemis(metin):
-    """~~cizili~~ (geri cekilmis) metni cikarir: kilitler yalniz YURURLUKTEKI metni okur."""
-    return re.sub(r"~~.*?~~", "", metin, flags=re.S)
+    """Cizili (geri cekilmis) metni cikarir: kilitler yalniz YURURLUKTEKI metni okur.
+
+    T240 (D-460 karar 2): ayiklama artik ORTAK yardimcidan gelir — eski surum yalniz `~~...~~`
+    biliyordu ve tek tilde `~ÖLÇÜLEMEDİ~` (kacan mutant W1/W6) kilidi deliyordu.
+    """
+    return belge_kilidi.cizikleri_ayikla(metin)
+
+
+def sitl_govdesi(metin):
+    """SS6.6'nin HUKUM GOVDESI: baslik, on kayitli kabul blogu ve on hukum paragrafi CIKARILMIS.
+
+    NEDEN: bu uc yuzey harfi harfine ayri kilitlidir (SITL_BASLIK_METNI, SITL_KABUL_METNI,
+    SITL_ON_HUKUM_METNI). Govdeye ayrica olumlu hukum ve kapali cumle kumesi kilidi uygulanir;
+    on kayitli bloklarin ikinci kez kara listeyle taranmasi kilidi GUCLENDIRMEZ, yalanci alarm
+    uretir (on hukum paragrafindaki "kendiliginden saglanir" gibi).
+    """
+    govde = "\n".join(metin.splitlines()[1:])
+    for bas in (SITL_KABUL_BASLIGI, SITL_ON_HUKUM):
+        blok = paragraf(govde, bas)
+        if blok:
+            govde = govde.replace(blok, "")
+    return govde
 
 
 def tek_satir(metin):
@@ -674,17 +806,49 @@ def anilan_olcutler(metin):
 
 
 def sitl_hukum_hatalari(metin):
-    """D-453: OLCULEMEDI/KOŞULMADI yalniz yururlukte sayilir; ikinci hukum kabul edilmez."""
+    """D-453 + T240: OLCULEMEDI/KOŞULMADI yalniz yururlukte sayilir; ikinci hukum kabul edilmez.
+
+    T240 (D-460 karar 2) ile sertlestirilen noktalar — her biri olculmus bir kacana karsilik gelir:
+      · baslik ALT DIZGE degil ON KAYITLI METIN esitligidir (W1 `~ÖLÇÜLEMEDİ~`, W6);
+      · sonuc cumlesi hem TAM 1 kez, hem de ON KAYITLI metinle bire bir (V3 ikinci "**Sonuç ...**");
+      · olumlu hukum ailesi NORMALLESTIRILMIS govdede aranir — `_` artik harf sayilmaz ve vurgu
+        sozcuk ici sokulur (W3 `_doğrulandı_`, W4 `__koşuldu__`), aile genistir (W2 KANITLANDI,
+        W7 "sorunsuz tamamlandi; ... saglanmis");
+      · "prova"/"olcut" gecen her cumle ON KAYITLI kumede olmalidir (V1 ve V3 hicbir olumlu hukum
+        sozcugu tasimiyordu, numarali olcut de anmiyordu — kara liste onlari goremez).
+    metin = cizilmemis SS6.6.
+    """
     hatalar = []
+    # On kayitli baslik metni OLCULEMEDI hukmunu tasimak ZORUNDADIR: sabiti belgeyle
+    # birlikte degistirip hukmu sessizce dusurme yolu boylece kapali kalir.
+    if SITL_BASLIK_HUKMU not in SITL_BASLIK_METNI:
+        hatalar.append(f"on kayitli SS6.6 basligi {SITL_BASLIK_HUKMU!r} hukmunu tasimiyor")
     baslik = metin.splitlines()[0] if metin else ""
-    if SITL_BASLIK_HUKMU not in baslik:
-        hatalar.append("SITL basliginda yururlukte OLCULEMEDI yok")
-    if metin.count(SITL_SONUC) != 1:
-        hatalar.append("SITL sonuc cumlesi yururlukte tam 1 kez KOŞULMADI demeli")
+    if not belge_kilidi.on_kayitli_metin_esit(baslik, SITL_BASLIK_METNI):
+        hatalar.append(f"SITL basligi on kayitli metinle ayni degil: {baslik!r}")
+    sonuclar = SITL_SONUC_DESENI.findall(metin)
+    if len(sonuclar) != 1:
+        hatalar.append(f"SITL sonuc cumlesi yururlukte {len(sonuclar)} kez (tam 1 olmali)")
+    elif not belge_kilidi.on_kayitli_metin_esit(sonuclar[0], SITL_SONUC):
+        hatalar.append(f"SITL sonuc cumlesi on kayitli metinle ayni degil: {sonuclar[0]!r}")
+    for etiket in SITL_OLCUM_ETIKETLERI:
+        if metin.count(etiket) != 1:
+            hatalar.append(f"SS6.6 olcum etiketi {etiket!r} {metin.count(etiket)} kez (tam 1 olmali)")
+    govde = sitl_govdesi(metin)
+    bulunan = belge_kilidi.olumlu_hukum_var(govde, haric=SITL_OLUMLU_HARIC)
+    if bulunan:
+        hatalar.append(f"SITL kosulmamisken olumlu hukum: {bulunan!r}")
+    cumleler = belge_kilidi.hukum_cumleleri(
+        re.sub(r"(?ms)^[ \t]*```.*?^[ \t]*```[ \t]*$", "", govde), SITL_HUKUM_ANAHTARLARI)
+    if cumleler != SITL_HUKUM_CUMLELERI:
+        fazla = [c for c in cumleler if c not in SITL_HUKUM_CUMLELERI]
+        eksik = [c for c in SITL_HUKUM_CUMLELERI if c not in cumleler]
+        hatalar.append(f"SS6.6 on kayitli hukum cumlesi kumesi degisti — fazla: {fazla}; "
+                       f"eksik: {eksik}")
     duz = tr_kucuk(metin.replace("**", ""))
     olumlu = SITL_OLUMLU_HUKUM.findall(duz)
     if olumlu:
-        hatalar.append(f"SITL kosulmamisken olumlu hukum: {olumlu}")
+        hatalar.append(f"SITL kosulmamisken olumlu hukum (ham): {olumlu}")
     for soz, beklenen in SITL_HUKUM_SAYIMI.items():
         if duz.count(soz) != beklenen:
             hatalar.append(f"SITL hukum sayimi {soz!r}: {duz.count(soz)} != {beklenen}")
@@ -743,13 +907,16 @@ def eski_olcut1_hatalari(ham, metin):
         hatalar.append(f"eski olcut 1 ~~cizili~~ {len(cizili)} kez (tam 1: FDR, eski metin silinmez)")
     elif not re.search(rf"~~[^~]*?{SITL_ESKI_OLCUT1}[^~]*?~~\s*\*?\({re.escape(SITL_DAMGA)}\W", ham):
         hatalar.append(f"cizili eski olcut 1'in hemen ardinda tarih damgasi yok: '({SITL_DAMGA}'")
+    tam = SITL_IZINLI_CIZIK_DESENI.findall(ham)
     araliklar = re.findall(r"~~(.*?)~~", ham, flags=re.S)
     if ham.count("~~") != 2 or len(araliklar) != 1:
         hatalar.append("SS6.6'da yalniz eski olcut 1 cizili olabilir (kapanmamis/ek ~~)")
-    elif tek_satir(araliklar[0]) != tek_satir(SITL_ESKI_OLCUT1_METNI):
+    elif not belge_kilidi.on_kayitli_metin_esit(araliklar[0], SITL_ESKI_OLCUT1_METNI):
         hatalar.append("cizili eski olcut 1 on kayitli tarihsel metinle ayni degil")
-    if re.search(r"</?(?:del|s|strike)\b", ham, flags=re.I):
-        hatalar.append("SS6.6 HTML cizgisi hukum gizleyemez")
+    # T240 (D-460 karar 2): HTML kara listesi yerine BEYAZ LISTE — tek mesru cizik eski olcut 1'dir.
+    # Tek tilde, <del>/<s>/<strike>, birlesen uzeri cizgi, tilde benzeri isaret ve stil tasiyabilen
+    # HER HTML etiketi burada yakalanir; gelecekteki sozdizimi icin kalip eklemek gerekmez (W1/W6).
+    hatalar += [f"SS6.6 {h}" for h in belge_kilidi.beyaz_liste_disi_cizik(ham, tam)]
     return hatalar
 
 
@@ -1033,6 +1200,39 @@ class SitlGorevi(unittest.TestCase):
         self.assertEqual(sitl_kabul_hatalari(sitl, self.p, _kanit(),
                                              SITL_YOKLAMA.read_text(encoding="utf-8")), [])
 
+    def test_a18b_D465_SS66_on_kayitli_metin_esitligi(self):
+        """D-465 (1): SS6.6'nin TAMAMI blok blok ON KAYITLI METIN ESITLIGIYLE baglidir.
+
+        Bu kilit YOKLUK degil ESITLIK denetler: bolumun HAM metni (yalniz bosluk/satir
+        sonu normalize) testte duran sabite ESIT olmak zorundadir. Bir sozcuk eklenir,
+        silinir ya da uzeri cizilirse test DUSER; bunun hangi SOZDIZIMIYLE yapildigi
+        ONEMSIZDIR — `~~X~~`, `~X~`, `<s>X</s>`, `&#822;`, `&#96;~~X~~&#96;` hepsi ayni
+        kapiya carpar.
+
+        OLCULEN KACISLAR ki bu tek kuralla kapanir: W1/W6 (`~OLCULEMEDI~` baslikta),
+        W2/W7 (aile disi olumlu hukum), V1/V3 (anahtar sozcuksuz celiskili ikinci
+        hukum), Y4 (`&#822;`), X15/X16/X17 (`&#96;` sarmali).
+
+        CIZIK AYIKLAMASI BILEREK YOKTUR: ayiklama, saklama yuzeyini acan seydir.
+        Mesru cizik (eski olcut 1) on kayitli blogun ICINDE HAM haliyle durur — FDR
+        kurali (eski metin silinmez, cizilir + tarih) bozulmadan korunur.
+        """
+        sitl = readme_bolumu(_readme(), README_SITL)
+        self.assertIsNotNone(sitl, f"README'de {README_SITL!r} yok")
+        bulunan = belge_kilidi.bloklar(sitl)
+        self.assertEqual(SITL_66_BLOKLARI, bulunan,
+                         "config/pixhawk/README SS6.6 on kayitli metinle ayni degil — "
+                         "fazla: {}; eksik: {}".format(
+                             [b for b in bulunan if b not in SITL_66_BLOKLARI],
+                             [b for b in SITL_66_BLOKLARI if b not in bulunan]))
+        # ON KAYITLAR BIRBIRINE BAGLI: baslik ve sonuc cumlesi sabitleri blok
+        # demetinin ICINDE gecmek zorunda — biri sessizce degistirilemez.
+        self.assertEqual(SITL_BASLIK_METNI, SITL_66_BLOKLARI[0])
+        self.assertTrue(any(SITL_SONUC in b for b in SITL_66_BLOKLARI),
+                        "SS6.6 on kayitli bloklarinda 'Sonuc:' cumlesi yok")
+        self.assertTrue(any(SITL_ESKI_OLCUT1_METNI in b for b in SITL_66_BLOKLARI),
+                        "SS6.6 on kayitli bloklarinda cizili eski olcut 1 yok")
+
 
 class KaynakBetigi(unittest.TestCase):
     """A19: scripts/ardupilot_param_kaynak.py saf fonksiyonlari, cevrimdisi sentetik kaynakla."""
@@ -1266,15 +1466,43 @@ class DenetleyiciGercektenDuser(unittest.TestCase):
         for eski, yeni, beklenen in (
                 ("ölçüt 4 ve 5\nÖLÇÜLEMEDİ", "~~ölçüt 4 ve 5\nÖLÇÜLEMEDİ~~ doğrulandı: tutar",
                  "on kayitli metin degisti"),
-                ("KOŞULMADI", "~~KOŞULMADI~~", "sonuc cumlesi yururlukte"),
+                ("KOŞULMADI", "~~KOŞULMADI~~", "sonuc cumlesi"),
                 ("KOŞULMADI", "~~KOŞULMADI~~ koşuldu", "olumlu hukum"),
-                ("KOŞULMADI", "<del>KOŞULMADI</del>", "HTML cizgisi"),
-                ("KOŞULMADI", "<s>KOŞULMADI</s>", "HTML cizgisi"),
+                ("KOŞULMADI", "<del>KOŞULMADI</del>", "html etiketi <del>"),
+                ("KOŞULMADI", "<s>KOŞULMADI</s>", "html etiketi <s>"),
                 ("KOŞULMADI", "~~KOŞULMADI", "kapanmamis/ek ~~")):
             with self.subTest(yeni=yeni):
                 self.assertEqual(sitl.count(eski), 1)
                 h = sitl_kabul_hatalari(sitl.replace(eski, yeni), p, kanit, yoklama)
                 self.assertTrue(any(beklenen in x for x in h), h)
+
+    def test_m18b_T240_D460_denetiminde_kacan_sekiz_mutant_duser(self):
+        """T240 (D-460 karar 2): bagimsiz mimar denetiminde SS6.6 kilidinden KACAN 8 mutant.
+
+        Sekizi de gercek dosya mutasyonu olarak olculmustu (kapi cikisi 0, A18 hata listesi []).
+        Burada ayni sekiz metin donusumu birim duzeyinde kurulur; her biri A18'i DUSURMELIDIR.
+        """
+        sitl, p, kanit, yoklama = self._sitl_girdileri()
+        celiski = "kaydı değiştirmez."
+        for ad, eski, yeni in (
+                ("W1 baslikta tek tilde", "— ÖLÇÜLEMEDİ (bu makine", "— ~ÖLÇÜLEMEDİ~ (bu makine"),
+                ("W6 tek tilde + KANITLANDI", "— ÖLÇÜLEMEDİ (bu makine",
+                 "— ~ÖLÇÜLEMEDİ~ · prova KANITLANDI (bu makine"),
+                ("W2 KANITLANDI", celiski, celiski + " SITL prova sonucu: KANITLANDI."),
+                ("W3 _dogrulandi_", celiski, celiski + " SITL prova sonucu: _doğrulandı_."),
+                ("W4 __kosuldu__", celiski, celiski + " SITL prova sonucu: __koşuldu__."),
+                ("W7 sorunsuz tamamlandi", celiski,
+                 celiski + " SITL provası sorunsuz tamamlandı; ölçütler sağlanmış durumdadır."),
+                ("V1 numarasiz celiskili hukum", celiski,
+                 celiski + " Bu koşullardan biri tutmasa da prova kabul edilir; liste sonradan "
+                 "genişletilebilir."),
+                ("V3 ikinci Sonuc cumlesi", celiski,
+                 celiski + " **Sonuç (11 Eylül): SITL zinciri yerinde; prova kapıları sorun "
+                 "çıkarmadı.**")):
+            with self.subTest(mutant=ad):
+                self.assertEqual(sitl.count(eski), 1, eski)
+                h = sitl_kabul_hatalari(sitl.replace(eski, yeni), p, kanit, yoklama)
+                self.assertTrue(h, f"{ad} A18'i DUSURMELI (kacti)")
 
     def test_m19_coklu_olcut_ve_celiskili_hukum_yakalanir(self):
         """D-454 N2/N3: olcut 5 sadece '4 ve 5'te anilsa da ikinci hukmu yakalanir."""

@@ -1,0 +1,578 @@
+# T244 mutasyon ciktisi · 2026-09-12 06:18:55 · python.exe
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+BASLANGIC TEMIZ: cikis=0 ran=44 son='OK' dusen=[] hatalar=[]
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+M1 madde1: §3.3.1.1.8 'acik kalemdir' cizgisi kaldirildi (eski hukum CANLI): cikis=1 ran=44 son='FAILED (failures=5)' -> YAKALANDI; hedef={'test_T1_uc_surecte_de_kodlu_yazili': 'DUSTU'}; dusen=['test_T10_log_YOK_sayilari_ve_rapor_HIZALI', 'test_T1_uc_surecte_de_kodlu_yazili', 'test_T1b_atiflar_gercek_kod_satirlariyla', 'test_T1c_6_eylul_de_kosulmadi_gecti_yazilmaz', 'test_cizme_isareti_beyaz_liste']; hatalar=[]
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+M2 madde2: §3.3.4.1.7 H1c 'damgalanmadi' cizgisi kaldirildi: cikis=1 ran=44 son='FAILED (failures=1)' -> YAKALANDI; hedef={'test_T2_h1c_kosuldu_ve_gecti': 'DUSTU'}; dusen=['test_T2_h1c_kosuldu_ve_gecti']; hatalar=[]
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+M3 madde3: kunye .engine sha'si defterden SAPTI (son hane 0 -> 1): cikis=1 ran=44 son='FAILED (failures=1)' -> YAKALANDI; hedef={'test_T3_engine_sha_kayit_defteriyle': 'DUSTU'}; dusen=['test_T3_engine_sha_kayit_defteriyle']; hatalar=[]
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+M4 madde4: §4.4 ESC kalibrasyonu hucresi 5 Eylul haline dondu: cikis=1 ran=44 son='FAILED (failures=1)' -> YAKALANDI; hedef={'test_T4c_6_eylul_hucreleri_dosya_satirla': 'DUSTU'}; dusen=['test_T4c_6_eylul_hucreleri_dosya_satirla']; hatalar=[]
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+M5 madde5: §4.8.3 'Jetson'da .engine ile olculecektir' CANLI dondu: cikis=1 ran=44 son='FAILED (failures=1)' -> YAKALANDI; hedef={'test_T5a_483_engine_olculdu_ve_dustu': 'DUSTU'}; dusen=['test_T5a_483_engine_olculdu_ve_dustu']; hatalar=[]
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+M6 madde6: §4.0 Y-4-M04 durumu YOK'a geri alindi (YONERGE ile celisir): cikis=1 ran=44 son='FAILED (failures=2)' -> YAKALANDI; hedef={'test_T6b_durumlar_HIZALI': 'DUSTU', 'test_T6c_m04_m06_kismen_eski_deger_cizili': 'DUSTU'}; dusen=['test_T6b_durumlar_HIZALI', 'test_T6c_m04_m06_kismen_eski_deger_cizili']; hatalar=[]
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+M7 madde7: durustluk cumlesi §4.7'den SILINDI (yalniz Bolum 3'te kaldi): cikis=1 ran=44 son='FAILED (failures=1)' -> YAKALANDI; hedef={'test_T7_cumle_iki_yerde_ve_CIZILMEMIS': 'DUSTU'}; dusen=['test_T7_cumle_iki_yerde_ve_CIZILMEMIS']; hatalar=[]
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+M8 madde8: §3.3.4.2.8 v2 HTAB engel orani artefakttan SAPTI (0,2380 -> 0,2400): cikis=1 ran=44 son='FAILED (failures=1)' -> YAKALANDI; hedef={'test_T8_varyant_sayilari_artefakttan': 'DUSTU'}; dusen=['test_T8_varyant_sayilari_artefakttan']; hatalar=[]
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+MC CELISKILI IKINCI HUKUM: §4.8.3'e gevsetilmis ikinci D-303 esigi yazildi: cikis=1 ran=44 son='FAILED (failures=4)' -> YAKALANDI; hedef={'test_T5a_483_engine_olculdu_ve_dustu': 'DUSTU', 'test_celiskili_ikinci_hukum_HICBIR_yuzeyde_yok': 'DUSTU'}; dusen=['test_T3c_d303_dustu_uc_yerde_de_olumluya_CEVRILMEMIS', 'test_T5a_483_engine_olculdu_ve_dustu', 'test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL', 'test_celiskili_ikinci_hukum_HICBIR_yuzeyde_yok']; hatalar=[]
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+MZ1 CIZILI VARYANT (tek tilde): madde7 cumlesi §3.3.3.2'de TEK TILDE ile cizildi: cikis=1 ran=44 son='FAILED (failures=1)' -> YAKALANDI; hedef={'test_T7_cumle_iki_yerde_ve_CIZILMEMIS': 'DUSTU'}; dusen=['test_T7_cumle_iki_yerde_ve_CIZILMEMIS']; hatalar=[]
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+MZ2 CIZILI VARYANT (<del>) + OLUMLUYA CEVIRME: §4.8.3 D-303 DUSTU -> dogrulandı: cikis=1 ran=44 son='FAILED (failures=2)' -> YAKALANDI; hedef={'test_T3c_d303_dustu_uc_yerde_de_olumluya_CEVRILMEMIS': 'DUSTU'}; dusen=['test_T3c_d303_dustu_uc_yerde_de_olumluya_CEVRILMEMIS', 'test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL']; hatalar=[]
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+MZ3 D-463(a) CIPLAK U+0336: §4.8.3 D-303 DUSTU hukmu birlestirici cizikle cizildi: cikis=1 ran=44 son='FAILED (failures=2)' -> YAKALANDI; hedef={'test_T3c_d303_dustu_uc_yerde_de_olumluya_CEVRILMEMIS': 'DUSTU', 'test_cizme_isareti_beyaz_liste': 'DUSTU'}; dusen=['test_T3c_d303_dustu_uc_yerde_de_olumluya_CEVRILMEMIS', 'test_cizme_isareti_beyaz_liste']; hatalar=[]
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+MZ4 D-463(a) HTML VARLIGI: §3.3.3.2 durustluk cumlesi &#822; ile cizildi: cikis=1 ran=44 son='FAILED (failures=2)' -> YAKALANDI; hedef={'test_T7_cumle_iki_yerde_ve_CIZILMEMIS': 'DUSTU', 'test_cizme_isareti_beyaz_liste': 'DUSTU'}; dusen=['test_T7_cumle_iki_yerde_ve_CIZILMEMIS', 'test_cizme_isareti_beyaz_liste']; hatalar=[]
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+MY1 D-466 KACAN CUMLE (kilitli kesit DISI): Not (12 Eylül): D-303 için %3'lük ikinci ora: cikis=1 ran=44 son='FAILED (failures=1)' -> YAKALANDI; hedef={'test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL': 'DUSTU'}; dusen=['test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL']; hatalar=[]
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+MY2 D-466 KACAN CUMLE (kilitli kesit DISI): Not: H1 için ham çevrilmenin %60'ı da kabul : cikis=1 ran=44 son='FAILED (failures=1)' -> YAKALANDI; hedef={'test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL': 'DUSTU'}; dusen=['test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL']; hatalar=[]
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+MY3 D-466 KACAN CUMLE (kilitli kesit DISI): Revize edilmiş kabul kapısı: engine kabul ed: cikis=1 ran=44 son='FAILED (failures=1)' -> YAKALANDI; hedef={'test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL': 'DUSTU'}; dusen=['test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL']; hatalar=[]
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+MY4 D-466 KACAN CUMLE (kilitli kesit DISI): RC failsafe sonucu tekrar değerlendirildiğin: cikis=1 ran=44 son='FAILED (failures=1)' -> YAKALANDI; hedef={'test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL': 'DUSTU'}; dusen=['test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL']; hatalar=[]
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+MY5 D-466 KACAN CUMLE (kilitli kesit DISI): Bu bölümdeki ÖLÇÜLEMEDİ kalemleri beyanla ka: cikis=1 ran=44 son='FAILED (failures=1)' -> YAKALANDI; hedef={'test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL': 'DUSTU'}; dusen=['test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL']; hatalar=[]
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+MY6 D-466 KACAN CUMLE (kilitli kesit DISI): D-303 oransal eşiği yerine %3'lük ikinci eşi: cikis=1 ran=44 son='FAILED (failures=1)' -> YAKALANDI; hedef={'test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL': 'DUSTU'}; dusen=['test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL']; hatalar=[]
+geri yukleme sha esit: True (FDR/BOLUM_3_SISTEM_SPESIFIKASYONLARI.md=3719774268ce, FDR/BOLUM_4_TEST_FAALIYETLERI.md=a5a9f71de2cf)
+OZET: 19/19 mutasyon TUM hedef testleriyle yakalandi; uygulanamayan 0
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+TEMIZ KOSUM (mutasyonsuz): cikis=0 ran=44 son='OK' dusen=[]
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'BB9BD8685A98A91947332C5B19B43F6C5631FB9C8EBCF611A9F75F6C05950300' not found in '##### 3.3.4.2.1 MODEL KUNYESI VE KAYIT DEFTERI FAIL-CLOSED\'U | ALAN | DEGER | |---|---| | MODEL_ID | NAVITAS-SEG-V36-512 | | MIMARI | YOLOV8M-SEG (27,2 M PARAMETRE) | | CIKARIM BOYUTU | 512 | | ARKA UC (URETIM) | PYTORCH | | SHA-256 (.PT) | 1D1CACA6F6DA19EA35E69186A048DA960CA5188BE6EE6D49D6106457CAC46911 | | SINIFLAR | {0: TRAVERSABLE, 1: BLOCKED} | | ONNX TUREVI | F4C9F5FE08883D1AECC9B4AC3CE9F98CEA61DE2F5298EDDE5D2C2A7A5056DEAB | | TENSORRT .ENGINE | → 6 EYLUL 2026\'DA DERLENDI (D-431; 12 EYLUL\'DE RAPORA ISLENDI, D-462 A3): NAVITAS_SEG_V36_BEST_512_FP16.ENGINE, TENSORRT 10.16.2 / ORIN NANO, 57 283 989 B, SHA256 BB9BD8685A98A91947332C5B19B43F6C5631FB9C8EBCF611A9F75F6C05950301 (CONFIG/MODEL_REGISTRY.JSON TUREVLER, KAYNAK_SHA256 = URETIM .PT → TUREV_ESLESTI). YER TUTUCU KALMADI; RED HUKMU KALKTI. ⚠ AMA ENGINE URETIME ALINMADI: KARAR DENKLIGI D-303 ORANSAL ESIGINI GECEMEDI (ASAGIDAKI DENKLIK OLCUMU) → UCUS .PT ILE | TUREV DOGRULAMASI FAIL-CLOSED\'DUR. ESKIDEN MODEL_KAYIT_DOGRULA YALNIZ DOSYA ADINI KIYASLIYORDU; HER .ENGINE "ESLESMIYOR" ILE REDDEDILIYOR VE JETSON\'DA TENSORRT ANCAK --KAYIT-DOGRULAMASIZ ILE - YANI FAIL-CLOSED KAPATILARAK - YUKLENIYORDU (D-284, T18 CURUTUCUSU). BUGUN: TUREVIN SHA256\'SI YER TUTUCU DEGILSE VE DISKTEKI DOSYANIN OZETIYLE BIREBIR AYNIYSA GECTI; KAYITSIZ/YABANCI .ENGINE RED; KAYNAK_SHA256 URETIM .PT OZETIYLE ESLESMEZSE TUREV YETIM SAYILIR VE RED. SAHA PAKETINDEKI AYNA KOPYA JETSON_PAKET/CONFIG/MODEL_REGISTRY.JSON ILE AYNI OLMAK ZORUNDADIR; NOBETCI TESTS/TEST_T202_JETSON_PAKET_BUTUNLUGU.PY. SAYISAL DENKLIK OLCUMLERI (KAPI DEGIL, OLCUM): - ONNX ↔ PYTORCH KARAR DENKLIGI: N=260\'TA KARAR 259/260 AYNI (1 UYUSMAZLIK: SA_000215.JPG, PT=2 · ONNX=1); ZEMIN MASKESI IOU ORTALAMASI 0,9975; AZAMI ROTA SAPMASI 172,1 PX = 13,443 M. ON KAYIT KURALI ≤ 5/260 GECTI. ⚠ KOSUM CPU EP ILEDIR; → 6 EYLUL 2026\'DA JETSON ORIN NANO\'DA OLCULDU VE DUSTU (D-431; 12 EYLUL\'DE RAPORA ISLENDI, D-462 A3) - ASAGIDAKI SATIR. - FP16 KARAR DENKLIGI: ZARAR YONU (FP32 DOGRUYKEN FP16 YANLIS SERIT) 0 → GECTI; KARAR UYUSMASI 0,9968 (ESIK 0,98) → GECTI. - 🔴 TENSORRT .ENGINE ↔ .PT KARAR DENKLIGI (JETSON ORIN NANO, 6 EYLUL 2026) - DUSTU. BETIK SCRIPTS/OLCUM/170_ENGINE_KARAR_DENKLIGI.PY; ARTEFAKT RESULTS/JETSON_20260906/JETSON_LOG_20260906/ENGINE_KARAR_DENKLIGI.JSON; ON KAYIT RESULTS/B4_FPS/ON_KAYIT_FP16.MD §2 + D-303. OLCULEN: F1 ZARAR YONU 0 (GECTI) · F2 KARAR UYUSMASI 0,99526 (N = 633, ESIK 0,98 → GECTI) · D-303 ORANSAL UYUSMAZLIK 3/126 = %2,38 > %1,92 (5/260) → DUSTU. SONUC, ESIK GEVSETILMEDEN RAPORA OLDUGU GIBI GIRER: ENGINE URETIME ALINMADI, UCUS .PT ILE YAPILIR (D-431 §4 MADDE 1). ⚠ SINIR: S KUMESI DATA/ARENA_KOMPOZIT_V2 (126 GT\'LI KARE), T66 KABUL KUMESI DEGILDIR; D-303 T66 ICIN YAZILMISTI - NIHAI KARAR T66 ILE TEKRAR OLCULECEK.' : künye tablosu engine sha'sını taşımıyor
+
+----------------------------------------------------------------------
+Ran 44 tests in 9.771s
+
+FAILED (failures=1)
+
+EXIT=1
+
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+.........................F..................
+======================================================================
+FAIL: test_T4c_6_eylul_hucreleri_dosya_satirla (test_fdr_t244_ic_celiski.T4_EkipmanKabulTablosu.test_T4c_6_eylul_hucreleri_dosya_satirla)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_88f63745-bff-2\tests\test_fdr_t244_ic_celiski.py", line 662, in test_T4c_6_eylul_hucreleri_dosya_satirla
+    self.assertEqual([], eksikler(m, (
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+        ("config/pixhawk/arducopter_fda_20260906.param", 1),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        ("6 Eylül: RC failsafe ÖLÇÜLDÜ ve DÜŞTÜ", 1),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )))
+    ^^^
+AssertionError: Lists differ: [] != ["'Hobbywing Skywalker 60A V2': 1 kez (beklenen 2)"]
+
+Second list contains 1 additional elements.
+First extra element 0:
+"'Hobbywing Skywalker 60A V2': 1 kez (beklenen 2)"
+
+- []
++ ["'Hobbywing Skywalker 60A V2': 1 kez (beklenen 2)"]
+
+----------------------------------------------------------------------
+Ran 44 tests in 8.707s
+
+FAILED (failures=1)
+
+EXIT=1
+
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+...........................F................
+======================================================================
+FAIL: test_T5a_483_engine_olculdu_ve_dustu (test_fdr_t244_ic_celiski.T5_OlculmusAmaOlcuelecekDiyenler.test_T5a_483_engine_olculdu_ve_dustu)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_88f63745-bff-2\tests\test_fdr_t244_ic_celiski.py", line 693, in test_T5a_483_engine_olculdu_ve_dustu
+    self.assertEqual([], yasaklar(m, ("Jetson'da `.engine` ile ölçülecektir",)))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['"Jetson\'da `.engine` ile ölçülecektir" normalleşmiş metinde VAR']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'"Jetson\'da `.engine` ile ölçülecektir" normalleşmiş metinde VAR'
+
+- []
++ ['"Jetson\'da `.engine` ile ölçülecektir" normalleşmiş metinde VAR']
+
+----------------------------------------------------------------------
+Ran 44 tests in 8.063s
+
+FAILED (failures=1)
+
+EXIT=1
+
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+...............................FF...........
+======================================================================
+FAIL: test_T6b_durumlar_HIZALI (test_fdr_t244_ic_celiski.T6_YonergeHizasi.test_T6b_durumlar_HIZALI)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_88f63745-bff-2\tests\test_fdr_t244_ic_celiski.py", line 783, in test_T6b_durumlar_HIZALI
+    self.assertEqual({}, fark,
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^
+                     "§4.0 ↔ YONERGE_HARITASI çelişkisi (D-462 A6 bir daha oluştu)")
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {} != {'Y-4-M04': ('YOK', 'KISMEN')}
+- {}
++ {'Y-4-M04': ('YOK', 'KISMEN')} : §4.0 ↔ YONERGE_HARITASI çelişkisi (D-462 A6 bir daha oluştu)
+
+======================================================================
+FAIL: test_T6c_m04_m06_kismen_eski_deger_cizili (test_fdr_t244_ic_celiski.T6_YonergeHizasi.test_T6c_m04_m06_kismen_eski_deger_cizili)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_88f63745-bff-2\tests\test_fdr_t244_ic_celiski.py", line 792, in test_T6c_m04_m06_kismen_eski_deger_cizili
+    self.assertIn("~~YOK~~", s, kimlik)          # eski değer SİLİNMEDİ
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: '~~YOK~~' not found in "| `Y-4-M04` | ekipman kabul testleri — İHA ve İKA'daki **tüm** ekipmanlar | §4.4 | **YOK** ~~KISMEN~~ (12 Eylül 2026, D-462 A6 — `YONERGE_HARITASI.md` ile hizalandı; gövde 5–6 Eylül tezgâh ölçümlerini veriyordu: §4.4'te 9 ekipman satırının 2'sinde kabul kapısı koşuldu — Jetson FPS **GEÇTİ**, FS-i6 failsafe **DÜŞTÜ** —, 4'ünde tezgâh ölçümü var, 1'i yalnız BEYAN, 2'sinde hiç ölçüm yok) |" : Y-4-M04
+
+----------------------------------------------------------------------
+Ran 44 tests in 8.464s
+
+FAILED (failures=2)
+
+EXIT=1
+
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+.................................F..........
+======================================================================
+FAIL: test_T7_cumle_iki_yerde_ve_CIZILMEMIS (test_fdr_t244_ic_celiski.T7_Durustluk.test_T7_cumle_iki_yerde_ve_CIZILMEMIS)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_88f63745-bff-2\tests\test_fdr_t244_ic_celiski.py", line 805, in test_T7_cumle_iki_yerde_ve_CIZILMEMIS
+    self.assertEqual([], eksikler(m, ((self.CUMLE, 1),)), ad)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ["'bu yüzden üretim sayıları sahaya göre İ[37 chars] 1)"]
+
+Second list contains 1 additional elements.
+First extra element 0:
+"'bu yüzden üretim sayıları sahaya göre İYİMSER ÜST SINIRDIR': 0 kez (beklenen 1)"
+
+- []
++ ["'bu yüzden üretim sayıları sahaya göre İYİMSER ÜST SINIRDIR': 0 kez "
++  '(beklenen 1)'] : §4.7
+
+----------------------------------------------------------------------
+Ran 44 tests in 8.314s
+
+FAILED (failures=1)
+
+EXIT=1
+
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+...................................F........
+======================================================================
+FAIL: test_T8_varyant_sayilari_artefakttan (test_fdr_t244_ic_celiski.T8_IsikGolgeKesiti.test_T8_varyant_sayilari_artefakttan)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_88f63745-bff-2\tests\test_fdr_t244_ic_celiski.py", line 867, in test_T8_varyant_sayilari_artefakttan
+    self.assertEqual(beklenen, tekhat(h[sutun]), (varyant, alan))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: '0,2380' != '0,2400'
+- 0,2380
++ 0,2400
+ : ('v2', 'htab_engel_ort')
+
+----------------------------------------------------------------------
+Ran 44 tests in 7.984s
+
+FAILED (failures=1)
+
+EXIT=1
+
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+..........F..........F.....F...........F....
+======================================================================
+FAIL: test_celiskili_ikinci_hukum_HICBIR_yuzeyde_yok (test_fdr_t244_ic_celiski.T0_CapaDosyalar.test_celiskili_ikinci_hukum_HICBIR_yuzeyde_yok)
+D-461 (d): SÖZLÜK katı — 8 ifadenin hiçbiri iki belgede geçmemeli.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_88f63745-bff-2\tests\test_fdr_t244_ic_celiski.py", line 471, in test_celiskili_ikinci_hukum_HICBIR_yuzeyde_yok
+    self.assertEqual([], celiskili_ikinci_hukum(m), ad)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['GOZDEN GECIRILMIS']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'GOZDEN GECIRILMIS'
+
+- []
++ ['GOZDEN GECIRILMIS'] : 4.8.3
+
+======================================================================
+FAIL: test_T3c_d303_dustu_uc_yerde_de_olumluya_CEVRILMEMIS (test_fdr_t244_ic_celiski.T3_EngineDenkligi.test_T3c_d303_dustu_uc_yerde_de_olumluya_CEVRILMEMIS)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_88f63745-bff-2\tests\test_fdr_t244_ic_celiski.py", line 610, in test_T3c_d303_dustu_uc_yerde_de_olumluya_CEVRILMEMIS
+    self.assertEqual([], celiskili_ikinci_hukum(m), ad)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['GOZDEN GECIRILMIS']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'GOZDEN GECIRILMIS'
+
+- []
++ ['GOZDEN GECIRILMIS'] : §4.8.3
+
+======================================================================
+FAIL: test_T5a_483_engine_olculdu_ve_dustu (test_fdr_t244_ic_celiski.T5_OlculmusAmaOlcuelecekDiyenler.test_T5a_483_engine_olculdu_ve_dustu)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_88f63745-bff-2\tests\test_fdr_t244_ic_celiski.py", line 699, in test_T5a_483_engine_olculdu_ve_dustu
+    self.assertEqual(["5/260 = %1,92"],
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+                     re.findall(r"≤\s*(\d+/\d+\s*=\s*%\d+,\d+)", n),
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                     "rakip/gevşetilmiş ikinci eşik var")
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['5/260 = %1,92'] != ['5/260 = %1,92', '5/126 = %3,97']
+
+Second list contains 1 additional elements.
+First extra element 1:
+'5/126 = %3,97'
+
+- ['5/260 = %1,92']
++ ['5/260 = %1,92', '5/126 = %3,97'] : rakip/gevşetilmiş ikinci eşik var
+
+======================================================================
+FAIL: test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL (test_fdr_t244_ic_celiski.T9_KabulOlcutuBicimiKilidi.test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL)
+YANLIŞ POZİTİF ÖLÇÜMÜ: dokunulmamış belgelerde kilit YEŞİL olmalı.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_88f63745-bff-2\tests\test_fdr_t244_ic_celiski.py", line 973, in test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL
+    self.assertEqual([], kabul_ihlalleri(oku(p)), p.name)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != [(('K1',), 'GOZDEN GECIRILMIS KAPI: ≤ 5/126 = %3,97 → GECTI.')]
+
+Second list contains 1 additional elements.
+First extra element 0:
+(('K1',), 'GOZDEN GECIRILMIS KAPI: ≤ 5/126 = %3,97 → GECTI.')
+
+- []
++ [(('K1',), 'GOZDEN GECIRILMIS KAPI: ≤ 5/126 = %3,97 → GECTI.')] : BOLUM_4_TEST_FAALIYETLERI.md
+
+----------------------------------------------------------------------
+Ran 44 tests in 8.124s
+
+FAILED (failures=4)
+
+EXIT=1
+
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+.................................F..........
+======================================================================
+FAIL: test_T7_cumle_iki_yerde_ve_CIZILMEMIS (test_fdr_t244_ic_celiski.T7_Durustluk.test_T7_cumle_iki_yerde_ve_CIZILMEMIS)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_88f63745-bff-2\tests\test_fdr_t244_ic_celiski.py", line 805, in test_T7_cumle_iki_yerde_ve_CIZILMEMIS
+    self.assertEqual([], eksikler(m, ((self.CUMLE, 1),)), ad)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ["'bu yüzden üretim sayıları sahaya göre İ[37 chars] 1)"]
+
+Second list contains 1 additional elements.
+First extra element 0:
+"'bu yüzden üretim sayıları sahaya göre İYİMSER ÜST SINIRDIR': 0 kez (beklenen 1)"
+
+- []
++ ["'bu yüzden üretim sayıları sahaya göre İYİMSER ÜST SINIRDIR': 0 kez "
++  '(beklenen 1)'] : §3.3.3.2
+
+----------------------------------------------------------------------
+Ran 44 tests in 8.323s
+
+FAILED (failures=1)
+
+EXIT=1
+
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+.....................F.................F....
+======================================================================
+FAIL: test_T3c_d303_dustu_uc_yerde_de_olumluya_CEVRILMEMIS (test_fdr_t244_ic_celiski.T3_EngineDenkligi.test_T3c_d303_dustu_uc_yerde_de_olumluya_CEVRILMEMIS)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_88f63745-bff-2\tests\test_fdr_t244_ic_celiski.py", line 608, in test_T3c_d303_dustu_uc_yerde_de_olumluya_CEVRILMEMIS
+    self.assertIn("DUSTU", pencere, (ad, pencere))
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'DUSTU' not found in "TULMUS) | >= 0,98 | 0,99526 (N = 633) | GECTI | | D-303 ORANSAL UYUSMAZLIK (S = DATA/ARENA_KOMPOZIT_V2, 126 GT'LI KARE) | ≤ 5/260 = %1,92 | 3/126 = %2,38 | OLUMLU_HUKUM | ESIK GEVSETILMEDI. SONUC: ENGINE URETIME ALINMADI, UCUS .PT ILE (D-431 §4 MADDE 1); .PT FPS KAPISINI ZATEN GE" : ('§4.8.3', "TULMUS) | >= 0,98 | 0,99526 (N = 633) | GECTI | | D-303 ORANSAL UYUSMAZLIK (S = DATA/ARENA_KOMPOZIT_V2, 126 GT'LI KARE) | ≤ 5/260 = %1,92 | 3/126 = %2,38 | OLUMLU_HUKUM | ESIK GEVSETILMEDI. SONUC: ENGINE URETIME ALINMADI, UCUS .PT ILE (D-431 §4 MADDE 1); .PT FPS KAPISINI ZATEN GE")
+
+======================================================================
+FAIL: test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL (test_fdr_t244_ic_celiski.T9_KabulOlcutuBicimiKilidi.test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL)
+YANLIŞ POZİTİF ÖLÇÜMÜ: dokunulmamış belgelerde kilit YEŞİL olmalı.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_88f63745-bff-2\tests\test_fdr_t244_ic_celiski.py", line 973, in test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL
+    self.assertEqual([], kabul_ihlalleri(oku(p)), p.name)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != [(('K1',), "| D-303 ORANSAL UYUSMAZLIK (S [99 chars] |")]
+
+Second list contains 1 additional elements.
+First extra element 0:
+(('K1',), "| D-303 ORANSAL UYUSMAZLIK (S = DATA/ARENA KOMPOZIT V2 , 126 GT'LI KARE) | ≤ 5/260 = %1,92 | 3/126 = %2,38 | 🔴 DUSTU OLUMLU_HUKUM |")
+
+- []
++ [(('K1',),
++   "| D-303 ORANSAL UYUSMAZLIK (S = DATA/ARENA KOMPOZIT V2 , 126 GT'LI KARE) | "
++   '≤ 5/260 = %1,92 | 3/126 = %2,38 | 🔴 DUSTU OLUMLU_HUKUM |')] : BOLUM_4_TEST_FAALIYETLERI.md
+
+----------------------------------------------------------------------
+Ran 44 tests in 7.632s
+
+FAILED (failures=2)
+
+EXIT=1
+
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+...........F.........F......................
+======================================================================
+FAIL: test_cizme_isareti_beyaz_liste (test_fdr_t244_ic_celiski.T0_CapaDosyalar.test_cizme_isareti_beyaz_liste)
+Kilitli yüzeylerde beyaz listede OLMAYAN çizme işareti kalmamalı.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_88f63745-bff-2\tests\test_fdr_t244_ic_celiski.py", line 458, in test_cizme_isareti_beyaz_liste
+    self.assertEqual([], cizme_artiklari(m), ad)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['̶', '̶', '̶', '̶', '̶']
+
+Second list contains 5 additional elements.
+First extra element 0:
+'̶'
+
+- []
++ ['̶', '̶', '̶', '̶', '̶'] : 4.8.3
+
+======================================================================
+FAIL: test_T3c_d303_dustu_uc_yerde_de_olumluya_CEVRILMEMIS (test_fdr_t244_ic_celiski.T3_EngineDenkligi.test_T3c_d303_dustu_uc_yerde_de_olumluya_CEVRILMEMIS)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_88f63745-bff-2\tests\test_fdr_t244_ic_celiski.py", line 608, in test_T3c_d303_dustu_uc_yerde_de_olumluya_CEVRILMEMIS
+    self.assertIn("DUSTU", pencere, (ad, pencere))
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'DUSTU' not found in "TULMUS) | >= 0,98 | 0,99526 (N = 633) | GECTI | | D-303 ORANSAL UYUSMAZLIK (S = DATA/ARENA_KOMPOZIT_V2, 126 GT'LI KARE) | ≤ 5/260 = %1,92 | 3/126 = %2,38 | 🔴 D̶U̶S̶T̶U̶ | ESIK GEVSETILMEDI. SONUC: ENGINE URETIME ALINMADI, UCUS .PT ILE (D-431 §4 MADDE 1); .PT FPS KAPISINI ZATEN GE" : ('§4.8.3', "TULMUS) | >= 0,98 | 0,99526 (N = 633) | GECTI | | D-303 ORANSAL UYUSMAZLIK (S = DATA/ARENA_KOMPOZIT_V2, 126 GT'LI KARE) | ≤ 5/260 = %1,92 | 3/126 = %2,38 | 🔴 D̶U̶S̶T̶U̶ | ESIK GEVSETILMEDI. SONUC: ENGINE URETIME ALINMADI, UCUS .PT ILE (D-431 §4 MADDE 1); .PT FPS KAPISINI ZATEN GE")
+
+----------------------------------------------------------------------
+Ran 44 tests in 8.764s
+
+FAILED (failures=2)
+
+EXIT=1
+
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+...........F.....................F..........
+======================================================================
+FAIL: test_cizme_isareti_beyaz_liste (test_fdr_t244_ic_celiski.T0_CapaDosyalar.test_cizme_isareti_beyaz_liste)
+Kilitli yüzeylerde beyaz listede OLMAYAN çizme işareti kalmamalı.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_88f63745-bff-2\tests\test_fdr_t244_ic_celiski.py", line 458, in test_cizme_isareti_beyaz_liste
+    self.assertEqual([], cizme_artiklari(m), ad)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['̶', '̶', '̶', '̶', '̶', '̶', '̶', '̶', '[578 chars] '̶']
+
+Second list contains 125 additional elements.
+First extra element 0:
+'̶'
+
+Diff is 1005 characters long. Set self.maxDiff to None to see it. : 3.3.3.2
+
+======================================================================
+FAIL: test_T7_cumle_iki_yerde_ve_CIZILMEMIS (test_fdr_t244_ic_celiski.T7_Durustluk.test_T7_cumle_iki_yerde_ve_CIZILMEMIS)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_88f63745-bff-2\tests\test_fdr_t244_ic_celiski.py", line 805, in test_T7_cumle_iki_yerde_ve_CIZILMEMIS
+    self.assertEqual([], eksikler(m, ((self.CUMLE, 1),)), ad)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ["'bu yüzden üretim sayıları sahaya göre İ[37 chars] 1)"]
+
+Second list contains 1 additional elements.
+First extra element 0:
+"'bu yüzden üretim sayıları sahaya göre İYİMSER ÜST SINIRDIR': 0 kez (beklenen 1)"
+
+- []
++ ["'bu yüzden üretim sayıları sahaya göre İYİMSER ÜST SINIRDIR': 0 kez "
++  '(beklenen 1)'] : §3.3.3.2
+
+----------------------------------------------------------------------
+Ran 44 tests in 8.171s
+
+FAILED (failures=2)
+
+EXIT=1
+
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+.......................................F....
+======================================================================
+FAIL: test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL (test_fdr_t244_ic_celiski.T9_KabulOlcutuBicimiKilidi.test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL)
+YANLIŞ POZİTİF ÖLÇÜMÜ: dokunulmamış belgelerde kilit YEŞİL olmalı.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_88f63745-bff-2\tests\test_fdr_t244_ic_celiski.py", line 973, in test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL
+    self.assertEqual([], kabul_ihlalleri(oku(p)), p.name)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != [(('K1', 'K2'), "NOT (12 EYLUL): D-303 ICI[68 chars]I.")]
+
+Second list contains 1 additional elements.
+First extra element 0:
+(('K1', 'K2'), "NOT (12 EYLUL): D-303 ICIN %3'LUK IKINCI ORANSAL ESIK DE KABUL SAYILIR; ENGINE BU ESIKLE GECTI.")
+
+- []
++ [(('K1', 'K2'),
++   "NOT (12 EYLUL): D-303 ICIN %3'LUK IKINCI ORANSAL ESIK DE KABUL SAYILIR; "
++   'ENGINE BU ESIKLE GECTI.')] : BOLUM_3_SISTEM_SPESIFIKASYONLARI.md
+
+----------------------------------------------------------------------
+Ran 44 tests in 8.494s
+
+FAILED (failures=1)
+
+EXIT=1
+
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+.......................................F....
+======================================================================
+FAIL: test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL (test_fdr_t244_ic_celiski.T9_KabulOlcutuBicimiKilidi.test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL)
+YANLIŞ POZİTİF ÖLÇÜMÜ: dokunulmamış belgelerde kilit YEŞİL olmalı.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_88f63745-bff-2\tests\test_fdr_t244_ic_celiski.py", line 973, in test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL
+    self.assertEqual([], kabul_ihlalleri(oku(p)), p.name)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != [(('K1', 'K2'), "NOT: H1 ICIN HAM CEVRILMENIN %60'I DA KABUL ESIGI SAYILIR.")]
+
+Second list contains 1 additional elements.
+First extra element 0:
+(('K1', 'K2'), "NOT: H1 ICIN HAM CEVRILMENIN %60'I DA KABUL ESIGI SAYILIR.")
+
+- []
++ [(('K1', 'K2'), "NOT: H1 ICIN HAM CEVRILMENIN %60'I DA KABUL ESIGI SAYILIR.")] : BOLUM_4_TEST_FAALIYETLERI.md
+
+----------------------------------------------------------------------
+Ran 44 tests in 9.137s
+
+FAILED (failures=1)
+
+EXIT=1
+
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+.......................................F....
+======================================================================
+FAIL: test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL (test_fdr_t244_ic_celiski.T9_KabulOlcutuBicimiKilidi.test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL)
+YANLIŞ POZİTİF ÖLÇÜMÜ: dokunulmamış belgelerde kilit YEŞİL olmalı.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_88f63745-bff-2\tests\test_fdr_t244_ic_celiski.py", line 973, in test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL
+    self.assertEqual([], kabul_ihlalleri(oku(p)), p.name)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != [(('K2',), 'REVIZE EDILMIS KABUL KAPISI: ENGINE KABUL EDILIR.')]
+
+Second list contains 1 additional elements.
+First extra element 0:
+(('K2',), 'REVIZE EDILMIS KABUL KAPISI: ENGINE KABUL EDILIR.')
+
+- []
++ [(('K2',), 'REVIZE EDILMIS KABUL KAPISI: ENGINE KABUL EDILIR.')] : BOLUM_3_SISTEM_SPESIFIKASYONLARI.md
+
+----------------------------------------------------------------------
+Ran 44 tests in 8.527s
+
+FAILED (failures=1)
+
+EXIT=1
+
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+.......................................F....
+======================================================================
+FAIL: test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL (test_fdr_t244_ic_celiski.T9_KabulOlcutuBicimiKilidi.test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL)
+YANLIŞ POZİTİF ÖLÇÜMÜ: dokunulmamış belgelerde kilit YEŞİL olmalı.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_88f63745-bff-2\tests\test_fdr_t244_ic_celiski.py", line 973, in test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL
+    self.assertEqual([], kabul_ihlalleri(oku(p)), p.name)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != [(('K2',), 'RC FAILSAFE SONUCU TEKRAR DEGE[34 chars]R.')]
+
+Second list contains 1 additional elements.
+First extra element 0:
+(('K2',), 'RC FAILSAFE SONUCU TEKRAR DEGERLENDIRILDIGINDE GECTI SAYILMALIDIR.')
+
+- []
++ [(('K2',),
++   'RC FAILSAFE SONUCU TEKRAR DEGERLENDIRILDIGINDE GECTI SAYILMALIDIR.')] : BOLUM_4_TEST_FAALIYETLERI.md
+
+----------------------------------------------------------------------
+Ran 44 tests in 8.180s
+
+FAILED (failures=1)
+
+EXIT=1
+
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+.......................................F....
+======================================================================
+FAIL: test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL (test_fdr_t244_ic_celiski.T9_KabulOlcutuBicimiKilidi.test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL)
+YANLIŞ POZİTİF ÖLÇÜMÜ: dokunulmamış belgelerde kilit YEŞİL olmalı.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_88f63745-bff-2\tests\test_fdr_t244_ic_celiski.py", line 973, in test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL
+    self.assertEqual([], kabul_ihlalleri(oku(p)), p.name)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != [(('K2',), 'BU BOLUMDEKI OLCULEMEDI KALEMLERI BEYANLA KAPATILABILIR.')]
+
+Second list contains 1 additional elements.
+First extra element 0:
+(('K2',), 'BU BOLUMDEKI OLCULEMEDI KALEMLERI BEYANLA KAPATILABILIR.')
+
+- []
++ [(('K2',), 'BU BOLUMDEKI OLCULEMEDI KALEMLERI BEYANLA KAPATILABILIR.')] : BOLUM_3_SISTEM_SPESIFIKASYONLARI.md
+
+----------------------------------------------------------------------
+Ran 44 tests in 7.404s
+
+FAILED (failures=1)
+
+EXIT=1
+
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+.......................................F....
+======================================================================
+FAIL: test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL (test_fdr_t244_ic_celiski.T9_KabulOlcutuBicimiKilidi.test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL)
+YANLIŞ POZİTİF ÖLÇÜMÜ: dokunulmamış belgelerde kilit YEŞİL olmalı.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_88f63745-bff-2\tests\test_fdr_t244_ic_celiski.py", line 973, in test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL
+    self.assertEqual([], kabul_ihlalleri(oku(p)), p.name)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != [(('K1', 'K2'), "D-303 ORANSAL ESIGI YERIN[36 chars]R.")]
+
+Second list contains 1 additional elements.
+First extra element 0:
+(('K1', 'K2'), "D-303 ORANSAL ESIGI YERINE %3'LUK IKINCI ESIK DE KABUL SAYILIR.")
+
+- []
++ [(('K1', 'K2'),
++   "D-303 ORANSAL ESIGI YERINE %3'LUK IKINCI ESIK DE KABUL SAYILIR.")] : BOLUM_4_TEST_FAALIYETLERI.md
+
+----------------------------------------------------------------------
+Ran 44 tests in 9.403s
+
+FAILED (failures=1)
+
+EXIT=1
+
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+............................................
+----------------------------------------------------------------------
+Ran 44 tests in 9.503s
+
+OK
+
+EXIT=0
+

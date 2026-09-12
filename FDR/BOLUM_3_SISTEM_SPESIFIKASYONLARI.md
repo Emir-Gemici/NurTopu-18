@@ -675,13 +675,33 @@ MAVProxy `--out udp:127.0.0.1:1455N`); her tüketici kendi UDP ucundan bağlanı
 | `iha_inis_yayinci --mavlink` | `udp:127.0.0.1:14551` | okur (`landed_state`) |
 | `iha_komut_alici --mavlink` | `udp:127.0.0.1:14552` | **yazar** (`COMMAND_LONG`) |
 
-Kural bugün **yalnız `iha_komut_alici`'da kodla kilitlidir**: seri cihaz reddedilir,
+~~Kural bugün **yalnız `iha_komut_alici`'da kodla kilitlidir**: seri cihaz reddedilir,
 `--seri-pixhawk-bilerek` ile bilerek aşılabilir. `rpi_inference --mavlink` ve
 `iha_inis_yayinci --mavlink` seri cihaz yolunu **hâlâ kabul eder** — üstelik
 `iha_inis_yayinci`'nin modül kılavuzu `/dev/ttyACM0`'ı örnek olarak gösterir. Bu iki
 süreçte tek-yazar kuralı bugün **yordamla** uygulanır (systemd birim dosyaları +
 `jetson_baslat.sh` denetimi), kodla değil. Kod kilidinin bu iki sürece genişletilmesi
-**açık kalemdir** (`FDR/ACIK_KALEMLER.md`).
+**açık kalemdir** (`FDR/ACIK_KALEMLER.md`).~~
+*(12 Eylül 2026'da geçersizleşti — D-462 A1; kaynak kodundan doğrulandı, aşağıdadır. Eski metin silinmedi.)*
+
+**12 Eylül 2026 — kilit ÜÇ SÜREÇTE DE KODLUDUR** (kapanma kaydı D-419 §3–4; `ACIK_KALEMLER.md`
+kalem #23). Üç süreç de tek-yazar kuralını **aynı ortak yardımcıdan** okur
+(`comms/inis_kaniti.py:101-143` — `seri_pixhawk_yolu_mu` :107 · `seri_pixhawk_kilit_metni` :122 ·
+`seri_pixhawk_bayragini_ekle` :129 · `seri_pixhawk_kilidini_uygula` :136, `parser.error` :143;
+kalıp kopyalanmaz, tek yerden okunur):
+
+| süreç | bayrak eklenir | kilit uygulanır |
+|---|---|---|
+| `codes/rpi_inference.py` | `:2539` | `:2684` |
+| `comms/iha_inis_yayinci.py` | `:432` | `:475` |
+| `comms/iha_komut_alici.py` | `:855` | `:899` |
+
+`/dev/tty*`, `COM*` ve `serial:` yolları üçünde de tek ve aynı red metniyle reddedilir
+(argparse çıkış kodu **2**); kilidi yalnız `--seri-pixhawk-bilerek` aşar (fail-closed).
+`iha_komut_alici --serial` ayrıca reddedilir (`comms/iha_komut_alici.py:891`, D-421 §1) ve
+`iha_inis_yayinci` kılavuzu artık `udp:127.0.0.1:14551` gösterir. **Kapı:**
+`tests/test_seri_pixhawk_kilidi.py` **13/13** (12 Eylül 2026 koşumu). Bu satır **kapanmış
+kalemdir**; açık kalem olarak sayılmaz.
 
 **Kapı:** `scripts/mavlink_dogrula.py` üç uçta **aynı anda** koşar ve şunları arar:
 `HEARTBEAT` sysid eşleşmesi, `GLOBAL_POSITION_INT ≥ MAVLINK_KONUM_ASGARI_HZ` (**4,0 Hz**),
@@ -699,6 +719,16 @@ sonu, gerekçe yorumda):
 > ve ArduCopter 4.5.7 ile açıldı (§3.3.1.1.11), ama Jetson o gün **takılmadı** (`REVIEW_LOG.md`
 > D-426 §4); çoğullayıcı ve üç UDP ucu gerçek kart üzerinde hiç açılmadı. Kapı Jetson takıldığında
 > koşulur (`SAHA_RUNBOOK.md` §3 satır 80–85; plan `FAZ_B_GUN_PLANI.md` §1). `ÖLÇÜLEMEDİ ≠ GEÇTİ`.
+>
+> ⚠ **6 Eylül durumu (D-431, 12 Eylül'de eklendi — D-462 A1):** Jetson Orin Nano o gün kuruldu
+> ve kartta koştu, ama **Pixhawk Jetson'a bağlı değildi**: `jetson_baslat.sh --kuru` çıktısında
+> dosya/kullanıcı/yorumlayıcı `[VAR]`, ~~tek `[YOK]` satırı~~ `Pixhawk seri /dev/ttyACM0` (12 Eylül düzeltmesi — D-466: `jetson_baslat_kuru2.log`'da **tek** `[YOK]`, ilk kuru koşumda **iki** (`mavproxy.py` PATH'te de yok); ikisinde de aynı çıkış kodu; udp kipi;
+> sik kipinde ayrıca `/dev/ttyUSB0`) ve betik **çıkış 3** verdi
+> (`results/jetson_20260906/jetson_log_20260906/jetson_baslat_kuru.log`,
+> `jetson_baslat_kuru2.log`). Yani çoğullayıcı ve üç UDP ucu **6 Eylül'de de** gerçek kart
+> üzerinde açılmadı; `scripts/mavlink_dogrula.py` 3/3 kapısı hâlâ **ÖLÇÜLEMEDİ**
+> (§4.13.1 kalem 6–7). Pixhawk aynı akşam çalıştı ama **Mission Planner'a** bağlıydı
+> (D-428, D-429). `ÖLÇÜLEMEDİ ≠ GEÇTİ`.
 
 
 ##### 3.3.1.1.9 🔴 SiK hub — NAVITAS-çerçeve seri çoğullayıcı (`CONTRACTS.md` §7.5 · D-404/D-405)
@@ -1036,7 +1066,7 @@ arka uçsuz **kurulamaz** — boş bir iskeletin "çalışıyor" görünmesi eng
 | Kayıt defteri | v36 `.pt` `eslesti`, `.engine` `turev_eslesti` |
 | T17 FPS (120 örnek) | pt **1,35/1,06** · engine **1,58/1,33** FPS, eşik 0,61 → **GEÇTİ** |
 | Engine↔pt denkliği | F1 0 · F2 0,9953 · **D-303 oransal 3/126 DÜŞTÜ** → uçuş `.pt` |
-| `jetson_baslat.sh --kuru` | `[YOK]` yalnız `/dev/ttyACM0` → çıkış 3 — Pixhawk bağlı değil, MAVLink kapısı **ÖLÇÜLEMEDİ** |
+| `jetson_baslat.sh --kuru` | ~~`[YOK]` yalnız~~ `/dev/ttyACM0` → çıkış 3 (12 Eylül düzeltmesi — D-466: `jetson_baslat_kuru2.log`'da **tek** `[YOK]`, ilk kuru koşumda **iki** (`mavproxy.py` PATH'te de yok); ikisinde de aynı çıkış kodu) — Pixhawk bağlı değil, MAVLink kapısı **ÖLÇÜLEMEDİ** |
 | Tam süit (kartta) | `Ran 2121` · F5 E30 S8 — 26'sı ortam (`O:\` yolları, PC'deki kümeler), kalanı D-431'de sınıflandırılmış |
 
 
@@ -1389,6 +1419,25 @@ genişliği ve teker ataleti TAHMİN, motor tork sınırı yok; sim kamerası hf
 `poses.csv`'den gürültüsüz; kamera köprüsü (MJPEG) atlandı; Jetson ~1,35 FPS kare hızı modellenmedi; OBB araç maskesi
 kapalı (sim'de araç yok); ışık/gölge çeşitliliği sentetik.
 
+
+🔴 **Dürüstlük — simülasyonun üretimde OLMAYAN iki yardımı** (12 Eylül 2026 eklendi; D-462 D,
+D-451 olgu 1). Yukarıdaki ÜRETİM MODELİ / ÜRETİM BORU HATTI sayıları, sahada bulunmayan iki
+kolaylıkla ölçülmüştür:
+
+1. **Rota referansı gerçek KB'dir.** İKA'ya verilen rota ankoru simülasyonun **yer gerçeği**
+   KB konumudur, üretim zincirinin kendi kestirimi değil (`simulation/mujoco/gorev_kosumu.py:313`
+   — `kb = H["kb"]; ref = [round(float(kb[0]), 2), round(float(kb[1]), 2)]`). Sahada bu nokta
+   algıdan çıkarılır ve hatası rotaya eklenir.
+2. **Kareler kuzey-yukarı döndürülerek beslenir.** `kerteriz` beslemesinde her tarama karesi,
+   pozdaki yaw'a göre tam çeyrek tur döndürülüp modele öyle verilir
+   (`simulation/mujoco/sim_karar_toplayici.py:183-184` — `k = ceyrek_tur(yaw)` →
+   `np.rot90(img, k)`; `ceyrek_tur` :113). Üretimde kamera karesi böyle bir ön hizalama
+   görmez.
+
+İkisi de rotanın lehinedir ve üretim kodunda karşılığı yoktur; **bu yüzden üretim sayıları sahaya göre İYİMSER ÜST SINIRDIR** — sahada bu
+iki yardım olmadığı için gerçek başarım bu sayıların **altında** beklenir. Zaten düşen kapılar
+(H1-K3, H1-K5) bu yardımlarla bile düşmüştür; hüküm gevşetilmez.
+
 *(3 Eylül metni — 10 Eylül 2026'da MuJoCo ölçümüyle geçersizleşti; üstü çizili, silinmedi.)*
 
 ~~**ÖLÇÜLEMEDİ:** Otonom karar verme başarı oranı, sanal görev süresi ve sistem tepkisi
@@ -1693,11 +1742,22 @@ Gecikme tavanı 3 karedir: uçtan uca p95 0,113 s ile ≈ **0,34 s**, `YKS_TESPI
 **11/24 = %45,8** (tohum 42) — ikisi de eşiğin üstünde; artefaktta
 `H1_ozgun: false` olarak durur. Eşik **değiştirilmedi**; bunun yerine mekanizmanın
 asıl vaadi, bileşim görülmeden yazılan iki yeni ölçütle sınandı ve **geçti**:
-H1a (azınlık şerit→şerit sızıntısı **0/0**) ve H1b (kesin azalma). H1c
+H1a (azınlık şerit→şerit sızıntısı **0/0**) ve H1b (kesin azalma). ~~H1c
 (sınıflandırılamayan yayımlanmış çevrilme = 0) **damgalanmadı** ve bu raporun
-kendi kuralınca **açık** sayılır. Kayıt: `ON_KAYIT.md` EK-1,
-`olcum_20260903.json`. Bu, raporda **geçilmeyen ikinci ön kayıttır** (birincisi
-§3.3.4.2.5'teki gerçek-kare eşikleridir).
+kendi kuralınca **açık** sayılır.~~ *(12 Eylül 2026'da geçersizleşti — D-462 A2;
+eski metin silinmedi.)* **H1c 3 Eylül 2026'da KOŞULDU ve GEÇTİ** (D-419 §3;
+`ACIK_KALEMLER.md` kalem #24 **KAPANDI**): aynı model/küme/tohumlarla
+(`_h1c_model_sha256` = üretim `.pt` `1d1caca6…`; tohum 7 ve 42; σ = 2; kare başına
+4 kopya) sınıflandırılamayan yayımlanmış çevrilme **0/0** ölçüldü — sınıflar
+yayımlananı tam örter (tohum 7: `no_route` 6 + `cogunluk` 1 = **7**; tohum 42:
+`no_route` 9 + `cogunluk` 2 = **11**; üçüncü sınıf hiç oluşmadı). Artefaktlar:
+`results/p5_histerezis/ON_KAYIT.md` §"H1c — KOŞULDU", `olcum_20260903.json`
+(`H1c: true`, `h1c_siniflandirilamayan: 0`) ve ikinci koşum
+`olcum_h1c_tekrar_20260903.json` (ham 13/24, yayımlanan 7/11 birebir). Kapı
+`tests/test_p5_h1c_damgasi.py` **23/23** (12 Eylül 2026 koşumu). **H1 %40 hükmü
+DÜŞTÜ olarak KALIR** — eşik ve K değişmedi, H1c damgası H1'i geçirmez.
+Kayıt: `ON_KAYIT.md` EK-1, `olcum_20260903.json`. Bu, raporda **geçilmeyen ikinci
+ön kayıttır** (birincisi §3.3.4.2.5'teki gerçek-kare eşikleridir).
 
 
 ##### 3.3.4.1.8 Yayın sözleşmesi (K1) — `CONTRACTS.md` §6.5
@@ -1968,7 +2028,7 @@ koşullar"** ölçütünün karşılanmayan kısmı (§3.3.4.2.8).
 | SHA-256 (`.pt`) | `1d1caca6f6da19ea35e69186a048da960ca5188be6ee6d49d6106457cac46911` |
 | sınıflar | `{0: traversable, 1: blocked}` |
 | ONNX türevi | `f4c9f5fe08883d1aecc9b4ac3ce9f98cea61de2f5298edde5d2c2a7a5056deab` |
-| TensorRT `.engine` | `DERLENINCE_YAZILIR` → **yer tutucu = derlenmedi = RED** |
+| TensorRT `.engine` | ~~`DERLENINCE_YAZILIR` → **yer tutucu = derlenmedi = RED**~~ → **6 Eylül 2026'da DERLENDİ** (D-431; 12 Eylül'de rapora işlendi, D-462 A3): `navitas_seg_v36_best_512_fp16.engine`, TensorRT 10.16.2 / Orin Nano, 57 283 989 B, sha256 `bb9bd8685a98a91947332c5b19b43f6c5631fb9c8ebcf611a9f75f6c05950300` (`config/model_registry.json` `turevler`, `kaynak_sha256` = üretim `.pt` → `turev_eslesti`). **Yer tutucu kalmadı; RED hükmü kalktı.** ⚠ Ama engine **üretime alınmadı**: karar denkliği D-303 oransal eşiğini geçemedi (aşağıdaki denklik ölçümü) → **uçuş `.pt` ile** |
 
 **Türev doğrulaması fail-closed'dur.** Eskiden `model_kayit_dogrula` yalnız **dosya adını**
 kıyaslıyordu; her `.engine` "EŞLEŞMİYOR" ile reddediliyor ve Jetson'da TensorRT ancak
@@ -1984,9 +2044,20 @@ zorundadır; nöbetçi `tests/test_t202_jetson_paket_butunlugu.py`.
 - **ONNX ↔ PyTorch karar denkliği:** n=260'ta karar **259/260** aynı (1 uyuşmazlık:
   `sa_000215.jpg`, pt=2 · onnx=1); zemin maskesi IoU ortalaması **0,9975**; azami rota
   sapması **172,1 px = 13,443 m**. Ön kayıt kuralı `≤ 5/260` **sağlandı**. ⚠ Koşum CPU
-  EP iledir; **TensorRT motorunun kendi denkliği Jetson'da AYRICA ölçülmelidir**.
+  EP iledir; ~~**TensorRT motorunun kendi denkliği Jetson'da AYRICA ölçülmelidir**~~
+  → **6 Eylül 2026'da Jetson Orin Nano'da ÖLÇÜLDÜ ve DÜŞTÜ** (D-431; 12 Eylül'de
+  rapora işlendi, D-462 A3) — aşağıdaki satır.
 - **FP16 karar denkliği:** zarar yönü (FP32 doğruyken FP16 yanlış şerit) **0** → GEÇTİ;
   karar uyuşması **0,9968** (eşik 0,98) → GEÇTİ.
+- 🔴 **TensorRT `.engine` ↔ `.pt` karar denkliği (Jetson Orin Nano, 6 Eylül 2026) — DÜŞTÜ.**
+  Betik `scripts/olcum/170_engine_karar_denkligi.py`; artefakt
+  `results/jetson_20260906/jetson_log_20260906/engine_karar_denkligi.json`; ön kayıt
+  `results/b4_fps/ON_KAYIT_FP16.md` §2 + D-303. Ölçülen: **F1** zarar yönü **0** (`GECTI`) ·
+  **F2** karar uyuşması **0,99526** (n = 633, eşik 0,98 → `GECTI`) · **D-303 oransal
+  uyuşmazlık 3/126 = %2,38 > %1,92 (5/260) → `DUSTU`**. Sonuç, **eşik gevşetilmeden**
+  rapora olduğu gibi girer: engine **üretime alınmadı**, uçuş **`.pt`** ile yapılır
+  (D-431 §4 madde 1). ⚠ Sınır: S kümesi `data/arena_kompozit_v2` (126 GT'li kare), **T66
+  kabul kümesi değildir**; D-303 T66 için yazılmıştı — nihai karar T66 ile tekrar ölçülecek.
 
 
 ##### 3.3.4.2.2 Karar zinciri kabul kapıları — K0…K8 + K5A
@@ -2130,8 +2201,51 @@ kümesinde **ölçülmüştür** (arena değil):
 **(a) Yarışma sahasına benzer koşullarda test.** Bugünkü iki ölçüm kümesi:
 sentetik arena (n = 260 kadraj) ve gerçek kırsal DJİ kareleri (`test29` n = 29,
 `val82` n = 82). Kabul denetçisi her koşumda kendi çıktısına *"Bu ölçümlerin tamamı
-SENTETİKTİR"* satırını basar (§3.3.4.2.6). **Farklı ışık açısı ve gölge kesitlerinde
-ayrı bir ölçüm yapılmamıştır** — kümeler bu eksende bölünmemiştir.
+SENTETİKTİR"* satırını basar (§3.3.4.2.6). ~~**Farklı ışık açısı ve gölge kesitlerinde
+ayrı bir ölçüm yapılmamıştır** — kümeler bu eksende bölünmemiştir.~~
+*(12 Eylül 2026'da düzeltildi — D-462 E; eski metin silinmedi.)* **Gerçek kare kümeleri**
+bu eksende hâlâ bölünmemiştir; ama SENTETİK render tarafında ayrı bir ışık/gölge
+ölçümü **vardır** ve aşağıya taşınmıştır.
+
+**SENTETİK ışık/gölge kesiti — ÖLÇÜLDÜ (10 Eylül 2026, T213-A; 12 Eylül'de rapora taşındı, D-462 E).**
+Yukarıdaki *"ayrı bir ölçüm yapılmamıştır"* cümlesi **eksikti**: MuJoCo render varyantlarında
+alçak güneş + gölge kesiti **üretim modeli v36 ile** (sha `1d1caca6…6911`; sim'e özel eğitim yok)
+ölçülmüştür. Bu **saha değil, SENTETİK render** ölçümüdür ve yönergenin istediği gerçek
+arena/HTAB karesinin yerine geçmez; ama **kötü ölçüm de rapora girer**. Işık yalnız v2/v3'te
+değişir (`simulation/mujoco/arena_mjcf.py:208-215` `ISIK` sözlüğü; gölge dökme
+`castshadow="true"` her varyantta açıktır, `:787` — gölgeyi belirgin yapan güneş yüksekliğidir):
+
+| varyant | güneş yönü (`dir`) | güneş yüksekliği | güneş `diffuse` | ortam (`headlight ambient`) | ne değişir |
+|---|---|---|---|---|---|
+| taban / v1 | `-0.35 0.25 -0.90` | ≈ **64,5°** (tepe güneş, kısa gölge) | `0.58 0.58 0.55` | `0.30 0.30 0.30` | — (taban çizgisi) |
+| **v2** | `-0.62 0.45 -0.64` | ≈ **39,9°** (alçak güneş, gölge ≈ 1,2 × yükseklik) | `0.85 0.83 0.78` | `0.18 0.18 0.19` | v1 + belirgin gölge/kontrast |
+| **v3** | v2 ile aynı ışık | ≈ **39,9°** | `0.85 0.83 0.78` | `0.18 0.18 0.19` | v2 + düzensiz moloz yığını mesh'leri |
+
+Üretim semantiğiyle (HB tohumu tek piksel, `hb_yaricap_m = 0`) **15 harita** (5 harita ×
+kolay/orta/zor), dört varyantta **aynı** harita seti; artefaktlar `results/fdr_sprint_20260910/H1/k3b/<varyant>_15harita.json`
+ve özet `k3b/ozet_k3b.json`, rapor `k3b/RAPOR_K3B.md`:
+
+| varyant | K3 rota bulunan | K3 **doğru etiket** | HTAB engel (ort) | HTAB geçilebilir (ort) | açık yol şeridinde geçilebilir (ort) | rota durumları |
+|---|---:|---:|---:|---:|---:|---|
+| taban | 0/15 | **0/15** | 0,2849 | 0,0506 | 0,1242 | BELIRSIZ_TEK_KAPI · KAPALI_DAR · KAPI_YOK · MASKE_YOK |
+| v1 (gerçek ölçekli doku) | 3/15 | **3/15** | 0,1314 | 0,3441 | 0,9727 | ACIK · KAPALI_DAR |
+| **v2 (alçak güneş + gölge)** | 0/15 | **0/15** | **0,2380** | 0,3350 | 0,9679 | KAPALI_DAR |
+| **v3 (v2 ışığı + moloz mesh)** | 0/15 | **0/15** | 0,1630 | 0,3645 | 0,9744 | KAPALI_DAR |
+
+**Okuma (hüküm gevşetilmeden).** Gölge, HTAB'ın **engel** oranını `0,1314 → 0,2380`'e çıkardı
+(gölgeli moloz çevresi daha geniş engel okunuyor); açık yol algısı neredeyse değişmedi
+(0,9727 → 0,9679). K3 eşiği (doğru etiket ≥ 12/15) **hiçbir varyantta** geçilmedi; v2/v3'te
+**0/15**'tir. v1'in 3 başarısının v2/v3'te kaybolması ışık farkından çok **HB pedi etiketinin
+kararsızlığındandır** (`k3b/RAPOR_K3B.md` §4); harita başına ayrım ölçülmedi → **açık kalır**.
+⚠ **Yerleşim sınırı:** bu dört satır **D-441 ÖNCESİ** arena yerleşimiyle ölçülmüştür (engeller
+açık yol hattına sokuluyordu). Yerleşim düzeltmesi yalnız **v1** için yeniden koşuldu
+(`k3b/v1_15harita_yerlesim_d441.json` → 7/15); **v2 ve v3 yeni yerleşimle yeniden ölçülmedi**
+ve bu görevde de koşulmadı (GPU'da model koşan iş yok). Yani gölge kesitinin yeni yerleşimdeki
+değeri **ÖLÇÜLEMEDİ**; buradaki 0/15 eski yerleşimin kaydıdır.
+
+**Bu ölçüm neyi KAPATMAZ.** Sentetik render ışığıdır; gerçek arenanın saat/hava/gölge
+çeşitliliğini temsil etmez. Yönergenin istediği *"yarışma sahasına benzer koşullar"*
+şartı bu satırla **karşılanmaz** — gerçek arena karesi hâlâ **ÖLÇÜLEMEDİ** (§4.13.1 kalem 1).
 
 **ÖLÇÜLEMEDİ:** Farklı ışık açısı ve gölge koşullarında doğruluk. Bunun için arena
 benzeri gerçek saha görüntüsü (kırmızı H brandası + moloz + fiziki bariyer, ≥ 30 m)
@@ -2649,7 +2763,7 @@ karşılanır.
 |---|---|---|
 | A1 | **Gerçek İKA motor sürücüsü** | Donanım tedarik edilmedi; İKA hattı finale bırakıldı. Arayüz ve sahte sürücü hazır, gerçek arka uç yok |
 | A2 | ~~**Gazebo fiziksel temas koşusu**~~ **Fiziksel temas koşusu** (§7.3 İKA yarısı) | ~~Geliştirme makinesinde `gz` yok — **ÖLÇÜLEMEDİ**~~ → **10 Eylül 2026:** MuJoCo'da koşuldu (SENTETİK, §3.3.3.2) — YER GERÇEĞİ 45/45 HB içinde, temaslı koşum 0; Gazebo koşulmadı. Gerçek İKA ile saha koşusu **ÖLÇÜLEMEDİ** (tedarik yok, A1) |
-| A3 | **TensorRT `.engine` denkliği** | Nano venv38'de `tensorrt` modülü yok; `.engine` bu kart için **ÖLÇÜLEMEDİ** |
+| A3 | **TensorRT `.engine` denkliği** | ~~Nano venv38'de `tensorrt` modülü yok; `.engine` bu kart için **ÖLÇÜLEMEDİ**~~ → **6 Eylül 2026 (D-431; 12 Eylül'de işlendi, D-462 A3):** kart Orin Nano Developer Kit 4 GB çıktı, TensorRT 10.16.2 apt ile kuruldu, FP16 engine **derlendi** ve denklik **ÖLÇÜLDÜ**: F1 0 · F2 0,99526 GEÇTİ, **D-303 oransal 3/126 = %2,38 > %1,92 → DÜŞTÜ** (`results/jetson_20260906/jetson_log_20260906/engine_karar_denkligi.json`). Kalem artık *"ölçülemedi"* değil **"denklik DÜŞTÜ"**tür: engine üretime alınmadı, uçuş `.pt` ile; T66 kabul kümesiyle tekrar ölçümü açık kalır |
 | A4 | **Karar kararsızlığı** (v36 14/260, v35'ten kötü) | Histerezis (K=3) yayın katmanında bastırıyor ama **kök neden modeldedir**; ölçüm kayıtlı, kapı yok. *5 Eylül eki:* yayın katmanı için H1c damgası koşuldu ve kilitlendi (aşağıdaki 4b #24 satırı); kök neden (model) bu satırda açık kalır |
 | A5 | **`min()` yolundaki duvar saati zayıflığı** (`rota_zaman` / `son_hb`) | Çürütücü işaret etti, `karar_yas` yolu düzeltildi; bu kol **A2'den eskidir** ve ayrı iş ister |
 | A6 | **FDA kipi denetim borcu** | Sözleşmeyi ve uygulamayı aynı el yazdı; bağımsız denetim ilk gerçek provada |
@@ -2844,7 +2958,8 @@ Bölümde geçen her sayının kaynağı. Biçim: **değer** · *dosya yolu* · 
 | değer | dosya | üreten | tarih |
 |---|---|---|---|
 | `navitas-seg-v36-512` · imgsz 512 · pytorch · sha256 `1d1caca6…` | `config/model_registry.json → profiles.competition` | `codes/model_registry.py` | 2026-08-26 |
-| ONNX sha `f4c9f5fe…` · `.engine` = `DERLENINCE_YAZILIR` (RED) | aynı dosya → `turevler` | `model_registry.py --turev-kaydet` | — |
+| ONNX sha `f4c9f5fe…` · ~~`.engine` = `DERLENINCE_YAZILIR` (RED)~~ → `.engine` sha `bb9bd868…0300` (6 Eylül'de derlendi, `turev_eslesti`) | aynı dosya → `turevler` | `model_registry.py --turev-kaydet` | 2026-09-06 |
+| `.engine` ↔ `.pt` karar denkliği: F1 **0** · F2 **0,99526** · **D-303 oransal 3/126 DÜŞTÜ** | `results/jetson_20260906/jetson_log_20260906/engine_karar_denkligi.json` | `scripts/olcum/170_engine_karar_denkligi.py` | 2026-09-06 |
 | ONNX↔PT karar denkliği 259/260 · IoU 0,9975 · sapma 172,1 px / 13,443 m | `results/t79/onnx_denklik_v36.json` | `scripts/olcum/67_onnx_karar_denkligi.py` | 2026-08 |
 | FP16 zarar yönü 0 · karar uyuşması 0,9968 (eşik 0,98) | `results/fdr/GORUNTU_ISLEME_KANIT.md` §4.2 · `REVIEW_LOG.md` D-375 | `scripts/olcum/167_fdr_kanit_paketi.py` | 2026-09 |
 | Karar çevrilmesi v36 14/260 (tohum 7) · 15/260 (tohum 11) · v35 9 / 11 | `results/karar_cevrilmesi_v36/` · `config/model_registry.json → metrics.karar_cevrilmesi` | `scripts/olcum/68_karar_kararliligi.py` | 2026-08-26 |
