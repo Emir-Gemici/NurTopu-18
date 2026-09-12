@@ -157,7 +157,7 @@
 | `Y-3.3.3-M03` | 🔴 **Video Kanıtı** | simülasyonun ekran kaydı videosunun **linki** | ~~YOK~~ **KISMEN** (10 Eylül 2026, T214-B): video üretildi — 177,88 s, 25 FPS, 1280×720, üç kamera + HUD, yerel dosya sha256 `35ffc33e2f99c833…` (`results/fdr_sprint_20260910/video/OKUBENI.md`, `BOLUM_3` §3.3.3.3); **link BEYAN GEREKLİ (insan, T222)** — yönerge linki ister, link gelene kadar KISMEN |
 | `Y-3.3.4-M01` | **Detaylı Algoritma Akışı** | İHA ve İKA otonom davranışlarını yöneten ana döngüler ve karar mekanizmalarının **akış diyagramları** | VAR (7 Eylül: 5 diyagram koddan, `FDR/sekiller/akis_a..e.svg` + düğüm tabloları `akis_<x>_dugumler.md`, 337/337 düğüm dosya:satır tam; nöbetçi `tests/test_gece_akis_diyagramlari.py` 13/13) |
 | `Y-3.3.4-M02` | **Görüntü İşleme Başarımı** | yarışma sahasına **benzer koşullarda** (farklı ışık açıları, gölgeler) test sonuçları ve **doğruluk matrisleri** | KISMEN (doğruluk matrisi 7 Eylül'de DOĞRULAMA kümesinde ölçüldü — §3.3.4.2.8 (b), §4.8.4; arena ve ışık/gölge kesiti yok) |
-| `Y-3.3.4-M03` | **Haberleşme Paket Yapısı** | İHA↔İKA ve yer istasyonu↔araçlar arasında aktarılan paketlerin **nihai yapısı, veri hızı ve gecikme test sonuçları** | KISMEN (yapı var, gecikme ölçümü kısmi) |
+| `Y-3.3.4-M03` | **Haberleşme Paket Yapısı** | İHA↔İKA ve yer istasyonu↔araçlar arasında aktarılan paketlerin **nihai yapısı, veri hızı ve gecikme test sonuçları** | KISMEN (12 Eylül, T243: yapı + worst-case boyut tablosu + gerçek görev veri hızı yazılım düzeneğinde ölçüldü — §3.3.4.3; gecikme UDP/TCP-seri köprüsünde ölçüldü §3.3.4.3.3; **RF (SiK 433 MHz fiili hat) hâlâ ÖLÇÜLEMEDİ**, radyo takılınca kapanır) |
 
 ## 4. Bölüm 4 — Test Faaliyetleri · **15 puan**
 

@@ -2350,6 +2350,42 @@ koşulmadı (D-426 §1); **kapanma:** ekip SiK çiftini taktığında aynı ara�
 (`--rol yanki --port COMx` / `--rol olc --port COMy --n 200 --json --cikti …`) — RF satırı o
 koşumun JSON'u olmadan kapanmaz.
 
+**12 Eylül (T243, D-462 C · Y-3.3.4-M03) — paket boyutu tablosu + gerçek görev veri hızı:**
+`scripts/sik_rf_olc.py`'nin ölçtüğü RTT/veri hızı **probe kadansındadır** (`IKA_GO`/`PARACHUTE`
+gibi ~80 B tekil komutlar); yönergenin istediği **"nihai paket yapısı"** her mesaj tipinin
+kendisidir, o da hâlâ ölçülmemişti. Ön kayıt: `results/t243_mesaj_boyutu/ON_KAYIT.md`
+(ölçümden önce); betik: `scripts/mesaj_boyutu_ve_veri_hizi.py`; nöbetçi:
+`tests/test_t243_mesaj_boyutu.py` (4/4 OK); ham çıktı: `results/t243_mesaj_boyutu/olcum.json`.
+
+*A) Paket boyutu — WORST-CASE, `comms/protocol.py` `encode()` ile gerçek çağrı:*
+
+| mesaj tipi | worst-case senaryo | bayt |
+|---|---|---:|
+| `OPEN_ROUTE` (0 waypoint) | rota geometrisi yok | 129 |
+| `OPEN_ROUTE` (`MAKS_WP`=64 waypoint) | `codes/costmap_path_finder.py:118` tavanı, İHA-UB (300×300 m) sınırında koordinat | 1344 |
+| `NO_ROUTE` | en uzun gerçek sebep sabiti (`karar_sozlesmesi.ICERIK_YOK_LETTERBOX_SUPHESI`, 28 karakter) + eş uzunlukta `detay` | 130 |
+| `HEARTBEAT` | `HEARTBEAT_TELEMETRI_ALANLARI`nın **tamamı** dolu (14 alan) | 291 |
+| `ACK` | `ref_tip`+`ref_cmd`+`sonuc` üçü de dolu | 129 |
+| `CMD` | en uzun `cmd`/`oturum` (64 karakter) | 155 |
+| `IHA_LANDED` | — | 67 |
+
+*B) Gerçek görev veri hızı — GERÇEK 127.0.0.1 UDP loopback (`tests/test_rpi_telsiz_yayin.py`'deki
+`KararYayinci`/`IkaReceiver` altyapısı yeniden kullanıldı, sahte soket değil), 10 saniye,
+karar dönüşümlü (açık/kapalı) + gerçek `IHA_HEARTBEAT_ARALIK_S` HEARTBEAT + gerçek ACK:*
+
+| ölçüm | değer |
+|---|---:|
+| Alınan toplam bayt (yalnız YKS ucu) | 8847 B / 10,146 s |
+| Ortalama veri hızı | **871,96 B/s** |
+| SiK 57600 baud 8N1 nominal kapasite | 5760,0 B/s |
+| **Doluluk oranı** | **%15,1** |
+
+⚠ **Bu ölçüm ALT SINIRDIR**, saha üst sınırı değil: yalnız YKS ucuna giden trafiği sayar;
+sahada aynı yayından İKA da ACK'li mesaj alır (paylaşımlı radyo hattında toplam trafik daha
+yüksektir). T250'nin (D-466) `MAKS_WP`+ECC worst-case senaryosundaki **%71/%143** rakamları
+bu ölçümle **çelişmez** — orası "olabilecek en kötü" (64 waypoint, ECC açık), burası "3
+waypointlik tipik bir açık/kapalı karar dönüşümü" ölçer; ikisi de gerçek, farklı senaryolar.
+
 ##### 3.3.4.3.1 Çerçeve protokolü (SiK 433 MHz / UDP)
 
 - **Çerçeveleme:** satır sonu (`\n`) ile ayrılmış **tek satır JSON**, UTF-8
