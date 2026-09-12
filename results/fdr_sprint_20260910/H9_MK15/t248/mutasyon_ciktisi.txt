@@ -1,0 +1,5 @@
+N0 mutasyon yok: beklenen=0 gercek=0
+N1 urun: tekrar gonderimde cizim YOK (duzeltme oncesi): beklenen=1 gercek=1
+N2 urun: cizim KOSULSUZ (her tekrarda yeniden ciz): beklenen=1 gercek=1
+N3 urun: tazeleme yalniz ANA tuval (kucuk harita bayat kalir): beklenen=1 gercek=1
+MUTASYON_SONUC GECTI

@@ -1,0 +1,30 @@
+# §2.3 atif dogrulamasi — YENIDEN KOSUM (12 Eyl 2026, kopyalanan dosya adlariyla)
+# calisma dizini: results/fdr_sprint_20260910/H9_MK15/t226/h2e_kararsizlik
+# tarih: 2026-09-12T03:36:34Z (UTC)
+
+$ grep -c "unexpectedly found" mutasyon_M4.txt
+0
+$ grep -c "unexpectedly found" mimar_011758_tam_suit.txt
+4
+
+$ grep -n "unexpectedly found" mimar_011758_tam_suit.txt
+399:AssertionError: '.!frame3.!frame.!canvas' unexpectedly found in {'.!frame3.!frame.!canvas': (34, 189, 227)}
+408:AssertionError: '.!frame3.!frame.!canvas' unexpectedly found in {'.!frame3.!frame.!canvas': (34, 189, 227)}
+434:AssertionError: '.!frame3.!frame.!canvas' unexpectedly found in {'.!frame3.!frame.!canvas': (51, 156, 243)}
+443:AssertionError: '.!frame3.!frame.!canvas' unexpectedly found in {'.!frame3.!frame.!canvas': (51, 156, 243)}
+
+$ grep -n "^Ran \|^FAILED\|^OK" mimar_011758_tam_suit.txt
+446:Ran 2620 tests in 551.792s
+448:FAILED (failures=6, skipped=12)
+
+$ grep -n "AssertionError: Lists differ" mimar_011758_tam_suit.txt
+384:AssertionError: Lists differ: [('li[20 chars]4.0, 96.0], {'activedash': '', 'activefill': '[20296 chars] 0))] != [('li[20 chars]4.0, 189.0], {'activedash': '', 'activefill': [20400 chars] 0))]
+419:AssertionError: Lists differ: [('li[21 chars].0, 144.0], {'activedash': '', 'activefill': '[20300 chars] 0))] != [('li[21 chars].0, 156.0], {'activedash': '', 'activefill': '[20329 chars] 0))]
+
+$ sha256sum mimar_011758_tam_suit.txt mimar_011758_genel_kapi.txt
+1af052cfdf8bb369a2a380baa16928a2bcc909a327d51ab342f859ccb292b6b4 *mimar_011758_tam_suit.txt
+64930014f4afe964563f8d35c26cab9282927bd040acc02acf1d6d6c06ad7491 *mimar_011758_genel_kapi.txt
+
+$ grep -n "GENEL KAPI\|TUM DETERMINISTIK" mimar_011758_genel_kapi.txt
+23:[OK] TUM DETERMINISTIK SAHNELER GECTI
+48:GENEL KAPI (madde 14): GECTI — kol1 15/15 · kol2 serit 15/15

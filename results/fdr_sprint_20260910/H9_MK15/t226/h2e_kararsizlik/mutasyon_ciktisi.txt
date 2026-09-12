@@ -1,0 +1,21 @@
+M0 mutasyon yok
+    M0 mutasyon yok: cikis=0
+M1 ayri geri dongu adresi geri alindi
+    M1 ayri geri dongu adresi geri alindi: cikis=1
+M2 hazir kosulu gevsetildi + sabit uyku geri geldi
+    M2 hazir kosulu gevsetildi + sabit uyku geri geldi: cikis=1
+M3 yabanci cerceve onkosulu silindi
+    M3 yabanci cerceve onkosulu silindi: cikis=0
+M4 duzeltme oncesi fikstur + seyrek enjeksiyon
+    M4 duzeltme oncesi fikstur + seyrek enjeksiyon: cikis=1
+M5 urun: OPEN_ROUTE rota_yok'u temizlemiyor
+    M5 urun: OPEN_ROUTE rota_yok'u temizlemiyor: cikis=1
+
+--- OZET ---
+OK  M0 mutasyon yok: beklenen=0 gercek=0
+OK  M1 ayri geri dongu adresi geri alindi: beklenen=1 gercek=1
+OK  M2 hazir kosulu gevsetildi + sabit uyku geri geldi: beklenen=1 gercek=1
+OK  M3 yabanci cerceve onkosulu silindi: beklenen=0 gercek=0
+OK  M4 duzeltme oncesi fikstur + seyrek enjeksiyon: beklenen=1 gercek=1
+OK  M5 urun: OPEN_ROUTE rota_yok'u temizlemiyor: beklenen=1 gercek=1
+MUTASYON_SONUC GECTI

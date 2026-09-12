@@ -1,0 +1,9 @@
+test_T248_no_route_sonrasi_tekrarli_open_route_haritayi_tazeler (test_yks_mk15_hakem_ekrani.H2g_TekrarliOpenRouteHaritayiTazeler.test_T248_no_route_sonrasi_tekrarli_open_route_haritayi_tazeler) ... ok
+test_T248b_durum_degismeyen_tekrar_haritayi_yeniden_cizmez (test_yks_mk15_hakem_ekrani.H2g_TekrarliOpenRouteHaritayiTazeler.test_T248b_durum_degismeyen_tekrar_haritayi_yeniden_cizmez) ... ok
+test_T248c_kamera_gorunumunde_kucuk_harita_da_tazelenir (test_yks_mk15_hakem_ekrani.H2g_TekrarliOpenRouteHaritayiTazeler.test_T248c_kamera_gorunumunde_kucuk_harita_da_tazelenir)
+T248 KAPSAM KENARI (çürütücü gözlemi) — küçük harita da ölçülür. ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 2.794s
+
+OK

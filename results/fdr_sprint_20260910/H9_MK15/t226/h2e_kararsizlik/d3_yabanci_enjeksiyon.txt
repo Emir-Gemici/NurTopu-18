@@ -1,0 +1,271 @@
+ONCE_DESEN_SAYISI 0
+test_H2e_olcek_1_0 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_0) ... 
+  test_H2e_olcek_1_0 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_0) (yol=1, olcek=1.0) ... FAIL
+  test_H2e_olcek_1_0 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_0) (yol=2, olcek=1.0) ... FAIL
+  test_H2e_olcek_1_0 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_0) (yol=3, olcek=1.0) ... FAIL
+H2E_DURUM {"OLCEK": 1.0, "harita": ".!frame3.!frame.!canvas", "harita_wh": [742, 450], "iha_port": 59497, "ika_port": 59498, "link_port": 59496, "olcek": 1.0, "olculu_alan": {}, "rota": 146, "rota_yok": {"detay": "koridor genişlik tavanı aşıldı", "sebep": "KORIDOR_DEGIL", "seq": 1030, "type": "NO_ROUTE", "v": 1}, "sayac": {"ACK_TX": 133, "HEARTBEAT": 0, "IHA_LANDED": 0, "NO_ROUTE": 133, "OPEN_ROUTE": 3, "OPEN_ROUTE_RED": 0}, "tk_scaling": 1.332282448377581}
+H2E_OLAY_SAYISI 276
+   11.742 CIZIM {"alan": {}, "detay_uz": 0, "gorunum": "harita", "rota_yok_seq": 147, "tuval": null}
+   11.747 MESAJ {"adr": ["127.0.0.1", 59497], "node": null, "rota_seq": 146, "rota_yok_once": 991, "rota_yok_sonra": 147, "seq": 147, "tip": "NO_ROUTE"}
+   11.748 CIZIM {"alan": {}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 992, "tuval": null}
+   11.753 MESAJ {"adr": ["127.0.0.1", 59499], "node": null, "rota_seq": 146, "rota_yok_once": 147, "rota_yok_sonra": 992, "seq": 992, "tip": "NO_ROUTE"}
+   11.882 CIZIM {"alan": {}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 993, "tuval": null}
+   11.887 MESAJ {"adr": ["127.0.0.1", 59499], "node": null, "rota_seq": 146, "rota_yok_once": 992, "rota_yok_sonra": 993, "seq": 993, "tip": "NO_ROUTE"}
+   12.016 CIZIM {"alan": {}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 994, "tuval": null}
+   12.021 MESAJ {"adr": ["127.0.0.1", 59499], "node": null, "rota_seq": 146, "rota_yok_once": 993, "rota_yok_sonra": 994, "seq": 994, "tip": "NO_ROUTE"}
+   12.150 CIZIM {"alan": {}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 995, "tuval": null}
+   12.156 MESAJ {"adr": ["127.0.0.1", 59499], "node": null, "rota_seq": 146, "rota_yok_once": 994, "rota_yok_sonra": 995, "seq": 995, "tip": "NO_ROUTE"}
+   12.285 CIZIM {"alan": {}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 996, "tuval": null}
+   12.289 MESAJ {"adr": ["127.0.0.1", 59499], "node": null, "rota_seq": 146, "rota_yok_once": 995, "rota_yok_sonra": 996, "seq": 996, "tip": "NO_ROUTE"}
+   12.420 CIZIM {"alan": {}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 997, "tuval": null}
+   12.425 MESAJ {"adr": ["127.0.0.1", 59499], "node": null, "rota_seq": 146, "rota_yok_once": 996, "rota_yok_sonra": 997, "seq": 997, "tip": "NO_ROUTE"}
+   12.554 CIZIM {"alan": {}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 998, "tuval": null}
+   12.560 MESAJ {"adr": ["127.0.0.1", 59499], "node": null, "rota_seq": 146, "rota_yok_once": 997, "rota_yok_sonra": 998, "seq": 998, "tip": "NO_ROUTE"}
+   12.688 CIZIM {"alan": {}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 999, "tuval": null}
+   12.693 MESAJ {"adr": ["127.0.0.1", 59499], "node": null, "rota_seq": 146, "rota_yok_once": 998, "rota_yok_sonra": 999, "seq": 999, "tip": "NO_ROUTE"}
+   12.823 CIZIM {"alan": {}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 1000, "tuval": null}
+   12.829 MESAJ {"adr": ["127.0.0.1", 59499], "node": null, "rota_seq": 146, "rota_yok_once": 999, "rota_yok_sonra": 1000, "seq": 1000, "tip": "NO_ROUTE"}
+   12.959 CIZIM {"alan": {}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 1001, "tuval": null}
+   12.985 MESAJ {"adr": ["127.0.0.1", 59499], "node": null, "rota_seq": 146, "rota_yok_once": 1000, "rota_yok_sonra": 1001, "seq": 1001, "tip": "NO_ROUTE"}
+   12.989 CIZIM {"alan": {}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 1002, "tuval": null}
+   13.011 MESAJ {"adr": ["127.0.0.1", 59499], "node": null, "rota_seq": 146, "rota_yok_once": 1001, "rota_yok_sonra": 1002, "seq": 1002, "tip": "NO_ROUTE"}
+   13.154 CIZIM {"alan": {}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 1003, "tuval": null}
+   13.160 MESAJ {"adr": ["127.0.0.1", 59499], "node": null, "rota_seq": 146, "rota_yok_once": 1002, "rota_yok_sonra": 1003, "seq": 1003, "tip": "NO_ROUTE"}
+   13.298 CIZIM {"alan": {}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 1004, "tuval": null}
+   13.306 MESAJ {"adr": ["127.0.0.1", 59499], "node": null, "rota_seq": 146, "rota_yok_once": 1003, "rota_yok_sonra": 1004, "seq": 1004, "tip": "NO_ROUTE"}
+   13.441 CIZIM {"alan": {}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 1005, "tuval": null}
+   13.448 MESAJ {"adr": ["127.0.0.1", 59499], "node": null, "rota_seq": 146, "rota_yok_once": 1004, "rota_yok_sonra": 1005, "seq": 1005, "tip": "NO_ROUTE"}
+   13.574 CIZIM {"alan": {}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 1006, "tuval": null}
+   13.589 MESAJ {"adr": ["127.0.0.1", 59499], "node": null, "rota_seq": 146, "rota_yok_once": 1005, "rota_yok_sonra": 1006, "seq": 1006, "tip": "NO_ROUTE"}
+   13.591 CIZIM {"alan": {}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 1007, "tuval": null}
+   13.614 MESAJ {"adr": ["127.0.0.1", 59499], "node": null, "rota_seq": 146, "rota_yok_once": 1006, "rota_yok_sonra": 1007, "seq": 1007, "tip": "NO_ROUTE"}
+   13.756 CIZIM {"alan": {}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 1008, "tuval": null}
+   13.771 MESAJ {"adr": ["127.0.0.1", 59499], "node": null, "rota_seq": 146, "rota_yok_once": 1007, "rota_yok_sonra": 1008, "seq": 1008, "tip": "NO_ROUTE"}
+   13.901 CIZIM {"alan": {}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 1009, "tuval": null}
+   13.909 MESAJ {"adr": ["127.0.0.1", 59499], "node": null, "rota_seq": 146, "rota_yok_once": 1008, "rota_yok_sonra": 1009, "seq": 1009, "tip": "NO_ROUTE"}
+   14.044 CIZIM {"alan": {}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 1010, "tuval": null}
+   14.053 MESAJ {"adr": ["127.0.0.1", 59499], "node": null, "rota_seq": 146, "rota_yok_once": 1009, "rota_yok_sonra": 1010, "seq": 1010, "tip": "NO_ROUTE"}
+   14.189 CIZIM {"alan": {}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 1011, "tuval": null}
+   14.197 MESAJ {"adr": ["127.0.0.1", 59499], "node": null, "rota_seq": 146, "rota_yok_once": 1010, "rota_yok_sonra": 1011, "seq": 1011, "tip": "NO_ROUTE"}
+   14.326 CIZIM {"alan": {}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 1012, "tuval": null}
+   14.334 MESAJ {"adr": ["127.0.0.1", 59499], "node": null, "rota_seq": 146, "rota_yok_once": 1011, "rota_yok_sonra": 1012, "seq": 1012, "tip": "NO_ROUTE"}
+   14.472 CIZIM {"alan": {}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 1013, "tuval": null}
+   14.483 MESAJ {"adr": ["127.0.0.1", 59499], "node": null, "rota_seq": 146, "rota_yok_once": 1012, "rota_yok_sonra": 1013, "seq": 1013, "tip": "NO_ROUTE"}
+   14.485 CIZIM {"alan": {}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 1014, "tuval": null}
+   14.493 MESAJ {"adr": ["127.0.0.1", 59499], "node": null, "rota_seq": 146, "rota_yok_once": 1013, "rota_yok_sonra": 1014, "seq": 1014, "tip": "NO_ROUTE"}
+   14.628 CIZIM {"alan": {}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 1015, "tuval": null}
+   14.634 MESAJ {"adr": ["127.0.0.1", 59499], "node": null, "rota_seq": 146, "rota_yok_once": 1014, "rota_yok_sonra": 1015, "seq": 1015, "tip": "NO_ROUTE"}
+   14.765 CIZIM {"alan": {}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 1016, "tuval": null}
+   14.772 MESAJ {"adr": ["127.0.0.1", 59499], "node": null, "rota_seq": 146, "rota_yok_once": 1015, "rota_yok_sonra": 1016, "seq": 1016, "tip": "NO_ROUTE"}
+   14.905 CIZIM {"alan": {}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 1017, "tuval": null}
+   14.913 MESAJ {"adr": ["127.0.0.1", 59499], "node": null, "rota_seq": 146, "rota_yok_once": 1016, "rota_yok_sonra": 1017, "seq": 1017, "tip": "NO_ROUTE"}
+   15.045 CIZIM {"alan": {}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 1018, "tuval": null}
+   15.054 MESAJ {"adr": ["127.0.0.1", 59499], "node": null, "rota_seq": 146, "rota_yok_once": 1017, "rota_yok_sonra": 1018, "seq": 1018, "tip": "NO_ROUTE"}
+   15.190 CIZIM {"alan": {}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 1019, "tuval": null}
+   15.203 MESAJ {"adr": ["127.0.0.1", 59499], "node": null, "rota_seq": 146, "rota_yok_once": 1018, "rota_yok_sonra": 1019, "seq": 1019, "tip": "NO_ROUTE"}
+   15.333 CIZIM {"alan": {}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 1020, "tuval": null}
+   15.343 MESAJ {"adr": ["127.0.0.1", 59499], "node": null, "rota_seq": 146, "rota_yok_once": 1019, "rota_yok_sonra": 1020, "seq": 1020, "tip": "NO_ROUTE"}
+   15.344 CIZIM {"alan": {}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 1021, "tuval": null}
+   15.352 MESAJ {"adr": ["127.0.0.1", 59499], "node": null, "rota_seq": 146, "rota_yok_once": 1020, "rota_yok_sonra": 1021, "seq": 1021, "tip": "NO_ROUTE"}
+   15.491 CIZIM {"alan": {}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 1022, "tuval": null}
+   15.498 MESAJ {"adr": ["127.0.0.1", 59499], "node": null, "rota_seq": 146, "rota_yok_once": 1021, "rota_yok_sonra": 1022, "seq": 1022, "tip": "NO_ROUTE"}
+   15.631 CIZIM {"alan": {}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 1023, "tuval": null}
+   15.641 MESAJ {"adr": ["127.0.0.1", 59499], "node": null, "rota_seq": 146, "rota_yok_once": 1022, "rota_yok_sonra": 1023, "seq": 1023, "tip": "NO_ROUTE"}
+   15.775 CIZIM {"alan": {}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 1024, "tuval": null}
+   15.786 MESAJ {"adr": ["127.0.0.1", 59499], "node": null, "rota_seq": 146, "rota_yok_once": 1023, "rota_yok_sonra": 1024, "seq": 1024, "tip": "NO_ROUTE"}
+   15.931 CIZIM {"alan": {}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 1025, "tuval": null}
+   15.978 MESAJ {"adr": ["127.0.0.1", 59499], "node": null, "rota_seq": 146, "rota_yok_once": 1024, "rota_yok_sonra": 1025, "seq": 1025, "tip": "NO_ROUTE"}
+   15.981 CIZIM {"alan": {}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 1026, "tuval": null}
+   15.989 MESAJ {"adr": ["127.0.0.1", 59499], "node": null, "rota_seq": 146, "rota_yok_once": 1025, "rota_yok_sonra": 1026, "seq": 1026, "tip": "NO_ROUTE"}
+   16.120 CIZIM {"alan": {}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 1027, "tuval": null}
+   16.132 MESAJ {"adr": ["127.0.0.1", 59499], "node": null, "rota_seq": 146, "rota_yok_once": 1026, "rota_yok_sonra": 1027, "seq": 1027, "tip": "NO_ROUTE"}
+   16.274 CIZIM {"alan": {}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 1028, "tuval": null}
+   16.286 MESAJ {"adr": ["127.0.0.1", 59499], "node": null, "rota_seq": 146, "rota_yok_once": 1027, "rota_yok_sonra": 1028, "seq": 1028, "tip": "NO_ROUTE"}
+   16.433 CIZIM {"alan": {}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 1029, "tuval": null}
+   16.449 MESAJ {"adr": ["127.0.0.1", 59499], "node": null, "rota_seq": 146, "rota_yok_once": 1028, "rota_yok_sonra": 1029, "seq": 1029, "tip": "NO_ROUTE"}
+   16.582 CIZIM {"alan": {}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 1030, "tuval": null}
+   16.589 MESAJ {"adr": ["127.0.0.1", 59499], "node": null, "rota_seq": 146, "rota_yok_once": 1029, "rota_yok_sonra": 1030, "seq": 1030, "tip": "NO_ROUTE"}
+test_H2e_olcek_1_5 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_5) ... 
+  test_H2e_olcek_1_5 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_5) (yol=1, olcek=1.5) ... FAIL
+  test_H2e_olcek_1_5 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_5) (yol=2, olcek=1.5) ... FAIL
+  test_H2e_olcek_1_5 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_5) (yol=3, olcek=1.5) ... FAIL
+H2E_DURUM {"OLCEK": 1.5, "harita": ".!frame3.!frame.!canvas", "harita_wh": [742, 450], "iha_port": 57122, "ika_port": 57123, "link_port": 57121, "olcek": 1.5, "olculu_alan": {".!frame3.!frame.!canvas": [51, 161, 238]}, "rota": 147, "rota_yok": {"detay": "koridor genişlik tavanı aşıldı", "sebep": "KORIDOR_DEGIL", "seq": 996, "type": "NO_ROUTE", "v": 1}, "sayac": {"ACK_TX": 99, "HEARTBEAT": 0, "IHA_LANDED": 0, "NO_ROUTE": 99, "OPEN_ROUTE": 4, "OPEN_ROUTE_RED": 0}, "tk_scaling": 2.0006367663344404}
+H2E_OLAY_SAYISI 212
+    7.270 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 161, 238]}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 957, "tuval": null}
+    7.277 MESAJ {"adr": ["127.0.0.1", 57124], "node": null, "rota_seq": 147, "rota_yok_once": 148, "rota_yok_sonra": 957, "seq": 957, "tip": "NO_ROUTE"}
+    7.407 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 161, 238]}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 958, "tuval": null}
+    7.410 MESAJ {"adr": ["127.0.0.1", 57124], "node": null, "rota_seq": 147, "rota_yok_once": 957, "rota_yok_sonra": 958, "seq": 958, "tip": "NO_ROUTE"}
+    7.544 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 161, 238]}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 959, "tuval": null}
+    7.553 MESAJ {"adr": ["127.0.0.1", 57124], "node": null, "rota_seq": 147, "rota_yok_once": 958, "rota_yok_sonra": 959, "seq": 959, "tip": "NO_ROUTE"}
+    7.690 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 161, 238]}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 960, "tuval": null}
+    7.693 MESAJ {"adr": ["127.0.0.1", 57124], "node": null, "rota_seq": 147, "rota_yok_once": 959, "rota_yok_sonra": 960, "seq": 960, "tip": "NO_ROUTE"}
+    7.827 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 161, 238]}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 961, "tuval": null}
+    7.834 MESAJ {"adr": ["127.0.0.1", 57124], "node": null, "rota_seq": 147, "rota_yok_once": 960, "rota_yok_sonra": 961, "seq": 961, "tip": "NO_ROUTE"}
+    7.986 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 161, 238]}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 962, "tuval": null}
+    7.994 MESAJ {"adr": ["127.0.0.1", 57124], "node": null, "rota_seq": 147, "rota_yok_once": 961, "rota_yok_sonra": 962, "seq": 962, "tip": "NO_ROUTE"}
+    8.002 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 161, 238]}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 963, "tuval": null}
+    8.015 MESAJ {"adr": ["127.0.0.1", 57124], "node": null, "rota_seq": 147, "rota_yok_once": 962, "rota_yok_sonra": 963, "seq": 963, "tip": "NO_ROUTE"}
+    8.149 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 161, 238]}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 964, "tuval": null}
+    8.152 MESAJ {"adr": ["127.0.0.1", 57124], "node": null, "rota_seq": 147, "rota_yok_once": 963, "rota_yok_sonra": 964, "seq": 964, "tip": "NO_ROUTE"}
+    8.293 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 161, 238]}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 965, "tuval": null}
+    8.303 MESAJ {"adr": ["127.0.0.1", 57124], "node": null, "rota_seq": 147, "rota_yok_once": 964, "rota_yok_sonra": 965, "seq": 965, "tip": "NO_ROUTE"}
+    8.453 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 161, 238]}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 966, "tuval": null}
+    8.463 MESAJ {"adr": ["127.0.0.1", 57124], "node": null, "rota_seq": 147, "rota_yok_once": 965, "rota_yok_sonra": 966, "seq": 966, "tip": "NO_ROUTE"}
+    8.609 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 161, 238]}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 967, "tuval": null}
+    8.615 MESAJ {"adr": ["127.0.0.1", 57124], "node": null, "rota_seq": 147, "rota_yok_once": 966, "rota_yok_sonra": 967, "seq": 967, "tip": "NO_ROUTE"}
+    8.617 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 161, 238]}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 968, "tuval": null}
+    8.621 MESAJ {"adr": ["127.0.0.1", 57124], "node": null, "rota_seq": 147, "rota_yok_once": 967, "rota_yok_sonra": 968, "seq": 968, "tip": "NO_ROUTE"}
+    8.756 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 161, 238]}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 969, "tuval": null}
+    8.770 MESAJ {"adr": ["127.0.0.1", 57124], "node": null, "rota_seq": 147, "rota_yok_once": 968, "rota_yok_sonra": 969, "seq": 969, "tip": "NO_ROUTE"}
+    8.907 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 161, 238]}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 970, "tuval": null}
+    8.912 MESAJ {"adr": ["127.0.0.1", 57124], "node": null, "rota_seq": 147, "rota_yok_once": 969, "rota_yok_sonra": 970, "seq": 970, "tip": "NO_ROUTE"}
+    9.065 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 161, 238]}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 971, "tuval": null}
+    9.070 MESAJ {"adr": ["127.0.0.1", 57124], "node": null, "rota_seq": 147, "rota_yok_once": 970, "rota_yok_sonra": 971, "seq": 971, "tip": "NO_ROUTE"}
+    9.204 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 161, 238]}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 972, "tuval": null}
+    9.207 MESAJ {"adr": ["127.0.0.1", 57124], "node": null, "rota_seq": 147, "rota_yok_once": 971, "rota_yok_sonra": 972, "seq": 972, "tip": "NO_ROUTE"}
+    9.345 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 161, 238]}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 973, "tuval": null}
+    9.349 MESAJ {"adr": ["127.0.0.1", 57124], "node": null, "rota_seq": 147, "rota_yok_once": 972, "rota_yok_sonra": 973, "seq": 973, "tip": "NO_ROUTE"}
+    9.351 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 161, 238]}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 974, "tuval": null}
+    9.355 MESAJ {"adr": ["127.0.0.1", 57124], "node": null, "rota_seq": 147, "rota_yok_once": 973, "rota_yok_sonra": 974, "seq": 974, "tip": "NO_ROUTE"}
+    9.491 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 161, 238]}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 975, "tuval": null}
+    9.496 MESAJ {"adr": ["127.0.0.1", 57124], "node": null, "rota_seq": 147, "rota_yok_once": 974, "rota_yok_sonra": 975, "seq": 975, "tip": "NO_ROUTE"}
+    9.630 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 161, 238]}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 976, "tuval": null}
+    9.633 MESAJ {"adr": ["127.0.0.1", 57124], "node": null, "rota_seq": 147, "rota_yok_once": 975, "rota_yok_sonra": 976, "seq": 976, "tip": "NO_ROUTE"}
+    9.770 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 161, 238]}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 977, "tuval": null}
+    9.784 MESAJ {"adr": ["127.0.0.1", 57124], "node": null, "rota_seq": 147, "rota_yok_once": 976, "rota_yok_sonra": 977, "seq": 977, "tip": "NO_ROUTE"}
+    9.926 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 161, 238]}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 978, "tuval": null}
+    9.929 MESAJ {"adr": ["127.0.0.1", 57124], "node": null, "rota_seq": 147, "rota_yok_once": 977, "rota_yok_sonra": 978, "seq": 978, "tip": "NO_ROUTE"}
+   10.066 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 161, 238]}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 979, "tuval": null}
+   10.070 MESAJ {"adr": ["127.0.0.1", 57124], "node": null, "rota_seq": 147, "rota_yok_once": 978, "rota_yok_sonra": 979, "seq": 979, "tip": "NO_ROUTE"}
+   10.217 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 161, 238]}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 980, "tuval": null}
+   10.221 MESAJ {"adr": ["127.0.0.1", 57124], "node": null, "rota_seq": 147, "rota_yok_once": 979, "rota_yok_sonra": 980, "seq": 980, "tip": "NO_ROUTE"}
+   10.366 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 161, 238]}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 981, "tuval": null}
+   10.368 MESAJ {"adr": ["127.0.0.1", 57124], "node": null, "rota_seq": 147, "rota_yok_once": 980, "rota_yok_sonra": 981, "seq": 981, "tip": "NO_ROUTE"}
+   10.373 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 161, 238]}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 982, "tuval": null}
+   10.378 MESAJ {"adr": ["127.0.0.1", 57124], "node": null, "rota_seq": 147, "rota_yok_once": 981, "rota_yok_sonra": 982, "seq": 982, "tip": "NO_ROUTE"}
+   10.536 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 161, 238]}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 983, "tuval": null}
+   10.549 MESAJ {"adr": ["127.0.0.1", 57124], "node": null, "rota_seq": 147, "rota_yok_once": 982, "rota_yok_sonra": 983, "seq": 983, "tip": "NO_ROUTE"}
+   10.682 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 161, 238]}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 984, "tuval": null}
+   10.686 MESAJ {"adr": ["127.0.0.1", 57124], "node": null, "rota_seq": 147, "rota_yok_once": 983, "rota_yok_sonra": 984, "seq": 984, "tip": "NO_ROUTE"}
+   10.821 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 161, 238]}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 985, "tuval": null}
+   10.825 MESAJ {"adr": ["127.0.0.1", 57124], "node": null, "rota_seq": 147, "rota_yok_once": 984, "rota_yok_sonra": 985, "seq": 985, "tip": "NO_ROUTE"}
+   10.955 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 161, 238]}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 986, "tuval": null}
+   10.958 MESAJ {"adr": ["127.0.0.1", 57124], "node": null, "rota_seq": 147, "rota_yok_once": 985, "rota_yok_sonra": 986, "seq": 986, "tip": "NO_ROUTE"}
+   11.088 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 161, 238]}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 987, "tuval": null}
+   11.091 MESAJ {"adr": ["127.0.0.1", 57124], "node": null, "rota_seq": 147, "rota_yok_once": 986, "rota_yok_sonra": 987, "seq": 987, "tip": "NO_ROUTE"}
+   11.223 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 161, 238]}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 988, "tuval": null}
+   11.227 MESAJ {"adr": ["127.0.0.1", 57124], "node": null, "rota_seq": 147, "rota_yok_once": 987, "rota_yok_sonra": 988, "seq": 988, "tip": "NO_ROUTE"}
+   11.230 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 161, 238]}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 989, "tuval": null}
+   11.235 MESAJ {"adr": ["127.0.0.1", 57124], "node": null, "rota_seq": 147, "rota_yok_once": 988, "rota_yok_sonra": 989, "seq": 989, "tip": "NO_ROUTE"}
+   11.367 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 161, 238]}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 990, "tuval": null}
+   11.370 MESAJ {"adr": ["127.0.0.1", 57124], "node": null, "rota_seq": 147, "rota_yok_once": 989, "rota_yok_sonra": 990, "seq": 990, "tip": "NO_ROUTE"}
+   11.509 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 161, 238]}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 991, "tuval": null}
+   11.511 MESAJ {"adr": ["127.0.0.1", 57124], "node": null, "rota_seq": 147, "rota_yok_once": 990, "rota_yok_sonra": 991, "seq": 991, "tip": "NO_ROUTE"}
+   11.642 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 161, 238]}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 992, "tuval": null}
+   11.645 MESAJ {"adr": ["127.0.0.1", 57124], "node": null, "rota_seq": 147, "rota_yok_once": 991, "rota_yok_sonra": 992, "seq": 992, "tip": "NO_ROUTE"}
+   11.786 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 161, 238]}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 993, "tuval": null}
+   11.790 MESAJ {"adr": ["127.0.0.1", 57124], "node": null, "rota_seq": 147, "rota_yok_once": 992, "rota_yok_sonra": 993, "seq": 993, "tip": "NO_ROUTE"}
+   11.926 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 161, 238]}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 994, "tuval": null}
+   11.930 MESAJ {"adr": ["127.0.0.1", 57124], "node": null, "rota_seq": 147, "rota_yok_once": 993, "rota_yok_sonra": 994, "seq": 994, "tip": "NO_ROUTE"}
+   12.065 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 161, 238]}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 995, "tuval": null}
+   12.068 MESAJ {"adr": ["127.0.0.1", 57124], "node": null, "rota_seq": 147, "rota_yok_once": 994, "rota_yok_sonra": 995, "seq": 995, "tip": "NO_ROUTE"}
+   12.202 CIZIM {"alan": {".!frame3.!frame.!canvas": [51, 161, 238]}, "detay_uz": 30, "gorunum": "harita", "rota_yok_seq": 996, "tuval": null}
+   12.204 MESAJ {"adr": ["127.0.0.1", 57124], "node": null, "rota_seq": 147, "rota_yok_once": 995, "rota_yok_sonra": 996, "seq": 996, "tip": "NO_ROUTE"}
+
+======================================================================
+FAIL: test_H2e_olcek_1_0 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_0) (yol=1, olcek=1.0)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 752, in _gecisleri_denetle
+    self._mesaj_ver(dict(YOK_ROTA, seq=seq, detay=detay))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 225, in _mesaj_ver
+    self.assertTrue(self._pompala(
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+        lambda: (getattr(self.app, alan) or {}).get("seq") == mesaj["seq"]),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        mesaj)
+        ^^^^^^
+AssertionError: False is not true : {'v': 1, 'type': 'NO_ROUTE', 'seq': 143, 'sebep': 'KORIDOR_DEGIL', 'detay': ''}
+
+======================================================================
+FAIL: test_H2e_olcek_1_0 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_0) (yol=2, olcek=1.0)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 752, in _gecisleri_denetle
+    self._mesaj_ver(dict(YOK_ROTA, seq=seq, detay=detay))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 225, in _mesaj_ver
+    self.assertTrue(self._pompala(
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+        lambda: (getattr(self.app, alan) or {}).get("seq") == mesaj["seq"]),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        mesaj)
+        ^^^^^^
+AssertionError: False is not true : {'v': 1, 'type': 'NO_ROUTE', 'seq': 145, 'sebep': 'KORIDOR_DEGIL', 'detay': ''}
+
+======================================================================
+FAIL: test_H2e_olcek_1_0 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_0) (yol=3, olcek=1.0)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 752, in _gecisleri_denetle
+    self._mesaj_ver(dict(YOK_ROTA, seq=seq, detay=detay))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 225, in _mesaj_ver
+    self.assertTrue(self._pompala(
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+        lambda: (getattr(self.app, alan) or {}).get("seq") == mesaj["seq"]),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        mesaj)
+        ^^^^^^
+AssertionError: False is not true : {'v': 1, 'type': 'NO_ROUTE', 'seq': 147, 'sebep': 'KORIDOR_DEGIL', 'detay': ''}
+
+======================================================================
+FAIL: test_H2e_olcek_1_5 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_5) (yol=1, olcek=1.5)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 752, in _gecisleri_denetle
+    self._mesaj_ver(dict(YOK_ROTA, seq=seq, detay=detay))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 225, in _mesaj_ver
+    self.assertTrue(self._pompala(
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+        lambda: (getattr(self.app, alan) or {}).get("seq") == mesaj["seq"]),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        mesaj)
+        ^^^^^^
+AssertionError: False is not true : {'v': 1, 'type': 'NO_ROUTE', 'seq': 143, 'sebep': 'KORIDOR_DEGIL', 'detay': ''}
+
+======================================================================
+FAIL: test_H2e_olcek_1_5 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_5) (yol=2, olcek=1.5)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 763, in _gecisleri_denetle
+    self.assertNotIn(str(app.harita), app._olculu_alan,
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                     self._tani(app, "ONBELLEK"))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: '.!frame3.!frame.!canvas' unexpectedly found in {'.!frame3.!frame.!canvas': (51, 161, 238)} : ONBELLEK · rota_seq=146 rota_yok={'v': 1, 'type': 'NO_ROUTE', 'seq': 953, 'sebep': 'KORIDOR_DEGIL', 'detay': 'koridor genişlik tavanı aşıldı'} alan={'.!frame3.!frame.!canvas': (51, 161, 238)} harita=.!frame3.!frame.!canvas wh=742x450 sayac={'OPEN_ROUTE': 3, 'OPEN_ROUTE_RED': 0, 'NO_ROUTE': 55, 'IHA_LANDED': 0, 'HEARTBEAT': 0, 'ACK_TX': 55} gunluk=[('M', 'NO_ROUTE', 949, ('127.0.0.1', 57124), 948, 949), ('C', 'ANA', 949, {'.!frame3.!frame.!canvas': (51, 161, 238)}), ('C', 'ANA', 950, {'.!frame3.!frame.!canvas': (51, 161, 238)}), ('M', 'NO_ROUTE', 950, ('127.0.0.1', 57124), 949, 950), ('C', 'ANA', 145, {'.!frame3.!frame.!canvas': (51, 161, 238)}), ('M', 'NO_ROUTE', 145, ('127.0.0.1', 57122), 950, 145), ('C', 'ANA', 951, {'.!frame3.!frame.!canvas': (51, 156, 243)}), ('M', 'NO_ROUTE', 951, ('127.0.0.1', 57124), 145, 951), ('C', 'ANA', 951, {'.!frame3.!frame.!canvas': (51, 161, 238)}), ('C', 'ANA', 952, {'.!frame3.!frame.!canvas': (51, 161, 238)}), ('M', 'NO_ROUTE', 952, ('127.0.0.1', 57124), 951, 952), ('C', 'ANA', None, {'.!frame3.!frame.!canvas': (51, 161, 238)}), ('M', 'OPEN_ROUTE', 146, ('127.0.0.1', 57122), 952, None), ('C', 'ANA', 953, {}), ('M', 'NO_ROUTE', 953, ('127.0.0.1', 57124), None, 953), ('C', 'ANA', 953, {'.!frame3.!frame.!canvas': (51, 161, 238)})]
+
+======================================================================
+FAIL: test_H2e_olcek_1_5 (__main__.main.<locals>.TaniliH2e.test_H2e_olcek_1_5) (yol=3, olcek=1.5)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 752, in _gecisleri_denetle
+    self._mesaj_ver(dict(YOK_ROTA, seq=seq, detay=detay))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 225, in _mesaj_ver
+    self.assertTrue(self._pompala(
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+        lambda: (getattr(self.app, alan) or {}).get("seq") == mesaj["seq"]),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        mesaj)
+        ^^^^^^
+AssertionError: False is not true : {'v': 1, 'type': 'NO_ROUTE', 'seq': 148, 'sebep': 'KORIDOR_DEGIL', 'detay': ''}
+
+----------------------------------------------------------------------
+Ran 2 tests in 29.237s
+
+FAILED (failures=6)
+H2E_TUR 1/1 DUSTU dusus=6 hata=0
+H2E_EXIT 1

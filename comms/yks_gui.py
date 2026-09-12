@@ -1909,6 +1909,11 @@ class YksArayuz:
             # okurlari ayni saate gecti.
             self.rota_zaman = time.monotonic()
             self.tespit_bayat = False
+            # T248 (curutucu bulgusu): TEKRAR gonderilen OPEN_ROUTE (ayni seq)
+            # de `rota_yok`u temizler ama `yeni` FALSE oldugu icin asagidaki
+            # cizim blogu kosmaz. Ekranin durumla ayrisip ayrismadigini bu
+            # bayrak olcer; kullanimi `if yeni:` blogunun HEMEN ALTINDA.
+            rota_yok_temizlendi = self.rota_yok is not None
             self.rota_yok = None
             self.rx_alim[m["seq"]] = self.rx_alim.get(m["seq"], 0) + 1
             ankor_uyarisi = rota_ankor_uyarisi(m)
@@ -1965,6 +1970,15 @@ class YksArayuz:
                               "433 MHz TX", "YKS (bu ekran)"))
                 if self.otomatik_onay and not ankor_uyarisi:
                     self.kok.after(2500, self.onayla)
+            elif rota_yok_temizlendi:
+                # 🔴 T248: NO_ROUTE'tan SONRA gelen TEKRAR kopyasi (sahada
+                # `iha_sender._tekrarli_gonder(repeat=8, interval=0.25)`
+                # tam olarak bunu uretir) durumu "rota kabul"e cevirir; harita
+                # cizilmezse hakem ekraninda "ROTA YOK" bandi ASILI KALIR ve
+                # hakem rotayi EKRANDAN onayladigi icin gorev puani etkilenir.
+                # DAR kosul: yalniz DURUM DEGISTIYSE cizilir — 8 kopyanin
+                # tamaminda cizmek 8 kat gereksiz yuktur (kapi: H2g/T248b).
+                self._harita_ciz()
             # T224 (D-441): İKA'nın ACK kopyası bu rotadan ÖNCE geldiyse
             # tampondan eşlenir — kanıt olayı ROTA_ALINDI'dan SONRA düşer.
             self._erken_ika_rota_ack_esle(m["seq"])

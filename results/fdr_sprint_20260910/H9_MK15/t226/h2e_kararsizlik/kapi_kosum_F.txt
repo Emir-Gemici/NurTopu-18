@@ -1,0 +1,6 @@
+1/2 tam süit…
+    Ran 2620 tests in 496.199s · OK (skipped=19)
+2/2 genel kapı…
+    GENEL KAPI (madde 14): GECTI — kol1 15/15 · kol2 serit 15/15
+KURU: ikisi de yeşil, push edilmedi · kanıt results\push_kapisi\20260912_033327
+EXIT=0

@@ -46,6 +46,14 @@ TASARIM KARARLARI (hepsi olculmus kacislara dayanir):
      denetimi yapar.
 
 Yalnizca standart kutuphane (CLAUDE.md madde 4).
+
+KESIF MUAFIYETI: test DEGIL, ORTAK yardimci modul — `cizikleri_ayikla`,
+  `beyaz_liste_disi_cizik`, `bloklar`, `olumlu_hukum_var` ve `HUKUM_SOZCUKLERI`
+  test_belge_kilidi, test_yks_mk15_hakem_ekrani, test_isaretli_gosterici,
+  test_faz_b_arduplane_sablon ve test_t235_alan_etiketi tarafindan ice alinir;
+  kendi basina kapi degildir (T120 kurali: `test_` onekli olmayan dosya test
+  tasimaz). Kendi kapisi `tests/test_belge_kilidi.py`dir.
+KOSUM: O:\\navitas-local-train\\venv\\Scripts\\python.exe -X utf8 -B -m unittest discover -s tests -p "test_belge_kilidi.py"  (tests/belge_kilidi.py bu kosumda ice alinir; 74 test)
 """
 
 import html
