@@ -72,7 +72,7 @@ sözleşme tavanındaki en uzun ondalık gösterim (`MAX_LOCAL_EXTENT_M = 60.0`,
    bat_yuzde, armed, mod, pixhawk_canli`) + referans varsa `x, y` + `KararYayinci`
    `karar_yas` = **15 alan** — `protocol.HEARTBEAT_TELEMETRI_ALANLARI` kümesinin
    tamamı. Değerler üretimdeki büyüklük sınıfından (Adıyaman enlem/boylam,
-   irtifa ~30 m) seçilir ve ON_KAYIT §5'teki tohumla sabittir.
+   irtifa yaklaşık 30 m) seçilir ve ON_KAYIT §5'teki tohumla sabittir.
 
 ### 2.2 Gerçek görev karışımı — betik `scripts/paket_boyutu_olc.py`, kip `--kip karisim`
 

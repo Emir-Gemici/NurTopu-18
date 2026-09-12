@@ -38,8 +38,12 @@ gerçek üretim yollarıyla (`IhaSender` + `KararYayinci` + `IkaReceiver`) dört
 koşumda gönderilen bayt/paket, ortalama ve tepe veri hızı, ortak ortam yükü.
 
 **ÖLÇÜLEMEDİ:** SiK 433 MHz RF hattında fiilî veri hızı; telsizin hava hızı
-(Air Speed); telsizin ECC ayarı. Bu üçü FDR §3.3.4.3.4'te **ÖLÇÜLEMEDİ** olarak
-kalır; buradaki sayılar onların yerine geçmez.
+(Air Speed). **ECC durumu: ÖLÇÜLEMEDİ** — SiK ayar sayfası hiç okunmadı
+(`results/atolye_20260912/SONUC_SABLONU.md` A6 satırı boş, `A6_sik_ayar.txt`
+yok). Bu üçü FDR §3.3.4.3.4'te **ÖLÇÜLEMEDİ** olarak kalır; buradaki sayılar
+onların yerine geçmez. ECC açıkken etkin hava hızının yarıya indiği bilgisi
+`ATOLYE_TEST_GUNU_20260912.md` A6 satırından **alıntıdır** ve orada
+*"HESAP + BENZER ÖLÇÜM — ölçüm değil"* etiketiyle durur.
 
 **HESAPTIR, ölçüm değildir:** 57600 8N1 ham bütçesi (10 bit/bayt → 5760 B/s,
 0,174 ms/bayt); hat doluluk oranları; görev süresi boyunca toplam bayt
@@ -49,7 +53,7 @@ kalır; buradaki sayılar onların yerine geçmez.
 
 - Çerçeve boyutları: `IHA_LANDED` 71 B · `ACK` 87 B · `NO_ROUTE` 117 B ·
   `CMD` 124 B (`oturum` alanlı) · tam telemetrili `HEARTBEAT` 273 B ·
-  21 waypoint'li `OPEN_ROUTE` 365 B. Kodda geçen *"~200 B çerçeve"* tasarım notu
+  21 waypoint'li `OPEN_ROUTE` 365 B. Kodda geçen `~200 B cerceve` tasarım notu
   gerçek çerçevelerin **altındadır**.
 - `OPEN_ROUTE` eğimi 11,5 B/waypoint (üretim yolu), 16,0 B/waypoint (en geniş
   gösterim); sözleşme tavanındaki rota 847 B'ye çıkar.
