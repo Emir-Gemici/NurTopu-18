@@ -1,16 +1,16 @@
 [dpi] SetProcessDpiAwareness(1) -> 0
 test_H2c_olcek_1_0 (__main__.TaniH2c.test_H2c_olcek_1_0) ... == olcek 1.0 ==
-  olcek=1.0 road=1: 93 ornek, degisim noktalari=[(0.0, 742, 450, 0)]
-  olcek=1.0 road=2: 94 ornek, degisim noktalari=[(0.0, 742, 450, 0)]
+  olcek=1.0 road=1: 94 ornek, degisim noktalari=[(0.0, 742, 450, 0)]
+  olcek=1.0 road=2: 95 ornek, degisim noktalari=[(0.0, 742, 450, 0)]
   olcek=1.0 road=3: 94 ornek, degisim noktalari=[(0.0, 742, 450, 1)]
 ok
 test_H2c_olcek_1_5_hakem_ekrani (__main__.TaniH2c.test_H2c_olcek_1_5_hakem_ekrani) ... == olcek 1.5 ==
-  olcek=1.5 road=1: 94 ornek, degisim noktalari=[(0.0, 945, 630, 0)]
-  olcek=1.5 road=2: 94 ornek, degisim noktalari=[(0.0, 945, 630, 0)]
-  olcek=1.5 road=3: 94 ornek, degisim noktalari=[(0.001, 945, 630, 1)]
+  olcek=1.5 road=1: 95 ornek, degisim noktalari=[(0.0, 945, 630, 0)]
+  olcek=1.5 road=2: 95 ornek, degisim noktalari=[(0.0, 945, 630, 0)]
+  olcek=1.5 road=3: 94 ornek, degisim noktalari=[(0.0, 945, 630, 1)]
 ok
 
 ----------------------------------------------------------------------
-Ran 2 tests in 15.645s
+Ran 2 tests in 15.862s
 
 OK

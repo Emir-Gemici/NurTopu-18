@@ -21,21 +21,22 @@ Yorumlayıcı: `O:\navitas-local-train\venv\Scripts\python.exe -X utf8 -B`.
 `tani_h2f.py` H2f ölçüm noktasını **2 s boyunca 20 ms aralıkla** örnekledi
 (tuval genişliği × yüksekliği × kesişim sayısı; yalnız DEĞİŞİM noktaları).
 Ham çıktı **repodadır**: `tani_h2f_cikti.txt` (çürütücü KUSUR 3 üzerine
-12 Eyl 06:4x'te yeniden koşuldu; `--dpi`li ikizi `tani_h2f_dpi_cikti.txt`):
+12 Eyl'de SON ağaçta yeniden koşuldu; `--dpi`li ikizi `tani_h2f_dpi_cikti.txt`):
 
 ```
-olcek=1.0 road=1: 95 ornek, degisim noktalari=[(0.0, 742, 450, 0)]
-olcek=1.0 road=2: 94 ornek, degisim noktalari=[(0.0, 742, 450, 0)]
+olcek=1.0 road=1: 94 ornek, degisim noktalari=[(0.0, 742, 450, 0)]
+olcek=1.0 road=2: 95 ornek, degisim noktalari=[(0.0, 742, 450, 0)]
 olcek=1.0 road=3: 94 ornek, degisim noktalari=[(0.0, 742, 450, 1)]
 olcek=1.5 road=1: 95 ornek, degisim noktalari=[(0.0, 945, 630, 0)]
-olcek=1.5 road=2: 93 ornek, degisim noktalari=[(0.0, 945, 630, 0)]
-olcek=1.5 road=3: 93 ornek, degisim noktalari=[(0.0, 945, 630, 1)]
+olcek=1.5 road=2: 94 ornek, degisim noktalari=[(0.0, 945, 630, 0)]
+olcek=1.5 road=3: 96 ornek, degisim noktalari=[(0.0, 945, 630, 1)]
 ```
 
-⚠ Alıntıdaki `N ornek` sayısı (93–95) koşum hızına bağlıdır ve koşumdan koşuma
-±2 oynar — ölçümün İDDİASI o sayı değil, **değişim noktası listesinin tek
-elemanlı ve `t = 0,000`'da olmasıdır**. Yukarıdaki üç satır
-`tani_h2f_cikti.txt`ten alınmıştır (sayılar o dosyadaki koşumun sayılarıdır).
+⚠ Alıntıdaki `N ornek` sayısı (ölçülen aralık 93–96) koşum hızına bağlıdır ve
+koşumdan koşuma birkaç örnek oynar — ölçümün İDDİASI o sayı DEĞİL, **değişim
+noktası listesinin TEK elemanlı ve `t = 0,000`'da olmasıdır**. Yukarıdaki altı
+satır `tani_h2f_cikti.txt`ten harfi harfine alınmıştır (sayılar o dosyadaki
+koşumun sayılarıdır; her satır `grep -cF` ile doğrulandı = 1).
 
 Altı durumun **altısında da** doğru değer daha `t = 0,000`'da hazır ve 2 s
 boyunca **hiç değişmiyor**. Sebebi ürün kaynağındadır: `_harita_ciz()`
@@ -76,7 +77,7 @@ yeniden üretir):
 | `kapsam_izi_mujoco_cikti.txt` | `kapsam_izi.py --mujoco` — **gerçek mekanizma**: MuJoCo modülü önce koşar, `[DPI] mujoco SONRASI = 2` | `olcek=1.5 ad='no_route DOĞAL' tuval=1142x725 civili=False` |
 
 Bugünkü çivili ağacın `--dpi` koşumu (`tani_h2f_dpi_cikti.txt`) ise
-`olcek=1.5 road=3: ... [(0.001, 945, 630, 1)]` yazar: DPI açıkken bile tuval
+`olcek=1.5 road=3: 94 ornek, degisim noktalari=[(0.0, 945, 630, 1)]` yazar: DPI açıkken bile tuval
 945 × 630, kalıntı sayısı 1 — **çivilemenin ölçümü**.
 
 1142 × 725 — **çürütücünün gördüğü boyutun ta kendisi**. Ana harita büyüyünce
