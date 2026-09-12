@@ -1267,6 +1267,40 @@ class H2g_TekrarliOpenRouteHaritayiTazeler(_GercekEkran):
             "geldiği için bu kat kat gereksiz yüktür")
         self.assertIsNone(app.rota_yok)
 
+    def test_T248c_kamera_gorunumunde_kucuk_harita_da_tazelenir(self):
+        """T248 KAPSAM KENARI (çürütücü gözlemi) — küçük harita da ölçülür.
+
+        Düzeltme `_harita_ciz()`i ARGÜMANSIZ çağırır; ürün o yolda kamera
+        görünümündeki KÜÇÜK haritayı da aynı koddan tazeler
+        (`comms/yks_gui.py:1561-1565`). H2g'nin diğer iki testi YALNIZ ana
+        haritayı ölçüyordu, yani düzeltmenin kapsadığı bu yol ölçülmemiş
+        kalıyordu. Hakem tespit anında KAMERA görünümünde durur (küçük harita
+        onun yanındaki şematiktir), dolayısıyla bayat "ROTA YOK" bandı orada
+        da görev puanını etkiler.
+        """
+        app = self._kur_olculu()
+        app.gorunum("kamera")
+        self.assertTrue(
+            self._pompala(self._yerlesim_durdu(app.mini_harita), 5.0),
+            f"küçük harita yerleşmedi: {app.mini_harita.winfo_width()}×"
+            f"{app.mini_harita.winfo_height()}")
+        rota = dict(ROTA, seq=SEQ + 340)
+        self._mesaj_ver(rota)
+        self.assertEqual([], self._bant_yazilari(app.mini_harita),
+                         "önkoşul: OPEN_ROUTE'ta küçük haritada bant olmamalı")
+        self._mesaj_ver(dict(YOK_ROTA, seq=SEQ + 341))
+        self.assertEqual(1, len(self._bant_yazilari(app.mini_harita)),
+                         "önkoşul: küçük haritada NO_ROUTE bandı çizilmedi")
+        self._tekrar_ver(rota)
+        self.assertIsNone(app.rota_yok)
+        self.assertEqual(
+            [], self._bant_yazilari(app.mini_harita),
+            "T248: kamera görünümünde tekrar gelen OPEN_ROUTE KÜÇÜK haritayı "
+            "tazelemedi — hakem kamera ekranında bayat ROTA YOK bandı görüyor")
+        # Ana harita da aynı çağrıdan tazelenir (görünmüyor olması muaf tutmaz).
+        self.assertEqual([], self._bant_yazilari(app.harita),
+                         "T248: kamera görünümündeyken ANA harita bayat kaldı")
+
 
 class H6_GorunumDonusSirasi(_GercekEkran):
     """MİMAR KARARI (D-448 §4): kamera/algı → harita dönüşünde harita

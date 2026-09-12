@@ -1,0 +1,11 @@
+[PIN] exit=1 (beklenen 1)
+[PIN] gozlenen YENI kumesi = [('d59', 'comms/yks_gui.py:1973'), ('d59b', 'comms/yks_gui.py:1981')]
+[PIN] beklenen YENI kumesi = [('d59', 'comms/yks_gui.py:1973'), ('d59b', 'comms/yks_gui.py:1981')]
+[PIN] ozet = {'ALTGRAFIK': 0, 'KAPSAM': 0, 'DEYIM': 0, 'SIRA': 0, 'DOSYA': 0, 'DEYIM_YOK': 0, 'KENAR': 0, 'YENI': 2, 'SILINEN': 0, 'KENAR_KUMESI': 0}
+[PIN] TUTTU
+
+[MUTASYON] d59b dugum satiri SILINDI
+[MUTASYON] exit=1 · YENI kumesi=[('d59', 'comms/yks_gui.py:1973')]
+[MUTASYON] ozet = {'ALTGRAFIK': 0, 'KAPSAM': 0, 'DEYIM': 0, 'SIRA': 0, 'DOSYA': 0, 'DEYIM_YOK': 0, 'KENAR': 0, 'YENI': 1, 'SILINEN': 0, 'KENAR_KUMESI': 0}
+[MUTASYON] pin YAKALADI
+AKIS_KAPSAM_BEKLENEN GECTI

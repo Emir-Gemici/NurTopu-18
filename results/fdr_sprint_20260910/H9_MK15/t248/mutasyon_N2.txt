@@ -1,11 +1,13 @@
 test_T248_no_route_sonrasi_tekrarli_open_route_haritayi_tazeler (test_yks_mk15_hakem_ekrani.H2g_TekrarliOpenRouteHaritayiTazeler.test_T248_no_route_sonrasi_tekrarli_open_route_haritayi_tazeler) ... ok
 test_T248b_durum_degismeyen_tekrar_haritayi_yeniden_cizmez (test_yks_mk15_hakem_ekrani.H2g_TekrarliOpenRouteHaritayiTazeler.test_T248b_durum_degismeyen_tekrar_haritayi_yeniden_cizmez) ... FAIL
+test_T248c_kamera_gorunumunde_kucuk_harita_da_tazelenir (test_yks_mk15_hakem_ekrani.H2g_TekrarliOpenRouteHaritayiTazeler.test_T248c_kamera_gorunumunde_kucuk_harita_da_tazelenir)
+T248 KAPSAM KENARI (çürütücü gözlemi) — küçük harita da ölçülür. ... ok
 
 ======================================================================
 FAIL: test_T248b_durum_degismeyen_tekrar_haritayi_yeniden_cizmez (test_yks_mk15_hakem_ekrani.H2g_TekrarliOpenRouteHaritayiTazeler.test_T248b_durum_degismeyen_tekrar_haritayi_yeniden_cizmez)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 1064, in test_T248b_durum_degismeyen_tekrar_haritayi_yeniden_cizmez
+  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 1263, in test_T248b_durum_degismeyen_tekrar_haritayi_yeniden_cizmez
     self.assertEqual(
     ~~~~~~~~~~~~~~~~^
         [], sayac,
@@ -26,6 +28,6 @@ First extra element 0:
 + [1, 1, 1, 1, 1, 1, 1, 1] : T248: durum DEĞİŞMEDEN 8 tekrar kopyası için harita yeniden çizildi (8 kez) — sahada her OPEN_ROUTE 8 kopya geldiği için bu kat kat gereksiz yüktür
 
 ----------------------------------------------------------------------
-Ran 2 tests in 2.264s
+Ran 3 tests in 3.779s
 
 FAILED (failures=1)

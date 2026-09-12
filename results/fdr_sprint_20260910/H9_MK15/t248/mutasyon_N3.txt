@@ -1,0 +1,33 @@
+test_T248_no_route_sonrasi_tekrarli_open_route_haritayi_tazeler (test_yks_mk15_hakem_ekrani.H2g_TekrarliOpenRouteHaritayiTazeler.test_T248_no_route_sonrasi_tekrarli_open_route_haritayi_tazeler) ... ok
+test_T248b_durum_degismeyen_tekrar_haritayi_yeniden_cizmez (test_yks_mk15_hakem_ekrani.H2g_TekrarliOpenRouteHaritayiTazeler.test_T248b_durum_degismeyen_tekrar_haritayi_yeniden_cizmez) ... ok
+test_T248c_kamera_gorunumunde_kucuk_harita_da_tazelenir (test_yks_mk15_hakem_ekrani.H2g_TekrarliOpenRouteHaritayiTazeler.test_T248c_kamera_gorunumunde_kucuk_harita_da_tazelenir)
+T248 KAPSAM KENARI (çürütücü gözlemi) — küçük harita da ölçülür. ... FAIL
+
+======================================================================
+FAIL: test_T248c_kamera_gorunumunde_kucuk_harita_da_tazelenir (test_yks_mk15_hakem_ekrani.H2g_TekrarliOpenRouteHaritayiTazeler.test_T248c_kamera_gorunumunde_kucuk_harita_da_tazelenir)
+T248 KAPSAM KENARI (çürütücü gözlemi) — küçük harita da ölçülür.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 1296, in test_T248c_kamera_gorunumunde_kucuk_harita_da_tazelenir
+    self.assertEqual(
+    ~~~~~~~~~~~~~~~~^
+        [], self._bant_yazilari(app.mini_harita),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        "T248: kamera görünümünde tekrar gelen OPEN_ROUTE KÜÇÜK haritayı "
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        "tazelemedi — hakem kamera ekranında bayat ROTA YOK bandı görüyor")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['ROTA YOK — KORIDOR_DEGIL · İKA GÜVENLİ D[35 chars]ldı']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'ROTA YOK — KORIDOR_DEGIL · İKA GÜVENLİ DURUŞTA\nkoridor genişlik tavanı aşıldı'
+
+- []
++ ['ROTA YOK — KORIDOR_DEGIL · İKA GÜVENLİ DURUŞTA\n'
++  'koridor genişlik tavanı aşıldı'] : T248: kamera görünümünde tekrar gelen OPEN_ROUTE KÜÇÜK haritayı tazelemedi — hakem kamera ekranında bayat ROTA YOK bandı görüyor
+
+----------------------------------------------------------------------
+Ran 3 tests in 3.803s
+
+FAILED (failures=1)

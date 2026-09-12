@@ -6,6 +6,9 @@ N1  ÜRÜN: `elif rota_yok_temizlendi: self._harita_ciz()` SİLİNİR
 N2  ÜRÜN: çizim KOŞULSUZ yapılır (`else:`) — her tekrar kopyasında
     yeniden çizim                                           -> KIRMIZI (1)
     (T248b: 8 kopya için 8 kat yük kilidi gerçekten ölçüyor mu?)
+N3  ÜRÜN: tazeleme YALNIZ ana tuvale daraltılır — küçük harita bayat
+    kalır                                                   -> KIRMIZI (1)
+    (T248c: kamera görünümündeki küçük harita yolu ölçülüyor mu?)
 
 Kaynak dosya bayt düzeyinde bozulur ve `finally` içinde sha256 doğrulanarak
 aynen geri yazılır (satır sonu dâhil).
@@ -39,6 +42,13 @@ MUTASYONLAR = [
     ("N1 urun: tekrar gonderimde cizim YOK (duzeltme oncesi)", [(BLOK, "")], 1),
     ("N2 urun: cizim KOSULSUZ (her tekrarda yeniden ciz)",
      [(BLOK, BLOK.replace("elif rota_yok_temizlendi:", "else:"))], 1),
+    # N3 (curutucu KAPSAM KENARI gozlemi): duzeltme `_harita_ciz()`i ARGUMANSIZ
+    # cagirdigi icin kamera gorunumundeki KUCUK haritayi da tazeliyor
+    # (yks_gui.py:1561-1565). Bu mutasyon tazelemeyi YALNIZ ana tuvale daraltir:
+    # ana harita dogru kalir (T248/T248b YESIL), kucuk harita bayat kalir ->
+    # yalnizca T248c duser. Yani T248c'nin ayri bir yolu olctugunun kaniti.
+    ("N3 urun: tazeleme yalniz ANA tuval (kucuk harita bayat kalir)",
+     [(BLOK, BLOK.replace("self._harita_ciz()", "self._harita_ciz(self.harita)"))], 1),
 ]
 
 
