@@ -71,3 +71,60 @@ satırıdır; davranış değişmez. Burada kayda geçiriliyor ki denetim, bu ik
 satırın bu dalın kapsamı dışından geldiğini ve neden zorunlu olduğunu
 görebilsin. Master tek başına hâlâ bu commit'ten önce kırmızıdır; bu dal
 birleşince düzelir.
+
+---
+
+# İKİNCİ MİRAS KIRMIZI — D-373 ileri işaret (`REVIEW_LOG.md`) · **BU DAL DÜZELTEMEZ**
+
+## 6. Olgu
+
+Belgeler bittikten sonra master bir kez daha ilerledi (`dd7cd12a`,
+"D-468 T240 KABUL ve master'da…") ve `git merge master` onu bu dala getirdi.
+Commit'in deltası **yalnız iki dosyadır**: `REVIEW_LOG.md` (+12 satır) ve
+`TASK_QUEUE.md` (+4/-1). D-468 kaydı, D-465'i çürüten/düzelten bir kayıttır;
+`tests/test_d373_defter_geri_isaret.py` her çürütülen kaydın başlığının altında
+**ileri işaret** ister. D-465'in altında o işaret yok.
+
+## 7. Ölçüm — kırmızı MASTER'DA
+
+Ayrı detached worktree `dd7cd12a`'ya açıldı (bu dalın tek satırı yok):
+
+```
+AssertionError: Lists differ: [] != [('D-465', 'D-468')]
+Ran 6 tests · FAILED (failures=2)
+```
+
+Ham çıktı: `master_d373_kirmizi.txt`.
+`git diff master HEAD -- REVIEW_LOG.md TASK_QUEUE.md` → **BOŞ**: bu dal iki
+dosyaya da dokunmadı.
+
+## 8. Neden DÜZELTİLMEDİ
+
+Bu dalın görev kuralı açıktır: **`REVIEW_LOG` / `TASK_QUEUE` / `CLAUDE` /
+`AGENTS` / `HANDOFF` dosyalarına DOKUNULMAZ.** Düzeltme tam olarak
+`REVIEW_LOG.md`de D-465 başlığının altına bir ileri işaret satırı eklemektir;
+o satırı bu amele yazamaz. **Kayıt burada bırakılıyor, sessizce geçilmiyor.**
+
+Gereken (kaydın sahibine): `REVIEW_LOG.md`de `D-465` başlığının hemen altına
+D-468'e ileri işaret satırı — biçimi `tests/test_d373_defter_geri_isaret.py`
+belirler.
+
+## 9. YALITIM ÖLÇÜMÜ — kırmızılığın TAMAMI o iki dosyadan geliyor
+
+`yalitim_suiti.py`: `REVIEW_LOG.md` ve `TASK_QUEUE.md` geçici olarak
+`46ffb503` sürümüne çevrilir (yani master'ın `dd7cd12a` deltası kaldırılır),
+tam süit koşulur, sonra iki dosya da **sha256 doğrulanarak bayt-eş** geri
+yazılır. Ürün ve test kaynağına DOKUNULMAZ.
+
+| Ağaç | Tam süit | Genel kapı | Kanıt |
+|---|---|---|---|
+| SON ağaç (master `dd7cd12a` dâhil) | `Ran 2816 · FAILED (failures=2)` — ikisi de D-373 | GECTI 15/15 | `results/push_kapisi/20260912_072913` |
+| SON ağaç, **yalnız `REVIEW_LOG.md`** geri alınmış (ara ölçüm) | `Ran 2816 · FAILED (failures=1)` — `test_defter_butunlugu`: `defterde bulunmayan kuyruk atiflari: [468]` (TASK_QUEUE hâlâ D-468'i anıyor) | GECTI 15/15 | `results/push_kapisi/20260912_074003` |
+| SON ağaç, **`dd7cd12a` deltasının TAMAMI** geri alınmış | **`Ran 2816 · OK (skipped=19)`** | **GECTI — kol1 15/15 · kol2 şerit 15/15** | `results/push_kapisi/20260912_074950` |
+
+İkinci satır ayrıca ara ölçümün neden yetmediğini gösterir: iki dosya **birbirine
+bağlıdır**, yalnız birini geri almak defter/kuyruk atıf kapısını düşürür.
+
+**Sonuç:** bu dalın kendi içeriği (ürün + test + kanıt) **tam süitte yeşildir**;
+son ağaçtaki iki düşüşün ikisi de master'ın `dd7cd12a` içeriğindendir ve bu
+amelenin dokunması yasak olan dosyadadır.

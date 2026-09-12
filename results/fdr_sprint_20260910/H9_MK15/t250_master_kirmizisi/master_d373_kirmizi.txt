@@ -1,0 +1,9 @@
+# MASTER dd7cd12a TEK BASINA — D-373 defter geri isaret kapisi KIRMIZI
+# tarih: 2026-09-12T04:59:31Z (UTC)
+# ayri detached worktree @ dd7cd12a — bu dalin hicbir degisikligi YOK
+# komut: python -X utf8 -B -m unittest discover -s tests -p test_d373_defter_geri_isaret.py
+
+AssertionError: Lists differ: [] != [('D-465', 'D-468')]
+  (test_HER_CURUTULEN_KAYIT_ILERI_ISARET_VERIYOR ve
+   test_BIR_ISARET_SILININCE_KAPI_DUSUYOR — iki dusus)
+Ran 6 tests · FAILED (failures=2)
