@@ -263,23 +263,45 @@ class TaramaSozlesmesi(unittest.TestCase):
         self.assertLess(p.t_parasut, p.t_inis)
 
 
+def _kuzeye_bakan_render_isle(kuyruk):
+    """T251 (D-467): `mujoco.Renderer` GL bağlamı bu SÜREÇTE kurulur — ayrı
+    ('spawn') süreçte çalıştığı için işlem bitince bağlamla birlikte YOK olur,
+    ana test sürecinin DPI farkındalığına (ve ona bağlı Tk testlerine) SIZMAZ.
+    Sonuç yalnız iki float (picklenebilir) olarak kuyruğa konur."""
+    import arena_mjcf as _amjcf
+    import iha_ucus as _iucus
+    import mujoco as _mj
+
+    m = _amjcf.yukle(1, "kolay", kam_res=160)
+    d = _mj.MjData(m)
+    iha = m.body_mocapid[_mj.mj_name2id(m, _mj.mjtObj.mjOBJ_BODY, "iha")]
+    d.mocap_pos[iha] = [_amjcf.IHA_IB_MERKEZ_X - 14.0, 0.0, 30.0]      # İB'nin batı kenarı
+    d.mocap_quat[iha] = _iucus.quat_ypr(math.pi / 2, 0.0, 0.0)         # burun kuzey
+    _mj.mj_forward(m, d)
+    r = _mj.Renderer(m, 160, 160)
+    r.update_scene(d, camera="scan_camera")
+    img = r.render(); r.close()
+    mavi = (img[..., 2] > 150) & (img[..., 0] < 100)
+    kuyruk.put((float(mavi[:80].mean()), float(mavi[80:].mean())))
+
+
 class KameraYonSozlesmesi(unittest.TestCase):
     """Nadir kamera: görüntü sağı = burun (+X gövde), yukarısı = sol kanat. Kuzeye bakan İHA'da
     doğu (İHA-İB mavisi) görüntünün ALT yarısında, kuzey (H) SAĞ yarısında olmalı."""
 
     def test_kuzeye_bakan_karede_ib_altta(self):
-        import cv2
-        m = arena_mjcf.yukle(1, "kolay", kam_res=160)
-        d = mujoco.MjData(m)
-        iha = m.body_mocapid[mujoco.mj_name2id(m, mujoco.mjtObj.mjOBJ_BODY, "iha")]
-        d.mocap_pos[iha] = [arena_mjcf.IHA_IB_MERKEZ_X - 14.0, 0.0, 30.0]      # İB'nin batı kenarı
-        d.mocap_quat[iha] = iha_ucus.quat_ypr(math.pi / 2, 0.0, 0.0)           # burun kuzey
-        mujoco.mj_forward(m, d)
-        r = mujoco.Renderer(m, 160, 160)
-        r.update_scene(d, camera="scan_camera")
-        img = r.render(); r.close()
-        mavi = (img[..., 2] > 150) & (img[..., 0] < 100)
-        ust, alt = mavi[:80].mean(), mavi[80:].mean()
+        # T251 (D-467): mujoco.Renderer AYRI ('spawn') süreçte kurulur —
+        # GL bağlamının süreç-genelinde geri alınamaz DPI yan etkisi (ölçüldü:
+        # winfo_screenwidth 1707->2560) bu test sürecine hiç girmez; sonraki
+        # Tk/ekran-boyutu bağımlı testler artık etkilenmez.
+        import multiprocessing as mp
+        ctx = mp.get_context("spawn")
+        kuyruk = ctx.Queue()
+        p = ctx.Process(target=_kuzeye_bakan_render_isle, args=(kuyruk,))
+        p.start()
+        ust, alt = kuyruk.get(timeout=60)
+        p.join(10)
+        self.assertEqual(0, p.exitcode, "render alt süreci başarısız bitti")
         self.assertGreater(alt, 0.3, f"İB altta olmalı: üst {ust:.2f} alt {alt:.2f}")
         self.assertLess(ust, 0.05)
 

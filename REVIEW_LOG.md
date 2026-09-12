@@ -30905,3 +30905,13 @@ Düşen 6 alt test yalnız `tests/test_yks_mk15_hakem_ekrani.py` `H2e_RotaYokSon
 **Ek kanıt:** `iha_haritala.py`'nin bugünkü (upstream) tarafı `simulation/mujoco/` paketi (araclar.py, gorev_kosumu.py, arena_mjcf.py, on_olcum_k3.py) tarafından **aktif kullanılıyor** — yani bu dosya ölü kod değil, K3 ölçümlerinin (FDR'de atıflı: 6/15, 1/15) beslendiği gerçek yol. Bu dosyayı 1280 satırlık, hiç denetlenmemiş bir alternatif uygulamayla değiştirmek, teslim tarihine bu kadar yakın, **ölçülmüş ve rapora yazılmış sayıları** yeniden ölçüm gerektirmeden riske atardı.
 **Karar: T254 KAPANDI, entegre edilmiyor.** Ağaçta upstream'in temiz sürümü kalır (zaten öyle). Yerel katkı arşivde durmaya devam eder (`AGENT_REPORTS/arsiv_20260912_sync/iha_haritala.py.local_taraf`) — kaybolmadı, yalnız kullanılmıyor. Gerekirse ileride (teslimden sonra) ayrı, ölçümle desteklenen bir mimari değerlendirme turu açılabilir.
 **Yan not:** `tests/test_sim_mujoco_olcum.py` bu makinede 4 PNG-bayt-eşliği testinde düşüyor ("PNG bayat/elle düzenlenmiş") — D-471 ile aynı sınıf (font/render farkı, kanonik olmayan makine); bu oturumda araştırılmadı, gerçek regresyon **iddia edilmiyor**.
+
+---
+
+### D-474 — T251 uygulandı: `mujoco.Renderer` ayrı ('spawn') sürece taşındı; orijinal DPI semptomu bu makinede YENİDEN ÜRETİLEMEDİ (platform bağımlı olabilir)
+
+**Tarih:** 12 Eylül 2026 · Mimar (madde 7 istisnası) · Bağımsız denetimden GEÇTİ (aynı denetim turu, T233/mancınık/T243 ile birlikte).
+**Yapılan:** `tests/test_sim_mujoco_arena.py`'deki tek `mujoco.Renderer` çağrısı (`KameraYonSozlesmesi.test_kuzeye_bakan_karede_ib_altta`) `multiprocessing.get_context("spawn")` ile ayrı sürece taşındı; sonuç (iki float) `Queue` ile ana sürece dönüyor. Test kendisi **GEÇTİ** (39 testlik dosyanın geri kalanı koşuldu).
+**Doğrulama sınırı (dürüstçe kaydedilir):** Bu makinede mujoco kurulu değildi, bu oturumda `pip install mujoco` (3.13.0, GLFW arka uç) ile kuruldu. Orijinal semptomu (in-process `Renderer` sonrası `winfo_screenwidth()` 1707→2560, D-467) elle yeniden ürettim: **değişmedi** (1920→1920, aynı süreç, aynı çağrı sırası). Yani D-467'nin bulgusu bu spesifik makinenin pencere yöneticisi/GL yığınına bağlı olabilir — **çözüm mimari olarak doğru** (ticket'ın kendi önerdiği izolasyon) ama "semptom artık kesin geçti" **iddia edilmiyor**; orijinal makinede ayrıca doğrulanmalı.
+**Yan bulgu (kapsam dışı, dokunulmadı):** aynı dosyada mujoco 3.13.0 ile 5 test düşüyor (sha256 kilit uyuşmazlığı, mesh boyutu) — muhtemelen kilitlerin üretildiği mujoco sürümünden farklı; D-471 sınıfı ortam farkı, T251'in kapsamı dışı.
+**Genel kapı:** 15/15 GEÇTİ (üretim kodu değişmedi, yalnız test dosyası).
