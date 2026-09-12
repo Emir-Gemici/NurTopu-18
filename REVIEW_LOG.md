@@ -30874,3 +30874,13 @@ Düşen 6 alt test yalnız `tests/test_yks_mk15_hakem_ekrani.py` `H2e_RotaYokSon
 **Sıradaki iş: T255** açıldı — video transkripti/kaynak doğrulaması + kapsam kararı + (onaylanırsa) mimari değişiklik. **TIKAYICI**: FDR §3.3.1.3 arena bölümü ve K3 ölçümleri, bu netleşmeden **doğru yazılamaz**; şimdilik FDR'ye bu D-kaydına atıfla **AÇIK KALEM** olarak işlenecek (silinip üstünün örtülmesi değil, dürüst açık kalem).
 
 **GÜNCELLEME (aynı gün, kullanıcı kararı — KESİN):** Kullanıcı ek doğrulama/transkript beklemeden net ve tekrarlı biçimde kararını verdi: **arena artık 3 güzergâh değil, 1 güzergâh.** Bu bir ölçüm değil, madde 10 kapsamında **kullanıcı kararıdır** — proje tarihinde "KULLANICI KARARI" ile kapanan başka maddeler de var (örn. eski T143), ek kanıt istenmez. T255'in "kaynak doğrulanacak" kısmı bu kararla **kapandı**; kalan iş yalnız **uygulama** — **T256** açıldı.
+
+---
+
+### D-471 — Bu Linux makinesi (`/home/trs/...`) kanonik ortam DEĞİL: `push_kapisi.py --kuru` tam süiti **KIRMIZI** verdi (2612 test, 51 hata + 57 çürük), sebep ortam farkı — madde 14'ün genel kapısı etkilenmedi
+
+**Tarih:** 12 Eylül 2026 15:2x. Bulan: mimar, T245 için "1896 test" sayısını tazelemeye çalışırken.
+**Ölçüm:** `.venv/bin/python -B scripts/push_kapisi.py --kuru` → `Ran 2612 tests in 350.801s · FAILED (failures=51, errors=57, skipped=95)`; genel kapı ayrı ayrı **GEÇTİ** (15/15). Ham çıktı: `results/push_kapisi/20260912_152200/tam_suit.txt`.
+**Kök neden (örnekleme, ham çıktıdan):** hatanın büyük kısmı `FileNotFoundError: .../jetson_paket/models/navitas_seg_v35_best.pt` (model ağırlığı bu makinede yok) ve `O:\navitas\...` gibi **Windows-yolu bekleyen** karşılaştırmalar (`'O:\\navitas\\dataset\\...' != 'dji_kirsal_...'`). Madde 13'ün kanonik yorumlayıcısı zaten Windows yolu (`O:\navitas-local-train\venv\...`) — bu Linux checkout ikincil bir ayna, büyük model ağırlıkları ve bazı testler o makineye kilitli.
+**Sonuç:** Bu makinede "tam süit yeşil" **ölçülemez** (madde 13 kapsamı dışı); bu bir yazılım gerilemesi **iddiası değildir**, doğrulanmadı. FDR'nin "1896/2620 test OK" gibi sayıları yalnız **Windows makinesinde** tazelenebilir — T245 bu ayrımla güncellendi, bu oturumda **sahte bir sayı yazılmadı**.
+**Yapılmayan:** 108 testin tek tek triyajı — madde 13 kapsamı dışı bir makinede bu, doğrulama kapasitesini (madde 8) yanlış yere harcamak olurdu. Windows makinesinde aynı komut ayrı ölçülmeli.
