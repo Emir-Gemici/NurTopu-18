@@ -1,6 +1,6 @@
-# T244 mutasyon ciktisi · 2026-09-12 04:22:20 · python.exe
+# T244 mutasyon ciktisi · 2026-09-12 04:28:44 · python.exe
 KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
-BASLANGIC TEMIZ: cikis=0 ran=37 son='OK' dusen=[] hatalar=[]
+BASLANGIC TEMIZ: cikis=0 ran=38 son='OK' dusen=[] hatalar=[]
 KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py -k test_T1_uc_surecte_de_kodlu_yazili
 M1 madde1: §3.3.1.1.8 'acik kalemdir' cizgisi kaldirildi (eski hukum CANLI): cikis=1 ran=1 son='FAILED (failures=1)' -> YAKALANDI; hedef={'test_T1_uc_surecte_de_kodlu_yazili': 'DUSTU'}; dusen=['test_T1_uc_surecte_de_kodlu_yazili']; hatalar=[]
 KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py -k test_T2_h1c_kosuldu_ve_gecti
@@ -23,7 +23,11 @@ KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest dis
 MZ1 CIZILI VARYANT (tek tilde): madde7 cumlesi §3.3.3.2'de TEK TILDE ile cizildi: cikis=1 ran=1 son='FAILED (failures=1)' -> YAKALANDI; hedef={'test_T7_cumle_iki_yerde_ve_CIZILMEMIS': 'DUSTU'}; dusen=['test_T7_cumle_iki_yerde_ve_CIZILMEMIS']; hatalar=[]
 KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py -k test_T3c_d303_dustu_uc_yerde_de_olumluya_CEVRILMEMIS
 MZ2 CIZILI VARYANT (<del>) + OLUMLUYA CEVIRME: §4.8.3 D-303 DUSTU -> dogrulandı: cikis=1 ran=1 son='FAILED (failures=1)' -> YAKALANDI; hedef={'test_T3c_d303_dustu_uc_yerde_de_olumluya_CEVRILMEMIS': 'DUSTU'}; dusen=['test_T3c_d303_dustu_uc_yerde_de_olumluya_CEVRILMEMIS']; hatalar=[]
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py -k test_T3c_d303_dustu_uc_yerde_de_olumluya_CEVRILMEMIS -k test_cizme_isareti_beyaz_liste
+MZ3 D-463(a) CIPLAK U+0336: §4.8.3 D-303 DUSTU hukmu birlestirici cizikle cizildi: cikis=1 ran=2 son='FAILED (failures=2)' -> YAKALANDI; hedef={'test_T3c_d303_dustu_uc_yerde_de_olumluya_CEVRILMEMIS': 'DUSTU', 'test_cizme_isareti_beyaz_liste': 'DUSTU'}; dusen=['test_T3c_d303_dustu_uc_yerde_de_olumluya_CEVRILMEMIS', 'test_cizme_isareti_beyaz_liste']; hatalar=[]
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py -k test_T7_cumle_iki_yerde_ve_CIZILMEMIS -k test_cizme_isareti_beyaz_liste
+MZ4 D-463(a) HTML VARLIGI: §3.3.3.2 durustluk cumlesi &#822; ile cizildi: cikis=1 ran=2 son='FAILED (failures=2)' -> YAKALANDI; hedef={'test_T7_cumle_iki_yerde_ve_CIZILMEMIS': 'DUSTU', 'test_cizme_isareti_beyaz_liste': 'DUSTU'}; dusen=['test_T7_cumle_iki_yerde_ve_CIZILMEMIS', 'test_cizme_isareti_beyaz_liste']; hatalar=[]
 geri yukleme sha esit: True (FDR/BOLUM_3_SISTEM_SPESIFIKASYONLARI.md=6363fe0d2559, FDR/BOLUM_4_TEST_FAALIYETLERI.md=3846de161346)
-OZET: 11/11 mutasyon TUM hedef testleriyle yakalandi; uygulanamayan 0
+OZET: 13/13 mutasyon TUM hedef testleriyle yakalandi; uygulanamayan 0
 KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
-TEMIZ KOSUM (mutasyonsuz): cikis=0 ran=37 son='OK' dusen=[]
+TEMIZ KOSUM (mutasyonsuz): cikis=0 ran=38 son='OK' dusen=[]

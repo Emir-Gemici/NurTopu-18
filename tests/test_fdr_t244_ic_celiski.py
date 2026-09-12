@@ -26,15 +26,19 @@ yeniden bağlar ve çelişkinin sessizce geri gelmesini engeller.
       §3.3.3.2 hem §4.7'de ve ÇİZİLMEMİŞ; kod satırları doğrulanır
   T8  §3.3.4.2.8 (a) SENTETİK ışık/gölge kesiti: v2/v3 sayıları `k3b` artefaktından;
       "saha değil" ve D-441 öncesi yerleşim sınırı yazılı; §4.8 ve §4.8.4 tazelenmiş
-  M1…M6  kurallar sentetik metinle iki yönde sınanır (boş kapı olmasın)
+  M1…M9  kurallar sentetik metinle iki yönde sınanır (boş kapı olmasın)
 
-BELGE KİLİDİ (D-453 / D-460 / D-461): tüm aramalar **normalleştirilmiş** metinde
-yapılır — çizili aralıklar (`~~…~~`, tek tilde, `<del>/<s>/<strike>`) **ayıklanır**
-(içerik silinir), kalın/italik/kod işaretleri ve tipografik kesme/tırnak/tire
-düzleştirilir, Türkçe harfler ASCII'ye katlanır, eş anlamlı geri dönüşler tek
-belirtece indirilir. Beyaz liste: bu üç çizme sözdizimi dışında çizme işareti
-kalırsa kilit DÜŞER (yeni sözdizimi kalıp eklemeden yakalanır). "≈/~" yaklaşık
-işareti tek istisnadır ve ayrıca sınanır.
+BELGE KİLİDİ (D-453 / D-460 / D-461 / D-463): tüm aramalar **normalleştirilmiş**
+metinde yapılır — HTML varlıkları açılır, çizili aralıklar (`~~…~~`, tek tilde,
+`<del>/<s>/<strike>`) **ayıklanır** (içerik silinir), kalın/italik/kod işaretleri
+ve tipografik kesme/tırnak/tire düzleştirilir, Türkçe harfler ASCII'ye katlanır,
+eş anlamlı geri dönüşler tek belirtece indirilir. Beyaz liste: bu üç çizme
+sözdizimi dışında çizme işareti kalırsa kilit DÜŞER — U+0335…U+0338 birleştirici
+çizik ve onun HTML varlık biçimi (`&#822;`, `&#x336;`) dâhil (D-463 (a): bu
+biçim belgede üstü çizili görünüyor ama kalıpsız kaçıyordu). "≈/~" yaklaşık
+işareti tek istisnadır ve ayrıca sınanır. Çelişkili ikinci hüküm taraması
+kilitli kesitlerle sınırlı değil, **iki bölümün tamamını** kapsar (D-463 (b):
+hüküm başka yere konunca kaçıyordu).
 
 ⚠ NOT: kanonik `tests/belge_kilidi.py` şu an T240 dalında yazılıyor ve master'da
 YOK. Bu dosyadaki normalleştirme fonksiyonları **tek yerde** (aşağıdaki
@@ -42,6 +46,7 @@ YOK. Bu dosyadaki normalleştirme fonksiyonları **tek yerde** (aşağıdaki
 kalıcı bir ikinci normalleştirme kopyası bırakılmaz.
 """
 
+import html
 import json
 import re
 import unittest
@@ -76,7 +81,17 @@ _CIZIK_TILDE1 = re.compile(r"(?<![~\w])~(?![~\s])[^\n~]+?(?<![~\s])~(?![~\w])")
 # "yaklaşık" işareti çizme DEĞİLDİR: `~18:45`, `~%6`, `~1,35` — tek istisna.
 _YAKLASIK = re.compile(r"(?<![\w~])~(?=[\d%.,])")
 # Beyaz listede olmayan her çizme işareti (yeni sözdizimi kalıpsız yakalanır).
-_CIZME_ARTIGI = re.compile(r"~|</?\s*(?:del|s|strike)\b", re.I)
+_CIZME_ARTIGI = re.compile(r"~|</?\s*(?:del|s|strike)\b|[̵-̸]", re.I)
+
+
+def varlik_coz(metin):
+    """HTML varlıklarını açar (D-463 (a)).
+
+    U+0336 birleştirici çiziğin **varlık biçimi** (`&#822;`, `&#x336;`) belgede
+    üstü çizili görünüyor ama kalıpsız kaçıyordu; `&#126;` ile yazılmış tilde de
+    öyle. Varlıklar aramadan ÖNCE açılır.
+    """
+    return html.unescape(metin)
 
 _KATLAMA = str.maketrans("İIıĞğÜüŞşÖöÇçÂâÎî", "IIiGgUuSsOoCcAaIi")
 _TIPOGRAFI = {
@@ -102,7 +117,8 @@ CELISKI_SOZCUKLERI = (
 
 
 def cizikleri_ayikla(metin):
-    """Beyaz listedeki üç çizme sözdiziminin İÇERİĞİNİ siler."""
+    """Beyaz listedeki üç çizme sözdiziminin İÇERİĞİNİ siler (varlıklar önce açılır)."""
+    metin = varlik_coz(metin)
     metin = _CIZIK_TILDE2.sub(" ", metin)
     metin = _CIZIK_ETIKET.sub(" ", metin)
     return _CIZIK_TILDE1.sub(" ", metin)
@@ -224,9 +240,16 @@ class T0_CapaDosyalar(unittest.TestCase):
             self.assertEqual([], cizme_artiklari(m), ad)
 
     def test_celiskili_ikinci_hukum_HICBIR_yuzeyde_yok(self):
-        """D-461 (d): kabul yüzeyine çelişkili/gevşetici ikinci hüküm yazılamaz."""
+        """D-461 (d): kabul yüzeyine çelişkili/gevşetici ikinci hüküm yazılamaz.
+
+        D-463 (b) deliği ("başka yere konunca kaçıyor") burada kapanır: tarama
+        kilitli kesitlerle sınırlı değil, **iki bölümün TAMAMI** denetlenir. Bugün
+        bu sözcüklerin hiçbiri iki belgede de geçmiyor (ölçüldü, `grep -ic` = 0).
+        """
         for ad, m in kilitli_yuzeyler():
             self.assertEqual([], celiskili_ikinci_hukum(m), ad)
+        for p in (B3, B4):
+            self.assertEqual([], celiskili_ikinci_hukum(oku(p)), p.name)
 
 
 class T1_MavlinkTekYazarKilidi(unittest.TestCase):
@@ -352,9 +375,17 @@ class T3_EngineDenkligi(unittest.TestCase):
             n = tekhat(m)
             self.assertIn("3/126", n, ad)
             self.assertIn("DUSTU", n, ad)
-            # D-303 hükmünün geçtiği satır olumlu hükümle çevrilmemiş olmalı
-            for satir in [s for s in n.splitlines() if "D-303" in s and "3/126" in s]:
-                self.assertNotIn("OLUMLU_HUKUM", satir, (ad, satir[:80]))
+            # Ölçümün YANINDAKİ hüküm denetlenir: her "3/126" geçişinin ±140
+            # karakterlik penceresi "DÜŞTÜ" taşımalı ve olumlu hükme çevrilmemiş
+            # olmalı. Bölümün BAŞKA yerindeki bir DÜŞTÜ bu pencereyi doyuramaz
+            # (kapının kendi mutasyon bulgusu MZ3: tek satıra indirilmiş metinde
+            # komşu cümledeki DÜŞTÜ, çizilmiş hükmü örtüyordu).
+            yerler = [mm.start() for mm in re.finditer(r"3/126", n)]
+            self.assertTrue(yerler, ad)
+            for i in yerler:
+                pencere = n[max(0, i - 140):i + 140]
+                self.assertIn("DUSTU", pencere, (ad, pencere))
+                self.assertNotIn("OLUMLU_HUKUM", pencere, (ad, pencere))
             self.assertEqual([], celiskili_ikinci_hukum(m), ad)
 
     def test_T3d_f2_ve_esik_artefaktla(self):
@@ -726,6 +757,26 @@ class MutasyonKontrolu(unittest.TestCase):
         self.assertEqual([], cizme_artiklari("düz metin, çizik yok"))
         self.assertTrue(cizme_artiklari("<del>yarım etiket"))
         self.assertTrue(cizme_artiklari("kapanmayan ~çizik"))
+
+    def test_M9_D463_birlestirici_cizik_ve_HTML_varligi_YAKALANIR(self):
+        """D-463 (a): U+0336 ve HTML varlık biçimi (`&#822;` / `&#x336;`) kaçıyordu."""
+        dogru = "D-303 oransal 3/126 DÜŞTÜ"
+        self.assertEqual([], cizme_artiklari(dogru))
+        self.assertEqual([], eksikler(dogru, (("DÜŞTÜ", 1),)))
+        mutantlar = {
+            "çıplak U+0336": "".join(c + "̶" for c in dogru),
+            "ondalık varlık": "".join(c + "&#822;" for c in dogru),
+            "onaltılık varlık": "".join(c + "&#x336;" for c in dogru),
+            "U+0335 kısa çizik": "".join(c + "̵" for c in dogru),
+        }
+        for ad, mutant in mutantlar.items():
+            self.assertNotEqual(dogru, mutant, "MUTASYON UYGULANMADI")
+            self.assertTrue(cizme_artiklari(mutant), ad)
+            self.assertEqual(1, len(eksikler(mutant, (("DÜŞTÜ", 1),))), ad)
+        # varlıkla gizlenmiş ÇİZİK SÖZDİZİMİ de görünür olur: `&#126;&#126;…&#126;&#126;`
+        gizli = "&#126;&#126;" + dogru + "&#126;&#126;"
+        self.assertEqual(1, len(eksikler(gizli, (("DÜŞTÜ", 1),))),
+                         "HTML varlığıyla yazılmış çizik kaçtı")
 
 
 if __name__ == "__main__":

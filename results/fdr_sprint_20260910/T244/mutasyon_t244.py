@@ -5,7 +5,7 @@ kapisini kosar, sonra dosyalari BAYT-ES geri yukler (sha256 ile dogrulanir).
 Ham cikti: `T244/mutasyon_ciktisi.txt` (+ tam stdout/stderr `.raw.txt`).
 
 Kapsam (gorev tanimi: "en az 6 — her maddeden biri + celiskili ikinci hukum + cizili
-varyant"). 11 mutant:
+varyant"). 13 mutant:
 
   M1  madde 1 — §3.3.1.1.8 "acik kalemdir" cizgisi kaldirilir (eski hukum CANLI doner)
   M2  madde 2 — §3.3.4.1.7 H1c "damgalanmadi" cizgisi kaldirilir
@@ -21,6 +21,8 @@ varyant"). 11 mutant:
   MZ1 CIZILI VARYANT (tek tilde) — madde 7 cumlesi §3.3.3.2'de TEK TILDE ile cizilir
   MZ2 CIZILI VARYANT (<del>) + OLUMLUYA CEVIRME — §4.8.3'te D-303 DUSTU hukmu
       <del>…</del> ile cizilip yerine "dogrulandı" yazilir
+  MZ3 D-463 (a) — D-303 DUSTU hukmu CIPLAK U+0336 birlestirici cizikle cizilir
+  MZ4 D-463 (a) — durustluk cumlesi HTML VARLIGI (&#822;) ile cizilir
 
 "YAKALANDI" yalniz kapi DUSTUYSE (ERROR degil, assert ile) ve secilen hedef testlerin
 hepsi dustuyse yazilir. Kacis / uygulanamayan mutant / bozuk temiz kosum / geri yukleme
@@ -58,6 +60,7 @@ T7 = "test_T7_cumle_iki_yerde_ve_CIZILMEMIS"
 T8 = "test_T8_varyant_sayilari_artefakttan"
 T3C = "test_T3c_d303_dustu_uc_yerde_de_olumluya_CEVRILMEMIS"
 TC = "test_celiskili_ikinci_hukum_HICBIR_yuzeyde_yok"
+TB = "test_cizme_isareti_beyaz_liste"
 
 DURUSTLUK = ("İkisi de rotanın lehinedir ve üretim kodunda karşılığı yoktur; "
              "**bu yüzden üretim sayıları sahaya göre İYİMSER ÜST SINIRDIR**")
@@ -99,6 +102,12 @@ MUTASYONLAR = [
     ("MZ2 CIZILI VARYANT (<del>) + OLUMLUYA CEVIRME: §4.8.3 D-303 DUSTU -> dogrulandı", B4,
      [("| **3/126 = %2,38** | 🔴 **DÜŞTÜ** |",
        "| **3/126 = %2,38** | <del>🔴 **DÜŞTÜ**</del> doğrulandı |")], (T3C,)),
+    ("MZ3 D-463(a) CIPLAK U+0336: §4.8.3 D-303 DUSTU hukmu birlestirici cizikle cizildi", B4,
+     [("| **3/126 = %2,38** | 🔴 **DÜŞTÜ** |",
+       "| **3/126 = %2,38** | 🔴 **" + "".join(c + "̶" for c in "DÜŞTÜ") + "** |")],
+     (T3C, TB)),
+    ("MZ4 D-463(a) HTML VARLIGI: §3.3.3.2 durustluk cumlesi &#822; ile cizildi", B3,
+     [(DURUSTLUK, "".join(c + "&#822;" for c in DURUSTLUK))], (T7, TB)),
 ]
 
 SATIRLAR = []
