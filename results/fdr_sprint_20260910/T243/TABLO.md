@@ -126,7 +126,9 @@ Ham bütçe 5760 B/s (57600 baud, 8N1 = 10 bit/bayt → 0,174 ms/bayt). Doluluk 
 
 | koşum | waypoint farkı (B) | `OPEN_ROUTE` çerçevesi | ortak ortam (B/s) | paylaşımlı | ECC açıkken |
 |---|---:|---:|---:|---:|---:|
+| `saha_jetson_olculmus` | 482 | 244 | 3995,8 | %69,37 | %138,74 |
 | `saha_tavan` | 482 | 244 | 4003,6 | %69,51 | %139,01 |
+| `udp_jetson_olculmus` | 482 | 250 | 4080,6 | %70,84 | %141,69 |
 | `udp_tavan` | 482 | 250 | 4107,2 | %71,31 | %142,61 |
 
 Rota sözleşme tavanındaki waypoint sayısına çıkarsa hat doluluğu yukarıdaki değerlere taşınır; ECC açık sütunu ham bütçeyi aşar. Bu bir ölçüm değil, ölçülen iki büyüklüğün (çerçeve boyutu farkı × çerçeve sayısı) çarpımıdır.

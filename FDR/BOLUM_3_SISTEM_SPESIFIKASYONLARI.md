@@ -2718,9 +2718,15 @@ hızlanırsa yayın hızlanmaz.** Bu bir kusur beyanı değil, ölçülmüş sı
 
 ⚠ **Duyarlılık (HESAP, ölçüm değil):** rota sözleşme tavanındaki waypoint sayısına
 (`MAX_WAYPOINTS` = 64) çıkarsa ortak ortam yükü ~~**3715,4 – 4003,6 B/s**'ye taşınır
-(paylaşımlı %64,50 – %69,51)~~ — **12 Eylül düzeltmesi (D-466)** — **4003,6 – 4107,2
+(paylaşımlı %64,50 – %69,51)~~ — **12 Eylül düzeltmesi (D-466)** — ~~**4003,6 – 4107,2
 B/s**'ye taşınır (paylaşımlı **%69,51 – %71,31**) ve ECC açık varsayımıyla ham bütçe
-**aşılır** (**%139,01 – %142,61**). Bu bir ölçüm değildir: ölçülen çerçeve boyutu farkı
+**aşılır** (**%139,01 – %142,61**)~~ — **12 Eylül ikinci düzeltmesi (D-466 · T243-C):
+bu aralık §3.3.4.3.3 tablosundaki DÖRT koşumun yalnız 2,0 Hz tavan kollarını
+kapsıyordu; 1,353 Hz kolları dışarıda kalmıştı ve alt sınır 7,8 B/s yüksek
+duruyordu** — dört koşumun tamamında **3995,8 – 4107,2 B/s**'ye taşınır (paylaşımlı
+**%69,37 – %71,31**) ve ECC açık varsayımıyla ham bütçe **aşılır**
+(**%138,74 – %142,61**); alt sınır `saha` · 1,353 Hz, üst sınır `udp` · 2,0 Hz
+kolundan gelir (`TABLO.md` §8, dört satır). Bu bir ölçüm değildir: ölçülen çerçeve boyutu farkı
 (482 B) × ölçülen çerçeve sayısıdır. Düzeltmenin sebebi: ilk hesap `udp` kolunda hatta
 giden **250** `OPEN_ROUTE` çerçevesinin yalnız YKS'ye ulaşan **200**'ünü saymıştı (İKA'ya
 giden 50 çerçeve atlanmıştı); çerçeve sayısı artık iki yapılandırmada da tek ölçüm

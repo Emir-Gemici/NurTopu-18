@@ -22,11 +22,12 @@
 ⚠ Bu isin hukmu "olculdu / OLCULEMEDI"dir; bir KAPI degildir (ON_KAYIT SS4).
   Kapi olan sey, FDR'deki sayinin artefaktla AYNI kalmasidir.
 
-⚠ Bu dosyadaki normallestirme fonksiyonlari TEK YERDE toplanmistir
-  (`_cizili_ayikla`, `_normallestir`, `_tek_bosluk`, `_bosluksuz`,
-  `_esik_degerleri`) ve **T242 ile kanonik yardimciya (`tests/belge_kilidi.py`)
-  gecirilecektir** — kanonik yardimci T240 dalinda yaziliyor, master'da henuz
-  yok (D-460 karar 2, D-461 siralama karari).
+⚠ OLCUM HUKMU TASIYAN YUZEY (D-465 metin esitligi) artik KANONIK yardimciyi
+  kullanir: `belge_kilidi.bloklar()` (D-468, T243-C). Kendi normallestirme
+  kopyasi YAZILMAZ. Kalan yokluk-taramasi yardimcilari (`_cizili_ayikla`,
+  `_normallestir`, `_tek_bosluk`, `_bosluksuz`, `_esik_degerleri`) dusuk degerli
+  anlati yuzeylerinde kalir ve T242 ile kanonige gecirilecektir
+  (D-460 karar 2, D-461 siralama karari).
 """
 
 import importlib.util as _u
@@ -46,9 +47,11 @@ BOYUT_JSON = DIZIN / "paket_boyutu.json"
 KARISIM_JSON = DIZIN / "gorev_veri_hizi.json"
 FDR = KOK / "FDR" / "BOLUM_3_SISTEM_SPESIFIKASYONLARI.md"
 
-for _p in (KOK / "codes", KOK / "comms", KOK / "scripts"):
+for _p in (KOK / "codes", KOK / "comms", KOK / "scripts", KOK / "tests"):
     if str(_p) not in sys.path:
         sys.path.insert(0, str(_p))
+
+import belge_kilidi as BK  # noqa: E402  (D-468: KANONIK belge kilidi)
 
 _spec = _u.spec_from_file_location("t243_olc", BETIK)
 M = _u.module_from_spec(_spec)
@@ -248,25 +251,41 @@ def _bagimsiz(anahtar):
     }
 
 
-#: FDR duyarlilik araliginin kaynagi: iki TAVAN kosumu.
-DUYARLILIK_KOSUMLARI = ("saha_tavan", "udp_tavan")
+#: FDR duyarlilik araliginin kaynagi: OLCULEN DORT KOSUMUN TAMAMI (T243-C).
+#: 🔴 Onceki surum yalniz ("saha_tavan", "udp_tavan") aliyordu; FDR ise hemen
+#:    ustunde DORT kosumluk olcum tablosu veriyordu. Aralik boylece 1,353 Hz
+#:    kollarini disarida birakiyor, ALT SINIR 7,8 B/s YUKSEK duruyordu — yon
+#:    yine "riski az gosterme" yonundeydi (curutucu kusuru 2). Kaynak artefaktin
+#:    kendisi oldugu icin JSON'a bir kosum eklenirse aralik SESSIZCE bayatlamaz.
+DUYARLILIK_KOSUMLARI = tuple(K["kosumlar"])
 
 
 def _paragraf(bolum, bas):
-    """Bolumun `bas` ile baslayan PARAGRAFI — HAM metin.
+    """Bolumun `bas` ile baslayan TEK blogu — KANONIK yardimcidan (D-468).
 
     D-465: olcum hukmu tasiyan yuzeyde cizik/varlik/vurgu AYIKLAMASI YOKTUR;
-    normallestirme yalniz bosluk/satir sonu icindir.
+    normallestirme yalniz bosluk/satir sonudur. Bu kural artik bu dosyadaki bir
+    KOPYADA degil, kanonik `belge_kilidi.bloklar()` icindedir (T243-C).
+
+    🔴 TEK BLOK sarti (curutucunun sinir bulgusu S3): eski surum ILK eslesmeyi
+       donduruyordu, bu yuzden ayni basla arkaya IKINCI (celiskili) bir paragraf
+       eklenince kilit ilk blogu gorup geciyordu. Artik eslesme sayisi 1 degilse
+       test DUSER.
     """
-    for par in re.split(r"\n[ \t]*\n", bolum):
-        if par.strip().startswith(bas):
-            return _bosluk(par)
-    raise AssertionError(f"paragraf bulunamadi: {bas!r}")
+    eslesen = [b for b in BK.bloklar(bolum) if b.startswith(bas)]
+    if len(eslesen) != 1:
+        raise AssertionError(
+            f"{bas!r} ile baslayan blok sayisi {len(eslesen)} (1 olmali) — "
+            "kilitli blogun ikizi/celiskili kopyasi eklenmis olabilir")
+    return eslesen[0]
 
 
 def _bosluk(metin):
-    """D-465 normallestirmesi: YALNIZ bosluk/satir sonu."""
-    return re.sub(r"\s+", " ", metin).strip()
+    """ON KAYITLI metnin KANONIK normallestirmesi (D-468) — tek blok olmali."""
+    b = BK.bloklar(metin)
+    if len(b) != 1:
+        raise AssertionError(f"on kayitli metin {len(b)} bloga bolundu (1 olmali)")
+    return b[0]
 
 
 class Capa(unittest.TestCase):
@@ -564,9 +583,9 @@ class FdrVeriHiziTablosu(unittest.TestCase):
         bs = sorted(x["hat_bayt_s"] for x in du)
         yz = sorted(x["paylasimli_yuzde"] for x in du)
         ec = sorted(x["ecc_acikken_paylasimli_yuzde"] for x in du)
-        for ifade in (f"{TR(bs[0], 1)} – {TR(bs[1], 1)} B/s",
-                      f"%{TR(yz[0], 2)} – %{TR(yz[1], 2)}",
-                      f"%{TR(ec[0], 2)} – %{TR(ec[1], 2)}",
+        for ifade in (f"{TR(bs[0], 1)} – {TR(bs[-1], 1)} B/s",
+                      f"%{TR(yz[0], 2)} – %{TR(yz[-1], 2)}",
+                      f"%{TR(ec[0], 2)} – %{TR(ec[-1], 2)}",
                       f"({du[0]['waypoint_farki_bayt']} B)"):
             self.assertIn(_ara(ifade), METIN_3, ifade)
         self.assertIn(_ara("HESAP, olcum degil"), METIN_3)
@@ -663,6 +682,22 @@ class DuyarlilikBagimsizKilit(unittest.TestCase):
                 self.assertAlmostEqual(bag[alan], bet[alan], places=6,
                                        msg=f"{ad}/{alan}")
 
+    def test_KILIT_TOLERANS_ON_KAYITLI(self):
+        """Nobetcinin KENDI esigi de gevsetilemez (T243-C).
+
+        🔴 OLCULEN OLU YUZEY: curutucu `KILIT_TOLERANS`'i tek basina
+           %2 -> %50 yapti ve HICBIR test dusmedi — urun esigi
+           (`M.CAPRAZ_KILIT_TOLERANS`) hala 0,02 oldugu icin zararsizdi, ama bir
+           esik sabitinin SESSIZCE gevsetilebildigi bir yuzeydi. Tek satirlik
+           on kayit kapatir.
+        """
+        self.assertEqual(0.02, KILIT_TOLERANS,
+                         "nobetcinin capraz kilit toleransi ON KAYITLI degerden "
+                         "farkli — esik gevsetilmis olabilir")
+        self.assertEqual(0.02, M.CAPRAZ_KILIT_TOLERANS,
+                         "betikteki capraz kilit toleransi ON KAYITLI degerden "
+                         "farkli — esik gevsetilmis olabilir")
+
     def test_capraz_kilit_GEVSETILEMEZ(self):
         """Esik gevsetilirse YANLIS cerceve sayisi kabul edilir -> bu test duser.
 
@@ -719,7 +754,10 @@ class DuyarlilikBagimsizKilit(unittest.TestCase):
         ham = TABLO.read_text(encoding="utf-8")
         satirlar = [s for s in _tablo_satirlari(ham)
                     if s[0].strip("`") in DUYARLILIK_KOSUMLARI and len(s) == 6]
-        self.assertEqual(2, len(satirlar), "TABLO §8 duyarlilik satirlari eksik")
+        self.assertEqual(len(DUYARLILIK_KOSUMLARI), len(satirlar),
+                         "TABLO §8 duyarlilik tablosu OLCULEN her kosumu "
+                         "yazmali (T243-C: eskiden yalniz iki tavan kosumu "
+                         "yaziliyordu, 1,353 Hz sayilari HICBIR dosyada yoktu)")
         for hucre in satirlar:
             d = _bagimsiz(hucre[0].strip("`"))
             self.assertEqual(
@@ -743,8 +781,16 @@ class DuyarlilikMetinKilidi(unittest.TestCase):
         "waypoint sayısına (`MAX_WAYPOINTS` = {tavan_wp}) çıkarsa ortak ortam "
         "yükü ~~**3715,4 – 4003,6 B/s**'ye taşınır (paylaşımlı "
         "%64,50 – %69,51)~~ — **12 Eylül düzeltmesi (D-466)** — "
-        "**{bs0} – {bs1} B/s**'ye taşınır (paylaşımlı **%{yz0} – %{yz1}**) ve "
-        "ECC açık varsayımıyla ham bütçe **aşılır** (**%{ec0} – %{ec1}**). "
+        "~~**4003,6 – 4107,2 B/s**'ye taşınır (paylaşımlı "
+        "**%69,51 – %71,31**) ve ECC açık varsayımıyla ham bütçe **aşılır** "
+        "(**%139,01 – %142,61**)~~ — **12 Eylül ikinci düzeltmesi "
+        "(D-466 · T243-C): bu aralık §3.3.4.3.3 tablosundaki DÖRT koşumun "
+        "yalnız 2,0 Hz tavan kollarını kapsıyordu; 1,353 Hz kolları dışarıda "
+        "kalmıştı ve alt sınır {eksik} B/s yüksek duruyordu** — dört koşumun "
+        "tamamında **{bs0} – {bs1} B/s**'ye taşınır (paylaşımlı "
+        "**%{yz0} – %{yz1}**) ve ECC açık varsayımıyla ham bütçe **aşılır** "
+        "(**%{ec0} – %{ec1}**); alt sınır `saha` · 1,353 Hz, üst sınır `udp` "
+        "· 2,0 Hz kolundan gelir (`TABLO.md` §8, dört satır). "
         "Bu bir ölçüm değildir: ölçülen çerçeve boyutu farkı ({fark} B) × "
         "ölçülen çerçeve sayısıdır. Düzeltmenin sebebi: ilk hesap `udp` "
         "kolunda hatta giden **{udp_cerceve}** `OPEN_ROUTE` çerçevesinin "
@@ -772,9 +818,14 @@ class DuyarlilikMetinKilidi(unittest.TestCase):
         u = K["kosumlar"]["udp_tavan"]
         beklenen = _bosluk(self.DUYARLILIK.format(
             tavan_wp=EGRI["sozlesme_tavani_waypoint"],
-            bs0=TR(bs[0], 1), bs1=TR(bs[1], 1),
-            yz0=TR(yz[0], 2), yz1=TR(yz[1], 2),
-            ec0=TR(ec[0], 2), ec1=TR(ec[1], 2),
+            bs0=TR(bs[0], 1), bs1=TR(bs[-1], 1),
+            yz0=TR(yz[0], 2), yz1=TR(yz[-1], 2),
+            ec0=TR(ec[0], 2), ec1=TR(ec[-1], 2),
+            # Eski (dar) araligin alt siniri ile YENI alt sinir arasindaki fark:
+            # "7,8 B/s yuksek duruyordu" iddiasi ARTEFAKTTAN turetilir, elle
+            # yazilmaz (T243-C).
+            eksik=TR(du["saha_tavan"]["hat_bayt_s"]
+                     - du["saha_jetson_olculmus"]["hat_bayt_s"], 1),
             fark=du["saha_tavan"]["waypoint_farki_bayt"],
             udp_cerceve=du["udp_tavan"]["cerceve"],
             yks=u["yks_gorulen_tipler"]["OPEN_ROUTE"],
@@ -949,6 +1000,18 @@ class ReadmeSayilariArtefakttan(unittest.TestCase):
                       f"{TR((EGRI['en_genis']['20'] - EGRI['en_genis']['10']) / 10.0, 1)} B/waypoint",
                       f"{u[tavan]} B'ye cikar"):
             self.assertIn(_ara(ifade), self.s, ifade)
+
+    def test_README_duyarlilik_araligi_DORT_KOSUMU_KAPSAR(self):
+        """README'deki duyarlilik araligi OLCULEN her kosumu kapsamali (T243-C).
+
+        🔴 Curutucu kusuru 2: aralik yalniz iki TAVAN kosumundan geliyordu; alt
+           sinir 7,8 B/s yuksek duruyordu (yon: riski az gosterme).
+        """
+        du = [_bagimsiz(a) for a in DUYARLILIK_KOSUMLARI]
+        bs = sorted(x["hat_bayt_s"] for x in du)
+        self.assertIn(_ara(f"{TR(bs[0], 1)}–{TR(bs[-1], 1)} B/s"), self.s,
+                      "README duyarlilik araligi dort kosumu kapsamiyor")
+        self.assertIn(_ara("§8 duyarlilik tablosu artik dort satirdir"), self.s)
 
     def test_veri_hizi_araligi(self):
         def aralik(al, basamak=1):

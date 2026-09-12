@@ -857,7 +857,10 @@ def tablo_uret(boyut, karisim):
     s.append("")
     s.append("| koşum | waypoint farkı (B) | `OPEN_ROUTE` çerçevesi | ortak ortam (B/s) | paylaşımlı | ECC açıkken |")
     s.append("|---|---:|---:|---:|---:|---:|")
-    for ad in ("saha_tavan", "udp_tavan"):
+    # DORT kosum da yazilir (T243-C, curutucu kusur 1): eskiden yalniz iki
+    # TAVAN kosumu uretiliyordu; 1,353 Hz kollarinin duyarlilik sayilari
+    # hicbir dosyada durmuyordu — FDR'nin alt siniri de o yuzden eksikti.
+    for ad in k["kosumlar"]:
         du = tavan_waypoint_duyarliligi(b, k["kosumlar"][ad])
         if du is None:
             kl = capraz_kilit(b, k["kosumlar"][ad])

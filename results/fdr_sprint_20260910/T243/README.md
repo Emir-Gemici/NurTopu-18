@@ -78,7 +78,12 @@ Bu bir kapı değildir; hüküm "ölçüldü"dür, "geçti" değildir.
 
 Ayrı ve **hesaba** dayalı bir uyarı kayda geçer: `TABLO.md` §8, rota sözleşme
 tavanındaki waypoint sayısına çıkarsa ortak ortam yükünün ~~3715,4–4003,6 B/s'ye~~
-**4003,6–4107,2 B/s**'ye taşındığını gösterir (12 Eylül düzeltmesi, D-466);
+~~4003,6–4107,2 B/s'ye~~ **3995,8–4107,2 B/s**'ye taşındığını gösterir
+(12 Eylül düzeltmesi, D-466; **ikinci düzeltme D-466 · T243-C**: ilk aralık
+§8 tablosunun yalnız iki **2,0 Hz tavan** satırından geliyordu, ölçülen dört
+koşumun tamamı alınınca alt sınır `saha` · 1,353 Hz kolundan **3995,8 B/s**
+olur — eski alt sınır **7,8 B/s yüksek** duruyordu, yön yine *riski az
+gösterme* yönündeydi). §8 duyarlılık tablosu artık **dört** satırdır;
 ECC açık sütunu ham bütçeyi aşar. Bu bir ölçüm değil,
 ölçülen iki büyüklüğün çarpımıdır ve telsiz ayarı okunmadan hükme bağlanamaz.
 
@@ -99,6 +104,15 @@ gösteriyordu**. Düzeltme:
   (ölçülen sapma: −%0,71 … −%0,41, `TABLO.md` §8 ikinci tablo). Tutmazsa hesap
   **yapılmaz**: sessiz yanlış sayı yerine açık boşluk (**OLCULEMEDI**).
 - Eski sayılar **silinmedi**; FDR'de ve yukarıda çizili durur.
+- **12 Eylül ikinci düzeltmesi (D-466 · T243-C) — bağımsız çürütücünün
+  bulgusu.** `scripts/paket_boyutu_olc.py` §8 duyarlılık tablosunu yalnız
+  `("saha_tavan", "udp_tavan")` için üretiyordu; 1,353 Hz kollarının duyarlılık
+  sayıları (`3995,8` · `%69,37` · `%138,74` ve `4080,6` · `%70,84` · `%141,69`)
+  **hiçbir dosyada durmuyordu**. Döngü artık ölçülen koşumların üzerinden
+  geçer (`for ad in k["kosumlar"]`), §8 tablosu **dört** satırdır ve FDR'deki
+  aralık dört koşumu kapsar (alt sınır 4003,6 → **3995,8 B/s**). Nöbetçide
+  `DUYARLILIK_KOSUMLARI` artık `tuple(K["kosumlar"])`'dır: JSON'a bir koşum
+  eklenirse aralık sessizce bayatlamaz.
 - Nöbetçi artık FDR'deki duyarlılık sayılarını **hesabı üreten fonksiyondan
   bağımsız** formülle yeniden hesaplayıp karşılaştırır (çürütücünün bulgusu:
   eski nöbetçi aynı hatalı fonksiyonu yeniden koşuyordu) ve duyarlılık paragrafı
@@ -126,6 +140,31 @@ sayıyı iyileştirmedi, **kötüleştirdi**; ilk çıktı silinmedi, bu dizinde
 5. Kadans 1,353 Hz Jetson `pt` p50 739,076 ms ölçümünden gelir
    (`results/jetson_20260906/jetson_fps_20260906_orin_nano/ozet.json`); uçuş
    modeli `.pt`'dir (D-431).
+
+**Kapanmayan sınırlar — sayılarak yazılır, kovalanmaz (T243-C, bağımsız
+çürütücü ölçümü).** Aşağıdakiler kusur değil, kilidin ÖLÇÜLEN menzilidir:
+
+6. **Çapraz kilidin ayırt etme penceresi — ölçüldü** (`kapi/kilit_penceresi.txt`,
+   betiğin fonksiyonları çağrılmadan). ±%2 tolerans şu çerçeve sayılarını
+   **geçirir**: `udp_tavan` ve `udp_jetson_olculmus` **244–253** (doğrusu 250,
+   yani **−6 … +3** çerçevelik sapma kaçar), `saha_tavan` **239–247** (doğrusu
+   244, **−5 … +3** kaçar), `saha_jetson_olculmus` **238–247** (**−6 … +3**).
+   Gross hata (250 → 200) sapma **+%24,41** verir ve kesin yakalanır. "Çapraz
+   kilitlenir" ifadesi bundan fazlasını söylemez: kilit **gross** hata
+   kilididir, birkaç çerçevelik sapmayı görmez.
+7. **Metin eşitliği (D-465/D-468) BLOĞU dondurur, BÖLÜMÜ değil.** Kilitli
+   bloğun *dışına* çelişkili ikinci bir hüküm eklenebilir; çürütücü üç prob
+   kurdu, üçü de kaçtı. T243-C bunlardan yalnız birini kapattı (aynı başla
+   eklenen **ikinci kopya** artık düşürür — nöbetçi tek eşleşme arar); geri
+   kalanı T244 ailesinin (çelişkili cümle süpürgesi) konusudur.
+8. **`gorev_veri_hizi.json` yeniden üretilemez bir zamanlama ölçümüdür.** Tek
+   yönlü kurcalanması yakalanır (TABLO.md yeniden üretilip karşılaştırıldığı
+   için), JSON + FDR birlikte kurcalanması da yakalandı; ama JSON + FDR +
+   TABLO **üçü birden** tutarlı değiştirilirse kilit geçilir. Kapatılamayan
+   kaçıştır.
+9. **Nöbetçinin kendi `KILIT_TOLERANS` sabiti** tek başına gevşetilse hiçbir
+   test düşmüyordu (ölü yüzey). T243-C bunu tek satırlık bir ön kayıtla
+   kapattı: `test_KILIT_TOLERANS_ON_KAYITLI`.
 
 ## Koşulan kapılar
 
@@ -161,7 +200,10 @@ T243 kaynaklı YENİ düşük YOK.**
 
 D-466 düzeltmesinden sonra tam süit **üç kez** koşuldu; ham çıktılar
 `kapi/tam_suit_3.txt`, `kapi/tam_suit_4.txt`, `kapi/tam_suit_5.txt`. Test
-sayısı 2782 → 2794 (nöbetçiye eklenen D-466 kilitleri). Düşen `FAIL:`/`ERROR:`
+sayısı 2782 → 2794 (nöbetçiye eklenen D-466 kilitleri); bu sayı
+`tam_suit_3/4/5` koşumlarınındır — kendi kusuru yüzünden kaldırılan iki test
+sonrası **son durum 2793**'tür (`tam_suit_6`, `tam_suit_7` ve bağımsız
+çürütücü koşumu). Düşen `FAIL:`/`ERROR:`
 kümesinin `kapi/tam_suit_2.txt` (düzeltme öncesi) kümesinden **farkı**:
 
 | koşum | tam_suit_2'ye göre fark | ne olduğu |
@@ -256,6 +298,11 @@ kilidi:
 3. **METİN EŞİTLİĞİ (D-465).** FDR §3.3.4.3.3'teki duyarlılık bloğu ve
    "Sonuç (D-466)" bloğu, ön kayıtlı metne **eşit** olmalıdır (normalleştirme
    yalnız boşluk/satır sonu; çizik/varlık ayıklaması YOK). Canlı sayılar
-   bağımsız hesaptan doldurulur, çizili eski sayılar tarihsel sabittir. Kilidin normalleştirme
-fonksiyonları o dosyada **tek yerde** toplanmıştır ve **T242 ile kanonik
-yardımcıya (`tests/belge_kilidi.py`) geçirilecektir** (D-460, D-461).
+   bağımsız hesaptan doldurulur, çizili eski sayılar tarihsel sabittir.
+**T243-C'den beri bu yüzey kanonik yardımcıyı KULLANIR** — blok ayırma ve
+normalleştirme `tests/belge_kilidi.py` dosyasındaki `bloklar()` içindedir
+(D-468), nöbetçide
+kopyası yoktur; blok başına **tek eşleşme** şartı da eklendi (aynı başla
+arkaya konan ikinci/çelişkili bir paragraf artık kilidi düşürür). Kalan
+**yokluk taraması** yardımcıları (düşük değerli anlatı yüzeyleri) hâlâ o
+dosyadadır ve T242 ile kanoniğe geçirilecektir (D-460, D-461).

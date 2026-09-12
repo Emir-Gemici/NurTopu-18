@@ -1,0 +1,18 @@
+N1 OPEN_ROUTE = 365 B · HEARTBEAT = 273 B · tolerans = +-%2,00
+
+saha_jetson_olculmus: dogru cerceve = 244
+   +-%2 icinde GECEN cerceve araligi = 238-247 (10 deger)
+   gross hata probu (cerceve=200) sapma = %+21.13 -> YAKALANIR
+
+saha_tavan: dogru cerceve = 244
+   +-%2 icinde GECEN cerceve araligi = 239-247 (9 deger)
+   gross hata probu (cerceve=200) sapma = %+21.49 -> YAKALANIR
+
+udp_jetson_olculmus: dogru cerceve = 250
+   +-%2 icinde GECEN cerceve araligi = 244-253 (10 deger)
+   gross hata probu (cerceve=200) sapma = %+24.37 -> YAKALANIR
+
+udp_tavan: dogru cerceve = 250
+   +-%2 icinde GECEN cerceve araligi = 244-253 (10 deger)
+   gross hata probu (cerceve=200) sapma = %+24.41 -> YAKALANIR
+
