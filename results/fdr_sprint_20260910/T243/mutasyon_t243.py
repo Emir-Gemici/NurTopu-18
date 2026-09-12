@@ -4,7 +4,9 @@ import subprocess
 import sys
 from pathlib import Path
 
-KOK = Path(r"O:\navitas\.claude\worktrees\wf_88f63745-bff-1")
+# Depo kökü bu dosyanın konumundan türetilir: betik worktree'de de, master'a
+# birleştikten sonra da AYNI komutla koşar (mutlak yol çivilenmez).
+KOK = Path(__file__).resolve().parents[3]
 PY = r"O:\navitas-local-train\venv\Scripts\python.exe"
 FDR = KOK / "FDR" / "BOLUM_3_SISTEM_SPESIFIKASYONLARI.md"
 ON = KOK / "results" / "fdr_sprint_20260910" / "T243" / "ON_KAYIT.md"
