@@ -30914,4 +30914,63 @@ Düşen 6 alt test yalnız `tests/test_yks_mk15_hakem_ekrani.py` `H2e_RotaYokSon
 **Yapılan:** `tests/test_sim_mujoco_arena.py`'deki tek `mujoco.Renderer` çağrısı (`KameraYonSozlesmesi.test_kuzeye_bakan_karede_ib_altta`) `multiprocessing.get_context("spawn")` ile ayrı sürece taşındı; sonuç (iki float) `Queue` ile ana sürece dönüyor. Test kendisi **GEÇTİ** (39 testlik dosyanın geri kalanı koşuldu).
 **Doğrulama sınırı (dürüstçe kaydedilir):** Bu makinede mujoco kurulu değildi, bu oturumda `pip install mujoco` (3.13.0, GLFW arka uç) ile kuruldu. Orijinal semptomu (in-process `Renderer` sonrası `winfo_screenwidth()` 1707→2560, D-467) elle yeniden ürettim: **değişmedi** (1920→1920, aynı süreç, aynı çağrı sırası). Yani D-467'nin bulgusu bu spesifik makinenin pencere yöneticisi/GL yığınına bağlı olabilir — **çözüm mimari olarak doğru** (ticket'ın kendi önerdiği izolasyon) ama "semptom artık kesin geçti" **iddia edilmiyor**; orijinal makinede ayrıca doğrulanmalı.
 **Yan bulgu (kapsam dışı, dokunulmadı):** aynı dosyada mujoco 3.13.0 ile 5 test düşüyor (sha256 kilit uyuşmazlığı, mesh boyutu) — muhtemelen kilitlerin üretildiği mujoco sürümünden farklı; D-471 sınıfı ortam farkı, T251'in kapsamı dışı.
+
+---
+
+### D-475 — 🔴🔴 SORU-CEVAP OTURUMU TRANSKRİPT EDİLDİ: **rapor teslimi 14 Eylül'e ÇEKİLMİŞ** (erteleme yok), **rapordan ayrı bir SUNUM isteniyor** (depoda izi yok), Adıyaman'da **İKA yok / tek yol var**, puanlama **ikili (hep ya da hiç)**, ve organizasyon **"3 yola kilitli tasarım bir kusurdur"** diyor
+
+**Tarih:** 12 Eylül 2026 · Yapan: Claude 1 (mimar), kullanıcının açık isteğiyle.
+**Kaynak:** `İleri_Otonom_Yarı_Finaller-soru-cevap-oturumu.mp4` (51 dk 56 s, sha256 `902e7665fe6743a3…`) → `ffmpeg` + `faster-whisper` (small, tr) → `results/soru_cevap_20260912/transkript_otomatik.txt` (825 segment).
+⚠ **Güvenilirlik:** otomatik transkript, hata içerir (`results/soru_cevap_20260912/OKUBENI.md`). Aşağıya yalnız **tekrarlanan ve cevabı net** ifadeler alındı; **kritik tarih bir insan tarafından teyit edilmelidir.**
+
+#### 1. 🔴 TAKVİM — rapor+sunum teslimi **14 Eylül**, erteleme yok (projedeki 21 Eylül YANLIŞ)
+- `[01:32]` "Biliyorsunuz **14'ünde** normalde raporlar teslim edilecekti."
+- `[01:57]` "**14'ünde**, yani haftaya pazartesi günü, **sunumlarınızla raporlarınızla birlikte** sisteme yüklemeniz bizim için çok önemli."
+- `[10:01]` "**14'ünün ertelenme ihtimali maalesef yok.**"
+- `[10:10]` "Bütün raporları, sunumlar dâhil değerlendirmemiz için **5 günümüz** olacak."
+- `[26:41]` "Buradaki **bir haftalık erkene çekilme**… ilk şartnamede de yazan bir durumdu: bu tarz tarihler organizasyon esnasındaki durumlardan dolayı değiştirilebilir."
+- Tedarik gecikmesi mazeret kabul edilmiyor (`[26:57]`).
+**Etki:** `FDR/BOLUM_2` §2.2.8 ve `tests/test_fdr_takvim_kapisi.py` **21.09.2026**'yı şartname s.11'e atıfla kilitliyor. Kilit yanlış tarihi çimentoluyor olabilir → **T258**.
+
+#### 2. 🔴 SUNUM — rapordan AYRI, zorunlu, depoda hiç izi yok
+- `[01:39]` "Bunun **ek olarak** yapacağınız **sunumları** da raporlarla birlikte teslim etmenizi istiyoruz."
+- `[09:28]` "Görselden ziyade **teknik ve ayrıntılı** bir sunum yapmanızı istiyoruz."
+- `[11:17]` Sunumda **şablon** kullanılacak (şablon oturum sırasında henüz yayınlanmamıştı).
+- `[15:04]` Sunumu tek kişi de tüm takım da yapabilir. `[22:17]` süre **15 dakika**, salı günü yüz yüze, sıra **kura** ile.
+- `[04:16]` "14'ünde göndereceğiniz sunumlar bizde önceden olacağı için alana geldiğinizde sunumunuzu açmış olacağız" — **değerlendirme gönderilen sunum üzerinden**.
+- `[07:59]` "%85 aslında sunumla raporunuzun oranı" (bulanık ifade; puan ağırlığının büyük kısmı). `[34:46]` sunum/rapor puan dağılımı **henüz belirlenmedi**. `[15:59]` rapora **sayfa sınırı yok**.
+→ **T259** açıldı.
+
+#### 3. ✅ ADIYAMAN KAPSAMI (T257 KAPANDI) — sadece drone, İKA yok, **tek yol**
+- `[14:23]` "İKA prototiplerini getirmemiz gerekiyor mu?" → "**Hayır, sadece drone'unuzu bekliyoruz. Çünkü bir algoritma doğrulama aşaması.**" `[21:38]` "Lütfen İKA'larınızı yükleyip getirmeyin."
+- `[14:55]` "**Burada üç yol yok.**" `[29:12]` "Adıyaman'da yapacağımız yarışmada zaten **sadece bir tane yol aktif olacak**."
+- `[30:15]` "**Burada sadece bir tane yol var**, orta-zor herhangi başka bir yol yok. **Tek bir açık yol var ve bunu tespit etmenizi istiyoruz.**"
+- `[15:31]` "**İniş-kalkış alanınız farklı bir yer olacak**, ama yine enkazın içerisindeki hedef alanına giden yolu bulmanız gerekiyor."
+- `[45:21]` Adıyaman'da kalkış/iniş için **özel işaret YOK**, "belli bir alan" olacak; kırmızı H **final** içindir.
+- `[16:18]` Adıyaman'da **paraşüt şartı yok** (paraşütlü iniş final/sabit kanat aşamasında).
+
+#### 4. 🔴 MİMARİ UYARI — "3 yola KİLİTLİ tasarım bir kusurdur" (D-470/D-472'yi keskinleştirir)
+- `[28:42]` "Eğer siz sisteminizi **sınırlı olarak 3 tane yolu tespit etmek üzerine kurguladıysanız**… `[28:59]` zaten bizim beklentimiz bu değil."
+- `[29:01]` "**Beklentimiz bir hava aracının açık olan bir yolu tespit edebilmesi.** `[29:06]` Burada 3 yol, 5 yol… normalde de 3 yolun sadece bir tanesi açık; zaten siz açık olanı tespit edebiliyorsunuz."
+- `[29:18]` "O zaman sizin kurguladığınız tasarımda **bir yanlışlık var** demektir."
+**Yorum (mimar):** Bu, D-472'deki "final 3 güzergâh, değişmedi" hükmünü **iptal etmez ama daraltır**: arenada birden çok koridor olabilir, fakat sistem **tam olarak 3'e kilitli olmamalı**. Bugünkü `CONTRACTS.md` §6 `OPEN_ROUTE.road ∈ {1=sol,2=orta,3=sağ}` tam olarak o kilittir. → **T260** (ölçümsüz kod değişikliği YAPILMADI).
+
+#### 5. 🔴 PUANLAMA İKİLİ (hep ya da hiç)
+- `[18:33]` "Drone görevini kusursuz yapmazsa görev kısmından 0 mı olacak?" → "**Evet.**"
+- `[18:44]` "Tek beklentimiz: **otonom hareket eden drone'dan alınan görüntülerle yerde bize real-time olarak yolu tespit ettiğinizi göstermek.** `[18:52]` Bunu yaptığınızda **bütün puanı** alırsınız, yapamazsanız **0**."
+- `[19:17]` "Canlı görüntü aktarımı real-time'dan bahsediyorsak **gerekli**." `[25:27]` "uçuş esnasında **real-time** olarak… görüntü işlemeyle göstermeniz lazım."
+- `[35:20]` YKS bağlantısı koparsa özel bir kural **yok**, ama uçuş **10 dakika** içinde bitmeli ve görüntüyü gösteremezseniz **başarısız**.
+- `[05:28]` **Kalkış ve iniş de otonom** olmalı; `[05:36]` yalnız acil durumda manuele izin (`[35:53]` aynı).
+
+#### 6. Diğer kaynaklı cevaplar
+- `[40:38]` Şartnamedeki **kırmızı olan H harfinin kendisidir**, içindeki 2×2 m kutu değil. (T237 soru 1 — **cevaplandı**)
+- `[19:04]` Enkaz alanı **koordinatları önceden verilmiyor**; "alana girdikten sonra paylaşabiliriz". (T237 soru 4 → köşeler **saha günü** girilecek; `scripts/fda_gorev_uret.py` tam bu yüzden parametrik yazıldı)
+- `[21:57]` "Alanın içerisindeki yol **çok net bir şekilde açık olacak**; başlangıç noktasını da bulabileceğinizi düşünüyoruz" + `[33:00]` "**Bir başlangıç noktası belirteceğiz**, başlayacağınız yer belli olacak."
+- `[33:13]` Kapalı yollar **kapalı** olacak; moloz "gerçek deprem bölgesini simüle edecek" ama **detayı önceden verilmiyor** (`[29:47]` brandanın rengi/yapısı da verilmiyor: "gerçek enkazda da bilmiyorsunuz").
+- `[34:23]` YKS'de açık yolu **nasıl gösterdiğiniz serbest** ("şartımız yok, yaratıcılığınız").
+- `[26:26]` **Simülasyon, gerçek ekipman testinin yerine geçmez** ("bizim tarafımızda bir geçerliliği olmaz") — FDR'nin sim sonuçlarını "SENTETİK" diye etiketleme yordamı bununla **uyumlu**.
+- `[22:22]` Sonuçlar yarışmadan ~1 hafta sonra açıklanacak.
+
+**Açılan işler:** **T258** (14 Eylül takvim düzeltmesi + kapı testi), **T259** (sunum — yeni çıktı), **T260** (3-yol kilidi mimari kararı). **Kapanan:** T257.
+**Kod değişmedi:** bu kayıt bir transkript/analiz işidir; genel kapı 15/15 GEÇTİ.
 **Genel kapı:** 15/15 GEÇTİ (üretim kodu değişmedi, yalnız test dosyası).
