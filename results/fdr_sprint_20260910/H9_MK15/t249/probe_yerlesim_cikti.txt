@@ -1,0 +1,13 @@
+..
+----------------------------------------------------------------------
+Ran 2 tests in 6.484s
+
+OK
+olcek=1.0 HARITA gorunumu degisim noktalari (t, wm-geometry, kok_w, kok_h, haritalandi, tuval_w, tuval_h):
+    (0.077, '1240x940+234+88', 1240, 940, 1, 742, 450)
+olcek=1.0 KAMERA gorunumu (kucuk harita) degisim noktalari (t, kok_w, kok_h, haritalandi, mini_w, mini_h):
+    (0.017, 1240, 940, 1, 300, 330)
+olcek=1.5 HARITA gorunumu degisim noktalari (t, wm-geometry, kok_w, kok_h, haritalandi, tuval_w, tuval_h):
+    (0.061, '1575x1140+116+0', 1575, 1140, 1, 945, 630)
+olcek=1.5 KAMERA gorunumu (kucuk harita) degisim noktalari (t, kok_w, kok_h, haritalandi, mini_w, mini_h):
+    (0.044, 1575, 1140, 1, 450, 345)

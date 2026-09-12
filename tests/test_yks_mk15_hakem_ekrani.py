@@ -771,7 +771,7 @@ class H2c_EtiketCakismasi(_GercekEkran):
                                      label=yks_gui.ROAD_LABEL[yol]))
                 # T249: SABİT UYKU KALDIRILDI. `_mesaj_ver` çerçeveyi
                 # İŞLENENE dek bekler ve `_harita_ciz()` `_mesaj_isle`
-                # içinde EŞZAMANLI koşar (comms/yks_gui.py:1969) — çizim
+                # içinde EŞZAMANLI koşar (comms/yks_gui.py:1968) — çizim
                 # `_mesaj_ver` döndüğünde BİTMİŞTİR (ölçüm `tani_h2f.py`:
                 # 2 s boyunca 20 ms aralıkla örneklendi, 6/6 durumda doğru
                 # değer t = 0,000'da ve hiç değişmiyor). Geriye kalan tek
@@ -1010,7 +1010,7 @@ class H2g_TekrarliOpenRouteHaritayiTazeler(_GercekEkran):
         `_mesaj_ver` kullanılamaz: hazır koşulu (`rota.seq == seq`) tekrar
         çerçevesi için gönderimden ÖNCE de doğrudur, yani hiçbir şey beklemez.
         Tekrarın işlendiğini ölçen tek büyüklük `rx_alim[seq]`dir — ürün her
-        KABUL EDİLEN OPEN_ROUTE kopyasında bir artırır (`yks_gui.py:1913`).
+        KABUL EDİLEN OPEN_ROUTE kopyasında bir artırır (`yks_gui.py:1918`).
         Sabit uyku yerine bu sayaç + boş kuyruk beklenir."""
         app = self.app
         hedef = app.rx_alim.get(mesaj["seq"], 0) + 1
