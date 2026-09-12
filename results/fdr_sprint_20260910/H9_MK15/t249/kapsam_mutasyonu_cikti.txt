@@ -1,0 +1,73 @@
+[dpi] SetProcessDpiAwareness(1) -> 0
+
+===== YENI =====
+test_H2c_olcek_1_5_hakem_ekrani (__main__.main.<locals>.YENI.test_H2c_olcek_1_5_hakem_ekrani) ... 
+  test_H2c_olcek_1_5_hakem_ekrani (__main__.main.<locals>.YENI.test_H2c_olcek_1_5_hakem_ekrani) (olcek=1.5, durum='ana_no_route_uzun_DOGAL', tuval=(1142, 725)) ... FAIL
+  test_H2c_olcek_1_5_hakem_ekrani (__main__.main.<locals>.YENI.test_H2c_olcek_1_5_hakem_ekrani) (olcek=1.5, durum='ana_no_route_DOGAL', tuval=(1142, 725)) ... FAIL
+
+======================================================================
+FAIL: test_H2c_olcek_1_5_hakem_ekrani (__main__.main.<locals>.YENI.test_H2c_olcek_1_5_hakem_ekrani) (olcek=1.5, durum='ana_no_route_uzun_DOGAL', tuval=(1142, 725))
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 938, in _h2c
+    self._ana_denetle("no_route_uzun DOĞAL")
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 900, in _ana_denetle
+    self.assertEqual([], _kesisen_ciftler(kutular), f"ana {ad} {boyut}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != [('ROTA YOK — KORIDOR_DEGIL · İKA GÜVENLİ [210 chars]33))]
+
+Second list contains 1 additional elements.
+First extra element 0:
+('ROTA YOK — KORIDOR_DEGIL · İKA GÜVENLİ DURUŞTA\nkoridor genişlik tavanı aşıldı · şerit 1 moloz · şerit 3 kapalı · costmap güvenli rota üretmedi · İKA başlangıçta bekler', (17, 6, 841, 90), 'ROTA YOK — SENTETIK KUSUR (kapsam mutasyonu)', (7, 8, 427, 33))
+
+- []
++ [('ROTA YOK — KORIDOR_DEGIL · İKA GÜVENLİ DURUŞTA\n'
++   'koridor genişlik tavanı aşıldı · şerit 1 moloz · şerit 3 kapalı · costmap '
++   'güvenli rota üretmedi · İKA başlangıçta bekler',
++   (17, 6, 841, 90),
++   'ROTA YOK — SENTETIK KUSUR (kapsam mutasyonu)',
++   (7, 8, 427, 33))] : ana no_route_uzun DOĞAL 1142x725
+
+======================================================================
+FAIL: test_H2c_olcek_1_5_hakem_ekrani (__main__.main.<locals>.YENI.test_H2c_olcek_1_5_hakem_ekrani) (olcek=1.5, durum='ana_no_route_DOGAL', tuval=(1142, 725))
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 941, in _h2c
+    self._ana_denetle("no_route DOĞAL")
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 900, in _ana_denetle
+    self.assertEqual([], _kesisen_ciftler(kutular), f"ana {ad} {boyut}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != [('ROTA YOK — KORIDOR_DEGIL · İKA GÜVENLİ [120 chars]33))]
+
+Second list contains 1 additional elements.
+First extra element 0:
+('ROTA YOK — KORIDOR_DEGIL · İKA GÜVENLİ DURUŞTA\nkoridor genişlik tavanı aşıldı', (17, 8, 508, 64), 'ROTA YOK — SENTETIK KUSUR (kapsam mutasyonu)', (7, 8, 427, 33))
+
+- []
++ [('ROTA YOK — KORIDOR_DEGIL · İKA GÜVENLİ DURUŞTA\n'
++   'koridor genişlik tavanı aşıldı',
++   (17, 8, 508, 64),
++   'ROTA YOK — SENTETIK KUSUR (kapsam mutasyonu)',
++   (7, 8, 427, 33))] : ana no_route DOĞAL 1142x725
+
+----------------------------------------------------------------------
+Ran 1 test in 2.058s
+
+FAILED (failures=2)
+[YENI] wasSuccessful=False (beklenen False)
+
+===== ESKI =====
+test_H2c_olcek_1_5_hakem_ekrani (__main__.main.<locals>.ESKI.test_H2c_olcek_1_5_hakem_ekrani) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 1.146s
+
+OK
+[ESKI] wasSuccessful=True (beklenen True)
+
+== KAPSAM MUTASYONU OZETI ==
+  YENI: gercek=KIRMIZI beklenen=KIRMIZI TUTTU
+  ESKI: gercek=YESIL beklenen=YESIL TUTTU
+KAPSAM_MUTASYON_SONUC GECTI

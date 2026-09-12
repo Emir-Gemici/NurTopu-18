@@ -1,0 +1,25 @@
+[DPI] farkindalik = 0
+test_H2c_olcek_1_0 (__main__.IzliH2c.test_H2c_olcek_1_0) ... == olcek 1.0 ==
+  olcek=1.0 ad='no_route_uzun DOĞAL' tuval=742x450 civili=True
+  olcek=1.0 ad='no_route DOĞAL' tuval=742x450 civili=True
+  olcek=1.0 ad='no_route_uzun' tuval=742x450 civili=True
+  olcek=1.0 ad='no_route' tuval=742x450 civili=True
+ok
+test_H2c_olcek_1_5_hakem_ekrani (__main__.IzliH2c.test_H2c_olcek_1_5_hakem_ekrani) ... == olcek 1.5 ==
+  olcek=1.5 ad='no_route_uzun DOĞAL' tuval=945x630 civili=True
+  olcek=1.5 ad='no_route DOĞAL' tuval=945x630 civili=True
+  olcek=1.5 ad='no_route_uzun' tuval=945x630 civili=True
+  olcek=1.5 ad='no_route' tuval=945x630 civili=True
+ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 4.224s
+
+OK
+
+== OZET: _ana_denetle'in kostugu YUZEYLER ==
+  olcek=1.0: 742x450
+  olcek=1.5: 945x630
+  olcek=1.0 FARKLI YUZEY SAYISI = 1
+  olcek=1.5 FARKLI YUZEY SAYISI = 1
+TOPLAM _ana_denetle cagrisi = 8

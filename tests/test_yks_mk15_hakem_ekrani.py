@@ -918,12 +918,34 @@ class H2c_EtiketCakismasi(_GercekEkran):
                     self._mesaj_ver(mesaj)
                 self._mini_denetle(ad, mesaj)
         # ANA harita (harita görünümü, inset dahil): uzun ve kısa detaylı ROTA YOK.
+        #
+        # 🔴 T250 — İKİ YÜZEYDE ÖLÇÜLÜR (çürütücü KUSUR 2, kapsam daralması).
+        # T249 çivilemesi H2f kalıntı SAYI kilidi için ZORUNLUDUR (ölçüm:
+        # `results/fdr_sprint_20260910/H9_MK15/t249/` M1/M2 mutasyonları), ama
+        # `_ana_denetle` DE çivilenmiş tuvale taşınınca ekrandan TÜREYEN
+        # boyutta (süreç DPI farkındalığı açıkken 1,5 ölçekte 1142×725) hiç
+        # ölçülmez olmuştu — hakemin sahada gerçekten gördüğü yüzey odur.
+        # `_ana_denetle`in üç iddiası (kesişen çift YOK, taşma YOK, tek bant)
+        # ölçekten BAĞIMSIZDIR, o yüzden ÖNCE doğal tuvalde, SONRA çivilenmiş
+        # tuvalde koşulur; H2f hükmünü yalnız çivilenmiş tuvalde verir.
         self.app.gorunum("harita")
+        self.assertTrue(self._pompala(self._yerlesim_durdu(self.app.harita), 5.0),
+                        f"ana harita yerleşmedi: {self.app.harita.winfo_width()}×"
+                        f"{self.app.harita.winfo_height()}")
+        dogal = (self.app.harita.winfo_width(), self.app.harita.winfo_height())
+        with self.subTest(olcek=olcek, durum="ana_no_route_uzun_DOGAL",
+                          tuval=dogal):
+            self._ana_denetle("no_route_uzun DOĞAL")
+        with self.subTest(olcek=olcek, durum="ana_no_route_DOGAL", tuval=dogal):
+            self._mesaj_ver(dict(YOK_ROTA, seq=seq + 3))
+            self._ana_denetle("no_route DOĞAL")
+        # ÇİVİLENMİŞ tuval: H2f kalıntı sayısı buradan hüküm verir.
         self._ana_tuvali_civile(olcek)
         with self.subTest(olcek=olcek, durum="ana_no_route_uzun"):
+            self._mesaj_ver(dict(YOK_ROTA, seq=seq + 4, detay=UZUN_DETAY))
             self._ana_denetle("no_route_uzun")
         with self.subTest(olcek=olcek, durum="ana_no_route"):
-            self._mesaj_ver(dict(YOK_ROTA, seq=seq + 3))
+            self._mesaj_ver(dict(YOK_ROTA, seq=seq + 5))
             self._ana_denetle("no_route")
         # H2f: ana harita OPEN_ROUTE'ta ÖLÇÜLÜR — sıfır İDDİA EDİLMEZ.
         self._ana_open_route_kalinti(olcek, seq + 10)
