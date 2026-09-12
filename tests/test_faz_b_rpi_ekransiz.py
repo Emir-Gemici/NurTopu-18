@@ -265,5 +265,64 @@ class CliVeBirim(unittest.TestCase):
             self.assertNotIn("XAUTHORITY", s, s)
 
 
+class EkransizFpsRaporu(unittest.TestCase):
+    """T233: ekransiz kipte p95/ortalama FPS `ozet`e ve bitis satirina duser.
+
+    NEDEN: `run_camera` ekransiz kipte `live_fps`i (ekrana yazilan) hic
+    hesaplamiyordu — A10'da SS4.4 kapisinin p95 kosulu canli kamerada
+    OLCULEMIYORDU. `time.perf_counter` sabit bir dizi ile taklit edilir:
+    ilk 10 kare 100 ms (yavas), sonraki 30 kare 10 ms (hizli) — `fps_buf`
+    (SON 30 kare) tum yavas kareleri ATAR; `tum_sureler` (oturum) atmaz.
+    Iki hesap FARKLI sayi verir, bu yuzden mutasyon (yanlislikla `fps_buf`
+    kullanma) test tarafindan YAKALANIR.
+    """
+
+    def _run_camera_zamanli(self, sureler_s, *, ekransiz):
+        # Her kare 2 `perf_counter()` cagrisi tuketir (t0 ve sure sonu);
+        # aralarindaki fark istenen sureyi verecek sekilde ciftlenir.
+        zaman_dizisi = []
+        for s in sureler_s:
+            zaman_dizisi += [0.0, s]
+        yayinla = _Yayinla()
+        draw = mock.MagicMock(side_effect=lambda sq, _m: sq)
+        with mock.patch.object(cv2, "VideoCapture",
+                               return_value=_Kamera(len(sureler_s))), \
+                mock.patch.object(cv2, "imshow"), \
+                mock.patch.object(cv2, "waitKey", return_value=0), \
+                mock.patch.object(cv2, "destroyAllWindows"), \
+                mock.patch.object(ri, "get_masks", return_value=_maskeler()), \
+                mock.patch.object(ri, "analyze_path", _analiz_dizisi()), \
+                mock.patch.object(ri, "draw_masks", draw), \
+                mock.patch.object(ri, "_draw_waypoints", side_effect=lambda v, _w: v), \
+                mock.patch.object(ri, "_karari_yayinla", yayinla), \
+                mock.patch.object(ri.time, "perf_counter", side_effect=zaman_dizisi), \
+                contextlib.redirect_stdout(io.StringIO()) as cikti:
+            ozet = ri.run_camera(SimpleNamespace(predict=lambda *a, **k: [object()]),
+                                 0.30, canli_olcek=(lambda _w: 0.05),
+                                 yayinci=object(), ekransiz=ekransiz)
+        return ozet, cikti.getvalue()
+
+    def test_ekransizda_oturum_capinda_p95_ve_ortalama_fps_raporlanir(self):
+        sureler = [0.1] * 10 + [0.01] * 30  # 40 kare, fps_buf yalniz son 30'u tutar
+        ozet, cikti = self._run_camera_zamanli(sureler, ekransiz=True)
+        self.assertEqual(40, ozet["fps_ornek"], ozet)
+        # tum_sureler ortalamasi: (10*100+30*10) ms / 40 = 32.5 ms -> 30.769 fps
+        self.assertAlmostEqual(30.769, ozet["fps_ortalama"], places=2, msg=ozet)
+        # p95 (40 ornek, ilk 30 hizli 10ms sirali sonra 10 yavas 100ms):
+        # numpy yuzdelik indeksi 37-38 tamamen yavas grupta -> 100 ms -> 10.0 fps
+        self.assertAlmostEqual(10.0, ozet["fps_p95"], places=2, msg=ozet)
+        self.assertIn("fps_ortalama=30.769", cikti)
+        self.assertIn("fps_p95=10.0", cikti)
+        # Mutasyon kontrolu: fps_buf (son 30, hepsi hizli) kullanilsaydi
+        # ortalama ~100 fps cikardi — 30,77 ile KARISTIRILAMAZ.
+        self.assertLess(ozet["fps_ortalama"], 50.0, "fps_buf'a (son 30) kaymis olabilir")
+
+    def test_ekranli_kipte_fps_alanlari_EKLENMEZ_davranis_degismedi(self):
+        ozet, cikti = self._run_camera_zamanli([0.01, 0.01, 0.01], ekransiz=False)
+        self.assertNotIn("fps_ortalama", ozet)
+        self.assertNotIn("fps_p95", ozet)
+        self.assertNotIn("fps_ortalama=", cikti)
+
+
 if __name__ == "__main__":
     unittest.main()

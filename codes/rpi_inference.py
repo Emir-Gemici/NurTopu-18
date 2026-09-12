@@ -2323,6 +2323,7 @@ def run_camera(model, conf, mpp=None, canli_olcek=None, kaynak=None,
     else:
         print("Kamera acik — cikmak icin 'q'")
     fps_buf = []
+    tum_sureler = []  # T233: tum oturum, p95/ortalama icin (fps_buf'tan bagimsiz)
     ozet = {"bitis": None, "okunan": 0, "dusen_toplam": 0, "dusen_ardisik_maks": 0}
     # P5 (D-396): yayin histerezisi — yalniz AKIS yollarinda, yayindan hemen
     # once. Analiz katmani ve zincir olcumleri (61/65) DEGISMEZ (madde 15).
@@ -2358,9 +2359,16 @@ def run_camera(model, conf, mpp=None, canli_olcek=None, kaynak=None,
 
             t0 = time.perf_counter()
             results = model.predict(small, imgsz=INFER_SIZE, conf=conf, verbose=False)
-            fps_buf.append(time.perf_counter() - t0)
+            sure = time.perf_counter() - t0
+            fps_buf.append(sure)
             if len(fps_buf) > 30:
                 fps_buf.pop(0)
+            # T233: ekransiz kipte ekrana YAZILAN `live_fps` hic hesaplanmiyordu
+            # (asagidaki `if ekransiz: continue` ekrani atlar) - A10'da SS4.4
+            # kapisinin p95 kosulu canli kamerada OLCULEMIYORDU. `fps_buf`
+            # yalniz SON 30 kareyi tutar (ekrandaki anlik gostergedir, dokunulmadi);
+            # `tum_sureler` OTURUM BOYUNCA biriktirir, dongu sonunda ozet'e yazilir.
+            tum_sureler.append(sure)
 
             masks = get_masks(results, orig_h, orig_w)
             masks = _maskeleri_icerige_kirp(masks, icerik)
@@ -2425,6 +2433,14 @@ def run_camera(model, conf, mpp=None, canli_olcek=None, kaynak=None,
         cap.release()
         if not ekransiz:
             cv2.destroyAllWindows()
+    # T233: yalniz ekransiz kipte eklenir — ekranli kipin `ozet` sozlesmesi
+    # (ve ona bakan mevcut testler) DEGISMEZ (madde 15/16).
+    if ekransiz and tum_sureler:
+        sureler_ms = [s * 1000.0 for s in tum_sureler]
+        ozet["fps_ortalama"] = round(1000.0 / (sum(sureler_ms) / len(sureler_ms)), 3)
+        p95_ms = float(np.percentile(sureler_ms, 95))
+        ozet["fps_p95"] = round(1000.0 / p95_ms, 3) if p95_ms > 0 else None
+        ozet["fps_ornek"] = len(tum_sureler)
     print(kamera_bitis_raporu(ozet))
     return ozet
 
@@ -2483,10 +2499,17 @@ def kamera_kareleri(cap, ozet, *, ust_sinir=None, bekleme_s=None,
 
 
 def kamera_bitis_raporu(ozet):
-    """Bitis satiri (log/YKS): neden + okunan + dusen (toplam / ardisik maks)."""
-    return (f"KAMERA BITIS: neden={ozet.get('bitis')} okunan={ozet.get('okunan', 0)} "
-            f"dusen_toplam={ozet.get('dusen_toplam', 0)} "
-            f"dusen_ardisik_maks={ozet.get('dusen_ardisik_maks', 0)}")
+    """Bitis satiri (log/YKS): neden + okunan + dusen (toplam / ardisik maks).
+
+    T233: `fps_ortalama`/`fps_p95` yalniz ekransiz kipte `ozet`e eklenir; yoksa
+    (eski davranis, ekranli kip) satir DEGISMEZ."""
+    satir = (f"KAMERA BITIS: neden={ozet.get('bitis')} okunan={ozet.get('okunan', 0)} "
+             f"dusen_toplam={ozet.get('dusen_toplam', 0)} "
+             f"dusen_ardisik_maks={ozet.get('dusen_ardisik_maks', 0)}")
+    if "fps_ortalama" in ozet:
+        satir += (f" fps_ortalama={ozet['fps_ortalama']} fps_p95={ozet['fps_p95']} "
+                  f"fps_ornek={ozet['fps_ornek']}")
+    return satir
 
 
 def _arguman_ayristirici():
