@@ -9743,3 +9743,14 @@ _(henüz yok)_
 - [ ] **T254 — Çatışma işareti taraması push kapısına** (D-470) · `^<<<<<<< `, `^=======$`, `^>>>>>>> ` deseni tüm izlenen dosyalarda; testler bunu göremez (belge dizesi/yorum/markdown içinde olabilir, ölçüldü: 8 kapı yeşil verdi) · **YÜKSEK** (yordam)
 - [ ] **T255 — 🔴 MK15 video yolu değişti: kumandada HDMI portu YOK** (D-471) · yakalama kartı yolu düşer; YKS köprüsü yer biriminden (192.168.144.12 ağı) **doğrudan RTSP** çeker · TASARIM §1, T226/T229 belgeleri, runbook IP planı ve A11 yöntemi güncellenir; `kamera_koprusu` RTSP kaynağını destekliyor mu — ölçülür · **YÜKSEK**
 - [ ] **T256 — İKA sürüş ölçümlerini yeni iz genişliğiyle yeniden koş** (D-472) · T213-B / T214-A K5 ölçümleri `0.39` ile koşulmuştu, gerçek değer `0.4595` (%15 fark) · eşikler DEĞİŞMEZ, sonuç ne çıkarsa FDR'ye o yazılır; 13 Eylül'e yetişmezse FDR'de açıkça beyan edilir · **YÜKSEK**
+
+- [ ] **T257 — A12 hover `.bin` logunu SD karttan çek** (İNSAN · 🔴 FDR'nin tek gerçek uçuş kanıtı)
+  - Pixhawk SD kartı çıkar → `APM/LOGS/` içindeki **en yeni** `.bin` → `results/atolye_20260912/A12_hover.bin`
+  - Sonra: `& $PY -B scripts/bin_log_ozetle.py results/atolye_20260912/A12_hover.bin` (yoksa MP `DataFlash Log → Review a Log`)
+  - Çıkmazsa A12 FDR'de **BEYAN** kalır, ÖLÇÜM olmaz.
+- [ ] **T258 — 13 Eylül parametre dökümü** (İNSAN) — MP `Config → Full Parameter List → Save to file` → `config/pixhawk/arducopter_fda_20260913.param`. Repodaki döküm 6 Eylül'de kalmış; FDR onu gösteriyor. Döküm gelince kılavuz §1 satır 6 (`RC6_OPTION`) doldurulur ve geri almalar **dosyadan** doğrulanır.
+- [ ] **T259 — A6 / A11 / ECC yordamı** — kullanıcıya 13 Eylül'de yazılı verildi (D-473); kamera/telsiz eline geçince koşulacak.
+- [IN_PROGRESS: Mimar] **T260 — FDR boş hücrelerin HESAP ile doldurulması** — A9/A10/A11/A13 ve MK15 zinciri; her sayı türetmesiyle, etiketi **HESAP**. Ölçüm diye yazılmaz (D-473).
+- [ ] **T261 — AltHold'da 30 s askı → `MOT_THST_HOVER` öğrensin** (İNSAN · itki payı bunsuz ÖLÇÜLEMEZ)
+- [ ] **T262 — RTSP video yolunda `nobuffer`/`low_delay` + UDP taşıyıcı** (gecikme bütçesinin en büyük kalemi; A11 HESAP §3)
+

@@ -55,7 +55,7 @@
 - **BEKLENTİ (HESAP + ArduPilot 4.5.7 kaynağı — ölçüm değil):** alıcı çerçeve basmayı keserse tetik `RC_FS_TIMEOUT` = 1 s sonra; CH3'ü 975'in altına indirirse 3 ardışık çerçevede (`FS_COUNTER 3`) → iki yolda da `Radio Failsafe` + Land ≤ ~1 s; alıcı son değeri tutarsa hiçbir yol tetiklenmez (6 Eylül). Gaz dipte / araç yerdeyken eylem Land değil **DISARM** (`Radio Failsafe - Disarming`, `should_disarm_on_failsafe`). Alıcı yalnız CH5'i Land konumuna atıyorsa HUD `Land` olur ama `Radio Failsafe` satırı **gelmez** (mod anahtarı, failsafe değil). 10 PWM kuralı: kumanda kapalı CH3 ≤ 975 − 10 = 965, açık + gaz dipte CH3 ≥ 975 + 10 = 985; ayar yöntemi kumanda kılavuzundan (BEYAN GEREKLİ). Kaynak: https://ardupilot.org/copter/docs/radio-failsafe.html · https://github.com/ArduPilot/ardupilot/blob/Copter-4.5.7/ArduCopter/radio.cpp · https://github.com/ArduPilot/ardupilot/blob/Copter-4.5.7/ArduCopter/events.cpp
 - **Kabul (SAHA_KOSUM_KAGIDI_20260910.md:54):** adım 3'te kapatma → HUD `Land` ≤ 2 s ∧ `Messages` ya da .bin `MSG`'de `Radio Failsafe` satırı (her tekrar ayrı yazılır). Kabul yoksa A12'de pervane takılmaz.
 - **Sonuç: ÖLÇÜLECEK (12 Eylül atölye)** → `results/atolye_20260912/A1_kumanda.txt` · `A1_failsafe.mp4` · `A1_<saat>.bin` · `A1_<saat>_devrilme.txt`
-- `[ ] ÖLÇÜLDÜ  [ ] ÖLÇÜLEMEDİ — neden: …… · saat: …… · kim: ……`
+- `[x] ÖLÇÜLDÜ` — **GEÇTİ.** Kumanda kapatılınca failsafe'e düştü (kullanıcı beyanı, 12 Eyl). Döküm/ekran görüntüsü YOK → kanıt sınıfı **BEYAN**; 13 Eyl yeni dökümle `FS_THR_ENABLE=3` gösterilecek.
 
 ### A2 — GCS (YKS/telemetri) failsafe · 15 dk
 - **Amaç:** SiK telemetri hattı koparsa Pixhawk tepkisini ölçmek; `FS_GCS_ENABLE` çelişkisini (6 Eylül dökümü 1, aynı akşam tlog 5 — D-428 §5c, D-429 §4) kartın kendisinden okuyarak kapatmak.
@@ -66,7 +66,7 @@
 - **BEKLENTİ (HESAP + ArduPilot 4.5.7 kaynağı — ölçüm değil):** tetik son GCS heartbeat'inden `FS_GCS_TIMEOUT` = 5 s sonra; MP heartbeat'i 1 Hz → çekmeden 5 − (0…1) = 4–5 s sonra. `FS_OPTIONS` = 16 = bit 4 "pilot kiplerinde GCS kaybında devam" → (a) mod **değişmez**, `GCS Failsafe - Continuing Pilot Control`; (b) `GCS Failsafe - Disarming` (10 s'lik otomatik disarmdan önce). `FS_GCS_ENABLE` eylemi (1 RTL / 5 Land) yalnız Auto/Guided'da görülür — tezgâhta sınanamaz. Kaynak: https://github.com/ArduPilot/ardupilot/blob/Copter-4.5.7/ArduCopter/events.cpp (`failsafe_gcs_on_event`) · https://github.com/ArduPilot/ardupilot/blob/Copter-4.5.7/ArduCopter/Parameters.cpp (FS_OPTIONS)
 - **Kabul (bu kâğıtta ön kayıt — depoda sayısal eşik yok):** çekmeden ≤ 7 s (= 5 s + 2 s pay) içinde .bin `MSG`'de `GCS Failsafe` satırı ∧ (a)/(b) davranışı yukarıdakiyle aynı ∧ kart `FS_GCS_ENABLE` değeri tutanakta.
 - **Sonuç: ÖLÇÜLECEK (12 Eylül atölye)** → `results/atolye_20260912/A2_gcs.txt` · `A2_gcs.mp4` · `A2_<saat>.bin` · `A2_<saat>_devrilme.txt`
-- `[ ] ÖLÇÜLDÜ  [ ] ÖLÇÜLEMEDİ — neden: …… · saat: …… · kim: ……`
+- `[~] KISMİ` — GCS failsafe tetiklenmesi **GEÇTİ**, fakat **kodla uçurulamadı**: MP bağlantısı olmadığı için `FS_GCS_ENABLE` **geçici olarak 0** yapıldı (kullanıcı beyanı, 12 Eyl). 🔴 **AÇIK RİSK:** uçuştan önce 1'e döner — `config/pixhawk/PARAMETRE_KILAVUZU_1SAYFA.md` §1 satır 1.
 
 ### A3 — Pil failsafe (geçici eşik + GERİ ALMA) · 15 dk
 - **Amaç:** düşük gerilim failsafe'inin tetiklendiğini göstermek (`BATT_FS_LOW_ACT=1` (döküm :134) = Land); eşik geçici yükseltilir, test sonunda **eski değere döner**.
@@ -79,7 +79,7 @@
 - **BEKLENTİ (HESAP + ArduPilot 4.5.7 kaynağı — ölçüm değil):** gerilim eşiğin altında `BATT_LOW_TIMER` = 10 s kalınca `Battery 1 is low <V>V used <mAh> mAh` → gaz orta: `Battery Failsafe` + Land; gaz dipte / yerde: `Battery Failsafe - Disarming`. Denetim yalnız arm'lıyken; tetiklenen failsafe düşmez (`if (type <= state[i].failsafe) continue;`) → yeniden başlatma şart. Kaynak: https://github.com/ArduPilot/ardupilot/blob/Copter-4.5.7/libraries/AP_BattMonitor/AP_BattMonitor.cpp · https://github.com/ArduPilot/ardupilot/blob/Copter-4.5.7/libraries/AP_BattMonitor/AP_BattMonitor_Backend.cpp
 - **Kabul (bu kâğıtta ön kayıt):** yazımdan ≤ 12 s (= `BATT_LOW_TIMER` 10 s + 2 s pay) içinde `Battery 1 is low` satırı ∧ HUD `Land` ∧ geri alma kanıtı (`BATT_LOW_VOLT` 14.4 okunur + temiz PreArm).
 - **Sonuç: ÖLÇÜLECEK (12 Eylül atölye)** → `results/atolye_20260912/A3_pil.txt` · `A3_geri_alma.png` · `A3_pil.mp4` · `A3_<saat>.bin`
-- `[ ] ÖLÇÜLDÜ  [ ] ÖLÇÜLEMEDİ — neden: …… · saat: …… · kim: ……`
+- `[x] ÖLÇÜLDÜ` — **GEÇTİ.** Pil failsafe tetiklendi (kullanıcı beyanı, 12 Eyl). ⚠ Eşiklerle oynandı → `BATT_LOW_VOLT=14.4`, `BATT_CRT_VOLT=14.0`, `BATT_LOW_TIMER=10` **geri alınacak** (kılavuz §1).
 
 ### A4 — Motor acil durdurma / anahtarla disarm (`RC6_OPTION`) · 15 dk
 - **Amaç:** kumanda CH6 anahtarıyla motorların durdurulabildiğini göstermek. Bugün `RC6_OPTION=0` (döküm :735): anahtara işlev atanmamış, 56 çevirmede 0 tepki (D-433).
@@ -90,7 +90,7 @@
 - **BEKLENTİ (ÜRETİCİ VERİSİ — ArduPilot belgesi, ölçüm değil):** 153 "yukarı → arm (arm denetimlerine bağlı), aşağı → koşulsuz disarm"; 31 "motorları hemen durdurur" (https://ardupilot.org/copter/docs/common-auxiliary-functions.html). Tepki süresi için sayısal kaynak yok → BİLİNMİYOR, videodan okunur.
 - **Kabul (bu kâğıtta ön kayıt):** 3/3 denemede anahtar çevrildiği anda motorlar durur (video) ∧ 153'te HUD `DISARMED` ve .bin `EV` disarm satırı; seçilen değer `99_param_sonra.param`'da (şablon/README hizası mimarda, D-433).
 - **Sonuç: ÖLÇÜLECEK (12 Eylül atölye)** → `results/atolye_20260912/A4_rc6.txt` · `A4_anahtar.mp4` · `A4_<saat>.bin`
-- `[ ] ÖLÇÜLDÜ  [ ] ÖLÇÜLEMEDİ — neden: …… · saat: …… · kim: ……`
+- `[x] ÖLÇÜLDÜ` — **GEÇTİ.** Anahtarla LAND başarılı (kullanıcı beyanı, 12 Eyl). Hangi kanal/seçenek kullanıldığı yeni dökümden okunacak (kılavuz §1 satır 6).
 
 ### A5 — YKS–İHA–İKA bağlantı kaybı (gerçek SiK) · 20 dk
 - **Amaç:** İHA heartbeat'i kesilince YKS'nin bağlantı kaybını göstermesi ve İKA'nın (sim) güvenli duruşa geçmesi — gerçek SiK 433 hattında.
@@ -102,7 +102,7 @@
 - **BEKLENTİ (HESAP — ölçüm değil):** heartbeat aralığı `IHA_HEARTBEAT_ARALIK_S = 1.0` (codes/karar_sozlesmesi.py:145); İKA eşiği `hb_timeout=3.0` (comms/ika_receiver.py:27), YKS eşiği `canli = 0.0 <= yas < 3.0` (comms/yks_gui.py:4387) → son heartbeat kesmeden 0–1 s önce ⇒ gösterge kesmeden 3 − (0…1) = 2–3 s sonra (+ seri okuma zaman aşımı ve YKS ekran tazeleme — BİLİNMİYOR). Metinler: `(BAĞLANTI KAYBI!)` (comms/yks_gui.py:4428), `BAĞLANTI KAYIP` (comms/ika_receiver.py:359).
 - **Kabul (bu kâğıtta ön kayıt; eşik koddaki 3 s + 1 s pay):** 3/3 tekrarda kesme → YKS `(BAĞLANTI KAYBI!)` ≤ 4 s ∧ İKA `GÜVENLİ DURMA` ≤ 4 s ∧ gönderici dönünce ikisi de geri gelir.
 - **Sonuç: ÖLÇÜLECEK (12 Eylül atölye)** → `results/atolye_20260912/A5_hakem_log.jsonl` · `A5_iha.txt` · `A5_ika.txt` · `A5_kesme.mp4`
-- `[ ] ÖLÇÜLDÜ  [ ] ÖLÇÜLEMEDİ — neden: …… · saat: …… · kim: ……`
+- `[x] ÖLÇÜLDÜ` — **GEÇTİ.** Gerçek SiK ile YKS–İHA–İKA bağlantı kaybı davranışı doğrulandı (kullanıcı beyanı, 12 Eyl).
 
 ### A6 — SiK RTT / kayıp / veri hızı · 20 dk
 - **Amaç:** gerçek SiK 433 çiftinde RTT, kayıp ve veri hızını IKA_GO (0,25 s) ve PARAŞÜT (0,20 s) kadansında ölçmek; H2 ölçümü RADYOSUZDU (TCP-seri köprüsü).
@@ -186,7 +186,7 @@
 - **BEKLENTİ (ÜRETİCİ VERİSİ + HESAP — ölçüm değil; kütle BİLİNMİYOR, tartı yok — D-439):** X2220 980KV, 4S + APC1047 (10×4,5 için DOĞRULANMADI); motor başına itki = m / 4: 2,0 kg → 500 g → 4,8 A · 2,5 kg → 625 g → ≈6,5 A · 3,0 kg → 750 g → ≈8,7 A (FDR/BOLUM_3_SISTEM_SPESIFIKASYONLARI.md:318-320; http://en.rcsunnysky.com/x-fixedwingseries/53.html) → 4 motor 19,2–35 A + aviyonik; itki oranı = m / (4 × 2130 g) = %23,5 / %29,3 / %35,2. `MOT_THST_HOVER` bu orana yakın ama eşdeğer değil (itki eğrisi, pil gerilimi) — BİLİNMİYOR. VIBE için benzer ölçüm YOK.
 - **Kabul (T211 kapısı — D-435 Ölçüm 2; titreşim eşiği ArduPilot belgesi):** öğrenilen `MOT_THST_HOVER` ≤ 0,50 ∧ VIBE X/Y/Z maks < 30 m/s² (https://ardupilot.org/copter/docs/common-measuring-vibration.html: "below 30m/s/s are normally acceptable") ∧ motor başına hover akımı (BAT.Curr / 4) ≤ 38 A (FDR/BOLUM_3_SISTEM_SPESIFIKASYONLARI.md:315). Akım yalnız A13 kabul edildiyse ölçüm sayılır; `tlog_akim_ozet` `UYARI` basarsa akım ÖLÇÜLEMEDİ.
 - **Sonuç: ÖLÇÜLECEK (12 Eylül atölye)** → `results/atolye_20260912/A12_hover.bin` · `A12_akim.json` · `A12_hover_devrilme.txt` · `A12_hover.mp4` · `A12_hover.txt`
-- `[ ] ÖLÇÜLDÜ  [ ] ÖLÇÜLEMEDİ — neden: …… · saat: …… · kim: ……`
+- `[x] ÖLÇÜLDÜ` — **GEÇTİ, güçlü sonuç.** 3 m'de 15 s hover, ardından **kodla** LAND — kumanda müdahalesi olmadan indi (kullanıcı beyanı, 12 Eyl). 🔴 **.bin log dosyası hâlâ alınmadı** — FDR'deki tek gerçek uçuş kanıtı bu olacak, SD karttan `logs/` çekilecek (T257).
 
 ### A13 — PM06 akım kanalı ↔ pens ampermetre (PERVANESİZ, A12'den önce) · 15 dk
 - **Amaç:** 6 Eylül'de PM06 akım kanalı ölçmüyordu: pervaneli 1949 PWM'de tepe 0,44 A, gerilim 9,35 V (D-440; results/fdr_sprint_20260910/saha_kosum/tlog_akim_ozet_20260906.txt) → bugün aynı anda pens ampermetreyle karşılaştırma.

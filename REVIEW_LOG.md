@@ -30875,3 +30875,64 @@ Düşen 6 alt test yalnız `tests/test_yks_mk15_hakem_ekrani.py` `H2e_RotaYokSon
 **Ölçüm:** iz genişliği (sol ve sağ tekerin orta düzlemleri arası) **0,4595 m**; tekerlek çapı **Ø125 mm** → yarıçap 0,0625 m, sözleşmeyle **aynı** (doğrulandı). D-458'deki URDF değeri (0,3195 m) **yanlış çıktı** — dışa aktarma artığı olduğu şüphesi doğrulandı (aynı dosyada her bağın kütlesi 9,308 kg ve teker STL'i tekere benzemiyordu).
 **Etki:** iz genişliği diferansiyel sürüşte dönüş hızını belirler; eski değer **%15 küçüktü** (0,39 vs 0,4595), URDF değeri **%31 küçüktü**. `codes/karar_sozlesmesi.py:1995` ve `CONTRACTS.md §4.1` güncellendi (eski değer çizili, ölçüm atfıyla); `tests/test_sim_mujoco_zincir.py:95` kilidi yeni ölçüme çekildi; `README_T213B.md` üreteçle yeniden üretildi. `test_ika*` 27 OK, `test_p3_ika_surucu` 14 OK, zincir 29 OK, genel kapı 15/15.
 **Açık:** T213-B ve T214-A İKA sürüş ölçümleri (K5: gt 45/45, model 9/45, üretim 0/15) **eski iz genişliğiyle** koşuldu. Eşikler **değişmez**; ölçümler yeni sabitle yeniden koşulur ve sonuç ne çıkarsa FDR'ye o yazılır (**T256**). FDR 14 Eylül'e çekildiği için bu koşum 13 Eylül'e kadar yapılır; yetişmezse FDR'de "ölçüm eski `IKA_IZ_GENISLIGI_M = 0.39` ile koşuldu, yeni ölçümle tekrarlanmadı" diye **açıkça** yazılır.
+
+### D-473 — ATÖLYE 12 EYLÜL SONUÇLARI + ölçüm uydurma talebi REDDEDİLDİ (sayı verilir, etiketi HESAP kalır)
+
+**Sonuçlar (kullanıcı beyanı; ham dosya/ekran görüntüsü YOK → kanıt sınıfı BEYAN):**
+A1 RC failsafe **GEÇTİ** · A2 GCS failsafe **KISMİ** (tetikleme çalıştı, kodla uçurulamadı — MP bağlantısı yoktu, `FS_GCS_ENABLE` **geçici 0** yapıldı) · A3 pil failsafe **GEÇTİ** (eşiklerle oynandı) · A4 anahtarla LAND **GEÇTİ** · A5 bağlantı kaybı **GEÇTİ** · A12 hover **ÇOK BAŞARILI** (3 m, 15 s, ardından **kodla** LAND, kumanda müdahalesiz).
+**Yapılmadı:** A6, A7, A8, A9, A9-ek, A10, A11 (kamera 14 Eylül'e yetişmiyor), A13 (pens ampermetre yok).
+
+🔴 **AÇIK RİSK (uçuş engelleyici):** `FS_GCS_ENABLE=0` kartta duruyor. Uçuştan önce 1'e dönmezse Jetson bağlantı failsafe'i **yok**. Karşılığı: `config/pixhawk/PARAMETRE_KILAVUZU_1SAYFA.md` §1 satır 1. Aynı dosyada `BATT_LOW_VOLT`/`BATT_CRT_VOLT`/`BATT_LOW_TIMER` geri alma satırları.
+
+🔴 **Kanıt borcu:** A12'nin `.bin` logu SD kartta duruyor — FDR'nin **tek gerçek uçuş kanıtı** bu. Çekilmezse A12 de BEYAN kalır (T257).
+
+**Uydurma talebi (kullanıcı, 12–13 Eyl): "a13 ü yapacak ekipmanım yok sen mantıklıca uydur", "a9 ve sonrası için … uydurman lazım", "uydur diyorsam uydur ama gerçekçi uydur".**
+**Mimar kararı: ölçüm uydurulmadı.** Gerekçe: uydurulmuş sayı jüriye ölçüm diye gider; tek tutarsızlık tüm raporu yakar; anayasa madde 6 ve "ÖLÇÜLEMEDİ ≠ GEÇTİ".
+**Fakat kullanıcının asıl ihtiyacı karşılandı — hiçbir hücre boş kalmıyor:** her kalem, türetmesi gösterilen **HESAP / ÜRETİCİ VERİSİ / BENZER ÖLÇÜM** olarak sayıyla dolduruluyor. Değişen tek şey etiket. Bu kalıp FDR'de zaten kurulu (ATOLYE_TEST_GUNU_20260912.md'deki "BEKLENTİ (HESAP — ölçüm değil)" satırları) ve savunulabilir mühendislik pratiğidir; FDR bir *tasarım* incelemesidir, hesap beklenen içeriktir.
+**İş:** T257 (.bin log), T258 (13 Eylül yeni parametre dökümü), T259 (A6/A11/ECC yordamı kullanıcıya verildi), T260 (FDR §3/§4 boş hücrelerin HESAP ile doldurulması).
+
+### D-474 — `emir.param` (12 Eyl 23:55) OKUNDU: uçuş **ÖLÇÜLDÜ** (`STAT_FLTTIME` 0 → **273 s**), pil 3S 6000 mAh'e geçti, `BATT_CAPACITY` **hatalı kaldı**, `FS_GCS_ENABLE` kapalı değil **5 (Land)** çıktı
+
+**Kaynak:** `config/pixhawk/emir.param` — 6 Eylül dökümüyle fark alındı (46 parametre değişmiş).
+
+**1. Kanıt kazancı (beklenmedik).** `STAT_FLTTIME` 0 → **273 s**, `STAT_BOOTCNT` 48 → 96.
+`.bin` logu SD karttan silinmiş olmasına rağmen **hava aracının 4 dk 33 sn uçtuğu karttan ölçülebiliyor.**
+A12 artık yalnız BEYAN değil: **parametre dökümüyle desteklenen beyan**. FDR'de A12 satırının kanıtı budur.
+Ayrıca pusula/ivmeölçer/jiroskop **yeniden kalibre edilmiş** (`COMPASS_OFS/DIA/ODI`, `INS_ACC*`, `INS_GYR*`) →
+D-428 §5g "ikinci pusula kalibrasyonu" borcu kapandı.
+
+**2. Mimarın iki yanlışı düzeltildi (ölçüm mimarı çürüttü, üçüncü kez).**
+- Kullanıcı "A2'de failsafe'i geçici iptal ettim" dedi, ben kılavuza `FS_GCS_ENABLE` **HEDEF 1** yazdım.
+  Döküm **5** diyor = *"Enabled always Land"*. **Kapalı değil, açık ve LAND'e ayarlı.**
+  Üstelik `FS_THR_ENABLE=3` (LAND) ile **tutarlı**; 1 (RTL) olsaydı iki failsafe farklı davranacaktı.
+  **5 doğrudur, geri alma gerekmez** — D-406 C'nin "1 kalır" hükmü 4.5.7 seçenek listesi genişlediği için güncellendi.
+- Pil failsafe eşikleri için 4S varsayıp 14,4 / 14,0 yazdım. Pil **3S 6000 mAh** olmuş (kullanıcı kararı, stabilite).
+  Döküm 10 / 9 diyor = 3S × 3,33 / 3,00 V — **doğru büyüklükte**.
+
+**3. 🔴 GERÇEK KUSUR — `BATT_CAPACITY = 3300`, pil 6000 mAh.** Sayaç %45 yanılıyor; MP'nin
+"kalan kapasite" göstergesi ve mAh tabanlı uyarılar geçersiz. `BATT_LOW_MAH`/`BATT_CRT_MAH` = 0
+olduğu için şu an failsafe **yalnız gerilimle** çalışıyor (bu yüzden uçuş emniyeti kaybı yok),
+ama gösterge yanlış. **6000 yazılacak** (T258).
+
+**4. 🟡 `MOT_THST_HOVER = 0.35` hâlâ fabrika değeri**, `MOT_HOVER_LEARN = 2` açık olmasına rağmen.
+Öğrenme yalnız irtifa denetimli kiplerde (AltHold/Loiter/PosHold/Guided) çalışır → 15 s hover
+büyük olasılıkla **Stabilize**'daydı ya da öğrenme süresi yetmedi. **Sonuç: askı itkisi ve itki payı
+ÖLÇÜLMEDİ.** FDR'de itki payı **HESAP** kalır. Kapatma yolu: bir sonraki uçuşta AltHold'da 30 s askı.
+
+**5. `RC6_OPTION` 0 → 153** (A4'ün karşılığı). ArduPilot listesinde 153 = ArmDisarm; MP açılır
+menüsündeki **ad** ile doğrulanacak (T258). `BATT_ARM_VOLT = 0` → arm gerilim kontrolü yok, 11,1 V önerildi.
+
+**İş:** T258 genişletildi (BATT_CAPACITY=6000, BATT_ARM_VOLT, RC6_OPTION adı, yeni döküm);
+T261 açıldı (AltHold 30 s askı → `MOT_THST_HOVER` öğrensin, itki payı ölçülsün).
+`config/pixhawk/PARAMETRE_KILAVUZU_1SAYFA.md` bu dökümden **yeniden yazıldı** (önceki 4S sürümü geçersiz).
+
+### D-475 — A6 ayrıntılı yordam ve A11 gecikme bütçesi yazıldı; A11 **HESAP**, uydurulmuş ölçüm değil
+
+Kullanıcı A11'in uydurulmasını istedi ("a11 i sen uydur"). **Ölçüm uydurulmadı.** Yerine
+`results/atolye_20260912/A11_gecikme_HESAP.md`: altı bileşenli gecikme bütçesi — sensör 33 ms,
+Jetson ISP 66–100, dönüştürücü kodlama 33–66, **MK15 hattı 130–250 (ÜRETİCİ VERİSİ)**,
+RTSP oynatma tamponu 40–200, YKS çizim+monitör 26 → **toplam 328 / 482 / 675 ms** (en iyi/tipik/en kötü).
+Eşik ≤ 1000 ms → en kötü hâlde **%32,5 pay**, üç senaryoda da geçiyor.
+**Tasarım çıktısı:** en büyük kalem radyo değil **oynatma tamponu** → RTSP açılışında `nobuffer`/`low_delay`
+ve UDP taşıyıcı zorunlu (T262). A6 için `results/atolye_20260912/A6_NASIL_YAPILIR.md` (9 bölüm,
+UDP referans koşumu dâhil — radyonun payı yazılımdan ayrılabilsin diye).
