@@ -314,6 +314,7 @@ docstring'i ve kanıt dizinleri).
 | `scripts/push_kapisi.py --kuru` #2 (SON ağaç, master `dd7cd12a` dâhil) | `Ran 2816 · FAILED (failures=2)` — **ikisi de master'ın D-373 kusuru**, ürün/test kaynağıyla ilgisiz — `results/push_kapisi/20260912_072913` |
 | `scripts/push_kapisi.py --kuru` #3 (SON ağaç, master `dd7cd12a` deltası yalıtılmış) | **`Ran 2816 · OK (skipped=19)`** + kapı 15/15 — `results/push_kapisi/20260912_074950`; yöntem ve gerekçe: `../t250_master_kirmizisi/KANIT.md` §9 |
 | `scripts/push_kapisi.py --kuru` **#4 — KAPANIŞ** (SON ağaç, master `7f396ad6` dâhil: D-373 kusurunu kaydın sahibi düzeltti) | **`Ran 2860 · OK (skipped=19)`** + kapı 15/15 — `results/push_kapisi/20260912_080105` |
+| `scripts/push_kapisi.py --kuru` **#5 — belge düzeltmelerinden SONRA** (aynı ağaç) | **`Ran 2860 · OK (skipped=19)`** + kapı 15/15 — `results/push_kapisi/20260912_082305` |
 | `ardisik_t249.py --tur 5 --onek t250b` (KAPANIŞ ağacı, 3 yüzey × 5) | **15/15 OK** · `ARDISIK_SONUC GECTI` (A 18,5–19,5 s · B 18,3–19,0 s · C 36,9–41,3 s) |
 | KAPANIŞ ağacında mutasyon setlerinin TAMAMI yeniden | `mutasyon_t249` **GECTI** · `kapsam_mutasyonu` **GECTI** · `t248/mutasyon_t248` (N0–N3) **GECTI** · `t248/akis_kapsam_beklenen --mutasyon` **GECTI** |
 | `kapsam_mutasyonu.py` | `KAPSAM_MUTASYON_SONUC GECTI` |
