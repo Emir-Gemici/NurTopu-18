@@ -28,6 +28,6 @@ First extra element 0:
 +  'koridor genişlik tavanı aşıldı'] : T248: kamera görünümünde tekrar gelen OPEN_ROUTE KÜÇÜK haritayı tazelemedi — hakem kamera ekranında bayat ROTA YOK bandı görüyor
 
 ----------------------------------------------------------------------
-Ran 3 tests in 3.803s
+Ran 3 tests in 3.074s
 
 FAILED (failures=1)

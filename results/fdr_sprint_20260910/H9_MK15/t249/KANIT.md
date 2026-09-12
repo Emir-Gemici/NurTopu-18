@@ -235,9 +235,10 @@ aynı üçlü bir kez daha koşuldu (`t250_*_{1..5}.txt`): yine 15/15 yeşil
 (T248c eklendi) ve C yüzeyinin beş çıktısının beşinde de
 `[DPI] mujoco SONRASI = 2`.**
 
-Toplam **60 ardışık koşum, 60 yeşil**. Dosyalar: `ardisik_*_{1..5}.txt`
+Toplam **75 ardışık koşum, 75 yeşil**. Dosyalar: `ardisik_*_{1..5}.txt`
 (yüksüz), `yuklu_*_{1..5}.txt` (12 işlemlik CPU yükü), `son_*_{1..5}.txt`
-(T249 son ağacı), `t250_*_{1..5}.txt` (T250 ağacı). C yüzeyinin her çıktısı
+(T249 son ağacı), `t250_*_{1..5}.txt` (T250 ağacı), `t250b_*_{1..5}.txt`
+(KAPANIŞ ağacı, master `7f396ad6` dâhil). C yüzeyinin her çıktısı
 `[DPI] mujoco SONRASI = 2` satırını taşır — yani kilit gerçekten farkındalık
 açıkken ölçüldü.
 
@@ -311,6 +312,9 @@ docstring'i ve kanıt dizinleri).
 | `scripts/push_kapisi.py --kuru` #1 (T250 ağacı, master `46ffb503` üzerinde) | `Ran 2816 · OK (skipped=19)` + kapı 15/15 — `results/push_kapisi/20260912_071749` |
 | `scripts/push_kapisi.py --kuru` #2 (SON ağaç, master `dd7cd12a` dâhil) | `Ran 2816 · FAILED (failures=2)` — **ikisi de master'ın D-373 kusuru**, ürün/test kaynağıyla ilgisiz — `results/push_kapisi/20260912_072913` |
 | `scripts/push_kapisi.py --kuru` #3 (SON ağaç, master `dd7cd12a` deltası yalıtılmış) | **`Ran 2816 · OK (skipped=19)`** + kapı 15/15 — `results/push_kapisi/20260912_074950`; yöntem ve gerekçe: `../t250_master_kirmizisi/KANIT.md` §9 |
+| `scripts/push_kapisi.py --kuru` **#4 — KAPANIŞ** (SON ağaç, master `7f396ad6` dâhil: D-373 kusurunu kaydın sahibi düzeltti) | **`Ran 2860 · OK (skipped=19)`** + kapı 15/15 — `results/push_kapisi/20260912_080105` |
+| `ardisik_t249.py --tur 5 --onek t250b` (KAPANIŞ ağacı, 3 yüzey × 5) | **15/15 OK** · `ARDISIK_SONUC GECTI` (A 18,5–19,5 s · B 18,3–19,0 s · C 36,9–41,3 s) |
+| KAPANIŞ ağacında mutasyon setlerinin TAMAMI yeniden | `mutasyon_t249` **GECTI** · `kapsam_mutasyonu` **GECTI** · `t248/mutasyon_t248` (N0–N3) **GECTI** · `t248/akis_kapsam_beklenen --mutasyon` **GECTI** |
 | `kapsam_mutasyonu.py` | `KAPSAM_MUTASYON_SONUC GECTI` |
 | `mutasyon_t249.py` (yeni ağaçta yeniden) | `MUTASYON_SONUC GECTI` (yüksüz **ve** 12 işlemlik CPU yükü altında) |
 | `t248/mutasyon_t248.py` (N0–N3) | `MUTASYON_SONUC GECTI` |

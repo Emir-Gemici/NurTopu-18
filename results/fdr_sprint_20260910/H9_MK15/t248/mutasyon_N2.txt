@@ -28,6 +28,6 @@ First extra element 0:
 + [1, 1, 1, 1, 1, 1, 1, 1] : T248: durum DEĞİŞMEDEN 8 tekrar kopyası için harita yeniden çizildi (8 kez) — sahada her OPEN_ROUTE 8 kopya geldiği için bu kat kat gereksiz yüktür
 
 ----------------------------------------------------------------------
-Ran 3 tests in 3.779s
+Ran 3 tests in 2.948s
 
 FAILED (failures=1)

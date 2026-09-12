@@ -4,6 +4,6 @@ test_T248c_kamera_gorunumunde_kucuk_harita_da_tazelenir (test_yks_mk15_hakem_ekr
 T248 KAPSAM KENARI (çürütücü gözlemi) — küçük harita da ölçülür. ... ok
 
 ----------------------------------------------------------------------
-Ran 3 tests in 3.178s
+Ran 3 tests in 2.794s
 
 OK

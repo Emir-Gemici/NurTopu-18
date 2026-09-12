@@ -53,7 +53,7 @@ First extra element 0:
 +   (7, 8, 427, 33))] : ana no_route DOĞAL 1142x725
 
 ----------------------------------------------------------------------
-Ran 1 test in 2.058s
+Ran 1 test in 2.088s
 
 FAILED (failures=2)
 [YENI] wasSuccessful=False (beklenen False)
@@ -62,7 +62,7 @@ FAILED (failures=2)
 test_H2c_olcek_1_5_hakem_ekrani (__main__.main.<locals>.ESKI.test_H2c_olcek_1_5_hakem_ekrani) ... ok
 
 ----------------------------------------------------------------------
-Ran 1 test in 1.146s
+Ran 1 test in 1.129s
 
 OK
 [ESKI] wasSuccessful=True (beklenen True)

@@ -54,6 +54,6 @@ Traceback (most recent call last):
 AssertionError: False is not true : ana tuval ölçüm anında 1142×725, çivilenen (945, 630) değil
 
 ----------------------------------------------------------------------
-Ran 2 tests in 19.145s
+Ran 2 tests in 19.048s
 
 FAILED (failures=3)

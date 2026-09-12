@@ -21,6 +21,6 @@ Traceback (most recent call last):
 AssertionError: 1 != 0 : ana road3 1142x725: KALINTI KESİŞİM SAYISI DEĞİŞTİ (beklenen 1, ölçülen 0): []
 
 ----------------------------------------------------------------------
-Ran 2 tests in 5.121s
+Ran 2 tests in 5.165s
 
 FAILED (failures=1)
