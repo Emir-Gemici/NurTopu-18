@@ -1,0 +1,35 @@
+# MASTER 46ffb503 TEK BASINA — T120 sahte kapi yasagi KIRMIZI
+# olcum tarihi: 2026-09-12T04:16:59Z (UTC)
+# calisma agaci: ayri, detached worktree @ 46ffb503 (bu dalin hicbir degisikligi YOK)
+# komut: python -X utf8 -B -m unittest discover -s tests -p test_t120_sahte_kapi_yasagi.py
+
+...F...........
+======================================================================
+FAIL: test_tests_altinda_sahte_kapi_YOK (test_t120_sahte_kapi_yasagi.DepoTaramasiTests.test_tests_altinda_sahte_kapi_YOK)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\yunus\AppData\Local\Temp\claude\O--navitas\3e104177-9b44-4ec7-a18f-1f32ed2c3f72\scratchpad\master_kontrol\tests\test_t120_sahte_kapi_yasagi.py", line 306, in test_tests_altinda_sahte_kapi_YOK
+    self.assertEqual(
+    ~~~~~~~~~~~~~~~~^
+        kotu, [],
+        ^^^^^^^^^
+        "tests/ altinda sahte kapi var — her dosya ya >=1 test toplamali "
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        "ya da modul docstring'inde 'KESIF MUAFIYETI: <gerekce>' + "
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        "'KOSUM: <komut>' tasimali:\n  " + "\n  ".join(kotu))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['belge_kilidi.py: SIFIR test topluyor ve muafiyet isareti YOK (sahte kapi)'] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+'belge_kilidi.py: SIFIR test topluyor ve muafiyet isareti YOK (sahte kapi)'
+
+- ['belge_kilidi.py: SIFIR test topluyor ve muafiyet isareti YOK (sahte kapi)']
++ [] : tests/ altinda sahte kapi var — her dosya ya >=1 test toplamali ya da modul docstring'inde 'KESIF MUAFIYETI: <gerekce>' + 'KOSUM: <komut>' tasimali:
+  belge_kilidi.py: SIFIR test topluyor ve muafiyet isareti YOK (sahte kapi)
+
+----------------------------------------------------------------------
+Ran 15 tests in 2.394s
+
+FAILED (failures=1)
