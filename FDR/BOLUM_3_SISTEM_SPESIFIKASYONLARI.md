@@ -458,7 +458,11 @@ primitifidir**, yapısal model değildir.
 | `T10` | Toplam kütle + **kütle dağılım tablosu** | **BEYAN GEREKLİ (insan)** | test (tartı) | rol atanmamış |
 | `T11` | Malzeme seçimi gerekçesi | **BEYAN GEREKLİ (insan)** | analiz | rol atanmamış |
 | `A01` | Fırlatıcı sistemde (varsa) **yay sabiti** | **BEYAN GEREKLİ (insan):** yay/lastik seçimi ve k sabiti | test | rol atanmamış |
-| `A02` | Mekanizmanın İHA'yı **ne kadar uzağa fırlatabileceği — enerji denklemleriyle** + **şematik gösterim** | **BEYAN GEREKLİ (insan):** depolanan enerji → çıkış hızı → menzil zinciri ve şeması. Girdisi §3.1.1 (kütle) ve §3.1.6'dır (kalkış hızı); ikisi de açıktır | analiz | rol atanmamış |
+| `A02` | Mekanizmanın İHA'yı **ne kadar uzağa fırlatabileceği — enerji denklemleriyle** + **şematik gösterim** | **KISMEN (12 Eylül, mimar) — şema var, sayı yok:** aşağıdaki şekil enerji zincirinin (E=½kx² → v0=√(2E/m) → R=v0²sin(2θ)/g) **analitik çerçevesini** sembolik değişkenlerle çizer; k, x, m, θ'nın **hiçbiri ölçülmedi/beyan edilmedi**, şekildeki her değişken "BEYAN GEREKLİ" rozeti taşır. Şeklin varlığı hükmü **GEÇTİ yapmaz** — girdisi §3.1.1 (kütle) ve §3.1.6'dır (kalkış hızı), ikisi de hâlâ açık. **BEYAN GEREKLİ (insan):** k, x, θ'nın gerçek değerleri | analiz | rol atanmamış |
+
+![Mancınık enerji zinciri — sembolik çerçeve, sayısal veri yok](sekiller/mancinik_enerji.svg)
+
+*Üreten: `scripts/fdr_mancinik_enerji_svg.py` (yalnız stdlib, deterministik); nöbetçi: `tests/test_gece_mancinik_enerji_semasi.py`. Sayı eklenmek istenirse betiğe `--k --x --m --theta` argümanı eklenip ikinci, sayısal bir şekil üretilir — bu dosya o güne kadar yalnız çerçevedir.*
 
 ---
 
