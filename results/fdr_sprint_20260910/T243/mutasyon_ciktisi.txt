@@ -1,0 +1,30 @@
+TABAN: rc=0 · OK
+  [YAKALANDI] M1 FDR boyut tablosu hucresi 365 -> 366 · FAILED (failures=1) · FAIL: test_tablo_tam_ve_bayt_esit
+  [YAKALANDI] M2 FDR veri hizi hucresi 1722,3 -> 1720,0 · FAILED (failures=1) · FAIL: test_her_hucre_jsondan_yeniden_hesaplanir
+  [YAKALANDI] M3 FDR ECC hukmu olumluya cevrildi (cizili + 'dogrulandi') · FAILED (failures=1) · FAIL: test_rf_hukmu_degismedi
+  [YAKALANDI] M4 FDR yayin tavani bulgusu silindi (61 -> 61 ifadesi) · FAILED (failures=1) · FAIL: test_yayin_tavani_bulgusu_sayilariyla_duruyor
+  [YAKALANDI] M5 ON_KAYIT: ikinci GEVSETILMIS kabul olcutu eklendi · FAILED (failures=2) · FAIL: test_celiskili_ikinci_hukum_yok; FAIL: test_rakip_esik_yok
+  [YAKALANDI] M6 ON_KAYIT: olcut cizilip ES ANLAMLI yeniden yazildi · FAILED (failures=1) · FAIL: test_olcut_her_belgede_TAM_BIR_KEZ
+  [YAKALANDI] M7 README: olcut TEK TILDE ile cizildi · FAILED (failures=2) · FAIL: test_olcut_her_belgede_TAM_BIR_KEZ; FAIL: test_rakip_esik_yok
+  [YAKALANDI] M8 README: <strike> ile ECC hukmu gizlendi · FAILED (failures=1) · FAIL: test_olculemedi_hukumleri_olumluya_cevrilmemis
+  [YAKALANDI] M9 README: ilk kosumun eksikligi beyani silindi · FAILED (failures=1) · FAIL: test_ilk_kosumun_eksikligi_yazili
+  [YAKALANDI] M10 TABLO.md elle duzenlendi (bir bayt degeri) · FAILED (failures=1) · FAIL: test_tablo_json_lardan_yeniden_uretilir
+  [YAKALANDI] M11 protocol.encode ayirici degisti (bosluklu JSON) · FAILED (failures=2) · FAIL: test_egri_ve_alan_maliyetleri_ayni; FAIL: test_tip_basina_bayt_ayni
+  [YAKALANDI] M12 protocol HEARTBEAT sozlesmesine alan eklendi · .......OLCULEMEDI: TAM_TELEMETRI alan kumesi sozlesmedeki HEARTBEAT_TELEMETRI_ALANLARI ile ayni degil; eksik/fazla: ['rssi'] · 
+  [YAKALANDI] M15 SayanLink recv sayaci oldüruldu · FAILED (failures=1) · FAIL: test_sayan_link_bayt_paket_ve_tepe_kovasi
+  [YAKALANDI] M16 tepe kovasi maks yerine son kovayi veriyor · FAILED (failures=1) · FAIL: test_sayan_link_bayt_paket_ve_tepe_kovasi
+  [YAKALANDI] M13 betik: duyarlilik carpimi oldüruldu · FAILED (failures=2) · FAIL: test_betigin_hesabi_bagimsiz_hesapla_ayni; FAIL: test_tablo_json_lardan_yeniden_uretilir
+  [YAKALANDI] M14 betik: hat yuku yalniz IHA'yi sayiyor (ilk kosumun kusuru geri geldi) · FAILED (failures=1) · FAIL: test_hat_yuku_TUM_UCLARIN_gonderdigini_toplar
+  [YAKALANDI] M17 FDR CIZILI tarihsel sabit degistirildi (gecmis kaydi bozuldu) · FAILED (failures=1) · FAIL: test_duyarlilik_paragrafi_ON_KAYITLI_METNE_ESIT
+  [YAKALANDI] M18 betik: capraz kilit toleransi gevsetildi (%2 -> %50) · FAILED (failures=4) · FAIL: test_KILIT_TOLERANS_ON_KAYITLI; FAIL: test_capraz_kilit_GEVSETILEMEZ; FAIL: test_kilit_tutmazsa_TABLODA_OLCULEMEDI; FAIL: test_tablo_json_lardan_yeniden_uretilir
+  [YAKALANDI] M19 betik: cerceve sayisinda udp dali geri geldi (YKS sayaci) · FAILED (failures=4) · FAIL: test_betigin_hesabi_bagimsiz_hesapla_ayni; FAIL: test_capraz_kilit_GEVSETILEMEZ; FAIL: test_cerceve_sayisi_OLCUMDEN_tek_formul; FAIL: test_tablo_json_lardan_yeniden_uretilir
+  [YAKALANDI] M20 FDR CANLI duyarlilik alt siniri dar araliga dondu (3995,8 -> 4003,6) · FAILED (failures=2) · FAIL: test_duyarlilik_paragrafi_ON_KAYITLI_METNE_ESIT; FAIL: test_duyarlilik_satiri_BAGIMSIZ_HESAPTAN
+  [YAKALANDI] M21 betik: duyarlilik tablosu yine yalniz IKI tavan kosumunu yaziyor · FAILED (failures=1) · FAIL: test_tablo_json_lardan_yeniden_uretilir
+  [YAKALANDI] M22 nobetci: DUYARLILIK_KOSUMLARI yine iki tavan kosumu · FAILED (failures=2, errors=1) · ERROR: test_duyarlilik_paragrafi_ON_KAYITLI_METNE_ESIT; FAIL: test_duyarlilik_satiri_BAGIMSIZ_HESAPTAN; FAIL: test_README_duyarlilik_araligi_DORT_KOSUMU_KAPSAR
+  [YAKALANDI] M23 nobetci: KENDI kilit toleransi gevsetildi (%2 -> %50) · FAILED (failures=1) · FAIL: test_KILIT_TOLERANS_ON_KAYITLI
+  [YAKALANDI] M24 FDR: kilitli duyarlilik blogunun ARKASINA ayni basla IKINCI blok · FAILED (failures=1) · FAIL: test_duyarlilik_paragrafi_ON_KAYITLI_METNE_ESIT
+  [YAKALANDI] M25 README: duyarlilik araligi yine dar (3995,8 -> 4003,6) · FAILED (failures=1) · FAIL: test_README_duyarlilik_araligi_DORT_KOSUMU_KAPSAR
+  [YAKALANDI] M26 TABLO.md: udp_jetson duyarlilik satiri elle silindi · FAILED (failures=2) · FAIL: test_duyarlilik_satiri_TABLOda_bagimsiz_hesapla_ayni; FAIL: test_tablo_json_lardan_yeniden_uretilir
+  [YAKALANDI] M27 kapi ciktisi DUSMUS kosumla degistirildi (OK satiri -> FAILED) · FAILED (failures=1) · FAIL: test_kapi_ciktilari_yerinde_ve_hukumleri_dosyadan
+SONUC: 27/27 mutasyon yakalandi
+GERI YUKLEME SONRASI: rc=0 · OK

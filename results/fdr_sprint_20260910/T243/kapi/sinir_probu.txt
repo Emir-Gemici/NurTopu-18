@@ -1,0 +1,5 @@
+TABAN: rc=0 · OK
+  [KACTI (kapatilmadi)] S1 FARKLI basla celiskili ikinci hukum (curutucunun probu) · OK · 
+  [KACTI (kapatilmadi)] S2 FARKLI basla 'yayin tavani KAPATILDI' celiskisi (curutucunun probu) · OK · 
+  [YAKALANDI] S3 AYNI basla ikinci (ikiz) blok — T243-C bunu kapatti · FAILED (failures=1) · FAIL: test_duyarlilik_paragrafi_ON_KAYITLI_METNE_ESIT
+GERI YUKLEME SONRASI: rc=0 · OK

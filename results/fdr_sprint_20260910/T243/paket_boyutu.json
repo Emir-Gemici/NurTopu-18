@@ -1,0 +1,208 @@
+{
+  "kunye": {
+    "etiket": "olcum",
+    "is": "T243",
+    "kayit": "D-462 C · yonerge Y-3.3.4-M03",
+    "on_kayit": "results/fdr_sprint_20260910/T243/ON_KAYIT.md",
+    "arac": "scripts/paket_boyutu_olc.py",
+    "tohum": 20260912,
+    "zaman": "2026-09-12T03:35:05",
+    "makine": "Windows-11-10.0.26200-SP0",
+    "python": "3.13.7",
+    "tasiyici_notu": "UDP loopback 127.0.0.1 (ephemeral port). RF DEGILDIR: SiK 433 MHz hattinin veri hizi hala OLCULEMEDI.",
+    "sabit_zaman": 1789000000.123,
+    "sabit_seq": 1000,
+    "protokol_surumu": 1,
+    "rapor_doluluk_esigi_yuzde": 80.0
+  },
+  "N1_tip_basina_bayt": {
+    "OPEN_ROUTE": 365,
+    "NO_ROUTE": 117,
+    "HEARTBEAT": 273,
+    "ACK": 87,
+    "CMD": 124,
+    "IHA_LANDED": 71
+  },
+  "N1_alanlar": {
+    "OPEN_ROUTE": [
+      "conf",
+      "label",
+      "ref_xy",
+      "road",
+      "seq",
+      "t",
+      "type",
+      "v",
+      "waypoints"
+    ],
+    "NO_ROUTE": [
+      "detay",
+      "sebep",
+      "seq",
+      "t",
+      "type",
+      "v"
+    ],
+    "HEARTBEAT": [
+      "alt",
+      "armed",
+      "bat",
+      "bat_yuzde",
+      "gps_fix",
+      "hiz",
+      "karar_yas",
+      "lat",
+      "lon",
+      "mod",
+      "node",
+      "pixhawk_canli",
+      "seq",
+      "t",
+      "type",
+      "uydu",
+      "v",
+      "x",
+      "y",
+      "yon"
+    ],
+    "ACK": [
+      "node",
+      "ref",
+      "ref_tip",
+      "t",
+      "type",
+      "v"
+    ],
+    "CMD": [
+      "cmd",
+      "hedef",
+      "oturum",
+      "seq",
+      "t",
+      "type",
+      "v"
+    ],
+    "IHA_LANDED": [
+      "node",
+      "seq",
+      "t",
+      "type",
+      "v"
+    ]
+  },
+  "N1_asgari_bayt": {
+    "OPEN_ROUTE": 125,
+    "NO_ROUTE": 77,
+    "HEARTBEAT": 70,
+    "ACK": 64,
+    "CMD": 80,
+    "IHA_LANDED": 71
+  },
+  "N2_open_route_egrisi": {
+    "uretim_yolu": {
+      "1": 139,
+      "2": 150,
+      "3": 160,
+      "4": 171,
+      "5": 181,
+      "6": 193,
+      "7": 204,
+      "8": 216,
+      "9": 227,
+      "10": 239,
+      "11": 250,
+      "12": 262,
+      "13": 273,
+      "14": 285,
+      "15": 296,
+      "16": 308,
+      "17": 319,
+      "18": 331,
+      "19": 342,
+      "20": 354,
+      "64": 847
+    },
+    "en_genis": {
+      "1": 151,
+      "2": 167,
+      "3": 183,
+      "4": 199,
+      "5": 215,
+      "6": 231,
+      "7": 247,
+      "8": 263,
+      "9": 279,
+      "10": 295,
+      "11": 311,
+      "12": 327,
+      "13": 343,
+      "14": 359,
+      "15": 375,
+      "16": 391,
+      "17": 407,
+      "18": 423,
+      "19": 439,
+      "20": 455,
+      "64": 1159
+    },
+    "sozlesme_tavani_waypoint": 64,
+    "karisimda_kullanilan_waypoint": 21
+  },
+  "N3_heartbeat": {
+    "asgari_bayt": 70,
+    "tam_telemetri_bayt": 273,
+    "tam_telemetri_alan_sayisi": 15,
+    "alanlar": [
+      "alt",
+      "armed",
+      "bat",
+      "bat_yuzde",
+      "gps_fix",
+      "hiz",
+      "karar_yas",
+      "lat",
+      "lon",
+      "mod",
+      "pixhawk_canli",
+      "uydu",
+      "x",
+      "y",
+      "yon"
+    ]
+  },
+  "N4_alan_marjinal_bayt": {
+    "alt": 11,
+    "armed": 13,
+    "bat": 12,
+    "bat_yuzde": 15,
+    "gps_fix": 12,
+    "hiz": 11,
+    "karar_yas": 17,
+    "lat": 17,
+    "lon": 17,
+    "mod": 13,
+    "pixhawk_canli": 21,
+    "uydu": 10,
+    "x": 11,
+    "y": 11,
+    "yon": 12
+  },
+  "N4_conf_ondalik_bayt": {
+    "kisa": 365,
+    "float32_genisleyen": 377
+  },
+  "N5_seq_basamak_bayt": {
+    "1": 270,
+    "10": 271,
+    "100": 272,
+    "1000": 273,
+    "10000": 274
+  },
+  "N5_gercek_saat_bayt": {
+    "ornek": 200,
+    "min": 271,
+    "maks": 273,
+    "sabit_saatteki_deger": 273
+  },
+  "cerceve_donusu_bayt_es": true
+}

@@ -1,0 +1,9 @@
+[boyut] protocol.encode() ile gercek bayt sayimi
+  tip basina: {'OPEN_ROUTE': 365, 'NO_ROUTE': 117, 'HEARTBEAT': 273, 'ACK': 87, 'CMD': 124, 'IHA_LANDED': 71}
+  -> results\fdr_sprint_20260910\T243\paket_boyutu.json
+[karisim] gercek gorev trafigi, pencere 60 s x 4 kosum
+  [saha_jetson_olculmus] kadans 1.353 Hz · TX 104807 B / 304 pkt · 1722.3 B/s · doluluk %35.82
+  [saha_tavan] kadans 2.0 Hz · TX 105071 B / 304 pkt · 1726.6 B/s · doluluk %35.95
+  [udp_jetson_olculmus] kadans 1.353 Hz · TX 123547 B / 370 pkt · 1995.5 B/s · doluluk %37.05
+  [udp_tavan] kadans 2.0 Hz · TX 123580 B / 370 pkt · 2008.7 B/s · doluluk %37.3
+  -> results\fdr_sprint_20260910\T243\gorev_veri_hizi.json
