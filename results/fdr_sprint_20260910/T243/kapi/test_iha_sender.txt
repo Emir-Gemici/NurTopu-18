@@ -1,6 +1,6 @@
 ...........
 ----------------------------------------------------------------------
-Ran 11 tests in 0.501s
+Ran 11 tests in 0.554s
 
 OK
 [T11_KAPI] exit=2 argparse=VAR traceback=YOK gonderim_mesaji=YOK

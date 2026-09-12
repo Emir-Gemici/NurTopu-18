@@ -189,8 +189,12 @@ venv\Scripts\python.exe -X utf8 -B \
   --once tam_suit_2.txt --sonra tam_suit_7.txt
 ```
 
-Çıktı `kapi/suit_kiyas.txt`. Nöbetçi **aracı ve donmuş ham çıktıları**
-kilitler; **hükmü kilitlemez** — hüküm tek komutla yeniden üretilebilir.
+Çıktı `kapi/suit_kiyas.txt`; ölçülen hüküm: **YENİ düşük 0 · GEÇEN düşük 0 ·
+`test_t243_paket_boyutu` kaynaklı düşük 0** — düşen küme `tam_suit_2` ile
+birebir aynı (22 düşük, 11 failure + 11 error). Nöbetçi **aracı ve donmuş ham
+çıktıları** kilitler; **hükmü kilitlemez** — hüküm tek komutla yeniden
+üretilebilir. (Bu paragraf `tam_suit_7` koşumundan **sonra** yazıldı; o koşumun
+kanıt değeri README metnine bağlı değildir.)
 Ölçüt de daraltıldı: tam küme eşitliği değil, *bu işin dokunduğu modül
 (`test_t243_paket_boyutu`) tam süit içinde hiç düşük üretiyor mu?*
 
