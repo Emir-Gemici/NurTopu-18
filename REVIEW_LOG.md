@@ -30746,3 +30746,32 @@ Düşen 6 alt test yalnız `tests/test_yks_mk15_hakem_ekrani.py` `H2e_RotaYokSon
 **🔴 D-461 ana bulgusu (T236-B çürütücüsü):** `ON_KAYIT §4`'e **ikinci ve gevşetilmiş** bir kabul ölçütü ("T236 SITL kapısı (gözden geçirilmiş): ≤ 4,0 m · ±15° · ≥ %70 · ±3,0 m") eklenince **hiçbir test düşmüyor**. Bugünkü kilitler yalnız **özgün satırın varlığını** koruyor; ölçütün **tekliğini** korumuyor. Bu, projenin çekirdek kuralının ("ön kayıtlı eşikler gevşetilmez", CLAUDE.md + ON_KAYIT) mekanik karşılığının olmaması demektir: ölçümden sonra yazılan gevşek bir ikinci ölçüt, süit yeşilken belgeye girebilir. Aynı sınıf, ATOLYE-2'de A10/A7'de (Y6/Y7) ve T229-D2'de §7.5'te ayrı ayrı ölçüldü — yani tek tek yamanan üç ayrı belirtinin **tek kök nedeni** budur.
 **Karar:** **T240'a zorunlu ek — "ön kayıt tekliği" kilidi:** her ön kayıt/kabul yüzeyinde (a) bir kapının kabul ölçütü metinde **tam bir kez** geçmeli (eş anlamlı/numarasız yeniden söyleyişler dahil, normalleştirilmiş metinde aranır); (b) aynı bölümde **rakip eşik** (aynı büyüklüğün farklı sayıyla geçtiği ikinci ifade) bulunamaz; (c) kabul bloğu **ön kayıtlı metin eşitliği** ile bağlanır, alt dizge `in` ile değil; (d) çelişkili ikinci hüküm sözcükleri ("gözden geçirilmiş", "güncellenmiş kapı", "yalnız … ile verilir", "kaldırıldı", "geçersiz") kabul yüzeyinde yasak. Kanıt: T236-B, ATOLYE-2 ve T229-D2'nin kaçan "ikinci hüküm" mutantlarının **hepsi** T240 yardımcısıyla düşmeli.
 **Sıralama kararı (çakışmayı önlemek için):** ATOLYE-2 kendi `tests/belge_kilidi.py`'sini yazdı; T240 kanonik olanı yazıyor. **T240 master'a girmeden** beş RED işi kendi kilit yamalarını genişletmez. T240 birleşince tek dalga (`kilit-uyum`) ile beş iş kanonik yardımcıya geçirilir ve her işin kendi kaçan mutantları o yardımcıyla düşürülür. Böylece aynı normalleştirme mantığının altı ayrı kopyası oluşmaz.
+
+### D-462 — FDR YAZILIM BOŞLUK ELEŞTİRİSİ (5 bölüm okuyucusu, salt okuma): **37 kapsanmayan yazılım boşluğu**, 46'sı çalışan işlerin kapsamında; baskın örüntü **bayatlık** — 4–10 Eylül'de ÖLÇÜLEN şeyler FDR'de hâlâ "ölçülecek / açık kalem" duruyor; en somut eksik: **mesaj paket boyutu tablosu ve gerçek görev veri hızı ölçülmemiş** (Y-3.3.4-M03)
+
+**Tarih:** 12 Eylül 2026 02:3x. **Kaynak:** `fdr-bosluk-elestirmen` (wf_8e7fafd8; 5 okuyucu tamam, sentezci oturum girişi düşmesinde kayboldu → mimar kendi ayıkladı). Kapsam D-439: yalnız yazılım kolu; mekanik/İKA yapısal satırlar ekibe bırakıldı.
+
+**A. İÇ ÇELİŞKİ — FDR kapanmış kalemi AÇIK gösteriyor (en zararlı sınıf; rapor kendi kendini yalanlıyor):**
+1. `BOLUM_3 §3.3.1.1.8` "MAVLink kilidi yalnız `iha_komut_alici`'da; diğer ikisi seri cihazı hâlâ kabul eder → açık kalem" — kilit **üç süreçte de** kodda, `ACIK_KALEMLER` #23 D-419 ile **KAPANDI**.
+2. `§3.3.4.1.7` "H1c damgalanmadı, bu raporun kendi kuralınca açık" — aynı bölümün `§3.4.1 A4`'ü ve `ACIK_KALEMLER` #24 kapandı diyor (0/0, `test_p5_h1c_damgasi` 23/23).
+3. `§3.3.4.2.1` künye "`.engine` DERLENINCE_YAZILIR → derlenmedi = RED" ve `§3.4.1 A3` "tensorrt yok, ÖLÇÜLEMEDİ" — 6 Eylül'de FP16 engine **derlendi**, D-303 denkliği **ölçüldü ve DÜŞTÜ** (3/126 → uçuş `.pt`, D-431).
+4. `BOLUM_4 §4.4` girişi "hiçbir ekipmanın fiziksel kabul testi yapılmadı, kutu 5 Eylül'de açılacak" — aynı tablo 6 Eylül ölçüm sayıları taşıyor.
+5. `§4.8.3` "FP16 payı Jetson'da ölçülecektir", `§4.1.3` "`jetson_baslat` ilk koşumu ÖLÇÜLEMEDİ", `§4.13.3` — üçü de 6 Eylül'de ölçüldü.
+6. `§4.0` kapsama tablosu Y-4-M04 ve Y-4-M06 için "YOK" diyor; `YONERGE_HARITASI` ikisini de KISMEN yazıyor ve gövde ölçüm veriyor.
+7. `BOLUM_6 §6.5.1` izlenebilirlik tablosunda **A13 satırı yok** (failsafe/geofence/döküm) ama metinde altı yerde anılıyor; sayım §6.5.1'de 11, §6.6.4'te 12, §6.6.5 "A1–A13" diyor.
+8. `BOLUM_1` üç yerde "12 kapanmamış gereksinim" diyor; Bölüm 6 11'e indirdi (A10 kapandı).
+9. `BOLUM_2 §2.2.7/§2.2.8` "Nano yığını kurulamaz, 5 Eylül'de ölçülecek" — D-431'de kapandı.
+10. `BOLUM_7 §7.4.2` ".engine derlenemiyor" riski canlı; aynı bölümün #18'i "GEÇERSİZ" diyor.
+
+**B. BAYAT SAYI / KIRIK ATIF:** `BOLUM_1:77` ve `BOLUM_4 §4.1/§4.2/§4.3.4` tam süiti **1896 test** diye veriyor ve `results/faz_b_oncesi/cuma_kontrol/tam_suit.txt`'ye atıf yapıyor — dosya 4 Eylül'de **üzerine yazıldı**, bugün 2104 içeriyor; 1896 yalnız `2705b4eb` sürümünde. Güncel: **2620 OK** (12 Eylül). → Sayılar teslim günü betikle `push_kapisi` çıktısından üretilmeli, atıf **commit'e sabitlenmeli** (dosya üzerine yazılabiliyor).
+
+**C. ÖLÇÜLEBİLİR EKSİK (yeni iş, donanım gerekmez):** `Y-3.3.4-M03` "nihai paket yapısı ve veri hızı" istiyor. FDR'de **paket boyutu tablosu yok**; ölçülen veri hızı yalnız `IKA_GO`/`PARASUT` prob kadansında (~80 B komut, ~78 B ACK). **Gerçek görev trafiği** (OPEN_ROUTE + tam telemetrili HEARTBEAT + ACK karışımı) hiç ölçülmedi; kodda "~200 B çerçeve" yalnız tasarım notu. → **T243**.
+
+**D. DÜRÜSTLÜK EKSİĞİ:** `BOLUM_3 §3.3.3.2` sınırlar paragrafında, simülasyonun üretimde olmayan iki yardımı verdiği (ref = gerçek KB; kareler kuzey-yukarı döndürülüyor) ve bu yüzden **üretim sayılarının sahaya göre iyimser üst sınır** olduğu yazılı değil (D-451 olgu 1). → T244'e girer.
+
+**E. ELDE OLAN AMA RAPORA GİRMEMİŞ ÖLÇÜM:** `§3.3.4.2.8 (a)` "farklı ışık açısı ve gölge kesitinde ayrı ölçüm yapılmamıştır" diyor; oysa T213-A MuJoCo render'ında alçak güneş + gölge varyantı üretim modeliyle ölçüldü (v2 K3 **0/15**; gölge HTAB engel oranını 0,13 → 0,24 çıkardı). Sonuç kötü diye atlanmış olması ayrıca ciddidir — **kötü ölçüm de rapora girer**. → T244.
+
+**F. SAHİPSİZ:** `BOLUM_1` (5 puan) ve `BOLUM_2` (5 puan) yazılım satırlarının sahibi belli değil; PDF yazılım paketi bu iki bölümü dışarıda bırakıyor, son dokunuş 7 Eylül. **Mimar kararı:** Bölüm 1/2'nin **yazılım satırları bizimdir** (özet, doğrulama, risk, revizyon, iş akışı, takvim); mekanik/parasal satırlara dokunulmaz. → T245.
+**G. MÜHÜR:** FDR üç bölümde "17 Eylül sürüm dondurma" diyor; ne mühür dosyası ne görevi var. → T246; sıra: MK15 düzeltmeleri + T234 + T240/T242 birleşince.
+
+**Açılan işler:** T243 (paket boyutu + gerçek görev veri hızı ölçümü, ön kayıtlı), T244 (Bölüm 3/4 iç çelişki ve elde-olan-ölçüm süpürgesi), T245 (Bölüm 1/2 yazılım satırları + sayı üretici betik), T246 (17 Eylül sürüm mührü), T247 (Bölüm 5/6/7 bayat hücre süpürgesi + §6.5.1 A13 satırı). **Kural (hepsi için):** eski metin silinmez, çizili + tarih + D-kaydı atfı; her sayı bir artefakttan gelir; ölçülmemişe GEÇTİ yazılmaz.
