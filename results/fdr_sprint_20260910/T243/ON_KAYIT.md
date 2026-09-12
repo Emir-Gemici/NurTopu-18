@@ -107,6 +107,40 @@ sözleşme tavanındaki en uzun ondalık gösterim (`MAX_LOCAL_EXTENT_M = 60.0`,
 10. Mesaj boyutları ölçümün kendisinden (gerçek `encode()` akışı) gelir; sentetik
     olan yalnız **rota geometrisidir** (piksel waypoint'ler), boyut değil.
 
+### 2.2-EK — ÖN KAYIT EKİ (12 Eylül, hâlâ ölçümden ÖNCE)
+
+> Bu ek, ön kaydın ilk commit'inden (`66dd28e2`) sonra, **ölçüm betiği daha
+> yazılmadan ve hiçbir sayı üretilmeden** yazıldı. Hiçbir eşiği gevşetmez; §4
+> rapor ölçütü ve §1 nicelik listesi aynen durur. Yalnız **ölçülecek yapılandırma
+> sayısını artırır** — sebebi, kaynak okunurken bulunan iki üretim olgusudur:
+>
+> **Olgu-1:** YKS `OPEN_ROUTE`'u kendiliğinden ACK'lemez. `comms/yks_gui.py`
+> yalnız `NO_ROUTE` ve `IHA_LANDED` için ACK üretir; `OPEN_ROUTE` ACK'i hakem
+> 2/2 onayına bağlıdır (`CONTRACTS.md` §6.6). Dolayısıyla `wait_ack=True` olan
+> UDP yolunda `IhaSender._tekrarli_gonder` her karar için `repeat` turunun
+> tamamını koşar; bir kararın hat yükü tek çerçeve değildir.
+>
+> **Olgu-2:** Saha taşıyıcısı (SiK seri) `comms/iha_sender.py` `yayinci_kur`
+> içinde `peers={"broadcast": None}` **ve** `wait_ack=False` ile kurulur — yani
+> sahadaki yük UDP dev yolundakiyle **aynı değildir**.
+
+Bu yüzden karışım ölçümü **iki yapılandırmada** koşulur, ikisi de kadans başına
+ayrı ayrı (toplam 4 koşum):
+
+| yapılandırma | akranlar | `wait_ack` | üretimdeki karşılığı |
+|---|---|---|---|
+| `saha` | tek yayın hattı | `False` | SiK seri (`--telsiz-seri`) — sahada kullanılan yol |
+| `udp` | `ika` + `yks` | `True` | UDP dev/sim yolu (`--yks-hedef` + `--ika-hedef`) |
+
+`udp` yapılandırmasında YKS ucu **üretimdeki gibi davranır**: `OPEN_ROUTE`'a ACK
+üretmez, `NO_ROUTE` ve `IHA_LANDED`'a üretir. İKA ucu gerçek `IkaReceiver`'dır ve
+hepsine ACK üretir. Ölçüm, YKS'nin ACK'lememesini bir arıza gibi düzeltmez.
+
+Ayrıca §1.1 N2 eğrisine, 1..20 satırlarının yanına sözleşme tavanı
+`MAX_WAYPOINTS` (`comms/iha_sender.py`) bir **üst sınır satırı** olarak eklenir;
+karışım ölçümünde kullanılan rota üretim yolundan gelen tek bir rotadır ve
+waypoint sayısı çıktı JSON'una yazılır.
+
 ### 2.3 Hat doluluğu
 
 `BAUD = 57600`, 8N1 → **10 bit/bayt** → ham `5760 B/s`, bayt başına `0,174 ms`.
