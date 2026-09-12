@@ -1,0 +1,45 @@
+# T244 mutasyon ciktisi · 2026-09-12 06:18:55 · python.exe
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+BASLANGIC TEMIZ: cikis=0 ran=44 son='OK' dusen=[] hatalar=[]
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+M1 madde1: §3.3.1.1.8 'acik kalemdir' cizgisi kaldirildi (eski hukum CANLI): cikis=1 ran=44 son='FAILED (failures=5)' -> YAKALANDI; hedef={'test_T1_uc_surecte_de_kodlu_yazili': 'DUSTU'}; dusen=['test_T10_log_YOK_sayilari_ve_rapor_HIZALI', 'test_T1_uc_surecte_de_kodlu_yazili', 'test_T1b_atiflar_gercek_kod_satirlariyla', 'test_T1c_6_eylul_de_kosulmadi_gecti_yazilmaz', 'test_cizme_isareti_beyaz_liste']; hatalar=[]
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+M2 madde2: §3.3.4.1.7 H1c 'damgalanmadi' cizgisi kaldirildi: cikis=1 ran=44 son='FAILED (failures=1)' -> YAKALANDI; hedef={'test_T2_h1c_kosuldu_ve_gecti': 'DUSTU'}; dusen=['test_T2_h1c_kosuldu_ve_gecti']; hatalar=[]
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+M3 madde3: kunye .engine sha'si defterden SAPTI (son hane 0 -> 1): cikis=1 ran=44 son='FAILED (failures=1)' -> YAKALANDI; hedef={'test_T3_engine_sha_kayit_defteriyle': 'DUSTU'}; dusen=['test_T3_engine_sha_kayit_defteriyle']; hatalar=[]
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+M4 madde4: §4.4 ESC kalibrasyonu hucresi 5 Eylul haline dondu: cikis=1 ran=44 son='FAILED (failures=1)' -> YAKALANDI; hedef={'test_T4c_6_eylul_hucreleri_dosya_satirla': 'DUSTU'}; dusen=['test_T4c_6_eylul_hucreleri_dosya_satirla']; hatalar=[]
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+M5 madde5: §4.8.3 'Jetson'da .engine ile olculecektir' CANLI dondu: cikis=1 ran=44 son='FAILED (failures=1)' -> YAKALANDI; hedef={'test_T5a_483_engine_olculdu_ve_dustu': 'DUSTU'}; dusen=['test_T5a_483_engine_olculdu_ve_dustu']; hatalar=[]
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+M6 madde6: §4.0 Y-4-M04 durumu YOK'a geri alindi (YONERGE ile celisir): cikis=1 ran=44 son='FAILED (failures=2)' -> YAKALANDI; hedef={'test_T6b_durumlar_HIZALI': 'DUSTU', 'test_T6c_m04_m06_kismen_eski_deger_cizili': 'DUSTU'}; dusen=['test_T6b_durumlar_HIZALI', 'test_T6c_m04_m06_kismen_eski_deger_cizili']; hatalar=[]
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+M7 madde7: durustluk cumlesi §4.7'den SILINDI (yalniz Bolum 3'te kaldi): cikis=1 ran=44 son='FAILED (failures=1)' -> YAKALANDI; hedef={'test_T7_cumle_iki_yerde_ve_CIZILMEMIS': 'DUSTU'}; dusen=['test_T7_cumle_iki_yerde_ve_CIZILMEMIS']; hatalar=[]
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+M8 madde8: §3.3.4.2.8 v2 HTAB engel orani artefakttan SAPTI (0,2380 -> 0,2400): cikis=1 ran=44 son='FAILED (failures=1)' -> YAKALANDI; hedef={'test_T8_varyant_sayilari_artefakttan': 'DUSTU'}; dusen=['test_T8_varyant_sayilari_artefakttan']; hatalar=[]
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+MC CELISKILI IKINCI HUKUM: §4.8.3'e gevsetilmis ikinci D-303 esigi yazildi: cikis=1 ran=44 son='FAILED (failures=4)' -> YAKALANDI; hedef={'test_T5a_483_engine_olculdu_ve_dustu': 'DUSTU', 'test_celiskili_ikinci_hukum_HICBIR_yuzeyde_yok': 'DUSTU'}; dusen=['test_T3c_d303_dustu_uc_yerde_de_olumluya_CEVRILMEMIS', 'test_T5a_483_engine_olculdu_ve_dustu', 'test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL', 'test_celiskili_ikinci_hukum_HICBIR_yuzeyde_yok']; hatalar=[]
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+MZ1 CIZILI VARYANT (tek tilde): madde7 cumlesi §3.3.3.2'de TEK TILDE ile cizildi: cikis=1 ran=44 son='FAILED (failures=1)' -> YAKALANDI; hedef={'test_T7_cumle_iki_yerde_ve_CIZILMEMIS': 'DUSTU'}; dusen=['test_T7_cumle_iki_yerde_ve_CIZILMEMIS']; hatalar=[]
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+MZ2 CIZILI VARYANT (<del>) + OLUMLUYA CEVIRME: §4.8.3 D-303 DUSTU -> dogrulandı: cikis=1 ran=44 son='FAILED (failures=2)' -> YAKALANDI; hedef={'test_T3c_d303_dustu_uc_yerde_de_olumluya_CEVRILMEMIS': 'DUSTU'}; dusen=['test_T3c_d303_dustu_uc_yerde_de_olumluya_CEVRILMEMIS', 'test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL']; hatalar=[]
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+MZ3 D-463(a) CIPLAK U+0336: §4.8.3 D-303 DUSTU hukmu birlestirici cizikle cizildi: cikis=1 ran=44 son='FAILED (failures=2)' -> YAKALANDI; hedef={'test_T3c_d303_dustu_uc_yerde_de_olumluya_CEVRILMEMIS': 'DUSTU', 'test_cizme_isareti_beyaz_liste': 'DUSTU'}; dusen=['test_T3c_d303_dustu_uc_yerde_de_olumluya_CEVRILMEMIS', 'test_cizme_isareti_beyaz_liste']; hatalar=[]
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+MZ4 D-463(a) HTML VARLIGI: §3.3.3.2 durustluk cumlesi &#822; ile cizildi: cikis=1 ran=44 son='FAILED (failures=2)' -> YAKALANDI; hedef={'test_T7_cumle_iki_yerde_ve_CIZILMEMIS': 'DUSTU', 'test_cizme_isareti_beyaz_liste': 'DUSTU'}; dusen=['test_T7_cumle_iki_yerde_ve_CIZILMEMIS', 'test_cizme_isareti_beyaz_liste']; hatalar=[]
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+MY1 D-466 KACAN CUMLE (kilitli kesit DISI): Not (12 Eylül): D-303 için %3'lük ikinci ora: cikis=1 ran=44 son='FAILED (failures=1)' -> YAKALANDI; hedef={'test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL': 'DUSTU'}; dusen=['test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL']; hatalar=[]
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+MY2 D-466 KACAN CUMLE (kilitli kesit DISI): Not: H1 için ham çevrilmenin %60'ı da kabul : cikis=1 ran=44 son='FAILED (failures=1)' -> YAKALANDI; hedef={'test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL': 'DUSTU'}; dusen=['test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL']; hatalar=[]
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+MY3 D-466 KACAN CUMLE (kilitli kesit DISI): Revize edilmiş kabul kapısı: engine kabul ed: cikis=1 ran=44 son='FAILED (failures=1)' -> YAKALANDI; hedef={'test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL': 'DUSTU'}; dusen=['test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL']; hatalar=[]
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+MY4 D-466 KACAN CUMLE (kilitli kesit DISI): RC failsafe sonucu tekrar değerlendirildiğin: cikis=1 ran=44 son='FAILED (failures=1)' -> YAKALANDI; hedef={'test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL': 'DUSTU'}; dusen=['test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL']; hatalar=[]
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+MY5 D-466 KACAN CUMLE (kilitli kesit DISI): Bu bölümdeki ÖLÇÜLEMEDİ kalemleri beyanla ka: cikis=1 ran=44 son='FAILED (failures=1)' -> YAKALANDI; hedef={'test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL': 'DUSTU'}; dusen=['test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL']; hatalar=[]
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+MY6 D-466 KACAN CUMLE (kilitli kesit DISI): D-303 oransal eşiği yerine %3'lük ikinci eşi: cikis=1 ran=44 son='FAILED (failures=1)' -> YAKALANDI; hedef={'test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL': 'DUSTU'}; dusen=['test_T9a_gercek_iki_bolum_MUTASYONSUZ_YESIL']; hatalar=[]
+geri yukleme sha esit: True (FDR/BOLUM_3_SISTEM_SPESIFIKASYONLARI.md=3719774268ce, FDR/BOLUM_4_TEST_FAALIYETLERI.md=a5a9f71de2cf)
+OZET: 19/19 mutasyon TUM hedef testleriyle yakalandi; uygulanamayan 0
+KOMUT: O:\navitas-local-train\venv\Scripts\python.exe -B -X utf8 -m unittest discover -s tests -p test_fdr_t244_ic_celiski.py
+TEMIZ KOSUM (mutasyonsuz): cikis=0 ran=44 son='OK' dusen=[]
