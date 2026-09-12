@@ -44,7 +44,44 @@ Yorumlayıcı: `O:\navitas-local-train\venv\Scripts\python.exe -X utf8 -B`.
 
 ## 2. Kök neden — FİKSTÜR (ürün kusuru DEĞİL)
 
-İki kusur birlikte çalışıyor:
+⚠ **Bu bölüm 12 Eylül'de YENİDEN YAZILDI** — bağımsız çürütücünün KABUL
+hükmündeki iki ZORUNLU düzeltme (anayasa md. 6: kanıtsız bulgu yazılmaz).
+İlk sürüm kök nedeni "imza eşleşmesine" dayandırıyordu; o dayanak **hem
+yanlış atıflıydı hem ayırt edici değildi**. Doğrusu §2.1'dedir; imzanın neden
+hüküm taşıyamayacağı §2.3'te ölçümle yazılıdır.
+
+### 2.1 ASIL DAYANAK — ürün kaynağından tümdengelim
+
+Üç satır kök nedeni **mantıksal olarak zorluyor** (satır numaraları bu daldaki
+`comms/yks_gui.py` sürümüne göredir):
+
+| Satır | Kod | Ne yapar |
+|---|---|---|
+| `comms/yks_gui.py:1593` | `alanlar.pop(str(c), None)` | `_harita_ciz` HER çizimde ölçülü alan önbelleğini ya **yazar** ya **siler** — üçüncü hâl yok (`:1590-1594`) |
+| `comms/yks_gui.py:1963` | `self._harita_ciz()` | YENİ bir OPEN_ROUTE işlenirken **aynı çağrı içinde, eşzamanlı** çizim yapılır |
+| `comms/yks_gui.py:1911` | `self.rota_yok = None` | OPEN_ROUTE `rota_yok`u **temizler** |
+
+Zincir:
+
+1. OPEN_ROUTE işlenince `rota_yok = None` olur ve `_harita_ciz()` **aynı
+   çağrının içinde** koşar. `rota_yok` boş, ana harita `inset_var` — yani
+   `rota_yok_metni` yok — olduğundan ölçülü yerleşime **girilmez** ve
+   `alanlar.pop(...)` ile önbellek **silinir**.
+2. Öyleyse ölçüm anında `_olculu_alan` DOLU ise, bizim OPEN_ROUTE'umuzdan
+   **SONRA** bir NO_ROUTE işlenmiş olmak **ZORUNDADIR**. Başka yol yok:
+   önbelleği dolduran tek kod yolu ölçülü yerleşimdir, ona da yalnız
+   `rota_yok_metni` varken girilir.
+3. Test kendi çerçevelerini **artan seq** ile ve sırayla gönderir; kendi
+   NO_ROUTE'ları ölçülen OPEN_ROUTE'tan ÖNCEDİR (`_mesaj_ver` her çerçevenin
+   işlendiğini bekler). Öyleyse o NO_ROUTE **YABANCIDIR** — aynı süreçte
+   koşan başka bir ucun datagramıdır.
+
+Sonuç: **ürünün önbellek yaşam döngüsü kusursuzdur; kusur fikstürdedir.**
+Bu çıkarım hiçbir ölçüm gürültüsüne bağlı değildir — yalnız üç kaynak satırına
+ve testin kendi gönderim sırasına dayanır. Bağımsız çürütücü aynı tümdengelimi
+kendi yolundan kurdu ve C1/C2/C3 mutasyonlarıyla sınadı (§2.3, §4).
+
+### 2.2 Fikstürün iki kusuru
 
 **(a) Kaynak kilidi bu fikstürde hiçbir şey ayırmıyor.**
 `comms/yks_gui.py:739 mesaj_kaynagi_dogrula` İHA verisi (OPEN_ROUTE /
@@ -60,30 +97,69 @@ temizlendiğine bakmıyordu; sonra körlemesine `_pompala(lambda: False, 0.15)`
 ile 150 ms olay pompalıyordu. O pencerede işlenen bir NO_ROUTE:
 `rota_yok` yeniden dolar → `_harita_ciz` ölçülü yerleşime girer →
 `_olculu_alan[str(harita)]` yazılır → sonraki `_cizim()` OPEN_ROUTE
-çizimini **ölçülü** üretir. Test bunu "ürün sızdırdı" diye okur. **Sızıntı
-YOKTUR; ürünün önbellek yaşam döngüsü doğrudur** — `_harita_ciz` her
-çizimde önbelleği ya yazar ya siler (`comms/yks_gui.py:1590-1594`), yani
-NO_ROUTE sonrası OPEN_ROUTE çizimi önbelleği **kendisi temizler**.
+çizimini **ölçülü** üretir. Test bunu "ürün sızdırdı" diye okur.
 
-**İmza eşleşmesi (bit düzeyinde).** Düzeltme öncesi fikstür + 300 ms
-aralıkla `detay` alanı OLMAYAN yabancı NO_ROUTE (`mutasyon_M4.txt`):
+### 2.3 İmza eşleşmesi AYIRT EDİCİ DEĞİLDİR (yanlış atıf düzeltildi)
+
+İlk sürüm burada `mutasyon_M4.txt`ten iki satır alıntılayıp "mimarın
+çıktısının birebir aynısı" diyordu. **İki ayrı hata vardı.**
+
+**Hata 1 — alıntı o dosyada YOK.** Ölçüm (çürütücü, yeniden doğrulandı):
+
 ```
-FAIL ... (yol=2, olcek=1.5)
-AssertionError: '.!frame3.!frame.!canvas' unexpectedly found in
-                {'.!frame3.!frame.!canvas': (51, 156, 243)}
-FAIL ... (yol=3, olcek=1.5)
-AssertionError: Lists differ: [... .0, 156.0], ...] != [... .0, 144.0], ...]
+$ grep -c "unexpectedly found" mutasyon_M4.txt
+0
+$ grep -c "unexpectedly found" results/push_kapisi/20260912_011758/tam_suit.txt
+4
 ```
-— mimarın çıktısındaki **aynı iki hata biçimi, aynı 6 alt test, aynı sayılar**
-(1,5'te 144 ↔ 156; önbellek `(51, 156, 243)`).
-`detay` alanı olmayan NO_ROUTE sahada `iha_sender.send_no_route(sebep)`
-(`comms/iha_sender.py:240`, `detay=None`) tarafından üretilir; süitte bu
-biçimi üreten uçlar vardır.
+
+`mutasyon_M4.txt`in GERÇEK altı düşüşü (dosyadaki `AssertionError` satırları,
+sırasıyla):
+
+```
+AssertionError: '.!frame3.!frame.!canvas' not found in {} : Önkoşul: uzun NO_ROUTE arena alanını değiştirmeli
+AssertionError: Lists differ: [...[94.8, 121.6, 133.2, 390.40000000000003]...] != [...[34.0, 96.0, 354.0, 416.0]...]
+AssertionError: Lists differ: [...[34.0, 96.0, 354.0, 416.0]...] != [...[94.8, 121.6, 133.2, 390.40000000000003]...]
+AssertionError: Lists differ: [...144.0]...] != [...156.0]...]
+AssertionError: False is not true : ekran çerçeveyi TAM işlemedi: {... 'seq': 146 ...} · rota=145 · rota_yok={... 'seq': 923 ...} · kuyruk=0 · kaynak reddi=0
+AssertionError: False is not true : ekran çerçeveyi TAM işlemedi: {... 'seq': 148 ...} · rota=147 · rota_yok={... 'seq': 940 ...} · kuyruk=0 · kaynak reddi=0
+```
+
+Mimarın 12 Eylül 01:17 çıktısı (`results/push_kapisi/20260912_011758/tam_suit.txt`):
+
+```
+AssertionError: Lists differ: [...34.0, 96.0]...] != [...34.0, 189.0]...]
+AssertionError: '.!frame3.!frame.!canvas' unexpectedly found in {'.!frame3.!frame.!canvas': (34, 189, 227)}   (×2)
+AssertionError: Lists differ: [...144.0]...] != [...156.0]...]
+AssertionError: '.!frame3.!frame.!canvas' unexpectedly found in {'.!frame3.!frame.!canvas': (51, 156, 243)}   (×2)
+```
+
+**Ölçülene çekilmiş iddia:** altı düşüşten **yalnız biri** örtüşüyor — 1,5
+ölçekte `144.0 ↔ 156.0`. Diğer dördü ters yönlü (`not found in {}`), farklı
+koordinatlı (`94.8, 121.6, …`) ya da amelenin bu görevde YENİ yazdığı tanı
+iletisidir (`ekran çerçeveyi TAM işlemedi`). Yani **M4 düzeltme öncesi
+fikstürün tamamı değil, KISMİ BİR GERİ ALMADIR**; "birebir aynı" iddiası
+kanıtsızdı ve geri çekilmiştir.
+
+**Hata 2 — imza zaten ayırt edici değil.** Çürütücünün C1 mutasyonu
+(`_harita_ciz`in `alanlar.pop(str(c), None)` satırı `pass` yapılır: GERÇEK
+ürün önbellek sızıntısı, **yabancı çerçeve enjeksiyonu YOK**) aynı imzayı
+M4'ten **daha iyi** üretir — `curutucu_C1.txt`, 6/6 kırmızı, dört
+`unexpectedly found` satırı dâhil. Öyleyse "(34,189,227)/(51,156,243)
+değerleri fikstür hipotezini kanıtlar" akıl yürütmesi **tek başına
+GEÇERSİZDİR**: aynı imzayı bir ürün kusuru da üretir. Kök nedeni kanıtlayan
+şey imza değil, §2.1'deki tümdengelimdir. Ayrımı ölçen mutasyon çiftidir:
+
+| Mutasyon | Ne değişti | Enjeksiyon | Sonuç | Ne öğretir |
+|---|---|---|---|---|
+| `curutucu_C1.txt` | ÜRÜN: önbellek silinmiyor | YOK | **6/6 KIRMIZI** | düzeltilmiş test gerçek ürün sızıntısını HÂLÂ yakalıyor (kapı gevşemedi); imza fikstüre özgü DEĞİL |
+| `curutucu_C2.txt` | ÜRÜN: kaynak kilidi IP denetimi kapalı | VAR | **6/6 KIRMIZI** | düzeltmenin yükünü ürünün KENDİ kilidi taşıyor; test kilidi baypas etmiyor, ÖLÇÜYOR |
+| `curutucu_C3.txt` | TEST: adres yalıtımı geri | YOK | **YEŞİL** | kusur YABANCI ÇERÇEVE gerektiriyor; yalıtımı kaldırmak tek başına düşürmüyor — seyrekliğin açıklaması |
 
 ⚠ **Açık kalan:** 12 Eylül 01:17 koşumunda o datagramı GÖNDEREN ucun kimliği
-saptanamadı (3 tam süit koşumunda olay tekrar etmedi). Saptanan şey
-**mekanizmadır** ve mekanizma enjeksiyonla birebir yeniden üretilmiştir.
-
+saptanamadı (3 tam süit koşumunda olay tekrar etmedi). Kanıtlanan şey
+**MEKANİZMADIR**, olayın kendisi değil; mekanizma hem tümdengelimle (§2.1)
+hem enjeksiyonla (`d3_yabanci_enjeksiyon.txt`) gösterilmiştir.
 ## 3. Düzeltme (yalnız fikstür; ürün kodu DEĞİŞMEDİ)
 
 `tests/test_yks_mk15_hakem_ekrani.py`:
@@ -132,6 +208,7 @@ yazıldı (`git status` temiz).
 | Tam süit ×4 (düzeltme sonrası) | `kapi_kosum_A/B/C/D.txt` | A: 2616 OK · B, C, D: **Ran 2620 · OK (skipped=19)** |
 | Tam süit ×2 (SON içerik) | `kapi_kosum_E.txt`, `kapi_kosum_F.txt` | **Ran 2620 · OK (skipped=19)** (502,8 s / 496,2 s) |
 | Genel kapı (madde 14) | yukarıdaki her koşum + `genel_kapi_son.txt` | **kol1 15/15 · kol2 şerit 15/15** |
+| **Çürütücü mutasyonu C0–C4** (bağımsız) | `curutucu_mutasyon.py`, `curutucu_C0..C4.txt` | C1/C2 **KIRMIZI**, C0/C3/C4 yeşil — §2.3 |
 
 (A koşumu `wheels`/`firmware` bağlanmadan önce yapıldı; o yüzden 2616.
 B'den sonra keşif sayısı mimarın ağacıyla aynı: **2620**.)
@@ -152,7 +229,9 @@ içinde sha256 doğrulayarak aynen geri yazar (satır sonu dâhil).
 
 `MUTASYON_SONUC GECTI` (`mutasyon_ciktisi.txt`).
 
-- **M4** mimarın imzasını birebir üretir (`(51, 156, 243)`; `144 ↔ 156`).
+- **M4** KISMİ bir geri almadır: altı düşüşünden yalnız biri (1,5 ölçekte
+  `144.0 ↔ 156.0`) mimarın imzasıyla örtüşür. İlk sürümdeki "birebir aynı"
+  iddiası **geri çekildi** — gerekçe ve ölçüm §2.3'te.
 - **M5 kapının gevşemediğinin kanıtıdır**: gerçek ürün sızıntısında test
   KIRMIZI olur ve tanıyı açıkça yazar —
   `ekran çerçeveyi TAM işlemedi: {...OPEN_ROUTE seq 144...} · rota=144 ·
@@ -160,6 +239,13 @@ içinde sha256 doğrulayarak aynen geri yazar (satır sonu dâhil).
   (yani "ürün temizlemedi", "yabancı çerçeve yok" ayrımı düşüş satırında).
 - **M3**'ün yeşil olması tasarım gereğidir: yalıtım tek başına yeterlidir,
   sayaç önkoşulu ikinci savunma hattı ve **tanı** içindir.
+- **Çürütücü mutasyonları** (C0–C4) bu görevin amelesinden BAĞIMSIZ yazıldı ve
+  koşuldu; `curutucu_mutasyon.py` çürütücünün kendi çalışma ağacı/geçici dizin
+  yollarını **olduğu gibi** taşır (kanıt bütünlüğü için değiştirilmedi), bu
+  yüzden yeniden koşmak için `KOK`/`CIK` sabitleri güncellenmelidir. Çıktılar:
+  `curutucu_C0..C4.txt`. C4 çürütücünün kendi kurgu hatasıdır (ana haritada
+  `olcu["alan"]` ROTA YOK bandı yokken zaten `None`; mutasyon yakın-etkisiz) —
+  test zayıflığı DEĞİLDİR.
 
 ## 5. Mimarın dikkatine — ürün tarafında ayrı bir gözlem (bu görevin konusu DEĞİL)
 

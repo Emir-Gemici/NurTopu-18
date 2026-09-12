@@ -235,6 +235,31 @@ class _GercekEkran(unittest.TestCase):
         self.kok.update()
         return bool(kosul())
 
+    def _yerlesim_durdu(self, w, en_az=(2, 2)):
+        """`_pompala` koşulu: parçanın YERLEŞİMİ DURDU mu? (sabit uyku DEĞİL)
+
+        Üç gerçek koşul: (1) parça haritalanmış, (2) boyutu `en_az`'dan büyük,
+        (3) boyut ARDIŞIK İKİ olay pompasında DEĞİŞMEMİŞ — yani yerleşim bir
+        FİKS NOKTAYA oturmuş. Ölçüm (T249, `results/fdr_sprint_20260910/
+        H9_MK15/t249/probe_yerlesim_cikti.txt`): bu makinede pencere
+        `deiconify()` sonrası İLK pompada nihai boyuta oturuyor ve 1,5 s
+        boyunca bir daha değişmiyor — yani eski `_pompala(lambda: False, 0.2)`
+        sabit uykusu hiçbir şey EKLEMİYOR, yalnız ölçümü ZAMANA bağlıyordu:
+        yerleşim 0,2 s'de bitmezse ölçüm yarım yerleşimi okur."""
+        onceki = {}
+
+        def kosul():
+            if not w.winfo_ismapped():
+                return False
+            boyut = (w.winfo_width(), w.winfo_height())
+            if boyut[0] < en_az[0] or boyut[1] < en_az[1]:
+                return False
+            sabit = onceki.get("boyut") == boyut
+            onceki["boyut"] = boyut
+            return sabit
+
+        return kosul
+
     def _rota_gonder(self, mesaj=None):
         self.iha.send(encode(dict(ROTA) if mesaj is None else mesaj), self.hedef)
 
@@ -564,16 +589,51 @@ class H2c_EtiketCakismasi(_GercekEkran):
         self.kok.deiconify()
         # Gerçek akış: ekran HARİTA görünümünde açılır, sonra kameraya geçilir
         # (ana haritanın <Configure> bağı yok — bkz. rapor, açık kalem).
-        self.assertTrue(self._pompala(
-            lambda: app.harita.winfo_ismapped() and app.harita.winfo_height() > 1,
-            5.0))
-        self._pompala(lambda: False, 0.2)
+        # T249: iki SABİT UYKU (0,2 s / 0,3 s) kaldırıldı; yerine yerleşimin
+        # gerçekten durduğu ölçülüyor (`_yerlesim_durdu`).
+        self.assertTrue(self._pompala(self._yerlesim_durdu(app.harita), 5.0),
+                        f"ana harita yerleşmedi: {app.harita.winfo_width()}×"
+                        f"{app.harita.winfo_height()}")
         app.gorunum("kamera")
-        self.assertTrue(self._pompala(
-            lambda: app.mini_harita.winfo_ismapped()
-            and app.mini_harita.winfo_width() > 1, 5.0))
-        self._pompala(lambda: False, 0.3)
+        self.assertTrue(self._pompala(self._yerlesim_durdu(app.mini_harita), 5.0),
+                        f"küçük harita yerleşmedi: "
+                        f"{app.mini_harita.winfo_width()}×"
+                        f"{app.mini_harita.winfo_height()}")
         return app
+
+    # 🔴 T249 — ANA TUVAL BOYUTU ÖLÇÜM KOŞULUDUR, ÇİVİLENİR.
+    # `_arayuz_kur` (comms/yks_gui.py:973) pencere boyutunu
+    # `min(S(1240), int(winfo_screenwidth() * 0.92))` ile EKRANDAN türetir.
+    # Süreç DPI FARKINDALIĞI `tests/test_sim_mujoco_arena.py`in MuJoCo GL
+    # bağlamı tarafından SÜREÇ GENELİNDE ve GERİ ALINAMAZ biçimde 0 → 2
+    # yapılıyor (ölçüm: `results/fdr_sprint_20260910/H9_MK15/t249/
+    # dpi_izi_cikti.txt`, tam süit izi). O andan sonra açılan her Tk kökü
+    # ekranı 1707×1067 yerine 2560×1600 görür ve ana tuval 1,5 ölçekte
+    # 945×630 yerine 1142×725 olur; H2f kalıntısı tuval boyutuna BAĞLI
+    # olduğu için kilit TAM SÜİTTE KIRMIZI, MODÜL TEK BAŞINAYKEN YEŞİL
+    # oluyordu (`tani_h2f.py` ile `--dpi`li/`--dpi`siz ölçüldü).
+    # Çivileme kilidi GEVŞETMEZ: kalıntı sayısı ve çiftleri aynen tutulur —
+    # yalnız ölçümün yapıldığı yüzey artık ekran çözünürlüğünden bağımsız.
+    ANA_TUVAL = {1.0: (742, 450), 1.5: (945, 630)}
+
+    def _ana_tuvali_civile(self, olcek):
+        c = self.app.harita
+        w, h = self.ANA_TUVAL[olcek]
+        c.pack_configure(expand=False, fill="none")
+        c.configure(width=w, height=h)
+        self.assertTrue(
+            self._pompala(lambda: c.winfo_ismapped()
+                          and (c.winfo_width(), c.winfo_height()) == (w, h), 5.0),
+            f"ana tuval çivilenen boyuta gelmedi: {c.winfo_width()}×"
+            f"{c.winfo_height()} (beklenen {w}×{h}) · "
+            f"pencere={self.kok.geometry()} · ekran="
+            f"{self.kok.winfo_screenwidth()}×{self.kok.winfo_screenheight()}")
+        # Ana haritanın `<Configure>` bağı YOKTUR (sınıf belgesi): ürün tuval
+        # boyutu değişince KENDİLİĞİNDEN yeniden çizmez. Ölçüm çivilenmiş
+        # tuvalde yapılacağına göre ÇİZİM de o tuvalde üretilmelidir — yoksa
+        # eski boyuta göre hesaplanmış yerleşim yeni tuvalde ölçülür.
+        self.app._harita_ciz()
+        return c
 
     def _bant_denetle(self, c, ad):
         bantlar = _dolgulu(c, "rectangle", yks_gui.KIRMIZI)
@@ -682,7 +742,7 @@ class H2c_EtiketCakismasi(_GercekEkran):
                 self._mini_denetle(ad, mesaj)
         # ANA harita (harita görünümü, inset dahil): uzun ve kısa detaylı ROTA YOK.
         self.app.gorunum("harita")
-        self.assertTrue(self._pompala(self.app.harita.winfo_ismapped, 3.0))
+        self._ana_tuvali_civile(olcek)
         with self.subTest(olcek=olcek, durum="ana_no_route_uzun"):
             self._ana_denetle("no_route_uzun")
         with self.subTest(olcek=olcek, durum="ana_no_route"):
@@ -709,7 +769,20 @@ class H2c_EtiketCakismasi(_GercekEkran):
             with self.subTest(olcek=olcek, durum=f"ana_open_route_road{yol}"):
                 self._mesaj_ver(dict(ROTA, seq=seq, road=yol,
                                      label=yks_gui.ROAD_LABEL[yol]))
-                self._pompala(lambda: False, 0.2)
+                # T249: SABİT UYKU KALDIRILDI. `_mesaj_ver` çerçeveyi
+                # İŞLENENE dek bekler ve `_harita_ciz()` `_mesaj_isle`
+                # içinde EŞZAMANLI koşar (comms/yks_gui.py:1969) — çizim
+                # `_mesaj_ver` döndüğünde BİTMİŞTİR (ölçüm `tani_h2f.py`:
+                # 2 s boyunca 20 ms aralıkla örneklendi, 6/6 durumda doğru
+                # değer t = 0,000'da ve hiç değişmiyor). Geriye kalan tek
+                # gerçek koşul YERLEŞİMDİR; o da çivilenmiş boyuttur.
+                self.assertTrue(
+                    self._pompala(lambda: c.winfo_ismapped()
+                                  and (c.winfo_width(), c.winfo_height())
+                                  == self.ANA_TUVAL[olcek], 5.0),
+                    f"ana tuval ölçüm anında {c.winfo_width()}×"
+                    f"{c.winfo_height()}, çivilenen "
+                    f"{self.ANA_TUVAL[olcek]} değil")
                 boyut = f"{c.winfo_width()}x{c.winfo_height()}"
                 kutular = _metin_kutulari(c)
                 ciftler = _kesisen_ciftler(kutular)
@@ -885,6 +958,117 @@ class H2e_RotaYokSonrasiAnaHarita(_GercekEkran):
         self._gecisleri_denetle(1.5)
 
 
+class H2g_TekrarliOpenRouteHaritayiTazeler(_GercekEkran):
+    """T248 — ÜRÜN KUSURU (bağımsız çürütücünün bulgusu, D-464 KAYIT 1).
+
+    Sahada `comms/iha_sender.py:171 _tekrarli_gonder(repeat=8, interval=0.25)`
+    her OPEN_ROUTE'u SEKİZ kopya yollar. NO_ROUTE'tan SONRA ulaşan bir tekrar
+    kopyası (AYNI seq) `_mesaj_isle`de `yeni = False` verir: durum temizlenir
+    (`rota_yok = None`, `tespit_bayat = False`) ama `_harita_ciz()` `if yeni:`
+    bloğunun İÇİNDE olduğu için HARİTA YENİDEN ÇİZİLMEZDİ — hakem ekranı
+    "ROTA YOK" bandını göstermeye devam ederken durum "rota kabul edildi"
+    diyordu. Hakem rotayı EKRANDAN onayladığı için bu, görev puanını
+    etkileyen bir bayat-ekran yoludur (§2.2.3).
+
+    Kapı İKİ YÖNLÜDÜR ve ikisi birlikte bağlayıcıdır:
+      1. durum DEĞİŞTİYSE (bant vardı, artık yok) ekran TAZELENİR;
+      2. durum DEĞİŞMEDİYSE yeniden çizim YAPILMAZ — 8 kopya için 8 kat
+         gereksiz çizim yükü kabul edilmez.
+    """
+
+    TUVAL_W, TUVAL_H = 742, 450
+
+    def _kur_olculu(self):
+        """Ana tuvali SABİT boyuta çivileyip gerçek yerleşim koşulunu bekler.
+
+        Sabit uyku YOK: ölçüm tuval boyutundan türeyen bir yerleşime bakar,
+        yarım yerleşimde ölçüm anlamsızdır (H2e ile aynı yöntem). Çivileme
+        ayrıca ekran çözünürlüğüne/DPI farkındalığına olan bağımlılığı keser
+        (T249 ölçümü: `_arayuz_kur` pencere boyutunu `winfo_screenwidth()`ten
+        türetir)."""
+        app = self._kur()
+        app.harita.pack_configure(expand=False, fill="none")
+        app.harita.configure(width=self.TUVAL_W, height=self.TUVAL_H)
+        self.kok.deiconify()
+        self.assertTrue(self._pompala(
+            lambda: app.harita.winfo_ismapped()
+            and (app.harita.winfo_width(), app.harita.winfo_height())
+            == (self.TUVAL_W, self.TUVAL_H), 5.0),
+            f"harita yerleşmedi: {app.harita.winfo_width()}×"
+            f"{app.harita.winfo_height()} pencere={self.kok.geometry()}")
+        return app
+
+    @staticmethod
+    def _bant_yazilari(c):
+        return [c.itemcget(i, "text") for i in c.find_all()
+                if c.type(i) == "text"
+                and c.itemcget(i, "text").startswith("ROTA YOK — ")]
+
+    def _tekrar_ver(self, mesaj):
+        """AYNI seq'li TEKRAR gönderim; işlendiğini GERÇEK sayaçla bekler.
+
+        `_mesaj_ver` kullanılamaz: hazır koşulu (`rota.seq == seq`) tekrar
+        çerçevesi için gönderimden ÖNCE de doğrudur, yani hiçbir şey beklemez.
+        Tekrarın işlendiğini ölçen tek büyüklük `rx_alim[seq]`dir — ürün her
+        KABUL EDİLEN OPEN_ROUTE kopyasında bir artırır (`yks_gui.py:1913`).
+        Sabit uyku yerine bu sayaç + boş kuyruk beklenir."""
+        app = self.app
+        hedef = app.rx_alim.get(mesaj["seq"], 0) + 1
+        self._rota_gonder(mesaj)
+        self.assertTrue(
+            self._pompala(lambda: app.gelen.empty()
+                          and app.rx_alim.get(mesaj["seq"], 0) >= hedef),
+            f"tekrar çerçevesi işlenmedi: seq={mesaj['seq']} · "
+            f"rx_alim={app.rx_alim.get(mesaj['seq'])} (hedef {hedef}) · "
+            f"kuyruk={app.gelen.qsize()} · "
+            f"kaynak reddi={getattr(app, 'kaynak_ret_sayaci', 0)}")
+
+    def test_T248_no_route_sonrasi_tekrarli_open_route_haritayi_tazeler(self):
+        app = self._kur_olculu()
+        rota = dict(ROTA, seq=SEQ + 300)
+        self._mesaj_ver(rota)
+        self.assertEqual([], self._bant_yazilari(app.harita),
+                         "önkoşul: OPEN_ROUTE'ta ROTA YOK bandı olmamalı")
+        self._mesaj_ver(dict(YOK_ROTA, seq=SEQ + 301))
+        self.assertEqual(1, len(self._bant_yazilari(app.harita)),
+                         "önkoşul: NO_ROUTE bandı çizilmedi")
+        # Sahadaki tekrar gönderimin TA KENDİSİ: aynı çerçeve, aynı seq.
+        self._tekrar_ver(rota)
+        # Durum: ürün rotayı kabul etmiş sayıyor.
+        self.assertIsNone(app.rota_yok)
+        # (`tespit_bayat` bilerek ÖLÇÜLMÜYOR: bu fikstürde heartbeat/karar_yas
+        # gelmediği için `_durum_tazele` onu her tikte yeniden BAYAT yapar —
+        # var olan, doğru fail-closed davranış. Ekran borcu `rota_yok`tadır.)
+        # Ekran: hakemin GÖRDÜĞÜ şey durumla aynı olmak ZORUNDA.
+        self.assertEqual(
+            [], self._bant_yazilari(app.harita),
+            "T248: durum 'rota kabul' derken ana harita hâlâ ROTA YOK bandını "
+            "gösteriyor — tekrar gönderilen OPEN_ROUTE haritayı çizmiyor")
+        self.assertNotIn(str(app.harita), app._olculu_alan,
+                         "T248: ROTA YOK ölçülü yerleşimi OPEN_ROUTE'ta kaldı")
+
+    def test_T248b_durum_degismeyen_tekrar_haritayi_yeniden_cizmez(self):
+        app = self._kur_olculu()
+        rota = dict(ROTA, seq=SEQ + 320)
+        self._mesaj_ver(rota)
+        gercek = app._harita_ciz
+        sayac = []
+
+        def sayan(*a, **k):
+            sayac.append(1)
+            return gercek(*a, **k)
+
+        with mock.patch.object(app, "_harita_ciz", sayan):
+            for _ in range(8):          # iha_sender: repeat=8
+                self._tekrar_ver(rota)
+        self.assertEqual(
+            [], sayac,
+            "T248: durum DEĞİŞMEDEN 8 tekrar kopyası için harita yeniden "
+            f"çizildi ({len(sayac)} kez) — sahada her OPEN_ROUTE 8 kopya "
+            "geldiği için bu kat kat gereksiz yüktür")
+        self.assertIsNone(app.rota_yok)
+
+
 class H6_GorunumDonusSirasi(_GercekEkran):
     """MİMAR KARARI (D-448 §4): kamera/algı → harita dönüşünde harita
     çerçevesi ilk açılıştaki yerine (görünüm düğmelerinin HEMEN altı) döner.
@@ -900,10 +1084,12 @@ class H6_GorunumDonusSirasi(_GercekEkran):
     def _ilk(self):
         app = self._kur()
         self.kok.deiconify()
-        self.assertTrue(self._pompala(
-            lambda: app.harita.winfo_ismapped() and app.harita.winfo_height() > 1,
-            5.0))
-        self._pompala(lambda: False, 0.2)
+        # T249: sabit uyku kaldırıldı — ölçülen şey (`winfo_y`, `winfo_height`,
+        # pack sırası) YERLEŞİMİN KENDİSİ olduğu için koşul da yerleşimin
+        # durmasıdır, süre değil.
+        self.assertTrue(self._pompala(self._yerlesim_durdu(app.harita), 5.0),
+                        f"harita yerleşmedi: {app.harita.winfo_width()}×"
+                        f"{app.harita.winfo_height()}")
         ilk = self._durum(app)
         sira = ilk[0]
         self.assertEqual(sira.index(str(app._gorunum_anahtari)) + 1,
@@ -912,8 +1098,10 @@ class H6_GorunumDonusSirasi(_GercekEkran):
 
     def _harita_don(self, app):
         app.gorunum("harita")
-        self.assertTrue(self._pompala(app.harita.winfo_ismapped, 3.0))
-        self._pompala(lambda: False, 0.2)
+        # T249: sabit uyku yerine gerçek yerleşim koşulu (yukarıdaki gerekçe).
+        self.assertTrue(self._pompala(self._yerlesim_durdu(app.harita), 5.0),
+                        f"harita dönüşte yerleşmedi: {app.harita.winfo_width()}×"
+                        f"{app.harita.winfo_height()}")
 
     def test_H6_harita_kamera_harita_sonrasi_sira_ve_konum_ilk_acilistaki(self):
         app, ilk = self._ilk()

@@ -1,0 +1,59 @@
+[dpi] SetProcessDpiAwareness(1) -> 0
+test_H2c_olcek_1_0 (test_yks_mk15_hakem_ekrani.H2c_EtiketCakismasi.test_H2c_olcek_1_0) ... ok
+test_H2c_olcek_1_5_hakem_ekrani (test_yks_mk15_hakem_ekrani.H2c_EtiketCakismasi.test_H2c_olcek_1_5_hakem_ekrani) ... 
+  test_H2c_olcek_1_5_hakem_ekrani (test_yks_mk15_hakem_ekrani.H2c_EtiketCakismasi.test_H2c_olcek_1_5_hakem_ekrani) (olcek=1.5, durum='ana_open_route_road1') ... FAIL
+  test_H2c_olcek_1_5_hakem_ekrani (test_yks_mk15_hakem_ekrani.H2c_EtiketCakismasi.test_H2c_olcek_1_5_hakem_ekrani) (olcek=1.5, durum='ana_open_route_road2') ... FAIL
+  test_H2c_olcek_1_5_hakem_ekrani (test_yks_mk15_hakem_ekrani.H2c_EtiketCakismasi.test_H2c_olcek_1_5_hakem_ekrani) (olcek=1.5, durum='ana_open_route_road3') ... FAIL
+
+======================================================================
+FAIL: test_H2c_olcek_1_5_hakem_ekrani (test_yks_mk15_hakem_ekrani.H2c_EtiketCakismasi.test_H2c_olcek_1_5_hakem_ekrani) (olcek=1.5, durum='ana_open_route_road1')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 779, in _ana_open_route_kalinti
+    self.assertTrue(
+    ~~~~~~~~~~~~~~~^
+        self._pompala(lambda: c.winfo_ismapped()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        f"{c.winfo_height()}, çivilenen "
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        f"{self.ANA_TUVAL[olcek]} değil")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : ana tuval ölçüm anında 1142×725, çivilenen (945, 630) değil
+
+======================================================================
+FAIL: test_H2c_olcek_1_5_hakem_ekrani (test_yks_mk15_hakem_ekrani.H2c_EtiketCakismasi.test_H2c_olcek_1_5_hakem_ekrani) (olcek=1.5, durum='ana_open_route_road2')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 779, in _ana_open_route_kalinti
+    self.assertTrue(
+    ~~~~~~~~~~~~~~~^
+        self._pompala(lambda: c.winfo_ismapped()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        f"{c.winfo_height()}, çivilenen "
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        f"{self.ANA_TUVAL[olcek]} değil")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : ana tuval ölçüm anında 1142×725, çivilenen (945, 630) değil
+
+======================================================================
+FAIL: test_H2c_olcek_1_5_hakem_ekrani (test_yks_mk15_hakem_ekrani.H2c_EtiketCakismasi.test_H2c_olcek_1_5_hakem_ekrani) (olcek=1.5, durum='ana_open_route_road3')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_56b658bb-aff-1\tests\test_yks_mk15_hakem_ekrani.py", line 779, in _ana_open_route_kalinti
+    self.assertTrue(
+    ~~~~~~~~~~~~~~~^
+        self._pompala(lambda: c.winfo_ismapped()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        f"{c.winfo_height()}, çivilenen "
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        f"{self.ANA_TUVAL[olcek]} değil")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : ana tuval ölçüm anında 1142×725, çivilenen (945, 630) değil
+
+----------------------------------------------------------------------
+Ran 2 tests in 18.873s
+
+FAILED (failures=3)
