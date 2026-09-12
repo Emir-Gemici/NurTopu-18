@@ -1,0 +1,90 @@
+{
+  "arac": "mavlink_dogrula",
+  "mavlink": "/dev/serial/by-id/usb-Holybro_Pixhawk6C_220044001451333531363238-if00",
+  "beklenen_sysid": 1,
+  "esikler": {
+    "konum_asgari_hz": 4.0,
+    "durum_asgari_hz": 1.0,
+    "heartbeat_asgari_hz": 0.5,
+    "dogrulama_suresi_s": 10.0
+  },
+  "heartbeat": {
+    "alindi": true,
+    "beklenen_sysid": 1,
+    "sysid": 1,
+    "compid": 1,
+    "autopilot": 3,
+    "autopilot_ad": "MAV_AUTOPILOT_ARDUPILOTMEGA",
+    "type": 2,
+    "type_ad": "MAV_TYPE_QUADROTOR",
+    "bekleme_s": 0.001,
+    "tavan_s": 15.0,
+    "gorulen_kaynaklar": [
+      [
+        1,
+        1
+      ]
+    ],
+    "hata": null
+  },
+  "istekler": [
+    {
+      "mesaj": "GLOBAL_POSITION_INT",
+      "mesaj_id": 33,
+      "istenen_hz": 8.0,
+      "aralik_us": 125000,
+      "gonderildi": true,
+      "ack": 0,
+      "ack_ad": "MAV_RESULT_ACCEPTED",
+      "not": null
+    },
+    {
+      "mesaj": "EXTENDED_SYS_STATE",
+      "mesaj_id": 245,
+      "istenen_hz": 2.0,
+      "aralik_us": 500000,
+      "gonderildi": true,
+      "ack": 0,
+      "ack_ad": "MAV_RESULT_ACCEPTED",
+      "not": null
+    }
+  ],
+  "akislar": [
+    {
+      "mesaj": "HEARTBEAT",
+      "mesaj_id": 0,
+      "sayi": 180,
+      "hz": 1.0,
+      "esik_hz": 0.5,
+      "gecti": true
+    },
+    {
+      "mesaj": "GLOBAL_POSITION_INT",
+      "mesaj_id": 33,
+      "sayi": 1440,
+      "hz": 8.0,
+      "esik_hz": 4.0,
+      "gecti": true
+    },
+    {
+      "mesaj": "EXTENDED_SYS_STATE",
+      "mesaj_id": 245,
+      "sayi": 360,
+      "hz": 2.0,
+      "esik_hz": 1.0,
+      "gecti": true
+    }
+  ],
+  "olcum": {
+    "sure_s": 180.0,
+    "gercek_sure_s": 180.0,
+    "hata": null,
+    "yabanci_kaynak_mesaj": {
+      "HEARTBEAT": 0,
+      "GLOBAL_POSITION_INT": 0,
+      "EXTENDED_SYS_STATE": 0
+    }
+  },
+  "gecti": true,
+  "dusme_nedenleri": []
+}

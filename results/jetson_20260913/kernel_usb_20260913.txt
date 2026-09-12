@@ -1,0 +1,37 @@
+# Kernel USB kaniti — 2026-09-13 (sudo dmesg -T, Pixhawk ilgili satirlar)
+
+[Sun Sep 13 01:36:13 2026] usb 1-2.1: new full-speed USB device number 6 using tegra-xusb
+[Sun Sep 13 01:36:13 2026] usb 1-2.1: New USB device found, idVendor=3185, idProduct=0038, bcdDevice= 1.01
+[Sun Sep 13 01:36:13 2026] usb 1-2.1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[Sun Sep 13 01:36:13 2026] usb 1-2.1: Product: PX4 BL FMU v6C.x
+[Sun Sep 13 01:36:13 2026] usb 1-2.1: Manufacturer: Auterion
+[Sun Sep 13 01:36:13 2026] usb 1-2.1: SerialNumber: 0
+[Sun Sep 13 01:36:13 2026] cdc_acm 1-2.1:1.0: ttyACM0: USB ACM device
+[Sun Sep 13 01:36:13 2026] usbcore: registered new interface driver cdc_acm
+[Sun Sep 13 01:36:13 2026] cdc_acm: USB Abstract Control Model driver for USB modems and ISDN adapters
+[Sun Sep 13 01:36:18 2026] usb 1-2.1: USB disconnect, device number 6
+[Sun Sep 13 01:36:18 2026] usb 1-2.1: new full-speed USB device number 7 using tegra-xusb
+[Sun Sep 13 01:36:18 2026] usb 1-2.1: New USB device found, idVendor=3162, idProduct=0053, bcdDevice= 2.00
+[Sun Sep 13 01:36:18 2026] usb 1-2.1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[Sun Sep 13 01:36:18 2026] usb 1-2.1: Product: Pixhawk6C
+[Sun Sep 13 01:36:18 2026] usb 1-2.1: Manufacturer: Holybro
+[Sun Sep 13 01:36:18 2026] usb 1-2.1: SerialNumber: 220044001451333531363238
+[Sun Sep 13 01:36:18 2026] cdc_acm 1-2.1:1.0: ttyACM0: USB ACM device
+[Sun Sep 13 01:36:18 2026] cdc_acm 1-2.1:1.2: ttyACM1: USB ACM device
+[Sun Sep 13 01:53:55 2026] usb 1-2.1: USB disconnect, device number 7
+[Sun Sep 13 01:54:08 2026] usb 1-2.1: new full-speed USB device number 8 using tegra-xusb
+[Sun Sep 13 01:54:08 2026] usb 1-2.1: New USB device found, idVendor=3185, idProduct=0038, bcdDevice= 1.01
+[Sun Sep 13 01:54:08 2026] usb 1-2.1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[Sun Sep 13 01:54:08 2026] usb 1-2.1: Product: PX4 BL FMU v6C.x
+[Sun Sep 13 01:54:08 2026] usb 1-2.1: Manufacturer: Auterion
+[Sun Sep 13 01:54:08 2026] usb 1-2.1: SerialNumber: 0
+[Sun Sep 13 01:54:08 2026] cdc_acm 1-2.1:1.0: ttyACM0: USB ACM device
+[Sun Sep 13 01:54:08 2026] usb 1-2.1: USB disconnect, device number 8
+[Sun Sep 13 01:54:08 2026] usb 1-2.1: new full-speed USB device number 9 using tegra-xusb
+[Sun Sep 13 01:54:09 2026] usb 1-2.1: New USB device found, idVendor=3162, idProduct=0053, bcdDevice= 2.00
+[Sun Sep 13 01:54:09 2026] usb 1-2.1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[Sun Sep 13 01:54:09 2026] usb 1-2.1: Product: Pixhawk6C
+[Sun Sep 13 01:54:09 2026] usb 1-2.1: Manufacturer: Holybro
+[Sun Sep 13 01:54:09 2026] usb 1-2.1: SerialNumber: 220044001451333531363238
+[Sun Sep 13 01:54:09 2026] cdc_acm 1-2.1:1.0: ttyACM0: USB ACM device
+[Sun Sep 13 01:54:09 2026] cdc_acm 1-2.1:1.2: ttyACM1: USB ACM device

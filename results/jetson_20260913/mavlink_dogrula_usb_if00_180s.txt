@@ -1,0 +1,11 @@
+PIXHAWK ON-UCUS DOGRULAMASI  (/dev/serial/by-id/usb-Holybro_Pixhawk6C_220044001451333531363238-if00, beklenen sysid 1)
+HEARTBEAT: sysid=1 compid=1 autopilot=3 (MAV_AUTOPILOT_ARDUPILOTMEGA) type=2 (MAV_TYPE_QUADROTOR)  bekleme=0.00 s
+ISTEK: GLOBAL_POSITION_INT  @8.0 Hz (125000 us) -> ACK 0 (MAV_RESULT_ACCEPTED)
+ISTEK: EXTENDED_SYS_STATE   @2.0 Hz (500000 us) -> ACK 0 (MAV_RESULT_ACCEPTED)
+OLCUM: 180.00 s (istenen 180 s), yalniz sysid 1; yabanci kaynak mesaj: 0
+  akis                  sayi  olculen Hz  esik Hz   sonuc
+  HEARTBEAT              180        1.00     0.50   GECTI
+  GLOBAL_POSITION_INT   1440        8.00     4.00   GECTI
+  EXTENDED_SYS_STATE     360        2.00     1.00   GECTI
+VERDIKT: GECTI
+JSON: results/jetson_20260913/mavlink_dogrula_usb_if00_180s.json

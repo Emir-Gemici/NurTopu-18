@@ -1,0 +1,36 @@
+# Ortam kaniti — 2026-09-13, Jetson (navitas-jetson)
+
+$ date -u
+Sat Sep 12 11:07:51 PM UTC 2026
+
+$ uname -a
+Linux navitas-jetson 6.8.12-1021-tegra #1 SMP PREEMPT Thu Aug  6 21:56:04 PDT 2026 aarch64 aarch64 aarch64 GNU/Linux
+
+$ lsusb
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 001 Device 002: ID 2109:2822 VIA Labs, Inc. USB2.0 Hub             
+Bus 001 Device 003: ID 1358:c123 Realtek Bluetooth Radio
+Bus 001 Device 004: ID 1ea7:0064 SHARKOON Technologies GmbH 2.4GHz Wireless rechargeable vertical mouse [More&Better]
+Bus 001 Device 005: ID 17ef:6190 Lenovo Lenovo Calliope USB Keyboard G2 
+Bus 001 Device 009: ID 3162:0053 Holybro Pixhawk6C
+Bus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+Bus 002 Device 002: ID 2109:0822 VIA Labs, Inc. USB3.1 Hub             
+
+$ ls -l /dev/serial/by-id/ /dev/ttyACM*
+crw-rw---- 1 root dialout 166, 0 Sep 13 02:07 /dev/ttyACM0
+crw-rw---- 1 root dialout 166, 1 Sep 13 01:54 /dev/ttyACM1
+
+/dev/serial/by-id/:
+total 0
+lrwxrwxrwx 1 root root 13 Sep 13 01:54 usb-Holybro_Pixhawk6C_220044001451333531363238-if00 -> ../../ttyACM0
+lrwxrwxrwx 1 root root 13 Sep 13 01:54 usb-Holybro_Pixhawk6C_220044001451333531363238-if02 -> ../../ttyACM1
+
+$ systemctl is-active navitas-cogullayici ModemManager
+inactive
+active
+
+$ git -C . rev-parse HEAD
+bdda2e3b8a13bb01c18a8427b8802b611597a2f7
+
+$ git -C . branch --show-current
+jetson/tek-yol-20260912
