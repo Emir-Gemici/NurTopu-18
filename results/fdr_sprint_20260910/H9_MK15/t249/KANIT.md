@@ -308,7 +308,9 @@ docstring'i ve kanıt dizinleri).
 | `test_t120_sahte_kapi_yasagi.py` | `Ran 15 · OK` (master'dan miras kırmızı kapatıldı — `../t250_master_kirmizisi/KANIT.md`) |
 | `test_belge_kilidi.py` + `belge_kilidi`yi içe alan 4 modül | 74 / 63 / 45 / 57 / 42 — hepsi OK |
 | `codes/test_rota_sentetik.py` (madde 14) | **kol1 15/15 · kol2 şerit 15/15** |
-| `scripts/push_kapisi.py --kuru` (T250 ağacı) | `Ran 2816 · OK (skipped=19)` + kapı 15/15 — `results/push_kapisi/20260912_071749` |
+| `scripts/push_kapisi.py --kuru` #1 (T250 ağacı, master `46ffb503` üzerinde) | `Ran 2816 · OK (skipped=19)` + kapı 15/15 — `results/push_kapisi/20260912_071749` |
+| `scripts/push_kapisi.py --kuru` #2 (SON ağaç, master `dd7cd12a` dâhil) | `Ran 2816 · FAILED (failures=2)` — **ikisi de master'ın D-373 kusuru**, ürün/test kaynağıyla ilgisiz — `results/push_kapisi/20260912_072913` |
+| `scripts/push_kapisi.py --kuru` #3 (SON ağaç, master `dd7cd12a` deltası yalıtılmış) | **`Ran 2816 · OK (skipped=19)`** + kapı 15/15 — `results/push_kapisi/20260912_074950`; yöntem ve gerekçe: `../t250_master_kirmizisi/KANIT.md` §9 |
 | `kapsam_mutasyonu.py` | `KAPSAM_MUTASYON_SONUC GECTI` |
 | `mutasyon_t249.py` (yeni ağaçta yeniden) | `MUTASYON_SONUC GECTI` (yüksüz **ve** 12 işlemlik CPU yükü altında) |
 | `t248/mutasyon_t248.py` (N0–N3) | `MUTASYON_SONUC GECTI` |

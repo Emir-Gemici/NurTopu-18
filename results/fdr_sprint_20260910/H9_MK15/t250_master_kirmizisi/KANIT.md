@@ -128,3 +128,19 @@ bağlıdır**, yalnız birini geri almak defter/kuyruk atıf kapısını düşü
 **Sonuç:** bu dalın kendi içeriği (ürün + test + kanıt) **tam süitte yeşildir**;
 son ağaçtaki iki düşüşün ikisi de master'ın `dd7cd12a` içeriğindendir ve bu
 amelenin dokunması yasak olan dosyadadır.
+
+## 10. KAPANDI — master kendi kusurunu düzeltti (`7f396ad6`)
+
+Yalıtım ölçümü kaydedildikten kısa süre sonra master bir kez daha ilerledi:
+`7f396ad6 D-465 e D-468 ileri isareti (defter geri isaret kapisi)` — yani
+§8'de "gereken" diye yazılan satırı kaydın sahibi koydu. `git merge master`
+ile alındı ve kapı bu dalda da yeşile döndü:
+
+```
+$ python -X utf8 -B -m unittest discover -s tests -p "test_d373_defter_geri_isaret.py"
+Ran 6 tests · OK
+```
+
+⚠ §9'daki yalıtım ölçümü **silinmiyor**: o ölçüm, kırmızılığın kaynağını
+bu dal değil master olduğunu gösteren kanıttır ve kayıtta öyle durmalıdır.
+Bugünkü kapanış onu geçersiz kılmaz, tamamlar.
