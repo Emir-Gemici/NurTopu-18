@@ -669,6 +669,25 @@ sayılar aynı kaynaklardandır (`results/fdr_sprint_20260910/H1/README_T214A.md
 Ortam MuJoCo 3.13; modeller BASİTLEŞTİRİLMİŞ (İHA sabit kanat mesh'i, DDR ölçülü İKA); İHA uçuşu kinematik; hakem
 onayı sim'de otomatik — **saha kanıtı değildir**. Eşikler ön kayıttan (`results/fdr_sprint_20260910/ON_KAYIT.md` H1), gevşetilmedi.
 
+
+🔴 **Dürüstlük — simülasyonun üretimde OLMAYAN iki yardımı** (12 Eylül 2026 eklendi; D-462 D,
+D-451 olgu 1). Yukarıdaki ÜRETİM MODELİ / ÜRETİM BORU HATTI sayıları, sahada bulunmayan iki
+kolaylıkla ölçülmüştür:
+
+1. **Rota referansı gerçek KB'dir.** İKA'ya verilen rota ankoru simülasyonun **yer gerçeği**
+   KB konumudur, üretim zincirinin kendi kestirimi değil (`simulation/mujoco/gorev_kosumu.py:313`
+   — `kb = H["kb"]; ref = [round(float(kb[0]), 2), round(float(kb[1]), 2)]`). Sahada bu nokta
+   algıdan çıkarılır ve hatası rotaya eklenir.
+2. **Kareler kuzey-yukarı döndürülerek beslenir.** `kerteriz` beslemesinde her tarama karesi,
+   pozdaki yaw'a göre tam çeyrek tur döndürülüp modele öyle verilir
+   (`simulation/mujoco/sim_karar_toplayici.py:183-184` — `k = ceyrek_tur(yaw)` →
+   `np.rot90(img, k)`; `ceyrek_tur` :113). Üretimde kamera karesi böyle bir ön hizalama
+   görmez.
+
+İkisi de rotanın lehinedir ve üretim kodunda karşılığı yoktur; **bu yüzden üretim sayıları sahaya göre İYİMSER ÜST SINIRDIR** — sahada bu
+iki yardım olmadığı için gerçek başarım bu sayıların **altında** beklenir. Zaten düşen kapılar
+(H1-K3, H1-K5) bu yardımlarla bile düşmüştür; hüküm gevşetilmez.
+
 | kapı | ölçüm | eşik | hüküm |
 |---|---|---|---|
 | H1-K3 rota tespiti — üretim modeli, mozaik zinciri | 6/15 doğru (yanlış 0) | ≥ 12/15 | **DÜŞTÜ** |
@@ -703,8 +722,16 @@ kümesi görev icra simülasyonu diye sunulmamıştır.
 > raporda sunulmalıdır."*
 
 🔴 **Yönergenin "yarışma sahasına benzer koşullar" şartı BUGÜN
-KARŞILANMAMIŞTIR.** Aşağıdaki kabul kümesi sentetiktir ve farklı ışık açısı /
-gölge çeşitliliği içermez; gerçek koşul ölçümü §4.13.1 kalem 1'dedir. Elde olan
+KARŞILANMAMIŞTIR.** ~~Aşağıdaki kabul kümesi sentetiktir ve farklı ışık açısı /
+gölge çeşitliliği içermez;~~ *(12 Eylül 2026'da düzeltildi — D-462 E; eski metin
+silinmedi.)* Aşağıdaki **kabul kümesi (n = 260 kadraj)** sentetiktir ve ışık/gölge
+ekseninde bölünmemiştir; **ama ayrı bir SENTETİK ışık/gölge kesiti ÖLÇÜLMÜŞTÜR** —
+T213-A MuJoCo render varyantları, üretim modeli v36 ile: alçak güneş + gölge (v2)
+K3 **0/15**, gölgesiz taban çizgisi v1 **3/15**; gölge HTAB engel oranını
+**0,1314 → 0,2380** çıkardı (tam tablo, ışık parametreleri ve yerleşim sınırı
+Bölüm 3 §3.3.4.2.8 (a); artefakt `results/fdr_sprint_20260910/H1/k3b/`). Bu
+ölçüm **saha değildir** ve şartı karşılamaz; kötü sonuç olduğu için atlanmamış,
+olduğu gibi yazılmıştır. Gerçek koşul ölçümü §4.13.1 kalem 1'dedir. Elde olan
 gerçek görüntü, arenaya **dağılım dışı** olan DJİ uçuş kareleridir ve onlarla
 alınan sonuç §4.8.2.1 ile §4.8.2.3'te **geçilmemiş eşik** olarak yazılıdır.
 
@@ -901,8 +928,14 @@ verilir. Kümenin piksellerinin %39,6'sı etiketsizdir; bu sütun model hatası 
 
 Karar düzeyi ölçüm (K7: *"yayınlanan şerit referansla aynı mı"*, **84/85 = %98,8**, §4.8.1)
 matrisin yerine geçmez, yanında durur. **SINIR:** `test29` arena değildir (kırsal yol; kırmızı H,
-moloz, fiziki bariyer yok) ve ışık/gölge kesiti içermez — o satır **ÖLÇÜLEMEDİ** kalır. Gerçek
-arena karesi geldiğinde (§4.13.1 kalem 1) aynı betik o küme üzerinde koşar.
+moloz, fiziki bariyer yok) ve ışık/gölge kesiti içermez — ~~o satır **ÖLÇÜLEMEDİ** kalır.~~
+*(12 Eylül 2026'da tazelendi — D-462 E; eski metin silinmedi.)* **Bu matris için** o satır
+**ÖLÇÜLEMEDİ** kalır: `176_piksel_karisiklik_matrisi.py` ışık/gölge kesitine bölünmüş bir küme
+üzerinde hiç koşmadı. Ayrı bir SENTETİK ışık/gölge ölçümü (T213-A render varyantları, üretim
+modeli v36: v2 K3 **0/15**, HTAB engel **0,1314 → 0,2380**) **vardır** ve §4.8 girişi ile
+Bölüm 3 §3.3.4.2.8 (a)'dadır — **karışıklık matrisi değildir**, K3 rota sayımıdır ve **saha
+değil render**'dır. Gerçek arena karesi geldiğinde (§4.13.1 kalem 1) aynı betik o küme üzerinde
+koşar.
 
 ---
 
