@@ -229,12 +229,17 @@ DEĞİLDİ.
 | C | `test_sim_mujoco_arena` + hakem modülü **AYNI SÜREÇTE** (tam süitin sırası) | 5/5 OK | 5/5 OK |
 
 Ağaç son hâline geldikten sonra aynı üçlü bir kez daha koşuldu
-(`son_*_{1..5}.txt`): **15/15 yeşil**.
+(`son_*_{1..5}.txt`): **15/15 yeşil**. **T250 kapsam düzeltmesinden sonra
+aynı üçlü bir kez daha koşuldu (`t250_*_{1..5}.txt`): yine 15/15 yeşil
+(A 17,3–19,1 s · B 17,3–19,5 s · C 35,9–43,7 s), modül artık **42 test**
+(T248c eklendi) ve C yüzeyinin beş çıktısının beşinde de
+`[DPI] mujoco SONRASI = 2`.**
 
-Toplam **45 ardışık koşum, 45 yeşil**. Dosyalar: `ardisik_*_{1..5}.txt`
+Toplam **60 ardışık koşum, 60 yeşil**. Dosyalar: `ardisik_*_{1..5}.txt`
 (yüksüz), `yuklu_*_{1..5}.txt` (12 işlemlik CPU yükü), `son_*_{1..5}.txt`
-(son ağaç). C yüzeyinin her çıktısı `[DPI] mujoco SONRASI = 2` satırını
-taşır — yani kilit gerçekten farkındalık açıkken ölçüldü.
+(T249 son ağacı), `t250_*_{1..5}.txt` (T250 ağacı). C yüzeyinin her çıktısı
+`[DPI] mujoco SONRASI = 2` satırını taşır — yani kilit gerçekten farkındalık
+açıkken ölçüldü.
 
 ## 5. Dosyalar
 
@@ -248,7 +253,7 @@ taşır — yani kilit gerçekten farkındalık açıkken ölçüldü.
 | `kos_dpi.py` | modülü DPI farkındalığı AÇIKKEN koşar |
 | `birlikte.py` | MuJoCo + hakem modülü aynı süreçte (tam süit sırası) |
 | `mutasyon_t249.py` · `mutasyon_M0..M4.txt` | mutasyon matrisi |
-| `ardisik_t249.py` · `ardisik_*`, `yuklu_*` | 30 ardışık koşum |
+| `ardisik_t249.py` · `ardisik_*`, `yuklu_*`, `son_*`, `t250_*` | 60 ardışık koşum (3 yüzey × 5 × 4 tur) |
 
 ⚠ `dpi_izi_cikti.txt` koşumundaki 5 düşüş + 5 hata **ölçümle ilgisizdir**: o
 koşum sürerken bu ajan aynı ağaçtaki `comms/yks_gui.py` ve test dosyasını
@@ -256,7 +261,7 @@ düzenliyordu (kaynağı AST ile okuyan testler yarı yazılmış dosyayı görd
 dosyadan alınan tek veri `[DPI]` satırlarıdır; temiz tam süit kanıtı
 `results/push_kapisi/` altındadır.
 
-## 6. Mimarın dikkatine — kapatılmayan iki kalem
+## 6. Mimarın dikkatine — kapatılan bir, kapatılmayan iki kalem
 
 1. **Aynı sınıf başka testlerde de olabilir.** `winfo_screenwidth()`e bağlı
    pencere boyutu bu dosyadaki H2c/H2f dışındaki Tk testlerini de etkileyebilir
@@ -266,8 +271,12 @@ dosyadan alınan tek veri `[DPI]` satırlarıdır; temiz tam süit kanıtı
    geri alınamaz bir süreç ayarı değiştiriyor; bu, ileride başka Tk/DPI bağımlı
    her ölçümü sessizce bozabilir. Kalıcı çözüm o modülü AYRI BİR SÜREÇTE
    koşturmaktır. Bu görevin kapsamı değildir; karar mimarındır.
+3. ✅ **KAPANDI — kapsam daralması (çürütücü KUSUR 2).** T250'de `_ana_denetle`
+   iki yüzeyde koşacak biçimde düzeltildi, ölçüldü (`kapsam_izi_*`) ve kapsam
+   noktasının gerçekten ölçtüğü mutasyonla gösterildi (`kapsam_mutasyonu.py`).
+   §2.1'deki KAPSAM BEYANI'na bakınız. **T252'ye devredilmedi.**
 
-## 7. Kapı (T248 + T249 birlikte, son ağaç)
+## 7. Kapı (T248 + T249 + T250, son ağaç)
 
 | Kapı | Sonuç |
 |---|---|
@@ -280,6 +289,36 @@ dosyadan alınan tek veri `[DPI]` satırlarıdır; temiz tam süit kanıtı
 | genel kapı (madde 14) | **kol1 15/15 · kol2 şerit 15/15** |
 | `scripts/push_kapisi.py --kuru` #1 | `Ran 2736 · OK (skipped=19)` + kapı 15/15 — `results/push_kapisi/20260912_053049` |
 | `scripts/push_kapisi.py --kuru` #2 | `Ran 2736 · OK (skipped=19)` + kapı 15/15 — `results/push_kapisi/20260912_054022` |
+
+
+### 7.1 T250 (çürütücü RED'i üzerine) — YENİDEN KOŞULAN kapılar
+
+Ölçüm tarafına dokunulmadı; yalnız DEĞİŞEN dosyaların kapıları tekrarlandı
+(değişenler: `tests/test_yks_mk15_hakem_ekrani.py`, `tests/belge_kilidi.py`
+docstring'i ve kanıt dizinleri).
+
+| Kapı | Sonuç |
+|---|---|
+| `ardisik_t249.py --tur 5 --onek t250` (3 yüzey × 5) | **15/15 OK** · `ARDISIK_SONUC GECTI` · modül 42 test |
+| `test_yks_*.py` | `Ran 236 · OK` |
+| `comms/test_comms.py` | EXIT 0 — `✓ TEST GEÇTİ` |
+| `scripts/akis_diyagram_dogrula.py` | akis_a 51 · akis_b 68 · akis_c 62 · akis_d **100/100** · akis_e 70 · `SONUÇ: TÜM DÜĞÜMLER TUTTU` |
+| `scripts/jetson_paket_hazirla.py` | EXIT 0 |
+| ayna/türev kapıları (9 modül) | `test_olcum_ayna_senkronu` 6 · `test_t202_jetson_paket_butunlugu` 7 · `test_jetson_paket_defteri` 6 · `test_imgsz_tek_kaynak` 9 · `test_t191_veri_kaynaklari_taze` 11 · `test_akis_kapsam_korumasi` 59 · `test_fdr_sarkan_atif_kapisi` 11 · `test_gece_akis_diyagramlari` 13 · `test_atolye_test_gunu` 39 — **hepsi OK** |
+| `test_t120_sahte_kapi_yasagi.py` | `Ran 15 · OK` (master'dan miras kırmızı kapatıldı — `../t250_master_kirmizisi/KANIT.md`) |
+| `test_belge_kilidi.py` + `belge_kilidi`yi içe alan 4 modül | 74 / 63 / 45 / 57 / 42 — hepsi OK |
+| `codes/test_rota_sentetik.py` (madde 14) | **kol1 15/15 · kol2 şerit 15/15** |
+| `scripts/push_kapisi.py --kuru` (T250 ağacı) | `Ran 2816 · OK (skipped=19)` + kapı 15/15 — `results/push_kapisi/20260912_071749` |
+| `kapsam_mutasyonu.py` | `KAPSAM_MUTASYON_SONUC GECTI` |
+| `mutasyon_t249.py` (yeni ağaçta yeniden) | `MUTASYON_SONUC GECTI` (yüksüz **ve** 12 işlemlik CPU yükü altında) |
+| `t248/mutasyon_t248.py` (N0–N3) | `MUTASYON_SONUC GECTI` |
+| `t248/akis_kapsam_beklenen.py --mutasyon` | `AKIS_KAPSAM_BEKLENEN GECTI` |
+
+⚠ `results/push_kapisi/20260912_070314` koşumu **KIRMIZIDIR ve kayıtta öyle
+durmalıdır**: tek düşüşü master'ın `46ffb503` commit'inden miras alınan T120
+kusuruydu (`tests/belge_kilidi.py` muafiyet işareti yok). Kusur ayrı bir
+worktree'de master üzerinde ÖLÇÜLDÜ ve kapatıldıktan sonraki koşum
+(`20260912_071749`) yeşildir. Ayrıntı: `../t250_master_kirmizisi/KANIT.md`.
 
 ⚠ `results/push_kapisi/20260912_052020` koşumu **KIRMIZIDIR ve kayıtta öyle
 durmalıdır**: T248'in ürün dosyasında yarattığı 14 satırlık kayma üç türev
