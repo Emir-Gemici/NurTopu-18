@@ -72,7 +72,7 @@ Düğüm kuralı: **fonksiyon** = `def ad()` ve satır o tanımın başı; **kar
 | 64 | `d89` | blok | sD12 | `self._ika_rota_ack_bagla(seq, damga, havada, erken=True)` | `comms/yks_gui.py:2523` | tam |
 | 65 | `sD6` | fonksiyon | — | `def YksArayuz.onayla()` | `comms/yks_gui.py:2197` | tam |
 | 66 | `d70` | karar | sD6 | `if not self.rota or self.rota_yok or self.onaylandi:` | `comms/yks_gui.py:2200` | tam |
-| 67 | `d71` | karar | sD6 | `if self._kanit_kilidi_var():` | `comms/yks_gui.py:2182` | tam |
+| 67 | `d71` | karar | sD6 | `if self._kanit_kilidi_var():` | `comms/yks_gui.py:2207` | tam |
 | 68 | `d72` | karar | sD6 | `if rota_ankor_uyarisi(self.rota):` | `comms/yks_gui.py:2215` | tam |
 | 69 | `d73` | karar | sD6 | `if self._tespiti_yaslandir():` | `comms/yks_gui.py:2223` | tam |
 | 70 | `d74` | karar | sD6 | `if not self.tespit_onayli:` | `comms/yks_gui.py:2229` | tam |
@@ -100,7 +100,7 @@ Düğüm kuralı: **fonksiyon** = `def ad()` ve satır o tanımın başı; **kar
 | 92 | `sD9` | fonksiyon | — | `def YksArayuz.ika_baslat()` | `comms/yks_gui.py:3937` | tam |
 | 93 | `d110` | karar | sD9 | `if self.fda_kipi:` | `comms/yks_gui.py:3940` | tam |
 | 94 | `d111` | karar | sD9 | `if self.iha_landed_seq is None:` | `comms/yks_gui.py:3947` | tam |
-| 95 | `d112` | karar | sD9 | `if not self.onaylandi:` | `comms/yks_gui.py:3931` | tam |
+| 95 | `d112` | karar | sD9 | `if not self.onaylandi:` | `comms/yks_gui.py:3952` | tam |
 | 96 | `d113` | blok | sD9 | `komut_mesaji = command("IKA_GO", "ika")` | `comms/yks_gui.py:3959` | tam |
 | 97 | `d90` | blok | — | `KANIT_OLAYLARI = (` | `comms/yks_gui.py:168` | tam |
 | 98 | `d00` | blok | — | `ap = argparse.ArgumentParser(description="Navitas YKS hakem ekranı")` | `comms/yks_gui.py:4792` | tam |
