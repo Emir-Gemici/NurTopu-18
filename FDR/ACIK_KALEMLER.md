@@ -7,6 +7,16 @@
 >
 > Sıralama kapanma tarihine göredir; en üsttekiler rapor teslimini bekletir.
 
+## 0. 🔴 12 Eylül — RAPORU BEKLETEN, en öncelikli (T255, D-470)
+
+> **Arena "3 güzergâh" mı "1 güzergâh" mı?** Bu rapordaki ve tüm mimarideki 3-güzergâh
+> varsayımı (`§3.3.1.3` arena tablosu, README.md, K3 rota-tespit ölçümleri) kullanıcının
+> bir toplantıda aktardığı "artık 1 güzergâh" resmi bilgisiyle çelişiyor. Kaynak henüz
+> **yazılı doğrulanmadı** (yalnız BEYAN — muhtemel kayıt `İleri_Otonom_Yarı_Finaller-soru-cevap-oturumu.mp4`,
+> transkript çıkarılmadı). Doğrulanıp kapsam kararı verilmeden ne rapor "3 güzergâh" diye
+> eskisi gibi bırakılır (bilinen çelişki sessizce gizlenmiş olur) ne de sessizce "1 güzergâh"a
+> çevrilir (doğrulanmamış BEYAN ölçülmüş gibi yazılmış olur) — **kanıt: `REVIEW_LOG.md` D-470, `TASK_QUEUE.md` T255.**
+
 ## 1. Cumartesi 5 Eylül — donanım geldiği gün kapanır (ÖLÇÜM)
 
 > 🧾 **Saha koşum kâğıdı (10 Eylül, T219 · ON_KAYIT H6):** kalem 2, 3, 6 ve 12 ekibin mimar olmadan koşacağı tek sayfa `SAHA_KOSUM_KAGIDI_20260910.md` ile kapanır (tartı kullanıcı kararıyla kâğıt dışı, D-439 — kütle BEYAN); sonuçlar `results/fdr_sprint_20260910/saha_kosum/` altına yazılır (kapı `tests/test_saha_kosum_kagidi.py`). ⚠ 6 Eylül tlog'unda PM06 akım kanalı motorlar 1949 PWM'deyken en fazla 0,44 A okudu (`scripts/tlog_akim_ozet.py`; kanıt `results/fdr_sprint_20260910/saha_kosum/tlog_akim_ozet_20260906.txt`) — kalem 12 için önce akım hattı doğrulanır.
