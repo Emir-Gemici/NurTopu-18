@@ -1,0 +1,145 @@
+== ESKI tazeleyici (56157d22) cikis=0
+_eski_akis_a.mmd: 43 dugum tazelendi; bulunamayan 1
+   ? ('a35', 'codes/rpi_inference.py:2420', 'if cv2.waitKey(1) #amp; 0xFF == ord("q"):')
+
+== YENI tazeleyici --taban HEAD cikis=0
+taban: HEAD = 8e2696dd1a0a
+akis_a.mmd: 48 dugum tazelendi; cozulemeyen 0
+   sA1: codes/rpi_inference.py:2705 -> 3388  [main]
+   a02: codes/rpi_inference.py:2709 -> 3392  [main]
+   a03: codes/rpi_inference.py:2710 -> 3393  [main]
+   a04: codes/rpi_inference.py:2672 -> 3345  [_argumanlari_dogrula]
+   a05: codes/rpi_inference.py:2583 -> 3256  [_ub_referansi_coz]
+   a06: codes/rpi_inference.py:2719 -> 3402  [main]
+   a07: codes/rpi_inference.py:316 -> 357  [CanliOlcekSaglayici.baglan]
+   a08: codes/rpi_inference.py:2745 -> 3428  [main]
+   a10: codes/rpi_inference.py:2089 -> 2741  [_durdurma_sinyallerini_kur]
+   a11: codes/rpi_inference.py:701 -> 742  [load_model]
+   a12: codes/rpi_inference.py:2789 -> 3481  [main]
+   a13: codes/rpi_inference.py:2806 -> 3499  [main]
+   sA2: codes/rpi_inference.py:2298 -> 2956  [run_camera]
+   a14: codes/rpi_inference.py:555 -> 596  [kamera_kaynagi_coz]
+   a15: codes/rpi_inference.py:2316 -> 2975  [run_camera]
+   a16: codes/rpi_inference.py:2318 -> 2977  [run_camera]
+   a17: codes/rpi_inference.py:2329 -> 2988  [run_camera]
+   a18: codes/rpi_inference.py:2335 -> 2994  [run_camera]
+   a19: codes/rpi_inference.py:2339 -> 2998  [run_camera]
+   a20: codes/rpi_inference.py:1892 -> 1933  [_preprocess]
+   a21: codes/rpi_inference.py:2360 -> 3019  [run_camera]
+   a22: codes/rpi_inference.py:744 -> 785  [get_masks]
+   a23: codes/rpi_inference.py:1919 -> 1960  [_maskeleri_icerige_kirp]
+   a24: codes/rpi_inference.py:453 -> 494  [kare_olcek_kahini]
+   a26: codes/rpi_inference.py:1352 -> 1393  [analyze_path]
+   a27: codes/rpi_inference.py:2390 -> 3049  [run_camera]
+   a28: codes/rpi_inference.py:2391 -> 3050  [run_camera]
+   a29: codes/rpi_inference.py:1779 -> 1820  [_rota_kararini_esikle]
+   a30: codes/rpi_inference.py:2399 -> 3058  [run_camera]
+   a32: codes/rpi_inference.py:285 -> 326  [_karari_yayinla]
+   a33: codes/rpi_inference.py:2403 -> 3068  [run_camera]
+   a34: codes/rpi_inference.py:856 -> 897  [draw_masks]
+   a35: codes/rpi_inference.py:2420 -> 3085  [run_camera]
+   a36: codes/rpi_inference.py:2425 -> 3090  [run_camera]
+   a37: codes/rpi_inference.py:2485 -> 3150  [kamera_bitis_raporu]
+   sA3: codes/rpi_inference.py:2432 -> 3097  [kamera_kareleri]
+   a40: codes/rpi_inference.py:2459 -> 3124  [kamera_kareleri]
+   a41: codes/rpi_inference.py:2465 -> 3130  [kamera_kareleri]
+   a42: codes/rpi_inference.py:2466 -> 3131  [kamera_kareleri]
+   a43: codes/rpi_inference.py:2470 -> 3135  [kamera_kareleri]
+   a44: codes/rpi_inference.py:2482 -> 3147  [kamera_kareleri]
+   sA4: codes/rpi_inference.py:2817 -> 3510  [main]
+   a50: codes/rpi_inference.py:2116 -> 2768  [_durdurma_sinyallerini_geri_al]
+   a51: codes/rpi_inference.py:2819 -> 3515  [main]
+   a52: codes/rpi_inference.py:2825 -> 3521  [main]
+   a53: codes/rpi_inference.py:2826 -> 3522  [main]
+   a54: codes/rpi_inference.py:375 -> 416  [CanliOlcekSaglayici.kapat]
+   a01: codes/rpi_inference.py:2492 -> 3157  [_arguman_ayristirici]
+SONUC: 48 dugum tazelendi · 0 hata
+
+== dugum | taban satir [kapsam] | ESKI arac | YENI arac | HAKEM (amele elle) | eski=hakem | yeni=hakem
+sA1  | codes/rpi_inference.py:2705 [main] | 2705 [<modul>] | 3388 [main] | 3388 [main] | FARKLI | ok
+a02  | codes/rpi_inference.py:2709 [main] | 3392 [main] | 3392 [main] | 3392 [main] | ok | ok
+a03  | codes/rpi_inference.py:2710 [main] | 3393 [main] | 3393 [main] | 3393 [main] | ok | ok
+a04  | codes/rpi_inference.py:2672 [_argumanlari_dogrula] | 3345 [_argumanlari_dogrula] | 3345 [_argumanlari_dogrula] | 3345 [_argumanlari_dogrula] | ok | ok
+a05  | codes/rpi_inference.py:2583 [_ub_referansi_coz] | 3256 [_ub_referansi_coz] | 3256 [_ub_referansi_coz] | 3256 [_ub_referansi_coz] | ok | ok
+a06  | codes/rpi_inference.py:2719 [main] | 3354 [_argumanlari_dogrula] | 3402 [main] | 3402 [main] | FARKLI | ok
+a07  | codes/rpi_inference.py:316 [CanliOlcekSaglayici.baglan] | 357 [CanliOlcekSaglayici.baglan] | 357 [CanliOlcekSaglayici.baglan] | 357 [CanliOlcekSaglayici.baglan] | ok | ok
+a08  | codes/rpi_inference.py:2745 [main] | 3428 [main] | 3428 [main] | 3428 [main] | ok | ok
+a09  | comms/iha_sender.py:514 [yayinci_kur] | 514 [yayinci_kur] | 514 [yayinci_kur] | 514 [yayinci_kur] | ok | ok
+a10  | codes/rpi_inference.py:2089 [_durdurma_sinyallerini_kur] | 2741 [_durdurma_sinyallerini_kur] | 2741 [_durdurma_sinyallerini_kur] | 2741 [_durdurma_sinyallerini_kur] | ok | ok
+a11  | codes/rpi_inference.py:701 [load_model] | 742 [load_model] | 742 [load_model] | 742 [load_model] | ok | ok
+a12  | codes/rpi_inference.py:2789 [main] | 3481 [main] | 3481 [main] | 3481 [main] | ok | ok
+a13  | codes/rpi_inference.py:2806 [main] | 3499 [main] | 3499 [main] | 3499 [main] | ok | ok
+sA2  | codes/rpi_inference.py:2298 [run_camera] | 2298 [IsaretliYayinci.__init__] | 2956 [run_camera] | 2956 [run_camera] | FARKLI | ok
+a14  | codes/rpi_inference.py:555 [kamera_kaynagi_coz] | 596 [kamera_kaynagi_coz] | 596 [kamera_kaynagi_coz] | 596 [kamera_kaynagi_coz] | ok | ok
+a15  | codes/rpi_inference.py:2316 [run_camera] | 2792 [run_video] | 2975 [run_camera] | 2975 [run_camera] | FARKLI | ok
+a16  | codes/rpi_inference.py:2318 [run_camera] | 2977 [run_camera] | 2977 [run_camera] | 2977 [run_camera] | ok | ok
+a17  | codes/rpi_inference.py:2329 [run_camera] | 2841 [run_video] | 2988 [run_camera] | 2988 [run_camera] | FARKLI | ok
+a18  | codes/rpi_inference.py:2335 [run_camera] | 2994 [run_camera] | 2994 [run_camera] | 2994 [run_camera] | ok | ok
+a19  | codes/rpi_inference.py:2339 [run_camera] | 2850 [run_video] | 2998 [run_camera] | 2998 [run_camera] | FARKLI | ok
+a20  | codes/rpi_inference.py:1892 [_preprocess] | 1933 [_preprocess] | 1933 [_preprocess] | 1933 [_preprocess] | ok | ok
+a21  | codes/rpi_inference.py:2360 [run_camera] | 2641 [run_image] | 3019 [run_camera] | 3019 [run_camera] | FARKLI | ok
+a22  | codes/rpi_inference.py:744 [get_masks] | 785 [get_masks] | 785 [get_masks] | 785 [get_masks] | ok | ok
+a23  | codes/rpi_inference.py:1919 [_maskeleri_icerige_kirp] | 1960 [_maskeleri_icerige_kirp] | 1960 [_maskeleri_icerige_kirp] | 1960 [_maskeleri_icerige_kirp] | ok | ok
+a24  | codes/rpi_inference.py:453 [kare_olcek_kahini] | 494 [kare_olcek_kahini] | 494 [kare_olcek_kahini] | 494 [kare_olcek_kahini] | ok | ok
+a25  | codes/karar_sozlesmesi.py:439 [rota_olcek_reddi] | 439 [rota_olcek_reddi] | 439 [rota_olcek_reddi] | 439 [rota_olcek_reddi] | ok | ok
+a26  | codes/rpi_inference.py:1352 [analyze_path] | 1393 [analyze_path] | 1393 [analyze_path] | 1393 [analyze_path] | ok | ok
+a27  | codes/rpi_inference.py:2390 [run_camera] | 2669 [run_image] | 3049 [run_camera] | 3049 [run_camera] | FARKLI | ok
+a28  | codes/rpi_inference.py:2391 [run_camera] | 2670 [run_image] | 3050 [run_camera] | 3050 [run_camera] | FARKLI | ok
+a29  | codes/rpi_inference.py:1779 [_rota_kararini_esikle] | 1820 [_rota_kararini_esikle] | 1820 [_rota_kararini_esikle] | 1820 [_rota_kararini_esikle] | ok | ok
+a30  | codes/rpi_inference.py:2399 [run_camera] | 2901 [run_video] | 3058 [run_camera] | 3058 [run_camera] | FARKLI | ok
+a31  | codes/karar_sozlesmesi.py:2172 [KararYumusatici.suz] | 2172 [KararYumusatici.suz] | 2172 [KararYumusatici.suz] | 2172 [KararYumusatici.suz] | ok | ok
+a32  | codes/rpi_inference.py:285 [_karari_yayinla] | 326 [_karari_yayinla] | 326 [_karari_yayinla] | 326 [_karari_yayinla] | ok | ok
+a33  | codes/rpi_inference.py:2403 [run_camera] | 2932 [run_video] | 3068 [run_camera] | 3068 [run_camera] | FARKLI | ok
+a34  | codes/rpi_inference.py:856 [draw_masks] | 897 [draw_masks] | 897 [draw_masks] | 897 [draw_masks] | ok | ok
+a35  | codes/rpi_inference.py:2420 [run_camera] | 2420 [IsaretliYayinci._isle] | 3085 [run_camera] | 3085 [run_camera] | FARKLI | ok
+a36  | codes/rpi_inference.py:2425 [run_camera] | 2709 [<modul>] | 3090 [run_camera] | 3090 [run_camera] | FARKLI | ok
+a37  | codes/rpi_inference.py:2485 [kamera_bitis_raporu] | 3150 [kamera_bitis_raporu] | 3150 [kamera_bitis_raporu] | 3150 [kamera_bitis_raporu] | ok | ok
+sA3  | codes/rpi_inference.py:2432 [kamera_kareleri] | 2432 [IsaretliYayinci._isle] | 3097 [kamera_kareleri] | 3097 [kamera_kareleri] | FARKLI | ok
+a40  | codes/rpi_inference.py:2459 [kamera_kareleri] | 2850 [run_video] | 3124 [kamera_kareleri] | 3124 [kamera_kareleri] | FARKLI | ok
+a41  | codes/rpi_inference.py:2465 [kamera_kareleri] | 2854 [run_video] | 3130 [kamera_kareleri] | 3130 [kamera_kareleri] | FARKLI | ok
+a42  | codes/rpi_inference.py:2466 [kamera_kareleri] | 3131 [kamera_kareleri] | 3131 [kamera_kareleri] | 3131 [kamera_kareleri] | ok | ok
+a43  | codes/rpi_inference.py:2470 [kamera_kareleri] | 3135 [kamera_kareleri] | 3135 [kamera_kareleri] | 3135 [kamera_kareleri] | ok | ok
+a44  | codes/rpi_inference.py:2482 [kamera_kareleri] | 3147 [kamera_kareleri] | 3147 [kamera_kareleri] | 3147 [kamera_kareleri] | ok | ok
+sA4  | codes/rpi_inference.py:2817 [main] | 2817 [run_video] | 3510 [main] | 3510 [main] | FARKLI | ok
+a50  | codes/rpi_inference.py:2116 [_durdurma_sinyallerini_geri_al] | 2768 [_durdurma_sinyallerini_geri_al] | 2768 [_durdurma_sinyallerini_geri_al] | 2768 [_durdurma_sinyallerini_geri_al] | ok | ok
+a51  | codes/rpi_inference.py:2819 [main] | 3515 [main] | 3515 [main] | 3515 [main] | ok | ok
+a52  | codes/rpi_inference.py:2825 [main] | 3521 [main] | 3521 [main] | 3521 [main] | ok | ok
+a53  | codes/rpi_inference.py:2826 [main] | 3522 [main] | 3522 [main] | 3522 [main] | ok | ok
+a54  | codes/rpi_inference.py:375 [CanliOlcekSaglayici.kapat] | 416 [CanliOlcekSaglayici.kapat] | 416 [CanliOlcekSaglayici.kapat] | 416 [CanliOlcekSaglayici.kapat] | ok | ok
+a01  | codes/rpi_inference.py:2492 [_arguman_ayristirici] | 3157 [_arguman_ayristirici] | 3157 [_arguman_ayristirici] | 3157 [_arguman_ayristirici] | ok | ok
+
+OZET (51 dugum): ESKI arac hakemden farkli 17 ['sA1', 'a06', 'sA2', 'a15', 'a17', 'a19', 'a21', 'a27', 'a28', 'a30', 'a33', 'a35', 'a36', 'sA3', 'a40', 'a41', 'sA4']; kapsam disi 17 ['sA1', 'a06', 'sA2', 'a15', 'a17', 'a19', 'a21', 'a27', 'a28', 'a30', 'a33', 'a35', 'a36', 'sA3', 'a40', 'a41', 'sA4']
+OZET (51 dugum): YENI arac hakemden farkli 0 []; kapsam disi 0 []
+
+== akis_diyagram_dogrula ESKI aracin ciktisina (seceneksiz, sonra --taban HEAD)
+FDR\sekiller\akis_a.mmd: 51 düğüm · 46 tuttu · tam satır 46 · hata 5
+  HATA: sA1: 'def main()' codes/rpi_inference.py:2705±3 içinde YOK
+  HATA: sA2: 'def run_camera()' codes/rpi_inference.py:2298±3 içinde YOK
+  HATA: a35: 'if cv2.waitKey(1) & 0xFF == ord("q"):' codes/rpi_inference.py:2420±3 içinde YOK
+  HATA: sA3: 'def kamera_kareleri()' codes/rpi_inference.py:2432±3 içinde YOK
+  HATA: sA4: 'finally:' codes/rpi_inference.py:2817±3 içinde YOK
+FDR\sekiller\akis_a.mmd: 51 düğüm · 46 tuttu · tam satır 46 · hata 5
+  HATA: sA1: 'def main()' codes/rpi_inference.py:2705±3 içinde YOK
+  HATA: sA2: 'def run_camera()' codes/rpi_inference.py:2298±3 içinde YOK
+  HATA: a35: 'if cv2.waitKey(1) & 0xFF == ord("q"):' codes/rpi_inference.py:2420±3 içinde YOK
+  HATA: sA3: 'def kamera_kareleri()' codes/rpi_inference.py:2432±3 içinde YOK
+  HATA: sA4: 'finally:' codes/rpi_inference.py:2817±3 içinde YOK
+  kapsam (taban HEAD): 51 düğüm karşılaştırıldı · tabanda yok 0 · KAPSAM DEGISTI 17 · kapsam hatası 17
+  KAPSAM DEGISTI: sA1: taban codes/rpi_inference.py:2705 [main] → çalışma codes/rpi_inference.py:2705 [<modul>]
+  KAPSAM DEGISTI: a06: taban codes/rpi_inference.py:2719 [main] → çalışma codes/rpi_inference.py:3354 [_argumanlari_dogrula]
+  KAPSAM DEGISTI: sA2: taban codes/rpi_inference.py:2298 [run_camera] → çalışma codes/rpi_inference.py:2298 [IsaretliYayinci.__init__]
+  KAPSAM DEGISTI: a15: taban codes/rpi_inference.py:2316 [run_camera] → çalışma codes/rpi_inference.py:2792 [run_video]
+  KAPSAM DEGISTI: a17: taban codes/rpi_inference.py:2329 [run_camera] → çalışma codes/rpi_inference.py:2841 [run_video]
+  KAPSAM DEGISTI: a19: taban codes/rpi_inference.py:2339 [run_camera] → çalışma codes/rpi_inference.py:2850 [run_video]
+  KAPSAM DEGISTI: a21: taban codes/rpi_inference.py:2360 [run_camera] → çalışma codes/rpi_inference.py:2641 [run_image]
+  KAPSAM DEGISTI: a27: taban codes/rpi_inference.py:2390 [run_camera] → çalışma codes/rpi_inference.py:2669 [run_image]
+  KAPSAM DEGISTI: a28: taban codes/rpi_inference.py:2391 [run_camera] → çalışma codes/rpi_inference.py:2670 [run_image]
+  KAPSAM DEGISTI: a30: taban codes/rpi_inference.py:2399 [run_camera] → çalışma codes/rpi_inference.py:2901 [run_video]
+  KAPSAM DEGISTI: a33: taban codes/rpi_inference.py:2403 [run_camera] → çalışma codes/rpi_inference.py:2932 [run_video]
+  KAPSAM DEGISTI: a35: taban codes/rpi_inference.py:2420 [run_camera] → çalışma codes/rpi_inference.py:2420 [IsaretliYayinci._isle]
+  KAPSAM DEGISTI: a36: taban codes/rpi_inference.py:2425 [run_camera] → çalışma codes/rpi_inference.py:2709 [<modul>]
+  KAPSAM DEGISTI: sA3: taban codes/rpi_inference.py:2432 [kamera_kareleri] → çalışma codes/rpi_inference.py:2432 [IsaretliYayinci._isle]
+  KAPSAM DEGISTI: a40: taban codes/rpi_inference.py:2459 [kamera_kareleri] → çalışma codes/rpi_inference.py:2850 [run_video]
+  KAPSAM DEGISTI: a41: taban codes/rpi_inference.py:2465 [kamera_kareleri] → çalışma codes/rpi_inference.py:2854 [run_video]
+  KAPSAM DEGISTI: sA4: taban codes/rpi_inference.py:2817 [main] → çalışma codes/rpi_inference.py:2817 [run_video]
+seceneksiz gecti=False · --taban HEAD gecti=False

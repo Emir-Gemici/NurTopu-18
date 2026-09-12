@@ -1,0 +1,38 @@
+depo: HEAD~1 = taban (f2:2, f1:8) · HEAD = basa f3 (f3:8, f2:13, f1:19) · n1 → pkg/mod.py:8 · .mmd'nin son commit'i HEAD~1
+
+== 1. ESKI (fd65b427) dogrula --taban HEAD
+sekil\akis_t.mmd: 1 düğüm · 1 tuttu · tam satır 1 · hata 0
+  kapsam (taban HEAD): 1 düğüm karşılaştırıldı · tabanda yok 0 · KAPSAM DEGISTI 0 · kapsam hatası 0
+gecti=True
+
+== 2. YENI dogrula --taban HEAD
+sekil\akis_t.mmd: 1 düğüm · 1 tuttu · tam satır 1 · hata 0
+  kapsam (taban HEAD): 1 düğüm karşılaştırıldı · tabanda yok 0 · KAPSAM DEGISTI 0 · TABAN SUPHELI 1 · kapsam hatası 1
+  TABAN SUPHELI: n1: .mmd 2adb423 commit'inden beri değişmedi, kod değişti — pkg/mod.py:8 o commit'te [f1], tabanda [f3]; .mmd satırları o commit'e göre olabilir (--taban 2adb423 ile de koşun)
+gecti=False
+
+== 3. YENI dogrula --taban HEAD~1 (dogru taban)
+sekil\akis_t.mmd: 1 düğüm · 1 tuttu · tam satır 1 · hata 0
+  kapsam (taban HEAD~1): 1 düğüm karşılaştırıldı · tabanda yok 0 · KAPSAM DEGISTI 1 · TABAN SUPHELI 0 · kapsam hatası 1
+  KAPSAM DEGISTI: n1: taban pkg/mod.py:8 [f1] → çalışma pkg/mod.py:8 [f3]
+gecti=False
+
+== 4. YENI tazeleyici varsayilan cikis=2
+taban: HEAD = 9fc09be6959d (varsayilan — taban suphesi engeller)
+TABAN SUPHELI: akis_t.mmd: n1: pkg/mod.py:8 — sonuc tabana bagli: secilen taban 9fc09be → 8 [f3] · 2adb423 (.mmd'nin son commit'i) → 19 [f1]
+SONUC: TABAN SUPHELI (1 dugum) — hicbir dosya yazilmadi. Sonuc tabana bagli: .mmd satirlarinin ait oldugu tabani --taban ile acikca verin (.mmd degismediyse son commit'i; onceki bir tazelemeyle degistiyse .mmd'yi git checkout ile geri alip yeniden kosun).
+   .mmd bayt-es: True
+
+== 5. YENI tazeleyici --taban HEAD~1 --kuru cikis=0
+taban: HEAD~1 = 2adb423db068 (elle verildi — taban suphesi yalniz uyarir)
+akis_t.mmd: 1 dugum tazelenecek (KURU — dosya yazilmadi); cozulemeyen 0
+   n1: pkg/mod.py:8 -> 19  [f1]
+SONUC: 1 dugum tazelenecek (KURU — dosya yazilmadi) · 0 hata
+
+== 6. ESKI (fd65b427) tazeleyici varsayilan (HEAD) cikis=0
+taban: HEAD = 9fc09be6959d
+akis_t.mmd: 0 dugum tazelendi; cozulemeyen 0
+SONUC: 0 dugum tazelendi · 0 hata
+   %% koddan turetildi 9fc09be 2026-09-10
+     n1["sonuc = hesapla(x)<br/>pkg/mod.py:8"]
+   n1 :8 calisma agacinda [f3] (dogrusu 19 [f1]) · dosya degisti (baslik damgasi): True

@@ -1,0 +1,668 @@
+{
+ "etiket": "benzetim (MuJoCo sentetik kareler, yer gerçeği poz), saha ölçümü değil",
+ "on_kayit": "results/fdr_sprint_20260910/H1/t235/ON_KAYIT.md SS3",
+ "not": "uygulama testi — bagimsiz kanit DEGIL (Analiz C karsi-olgusunun yeniden uretimi)",
+ "sim_cozunurluk_px": 1280,
+ "mpp_cozunurluk_tutarsiz_kare_n": 0,
+ "alan_merkezi_htab": [
+  0.0,
+  0.0
+ ],
+ "kerteriz_derece": 0.0,
+ "alan_genislik_m": 50.0,
+ "ozet": {
+  "kerteriz": {
+   "n": 8,
+   "A1=dunya": 8,
+   "KARE=dunya": 3,
+   "KARE_yeniden=yayinlanan": 8
+  },
+  "kosum_tur3_uretim": {
+   "n": 20,
+   "A1=dunya": 20,
+   "KARE=dunya": 6,
+   "KARE_yeniden=yayinlanan": 20
+  }
+ },
+ "A1_dunya": [
+  28,
+  28
+ ],
+ "A1_beklenen": [
+  28,
+  28
+ ],
+ "KARE_beklenen": {
+  "kerteriz": [
+   3,
+   8
+  ],
+  "kosum_tur3_uretim": [
+   6,
+   20
+  ]
+ },
+ "KARE_negatif_kontrol_uretildi": true,
+ "KARE_yayin_yeniden_uretildi": true,
+ "kbh_sim_geri_donus_maks_m": 0.0,
+ "tezgah_bos": false,
+ "gecti": true,
+ "kareler": [
+  {
+   "kaynak": "kerteriz",
+   "harita": "1_kolay",
+   "tohum": 42,
+   "kare": 9,
+   "acik_yol": 1,
+   "dunya_yolu": 1,
+   "yayinlanan": 2,
+   "KARE_yeniden": 2,
+   "KARE_sayim": [
+    0,
+    1078,
+    0
+   ],
+   "A1": 1,
+   "A1_sayim": [
+    1078,
+    0,
+    0
+   ],
+   "kbh_sim_geri_donus_maks_m": 0.0
+  },
+  {
+   "kaynak": "kerteriz",
+   "harita": "1_kolay",
+   "tohum": 42,
+   "kare": 15,
+   "acik_yol": 1,
+   "dunya_yolu": 1,
+   "yayinlanan": 1,
+   "KARE_yeniden": 1,
+   "KARE_sayim": [
+    808,
+    153,
+    0
+   ],
+   "A1": 1,
+   "A1_sayim": [
+    961,
+    0,
+    0
+   ],
+   "kbh_sim_geri_donus_maks_m": 0.0
+  },
+  {
+   "kaynak": "kerteriz",
+   "harita": "2_kolay",
+   "tohum": 42,
+   "kare": 9,
+   "acik_yol": 1,
+   "dunya_yolu": 1,
+   "yayinlanan": 2,
+   "KARE_yeniden": 2,
+   "KARE_sayim": [
+    0,
+    1016,
+    22
+   ],
+   "A1": 1,
+   "A1_sayim": [
+    1038,
+    0,
+    0
+   ],
+   "kbh_sim_geri_donus_maks_m": 0.0
+  },
+  {
+   "kaynak": "kerteriz",
+   "harita": "2_orta",
+   "tohum": 42,
+   "kare": 15,
+   "acik_yol": 1,
+   "dunya_yolu": 1,
+   "yayinlanan": 1,
+   "KARE_yeniden": 1,
+   "KARE_sayim": [
+    861,
+    427,
+    203
+   ],
+   "A1": 1,
+   "A1_sayim": [
+    1009,
+    468,
+    14
+   ],
+   "kbh_sim_geri_donus_maks_m": 0.0
+  },
+  {
+   "kaynak": "kerteriz",
+   "harita": "4_zor",
+   "tohum": 42,
+   "kare": 9,
+   "acik_yol": 1,
+   "dunya_yolu": 1,
+   "yayinlanan": 2,
+   "KARE_yeniden": 2,
+   "KARE_sayim": [
+    0,
+    1028,
+    0
+   ],
+   "A1": 1,
+   "A1_sayim": [
+    1028,
+    0,
+    0
+   ],
+   "kbh_sim_geri_donus_maks_m": 0.0
+  },
+  {
+   "kaynak": "kerteriz",
+   "harita": "5_zor",
+   "tohum": 42,
+   "kare": 9,
+   "acik_yol": 2,
+   "dunya_yolu": 2,
+   "yayinlanan": 3,
+   "KARE_yeniden": 3,
+   "KARE_sayim": [
+    0,
+    17,
+    1126
+   ],
+   "A1": 2,
+   "A1_sayim": [
+    75,
+    1068,
+    0
+   ],
+   "kbh_sim_geri_donus_maks_m": 0.0
+  },
+  {
+   "kaynak": "kerteriz",
+   "harita": "5_zor",
+   "tohum": 42,
+   "kare": 15,
+   "acik_yol": 2,
+   "dunya_yolu": 2,
+   "yayinlanan": 2,
+   "KARE_yeniden": 2,
+   "KARE_sayim": [
+    0,
+    823,
+    240
+   ],
+   "A1": 2,
+   "A1_sayim": [
+    76,
+    987,
+    0
+   ],
+   "kbh_sim_geri_donus_maks_m": 0.0
+  },
+  {
+   "kaynak": "kerteriz",
+   "harita": "5_zor",
+   "tohum": 42,
+   "kare": 20,
+   "acik_yol": 2,
+   "dunya_yolu": 2,
+   "yayinlanan": 1,
+   "KARE_yeniden": 1,
+   "KARE_sayim": [
+    683,
+    430,
+    0
+   ],
+   "A1": 2,
+   "A1_sayim": [
+    70,
+    1043,
+    0
+   ],
+   "kbh_sim_geri_donus_maks_m": 0.0
+  },
+  {
+   "kaynak": "kosum_tur3_uretim",
+   "harita": "1_kolay",
+   "tohum": 42,
+   "kare": 9,
+   "acik_yol": 1,
+   "dunya_yolu": 1,
+   "yayinlanan": 2,
+   "KARE_yeniden": 2,
+   "KARE_sayim": [
+    0,
+    1078,
+    0
+   ],
+   "A1": 1,
+   "A1_sayim": [
+    1078,
+    0,
+    0
+   ],
+   "kbh_sim_geri_donus_maks_m": 0.0
+  },
+  {
+   "kaynak": "kosum_tur3_uretim",
+   "harita": "1_kolay",
+   "tohum": 42,
+   "kare": 15,
+   "acik_yol": 1,
+   "dunya_yolu": 1,
+   "yayinlanan": 1,
+   "KARE_yeniden": 1,
+   "KARE_sayim": [
+    808,
+    153,
+    0
+   ],
+   "A1": 1,
+   "A1_sayim": [
+    961,
+    0,
+    0
+   ],
+   "kbh_sim_geri_donus_maks_m": 0.0
+  },
+  {
+   "kaynak": "kosum_tur3_uretim",
+   "harita": "1_kolay",
+   "tohum": 43,
+   "kare": 9,
+   "acik_yol": 1,
+   "dunya_yolu": 1,
+   "yayinlanan": 2,
+   "KARE_yeniden": 2,
+   "KARE_sayim": [
+    0,
+    1028,
+    0
+   ],
+   "A1": 1,
+   "A1_sayim": [
+    1028,
+    0,
+    0
+   ],
+   "kbh_sim_geri_donus_maks_m": 0.0
+  },
+  {
+   "kaynak": "kosum_tur3_uretim",
+   "harita": "1_kolay",
+   "tohum": 43,
+   "kare": 15,
+   "acik_yol": 1,
+   "dunya_yolu": 1,
+   "yayinlanan": 1,
+   "KARE_yeniden": 1,
+   "KARE_sayim": [
+    810,
+    144,
+    0
+   ],
+   "A1": 1,
+   "A1_sayim": [
+    954,
+    0,
+    0
+   ],
+   "kbh_sim_geri_donus_maks_m": 0.0
+  },
+  {
+   "kaynak": "kosum_tur3_uretim",
+   "harita": "1_kolay",
+   "tohum": 44,
+   "kare": 9,
+   "acik_yol": 1,
+   "dunya_yolu": 1,
+   "yayinlanan": 2,
+   "KARE_yeniden": 2,
+   "KARE_sayim": [
+    0,
+    1028,
+    0
+   ],
+   "A1": 1,
+   "A1_sayim": [
+    1028,
+    0,
+    0
+   ],
+   "kbh_sim_geri_donus_maks_m": 0.0
+  },
+  {
+   "kaynak": "kosum_tur3_uretim",
+   "harita": "2_kolay",
+   "tohum": 42,
+   "kare": 9,
+   "acik_yol": 1,
+   "dunya_yolu": 1,
+   "yayinlanan": 2,
+   "KARE_yeniden": 2,
+   "KARE_sayim": [
+    0,
+    1016,
+    22
+   ],
+   "A1": 1,
+   "A1_sayim": [
+    1038,
+    0,
+    0
+   ],
+   "kbh_sim_geri_donus_maks_m": 0.0
+  },
+  {
+   "kaynak": "kosum_tur3_uretim",
+   "harita": "2_kolay",
+   "tohum": 43,
+   "kare": 9,
+   "acik_yol": 1,
+   "dunya_yolu": 1,
+   "yayinlanan": 2,
+   "KARE_yeniden": 2,
+   "KARE_sayim": [
+    0,
+    1014,
+    24
+   ],
+   "A1": 1,
+   "A1_sayim": [
+    1038,
+    0,
+    0
+   ],
+   "kbh_sim_geri_donus_maks_m": 0.0
+  },
+  {
+   "kaynak": "kosum_tur3_uretim",
+   "harita": "2_kolay",
+   "tohum": 44,
+   "kare": 9,
+   "acik_yol": 1,
+   "dunya_yolu": 1,
+   "yayinlanan": 2,
+   "KARE_yeniden": 2,
+   "KARE_sayim": [
+    0,
+    1022,
+    6
+   ],
+   "A1": 1,
+   "A1_sayim": [
+    1028,
+    0,
+    0
+   ],
+   "kbh_sim_geri_donus_maks_m": 0.0
+  },
+  {
+   "kaynak": "kosum_tur3_uretim",
+   "harita": "2_orta",
+   "tohum": 42,
+   "kare": 15,
+   "acik_yol": 1,
+   "dunya_yolu": 1,
+   "yayinlanan": 1,
+   "KARE_yeniden": 1,
+   "KARE_sayim": [
+    861,
+    427,
+    203
+   ],
+   "A1": 1,
+   "A1_sayim": [
+    1009,
+    468,
+    14
+   ],
+   "kbh_sim_geri_donus_maks_m": 0.0
+  },
+  {
+   "kaynak": "kosum_tur3_uretim",
+   "harita": "4_zor",
+   "tohum": 42,
+   "kare": 9,
+   "acik_yol": 1,
+   "dunya_yolu": 1,
+   "yayinlanan": 2,
+   "KARE_yeniden": 2,
+   "KARE_sayim": [
+    0,
+    1028,
+    0
+   ],
+   "A1": 1,
+   "A1_sayim": [
+    1028,
+    0,
+    0
+   ],
+   "kbh_sim_geri_donus_maks_m": 0.0
+  },
+  {
+   "kaynak": "kosum_tur3_uretim",
+   "harita": "4_zor",
+   "tohum": 44,
+   "kare": 9,
+   "acik_yol": 1,
+   "dunya_yolu": 1,
+   "yayinlanan": 2,
+   "KARE_yeniden": 2,
+   "KARE_sayim": [
+    0,
+    1028,
+    0
+   ],
+   "A1": 1,
+   "A1_sayim": [
+    1028,
+    0,
+    0
+   ],
+   "kbh_sim_geri_donus_maks_m": 0.0
+  },
+  {
+   "kaynak": "kosum_tur3_uretim",
+   "harita": "5_zor",
+   "tohum": 42,
+   "kare": 9,
+   "acik_yol": 2,
+   "dunya_yolu": 2,
+   "yayinlanan": 3,
+   "KARE_yeniden": 3,
+   "KARE_sayim": [
+    0,
+    17,
+    1126
+   ],
+   "A1": 2,
+   "A1_sayim": [
+    75,
+    1068,
+    0
+   ],
+   "kbh_sim_geri_donus_maks_m": 0.0
+  },
+  {
+   "kaynak": "kosum_tur3_uretim",
+   "harita": "5_zor",
+   "tohum": 42,
+   "kare": 15,
+   "acik_yol": 2,
+   "dunya_yolu": 2,
+   "yayinlanan": 2,
+   "KARE_yeniden": 2,
+   "KARE_sayim": [
+    0,
+    823,
+    240
+   ],
+   "A1": 2,
+   "A1_sayim": [
+    76,
+    987,
+    0
+   ],
+   "kbh_sim_geri_donus_maks_m": 0.0
+  },
+  {
+   "kaynak": "kosum_tur3_uretim",
+   "harita": "5_zor",
+   "tohum": 42,
+   "kare": 20,
+   "acik_yol": 2,
+   "dunya_yolu": 2,
+   "yayinlanan": 1,
+   "KARE_yeniden": 1,
+   "KARE_sayim": [
+    683,
+    430,
+    0
+   ],
+   "A1": 2,
+   "A1_sayim": [
+    70,
+    1043,
+    0
+   ],
+   "kbh_sim_geri_donus_maks_m": 0.0
+  },
+  {
+   "kaynak": "kosum_tur3_uretim",
+   "harita": "5_zor",
+   "tohum": 43,
+   "kare": 9,
+   "acik_yol": 2,
+   "dunya_yolu": 2,
+   "yayinlanan": 3,
+   "KARE_yeniden": 3,
+   "KARE_sayim": [
+    0,
+    13,
+    1100
+   ],
+   "A1": 2,
+   "A1_sayim": [
+    71,
+    1042,
+    0
+   ],
+   "kbh_sim_geri_donus_maks_m": 0.0
+  },
+  {
+   "kaynak": "kosum_tur3_uretim",
+   "harita": "5_zor",
+   "tohum": 43,
+   "kare": 15,
+   "acik_yol": 2,
+   "dunya_yolu": 2,
+   "yayinlanan": 2,
+   "KARE_yeniden": 2,
+   "KARE_sayim": [
+    0,
+    790,
+    228
+   ],
+   "A1": 2,
+   "A1_sayim": [
+    78,
+    940,
+    0
+   ],
+   "kbh_sim_geri_donus_maks_m": 0.0
+  },
+  {
+   "kaynak": "kosum_tur3_uretim",
+   "harita": "5_zor",
+   "tohum": 43,
+   "kare": 20,
+   "acik_yol": 2,
+   "dunya_yolu": 2,
+   "yayinlanan": 1,
+   "KARE_yeniden": 1,
+   "KARE_sayim": [
+    658,
+    417,
+    0
+   ],
+   "A1": 2,
+   "A1_sayim": [
+    75,
+    1000,
+    0
+   ],
+   "kbh_sim_geri_donus_maks_m": 0.0
+  },
+  {
+   "kaynak": "kosum_tur3_uretim",
+   "harita": "5_zor",
+   "tohum": 44,
+   "kare": 9,
+   "acik_yol": 2,
+   "dunya_yolu": 2,
+   "yayinlanan": 3,
+   "KARE_yeniden": 3,
+   "KARE_sayim": [
+    0,
+    7,
+    1136
+   ],
+   "A1": 2,
+   "A1_sayim": [
+    65,
+    1078,
+    0
+   ],
+   "kbh_sim_geri_donus_maks_m": 0.0
+  },
+  {
+   "kaynak": "kosum_tur3_uretim",
+   "harita": "5_zor",
+   "tohum": 44,
+   "kare": 15,
+   "acik_yol": 2,
+   "dunya_yolu": 2,
+   "yayinlanan": 2,
+   "KARE_yeniden": 2,
+   "KARE_sayim": [
+    0,
+    831,
+    232
+   ],
+   "A1": 2,
+   "A1_sayim": [
+    72,
+    991,
+    0
+   ],
+   "kbh_sim_geri_donus_maks_m": 0.0
+  },
+  {
+   "kaynak": "kosum_tur3_uretim",
+   "harita": "5_zor",
+   "tohum": 44,
+   "kare": 20,
+   "acik_yol": 2,
+   "dunya_yolu": 2,
+   "yayinlanan": 1,
+   "KARE_yeniden": 1,
+   "KARE_sayim": [
+    682,
+    417,
+    0
+   ],
+   "A1": 2,
+   "A1_sayim": [
+    75,
+    1024,
+    0
+   ],
+   "kbh_sim_geri_donus_maks_m": 0.0
+  }
+ ]
+}

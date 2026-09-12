@@ -20,16 +20,41 @@ KURALI koda bağlar: bir .mmd içindeki HER düğüm (alt-grafik başlıkları d
 
 Mermaid varlık kodları çözülür: #quot; #lt; #gt; #amp; #35; ve #NN;.
 
+KAPSAM DENETİMİ (--taban, AKIS-D / D-448 (6)): metin denetimi, düğüm BAŞKA
+fonksiyondaki aynı metne kaydığında da "tuttu" der (T227: 12 düğüm). `--taban
+<git-ref>` verilince her düğüm için tabandaki .mmd'nin gösterdiği satırın
+(git show <ref>:<yol>) ast ile en içteki def/class nitelikli adı (qualname),
+çalışma ağacındaki satırın qualname'i ile karşılaştırılır; farklıysa
+"KAPSAM DEGISTI" → çıkış 1. Tabandaki .mmd'de olmayan düğüm "yeni" sayılır
+(karşılaştırılamaz, sayısı basılır). Seçenek verilmezse davranış ve çıktı
+değişmez.
+
+TABAN ŞÜPHESİ (AKIS-D2, çürütücü KUSUR-1 + KUSUR-A): tabandaki .mmd'nin bir düğüm
+satırı, O SATIRI yazan commit'teki (L_n) koda göre yazılmıştır. Kod L_n'den sonra
+.mmd tazelenmeden commit'lendiyse tabanın koduna göre okumak yanlış kapsam verir
+ve KAPSAM DEGISTI kör kalır (çürütücü: taban HEAD'de f3'e kayan düğüm "tuttu").
+🔴 L_n DÜĞÜM BAŞINA `git blame` ile alınır, dosya düzeyinde DEĞİL (AKIS-D2 2. RED,
+KUSUR-A): .mmd kod commit'inden SONRA başka bir nedenle (yorum satırı, elle
+eklenen başka düğüm) commit'lenince "dosyaya dokunan son commit" tabanın kendisi
+olur, ikinci taban düşer ve kayma yine sessiz kalırdı (karşı-örnek: A → C kod →
+D .mmd yorumu; `git blame` düğüm satırını A'ya bağlar).
+L_n ≠ taban ve düğümün dosyası L_n ile taban arasında farklıysa tabandaki satırın
+kapsamı L_n'de de hesaplanır; farklıysa "TABAN SUPHELI" → çıkış 1 (--taban L_n
+ile de koşun). Satır kaydırmayan kod değişikliği şüpheli DEĞİLDİR (kapsam aynı).
+
 Kullanım:
   python scripts/akis_diyagram_dogrula.py            # 5 diyagramı doğrula
   python scripts/akis_diyagram_dogrula.py --tablo    # + akis_<x>_dugumler.md yaz
   python scripts/akis_diyagram_dogrula.py --mmd FDR/sekiller/akis_a.mmd
-Çıkış: 0 tüm düğümler tuttu · 1 en az bir hata · 2 dosya yok
+  python scripts/akis_diyagram_dogrula.py --taban HEAD   # + kapsam denetimi
+Çıkış: 0 tüm düğümler tuttu · 1 en az bir hata · 2 dosya yok / taban geçersiz
 """
 
 import argparse
+import ast
 import html
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -57,6 +82,8 @@ RE_TANINAN = re.compile(
 RE_OK = re.compile(r'\s*(?:-->|-\.->|==>|---|-\.-)\s*')
 RE_ID = re.compile(r'^[A-Za-z][A-Za-z0-9_]*$')
 RE_BR = re.compile(r'<br\s*/?>')
+# `git blame --porcelain` grup başlığı: <40-hex sha> <eski satır> <yeni satır> [adet]
+RE_BLAME = re.compile(r'^([0-9a-f]{40}) (\d+) (\d+)(?: (\d+))?$')
 
 
 def varlik_coz(metin):
@@ -203,6 +230,278 @@ def dogrula_metin(metin, kok=KOK, tolerans=SATIR_TOLERANSI):
     return dugumler, hatalar, baslik
 
 
+# ── Kapsam (qualname) katmanı — AKIS-D ───────────────────────────────────
+# Metin denetimi düğümün HANGİ fonksiyonda durduğunu görmez; bu katman her
+# satırı ast ile en içteki def/class'a bağlar. akis_satir_tazele.py da
+# buradan içe aktarır (tek tanım: iki araç aynı kapsam kuralını kullanır).
+MODUL_KAPSAMI = "<modul>"
+_KAPSAM_TIPLERI = (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)
+
+
+def satirlara_bol(metin):
+    """ast satır numaralarıyla uyumlu bölme (yalnız \\n, \\r\\n, \\r)."""
+    return metin.replace("\r\n", "\n").replace("\r", "\n").split("\n")
+
+
+class KapsamHaritasi:
+    """Python kaynağı → her satırın en içteki def/class kapsamı (ast).
+
+    Kapsam kimliği (qualname, sıra): `Sinif.metot` biçiminde nitelikli ad ve
+    aynı ad birden çok kez tanımlıysa (property setter, if/else içinde iki
+    def) kaynak sırasındaki kaçıncı tanım olduğu. Dekoratör satırları tanıma
+    aittir (üyelik aralığı `bas`). Göreli konum çapası ise `def`/`class`
+    satırıdır (`capa`, dekoratörler HARİÇ): dekoratör eklenip çıkarılınca
+    gövdedeki göreli konum kaymaz. Hiçbir def/class içinde olmayan satır
+    MODUL_KAPSAMI'dır (çapa 1).
+    Sözdizimi hatası → SyntaxError (ya da NUL bayt → ValueError).
+    """
+
+    def __init__(self, kaynak):
+        if kaynak.startswith("\ufeff"):
+            kaynak = kaynak[1:]
+        agac = ast.parse(kaynak)
+        self.satir_sayisi = len(satirlara_bol(kaynak))
+        self.kapsamlar = [(MODUL_KAPSAMI, 0, 1, self.satir_sayisi, 1)]
+        self._say = {MODUL_KAPSAMI: 1}
+        self._en_ic = [0] * (self.satir_sayisi + 2)
+        self._gez(agac, "")
+        self._dizin = {k[:2]: i for i, k in enumerate(self.kapsamlar)}
+
+    def _gez(self, dugum, on):
+        # Ön-sıra: önce tanımın tüm aralığı, sonra iç tanımlar üzerine yazar.
+        for c in ast.iter_child_nodes(dugum):
+            if isinstance(c, _KAPSAM_TIPLERI):
+                q = on + c.name
+                sira = self._say.get(q, 0)
+                self._say[q] = sira + 1
+                bas = min([c.lineno] + [d.lineno for d in c.decorator_list])
+                capa = c.lineno
+                i = len(self.kapsamlar)
+                self.kapsamlar.append((q, sira, bas, c.end_lineno, capa))
+                for n in range(bas, c.end_lineno + 1):
+                    self._en_ic[n] = i
+                self._gez(c, q + ".")
+            else:
+                self._gez(c, on)
+
+    def kapsam(self, satir):
+        """1-tabanlı satır → (qualname, sıra); aralık dışı → None."""
+        if not 1 <= satir <= self.satir_sayisi:
+            return None
+        q, s = self.kapsamlar[self._en_ic[satir]][:2]
+        return q, s
+
+    def sayi(self, qualname):
+        """Bu nitelikli adla kaç tanım var (MODUL_KAPSAMI için 1)."""
+        return self._say.get(qualname, 0)
+
+    def baslangic(self, kimlik):
+        """(qualname, sıra) → tanımın ilk satırı (dekoratör dâhil); yoksa None."""
+        i = self._dizin.get(kimlik)
+        return None if i is None else self.kapsamlar[i][2]
+
+    def capa(self, kimlik):
+        """(qualname, sıra) → göreli konum çapası: `def`/`class` satırı (dekoratör
+        HARİÇ); modül → 1; yoksa None. akis_satir_tazele beklenen satırı buna göre
+        hesaplar (AKIS-D2: dekoratörlü başlangıç çapa iken iki dekoratör eklenen
+        fonksiyonda düğüm aynı metnin İLK geçişine sessizce bağlanıyordu)."""
+        i = self._dizin.get(kimlik)
+        return None if i is None else self.kapsamlar[i][4]
+
+    def satirlari(self, kimlik):
+        """En içteki kapsamı TAM OLARAK `kimlik` olan satırlar (iç tanımlar hariç)."""
+        i = self._dizin.get(kimlik)
+        if i is None:
+            return []
+        bas, son = self.kapsamlar[i][2:4]
+        return [n for n in range(bas, son + 1) if self._en_ic[n] == i]
+
+
+def kapsam_metni(kimlik):
+    """(qualname, sıra) → okunur metin; aynı adlı 2. tanım 'ad#2' olur."""
+    q, s = kimlik
+    return q if s == 0 else f"{q}#{s + 1}"
+
+
+def taban_ref_coz(ref, kok=KOK):
+    """git-ref → tam commit sha; commit değilse None."""
+    r = subprocess.run(["git", "-C", str(kok), "rev-parse", "--verify", "--quiet",
+                        f"{ref}^{{commit}}"], capture_output=True, text=True)
+    sha = r.stdout.strip()
+    return sha if r.returncode == 0 and sha else None
+
+
+def taban_icerigi(kok, ref, yol):
+    """`git show <ref>:./<yol>` (yol köke göre, '/' ayraçlı) → metin; yoksa None."""
+    r = subprocess.run(["git", "-C", str(kok), "show", f"{ref}:./{yol}"],
+                       capture_output=True)
+    if r.returncode != 0:
+        return None
+    return r.stdout.decode("utf-8-sig", errors="replace")
+
+
+def satir_kokenleri(kok, ref, yol):
+    """`git blame --porcelain <ref> -- <yol>` → {satır_no: köken_commit}; hata → {}.
+
+    Bir .mmd düğüm satırının KENDİ köken commit'i = o satırı en son yazan commit.
+    🔴 Dosya düzeyindeki "son commit" YETMEZ (AKIS-D2 2. RED, KUSUR-A): .mmd kod
+    commit'inden sonra başka bir nedenle commit'lenince dosya düzeyi seçim tabanın
+    kendisine düşüyor, ikinci taban kayboluyor ve düğümün başka fonksiyona kayması
+    sessiz kalıyordu. Satır numaraları `ref`teki .mmd'ye göredir.
+    """
+    r = subprocess.run(["git", "-C", str(kok), "blame", "--porcelain", ref, "--", yol],
+                       capture_output=True, text=True, encoding="utf-8", errors="replace")
+    if r.returncode != 0:
+        return {}
+    kokenler = {}
+    for s in r.stdout.split("\n"):
+        m = RE_BLAME.match(s.rstrip("\r"))
+        if m:
+            sha, ilk, adet = m.group(1), int(m.group(3)), int(m.group(4) or 1)
+            for k in range(adet):
+                kokenler[ilk + k] = sha
+    return kokenler
+
+
+def mmd_dugum_kokenleri(kok, taban, goreli, taban_mmd):
+    """Tabandaki .mmd'nin her düğümü → SATIRINI yazan commit (tabandan farklıysa).
+
+    → {düğüm_kimliği: köken_commit}; `taban_mmd` None ise boş. Blame'in satır
+    numarası vermediği düğüm atlanır — tahmin edilmez.
+    """
+    if taban_mmd is None:
+        return {}
+    sha = taban_ref_coz(taban, kok)
+    kokenler = satir_kokenleri(kok, taban, goreli)
+    sonuc = {}
+    for t in ayristir(taban_mmd)[0]:
+        k = kokenler.get(t.mmd_satiri)
+        if k is not None and k != sha:
+            sonuc.setdefault(t.kimlik, k)
+    return sonuc
+
+
+class KapsamKaynagi:
+    """(ref, dosya) → metin / KapsamHaritasi önbelleği; ref None = çalışma ağacı."""
+
+    def __init__(self, kok):
+        self.kok = Path(kok)
+        self._metin = {}
+        self._harita = {}
+
+    def metin(self, dosya, ref=None):
+        a = (ref, dosya)
+        if a not in self._metin:
+            if ref is None:
+                yol = self.kok / dosya
+                self._metin[a] = (yol.read_bytes().decode("utf-8-sig", errors="replace")
+                                  if yol.is_file() else None)
+            else:
+                self._metin[a] = taban_icerigi(self.kok, ref, dosya)
+        return self._metin[a]
+
+    def satirlar(self, dosya, ref=None):
+        m = self.metin(dosya, ref)
+        return None if m is None else satirlara_bol(m)
+
+    def harita(self, dosya, ref=None):
+        """KapsamHaritasi; dosya yoksa None; ast hatası SyntaxError/ValueError yükseltir."""
+        a = (ref, dosya)
+        if a not in self._harita:
+            m = self.metin(dosya, ref)
+            self._harita[a] = None if m is None else KapsamHaritasi(m)
+        return self._harita[a]
+
+
+def kapsam_denetle(dugumler, taban_mmd_metni, taban, kaynak, oncekiler=None):
+    """Çalışma .mmd düğümleri ↔ tabandaki .mmd'nin AYNI ID'li düğümü.
+
+    Tabandaki düğümün satırının taban kodundaki kapsamı ile çalışma düğümünün
+    satırının çalışma kodundaki kapsamı karşılaştırılır. `oncekiler`
+    ({düğüm_kimliği: o düğümün SATIRINI yazan commit}, tabandan farklıysa — dosya
+    düzeyi DEĞİL, bkz. mmd_dugum_kokenleri): düğümün dosyası o commit ile taban
+    arasında değiştiyse tabandaki satırın kapsamı o commit'te de hesaplanır;
+    farklıysa "TABAN SUPHELI".
+    → (karşılaştırılan, tabanda_yok, hatalar); hatalar "KAPSAM DEGISTI",
+    "KAPSAM BELIRSIZ", "KAPSAM OLCULEMEDI" ya da "TABAN SUPHELI" ile başlar
+    (hepsi çıkış 1).
+    """
+    taban_dugum = {}
+    if taban_mmd_metni is not None:
+        for t in ayristir(taban_mmd_metni)[0]:
+            taban_dugum.setdefault(t.kimlik, t)
+    oncekiler = oncekiler or {}
+    karsilastirilan, yeni, hatalar = 0, 0, []
+    for d in dugumler:
+        onceki = oncekiler.get(d.kimlik)
+        t = taban_dugum.get(d.kimlik)
+        if t is None:
+            yeni += 1
+            continue
+        if t.dosya is None or d.dosya is None:
+            hatalar.append(f"KAPSAM OLCULEMEDI: {d.kimlik}: dosya:satır yok "
+                           f"(taban {t.dosya is not None}, çalışma {d.dosya is not None})")
+            continue
+        yer_t, yer_c = f"{t.dosya}:{t.satir}", f"{d.dosya}:{d.satir}"
+        if t.dosya != d.dosya:
+            hatalar.append(f"KAPSAM DEGISTI: {d.kimlik}: dosya değişti — "
+                           f"taban {yer_t} → çalışma {yer_c}")
+            continue
+        try:
+            ht, hc = kaynak.harita(t.dosya, taban), kaynak.harita(d.dosya)
+        except (SyntaxError, ValueError) as e:
+            hatalar.append(f"KAPSAM OLCULEMEDI: {d.kimlik}: {d.dosya} ast ile "
+                           f"ayrıştırılamadı ({e.__class__.__name__})")
+            continue
+        if ht is None or hc is None:
+            hatalar.append(f"KAPSAM OLCULEMEDI: {d.kimlik}: {d.dosya} "
+                           + ("tabanda yok" if ht is None else "çalışma ağacında yok"))
+            continue
+        kt, kc = ht.kapsam(t.satir), hc.kapsam(d.satir)
+        if kt is None or kc is None:
+            hatalar.append(f"KAPSAM OLCULEMEDI: {d.kimlik}: satır aralık dışı "
+                           f"(taban {yer_t}, çalışma {yer_c})")
+            continue
+        if onceki is not None and kaynak.satirlar(t.dosya, onceki) != kaynak.satirlar(t.dosya, taban):
+            try:
+                ho = kaynak.harita(t.dosya, onceki)
+            except (SyntaxError, ValueError):
+                ho = None
+            ko = ho.kapsam(t.satir) if ho is not None else None
+            if ko != kt:
+                hatalar.append(
+                    f"TABAN SUPHELI: {d.kimlik}: düğüm satırı {onceki[:7]} commit'inden beri "
+                    f"değişmedi, kod değişti — {yer_t} o commit'te "
+                    f"[{kapsam_metni(ko) if ko else 'ölçülemedi'}], tabanda [{kapsam_metni(kt)}]; "
+                    f".mmd satırı o commit'e göre olabilir (--taban {onceki[:7]} ile de koşun)")
+        karsilastirilan += 1
+        if kt[0] != kc[0]:
+            hatalar.append(f"KAPSAM DEGISTI: {d.kimlik}: taban {yer_t} [{kapsam_metni(kt)}]"
+                           f" → çalışma {yer_c} [{kapsam_metni(kc)}]")
+        elif ht.sayi(kt[0]) != hc.sayi(kt[0]):
+            hatalar.append(f"KAPSAM BELIRSIZ: {d.kimlik}: {kt[0]} adlı tanım sayısı "
+                           f"değişti (taban {ht.sayi(kt[0])}, çalışma {hc.sayi(kt[0])}) — "
+                           f"taban {yer_t} → çalışma {yer_c}")
+        elif kt[1] != kc[1]:
+            hatalar.append(f"KAPSAM DEGISTI: {d.kimlik}: aynı adlı başka tanım — taban "
+                           f"{yer_t} [{kapsam_metni(kt)}] → çalışma {yer_c} [{kapsam_metni(kc)}]")
+    return karsilastirilan, yeni, hatalar
+
+
+def mmd_kapsam_denetle(mmd_yolu, dugumler, kok, taban, kaynak=None):
+    """Bir .mmd için kapsam denetimi → (karşılaştırılan, tabanda_yok, hatalar, taban_mmd_var)."""
+    kok = Path(kok).resolve()
+    kaynak = kaynak if kaynak is not None else KapsamKaynagi(kok)
+    try:
+        goreli = Path(mmd_yolu).resolve().relative_to(kok).as_posix()
+    except ValueError:
+        return 0, 0, [f"KAPSAM OLCULEMEDI: {mmd_yolu} depo kökü dışında"], False
+    taban_mmd = taban_icerigi(kok, taban, goreli)
+    oncekiler = mmd_dugum_kokenleri(kok, taban, goreli, taban_mmd)
+    k, y, h = kapsam_denetle(dugumler, taban_mmd, taban, kaynak, oncekiler)
+    return k, y, h, taban_mmd is not None
+
+
 def tablo_uret(harf, dugumler, baslik):
     """akis_<harf>_dugumler.md içeriği (deterministik; commit .mmd başlığından)."""
     commit, tarih = baslik if baslik else ("?", "?")
@@ -229,21 +528,43 @@ def tablo_uret(harf, dugumler, baslik):
     return "\n".join(sat)
 
 
-def dosyayi_dogrula(mmd_yolu, kok=KOK, tablo=False):
+def _yol_goster(yol, kok):
+    """Köke göre yol; göreli --mmd verilince de (eskiden `yol.relative_to(kok)`
+    göreli yolda ValueError atıyordu — D-440 EK, AKIS-D2). Kök dışında → olduğu gibi."""
+    try:
+        return Path(yol).resolve().relative_to(Path(kok).resolve())
+    except ValueError:
+        return Path(yol)
+
+
+def dosyayi_dogrula(mmd_yolu, kok=KOK, tablo=False, taban=None, kaynak=None):
+    """taban None → eski davranış ve çıktı AYNEN; git-ref → + kapsam denetimi."""
     metin = mmd_yolu.read_text(encoding="utf-8")
     dugumler, hatalar, baslik = dogrula_metin(metin, kok)
     harf = mmd_yolu.stem.replace("akis_", "")
     tam = sum(1 for d in dugumler if d.dogrulama == "tam")
-    print(f"{mmd_yolu.relative_to(kok)}: {len(dugumler)} düğüm · "
+    print(f"{_yol_goster(mmd_yolu, kok)}: {len(dugumler)} düğüm · "
           f"{len(dugumler) - sum(1 for d in dugumler if d.dogrulama is None)} tuttu · "
           f"tam satır {tam} · hata {len(hatalar)}")
     for h in hatalar:
         print(f"  HATA: {h}")
-    if tablo and not hatalar:
+    kapsam_hatalari = []
+    if taban is not None:
+        k, yeni, kapsam_hatalari, var = mmd_kapsam_denetle(mmd_yolu, dugumler, kok,
+                                                           taban, kaynak)
+        degisti = sum(1 for h in kapsam_hatalari if h.startswith("KAPSAM DEGISTI"))
+        supheli = sum(1 for h in kapsam_hatalari if h.startswith("TABAN SUPHELI"))
+        print(f"  kapsam (taban {taban}): {k} düğüm karşılaştırıldı · tabanda yok {yeni}"
+              + ("" if var else " (tabanda .mmd YOK)")
+              + f" · KAPSAM DEGISTI {degisti} · TABAN SUPHELI {supheli}"
+              + f" · kapsam hatası {len(kapsam_hatalari)}")
+        for h in kapsam_hatalari:
+            print(f"  {h}")
+    if tablo and not hatalar and not kapsam_hatalari:
         cikti = mmd_yolu.with_name(f"akis_{harf}_dugumler.md")
         cikti.write_text(tablo_uret(harf, dugumler, baslik), encoding="utf-8")
-        print(f"  tablo: {cikti.relative_to(kok)}")
-    return len(hatalar) == 0
+        print(f"  tablo: {_yol_goster(cikti, kok)}")
+    return len(hatalar) == 0 and not kapsam_hatalari
 
 
 def main(argv=None):
@@ -252,6 +573,9 @@ def main(argv=None):
                     help="yalnız bu .mmd (tekrarlanabilir); verilmezse 5 diyagram")
     ap.add_argument("--tablo", action="store_true",
                     help="hatasız diyagramlar için akis_<x>_dugumler.md yaz")
+    ap.add_argument("--taban", metavar="GIT_REF",
+                    help="kapsam denetimi: her düğümün tabandaki (git show REF) "
+                         "kapsamı (qualname) korunmuş mu; değişen → KAPSAM DEGISTI, çıkış 1")
     args = ap.parse_args(argv)
     yollar = args.mmd or [SEKILLER / f"akis_{h}.mmd" for h in DIYAGRAMLAR]
     eksik = [y for y in yollar if not y.is_file()]
@@ -259,7 +583,15 @@ def main(argv=None):
         for y in eksik:
             print(f"DOSYA YOK: {y}")
         return 2
-    sonuc = [dosyayi_dogrula(y, KOK, args.tablo) for y in yollar]
+    kaynak = None
+    if args.taban is not None:
+        sha = taban_ref_coz(args.taban, KOK)
+        if sha is None:
+            print(f"TABAN GEÇERSİZ: {args.taban!r} bir commit değil")
+            return 2
+        print(f"kapsam tabanı: {args.taban} = {sha[:12]}")
+        kaynak = KapsamKaynagi(Path(KOK).resolve())
+    sonuc = [dosyayi_dogrula(y, KOK, args.tablo, args.taban, kaynak) for y in yollar]
     print("SONUÇ:", "TÜM DÜĞÜMLER TUTTU" if all(sonuc) else "HATA VAR")
     return 0 if all(sonuc) else 1
 

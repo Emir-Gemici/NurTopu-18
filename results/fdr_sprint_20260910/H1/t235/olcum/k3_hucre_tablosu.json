@@ -1,0 +1,2698 @@
+{
+ "etiket": "benzetim (sentetik maske), saha ölçümü değil",
+ "on_kayit": "results/fdr_sprint_20260910/H1/t235/ON_KAYIT.md",
+ "parametreler": {
+  "tohum": 20260910,
+  "cekilis_n": 2000,
+  "s_m": [
+   5.0,
+   6.67,
+   8.0
+  ],
+  "kip_h": [
+   [
+    "4:3",
+    32.0
+   ],
+   [
+    "16:9",
+    40.0
+   ],
+   [
+    "16:9",
+    32.0
+   ]
+  ],
+  "bilgi_kip_h": [
+   [
+    "16:9",
+    32.0
+   ]
+  ],
+  "sigma_c_m": [
+   0.5,
+   1.0
+  ],
+  "sigma_psi_derece": [
+   2.0,
+   5.0
+  ],
+  "sigma_g_m": [
+   1.0,
+   2.0
+  ],
+  "egim_derece": [
+   2.0,
+   3.0
+  ],
+  "hfov_derece": 55.3016,
+  "alan_m": [
+   20.0,
+   20.0
+  ],
+  "tuval_px": 512,
+  "icerik_kutusu": {
+   "4:3": [
+    0,
+    64,
+    512,
+    384
+   ],
+   "16:9": [
+    0,
+    112,
+    512,
+    288
+   ]
+  },
+  "tezgah_kerteriz_derece": 37.0,
+  "tezgah_montaj_yaw_derece": 90.0,
+  "kapi": {
+   "nominal_s_m": [
+    6.67,
+    8.0
+   ],
+   "nominal_sigma_c_m": 1.0,
+   "nominal_sigma_psi_derece": 5.0,
+   "nominal_kip_h": [
+    [
+     "4:3",
+     32.0
+    ],
+    [
+     "16:9",
+     40.0
+    ]
+   ],
+   "nominal_sigma_g_m": 2.0,
+   "oran_yuzde_esigi": 99.0,
+   "kare_fark_puan_esigi": 0.5,
+   "kapi_disi_s_m": [
+    5.0
+   ],
+   "alan_sigma_asgari_pay_m": 1.0
+  }
+ },
+ "k3n": {
+  "s_m": 5.0,
+  "beklenen_KARE": [
+   2,
+   2,
+   2
+  ],
+  "yapilandirmalar": [
+   {
+    "kip": "4:3",
+    "h_m": 32.0,
+    "KARE": [
+     2,
+     2,
+     2
+    ],
+    "A0": [
+     1,
+     2,
+     3
+    ],
+    "A1": [
+     1,
+     2,
+     3
+    ],
+    "KARE_uretti": true
+   },
+   {
+    "kip": "16:9",
+    "h_m": 40.0,
+    "KARE": [
+     2,
+     2,
+     2
+    ],
+    "A0": [
+     1,
+     2,
+     3
+    ],
+    "A1": [
+     1,
+     2,
+     3
+    ],
+    "KARE_uretti": true
+   },
+   {
+    "kip": "16:9",
+    "h_m": 32.0,
+    "KARE": [
+     2,
+     2,
+     2
+    ],
+    "A0": [
+     1,
+     2,
+     3
+    ],
+    "A1": [
+     1,
+     2,
+     3
+    ],
+    "KARE_uretti": true
+   }
+  ],
+  "etiket": "benzetim (sentetik maske), saha ölçümü değil",
+  "gecti": true
+ },
+ "alan_sigma": [
+  {
+   "kip": "4:3",
+   "h_m": 32.0,
+   "mpp": 0.06549,
+   "kare_genislik_m": 33.531,
+   "kare_boy_m": 25.148,
+   "pay_m": 2.574,
+   "fda_kullanilir": true,
+   "etiket": "benzetim (sentetik maske), saha ölçümü değil"
+  },
+  {
+   "kip": "16:9",
+   "h_m": 40.0,
+   "mpp": 0.081862,
+   "kare_genislik_m": 41.913,
+   "kare_boy_m": 23.576,
+   "pay_m": 1.788,
+   "fda_kullanilir": true,
+   "etiket": "benzetim (sentetik maske), saha ölçümü değil"
+  },
+  {
+   "kip": "16:9",
+   "h_m": 32.0,
+   "mpp": 0.06549,
+   "kare_genislik_m": 33.531,
+   "kare_boy_m": 18.861,
+   "pay_m": -0.569,
+   "fda_kullanilir": false,
+   "etiket": "benzetim (sentetik maske), saha ölçümü değil"
+  }
+ ],
+ "hucreler": [
+  {
+   "hucre": "s=5|4:3@32m|sc=0.5|spsi=2",
+   "s_m": 5.0,
+   "kip": "4:3",
+   "h_m": 32.0,
+   "sigma_c_m": 0.5,
+   "sigma_psi_derece": 2.0,
+   "bilgi_hucresi": false,
+   "kapiya_girer": false,
+   "nominal": false,
+   "cekilis_n": 2000,
+   "sahne_n": 6000,
+   "KARE": {
+    "dogru": 3375,
+    "sahne_n": 6000,
+    "oran_yuzde": 56.25,
+    "acik_yol_basina_dogru": [
+     691,
+     2000,
+     684
+    ],
+    "karar_yok": 0
+   },
+   "A0": {
+    "dogru": 5787,
+    "sahne_n": 6000,
+    "oran_yuzde": 96.45,
+    "acik_yol_basina_dogru": [
+     1907,
+     2000,
+     1880
+    ],
+    "karar_yok": 0,
+    "pay_m_p01_p05_medyan": [
+     0.039,
+     0.236,
+     2.063
+    ]
+   },
+   "A1": {
+    "sigma_g=1": {
+     "dogru": 5497,
+     "sahne_n": 6000,
+     "oran_yuzde": 91.617,
+     "acik_yol_basina_dogru": [
+      1774,
+      1973,
+      1750
+     ],
+     "karar_yok": 0
+    },
+    "sigma_g=2": {
+     "dogru": 4845,
+     "sahne_n": 6000,
+     "oran_yuzde": 80.75,
+     "acik_yol_basina_dogru": [
+      1553,
+      1739,
+      1553
+     ],
+     "karar_yok": 0
+    }
+   },
+   "alan_tam_karede_oran_yuzde": 98.1,
+   "etiket": "benzetim (sentetik maske), saha ölçümü değil"
+  },
+  {
+   "hucre": "s=5|4:3@32m|sc=0.5|spsi=5",
+   "s_m": 5.0,
+   "kip": "4:3",
+   "h_m": 32.0,
+   "sigma_c_m": 0.5,
+   "sigma_psi_derece": 5.0,
+   "bilgi_hucresi": false,
+   "kapiya_girer": false,
+   "nominal": false,
+   "cekilis_n": 2000,
+   "sahne_n": 6000,
+   "KARE": {
+    "dogru": 3362,
+    "sahne_n": 6000,
+    "oran_yuzde": 56.033,
+    "acik_yol_basina_dogru": [
+     679,
+     2000,
+     683
+    ],
+    "karar_yok": 0
+   },
+   "A0": {
+    "dogru": 5778,
+    "sahne_n": 6000,
+    "oran_yuzde": 96.3,
+    "acik_yol_basina_dogru": [
+     1899,
+     2000,
+     1879
+    ],
+    "karar_yok": 0,
+    "pay_m_p01_p05_medyan": [
+     0.059,
+     0.223,
+     2.056
+    ]
+   },
+   "A1": {
+    "sigma_g=1": {
+     "dogru": 5494,
+     "sahne_n": 6000,
+     "oran_yuzde": 91.567,
+     "acik_yol_basina_dogru": [
+      1767,
+      1973,
+      1754
+     ],
+     "karar_yok": 0
+    },
+    "sigma_g=2": {
+     "dogru": 4845,
+     "sahne_n": 6000,
+     "oran_yuzde": 80.75,
+     "acik_yol_basina_dogru": [
+      1553,
+      1745,
+      1547
+     ],
+     "karar_yok": 0
+    }
+   },
+   "alan_tam_karede_oran_yuzde": 89.25,
+   "etiket": "benzetim (sentetik maske), saha ölçümü değil"
+  },
+  {
+   "hucre": "s=5|4:3@32m|sc=1|spsi=2",
+   "s_m": 5.0,
+   "kip": "4:3",
+   "h_m": 32.0,
+   "sigma_c_m": 1.0,
+   "sigma_psi_derece": 2.0,
+   "bilgi_hucresi": false,
+   "kapiya_girer": false,
+   "nominal": false,
+   "cekilis_n": 2000,
+   "sahne_n": 6000,
+   "KARE": {
+    "dogru": 3409,
+    "sahne_n": 6000,
+    "oran_yuzde": 56.817,
+    "acik_yol_basina_dogru": [
+     718,
+     2000,
+     691
+    ],
+    "karar_yok": 0
+   },
+   "A0": {
+    "dogru": 5492,
+    "sahne_n": 6000,
+    "oran_yuzde": 91.533,
+    "acik_yol_basina_dogru": [
+     1765,
+     1972,
+     1755
+    ],
+    "karar_yok": 0,
+    "pay_m_p01_p05_medyan": [
+     0.039,
+     0.203,
+     1.965
+    ]
+   },
+   "A1": {
+    "sigma_g=1": {
+     "dogru": 5498,
+     "sahne_n": 6000,
+     "oran_yuzde": 91.633,
+     "acik_yol_basina_dogru": [
+      1772,
+      1973,
+      1753
+     ],
+     "karar_yok": 0
+    },
+    "sigma_g=2": {
+     "dogru": 4850,
+     "sahne_n": 6000,
+     "oran_yuzde": 80.833,
+     "acik_yol_basina_dogru": [
+      1556,
+      1743,
+      1551
+     ],
+     "karar_yok": 0
+    }
+   },
+   "alan_tam_karede_oran_yuzde": 90.0,
+   "etiket": "benzetim (sentetik maske), saha ölçümü değil"
+  },
+  {
+   "hucre": "s=5|4:3@32m|sc=1|spsi=5",
+   "s_m": 5.0,
+   "kip": "4:3",
+   "h_m": 32.0,
+   "sigma_c_m": 1.0,
+   "sigma_psi_derece": 5.0,
+   "bilgi_hucresi": false,
+   "kapiya_girer": false,
+   "nominal": false,
+   "cekilis_n": 2000,
+   "sahne_n": 6000,
+   "KARE": {
+    "dogru": 3381,
+    "sahne_n": 6000,
+    "oran_yuzde": 56.35,
+    "acik_yol_basina_dogru": [
+     699,
+     2000,
+     682
+    ],
+    "karar_yok": 0
+   },
+   "A0": {
+    "dogru": 5491,
+    "sahne_n": 6000,
+    "oran_yuzde": 91.517,
+    "acik_yol_basina_dogru": [
+     1766,
+     1971,
+     1754
+    ],
+    "karar_yok": 0,
+    "pay_m_p01_p05_medyan": [
+     0.039,
+     0.203,
+     1.958
+    ]
+   },
+   "A1": {
+    "sigma_g=1": {
+     "dogru": 5500,
+     "sahne_n": 6000,
+     "oran_yuzde": 91.667,
+     "acik_yol_basina_dogru": [
+      1771,
+      1973,
+      1756
+     ],
+     "karar_yok": 0
+    },
+    "sigma_g=2": {
+     "dogru": 4852,
+     "sahne_n": 6000,
+     "oran_yuzde": 80.867,
+     "acik_yol_basina_dogru": [
+      1555,
+      1746,
+      1551
+     ],
+     "karar_yok": 0
+    }
+   },
+   "alan_tam_karede_oran_yuzde": 79.15,
+   "etiket": "benzetim (sentetik maske), saha ölçümü değil"
+  },
+  {
+   "hucre": "s=5|16:9@40m|sc=0.5|spsi=2",
+   "s_m": 5.0,
+   "kip": "16:9",
+   "h_m": 40.0,
+   "sigma_c_m": 0.5,
+   "sigma_psi_derece": 2.0,
+   "bilgi_hucresi": false,
+   "kapiya_girer": false,
+   "nominal": false,
+   "cekilis_n": 2000,
+   "sahne_n": 6000,
+   "KARE": {
+    "dogru": 2215,
+    "sahne_n": 6000,
+    "oran_yuzde": 36.917,
+    "acik_yol_basina_dogru": [
+     118,
+     2000,
+     97
+    ],
+    "karar_yok": 0
+   },
+   "A0": {
+    "dogru": 5540,
+    "sahne_n": 6000,
+    "oran_yuzde": 92.333,
+    "acik_yol_basina_dogru": [
+     1774,
+     1999,
+     1767
+    ],
+    "karar_yok": 0,
+    "pay_m_p01_p05_medyan": [
+     0.023,
+     0.187,
+     1.983
+    ]
+   },
+   "A1": {
+    "sigma_g=1": {
+     "dogru": 5320,
+     "sahne_n": 6000,
+     "oran_yuzde": 88.667,
+     "acik_yol_basina_dogru": [
+      1688,
+      1948,
+      1684
+     ],
+     "karar_yok": 0
+    },
+    "sigma_g=2": {
+     "dogru": 4769,
+     "sahne_n": 6000,
+     "oran_yuzde": 79.483,
+     "acik_yol_basina_dogru": [
+      1541,
+      1710,
+      1518
+     ],
+     "karar_yok": 0
+    }
+   },
+   "alan_tam_karede_oran_yuzde": 68.05,
+   "etiket": "benzetim (sentetik maske), saha ölçümü değil"
+  },
+  {
+   "hucre": "s=5|16:9@40m|sc=0.5|spsi=5",
+   "s_m": 5.0,
+   "kip": "16:9",
+   "h_m": 40.0,
+   "sigma_c_m": 0.5,
+   "sigma_psi_derece": 5.0,
+   "bilgi_hucresi": false,
+   "kapiya_girer": false,
+   "nominal": false,
+   "cekilis_n": 2000,
+   "sahne_n": 6000,
+   "KARE": {
+    "dogru": 2200,
+    "sahne_n": 6000,
+    "oran_yuzde": 36.667,
+    "acik_yol_basina_dogru": [
+     111,
+     2000,
+     89
+    ],
+    "karar_yok": 0
+   },
+   "A0": {
+    "dogru": 5527,
+    "sahne_n": 6000,
+    "oran_yuzde": 92.117,
+    "acik_yol_basina_dogru": [
+     1769,
+     1999,
+     1759
+    ],
+    "karar_yok": 0,
+    "pay_m_p01_p05_medyan": [
+     0.023,
+     0.146,
+     1.944
+    ]
+   },
+   "A1": {
+    "sigma_g=1": {
+     "dogru": 5305,
+     "sahne_n": 6000,
+     "oran_yuzde": 88.417,
+     "acik_yol_basina_dogru": [
+      1683,
+      1945,
+      1677
+     ],
+     "karar_yok": 0
+    },
+    "sigma_g=2": {
+     "dogru": 4761,
+     "sahne_n": 6000,
+     "oran_yuzde": 79.35,
+     "acik_yol_basina_dogru": [
+      1531,
+      1710,
+      1520
+     ],
+     "karar_yok": 0
+    }
+   },
+   "alan_tam_karede_oran_yuzde": 49.6,
+   "etiket": "benzetim (sentetik maske), saha ölçümü değil"
+  },
+  {
+   "hucre": "s=5|16:9@40m|sc=1|spsi=2",
+   "s_m": 5.0,
+   "kip": "16:9",
+   "h_m": 40.0,
+   "sigma_c_m": 1.0,
+   "sigma_psi_derece": 2.0,
+   "bilgi_hucresi": false,
+   "kapiya_girer": false,
+   "nominal": false,
+   "cekilis_n": 2000,
+   "sahne_n": 6000,
+   "KARE": {
+    "dogru": 2432,
+    "sahne_n": 6000,
+    "oran_yuzde": 40.533,
+    "acik_yol_basina_dogru": [
+     214,
+     2000,
+     218
+    ],
+    "karar_yok": 0
+   },
+   "A0": {
+    "dogru": 5302,
+    "sahne_n": 6000,
+    "oran_yuzde": 88.367,
+    "acik_yol_basina_dogru": [
+     1672,
+     1950,
+     1680
+    ],
+    "karar_yok": 0,
+    "pay_m_p01_p05_medyan": [
+     0.059,
+     0.187,
+     1.906
+    ]
+   },
+   "A1": {
+    "sigma_g=1": {
+     "dogru": 5328,
+     "sahne_n": 6000,
+     "oran_yuzde": 88.8,
+     "acik_yol_basina_dogru": [
+      1695,
+      1948,
+      1685
+     ],
+     "karar_yok": 0
+    },
+    "sigma_g=2": {
+     "dogru": 4773,
+     "sahne_n": 6000,
+     "oran_yuzde": 79.55,
+     "acik_yol_basina_dogru": [
+      1544,
+      1710,
+      1519
+     ],
+     "karar_yok": 0
+    }
+   },
+   "alan_tam_karede_oran_yuzde": 62.6,
+   "etiket": "benzetim (sentetik maske), saha ölçümü değil"
+  },
+  {
+   "hucre": "s=5|16:9@40m|sc=1|spsi=5",
+   "s_m": 5.0,
+   "kip": "16:9",
+   "h_m": 40.0,
+   "sigma_c_m": 1.0,
+   "sigma_psi_derece": 5.0,
+   "bilgi_hucresi": false,
+   "kapiya_girer": false,
+   "nominal": false,
+   "cekilis_n": 2000,
+   "sahne_n": 6000,
+   "KARE": {
+    "dogru": 2416,
+    "sahne_n": 6000,
+    "oran_yuzde": 40.267,
+    "acik_yol_basina_dogru": [
+     209,
+     2000,
+     207
+    ],
+    "karar_yok": 0
+   },
+   "A0": {
+    "dogru": 5286,
+    "sahne_n": 6000,
+    "oran_yuzde": 88.1,
+    "acik_yol_basina_dogru": [
+     1662,
+     1948,
+     1676
+    ],
+    "karar_yok": 0,
+    "pay_m_p01_p05_medyan": [
+     0.059,
+     0.187,
+     1.906
+    ]
+   },
+   "A1": {
+    "sigma_g=1": {
+     "dogru": 5318,
+     "sahne_n": 6000,
+     "oran_yuzde": 88.633,
+     "acik_yol_basina_dogru": [
+      1692,
+      1946,
+      1680
+     ],
+     "karar_yok": 0
+    },
+    "sigma_g=2": {
+     "dogru": 4764,
+     "sahne_n": 6000,
+     "oran_yuzde": 79.4,
+     "acik_yol_basina_dogru": [
+      1536,
+      1712,
+      1516
+     ],
+     "karar_yok": 0
+    }
+   },
+   "alan_tam_karede_oran_yuzde": 46.1,
+   "etiket": "benzetim (sentetik maske), saha ölçümü değil"
+  },
+  {
+   "hucre": "s=5|16:9@32m|sc=0.5|spsi=2",
+   "s_m": 5.0,
+   "kip": "16:9",
+   "h_m": 32.0,
+   "sigma_c_m": 0.5,
+   "sigma_psi_derece": 2.0,
+   "bilgi_hucresi": true,
+   "kapiya_girer": false,
+   "nominal": false,
+   "cekilis_n": 2000,
+   "sahne_n": 6000,
+   "KARE": {
+    "dogru": 3379,
+    "sahne_n": 6000,
+    "oran_yuzde": 56.317,
+    "acik_yol_basina_dogru": [
+     693,
+     2000,
+     686
+    ],
+    "karar_yok": 0
+   },
+   "A0": {
+    "dogru": 5789,
+    "sahne_n": 6000,
+    "oran_yuzde": 96.483,
+    "acik_yol_basina_dogru": [
+     1908,
+     2000,
+     1881
+    ],
+    "karar_yok": 0,
+    "pay_m_p01_p05_medyan": [
+     0.039,
+     0.236,
+     2.07
+    ]
+   },
+   "A1": {
+    "sigma_g=1": {
+     "dogru": 5502,
+     "sahne_n": 6000,
+     "oran_yuzde": 91.7,
+     "acik_yol_basina_dogru": [
+      1777,
+      1973,
+      1752
+     ],
+     "karar_yok": 0
+    },
+    "sigma_g=2": {
+     "dogru": 4845,
+     "sahne_n": 6000,
+     "oran_yuzde": 80.75,
+     "acik_yol_basina_dogru": [
+      1554,
+      1738,
+      1553
+     ],
+     "karar_yok": 0
+    }
+   },
+   "alan_tam_karede_oran_yuzde": 0.0,
+   "etiket": "benzetim (sentetik maske), saha ölçümü değil"
+  },
+  {
+   "hucre": "s=5|16:9@32m|sc=0.5|spsi=5",
+   "s_m": 5.0,
+   "kip": "16:9",
+   "h_m": 32.0,
+   "sigma_c_m": 0.5,
+   "sigma_psi_derece": 5.0,
+   "bilgi_hucresi": true,
+   "kapiya_girer": false,
+   "nominal": false,
+   "cekilis_n": 2000,
+   "sahne_n": 6000,
+   "KARE": {
+    "dogru": 3380,
+    "sahne_n": 6000,
+    "oran_yuzde": 56.333,
+    "acik_yol_basina_dogru": [
+     695,
+     2000,
+     685
+    ],
+    "karar_yok": 0
+   },
+   "A0": {
+    "dogru": 5792,
+    "sahne_n": 6000,
+    "oran_yuzde": 96.533,
+    "acik_yol_basina_dogru": [
+     1911,
+     2000,
+     1881
+    ],
+    "karar_yok": 0,
+    "pay_m_p01_p05_medyan": [
+     0.039,
+     0.236,
+     2.07
+    ]
+   },
+   "A1": {
+    "sigma_g=1": {
+     "dogru": 5502,
+     "sahne_n": 6000,
+     "oran_yuzde": 91.7,
+     "acik_yol_basina_dogru": [
+      1775,
+      1973,
+      1754
+     ],
+     "karar_yok": 0
+    },
+    "sigma_g=2": {
+     "dogru": 4853,
+     "sahne_n": 6000,
+     "oran_yuzde": 80.883,
+     "acik_yol_basina_dogru": [
+      1556,
+      1741,
+      1556
+     ],
+     "karar_yok": 0
+    }
+   },
+   "alan_tam_karede_oran_yuzde": 0.0,
+   "etiket": "benzetim (sentetik maske), saha ölçümü değil"
+  },
+  {
+   "hucre": "s=5|16:9@32m|sc=1|spsi=2",
+   "s_m": 5.0,
+   "kip": "16:9",
+   "h_m": 32.0,
+   "sigma_c_m": 1.0,
+   "sigma_psi_derece": 2.0,
+   "bilgi_hucresi": true,
+   "kapiya_girer": false,
+   "nominal": false,
+   "cekilis_n": 2000,
+   "sahne_n": 6000,
+   "KARE": {
+    "dogru": 3411,
+    "sahne_n": 6000,
+    "oran_yuzde": 56.85,
+    "acik_yol_basina_dogru": [
+     721,
+     2000,
+     690
+    ],
+    "karar_yok": 0
+   },
+   "A0": {
+    "dogru": 5494,
+    "sahne_n": 6000,
+    "oran_yuzde": 91.567,
+    "acik_yol_basina_dogru": [
+     1764,
+     1972,
+     1758
+    ],
+    "karar_yok": 0,
+    "pay_m_p01_p05_medyan": [
+     0.039,
+     0.203,
+     1.971
+    ]
+   },
+   "A1": {
+    "sigma_g=1": {
+     "dogru": 5500,
+     "sahne_n": 6000,
+     "oran_yuzde": 91.667,
+     "acik_yol_basina_dogru": [
+      1775,
+      1973,
+      1752
+     ],
+     "karar_yok": 0
+    },
+    "sigma_g=2": {
+     "dogru": 4853,
+     "sahne_n": 6000,
+     "oran_yuzde": 80.883,
+     "acik_yol_basina_dogru": [
+      1556,
+      1743,
+      1554
+     ],
+     "karar_yok": 0
+    }
+   },
+   "alan_tam_karede_oran_yuzde": 0.0,
+   "etiket": "benzetim (sentetik maske), saha ölçümü değil"
+  },
+  {
+   "hucre": "s=5|16:9@32m|sc=1|spsi=5",
+   "s_m": 5.0,
+   "kip": "16:9",
+   "h_m": 32.0,
+   "sigma_c_m": 1.0,
+   "sigma_psi_derece": 5.0,
+   "bilgi_hucresi": true,
+   "kapiya_girer": false,
+   "nominal": false,
+   "cekilis_n": 2000,
+   "sahne_n": 6000,
+   "KARE": {
+    "dogru": 3413,
+    "sahne_n": 6000,
+    "oran_yuzde": 56.883,
+    "acik_yol_basina_dogru": [
+     721,
+     2000,
+     692
+    ],
+    "karar_yok": 0
+   },
+   "A0": {
+    "dogru": 5501,
+    "sahne_n": 6000,
+    "oran_yuzde": 91.683,
+    "acik_yol_basina_dogru": [
+     1767,
+     1972,
+     1762
+    ],
+    "karar_yok": 0,
+    "pay_m_p01_p05_medyan": [
+     0.039,
+     0.203,
+     1.971
+    ]
+   },
+   "A1": {
+    "sigma_g=1": {
+     "dogru": 5501,
+     "sahne_n": 6000,
+     "oran_yuzde": 91.683,
+     "acik_yol_basina_dogru": [
+      1773,
+      1973,
+      1755
+     ],
+     "karar_yok": 0
+    },
+    "sigma_g=2": {
+     "dogru": 4855,
+     "sahne_n": 6000,
+     "oran_yuzde": 80.917,
+     "acik_yol_basina_dogru": [
+      1557,
+      1741,
+      1557
+     ],
+     "karar_yok": 0
+    }
+   },
+   "alan_tam_karede_oran_yuzde": 0.0,
+   "etiket": "benzetim (sentetik maske), saha ölçümü değil"
+  },
+  {
+   "hucre": "s=6.67|4:3@32m|sc=0.5|spsi=2",
+   "s_m": 6.67,
+   "kip": "4:3",
+   "h_m": 32.0,
+   "sigma_c_m": 0.5,
+   "sigma_psi_derece": 2.0,
+   "bilgi_hucresi": false,
+   "kapiya_girer": true,
+   "nominal": false,
+   "cekilis_n": 2000,
+   "sahne_n": 6000,
+   "KARE": {
+    "dogru": 5191,
+    "sahne_n": 6000,
+    "oran_yuzde": 86.517,
+    "acik_yol_basina_dogru": [
+     1605,
+     2000,
+     1586
+    ],
+    "karar_yok": 0
+   },
+   "A0": {
+    "dogru": 6000,
+    "sahne_n": 6000,
+    "oran_yuzde": 100.0,
+    "acik_yol_basina_dogru": [
+     2000,
+     2000,
+     2000
+    ],
+    "karar_yok": 0,
+    "pay_m_p01_p05_medyan": [
+     1.087,
+     1.532,
+     2.823
+    ]
+   },
+   "A1": {
+    "sigma_g=1": {
+     "dogru": 5946,
+     "sahne_n": 6000,
+     "oran_yuzde": 99.1,
+     "acik_yol_basina_dogru": [
+      1988,
+      1973,
+      1985
+     ],
+     "karar_yok": 0
+    },
+    "sigma_g=2": {
+     "dogru": 5480,
+     "sahne_n": 6000,
+     "oran_yuzde": 91.333,
+     "acik_yol_basina_dogru": [
+      1880,
+      1739,
+      1861
+     ],
+     "karar_yok": 0
+    }
+   },
+   "alan_tam_karede_oran_yuzde": 98.1,
+   "etiket": "benzetim (sentetik maske), saha ölçümü değil"
+  },
+  {
+   "hucre": "s=6.67|4:3@32m|sc=0.5|spsi=5",
+   "s_m": 6.67,
+   "kip": "4:3",
+   "h_m": 32.0,
+   "sigma_c_m": 0.5,
+   "sigma_psi_derece": 5.0,
+   "bilgi_hucresi": false,
+   "kapiya_girer": true,
+   "nominal": false,
+   "cekilis_n": 2000,
+   "sahne_n": 6000,
+   "KARE": {
+    "dogru": 5167,
+    "sahne_n": 6000,
+    "oran_yuzde": 86.117,
+    "acik_yol_basina_dogru": [
+     1589,
+     2000,
+     1578
+    ],
+    "karar_yok": 0
+   },
+   "A0": {
+    "dogru": 6000,
+    "sahne_n": 6000,
+    "oran_yuzde": 100.0,
+    "acik_yol_basina_dogru": [
+     2000,
+     2000,
+     2000
+    ],
+    "karar_yok": 0,
+    "pay_m_p01_p05_medyan": [
+     1.054,
+     1.513,
+     2.823
+    ]
+   },
+   "A1": {
+    "sigma_g=1": {
+     "dogru": 5943,
+     "sahne_n": 6000,
+     "oran_yuzde": 99.05,
+     "acik_yol_basina_dogru": [
+      1986,
+      1973,
+      1984
+     ],
+     "karar_yok": 0
+    },
+    "sigma_g=2": {
+     "dogru": 5486,
+     "sahne_n": 6000,
+     "oran_yuzde": 91.433,
+     "acik_yol_basina_dogru": [
+      1881,
+      1745,
+      1860
+     ],
+     "karar_yok": 0
+    }
+   },
+   "alan_tam_karede_oran_yuzde": 89.25,
+   "etiket": "benzetim (sentetik maske), saha ölçümü değil"
+  },
+  {
+   "hucre": "s=6.67|4:3@32m|sc=1|spsi=2",
+   "s_m": 6.67,
+   "kip": "4:3",
+   "h_m": 32.0,
+   "sigma_c_m": 1.0,
+   "sigma_psi_derece": 2.0,
+   "bilgi_hucresi": false,
+   "kapiya_girer": true,
+   "nominal": false,
+   "cekilis_n": 2000,
+   "sahne_n": 6000,
+   "KARE": {
+    "dogru": 5037,
+    "sahne_n": 6000,
+    "oran_yuzde": 83.95,
+    "acik_yol_basina_dogru": [
+     1524,
+     2000,
+     1513
+    ],
+    "karar_yok": 0
+   },
+   "A0": {
+    "dogru": 5947,
+    "sahne_n": 6000,
+    "oran_yuzde": 99.117,
+    "acik_yol_basina_dogru": [
+     1985,
+     1972,
+     1990
+    ],
+    "karar_yok": 0,
+    "pay_m_p01_p05_medyan": [
+     0.236,
+     0.956,
+     2.823
+    ]
+   },
+   "A1": {
+    "sigma_g=1": {
+     "dogru": 5946,
+     "sahne_n": 6000,
+     "oran_yuzde": 99.1,
+     "acik_yol_basina_dogru": [
+      1988,
+      1973,
+      1985
+     ],
+     "karar_yok": 0
+    },
+    "sigma_g=2": {
+     "dogru": 5488,
+     "sahne_n": 6000,
+     "oran_yuzde": 91.467,
+     "acik_yol_basina_dogru": [
+      1882,
+      1743,
+      1863
+     ],
+     "karar_yok": 0
+    }
+   },
+   "alan_tam_karede_oran_yuzde": 90.0,
+   "etiket": "benzetim (sentetik maske), saha ölçümü değil"
+  },
+  {
+   "hucre": "s=6.67|4:3@32m|sc=1|spsi=5",
+   "s_m": 6.67,
+   "kip": "4:3",
+   "h_m": 32.0,
+   "sigma_c_m": 1.0,
+   "sigma_psi_derece": 5.0,
+   "bilgi_hucresi": false,
+   "kapiya_girer": true,
+   "nominal": true,
+   "cekilis_n": 2000,
+   "sahne_n": 6000,
+   "KARE": {
+    "dogru": 5016,
+    "sahne_n": 6000,
+    "oran_yuzde": 83.6,
+    "acik_yol_basina_dogru": [
+     1508,
+     2000,
+     1508
+    ],
+    "karar_yok": 0
+   },
+   "A0": {
+    "dogru": 5946,
+    "sahne_n": 6000,
+    "oran_yuzde": 99.1,
+    "acik_yol_basina_dogru": [
+     1986,
+     1971,
+     1989
+    ],
+    "karar_yok": 0,
+    "pay_m_p01_p05_medyan": [
+     0.203,
+     0.923,
+     2.823
+    ]
+   },
+   "A1": {
+    "sigma_g=1": {
+     "dogru": 5943,
+     "sahne_n": 6000,
+     "oran_yuzde": 99.05,
+     "acik_yol_basina_dogru": [
+      1986,
+      1973,
+      1984
+     ],
+     "karar_yok": 0
+    },
+    "sigma_g=2": {
+     "dogru": 5489,
+     "sahne_n": 6000,
+     "oran_yuzde": 91.483,
+     "acik_yol_basina_dogru": [
+      1880,
+      1746,
+      1863
+     ],
+     "karar_yok": 0
+    }
+   },
+   "alan_tam_karede_oran_yuzde": 79.15,
+   "etiket": "benzetim (sentetik maske), saha ölçümü değil"
+  },
+  {
+   "hucre": "s=6.67|16:9@40m|sc=0.5|spsi=2",
+   "s_m": 6.67,
+   "kip": "16:9",
+   "h_m": 40.0,
+   "sigma_c_m": 0.5,
+   "sigma_psi_derece": 2.0,
+   "bilgi_hucresi": false,
+   "kapiya_girer": true,
+   "nominal": false,
+   "cekilis_n": 2000,
+   "sahne_n": 6000,
+   "KARE": {
+    "dogru": 3738,
+    "sahne_n": 6000,
+    "oran_yuzde": 62.3,
+    "acik_yol_basina_dogru": [
+     870,
+     2000,
+     868
+    ],
+    "karar_yok": 0
+   },
+   "A0": {
+    "dogru": 5998,
+    "sahne_n": 6000,
+    "oran_yuzde": 99.967,
+    "acik_yol_basina_dogru": [
+     1999,
+     1999,
+     2000
+    ],
+    "karar_yok": 0,
+    "pay_m_p01_p05_medyan": [
+     0.76,
+     1.205,
+     2.678
+    ]
+   },
+   "A1": {
+    "sigma_g=1": {
+     "dogru": 5895,
+     "sahne_n": 6000,
+     "oran_yuzde": 98.25,
+     "acik_yol_basina_dogru": [
+      1980,
+      1948,
+      1967
+     ],
+     "karar_yok": 0
+    },
+    "sigma_g=2": {
+     "dogru": 5421,
+     "sahne_n": 6000,
+     "oran_yuzde": 90.35,
+     "acik_yol_basina_dogru": [
+      1867,
+      1710,
+      1844
+     ],
+     "karar_yok": 0
+    }
+   },
+   "alan_tam_karede_oran_yuzde": 68.05,
+   "etiket": "benzetim (sentetik maske), saha ölçümü değil"
+  },
+  {
+   "hucre": "s=6.67|16:9@40m|sc=0.5|spsi=5",
+   "s_m": 6.67,
+   "kip": "16:9",
+   "h_m": 40.0,
+   "sigma_c_m": 0.5,
+   "sigma_psi_derece": 5.0,
+   "bilgi_hucresi": false,
+   "kapiya_girer": true,
+   "nominal": false,
+   "cekilis_n": 2000,
+   "sahne_n": 6000,
+   "KARE": {
+    "dogru": 3729,
+    "sahne_n": 6000,
+    "oran_yuzde": 62.15,
+    "acik_yol_basina_dogru": [
+     866,
+     2000,
+     863
+    ],
+    "karar_yok": 0
+   },
+   "A0": {
+    "dogru": 5998,
+    "sahne_n": 6000,
+    "oran_yuzde": 99.967,
+    "acik_yol_basina_dogru": [
+     1999,
+     1999,
+     2000
+    ],
+    "karar_yok": 0,
+    "pay_m_p01_p05_medyan": [
+     0.755,
+     1.169,
+     2.678
+    ]
+   },
+   "A1": {
+    "sigma_g=1": {
+     "dogru": 5887,
+     "sahne_n": 6000,
+     "oran_yuzde": 98.117,
+     "acik_yol_basina_dogru": [
+      1978,
+      1945,
+      1964
+     ],
+     "karar_yok": 0
+    },
+    "sigma_g=2": {
+     "dogru": 5417,
+     "sahne_n": 6000,
+     "oran_yuzde": 90.283,
+     "acik_yol_basina_dogru": [
+      1865,
+      1710,
+      1842
+     ],
+     "karar_yok": 0
+    }
+   },
+   "alan_tam_karede_oran_yuzde": 49.6,
+   "etiket": "benzetim (sentetik maske), saha ölçümü değil"
+  },
+  {
+   "hucre": "s=6.67|16:9@40m|sc=1|spsi=2",
+   "s_m": 6.67,
+   "kip": "16:9",
+   "h_m": 40.0,
+   "sigma_c_m": 1.0,
+   "sigma_psi_derece": 2.0,
+   "bilgi_hucresi": false,
+   "kapiya_girer": true,
+   "nominal": false,
+   "cekilis_n": 2000,
+   "sahne_n": 6000,
+   "KARE": {
+    "dogru": 3731,
+    "sahne_n": 6000,
+    "oran_yuzde": 62.183,
+    "acik_yol_basina_dogru": [
+     866,
+     2000,
+     865
+    ],
+    "karar_yok": 0
+   },
+   "A0": {
+    "dogru": 5904,
+    "sahne_n": 6000,
+    "oran_yuzde": 98.4,
+    "acik_yol_basina_dogru": [
+     1975,
+     1950,
+     1979
+    ],
+    "karar_yok": 0,
+    "pay_m_p01_p05_medyan": [
+     0.181,
+     0.678,
+     2.724
+    ]
+   },
+   "A1": {
+    "sigma_g=1": {
+     "dogru": 5895,
+     "sahne_n": 6000,
+     "oran_yuzde": 98.25,
+     "acik_yol_basina_dogru": [
+      1979,
+      1948,
+      1968
+     ],
+     "karar_yok": 0
+    },
+    "sigma_g=2": {
+     "dogru": 5419,
+     "sahne_n": 6000,
+     "oran_yuzde": 90.317,
+     "acik_yol_basina_dogru": [
+      1867,
+      1710,
+      1842
+     ],
+     "karar_yok": 0
+    }
+   },
+   "alan_tam_karede_oran_yuzde": 62.6,
+   "etiket": "benzetim (sentetik maske), saha ölçümü değil"
+  },
+  {
+   "hucre": "s=6.67|16:9@40m|sc=1|spsi=5",
+   "s_m": 6.67,
+   "kip": "16:9",
+   "h_m": 40.0,
+   "sigma_c_m": 1.0,
+   "sigma_psi_derece": 5.0,
+   "bilgi_hucresi": false,
+   "kapiya_girer": true,
+   "nominal": true,
+   "cekilis_n": 2000,
+   "sahne_n": 6000,
+   "KARE": {
+    "dogru": 3714,
+    "sahne_n": 6000,
+    "oran_yuzde": 61.9,
+    "acik_yol_basina_dogru": [
+     853,
+     2000,
+     861
+    ],
+    "karar_yok": 0
+   },
+   "A0": {
+    "dogru": 5900,
+    "sahne_n": 6000,
+    "oran_yuzde": 98.333,
+    "acik_yol_basina_dogru": [
+     1973,
+     1948,
+     1979
+    ],
+    "karar_yok": 0,
+    "pay_m_p01_p05_medyan": [
+     0.141,
+     0.678,
+     2.724
+    ]
+   },
+   "A1": {
+    "sigma_g=1": {
+     "dogru": 5887,
+     "sahne_n": 6000,
+     "oran_yuzde": 98.117,
+     "acik_yol_basina_dogru": [
+      1977,
+      1946,
+      1964
+     ],
+     "karar_yok": 0
+    },
+    "sigma_g=2": {
+     "dogru": 5418,
+     "sahne_n": 6000,
+     "oran_yuzde": 90.3,
+     "acik_yol_basina_dogru": [
+      1866,
+      1712,
+      1840
+     ],
+     "karar_yok": 0
+    }
+   },
+   "alan_tam_karede_oran_yuzde": 46.1,
+   "etiket": "benzetim (sentetik maske), saha ölçümü değil"
+  },
+  {
+   "hucre": "s=6.67|16:9@32m|sc=0.5|spsi=2",
+   "s_m": 6.67,
+   "kip": "16:9",
+   "h_m": 32.0,
+   "sigma_c_m": 0.5,
+   "sigma_psi_derece": 2.0,
+   "bilgi_hucresi": true,
+   "kapiya_girer": false,
+   "nominal": false,
+   "cekilis_n": 2000,
+   "sahne_n": 6000,
+   "KARE": {
+    "dogru": 5197,
+    "sahne_n": 6000,
+    "oran_yuzde": 86.617,
+    "acik_yol_basina_dogru": [
+     1608,
+     2000,
+     1589
+    ],
+    "karar_yok": 0
+   },
+   "A0": {
+    "dogru": 6000,
+    "sahne_n": 6000,
+    "oran_yuzde": 100.0,
+    "acik_yol_basina_dogru": [
+     2000,
+     2000,
+     2000
+    ],
+    "karar_yok": 0,
+    "pay_m_p01_p05_medyan": [
+     1.074,
+     1.532,
+     2.823
+    ]
+   },
+   "A1": {
+    "sigma_g=1": {
+     "dogru": 5946,
+     "sahne_n": 6000,
+     "oran_yuzde": 99.1,
+     "acik_yol_basina_dogru": [
+      1988,
+      1973,
+      1985
+     ],
+     "karar_yok": 0
+    },
+    "sigma_g=2": {
+     "dogru": 5481,
+     "sahne_n": 6000,
+     "oran_yuzde": 91.35,
+     "acik_yol_basina_dogru": [
+      1881,
+      1738,
+      1862
+     ],
+     "karar_yok": 0
+    }
+   },
+   "alan_tam_karede_oran_yuzde": 0.0,
+   "etiket": "benzetim (sentetik maske), saha ölçümü değil"
+  },
+  {
+   "hucre": "s=6.67|16:9@32m|sc=0.5|spsi=5",
+   "s_m": 6.67,
+   "kip": "16:9",
+   "h_m": 32.0,
+   "sigma_c_m": 0.5,
+   "sigma_psi_derece": 5.0,
+   "bilgi_hucresi": true,
+   "kapiya_girer": false,
+   "nominal": false,
+   "cekilis_n": 2000,
+   "sahne_n": 6000,
+   "KARE": {
+    "dogru": 5199,
+    "sahne_n": 6000,
+    "oran_yuzde": 86.65,
+    "acik_yol_basina_dogru": [
+     1606,
+     2000,
+     1593
+    ],
+    "karar_yok": 0
+   },
+   "A0": {
+    "dogru": 6000,
+    "sahne_n": 6000,
+    "oran_yuzde": 100.0,
+    "acik_yol_basina_dogru": [
+     2000,
+     2000,
+     2000
+    ],
+    "karar_yok": 0,
+    "pay_m_p01_p05_medyan": [
+     1.054,
+     1.532,
+     2.832
+    ]
+   },
+   "A1": {
+    "sigma_g=1": {
+     "dogru": 5946,
+     "sahne_n": 6000,
+     "oran_yuzde": 99.1,
+     "acik_yol_basina_dogru": [
+      1988,
+      1973,
+      1985
+     ],
+     "karar_yok": 0
+    },
+    "sigma_g=2": {
+     "dogru": 5487,
+     "sahne_n": 6000,
+     "oran_yuzde": 91.45,
+     "acik_yol_basina_dogru": [
+      1882,
+      1741,
+      1864
+     ],
+     "karar_yok": 0
+    }
+   },
+   "alan_tam_karede_oran_yuzde": 0.0,
+   "etiket": "benzetim (sentetik maske), saha ölçümü değil"
+  },
+  {
+   "hucre": "s=6.67|16:9@32m|sc=1|spsi=2",
+   "s_m": 6.67,
+   "kip": "16:9",
+   "h_m": 32.0,
+   "sigma_c_m": 1.0,
+   "sigma_psi_derece": 2.0,
+   "bilgi_hucresi": true,
+   "kapiya_girer": false,
+   "nominal": false,
+   "cekilis_n": 2000,
+   "sahne_n": 6000,
+   "KARE": {
+    "dogru": 5040,
+    "sahne_n": 6000,
+    "oran_yuzde": 84.0,
+    "acik_yol_basina_dogru": [
+     1525,
+     2000,
+     1515
+    ],
+    "karar_yok": 0
+   },
+   "A0": {
+    "dogru": 5947,
+    "sahne_n": 6000,
+    "oran_yuzde": 99.117,
+    "acik_yol_basina_dogru": [
+     1985,
+     1972,
+     1990
+    ],
+    "karar_yok": 0,
+    "pay_m_p01_p05_medyan": [
+     0.236,
+     0.956,
+     2.823
+    ]
+   },
+   "A1": {
+    "sigma_g=1": {
+     "dogru": 5946,
+     "sahne_n": 6000,
+     "oran_yuzde": 99.1,
+     "acik_yol_basina_dogru": [
+      1988,
+      1973,
+      1985
+     ],
+     "karar_yok": 0
+    },
+    "sigma_g=2": {
+     "dogru": 5488,
+     "sahne_n": 6000,
+     "oran_yuzde": 91.467,
+     "acik_yol_basina_dogru": [
+      1881,
+      1743,
+      1864
+     ],
+     "karar_yok": 0
+    }
+   },
+   "alan_tam_karede_oran_yuzde": 0.0,
+   "etiket": "benzetim (sentetik maske), saha ölçümü değil"
+  },
+  {
+   "hucre": "s=6.67|16:9@32m|sc=1|spsi=5",
+   "s_m": 6.67,
+   "kip": "16:9",
+   "h_m": 32.0,
+   "sigma_c_m": 1.0,
+   "sigma_psi_derece": 5.0,
+   "bilgi_hucresi": true,
+   "kapiya_girer": false,
+   "nominal": false,
+   "cekilis_n": 2000,
+   "sahne_n": 6000,
+   "KARE": {
+    "dogru": 5044,
+    "sahne_n": 6000,
+    "oran_yuzde": 84.067,
+    "acik_yol_basina_dogru": [
+     1526,
+     2000,
+     1518
+    ],
+    "karar_yok": 0
+   },
+   "A0": {
+    "dogru": 5947,
+    "sahne_n": 6000,
+    "oran_yuzde": 99.117,
+    "acik_yol_basina_dogru": [
+     1985,
+     1972,
+     1990
+    ],
+    "karar_yok": 0,
+    "pay_m_p01_p05_medyan": [
+     0.236,
+     0.943,
+     2.823
+    ]
+   },
+   "A1": {
+    "sigma_g=1": {
+     "dogru": 5946,
+     "sahne_n": 6000,
+     "oran_yuzde": 99.1,
+     "acik_yol_basina_dogru": [
+      1988,
+      1973,
+      1985
+     ],
+     "karar_yok": 0
+    },
+    "sigma_g=2": {
+     "dogru": 5486,
+     "sahne_n": 6000,
+     "oran_yuzde": 91.433,
+     "acik_yol_basina_dogru": [
+      1884,
+      1741,
+      1861
+     ],
+     "karar_yok": 0
+    }
+   },
+   "alan_tam_karede_oran_yuzde": 0.0,
+   "etiket": "benzetim (sentetik maske), saha ölçümü değil"
+  },
+  {
+   "hucre": "s=8|4:3@32m|sc=0.5|spsi=2",
+   "s_m": 8.0,
+   "kip": "4:3",
+   "h_m": 32.0,
+   "sigma_c_m": 0.5,
+   "sigma_psi_derece": 2.0,
+   "bilgi_hucresi": false,
+   "kapiya_girer": true,
+   "nominal": false,
+   "cekilis_n": 2000,
+   "sahne_n": 6000,
+   "KARE": {
+    "dogru": 5981,
+    "sahne_n": 6000,
+    "oran_yuzde": 99.683,
+    "acik_yol_basina_dogru": [
+     1990,
+     2000,
+     1991
+    ],
+    "karar_yok": 0
+   },
+   "A0": {
+    "dogru": 6000,
+    "sahne_n": 6000,
+    "oran_yuzde": 100.0,
+    "acik_yol_basina_dogru": [
+     2000,
+     2000,
+     2000
+    ],
+    "karar_yok": 0,
+    "pay_m_p01_p05_medyan": [
+     1.238,
+     1.762,
+     3.74
+    ]
+   },
+   "A1": {
+    "sigma_g=1": {
+     "dogru": 5973,
+     "sahne_n": 6000,
+     "oran_yuzde": 99.55,
+     "acik_yol_basina_dogru": [
+      2000,
+      1973,
+      2000
+     ],
+     "karar_yok": 0
+    },
+    "sigma_g=2": {
+     "dogru": 5663,
+     "sahne_n": 6000,
+     "oran_yuzde": 94.383,
+     "acik_yol_basina_dogru": [
+      1967,
+      1739,
+      1957
+     ],
+     "karar_yok": 0
+    }
+   },
+   "alan_tam_karede_oran_yuzde": 98.1,
+   "etiket": "benzetim (sentetik maske), saha ölçümü değil"
+  },
+  {
+   "hucre": "s=8|4:3@32m|sc=0.5|spsi=5",
+   "s_m": 8.0,
+   "kip": "4:3",
+   "h_m": 32.0,
+   "sigma_c_m": 0.5,
+   "sigma_psi_derece": 5.0,
+   "bilgi_hucresi": false,
+   "kapiya_girer": true,
+   "nominal": false,
+   "cekilis_n": 2000,
+   "sahne_n": 6000,
+   "KARE": {
+    "dogru": 5980,
+    "sahne_n": 6000,
+    "oran_yuzde": 99.667,
+    "acik_yol_basina_dogru": [
+     1990,
+     2000,
+     1990
+    ],
+    "karar_yok": 0
+   },
+   "A0": {
+    "dogru": 6000,
+    "sahne_n": 6000,
+    "oran_yuzde": 100.0,
+    "acik_yol_basina_dogru": [
+     2000,
+     2000,
+     2000
+    ],
+    "karar_yok": 0,
+    "pay_m_p01_p05_medyan": [
+     1.27,
+     1.762,
+     3.74
+    ]
+   },
+   "A1": {
+    "sigma_g=1": {
+     "dogru": 5973,
+     "sahne_n": 6000,
+     "oran_yuzde": 99.55,
+     "acik_yol_basina_dogru": [
+      2000,
+      1973,
+      2000
+     ],
+     "karar_yok": 0
+    },
+    "sigma_g=2": {
+     "dogru": 5667,
+     "sahne_n": 6000,
+     "oran_yuzde": 94.45,
+     "acik_yol_basina_dogru": [
+      1966,
+      1745,
+      1956
+     ],
+     "karar_yok": 0
+    }
+   },
+   "alan_tam_karede_oran_yuzde": 89.25,
+   "etiket": "benzetim (sentetik maske), saha ölçümü değil"
+  },
+  {
+   "hucre": "s=8|4:3@32m|sc=1|spsi=2",
+   "s_m": 8.0,
+   "kip": "4:3",
+   "h_m": 32.0,
+   "sigma_c_m": 1.0,
+   "sigma_psi_derece": 2.0,
+   "bilgi_hucresi": false,
+   "kapiya_girer": true,
+   "nominal": false,
+   "cekilis_n": 2000,
+   "sahne_n": 6000,
+   "KARE": {
+    "dogru": 5854,
+    "sahne_n": 6000,
+    "oran_yuzde": 97.567,
+    "acik_yol_basina_dogru": [
+     1935,
+     2000,
+     1919
+    ],
+    "karar_yok": 0
+   },
+   "A0": {
+    "dogru": 5972,
+    "sahne_n": 6000,
+    "oran_yuzde": 99.533,
+    "acik_yol_basina_dogru": [
+     2000,
+     1972,
+     2000
+    ],
+    "karar_yok": 0,
+    "pay_m_p01_p05_medyan": [
+     0.419,
+     1.251,
+     3.641
+    ]
+   },
+   "A1": {
+    "sigma_g=1": {
+     "dogru": 5973,
+     "sahne_n": 6000,
+     "oran_yuzde": 99.55,
+     "acik_yol_basina_dogru": [
+      2000,
+      1973,
+      2000
+     ],
+     "karar_yok": 0
+    },
+    "sigma_g=2": {
+     "dogru": 5666,
+     "sahne_n": 6000,
+     "oran_yuzde": 94.433,
+     "acik_yol_basina_dogru": [
+      1967,
+      1743,
+      1956
+     ],
+     "karar_yok": 0
+    }
+   },
+   "alan_tam_karede_oran_yuzde": 90.0,
+   "etiket": "benzetim (sentetik maske), saha ölçümü değil"
+  },
+  {
+   "hucre": "s=8|4:3@32m|sc=1|spsi=5",
+   "s_m": 8.0,
+   "kip": "4:3",
+   "h_m": 32.0,
+   "sigma_c_m": 1.0,
+   "sigma_psi_derece": 5.0,
+   "bilgi_hucresi": false,
+   "kapiya_girer": true,
+   "nominal": true,
+   "cekilis_n": 2000,
+   "sahne_n": 6000,
+   "KARE": {
+    "dogru": 5844,
+    "sahne_n": 6000,
+    "oran_yuzde": 97.4,
+    "acik_yol_basina_dogru": [
+     1932,
+     2000,
+     1912
+    ],
+    "karar_yok": 0
+   },
+   "A0": {
+    "dogru": 5971,
+    "sahne_n": 6000,
+    "oran_yuzde": 99.517,
+    "acik_yol_basina_dogru": [
+     2000,
+     1971,
+     2000
+    ],
+    "karar_yok": 0,
+    "pay_m_p01_p05_medyan": [
+     0.452,
+     1.238,
+     3.609
+    ]
+   },
+   "A1": {
+    "sigma_g=1": {
+     "dogru": 5973,
+     "sahne_n": 6000,
+     "oran_yuzde": 99.55,
+     "acik_yol_basina_dogru": [
+      2000,
+      1973,
+      2000
+     ],
+     "karar_yok": 0
+    },
+    "sigma_g=2": {
+     "dogru": 5667,
+     "sahne_n": 6000,
+     "oran_yuzde": 94.45,
+     "acik_yol_basina_dogru": [
+      1966,
+      1746,
+      1955
+     ],
+     "karar_yok": 0
+    }
+   },
+   "alan_tam_karede_oran_yuzde": 79.15,
+   "etiket": "benzetim (sentetik maske), saha ölçümü değil"
+  },
+  {
+   "hucre": "s=8|16:9@40m|sc=0.5|spsi=2",
+   "s_m": 8.0,
+   "kip": "16:9",
+   "h_m": 40.0,
+   "sigma_c_m": 0.5,
+   "sigma_psi_derece": 2.0,
+   "bilgi_hucresi": false,
+   "kapiya_girer": true,
+   "nominal": false,
+   "cekilis_n": 2000,
+   "sahne_n": 6000,
+   "KARE": {
+    "dogru": 4852,
+    "sahne_n": 6000,
+    "oran_yuzde": 80.867,
+    "acik_yol_basina_dogru": [
+     1438,
+     2000,
+     1414
+    ],
+    "karar_yok": 0
+   },
+   "A0": {
+    "dogru": 5999,
+    "sahne_n": 6000,
+    "oran_yuzde": 99.983,
+    "acik_yol_basina_dogru": [
+     2000,
+     1999,
+     2000
+    ],
+    "karar_yok": 0,
+    "pay_m_p01_p05_medyan": [
+     0.959,
+     1.451,
+     3.543
+    ]
+   },
+   "A1": {
+    "sigma_g=1": {
+     "dogru": 5948,
+     "sahne_n": 6000,
+     "oran_yuzde": 99.133,
+     "acik_yol_basina_dogru": [
+      2000,
+      1948,
+      2000
+     ],
+     "karar_yok": 0
+    },
+    "sigma_g=2": {
+     "dogru": 5616,
+     "sahne_n": 6000,
+     "oran_yuzde": 93.6,
+     "acik_yol_basina_dogru": [
+      1963,
+      1710,
+      1943
+     ],
+     "karar_yok": 0
+    }
+   },
+   "alan_tam_karede_oran_yuzde": 68.05,
+   "etiket": "benzetim (sentetik maske), saha ölçümü değil"
+  },
+  {
+   "hucre": "s=8|16:9@40m|sc=0.5|spsi=5",
+   "s_m": 8.0,
+   "kip": "16:9",
+   "h_m": 40.0,
+   "sigma_c_m": 0.5,
+   "sigma_psi_derece": 5.0,
+   "bilgi_hucresi": false,
+   "kapiya_girer": true,
+   "nominal": false,
+   "cekilis_n": 2000,
+   "sahne_n": 6000,
+   "KARE": {
+    "dogru": 4830,
+    "sahne_n": 6000,
+    "oran_yuzde": 80.5,
+    "acik_yol_basina_dogru": [
+     1430,
+     2000,
+     1400
+    ],
+    "karar_yok": 0
+   },
+   "A0": {
+    "dogru": 5999,
+    "sahne_n": 6000,
+    "oran_yuzde": 99.983,
+    "acik_yol_basina_dogru": [
+     2000,
+     1999,
+     2000
+    ],
+    "karar_yok": 0,
+    "pay_m_p01_p05_medyan": [
+     0.959,
+     1.451,
+     3.502
+    ]
+   },
+   "A1": {
+    "sigma_g=1": {
+     "dogru": 5945,
+     "sahne_n": 6000,
+     "oran_yuzde": 99.083,
+     "acik_yol_basina_dogru": [
+      2000,
+      1945,
+      2000
+     ],
+     "karar_yok": 0
+    },
+    "sigma_g=2": {
+     "dogru": 5613,
+     "sahne_n": 6000,
+     "oran_yuzde": 93.55,
+     "acik_yol_basina_dogru": [
+      1962,
+      1710,
+      1941
+     ],
+     "karar_yok": 0
+    }
+   },
+   "alan_tam_karede_oran_yuzde": 49.6,
+   "etiket": "benzetim (sentetik maske), saha ölçümü değil"
+  },
+  {
+   "hucre": "s=8|16:9@40m|sc=1|spsi=2",
+   "s_m": 8.0,
+   "kip": "16:9",
+   "h_m": 40.0,
+   "sigma_c_m": 1.0,
+   "sigma_psi_derece": 2.0,
+   "bilgi_hucresi": false,
+   "kapiya_girer": true,
+   "nominal": false,
+   "cekilis_n": 2000,
+   "sahne_n": 6000,
+   "KARE": {
+    "dogru": 4841,
+    "sahne_n": 6000,
+    "oran_yuzde": 80.683,
+    "acik_yol_basina_dogru": [
+     1428,
+     2000,
+     1413
+    ],
+    "karar_yok": 0
+   },
+   "A0": {
+    "dogru": 5948,
+    "sahne_n": 6000,
+    "oran_yuzde": 99.133,
+    "acik_yol_basina_dogru": [
+     1998,
+     1950,
+     2000
+    ],
+    "karar_yok": 0,
+    "pay_m_p01_p05_medyan": [
+     0.304,
+     1.0,
+     3.461
+    ]
+   },
+   "A1": {
+    "sigma_g=1": {
+     "dogru": 5948,
+     "sahne_n": 6000,
+     "oran_yuzde": 99.133,
+     "acik_yol_basina_dogru": [
+      2000,
+      1948,
+      2000
+     ],
+     "karar_yok": 0
+    },
+    "sigma_g=2": {
+     "dogru": 5616,
+     "sahne_n": 6000,
+     "oran_yuzde": 93.6,
+     "acik_yol_basina_dogru": [
+      1963,
+      1710,
+      1943
+     ],
+     "karar_yok": 0
+    }
+   },
+   "alan_tam_karede_oran_yuzde": 62.6,
+   "etiket": "benzetim (sentetik maske), saha ölçümü değil"
+  },
+  {
+   "hucre": "s=8|16:9@40m|sc=1|spsi=5",
+   "s_m": 8.0,
+   "kip": "16:9",
+   "h_m": 40.0,
+   "sigma_c_m": 1.0,
+   "sigma_psi_derece": 5.0,
+   "bilgi_hucresi": false,
+   "kapiya_girer": true,
+   "nominal": true,
+   "cekilis_n": 2000,
+   "sahne_n": 6000,
+   "KARE": {
+    "dogru": 4810,
+    "sahne_n": 6000,
+    "oran_yuzde": 80.167,
+    "acik_yol_basina_dogru": [
+     1414,
+     2000,
+     1396
+    ],
+    "karar_yok": 0
+   },
+   "A0": {
+    "dogru": 5946,
+    "sahne_n": 6000,
+    "oran_yuzde": 99.1,
+    "acik_yol_basina_dogru": [
+     1998,
+     1948,
+     2000
+    ],
+    "karar_yok": 0,
+    "pay_m_p01_p05_medyan": [
+     0.304,
+     1.0,
+     3.461
+    ]
+   },
+   "A1": {
+    "sigma_g=1": {
+     "dogru": 5946,
+     "sahne_n": 6000,
+     "oran_yuzde": 99.1,
+     "acik_yol_basina_dogru": [
+      2000,
+      1946,
+      2000
+     ],
+     "karar_yok": 0
+    },
+    "sigma_g=2": {
+     "dogru": 5617,
+     "sahne_n": 6000,
+     "oran_yuzde": 93.617,
+     "acik_yol_basina_dogru": [
+      1962,
+      1712,
+      1943
+     ],
+     "karar_yok": 0
+    }
+   },
+   "alan_tam_karede_oran_yuzde": 46.1,
+   "etiket": "benzetim (sentetik maske), saha ölçümü değil"
+  },
+  {
+   "hucre": "s=8|16:9@32m|sc=0.5|spsi=2",
+   "s_m": 8.0,
+   "kip": "16:9",
+   "h_m": 32.0,
+   "sigma_c_m": 0.5,
+   "sigma_psi_derece": 2.0,
+   "bilgi_hucresi": true,
+   "kapiya_girer": false,
+   "nominal": false,
+   "cekilis_n": 2000,
+   "sahne_n": 6000,
+   "KARE": {
+    "dogru": 5982,
+    "sahne_n": 6000,
+    "oran_yuzde": 99.7,
+    "acik_yol_basina_dogru": [
+     1990,
+     2000,
+     1992
+    ],
+    "karar_yok": 0
+   },
+   "A0": {
+    "dogru": 6000,
+    "sahne_n": 6000,
+    "oran_yuzde": 100.0,
+    "acik_yol_basina_dogru": [
+     2000,
+     2000,
+     2000
+    ],
+    "karar_yok": 0,
+    "pay_m_p01_p05_medyan": [
+     1.238,
+     1.762,
+     3.74
+    ]
+   },
+   "A1": {
+    "sigma_g=1": {
+     "dogru": 5973,
+     "sahne_n": 6000,
+     "oran_yuzde": 99.55,
+     "acik_yol_basina_dogru": [
+      2000,
+      1973,
+      2000
+     ],
+     "karar_yok": 0
+    },
+    "sigma_g=2": {
+     "dogru": 5663,
+     "sahne_n": 6000,
+     "oran_yuzde": 94.383,
+     "acik_yol_basina_dogru": [
+      1967,
+      1738,
+      1958
+     ],
+     "karar_yok": 0
+    }
+   },
+   "alan_tam_karede_oran_yuzde": 0.0,
+   "etiket": "benzetim (sentetik maske), saha ölçümü değil"
+  },
+  {
+   "hucre": "s=8|16:9@32m|sc=0.5|spsi=5",
+   "s_m": 8.0,
+   "kip": "16:9",
+   "h_m": 32.0,
+   "sigma_c_m": 0.5,
+   "sigma_psi_derece": 5.0,
+   "bilgi_hucresi": true,
+   "kapiya_girer": false,
+   "nominal": false,
+   "cekilis_n": 2000,
+   "sahne_n": 6000,
+   "KARE": {
+    "dogru": 5985,
+    "sahne_n": 6000,
+    "oran_yuzde": 99.75,
+    "acik_yol_basina_dogru": [
+     1991,
+     2000,
+     1994
+    ],
+    "karar_yok": 0
+   },
+   "A0": {
+    "dogru": 6000,
+    "sahne_n": 6000,
+    "oran_yuzde": 100.0,
+    "acik_yol_basina_dogru": [
+     2000,
+     2000,
+     2000
+    ],
+    "karar_yok": 0,
+    "pay_m_p01_p05_medyan": [
+     1.238,
+     1.762,
+     3.772
+    ]
+   },
+   "A1": {
+    "sigma_g=1": {
+     "dogru": 5973,
+     "sahne_n": 6000,
+     "oran_yuzde": 99.55,
+     "acik_yol_basina_dogru": [
+      2000,
+      1973,
+      2000
+     ],
+     "karar_yok": 0
+    },
+    "sigma_g=2": {
+     "dogru": 5665,
+     "sahne_n": 6000,
+     "oran_yuzde": 94.417,
+     "acik_yol_basina_dogru": [
+      1967,
+      1741,
+      1957
+     ],
+     "karar_yok": 0
+    }
+   },
+   "alan_tam_karede_oran_yuzde": 0.0,
+   "etiket": "benzetim (sentetik maske), saha ölçümü değil"
+  },
+  {
+   "hucre": "s=8|16:9@32m|sc=1|spsi=2",
+   "s_m": 8.0,
+   "kip": "16:9",
+   "h_m": 32.0,
+   "sigma_c_m": 1.0,
+   "sigma_psi_derece": 2.0,
+   "bilgi_hucresi": true,
+   "kapiya_girer": false,
+   "nominal": false,
+   "cekilis_n": 2000,
+   "sahne_n": 6000,
+   "KARE": {
+    "dogru": 5853,
+    "sahne_n": 6000,
+    "oran_yuzde": 97.55,
+    "acik_yol_basina_dogru": [
+     1935,
+     2000,
+     1918
+    ],
+    "karar_yok": 0
+   },
+   "A0": {
+    "dogru": 5972,
+    "sahne_n": 6000,
+    "oran_yuzde": 99.533,
+    "acik_yol_basina_dogru": [
+     2000,
+     1972,
+     2000
+    ],
+    "karar_yok": 0,
+    "pay_m_p01_p05_medyan": [
+     0.419,
+     1.251,
+     3.641
+    ]
+   },
+   "A1": {
+    "sigma_g=1": {
+     "dogru": 5973,
+     "sahne_n": 6000,
+     "oran_yuzde": 99.55,
+     "acik_yol_basina_dogru": [
+      2000,
+      1973,
+      2000
+     ],
+     "karar_yok": 0
+    },
+    "sigma_g=2": {
+     "dogru": 5666,
+     "sahne_n": 6000,
+     "oran_yuzde": 94.433,
+     "acik_yol_basina_dogru": [
+      1967,
+      1743,
+      1956
+     ],
+     "karar_yok": 0
+    }
+   },
+   "alan_tam_karede_oran_yuzde": 0.0,
+   "etiket": "benzetim (sentetik maske), saha ölçümü değil"
+  },
+  {
+   "hucre": "s=8|16:9@32m|sc=1|spsi=5",
+   "s_m": 8.0,
+   "kip": "16:9",
+   "h_m": 32.0,
+   "sigma_c_m": 1.0,
+   "sigma_psi_derece": 5.0,
+   "bilgi_hucresi": true,
+   "kapiya_girer": false,
+   "nominal": false,
+   "cekilis_n": 2000,
+   "sahne_n": 6000,
+   "KARE": {
+    "dogru": 5855,
+    "sahne_n": 6000,
+    "oran_yuzde": 97.583,
+    "acik_yol_basina_dogru": [
+     1936,
+     2000,
+     1919
+    ],
+    "karar_yok": 0
+   },
+   "A0": {
+    "dogru": 5972,
+    "sahne_n": 6000,
+    "oran_yuzde": 99.533,
+    "acik_yol_basina_dogru": [
+     2000,
+     1972,
+     2000
+    ],
+    "karar_yok": 0,
+    "pay_m_p01_p05_medyan": [
+     0.419,
+     1.25,
+     3.641
+    ]
+   },
+   "A1": {
+    "sigma_g=1": {
+     "dogru": 5973,
+     "sahne_n": 6000,
+     "oran_yuzde": 99.55,
+     "acik_yol_basina_dogru": [
+      2000,
+      1973,
+      2000
+     ],
+     "karar_yok": 0
+    },
+    "sigma_g=2": {
+     "dogru": 5665,
+     "sahne_n": 6000,
+     "oran_yuzde": 94.417,
+     "acik_yol_basina_dogru": [
+      1967,
+      1741,
+      1957
+     ],
+     "karar_yok": 0
+    }
+   },
+   "alan_tam_karede_oran_yuzde": 0.0,
+   "etiket": "benzetim (sentetik maske), saha ölçümü değil"
+  }
+ ],
+ "kapi": {
+  "A0": {
+   "kosul1_nominal_oran": [
+    {
+     "hucre": "s=6.67|4:3@32m|sc=1|spsi=5",
+     "blok": "A0",
+     "oran_yuzde": 99.1,
+     "gecti": true
+    },
+    {
+     "hucre": "s=6.67|16:9@40m|sc=1|spsi=5",
+     "blok": "A0",
+     "oran_yuzde": 98.333,
+     "gecti": false
+    },
+    {
+     "hucre": "s=8|4:3@32m|sc=1|spsi=5",
+     "blok": "A0",
+     "oran_yuzde": 99.517,
+     "gecti": true
+    },
+    {
+     "hucre": "s=8|16:9@40m|sc=1|spsi=5",
+     "blok": "A0",
+     "oran_yuzde": 99.1,
+     "gecti": true
+    }
+   ],
+   "kosul1_gecti": false,
+   "kosul2_denetlenen_blok_n": 16,
+   "kosul2_ihlaller": [],
+   "kosul2_gecti": true,
+   "gecti": false,
+   "yapilandirma_basina_BILGI": {
+    "4:3@32m": {
+     "kosul1": true,
+     "kosul2": true
+    },
+    "16:9@40m": {
+     "kosul1": false,
+     "kosul2": true
+    }
+   }
+  },
+  "A1": {
+   "kosul1_nominal_oran": [
+    {
+     "hucre": "s=6.67|4:3@32m|sc=1|spsi=5",
+     "blok": "sigma_g=2",
+     "oran_yuzde": 91.483,
+     "gecti": false
+    },
+    {
+     "hucre": "s=6.67|16:9@40m|sc=1|spsi=5",
+     "blok": "sigma_g=2",
+     "oran_yuzde": 90.3,
+     "gecti": false
+    },
+    {
+     "hucre": "s=8|4:3@32m|sc=1|spsi=5",
+     "blok": "sigma_g=2",
+     "oran_yuzde": 94.45,
+     "gecti": false
+    },
+    {
+     "hucre": "s=8|16:9@40m|sc=1|spsi=5",
+     "blok": "sigma_g=2",
+     "oran_yuzde": 93.617,
+     "gecti": false
+    }
+   ],
+   "kosul1_gecti": false,
+   "kosul2_denetlenen_blok_n": 32,
+   "kosul2_ihlaller": [
+    {
+     "hucre": "s=8|4:3@32m|sc=0.5|spsi=2",
+     "blok": "sigma_g=2",
+     "fark_puan": -5.3
+    },
+    {
+     "hucre": "s=8|4:3@32m|sc=0.5|spsi=5",
+     "blok": "sigma_g=2",
+     "fark_puan": -5.217
+    },
+    {
+     "hucre": "s=8|4:3@32m|sc=1|spsi=2",
+     "blok": "sigma_g=2",
+     "fark_puan": -3.133
+    },
+    {
+     "hucre": "s=8|4:3@32m|sc=1|spsi=5",
+     "blok": "sigma_g=2",
+     "fark_puan": -2.95
+    }
+   ],
+   "kosul2_gecti": false,
+   "gecti": false,
+   "yapilandirma_basina_BILGI": {
+    "4:3@32m": {
+     "kosul1": false,
+     "kosul2": false
+    },
+    "16:9@40m": {
+     "kosul1": false,
+     "kosul2": true
+    }
+   }
+  }
+ },
+ "hukum": {
+  "tezgah_bos": false,
+  "A0": "DUSTU",
+  "A1": "DUSTU",
+  "karar": "A0 DUSTU, A1 DUSTU -> KARE kalir (ON_KAYIT SS2).",
+  "her_durumda": "YKS etiketin cercevesini niteler (T235-A).",
+  "alan_sigma_ile_fda_disi_yapilandirma": [
+   "16:9@32m"
+  ],
+  "etiket": "benzetim (sentetik maske), saha ölçümü değil"
+ }
+}

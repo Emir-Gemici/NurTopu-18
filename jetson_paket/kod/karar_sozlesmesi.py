@@ -2258,3 +2258,252 @@ MAVLINK_AKIS_SESSIZLIK_TAVANI_S = 5.0
 # DEGER — T207'de o araca dokunulmadi; oradaki sabitin buraya BAGLANMASI
 # onerilir (tests/test_faz_b_akis_istegi.py esitligi kilitler).
 MAVLINK_AKIS_ISTEK_HIZ_CARPANI = 2
+
+
+# ════════════════════════════════════════════════════════════════════════════
+# T235-B · ALAN-OLCEKLI YOL ETIKETI (A0) + KBH IZDUSUMU (A1) + HIZ KAPISI
+#          (D-451 · results/fdr_sprint_20260910/H1/t235/ON_KAYIT.md SS1, SS5)
+# ════════════════════════════════════════════════════════════════════════════
+# NEDEN: yayinlanan `road` (`rota_serit_karari`) rotanin KARENIN hangi ucte
+# birinde oldugundan okunur. Kare alana ortali degilse ya da kare alandan
+# genisse etiket DUNYA yoluyla eslesmez (OLCULDU, SENTETIK: kerteriz 3/8,
+# kosum_tur3 6/20 — H1/README_T214A.md SS2, H1/t235/analiz/analiz_c.md SS1).
+# FDA'da (sartname :726-745, 20x20 m) HQ 6 mm ile 32 m'de kare 33,5 m
+# genisliktedir; yol araligi 5,59 m'nin altindaysa kare-goreli ucte-birler uc
+# yola da "2" verir (HESAP, H1/t235/analiz/fda_etiket_hesap.py).
+#
+# 🔴 BU BOLUM YALNIZ SAF FONKSIYON TASIR, URETIME BAGLI DEGILDIR:
+# `rpi_inference` bunlari CAGIRMAZ -> yayin davranisi bayt-es. Uretime
+# baglanmak T235-C'nin isidir ve ON_KAYIT SS2 karar kuralina baglidir
+# (A0 ancak tezgah kapisini gecerse, bayrakla; A1 yalniz tezgah/karsilastirma).
+#
+# Cerceve (TASARIM_TASLAK SS3, "KBH"): orijin alan merkezi (FDA; ana gorevde
+# KB), +y = Baslangic -> Hedef yatay dogrultusu (kerteriz, pusula, saat yonu),
+# +x = Hedef'e bakan gozlemcinin SAGI. Etiket: x < -W/6 -> 1 · |x| <= W/6 -> 2
+# · x > W/6 -> 3. "Sol/orta/sag, Baslangic'tan Hedef'e bakan gozlemciye gore"
+# sartnamenin tanimi DEGIL, proje sozlesmesidir.
+
+# Alan genislikleri — sartname beyanidir, olcum degil. `SENARYO_BOYUTLARI_M`
+# ile AYNI degerlerdir; esitlik tests/test_t235_alan_etiketi.py ile kilitlidir
+# (biri degisip digeri kalamaz).
+FDA_ALAN_GENISLIK_M = 20.0     # sartname :726-745 FDA alani 20x20 m · ON_KAYIT SS1
+HTAB_ALAN_GENISLIK_M = 50.0    # sartname HTAB 50x50 m · simulation/scripts/arena.py HTAB
+
+# HIZ KAPISI (ON_KAYIT SS5 · CURUTUCU_HUKMU bulgu 5): alan-goreli etiket
+# yalniz yer hizi <= 1,0 m/s iken kullanilir. NEDEN: kare zaman damgasi YOK
+# (protocol.py yayin anini yazar); kose bacaklarinda 3 m/s (WPNAV_SPEED
+# 300 cm/s) x kare basina 770-922 ms = 2,3-2,8 m kayma (HESAP) FDA'nin
+# 3,33 m'lik payini yer. Beklemede (hiz ~ 0) bu terim kaybolur.
+ALAN_ETIKETI_HIZ_ESIGI_M_S = 1.0
+# Tazelik (ON_KAYIT SS5): hiz ornegi karar anindaki telemetri anlik
+# goruntusunden en fazla bu kadar eski olabilir. `TELEMETRI_IRTIFA_TAZELIK_S`
+# (0,50 s) ile ayni ailedendir ama ON KAYITLI esiktir: o sabit degisse bile
+# bu DEGISMEZ (esik gevsetilmez); deger testle kilitlidir.
+ALAN_ETIKETI_TAZELIK_S = 0.5
+
+
+def _t235_sayi(x):
+    """Sonlu gercek sayi -> float; bool/None/NaN/sonsuz/metin -> ``None``."""
+    if isinstance(x, bool) or not isinstance(x, Real):
+        return None
+    d = float(x)
+    return d if math.isfinite(d) else None
+
+
+def alan_serit_yari_genisligi_m(alan_genislik_m):
+    """ORTA seridin YARI genisligi = W/6 (m); gecersiz W -> ``None``.
+
+    W alan uc esit serite bolunur (SERIT_SAYISI); orta serit merkezden
+    ±W/(2*SERIT_SAYISI) = ±W/6'dir. A0 ve A1 AYNI siniri buradan okur.
+    """
+    w = _t235_sayi(alan_genislik_m)
+    if w is None or w <= 0.0:
+        return None
+    return w / (2.0 * SERIT_SAYISI)
+
+
+def _t235_x_dizisi(rota_pikselleri):
+    """Rota pikselleri -> (n, >=2) float dizi; bos, sayisal olmayan, duzensiz
+    ya da sonlu olmayan girdi -> ``None`` (FAIL-CLOSED: istisna FIRLATMAZ)."""
+    import numpy as _np
+    try:
+        if not isinstance(rota_pikselleri, _np.ndarray):
+            rota_pikselleri = list(rota_pikselleri)
+        n = len(rota_pikselleri)
+        if n == 0:
+            return None
+        dizi = _np.asarray(rota_pikselleri, dtype=float).reshape(n, -1)
+    except (TypeError, ValueError):
+        return None
+    if dizi.shape[1] < 2 or not _np.all(_np.isfinite(dizi[:, :2])):
+        return None
+    return dizi
+
+
+def _t235_cogunluk(seritler):
+    """1..3 serit dizisi -> ``(karar, sayim)``; `rota_serit_karari` KURALI:
+    en cok piksel tasiyan serit, beraberlikte KUCUK serit indisi."""
+    import numpy as _np
+    sayim = tuple(int(v) for v in _np.bincount(
+        _np.asarray(seritler, dtype=_np.int64) - 1, minlength=3)[:3])
+    mevcut = [i for i in range(3) if sayim[i] > 0]
+    if not mevcut:
+        return None, sayim
+    return int(max(mevcut, key=lambda i: (sayim[i], -i)) + 1), sayim
+
+
+def alan_serit_karari(rota_pikselleri, icerik_x0, icerik_w, mpp,
+                      alan_genislik_m=FDA_ALAN_GENISLIK_M):
+    """A0 — ALAN-OLCEKLI, MERKEZ REFERANSLI yol etiketi (T235 · ON_KAYIT SS1).
+
+    Sinirlar icerik kutusunun MERKEZINDEN ±(W/6)/mpp pikseldir
+    (W = alan genisligi, m; mpp = kare olcegi, `mpp_irtifadan`):
+        x < merkez - b -> 1 (sol) · x <= merkez + b -> 2 (orta) · aksi 3 (sag)
+    Orta serit KAPALI araliktir: `kbh_serit_karari` (|x| <= W/6 -> 2) ile
+    ayni ve piksel basina serit atamasi merkeze gore x-aynasi SIMETRIKTIR
+    (tam sinirdaki piksel iki yanda da 2). Karar `rota_serit_karari` ile AYNI
+    kuraldir: rota GOVDESI piksel cogunlugu, beraberlikte KUCUK serit (bu
+    beraberlik kurali tanim geregi ayna-simetrik degildir). x float kiyaslanir.
+
+    Varsayim (ON_KAYIT SS1, T235-E): IHA alan MERKEZINDE bekler ve goruntunun
+    yukarisi Baslangic -> Hedef'tir. Poz, hdg, enlem/boylam GEREKMEZ.
+    Varsayim tutmuyorsa (IHA hareket halinde) cagiran
+    `alan_etiketi_kullanilabilir_mi` ile KARE'ye duser.
+
+    Doner ``(karar, sayim, pay)``:
+      karar : 1|2|3; rota bos ya da olcek/icerik/W gecersiz -> ``None``
+              (``None`` = alan etiketi URETILEMEZ; cagiran KARE'ye duser)
+      sayim : serit basina piksel (n1, n2, n3)
+      pay   : ``None`` ya da sozluk —
+              sol_sinir_px, sag_sinir_px : iki serit sinirinin x'i
+              medyan_x_px : rota piksellerinin x medyani
+              pay_m : medyanin SECILEN seridin en yakin sinirina uzakligi (m);
+                      pozitif = serit ICINDE, negatif = medyan baska seritte
+    """
+    import numpy as _np
+    bos = (None, (0, 0, 0), None)
+    x0 = _t235_sayi(icerik_x0)
+    w = _t235_sayi(icerik_w)
+    if x0 is None or w is None or w <= 0.0 or not olcek_gecerli_mi(mpp):
+        return bos
+    yari_m = alan_serit_yari_genisligi_m(alan_genislik_m)
+    if yari_m is None:
+        return bos
+    dizi = _t235_x_dizisi(rota_pikselleri)
+    if dizi is None:
+        return bos
+    m = float(mpp)
+    merkez = x0 + w / 2.0
+    b = yari_m / m
+    sol, sag = merkez - b, merkez + b
+    xs = dizi[:, 0]
+    karar, sayim = _t235_cogunluk(
+        _np.where(xs < sol, 1, _np.where(xs <= sag, 2, 3)))
+    medyan = float(_np.median(xs))
+    if karar == 1:
+        pay_px = sol - medyan
+    elif karar == 2:
+        pay_px = min(medyan - sol, sag - medyan)
+    else:
+        pay_px = medyan - sag
+    return karar, sayim, {"sol_sinir_px": sol, "sag_sinir_px": sag,
+                          "medyan_x_px": medyan, "pay_m": pay_px * m}
+
+
+def kbh_donustur(px, py, *, merkez_px, mpp, iha_dogu_m, iha_kuzey_m,
+                 hdg_derece, montaj_yaw_derece, kerteriz_derece):
+    """A1 — kare pikseli -> KBH (alan) cercevesi, metre (T235 · ON_KAYIT SS1).
+
+    ⚠ YALNIZ TEZGAH/KARSILASTIRMA; URETIME BAGLANMAZ (T235-C, ON_KAYIT SS2).
+    Nadir, egimsiz, duz zemin varsayimi (ATTITUDE yok; egim tezgahta ayri
+    hata terimidir). Adimlar:
+      1. goruntu-yukari kerterizi  t = hdg + montaj_yaw  (pusula, saat yonu)
+      2. piksel ofseti  sag = (px - cx) * mpp ; ileri = (cy - py) * mpp
+      3. ENU ofseti  dogu = sag*cos t + ileri*sin t ; kuzey = -sag*sin t + ileri*cos t
+      4. ENU nokta = IHA (dogu, kuzey) + ofset — IHA konumu alan ORIJININE
+         gore metre (`yerel_konum_m(orijin_enlem, orijin_boylam, enlem, boylam)`)
+      5. KBH  x = dogu*cos k - kuzey*sin k ; y = dogu*sin k + kuzey*cos k
+         (k = kerteriz: Baslangic -> Hedef dogrultusunun pusula acisi)
+    `montaj_yaw_derece`: goruntu-yukarisinin BURNA gore saat yonu acisi
+    (goruntu-yukari = burun ise 0). `merkez_px`: icerik kutusu merkezi (cx, cy).
+    `px`, `py` skaler ya da dizi olabilir (NumPy yayilimi): skalerde
+    ``(x, y)`` float ikilisi, dizide iki dizi doner.
+    FAIL-CLOSED: gecersiz olcek/aci/konum/merkez -> ``None``.
+    """
+    import numpy as _np
+    if not olcek_gecerli_mi(mpp):
+        return None
+    try:
+        cx, cy = merkez_px
+    except (TypeError, ValueError):
+        return None
+    degerler = [_t235_sayi(v) for v in (cx, cy, iha_dogu_m, iha_kuzey_m,
+                                         hdg_derece, montaj_yaw_derece,
+                                         kerteriz_derece)]
+    if None in degerler:
+        return None
+    cx, cy, e0, n0, hdg, montaj, kerteriz = degerler
+    m = float(mpp)
+    skaler = _np.ndim(px) == 0 and _np.ndim(py) == 0
+    sag = (_np.asarray(px, dtype=float) - cx) * m
+    ileri = (cy - _np.asarray(py, dtype=float)) * m
+    t = math.radians(hdg + montaj)
+    dogu = e0 + sag * math.cos(t) + ileri * math.sin(t)
+    kuzey = n0 - sag * math.sin(t) + ileri * math.cos(t)
+    k = math.radians(kerteriz)
+    x = dogu * math.cos(k) - kuzey * math.sin(k)
+    y = dogu * math.sin(k) + kuzey * math.cos(k)
+    if skaler:
+        return float(x), float(y)
+    return x, y
+
+
+def kbh_serit_karari(rota_pikselleri, *, merkez_px, mpp, iha_dogu_m,
+                     iha_kuzey_m, hdg_derece, montaj_yaw_derece,
+                     kerteriz_derece, alan_genislik_m=FDA_ALAN_GENISLIK_M):
+    """A1 — rota piksellerinin KBH x'inden yol etiketi (T235 · ON_KAYIT SS1).
+
+    ⚠ YALNIZ TEZGAH/KARSILASTIRMA; URETIME BAGLANMAZ (ON_KAYIT SS1: ancak
+    SS2 karar kurali + T235-C poz kolu). Her piksel `kbh_donustur` ile KBH'ye
+    izdusurulur; x < -W/6 -> 1 · |x| <= W/6 -> 2 · x > W/6 -> 3; cogunluk,
+    beraberlikte KUCUK serit (`rota_serit_karari` kurali).
+    Doner ``(karar, sayim)``; rota bos ya da olcek/poz/W gecersiz ->
+    ``(None, (0, 0, 0))``.
+    """
+    import numpy as _np
+    bos = (None, (0, 0, 0))
+    yari = alan_serit_yari_genisligi_m(alan_genislik_m)
+    if yari is None:
+        return bos
+    dizi = _t235_x_dizisi(rota_pikselleri)
+    if dizi is None:
+        return bos
+    sonuc = kbh_donustur(dizi[:, 0], dizi[:, 1], merkez_px=merkez_px, mpp=mpp,
+                         iha_dogu_m=iha_dogu_m, iha_kuzey_m=iha_kuzey_m,
+                         hdg_derece=hdg_derece,
+                         montaj_yaw_derece=montaj_yaw_derece,
+                         kerteriz_derece=kerteriz_derece)
+    if sonuc is None:
+        return bos
+    x = _np.asarray(sonuc[0], dtype=float)
+    if not _np.all(_np.isfinite(x)):
+        return bos
+    return _t235_cogunluk(_np.where(x < -yari, 1, _np.where(x <= yari, 2, 3)))
+
+
+def alan_etiketi_kullanilabilir_mi(hiz_m_s, tazelik_s):
+    """HIZ KAPISI (ON_KAYIT SS5): alan-goreli etiket (A0/A1) bu karede
+    kullanilabilir mi?
+
+    ``True`` YALNIZ: yer hizi <= ALAN_ETIKETI_HIZ_ESIGI_M_S VE hiz orneginin
+    yasi <= ALAN_ETIKETI_TAZELIK_S (karar anindaki telemetri anlik
+    goruntusu). Aksi halde cagiran KARE etiketini yayinlar ve
+    `road_cerceve = "KARE"` yazar (T235-C). FAIL-CLOSED: None/bool/NaN/
+    sonsuz/negatif hiz ya da yas -> ``False`` (bilinmeyen hiz "beklemede"
+    SAYILMAZ).
+    """
+    v = _t235_sayi(hiz_m_s)
+    yas = _t235_sayi(tazelik_s)
+    if v is None or yas is None or v < 0.0 or yas < 0.0:
+        return False
+    return v <= ALAN_ETIKETI_HIZ_ESIGI_M_S and yas <= ALAN_ETIKETI_TAZELIK_S

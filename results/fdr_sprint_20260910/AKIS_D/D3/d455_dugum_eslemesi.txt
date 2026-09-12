@@ -1,0 +1,9 @@
+akis_d.mmd: 98 dugum · metin hatasi 0
+  d78: comms/yks_gui.py:2248 [YksArayuz.onayla] dogrulama=tam · etiket='self._kanit_yaz("HAKEM_ONAYI_REDDI", seq=self.rota.get("seq"),'
+      kod satiri: 'self._kanit_yaz("HAKEM_ONAYI_REDDI", seq=self.rota.get("seq"),'
+  d82: comms/yks_gui.py:2217 [YksArayuz.onayla] dogrulama=tam · etiket='self._kanit_yaz("HAKEM_ONAYI_REDDI", seq=self.rota.get("seq"),'
+      kod satiri: 'self._kanit_yaz("HAKEM_ONAYI_REDDI", seq=self.rota.get("seq"),'
+  d83: comms/yks_gui.py:2226 [YksArayuz.onayla] dogrulama=tam · etiket='self._kanit_yaz("HAKEM_ONAYI_REDDI", seq=self.rota.get("seq"),'
+      kod satiri: 'self._kanit_yaz("HAKEM_ONAYI_REDDI", seq=self.rota.get("seq"),'
+kapsam (taban HEAD): 98 karsilastirildi · tabanda yok 0 · hata 0
+HEAD'den farkli koken commit'i olan dugum sayisi: 98 · d78/d82/d83: {'d78': '72e516f', 'd82': '15ad56d', 'd83': '72e516f'}
