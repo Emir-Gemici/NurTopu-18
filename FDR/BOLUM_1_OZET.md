@@ -187,6 +187,41 @@ hem NAVITAS protokolü için çoğullayıcıya bağlanmış ve kapıya alınmı�
 ve zaman aşımı istisnası görev döngüsünü **çökertiyordu**; sürücü katmanı, ardışık hata
 tavanı ve fail-loud `GercekSurucu` ile kapatıldı (§Y-1-M02(3)).
 
+**(g) Simülasyon motoru: Gazebo'dan MuJoCo'ya geçiş (10 Eylül, T212-T214).** Gazebo
+Classic 11 + llvmpipe (yazılım GL) altında foto-doku render edilmiyor, model sim
+zeminini "%93 blocked" gördü (kök neden ölçüldü) — görsel gerçekçilik yatırımı
+(moloz mesh, ışık) algı boşluğunu **kapatmadı**. Karar: perception ölçümü MuJoCo'ya
+taşındı (`simulation/mujoco/`), 15 harita × 3 tohum koşumla K3-K9 kapıları yeniden
+ölçüldü; Gazebo dünya üreteci (`world_generator.py`) hâlâ dursun/durmasın kararı
+verilmedi ama üretim ölçümü artık ona bağlı değil.
+
+**(h) MK15 video/telemetri entegrasyonu (T225, T227-T230, T246).** Kumanda HDMI
+çıkışı → yer bilgisayarı yakalama kartı → hakem ekranı zinciri tasarlandı ve
+yazıldı; Jetson işaretli yayın (`--isaretli-yayin`, seçilen rota bindirmeli
+kare) eklendi. Saha maddeleri (Air Unit gerilim aralığı, camdan cama gecikme)
+hâlâ **BEYAN GEREKLİ (insan)**.
+
+**(i) Atölye test günü sistemleştirildi (D-444/D-446, T231-T232).** 12 Eylül'ün 13
+maddelik test programı (A1-A13) tek kâğıda (`ATOLYE_TEST_GUNU_20260912.md`) ve
+sonuç şablonuna (`SONUC_SABLONU.md`) döküldü; her madde için yöntem, kaynaklı
+BEKLENTİ ve kabul ölçütü **ölçümden önce** yazıldı — sonuçlar geldikçe "ÖLÇÜLDÜ/
+ÖLÇÜLEMEDİ" ile doldurulacak, geriye dönük eşik değişmez.
+
+**(j) Rota dünya-çerçevesi kararı (D-449/D-451/D-457, T235-T236).** Üretim yolunun
+yol etiketini kare-göreli (dünya çerçevesine göre değil) verdiği ölçüldü; alan-
+ölçekli düzeltme (Aşama-0) tezgâhta ve gerçek SITL'de sınandı, **eşiği geçemedi**
+(%98,33<%99) — düzeltme **uygulanmadı**, mevcut davranış (kare-göreli etiket)
+ölçülmüş kanıtla korundu. Bu, "ölçüm kötü çıktı diye kod değiştirilmez" ilkesinin
+(madde 6) canlı bir örneğidir.
+
+**(k) Belge kilidi yöntemi değişti: yokluk denetiminden ön kayıtlı metin eşitliğine
+(D-460/D-465/D-468, T240).** Rapor iç tutarlılığını koruyan otomatik kilitler
+önce "silinmiş/çizilmemiş metin var mı" diye arıyordu; bu yöntemin kaçış yüzeyi
+(HTML varlık kodlu çizik, kilitli bölüm kopyası vb.) sonsuzdu. Yöntem, ölçüm
+hükmü taşıyan yüzeyleri **ön kayıtlı tam metinle** karşılaştırmaya çevrildi;
+çürütücünün 14 gizleme denemesinin 13'ü düştü, kaçan tek şey zaten beyan edilmiş
+bir normalleştirmeydi.
+
 - **BEYAN GEREKLİ (insan):** DDR aviyonik BOM'u (28 kalem, toplam **2293 g**;
   `navitas-teknofest/references/ddr_requirements.md`) **final aracına** aittir ve
   bugünkü FDA aracı künyesiyle aynı değildir (DDR'de Jetson Orin NX + Arducam IMX477
@@ -340,13 +375,17 @@ gönderilir; kaynak pini olmayan komut kabul edilmez
 
 | risk | önleyici tedbir |
 |---|---|
-| Nano yığını kurulamaz (Py3.8 / torch / kamera) | çevrimdışı tekerlekler (14/14), **CPU torch garanti yolu**, **USB webcam yedeği**, kurulum bitmezse ertesi sabah devam |
+| ~~Nano yığını kurulamaz (Py3.8 / torch / kamera)~~ → **KAPANDI (6 Eylül, D-431):** kart beklenenden farklı çıktı (Orin Nano Developer Kit 4 GB, JetPack 7.2.1, GPU'lu); FPS kapısı GEÇTİ (pt 1,35/1,06, engine 1,58/1,33 FPS, eşik 0,61) | çevrimdışı tekerlekler (14/14) hazırdı ama gerekmedi |
 | Yanlış güzergâh = 0 puan | histerezis, tek pas, hakem ekranında güven değeri + ret sebebi |
 | 10 dakikalık operasyon süresinin aşılması | kısa görev planı (bütçe 221,5 s), loiter ACK tavanı, YKS kronometresi |
 | Tek pil | günde ≤ 2 uçuş; ikinci pil / şarj kararı kaptanda |
 | Görev bilgisayarında çökme döngüsü (hands-off) | ekransız kip, `Restart=always`, seri port çoğullayıcı |
 | Pusula / GPS / titreşim | direk montaj, açık alanda kalibrasyon, damper, ilk hover logunun incelenmesi |
 | PM02 akım sınırı | sürekli tam gaz yok, `BATT_AMP` ekranda, motor testi kısa |
+| 🔴 **Motor/pervane değişikliği bütçeyi geçersiz kıldı** (7 Eylül, D-435) | 5008 340KV/12×10 tahmini X2220 980KV V3/10×4,5 (BEYAN) ile değişti; itki bütçesi veri sayfasından yeniden yazıldı (§3.2.1.1.1), gerçek akım hâlâ **ÖLÇÜLEMEDİ** — T211 tıkayıcı |
+| 🔴 **FDA'da yol etiketi kare-göreli, dünya çerçevesine göre değil** (10-12 Eylül, D-449/D-451/D-457) | Aşama-0 düzeltmesi (alan-ölçekli etiket) SITL ölçümünde eşiği **geçemedi** (%98,33<%99) → **FDA'da mevcut KARE etiket korunuyor** (kod değiştirilmedi, ölçüm öyle söylüyor); T235/T236 açık, 4:3 kamera kipi çıkarsa koşullu yeniden açılır |
+| İKA iz genişliği CONTRACTS'ta TAHMİN (0,39 m), takım arkadaşının modeli 0,319 m diyor (D-458) | şerit metre ölçümü bekliyor (T239, insan); gelene kadar sürüş/dönüş hesapları tahmini değerle işaretli |
+| Yayınlanan waypoint sayısı sözleşme tavanına (64) çıkarsa SiK bant genişliği ECC açıkken aşılabilir (D-466) | T250: gerçek yayınlanan waypoint sayısı ölçülüp seyreltme/üst sınır eklenecek; A6'da ECC durumu okunuyor |
 
 **Ölçülmüş, kapanmamış teknik risk:** modelin sahne bağıntılı **51 saniyelik kör
 aralığı** (§Y-1-M05(1)). Bugünkü azaltma tedbiri gizlemek değil **göstermektir**:
