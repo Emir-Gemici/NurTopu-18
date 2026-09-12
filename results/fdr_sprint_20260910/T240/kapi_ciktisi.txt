@@ -1,0 +1,65 @@
+# T240-C KAPI — 2026-09-12 05:49:23
+# yorumlayici: O:/navitas-local-train/venv/Scripts/python.exe
+# depo koku  : O:/navitas/.claude/worktrees/wf_fabd3bac-230-1
+# HEAD       : 40b0d9d2
+
+== test_belge_kilidi.py  (cikis=0, 1 s)
+----------------------------------------------------------------------
+Ran 74 tests in 0.028s
+
+OK
+
+== MK15 (1/3)  (cikis=0, 24 s)
+----------------------------------------------------------------------
+Ran 39 tests in 24.351s
+
+OK
+
+== MK15 (2/3)  (cikis=0, 25 s)
+----------------------------------------------------------------------
+Ran 39 tests in 24.535s
+
+OK
+
+== MK15 (3/3)  (cikis=0, 26 s)
+----------------------------------------------------------------------
+Ran 39 tests in 24.964s
+
+OK
+
+== test_isaretli_gosterici.py  (cikis=0, 34 s)
+----------------------------------------------------------------------
+Ran 63 tests in 33.989s
+
+OK (skipped=1)
+
+== test_faz_b_arduplane_sablon.py  (cikis=0, 1 s)
+----------------------------------------------------------------------
+Ran 45 tests in 0.877s
+
+OK
+
+== test_t235_alan_etiketi.py  (cikis=0, 33 s)
+----------------------------------------------------------------------
+Ran 57 tests in 32.652s
+
+OK
+
+== test_yks_*.py (discover)  (cikis=0, 42 s)
+----------------------------------------------------------------------
+Ran 233 tests in 39.312s
+
+OK
+
+== GENEL KAPI codes/test_rota_sentetik.py  (cikis=0, 5 s)
+URETIM YOLU: rota uretimi 15/15 · yayinlanan serit 15/15 (esik >= 14/15, ON_KAYIT SS18-B)
+[OK] URETIM YOLU KOLU GECTI
+------------------------------------------------------------------------------
+GENEL KAPI (madde 14): GECTI — kol1 15/15 · kol2 serit 15/15
+
+== scripts/belge_kilidi_denetle.py  (cikis=0, 1 s)
+| `tests/test_yks_sik_yordami.py` | `assertIn`, `index`, `search` |
+
+
+rapor yazildi: O:\navitas\.claude\worktrees\wf_fabd3bac-230-1\results\fdr_sprint_20260910\T240\acik_kilitler.md
+

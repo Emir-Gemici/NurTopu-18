@@ -94,6 +94,7 @@ for _y in (KOK / "comms", KOK / "codes", KOK / "tests", KOK / "scripts"):
     if str(_y) not in sys.path:
         sys.path.insert(0, str(_y))
 
+import belge_kilidi  # noqa: E402  (T240: ORTAK belge kilidi yardimcisi)
 import kamera_koprusu as kk  # noqa: E402
 import yks_gui  # noqa: E402
 from link import UDPLink  # noqa: E402
@@ -105,6 +106,182 @@ GUI_YOLU = KOK / "comms" / "yks_gui.py"
 SOZLESME = KOK / "CONTRACTS.md"
 SEQ = ROTA["seq"]
 ETIKET = "MK15 · HDMI · yakalama"
+
+# ── T240 (D-460 karar 2): CONTRACTS §6.8 ON KAYITLARI ─────────────────────────
+# D-460 denetimi §6.8 kilidinde 4 gercek dosya mutasyonunun kactigini olctu:
+# D1b `<del>`, D1c tek tilde `~...~`, D1d `<s>` (ucu de cizik ayiklamasi yalniz
+# `~~...~~` bildigi icin) ve D1e (kaynak hukmunun ALTINA celiskili ikinci hukum
+# eklenmesi — hicbir kilit paragraf EKLENMESINI gormuyordu).
+SOZLESME_68_BASI = "### 6.8 Hakem kanıt kaydının OLAY KÜMESİ"
+SOZLESME_68_SONU = "### 6.2 `road` sözleşmesi"
+# §6.8'de MESRU cizili aralik YOKTUR: beyaz liste bostur, her cizik hatadir.
+SOZLESME_68_IZINLI_CIZIK = ()
+# §6.8'in kalin baslikli hukum paragraflari — SIRALI ve TAM (D1e). Yeni bir hukum
+# paragrafi eklemek ya da birini cizmek bu demeti bozar.
+SOZLESME_68_HUKUM_BASLIKLARI = (
+    "Olgu (ölçüldü, 2026-09-03)",
+    "Dosya ve ömür",
+    "Ortak alanlar (her satırda, `HakemKaydi.yaz` üretir)",
+    "`KAMERA_KANIT.kaynak` (T226 · D-443, 10 Eylül)",
+    "Tekrar (throttle) kuralı — `KAMERA_KANIT` ve `TELEMETRI_KANIT` için, gerekçeli",
+    "Bağlayıcı ilkeler",
+    "Kanıt kaydı KİLİDİ — fail-closed + fail-visible (bağlayıcı)",
+    "Kilit",
+    "kullanılabilir kalır",
+)
+SOZLESME_68_KALIN_BASLIK = re.compile(r"(?m)^\*\*(.+?):?\*\*")
+# Kaynak hukmunun TAMAMI on kayitlidir; ⟨ÖRNEK⟩ KODDAN (kamera_kanit_kaynagi)
+# doldurulur — belge ile kod ayrisirsa ve hukum baska sozle yazilirsa DUSER.
+SOZLESME_KAYNAK_BASI = "**`KAMERA_KANIT.kaynak` (T226 · D-443, 10 Eylül):**"
+SOZLESME_KAYNAK_HUKMU = (
+    "**`KAMERA_KANIT.kaynak` (T226 · D-443, 10 Eylül):** `kaynak` = kare URL'si "
+    "[+ ` [<etiket>]`] — `yks_gui --kamera-etiket` verildiyse `\"⟨ÖRNEK⟩\"` biçimi "
+    "(`yks_gui.kamera_kanit_kaynagi`), verilmediyse yalnız URL, URL yoksa `null`; "
+    "video karar üretmez, hakem onayı telsiz verisine verilir (§6.7).")
+# Kaynak hukmunun HEMEN ARDINDAN gelmesi gereken paragrafin basi: arasina
+# kalin baslik TASIMAYAN bir hukum paragrafi sokusturulamaz (D1e varyanti).
+SOZLESME_KAYNAK_SONRASI = "**Tekrar (throttle) kuralı"
+
+# ── D-465 (1) · MIMAR KARARI 12 Eylul: YOKLUK yerine ON KAYITLI METIN ESITLIGI ──
+# NEDEN: T240 ailesi uc turdur ayni bicimde RED aldi — "su sozdizimiyle yasak metin geri
+# kondu / hukum gizlendi" (Y4 `&#822;`, sonra `&#96;~~...~~&#96;`, ayrica anahtar sozcuksuz
+# cumle). YOKLUK denetiminin kacis yuzeyi SONSUZDUR; ESITLIK denetiminin kacis yuzeyi
+# YOKTUR. §6.8 bir HUKUM TABLOSU ve baglayici ilkeler yuzeyidir; bu yuzden bolumun TAMAMI
+# blok blok ON KAYITLIDIR (basliklar, tablo satirlari, paragraflar, liste maddeleri).
+# Normallestirme YALNIZ bosluk/satir sonudur — cizik/varlik/vurgu AYIKLAMASI YOKTUR
+# (ayiklama, saklama yuzeyi acan seyin kendisidir). Kod araliklarinin ICI harfi harfine.
+# ⟨ÖRNEK⟩ KODDAN (yks_gui.kamera_kanit_kaynagi) doldurulur: belge ile kod ayrisirsa DUSER.
+SOZLESME_68_BLOKLARI = (
+    '### 6.8 Hakem kanıt kaydının OLAY KÜMESİ — bağlayıcı (şartname §2.2.3 / §6.2 · FDR açık kalem #25)',
+    "**Olgu (ölçüldü, 2026-09-03):** `comms/yks_gui.py` hakem kaydına yalnız `YKS_ARAYUZ_HAZIR`, `UI_OLAYI` ve iki döngüsel satır yazıyordu; onay zincirinin (§2.2.3) ve süre bütçesinin (§6.2/§5.3.2) hiçbir olayı diske düşmüyordu. Kayıt, 21 Eylül'de §2.2.3 hakem onayının **DAYANAĞIDIR**; ekrandaki kayan metin uçuş sonrası kanıt değildir.",
+    '**Dosya ve ömür:** `comms/hakem_kaydi.py` · UTF-8 JSONL, satır başına `flush`+`fsync`. Yol `--hakem-log` ile verilir; verilmezse `varsayilan_hakem_log_yolu()` = `results/prova/<YYYYMMDD_HHMMSS>_<pid>/hakem_log.jsonl`. Dosya **açılamazsa kurucu yükseltir** (fail-closed: saha sessizce kanıtsız başlamaz). Açıldıktan sonraki yazma hatası arayüzü **öldürmez** ama saklanmaz: `kanit_kaydi_hatasi` + günlükte KIRMIZI satır (fail-visible). Oturum `OTURUM_BASLADI` ile açılır, `mainloop` bitince `kapat()` `OTURUM_BITTI` yazar.',
+    '**Ortak alanlar (her satırda, `HakemKaydi.yaz` üretir):** `v`, `ts` (yerel ISO-8601, ms), `monotonic_s`, `oturum`, `olay`. Aşağıdaki alanlar bunlara **eklenir**.',
+    '| olay | NE ZAMAN yazılır (kod yolu) | zorunlu alanlar |',
+    '|---|---|---|',
+    "| `YKS_ARAYUZ_HAZIR` | kurucunun sonunda, dinleyici thread'inden ÖNCE | `demo`, `kamera_yapilandirildi`, `tasiyici`, `komut_oturumu` |",
+    "| `ROTA_ALINDI` | kabul edilen `OPEN_ROUTE`un **YENİ** `seq`'i işlendiğinde (`_mesaj_isle`) | `seq`, `road`, `label`, `conf`, `waypoint`, `ankor` |",
+    '| `ROTA_REDDEDILDI` | güven eşiği altındaki `OPEN_ROUTE` — **ACK üretilmez** (`_open_route_guven_reddini_goster`) | `seq`, `sebep`, `detay` |',
+    "| `ROTA_YOK` | yeni `NO_ROUTE`, güvenli duruş ACK'i gönderildikten SONRA | `seq`, `sebep`, `detay` |",
+    '| `ACK_ALINDI` | yapısal olarak geçerli her `ACK` (`ref` int), düğüm ayrımından ÖNCE (`_ack_isle`) | `node`, `ref`, `ref_tip` |',
+    "| `IKA_AKTARIM_KANITI` | K8 kanıtı (§6.6) geçerli rota `seq`'i için **İLK** bağlandığında | `seq`, `iha_havada` |",
+    '| `HAKEM_ONAYI_1` | 1/2 "tespit doğrulandı" (`onayla`) | `seq`, `road`, `conf` |',
+    "| `HAKEM_ONAYI_2` | 2/2 onay ve ACK link'e yazıldıktan SONRA | `seq`, `ref_tip`, `fda_kipi`, `dayanak`, `iha_indi` |",
+    '| `HAKEM_ONAYI_REDDI` | fail-closed ret: `ANKOR_YOK` · `BAYAT_TESPIT` · `IKA_ACK_KANITI_YOK` | `seq`, `sebep` |',
+    "| `IHA_INIS_KANITI` | yeni `IHA_LANDED` `seq`'i, ACK gönderildikten SONRA | `seq`, `ika_rota_ack_var` |",
+    '| `KAMERA_KANIT` | kamera kanıt durumu **DEĞİŞTİĞİNDE**; değişmezse tekrar aralığında bir (`_kamera_tazele`) | `durum`, `degisim`, `kare_yasi_s`, `kare_sira`, `kaynak`, `hata`, `calisiyor` |',
+    '| `TELEMETRI_KANIT` | düğüm tazelik özeti **DEĞİŞTİĞİNDE**; değişmezse tekrar aralığında bir (`_durum_tazele`) | `durum`, `degisim`, `bayat`, `yas_s`, `dugumler` |',
+    '| `ACIL_SENARYO` | demo arıza tatbikatı tetiklendiğinde (`senaryo`) | `kod`, `senaryo_no` |',
+    '| `KRONOMETRE_BASLADI` | fırlatma/kalkış · `IKA_GO` · alan girişi · müdahale sonrası devam. `kron` ∈ {iha, ika, hazirlik}; `devam=true` yalnız müdahale sonrası (kronometre sıfırlanmaz, kaldığı yerden sürer) | `kron`, `limit_s`, `devam` |',
+    '| `KRONOMETRE_BITTI` | İHA indi · HB temas · takım hazır | `kron`, `sure_s`, `limit_s`, `asim` |',
+    '| `UI_OLAYI` | `_logla` ile günlüğe yazılan HER satır (ekranda görünen ile kayıt ayrışmasın) | `mesaj`, `seviye` |',
+    '**`KAMERA_KANIT.kaynak` (T226 · D-443, 10 Eylül):** `kaynak` = kare URL\'si [+ ` [<etiket>]`] — `yks_gui --kamera-etiket` verildiyse `"⟨ÖRNEK⟩"` biçimi (`yks_gui.kamera_kanit_kaynagi`), verilmediyse yalnız URL, URL yoksa `null`; video karar üretmez, hakem onayı telsiz verisine verilir (§6.7).',
+    '**Tekrar (throttle) kuralı — `KAMERA_KANIT` ve `TELEMETRI_KANIT` için, gerekçeli:** bu iki olay `_tik` döngüsünden (~8 Hz) üretilir ve `HakemKaydi.yaz` **her satırda `fsync`** yapar. Her tikte yazmak Tk geri çağrısını diske bağlar (ekran donar, komut gecikir) ve kaydı okunamaz hâle getirir. Bu yüzden ikisi **KENAR** olayıdır: durum değişirse hemen, değişmezse en çok `KANIT_TEKRAR_ARALIGI_S` (= 30 s, `yks_gui`) aralıkla bir kez daha yazılır — "hâlâ aynı" satırı **süreklilik kanıtıdır** (yalnız geçişler yazılırsa kaydın "kamera 10 dakika canlı kaldı" demeye dayanağı olmaz), maliyeti 2 satır/dk\'dır. `degisim` (bool) alanı geçişi tekrardan ayırır. Durum ve damga alanları: kamera `_kamera_kanit_durumu` / `_son_kamera_kanit_monotonic`, telemetri `_telemetri_kanit_durumu` / `_son_telemetri_kanit_monotonic`. `HEARTBEAT` başına satır **YAZILMAZ** (1 Hz × düğüm = gürültü); tazelik özeti onu taşır.',
+    '**Bağlayıcı ilkeler:**',
+    '- Kanıt yazımı **hiçbir karar yolunu değiştirmez**: `_kanit_yaz` istisna yükseltmez, dönüş değeri hiçbir dalda koşul olarak kullanılmaz.',
+    '- Kayıt **kapalıyken** (`hakem_kaydi is None` — test/demo fikstürü) bütün olaylar sessizce atlanır; kod yolları birebir aynıdır.',
+    '- Olay adı ve zorunlu alan kümesi **bu tablodan** okunur; `yks_gui` içinde serbest metin olay adı üretilmez (madde 16). Tek küme: `yks_gui.KANIT_OLAYLARI`.',
+    '**Kanıt kaydı KİLİDİ — fail-closed + fail-visible (bağlayıcı):** yazma hatası oluştuğunda `kanit_kaydi_hatasi` kurulur ve **kalıcıdır** (kendiliğinden temizlenmez). Kilit **YALNIZ** `btn_firlat` (uçuş kronometresi) ve `btn_onay` (§2.2.3 hakem onayı) üzerindedir; **ARM/DISARM ve acil komutlar (RTL/LAND) AÇIK kalır** — kanıt kaydı bozukken bile aracı indirebilmek emniyetin kendisidir. Kilit iki yerden birden uygulanır ve ikisi de zorunludur:',
+    "1. **Çizim:** `btn_firlat`/`btn_onay`ın TEK yazarları `_firlat_dugmesini_ciz` ve `_onay_dugmesini_ciz`'dir; ikisi de `_kanit_kilidi_var()` okur. Periyodik tazeleme (`_arm_ui_uygula`, `_onay_dugmesini_tazele`, `_aktarim_onay_dugmesini_kur`) düğmeyi **geri açamaz** — ölçülen fail-open buydu: kırmızı afiş ekranda kalırken düğmeler bir tik sonra çalışıyordu.",
+    '2. **Eylem:** `firlatma()` ve `onayla()` kilidi kendileri de reddeder — düğme durumu tek savunma değildir (T180 sınıfı: klavye/otomasyon/doğrudan çağrı).',
+    '**Kilit:** `tests/test_yks_hakem_kanit_olaylari.py` — GERÇEK `HakemKaydi` + GERÇEK geçici dosya ile uçtan uca: her olay diske düşer, zorunlu alanlar tam, kamera/telemetri olayları kenarda yazılıp tekrar aralığı dolmadan **yazılmaz**, yazma hatası arayüzü öldürmez, kilit periyodik tazelemeye rağmen **açılmaz**, ARM/acil düğmeleri **kullanılabilir kalır**, tablo ile kod birebir (üç yönlü ad kümesi karşılaştırması). `tests/test_yks_hakem_kaydi.py` `HakemKaydi`nin kendi dayanıklılık kapısıdır (fsync sayımı, NaN reddi, kapalı dosyaya yazma).',
+)
+
+# ── T240-B (D-460 kacani Y7): §6.8'in KAPALI HUKUM CUMLESI KUMESI ────────────
+# NEDEN: kalin baslik demeti + komsuluk kilidi YETMEDI. Bagimsiz curutucu, kalin
+# baslik TASIMAYAN ve kaynak paragrafinin hemen ardina DEGIL, §6.8'in baska bir
+# yerine konan celiskili bir hukum paragrafi ("Not (12 Eylul): `kaynak` alani
+# artik zorunlu degildir; ...") kurdu: MK15 suiti de, 233 testlik test_yks_*.py
+# de cikis 0 verdi (KACTI). T221 §6.6'ya verilen YAPISAL cozum (kapali cumle
+# kumesi) buraya VERILMEMISTI; simdi verildi.
+# Kume secicisi ON KAYITLIDIR: belge_kilidi.HUKUM_SOZCUKLERI (gerekcesi orada
+# yazili) + §6.8'in kendi alan sozcukleri. Kumede olmayan her hukum cumlesi —
+# NEREYE konursa konsun, kalin baslik tasisin tasimasin — kilidi DUSURUR.
+SOZLESME_68_HUKUM_ANAHTARLARI = belge_kilidi.HUKUM_SOZCUKLERI + (
+    "kanit", "olay", "hakem", "alan")
+#: ⟨ORNEK⟩ KODDAN (kamera_kanit_kaynagi) doldurulur — belge ile kod ayrisirsa DUSER.
+SOZLESME_68_HUKUM_CUMLELERI = (
+    "### 6.8 hakem kanit kaydinin olay kumesi - baglayici (sartname §2.2.3 / §6.2 · fdr acik "
+    "kalem #25)",
+    "olgu (olculdu, 2026-09-03): comms/yksgui.py hakem kaydina yalniz yksarayuzhazir, uiolayi ve "
+    "2 dongusel satir yaziyordu; onay zincirinin (§2.2.3) ve sure butcesinin (§6.2/§5.3.2) hicbir "
+    "olayi diske dusmuyordu.",
+    "kayit, 21 eylul'de §2.2.3 hakem onayinin dayanagidir; ekrandaki kayan metin ucus sonrasi "
+    "kanit degildir.",
+    "dosya ve omur: comms/hakemkaydi.py · utf-8 jsonl, satir basina flush+fsync.",
+    "yol --hakem-log ile verilir; verilmezse varsayilanhakemlogyolu() = "
+    "results/prova/<yyyymmddhhmmss><pid>/hakemlog.jsonl.",
+    "dosya acilamazsa kurucu yukseltir (fail-closed: saha sessizce kanitsiz baslamaz).",
+    "acildiktan sonraki yazma hatasi arayuzu oldurmez ama saklanmaz: kanitkaydihatasi + gunlukte "
+    "kirmizi satir (fail-visible).",
+    "ortak alanlar (her satirda, hakemkaydi.yaz uretir): v, ts (yerel iso-8601, ms), monotonics, "
+    "oturum, olay.",
+    "asagidaki alanlar bunlara eklenir.",
+    "| olay | ne zaman yazilir (kod yolu) | zorunlu alanlar |",
+    "| rotaalindi | kabul edilen openrouteun yeni seq'i islendiginde (mesajisle) | seq, road, "
+    "label, conf, waypoint, ankor |",
+    "| ackalindi | yapisal olarak gecerli her ack (ref int), dugum ayrimindan once (ackisle) | "
+    "node, ref, reftip |",
+    "| ikaaktarimkaniti | k8 kaniti (§6.6) gecerli rota seq'i icin ilk baglandiginda | seq, "
+    "ihahavada |",
+    '| hakemonayi1 | 1/2 "tespit dogrulandi" (onayla) | seq, road, conf |',
+    "| hakemonayi2 | 2/2 onay ve ack link'e yazildiktan sonra | seq, reftip, fdakipi, dayanak, "
+    "ihaindi |",
+    "| hakemonayireddi | fail-closed ret: ankoryok · bayattespit · ikaackkanitiyok | seq, sebep |",
+    "| ihainiskaniti | yeni ihalanded seq'i, ack gonderildikten sonra | seq, ikarotaackvar |",
+    "| kamerakanit | kamera kanit durumu degistiginde; degismezse tekrar araliginda 1 "
+    "(kameratazele) | durum, degisim, kareyasis, karesira, kaynak, hata, calisiyor |",
+    "| telemetrikanit | dugum tazelik ozeti degistiginde; degismezse tekrar araliginda 1 "
+    "(durumtazele) | durum, degisim, bayat, yass, dugumler |",
+    "| kronometrebasladi | firlatma/kalkis · ikago · alan girisi · mudahale sonrasi devam.",
+    "| uiolayi | logla ile gunluge yazilan her satir (ekranda gorunen ile kayit ayrismasin) | "
+    "mesaj, seviye |",
+    "kamerakanit.kaynak (t226 · d-443, 10 eylul): kaynak = kare url'si [+ [<etiket>]] - yksgui "
+    '--kamera-etiket verildiyse "⟨ORNEK⟩" bicimi (yksgui.kamerakanitkaynagi), verilmediyse yalniz '
+    "url, url yoksa null; video karar uretmez, hakem onayi telsiz verisine verilir (§6.7).",
+    "tekrar (throttle) kurali - kamerakanit ve telemetrikanit icin, gerekceli: bu 2 olay tik "
+    "dongusunden (~8 hz) uretilir ve hakemkaydi.yaz her satirda fsync yapar.",
+    "bu yuzden ikisi kenar olayidir: durum degisirse hemen, degismezse ≤ kanittekrararaligis (= "
+    '30 s, yksgui) aralikla 1 kez daha yazilir - "hala ayni" satiri sureklilik kanitidir (yalniz '
+    'gecisler yazilirsa kaydin "kamera 10 dakika canli kaldi" demeye dayanagi olmaz), maliyeti 2 '
+    "satir/dk'dir.",
+    "degisim (bool) alani gecisi tekrardan ayirir.",
+    "durum ve damga alanlari: kamera kamerakanitdurumu / sonkamerakanitmonotonic, telemetri "
+    "telemetrikanitdurumu / sontelemetrikanitmonotonic.",
+    "baglayici ilkeler:",
+    "- kanit yazimi hicbir karar yolunu degistirmez: kanityaz istisna yukseltmez, donus degeri "
+    "hicbir dalda kosul olarak kullanilmaz.",
+    "- kayit kapaliyken (hakemkaydi is none - test/demo fiksturu) butun olaylar sessizce atlanir; "
+    "kod yollari birebir aynidir.",
+    "- olay adi ve zorunlu alan kumesi bu tablodan okunur; yksgui icinde serbest metin olay adi "
+    "uretilmez (madde 16).",
+    "1 kume: yksgui.kanitolaylari.",
+    "kanit kaydi kilidi - fail-closed + fail-visible (baglayici): yazma hatasi olustugunda "
+    "kanitkaydihatasi kurulur ve kalicidir (kendiliginden temizlenmez).",
+    "kilit yalniz btnfirlat (ucus kronometresi) ve btnonay (§2.2.3 hakem onayi) uzerindedir; "
+    "arm/disarm ve acil komutlar (rtl/land) acik kalir - kanit kaydi bozukken bile araci "
+    "indirebilmek emniyetin kendisidir.",
+    "kilit 2 yerden birden uygulanir ve ikisi de zorunludur:",
+    "cizim: btnfirlat/btnonayin 1 yazarlari firlatdugmesiniciz ve onaydugmesiniciz'dir; ikisi de "
+    "kanitkilidivar() okur.",
+    "kilit: tests/testykshakemkanitolaylari.py - gercek hakemkaydi + gercek gecici dosya ile "
+    "uctan uca: her olay diske duser, zorunlu alanlar tam, kamera/telemetri olaylari kenarda "
+    "yazilip tekrar araligi dolmadan yazilmaz, yazma hatasi arayuzu oldurmez, kilit periyodik "
+    "tazelemeye ragmen acilmaz, arm/acil dugmeleri kullanilabilir kalir, tablo ile kod birebir (3 "
+    "yonlu ad kumesi karsilastirmasi).",
+    "tests/testykshakemkaydi.py hakemkaydinin kendi dayaniklilik kapisidir (fsync sayimi, nan "
+    "reddi, kapali dosyaya yazma).",
+)
+
+
+def _sozlesme_68(ham=None):
+    """CONTRACTS §6.8 blogu (ham metin; cizikler AYIKLANMAMIS)."""
+    metin = SOZLESME.read_text(encoding="utf-8") if ham is None else ham
+    bas = metin.index(SOZLESME_68_BASI)
+    return metin[bas:metin.index(SOZLESME_68_SONU, bas)]
+
+
+def _paragraflar(metin):
+    return [p for p in re.split(r"\n[ \t]*\n", metin) if p.strip()]
 
 
 def _olu_port():
@@ -1246,18 +1423,58 @@ class H4_KameraKanitKaynagi(unittest.TestCase):
         self.assertEqual(f"{self.URL} [{ETIKET}]", f(self.URL, ETIKET))
 
     def test_H4e_contracts_ornegi_kodla_ayni(self):
-        # MİMAR KURALI D-453 (T226-D2, çürütücü D1): belge kilidi yeni içeriği
-        # ÇİZİLİ ARALIKLAR AYIKLANMIŞ metinde arar — `~~…~~` içine alınmış
-        # (geri çekilmiş) cümle, ne başlık ne örnek olarak kilidi karşılar.
-        metin = re.sub(r"~~.*?~~", "", SOZLESME.read_text(encoding="utf-8"),
-                       flags=re.S)
-        bas = metin.index("### 6.8 Hakem kanıt kaydının OLAY KÜMESİ")
-        son = metin.index("### 6.2 `road` sözleşmesi", bas)
-        blok = metin[bas:son]
+        """MİMAR KURALI D-453 (T226-D2, çürütücü D1) + T240 (D-460 karar 2).
+
+        Belge kilidi yeni içeriği ÇİZİLİ ARALIKLAR AYIKLANMIŞ metinde arar; çizme
+        sözdizimi artık `tests/belge_kilidi.py` ile TEK YERDEN gelir (`~~…~~`,
+        tek tilde, `<del>`/`<s>`/`<strike>`). Ayrıca:
+        · beyaz liste dışı HİÇBİR çizik olamaz (§6.8'de meşru çizik yoktur),
+        · kaynak hükmünün TAMAMI ön kayıtlıdır ve örneği KODDAN doldurulur,
+        · §6.8'in kalın başlıklı hüküm paragrafları sıralı+tam ön kayıtlıdır ve
+          kaynak hükmünü `Tekrar (throttle)` paragrafı izler — hükmü geri alan
+          çelişkili ikinci paragraf (D1e) eklenemez,
+        · T240-B (D-460 kaçanı Y7): §6.8'in **kapalı hüküm cümlesi kümesi** ön
+          kayıtlıdır. Kalın başlık TAŞIMAYAN ve kaynak paragrafının hemen ardına
+          DEĞİL, bölümün başka bir yerine konan çelişkili hüküm paragrafı
+          yukarıdaki üç kilidin ÜÇÜNDEN DE kaçıyordu (ölçüldü: MK15 ve tüm
+          test_yks_*.py çıkış 0); yakalayan tek yapı budur.
+        """
+        ham = _sozlesme_68()
+        self.assertEqual([], belge_kilidi.beyaz_liste_disi_cizik(
+            ham, SOZLESME_68_IZINLI_CIZIK), "CONTRACTS §6.8'de beyaz liste dışı çizik")
+        # D-465 (1): §6.8'in TAMAMI blok blok ÖN KAYITLI METİN EŞİTLİĞİYLE bağlıdır.
+        # Bu kilit YOKLUK değil EŞİTLİK denetler; hangi sözdiziminin kullanıldığı ÖNEMSİZDİR.
+        # Çizik ayıklaması BİLEREK yoktur: ayıklama, saklama yüzeyini açan şeydir.
+        ornek0 = yks_gui.kamera_kanit_kaynagi(self.URL, ETIKET)
+        beklenen_blok = tuple(b.replace("⟨ÖRNEK⟩", ornek0) for b in SOZLESME_68_BLOKLARI)
+        bulunan_blok = belge_kilidi.bloklar(ham)
+        self.assertEqual(beklenen_blok, bulunan_blok,
+                         "CONTRACTS §6.8 ön kayıtlı metinle aynı değil — fazla: {}; eksik: {}"
+                         .format([b for b in bulunan_blok if b not in beklenen_blok],
+                                 [b for b in beklenen_blok if b not in bulunan_blok]))
+        blok = belge_kilidi.cizikleri_ayikla(ham)
         self.assertIn("--kamera-etiket", blok)
         self.assertIn("`KAMERA_KANIT.kaynak`", blok)
         ornek = yks_gui.kamera_kanit_kaynagi(self.URL, ETIKET)
         self.assertIn(f'`"{ornek}"`', blok, "CONTRACTS §6.8 örneği kodla ayrıştı")
+        self.assertEqual(SOZLESME_68_HUKUM_BASLIKLARI,
+                         tuple(SOZLESME_68_KALIN_BASLIK.findall(blok)),
+                         "§6.8 hüküm paragrafı eklendi/silindi/çizildi (D1e sınıfı)")
+        par = _paragraflar(blok)
+        kaynak = [p for p in par if p.startswith(SOZLESME_KAYNAK_BASI)]
+        self.assertEqual(1, len(kaynak), "§6.8 kaynak hükmü paragrafı tam 1 kez olmalı")
+        self.assertTrue(belge_kilidi.on_kayitli_metin_esit(
+            kaynak[0], SOZLESME_KAYNAK_HUKMU.replace("⟨ÖRNEK⟩", ornek)),
+            "§6.8 `KAMERA_KANIT.kaynak` hükmü ön kayıtlı metinle aynı değil")
+        self.assertTrue(par[par.index(kaynak[0]) + 1].startswith(SOZLESME_KAYNAK_SONRASI),
+                        "§6.8 kaynak hükmünün ardına ikinci hüküm paragrafı sokuşturuldu")
+        beklenen = tuple(c.replace("⟨ORNEK⟩", " ".join(belge_kilidi.normalize(ornek).split()))
+                         for c in SOZLESME_68_HUKUM_CUMLELERI)
+        cumleler = belge_kilidi.hukum_cumleleri(blok, SOZLESME_68_HUKUM_ANAHTARLARI)
+        self.assertEqual(beklenen, cumleler,
+                         "§6.8 ön kayıtlı hüküm cümlesi kümesi değişti — fazla: {}; eksik: {}"
+                         .format([c for c in cumleler if c not in beklenen],
+                                 [c for c in beklenen if c not in cumleler]))
 
 
 class H5_VideoOnayiKilitlemez(_GercekEkran):

@@ -26,13 +26,48 @@ from pathlib import Path
 import numpy as np
 
 KOK = Path(__file__).resolve().parents[1]
-for _p in (KOK / "codes", KOK / "simulation" / "mujoco", KOK / "simulation" / "scripts"):
+for _p in (KOK / "codes", KOK / "simulation" / "mujoco", KOK / "simulation" / "scripts",
+           KOK / "tests"):
     if str(_p) not in sys.path:
         sys.path.insert(0, str(_p))
 
+import belge_kilidi  # noqa: E402  (T240: ORTAK belge kilidi yardimcisi)
 import karar_sozlesmesi as ks  # noqa: E402
 
 ON_KAYIT = KOK / "results" / "fdr_sprint_20260910" / "H1" / "t235" / "ON_KAYIT.md"
+
+# ── D-461 (T236-B curutucusu): ON KAYIT TEKLIGI — §4 T236 SITL kapisi ────────
+# NEDEN: §4'e IKINCI ve GEVSETILMIS bir kabul olcutu eklenince hicbir test
+# dusmuyordu; ozgun satir yerinde durdugu icin butun "varlik" kilitleri yesil
+# kaliyordu. Kapi adi, kabul blogunun TAM metni ve olcutun kisitladigi
+# buyuklukler (m, °, %) burada ON KAYITLIDIR — kabul blogu ancak bu sabitle
+# BIRLIKTE, gorunur bir test degisikligiyle degisebilir.
+T236_BOLUM_BASI = "## 4. FDA görev planı"
+T236_KAPI_ADI = "T236 SITL kapısı"
+T236_KABUL_BASLIGI = "**T236 SITL kapısı**"
+T236_KABUL_OLCUTU = (
+    "- **T236 SITL kapısı** (Windows SITL ikilisi bulunursa): bekleme süresince (ilk 10 s hariç) "
+    "yatay konum merkezden **≤ 2,0 m** ve yaw β'dan **≤ ±5°** zamanın **≥ %90**'ında; irtifa "
+    "hedeften **±1,0 m**. SITL koşulamazsa **ÖLÇÜLEMEDİ** (GEÇTİ değil) ve plan ilk kalkıştan "
+    "önce Mission Planner simülasyonunda insanca doğrulanır (BEYAN)."
+)
+
+# ── D-465 (1) · MIMAR KARARI 12 Eylul: YOKLUK yerine ON KAYITLI METIN ESITLIGI ──
+# NEDEN: T240 ailesi uc turdur ayni bicimde RED aldi — "su sozdizimiyle yasak metin geri
+# kondu / hukum gizlendi". YOKLUK denetiminin kacis yuzeyi SONSUZDUR (her yasak bicimin
+# baska bir yazimi vardir: `~~`, `<s>`, `&#822;`, `&#96;~~...~~&#96;`, anahtar sozcuksuz
+# cumle, "en cok 4 metre", "≤ 400 cm" ...). ESITLIK denetiminin kacis yuzeyi YOKTUR.
+# §4 KABUL OLCUTU TASIYAN bir yuzeydir; bu yuzden bolumun TAMAMI blok blok ON KAYITLIDIR.
+# Normallestirme YALNIZ bosluk/satir sonudur: cizik/varlik/vurgu AYIKLAMASI YOKTUR
+# (ayiklama, saklama yuzeyi acan seyin kendisidir) — `~~X~~`, `<s>X</s>` ve
+# `&#96;~~X~~&#96;` ucu de ayni sekilde, tek kuralla DUSURUR.
+# OLCULEN KACISLAR bu tek kuralla kapanir: X13 ("en cok 4 metre / en az yuzde 70"),
+# X14 ("≤ 400 cm"), D-461 ikinci gevsetilmis olcut, ve her cizme sozdizimi.
+T236_BOLUM_BLOKLARI = (
+    '## 4. FDA görev planı (T235-E) ve SITL (T236)',
+    "- Görev üreteci: 4 köşe + Başlangıç kenarı + montaj yaw → merkez = köşe ortalaması; β = Başlangıç kenarı ortası → Hedef kenarı ortası kerterizi; `NAV_LOITER_TIME` **merkezde**; `CONDITION_YAW(β − montaj_yaw)` `LOITER_TIME`'dan **SONRA** (ArduCopter DO/CONDITION komutları önceki NAV komutu sürerken koşar; `WP_YAW_BEHAVIOR=2` yeni NAV'da yaw'ı sıfırlar — çürütücü bulgusu 2). İrtifa (kip, h) seçimine göre, `FENCE` 50 m altında.",
+    "- **T236 SITL kapısı** (Windows SITL ikilisi bulunursa): bekleme süresince (ilk 10 s hariç) yatay konum merkezden **≤ 2,0 m** ve yaw β'dan **≤ ±5°** zamanın **≥ %90**'ında; irtifa hedeften **±1,0 m**. SITL koşulamazsa **ÖLÇÜLEMEDİ** (GEÇTİ değil) ve plan ilk kalkıştan önce Mission Planner simülasyonunda insanca doğrulanır (BEYAN).",
+)
 
 # Tipografik kesme/tirnak tek bicime (D-453: "’ ´ ` kesme" varyantlari kilidi delemez).
 _KESME = str.maketrans({"’": "'", "‘": "'", "´": "'", "`": "'", "ʼ": "'",
@@ -243,6 +278,49 @@ class OnKayitKilitleri(unittest.TestCase):
         self.assertRegex(b3, r"kosum_tur3'?\s*20\s*\+\s*kerteriz\s*8\b")
         self.assertEqual((28, 28), t.K1_BEKLENEN_A1)
         self.assertEqual({"kerteriz": (3, 8), "kosum_tur3_uretim": (6, 20)}, t.K1_BEKLENEN_KARE)
+
+    def test_SS4_T236_kabul_olcutu_TEKLIGI(self):
+        """D-461 (T236-B çürütücüsü): ÖN KAYIT TEKLİĞİ kilidi — `belge_kilidi.kabul_olcutu_tekligi`.
+
+        ÖLÇÜLEN KAÇIŞ: `ON_KAYIT §4`'e **ikinci ve gevşetilmiş** bir kabul ölçütü
+        ("T236 SITL kapısı (gözden geçirilmiş): ≤ 4,0 m · ±15° · ≥ %70 · ±3,0 m") eklenince
+        HİÇBİR test düşmüyordu — bugünkü kilitler yalnız ÖZGÜN SATIRIN VARLIĞINI koruyordu,
+        ölçütün TEKLİĞİNİ değil. "Ön kayıtlı eşikler gevşetilmez" kuralının mekanik karşılığı
+        yoktu; ölçümden SONRA yazılan gevşek bir ikinci ölçüt süit yeşilken belgeye girebilirdi.
+
+        Dört kural birden koşar: (a) kapı adı §4'te TAM 1 kez; (b) ön kayıtlı ölçütün
+        kısıtladığı her büyüklükte (m, °, %) RAKİP EŞİK yok; (c) kabul bloğu ön kayıtlı metinle
+        TAM EŞİT (alt dizge `in` değil); (d) kabul yüzeyinde çelişkili ikinci hüküm sözcüğü yok.
+        """
+        ham = ON_KAYIT.read_text(encoding="utf-8")
+        self.assertEqual(1, ham.count(T236_KABUL_BASLIGI), "§4 kabul ölçütü başlığı tam 1 olmalı")
+        bolum = T236_BOLUM_BASI + ham.split(T236_BOLUM_BASI, 1)[1].split("\n## 5.", 1)[0]
+        self.assertEqual([], belge_kilidi.kabul_olcutu_tekligi(
+            bolum, T236_KAPI_ADI, T236_KABUL_OLCUTU),
+            "ON_KAYIT §4 kabul ölçütü tekliği bozuldu (D-461)")
+
+    def test_SS4_ON_KAYITLI_METIN_ESITLIGI_D465(self):
+        """D-465 (1): §4'ün TAMAMI blok blok ÖN KAYITLI METİN EŞİTLİĞİYLE bağlıdır.
+
+        Bu kilit YOKLUK değil EŞİTLİK denetler: §4'ün ham metni (yalnız boşluk/satır
+        sonu normalize) testte duran sabite EŞİT olmak zorundadır. Bir sözcük eklenir,
+        silinir ya da üzeri çizilirse test DÜŞER ve bunun hangi SÖZDİZİMİYLE yapıldığı
+        ÖNEMSİZDİR — `~~…~~`, `<s>`, `&#822;`, `&#96;~~…~~&#96;`, anahtar sözcüksüz
+        cümle, birim kaydırması ("en çok 4 metre", "≤ 400 cm") hepsi aynı kapıya çarpar.
+
+        ÇİZİK AYIKLAMASI BİLEREK YOKTUR: ayıklama, saklama yüzeyini açan şeydir
+        (ayıklanan metin testin gördüğü metinden düşer, yani gizlenir).
+        """
+        ham = ON_KAYIT.read_text(encoding="utf-8")
+        bolum = T236_BOLUM_BASI + ham.split(T236_BOLUM_BASI, 1)[1].split("\n## 5.", 1)[0]
+        bulunan = belge_kilidi.bloklar(bolum)
+        self.assertEqual(T236_BOLUM_BLOKLARI, bulunan,
+                         "ON_KAYIT §4 ön kayıtlı metinle aynı değil — fazla: {}; eksik: {}"
+                         .format([b for b in bulunan if b not in T236_BOLUM_BLOKLARI],
+                                 [b for b in T236_BOLUM_BLOKLARI if b not in bulunan]))
+        # ÖN KAYITLI kabul ölçütü bloğu §4'ün İÇİNDEDİR: sabit, belgeyle birlikte
+        # sessizce değiştirilemesin diye iki ön kayıt birbirine BAĞLIDIR.
+        self.assertIn(" ".join(T236_KABUL_OLCUTU.split()), T236_BOLUM_BLOKLARI)
 
 
 class A0AlanSeritKarari(unittest.TestCase):
