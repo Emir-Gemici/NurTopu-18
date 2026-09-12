@@ -191,6 +191,25 @@ def b4(bas, son=None):
     return kesit(oku(B4), bas, son)
 
 
+# T244'ün kilitlediği YÜZEYLER — beyaz liste ve çelişkili ikinci hüküm denetimi
+# hepsinde TOPLUCA koşar (yeni bir yüzey eklenince kapı da kendiliğinden kapsar).
+def kilitli_yuzeyler():
+    return (("3.3.1.1.8", b3("##### 3.3.1.1.8 ", "##### 3.3.1.1.9 ")),
+            ("3.3.3.2", b3("#### 3.3.3.2 ", "#### 3.3.3.3 ")),
+            ("3.3.4.1.7", b3("##### 3.3.4.1.7 ", "##### 3.3.4.1.8 ")),
+            ("3.3.4.2.1", b3("##### 3.3.4.2.1 ", "##### 3.3.4.2.2 ")),
+            ("3.3.4.2.8", b3("##### 3.3.4.2.8 ", "#### 3.3.4.3 ")),
+            ("3.4.1", b3("### 3.4.1 ", "### 3.4.2 ")),
+            ("4.0", b4("## 4.0 ", "## 4.1 ")),
+            ("4.1.3", b4("### 4.1.3 ", "## 4.2 ")),
+            ("4.4", b4("## 4.4 ", "## 4.5 ")),
+            ("4.7", b4("## 4.7 ", "## 4.8 ")),
+            ("4.8 girişi", b4("## 4.8 ", "### 4.8.1 ")),
+            ("4.8.3", b4("### 4.8.3 ", "### 4.8.4 ")),
+            ("4.8.4", b4("### 4.8.4 ", "## 4.9 ")),
+            ("4.13.3", b4("### 4.13.3 ", "#### 4.13.3.1 ")))
+
+
 class T0_CapaDosyalar(unittest.TestCase):
     def test_capa_dosyalar_var(self):
         for p in (B3, B4, YONERGE, KAYIT, ENGINE_JSON, H1C_JSON, INIS, PARAM):
@@ -201,15 +220,13 @@ class T0_CapaDosyalar(unittest.TestCase):
 
     def test_cizme_isareti_beyaz_liste(self):
         """Kilitli yüzeylerde beyaz listede OLMAYAN çizme işareti kalmamalı."""
-        for ad, m in (("3.3.1.1.8", b3("##### 3.3.1.1.8 ", "##### 3.3.1.1.9 ")),
-                      ("3.3.4.1.7", b3("##### 3.3.4.1.7 ", "##### 3.3.4.1.8 ")),
-                      ("3.3.4.2.1", b3("##### 3.3.4.2.1 ", "##### 3.3.4.2.2 ")),
-                      ("3.3.4.2.8", b3("##### 3.3.4.2.8 ", "#### 3.3.4.3 ")),
-                      ("3.4.1", b3("### 3.4.1 ", "### 3.4.2 ")),
-                      ("4.4", b4("## 4.4 ", "## 4.5 ")),
-                      ("4.8.3", b4("### 4.8.3 ", "### 4.8.4 ")),
-                      ("4.13.3", b4("### 4.13.3 ", "#### 4.13.3.1 "))):
+        for ad, m in kilitli_yuzeyler():
             self.assertEqual([], cizme_artiklari(m), ad)
+
+    def test_celiskili_ikinci_hukum_HICBIR_yuzeyde_yok(self):
+        """D-461 (d): kabul yüzeyine çelişkili/gevşetici ikinci hüküm yazılamaz."""
+        for ad, m in kilitli_yuzeyler():
+            self.assertEqual([], celiskili_ikinci_hukum(m), ad)
 
 
 class T1_MavlinkTekYazarKilidi(unittest.TestCase):
@@ -426,8 +443,11 @@ class T5_OlculmusAmaOlcuelecekDiyenler(unittest.TestCase):
         n = tekhat(m)
         self.assertEqual(1, n.count("5/260"), "D-303 eşiği tam bir kez geçmeli")
         self.assertEqual(1, n.count("%1,92"), "D-303 eşik yüzdesi tam bir kez geçmeli")
-        self.assertEqual(["%1,92"], re.findall(r"≤\s*5/260\s*=\s*(%\d+,\d+)", n),
+        # RAKİP EŞİK YASAĞI: bölümde `≤ n/m = %x,y` biçiminde BAŞKA kabul ölçütü olamaz
+        self.assertEqual(["5/260 = %1,92"],
+                         re.findall(r"≤\s*(\d+/\d+\s*=\s*%\d+,\d+)", n),
                          "rakip/gevşetilmiş ikinci eşik var")
+        self.assertEqual([], celiskili_ikinci_hukum(m))
         self.assertIn("%2,38", n)
 
     def test_T5b_413_jetson_baslat_ve_tensorrt(self):
@@ -557,20 +577,42 @@ class T8_IsikGolgeKesiti(unittest.TestCase):
     def _b3(self):
         return b3("##### 3.3.4.2.8 ", "#### 3.3.4.3 ")
 
+    def _varyant_satirlari(self):
+        """Işık/gölge sonuç tablosunun SATIRLARI: {varyant: [hücreler]}.
+
+        Satır bazlıdır — bölümün başka bir yerindeki aynı sayı bir hücre sapmasını
+        DOYURAMAZ (kapının kendi mutasyon bulgusu M8).
+        """
+        sonuc = {}
+        for s in self._b3().splitlines():
+            if not s.startswith("| "):
+                continue
+            hucreler = [h.strip() for h in s.strip().strip("|").split("|")]
+            n0 = tekhat(hucreler[0])
+            for varyant in ("TABAN", "V1", "V2", "V3"):
+                if len(hucreler) == 7 and re.match(r"^{}\b".format(varyant), n0):
+                    sonuc.setdefault(varyant.lower(), hucreler)
+        return sonuc
+
     def test_T8_varyant_sayilari_artefakttan(self):
-        m = tekhat(self._b3())
+        satirlar = self._varyant_satirlari()
+        self.assertEqual({"taban", "v1", "v2", "v3"}, set(satirlar), sorted(satirlar))
+        ozet = json.loads((K3B / "ozet_k3b.json").read_text(encoding="utf-8"))
+        ozetler = {v["varyant"]: v for v in ozet["varyantlar"]}
+        self.assertAlmostEqual(0.1314, ozetler["v1"]["htab_engel_ort"], places=4)
+        self.assertAlmostEqual(0.2380, ozetler["v2"]["htab_engel_ort"], places=4)
         for dosya, varyant in (("taban_15harita.json", "taban"), ("v1_15harita.json", "v1"),
                                ("v2_15harita.json", "v2"), ("v3_15harita.json", "v3")):
             o = json.loads((K3B / dosya).read_text(encoding="utf-8"))["ozet"]
             self.assertEqual(15, o["harita_n"], varyant)
-            self.assertIn("{}/15".format(o["dogru_etiket"]), m, (varyant, "dogru"))
-            self.assertIn("{}/15".format(o["rota_bulunan"]), m, (varyant, "rota"))
-        ozet = json.loads((K3B / "ozet_k3b.json").read_text(encoding="utf-8"))
-        engel = {v["varyant"]: v["htab_engel_ort"] for v in ozet["varyantlar"]}
-        self.assertAlmostEqual(0.1314, engel["v1"], places=4)
-        self.assertAlmostEqual(0.2380, engel["v2"], places=4)
-        for v in ("v1", "v2", "v3", "taban"):
-            self.assertIn(("%.4f" % engel[v]).replace(".", ","), m, v)
+            h = satirlar[varyant]
+            # sütunlar: varyant | rota bulunan | doğru etiket | engel | geçilebilir | açık yol | durumlar
+            self.assertEqual("{}/15".format(o["rota_bulunan"]), tekhat(h[1]), (varyant, "rota"))
+            self.assertEqual("{}/15".format(o["dogru_etiket"]), tekhat(h[2]), (varyant, "doğru"))
+            for sutun, alan in ((3, "htab_engel_ort"), (4, "htab_gecilebilir_ort"),
+                                (5, "acik_yol_gecilebilir_ort")):
+                beklenen = ("%.4f" % ozetler[varyant][alan]).replace(".", ",")
+                self.assertEqual(beklenen, tekhat(h[sutun]), (varyant, alan))
 
     def test_T8b_isik_parametreleri_koddan(self):
         arena = oku(KOK / "simulation" / "mujoco" / "arena_mjcf.py")

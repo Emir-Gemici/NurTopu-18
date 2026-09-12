@@ -516,12 +516,13 @@ ekipman satırının** bugünkü dağılımı, hücre metinlerinden sayılarak:
 | **önceden yazılmış kabul kapısı KOŞULDU** — Jetson (FPS ≥ 0,61 → **GEÇTİ**) · FS-i6 (failsafe kolu → **DÜŞTÜ**) | **2/9** |
 | kapı koşulmadı ama tezgâh **ÖLÇÜMÜ var** (KISMEN) — Pixhawk · GNSS · motor-ESC-pervane · pil | **4/9** |
 | yalnız **BEYAN** var, ölçüm yok — SiK çifti | **1/9** |
-| hiç ölçüm/beyan yok — RPi HQ (kamera hiç bağlanmadı) · İKA ekipmanları (seçilmedi) | **2/9** |
+| **ekipmanın KENDİ kabul ölçümü yok** — RPi HQ (kamera hiçbir gün bağlanmadı; 6 Eylül'de açılan köprü ölçümü Jetson'undur, kameranın değil) · İKA ekipmanları (henüz seçilmedi) | **2/9** |
 
 Yani **hiçbir ekipman için kabul testi zinciri tam kapanmamıştır**; kapısı koşulan iki
 satırın biri **düşmüştür** ve sonuç gevşetilmeden yazılmıştır. Ekipmanlar ve her biri için
 **önceden yazılmış** kabul kapısı aşağıdadır; sağ sütun 5–6 Eylül tezgâhında ölçülenle
-doldurulmuştur, **ölçülmeyen hücrede `ÖLÇÜLEMEDİ` yazar** — boş bırakılmaz.
+doldurulmuştur ve **hiçbir hücre boş bırakılmamıştır**: ölçülmeyen kalem `ÖLÇÜLEMEDİ`,
+yalnız sözlü olan `BEYAN`, henüz seçilmemiş olan da nedeniyle yazılıdır.
 
 | ekipman | koşulacak kabul kapısı | bugünkü sonuç |
 |---|---|---|

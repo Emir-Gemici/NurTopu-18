@@ -2221,8 +2221,8 @@ değişir (`simulation/mujoco/arena_mjcf.py:208-215` `ISIK` sözlüğü; gölge 
 | **v2** | `-0.62 0.45 -0.64` | ≈ **39,9°** (alçak güneş, gölge ≈ 1,2 × yükseklik) | `0.85 0.83 0.78` | `0.18 0.18 0.19` | v1 + belirgin gölge/kontrast |
 | **v3** | v2 ile aynı ışık | ≈ **39,9°** | `0.85 0.83 0.78` | `0.18 0.18 0.19` | v2 + düzensiz moloz yığını mesh'leri |
 
-Üretim semantiğiyle (HB tohumu tek piksel, `hb_yaricap_m = 0`) 15 harita, üç tohum
-kümesinden aynı harita seti; artefaktlar `results/fdr_sprint_20260910/H1/k3b/<varyant>_15harita.json`
+Üretim semantiğiyle (HB tohumu tek piksel, `hb_yaricap_m = 0`) **15 harita** (5 harita ×
+kolay/orta/zor), dört varyantta **aynı** harita seti; artefaktlar `results/fdr_sprint_20260910/H1/k3b/<varyant>_15harita.json`
 ve özet `k3b/ozet_k3b.json`, rapor `k3b/RAPOR_K3B.md`:
 
 | varyant | K3 rota bulunan | K3 **doğru etiket** | HTAB engel (ort) | HTAB geçilebilir (ort) | açık yol şeridinde geçilebilir (ort) | rota durumları |

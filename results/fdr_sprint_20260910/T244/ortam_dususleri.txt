@@ -1,0 +1,35 @@
+# T244 — tam suit dususlerinin siniflandirmasi (kaynak: tam_suit.txt, ayni agac)
+# Kural: OLCULEMEDI != GECTI. Asagidaki 21 dusus ORTAM kaynaklidir: worktree
+# yalnizca git'in IZLEDIGI dosyalari tasir; models/*.pt, jetson_paket/models/*.pt ve
+# bazi data/ fikstur dosyalari izlenmiyor -> yok. Hicbiri T244'un dokundugu dosyalara
+# (FDR/*.md, ATOLYE_TEST_GUNU_20260912.md, tests/test_atolye_test_gunu.py,
+# tests/test_fdr_t244_ic_celiski.py) bagli degil: yedi modulde de `grep -c 'FDR/'` = 0.
+# T244 oncesi ayni agacta olculen dusus sayisi da 21'dir (atolye satir atfi 915->929
+# duzeltildikten sonra; duzeltme oncesi 22 idi ve 22.'si T244'un kendi yan etkisiydi).
+
+ERROR test_imgsz_tek_kaynak.test_uretim_defteri_ile_INFER_SIZE_UYUSUYOR -> ?
+ERROR test_model_registry.test_default_is_verified_v36_competition_model -> model artefaktı yok: O:\navitas\.claude\worktrees\wf_88f63745-bff-2\models\navitas_seg_v36_best.pt
+ERROR test_saha_parametrik.test_GEVSETME_ACIKCA_istenmeli -> ?
+ERROR test_saha_parametrik.test_UYUM_varsa_yuklenir -> ?
+ERROR test_saha_parametrik.test_kayit_defteri_YOKSA_uyum_SAYILMAZ -> ?
+ERROR test_saha_parametrik.test_UC_UC_ayni_agirligi_gosteriyor -> ?
+ERROR test_saha_parametrik.test_manifest_ile_kayit_defteri_ESLESIYOR -> ?
+ERROR test_saha_parametrik.test_varsayilan_MANIFESTTEN_gelir -> ?
+ERROR test_t123_gecis_provasi.test_MUTASYON_kunyedeki_sha_bozulursa_UYUSMAZ_der -> [Errno 2] No such file or directory: 'C:\\Users\\yunus\\AppData\\Local\\Temp\\tmpkm6aqqnk\\jetson_paket\\models\\navitas_seg_v35_best.pt'
+ERROR test_t123_gecis_provasi.test_g2_KOSUYOR_ve_PATLAMIYOR -> [Errno 2] No such file or directory: 'O:\\navitas\\.claude\\worktrees\\wf_88f63745-bff-2\\jetson_paket\\models\\navitas_seg_v35_best.pt'
+ERROR test_t123_gecis_provasi.test_g2_YEDEGI_OK_diye_dogruluyor -> [Errno 2] No such file or directory: 'O:\\navitas\\.claude\\worktrees\\wf_88f63745-bff-2\\jetson_paket\\models\\navitas_seg_v35_best.pt'
+FAIL test_imgsz_tek_kaynak.test_load_model_hata_mesaji_IMGSZ_degerlerini_yaziyor -> "profilin imgsz'i  : 640" not found in 'Manifest `navitas_seg_v36_best.pt` diyor ama agirlik diskte YOK (bakilan: O:\\navitas\\.claude\\worktrees\\wf_88f63745-bff-2\\jets
+FAIL test_saha_parametrik.test_UYUSMAZLIKTA_yukselir -> 'fail-closed' not found in 'Manifest `navitas_seg_v36_best.pt` diyor ama agirlik diskte YOK (bakilan: O:\\navitas\\.claude\\worktrees\\wf_88f63745-bff-2\\jetson_paket\\mo
+FAIL test_t123_gecis_provasi.test_BIRINCIL_ve_YEDEK_ikisi_de_pakette -> False is not true
+FAIL test_t202_jetson_paket_butunlugu.test_KULLANILAN_HER_YOL_KURULUYOR -> Lists differ: [] != ['models/navitas_seg_v17_best.pt', 'models[190 chars]nnx']
+FAIL test_t38_kuru_kosu_fiksturu.test_kareler_ve_sha_tutuyor -> False is not true : O:\navitas\.claude\worktrees\wf_88f63745-bff-2\data\kuru_kosu_fikstur\images\sa_000000.jpg
+FAIL test_t38_kuru_kosu_fiksturu.test_kareler_ve_sha_tutuyor -> False is not true : O:\navitas\.claude\worktrees\wf_88f63745-bff-2\data\kuru_kosu_fikstur\images\sa_000001.jpg
+FAIL test_t38_kuru_kosu_fiksturu.test_kareler_ve_sha_tutuyor -> False is not true : O:\navitas\.claude\worktrees\wf_88f63745-bff-2\data\kuru_kosu_fikstur\images\sa_000002.jpg
+FAIL test_t38_kuru_kosu_fiksturu.test_okuyucu_dortlu_donuyor -> unexpectedly None : fikstur okunamadi
+FAIL test_t38_kuru_kosu_fiksturu.test_varsayilan_fiksturden_gelir -> False is not true : varsayilan kare hâlâ data/raw_frames'ten geliyor (T38)
+FAIL test_yks_gui_uretim_hizasi.test_kompozit_dizini_listeleniyor -> [] is not true : kompozit kume bos listelendi
+
+MODUL DAGILIMI: test_imgsz_tek_kaynak=2, test_model_registry=1, test_saha_parametrik=7, test_t123_gecis_provasi=4, test_t202_jetson_paket_butunlugu=1, test_t38_kuru_kosu_fiksturu=5, test_yks_gui_uretim_hizasi=1
+TOPLAM: 21
+SUIT: Ran 2767 tests in 592.642s
+SON SATIR: FAILED (failures=10, errors=11, skipped=34)
