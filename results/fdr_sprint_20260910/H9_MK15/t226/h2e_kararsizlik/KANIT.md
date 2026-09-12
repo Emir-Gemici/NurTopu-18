@@ -106,9 +106,16 @@ saptanamadı (3 tam süit koşumunda olay tekrar etmedi). Saptanan şey
 4. H2e'deki `_pompala(lambda: False, 0.2)` yerine **gerçek yerleşim koşulu**:
    `winfo_ismapped()` **ve** tuval boyutu 742×450. (H1b'de aynı sınıf
    `d812b1e2` ile kapanmıştı.)
+5. Hazır koşulu düşerse mesaj artık durumu yazıyor: `rota`, `rota_yok`,
+   kuyruk boyu, kaynak reddi sayısı — "ürün temizlemedi" ile "yabancı
+   çerçeve geldi" ayrımı düşüş satırında görünüyor.
 
 Hiçbir assert gevşetilmedi, kapsam daraltılmadı, `skip`/`expectedFailure`
-kullanılmadı. Yeni bağımlılık yok.
+kullanılmadı. Yeni bağımlılık yok. Ürün kodu (`comms/yks_gui.py`)
+**değişmedi** — M5 mutasyonu dışında, o da `finally` ile bayt bayt geri
+yazıldı (`git status` temiz).
+
+**Süre kazancı (yan etki):** modül 22,3 s → 14,8 s; sabit uykular kalktı.
 
 ## 4. Kanıt
 
@@ -122,21 +129,37 @@ kullanılmadı. Yeni bağımlılık yok.
 | Yabancı enjeksiyon, düzeltme SONRASI | `d4_enjeksiyon_duzeltme_sonrasi.txt` | OK ×2, kabul edilen çerçeve 9/6 (tam) |
 | Mutasyon M0–M4 | `mutasyon_ciktisi.txt`, `mutasyon_M*.txt` | **GECTI** (M1/M2/M4 kırmızı, M0/M3 yeşil) |
 | Enjeksiyon altında 5 ardışık koşum | `ardisik_1..5.txt` | 5/5 OK, her koşumda 9 OPEN / 6 NO_ROUTE |
-| Tam süit ×2 (düzeltme sonrası) | `kapi_kosum_A.txt`, `kapi_kosum_B.txt` | bkz. dosyalar |
-| Genel kapı (madde 14) | aynı dosyalar | 15/15 |
+| Tam süit ×4 (düzeltme sonrası) | `kapi_kosum_A/B/C/D.txt` | A: 2616 OK · B, C, D: **Ran 2620 · OK (skipped=19)** |
+| Tam süit ×2 (SON içerik) | `kapi_kosum_E.txt`, `kapi_kosum_F.txt` | **Ran 2620 · OK (skipped=19)** (502,8 s / 496,2 s) |
+| Genel kapı (madde 14) | yukarıdaki her koşum + `genel_kapi_son.txt` | **kol1 15/15 · kol2 şerit 15/15** |
 
-### Mutasyon tablosu (`mutasyon_h2e.py` — gerçek dosyayı bozar, `finally` ile sha256 doğrulayarak geri yazar)
+(A koşumu `wheels`/`firmware` bağlanmadan önce yapıldı; o yüzden 2616.
+B'den sonra keşif sayısı mimarın ağacıyla aynı: **2620**.)
 
-| # | Mutasyon | Beklenen | Gerçek |
-|---|---|---|---|
-| M0 | yok (enjeksiyon var) | 0 | 0 |
-| M1 | ayrı geri döngü adresi geri alınır | 1 | 1 |
-| M2 | hazır koşulu gevşetilir + 0,15 s sabit uyku geri gelir | 1 | 1 |
-| M3 | yabancı çerçeve önkoşulu silinir (adres yalıtımı durur) | 0 | 0 |
-| M4 | düzeltme öncesi fikstürün tamamı + seyrek enjeksiyon | 1 | 1 |
+### Mutasyon tablosu
 
-M3'ün yeşil olması tasarım gereğidir: yalıtım tek başına yeterlidir, sayaç
-önkoşulu **tanıyı** verir (ikinci savunma hattı).
+`mutasyon_h2e.py` gerçek kaynak dosyayı **bayt düzeyinde** bozar ve `finally`
+içinde sha256 doğrulayarak aynen geri yazar (satır sonu dâhil).
+
+| # | Mutasyon | Hedef | Beklenen | Gerçek |
+|---|---|---|---|---|
+| M0 | yok (enjeksiyon var) | — | 0 | 0 |
+| M1 | ayrı geri döngü adresi geri alınır | test | 1 | 1 |
+| M2 | hazır koşulu gevşetilir + 0,15 s sabit uyku geri gelir | test | 1 | 1 |
+| M3 | yabancı çerçeve önkoşulu silinir (adres yalıtımı durur) | test | 0 | 0 |
+| M4 | düzeltme öncesi fikstürün tamamı + seyrek enjeksiyon | test | 1 | 1 |
+| M5 | **ÜRÜN**: OPEN_ROUTE `rota_yok`u temizlemiyor (enjeksiyon YOK) | ürün | 1 | 1 |
+
+`MUTASYON_SONUC GECTI` (`mutasyon_ciktisi.txt`).
+
+- **M4** mimarın imzasını birebir üretir (`(51, 156, 243)`; `144 ↔ 156`).
+- **M5 kapının gevşemediğinin kanıtıdır**: gerçek ürün sızıntısında test
+  KIRMIZI olur ve tanıyı açıkça yazar —
+  `ekran çerçeveyi TAM işlemedi: {...OPEN_ROUTE seq 144...} · rota=144 ·
+  rota_yok={...NO_ROUTE seq 143...} · kuyruk=0 · kaynak reddi=0`
+  (yani "ürün temizlemedi", "yabancı çerçeve yok" ayrımı düşüş satırında).
+- **M3**'ün yeşil olması tasarım gereğidir: yalıtım tek başına yeterlidir,
+  sayaç önkoşulu ikinci savunma hattı ve **tanı** içindir.
 
 ## 5. Mimarın dikkatine — ürün tarafında ayrı bir gözlem (bu görevin konusu DEĞİL)
 

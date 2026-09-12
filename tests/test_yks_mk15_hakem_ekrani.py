@@ -259,7 +259,13 @@ class _GercekEkran(unittest.TestCase):
                         and app.rota_yok is None)
             return (app.rota_yok or {}).get("seq") == mesaj["seq"]
 
-        self.assertTrue(self._pompala(islendi), mesaj)
+        self.assertTrue(
+            self._pompala(islendi),
+            f"ekran çerçeveyi TAM işlemedi: {mesaj} · "
+            f"rota={(self.app.rota or {}).get('seq')} · "
+            f"rota_yok={self.app.rota_yok!r} · "
+            f"kuyruk={self.app.gelen.qsize()} · "
+            f"kaynak reddi={getattr(self.app, 'kaynak_ret_sayaci', 0)}")
 
     def _yalniz_bizim_cerceveler(self, app, acik, yok):
         """Sızıntı hükmünden ÖNCEKİ önkoşul: ekran YALNIZ bu testin

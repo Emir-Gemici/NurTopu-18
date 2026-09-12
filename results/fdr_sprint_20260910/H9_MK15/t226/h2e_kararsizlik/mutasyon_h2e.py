@@ -24,23 +24,32 @@ from pathlib import Path
 
 BURASI = Path(__file__).resolve().parent
 KOK = BURASI.parents[4]
-HEDEF = KOK / "tests" / "test_yks_mk15_hakem_ekrani.py"
+DOSYA = {"test": KOK / "tests" / "test_yks_mk15_hakem_ekrani.py",
+         "urun": KOK / "comms" / "yks_gui.py"}
 TANI = BURASI / "h2e_tani.py"
 PY = sys.executable
 
-ESKI_UYKU = """        self.assertTrue(self._pompala(islendi), mesaj)"""
+ESKI_UYKU = """            f"kaynak reddi={getattr(self.app, 'kaynak_ret_sayaci', 0)}")"""
 
-ADRES_GERI = ('    IHA_ADRESI = "127.0.0.2"\n    IKA_ADRESI = "127.0.0.3"',
+ADRES_GERI = ("test",
+              '    IHA_ADRESI = "127.0.0.2"\n    IKA_ADRESI = "127.0.0.3"',
               '    IHA_ADRESI = "127.0.0.1"\n    IKA_ADRESI = "127.0.0.1"')
-HAZIR_GEVSET = ("""            if acik:
+HAZIR_GEVSET = ("test", """            if acik:
                 return ((app.rota or {}).get("seq") == mesaj["seq"]
                         and app.rota_yok is None)""",
                 """            if acik:
                 return (app.rota or {}).get("seq") == mesaj["seq"]""")
-UYKU_GERI = (ESKI_UYKU,
+UYKU_GERI = ("test", ESKI_UYKU,
              ESKI_UYKU + "\n        self._pompala(lambda: False, 0.15)")
-ONKOSUL_SIL = ("                    self._yalniz_bizim_cerceveler("
+ONKOSUL_SIL = ("test",
+               "                    self._yalniz_bizim_cerceveler("
                "app, acik_sayisi, yok_sayisi)\n", "")
+# URUN mutasyonu: OPEN_ROUTE artik `rota_yok`u TEMIZLEMIYOR — yani T226'nin
+# koruduğu gercek kusur geri getiriliyor. Duzeltilmis test bunu YAKALAMALI.
+URUN_SIZINTI = ("urun",
+                "            self.tespit_bayat = False\n"
+                "            self.rota_yok = None\n",
+                "            self.tespit_bayat = False\n")
 
 # (ad, degisiklikler, beklenen cikis, enjeksiyon periyodu ms)
 MUTASYONLAR = [
@@ -54,6 +63,9 @@ MUTASYONLAR = [
     # onbellek" alt testleri; olculu alan 1,0'da (34,189,227)).
     ("M4 duzeltme oncesi fikstur + seyrek enjeksiyon",
      [HAZIR_GEVSET, ADRES_GERI, UYKU_GERI, ONKOSUL_SIL], 1, 300),
+    # M5: URUN kusuru, enjeksiyon YOK. Kapinin gevsemedigi burada olculur:
+    # `rota_yok` OPEN_ROUTE'ta temizlenmezse test KIRMIZI olmalidir.
+    ("M5 urun: OPEN_ROUTE rota_yok'u temizlemiyor", [URUN_SIZINTI], 1, 0),
 ]
 
 
@@ -68,25 +80,33 @@ def kos(ad, cikti, periyot_ms):
 
 
 def main():
-    ham = HEDEF.read_text(encoding="utf-8")
-    ozet = hashlib.sha256(ham.encode("utf-8")).hexdigest()
+    # BAYT duzeyinde oku/yaz: metin kipinde okuyup geri yazmak dosyanin satir
+    # sonlarini CRLF'ten LF'e cevirir ve kaynak agaci "degismis" gosterirdi.
+    # Mutasyon kaynak dosyayi AYNEN birakmak zorundadir.
+    ham = {ad: y.read_bytes() for ad, y in DOSYA.items()}
+    ozet = {ad: hashlib.sha256(b).hexdigest() for ad, b in ham.items()}
+    ss = {ad: ("\r\n" if b"\r\n" in b else "\n") for ad, b in ham.items()}
     sonuc = []
     for ad, degisiklikler, beklenen, periyot_ms in MUTASYONLAR:
-        metin = ham
-        for eski, yeni in degisiklikler:
-            if eski not in metin:
-                raise SystemExit(f"MUTASYON UYGULANAMADI ({ad}): desen yok:\n{eski}")
-            metin = metin.replace(eski, yeni, 1)
+        metin = dict(ham)
+        for hedef, eski, yeni in degisiklikler:
+            e = eski.replace("\n", ss[hedef]).encode("utf-8")
+            y2 = yeni.replace("\n", ss[hedef]).encode("utf-8")
+            if e not in metin[hedef]:
+                raise SystemExit(f"MUTASYON UYGULANAMADI ({ad}): desen yok "
+                                 f"[{hedef}]:\n{eski}")
+            metin[hedef] = metin[hedef].replace(e, y2, 1)
         try:
-            HEDEF.write_text(metin, encoding="utf-8", newline="")
+            for h, y in DOSYA.items():
+                if metin[h] != ham[h]:
+                    y.write_bytes(metin[h])
             print(ad)
             kod = kos(ad, BURASI / f"mutasyon_{ad.split()[0]}.txt", periyot_ms)
         finally:
-            HEDEF.write_text(ham, encoding="utf-8", newline="")
-            simdi = hashlib.sha256(
-                HEDEF.read_text(encoding="utf-8").encode("utf-8")).hexdigest()
-            if simdi != ozet:
-                raise SystemExit("DOSYA GERI YAZILAMADI — elle onar!")
+            for h, y in DOSYA.items():
+                y.write_bytes(ham[h])
+                if hashlib.sha256(y.read_bytes()).hexdigest() != ozet[h]:
+                    raise SystemExit(f"DOSYA GERI YAZILAMADI ({y}) — elle onar!")
         sonuc.append((ad, beklenen, kod))
 
     print("\n--- OZET ---")
