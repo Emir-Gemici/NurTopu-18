@@ -1,0 +1,20 @@
+X8 DENKLIK KAYDI (AKIS-D2 3. tur, curutucunun "KACTI ama esdeger" hukmunun yeni koddaki karsiligi)
+
+Mutasyon: scripts/akis_satir_tazele.py taban_suphesi
+  -        elif koken is not None and koken != sha:
+  +        elif koken is not None:
+
+Kosum (gercek dosya mutasyonu, bayt-es geri yukleme):
+  X8 (koken == sha iken de ikinci taban): KACTI ['Ran 59 tests in 20.444s', 'OK']
+  geri yukleme bayt-es: True
+
+DENKLIK GEREKCESI (davranis degismez, bu yuzden KACMASI bir kilit bosluğu DEGILDIR):
+koken == sha olunca ikinci taban sha'nin KENDISIDIR. Bir sonraki satir
+    if kaynak.satirlar(dosya, ref) == kaynak.satirlar(dosya, sha): continue
+bu durumda ayni ref'i iki kez okur, karsilastirma HER ZAMAN True olur ve dugum
+atlanir — yani mutant ile asil kod ayni yolu izler. Curutucu da ayni hukmu vermisti
+("X8 KACTI ama esdeger (L==sha iken dosya esit → continue); kusur sayilmadi").
+
+NOT: X8'in asil hedefi olan satir (dosya duzeyindeki `son_degisiklik_commiti`
+kullanimi) bu turde TAMAMEN KALDIRILDI; ikinci taban artik dugum basina
+`git blame` ile aliniyor (KUSUR-A duzeltmesi, M42/M43/M44 ile kilitli).

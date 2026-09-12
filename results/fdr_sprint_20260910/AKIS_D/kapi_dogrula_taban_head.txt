@@ -1,0 +1,13 @@
+kapsam tabanı: HEAD = 69a2ace26bc9
+FDR\sekiller\akis_a.mmd: 51 düğüm · 51 tuttu · tam satır 51 · hata 0
+  kapsam (taban HEAD): 51 düğüm karşılaştırıldı · tabanda yok 0 · KAPSAM DEGISTI 0 · kapsam hatası 0
+FDR\sekiller\akis_b.mmd: 68 düğüm · 68 tuttu · tam satır 68 · hata 0
+  kapsam (taban HEAD): 68 düğüm karşılaştırıldı · tabanda yok 0 · KAPSAM DEGISTI 0 · kapsam hatası 0
+FDR\sekiller\akis_c.mmd: 62 düğüm · 62 tuttu · tam satır 62 · hata 0
+  kapsam (taban HEAD): 62 düğüm karşılaştırıldı · tabanda yok 0 · KAPSAM DEGISTI 0 · kapsam hatası 0
+FDR\sekiller\akis_d.mmd: 98 düğüm · 98 tuttu · tam satır 98 · hata 0
+  kapsam (taban HEAD): 98 düğüm karşılaştırıldı · tabanda yok 0 · KAPSAM DEGISTI 0 · kapsam hatası 0
+FDR\sekiller\akis_e.mmd: 70 düğüm · 70 tuttu · tam satır 70 · hata 0
+  kapsam (taban HEAD): 70 düğüm karşılaştırıldı · tabanda yok 0 · KAPSAM DEGISTI 0 · kapsam hatası 0
+SONUÇ: TÜM DÜĞÜMLER TUTTU
+cikis=0

@@ -1,0 +1,12 @@
+akis_a.mmd: 51 dugum · ayni kapsamda ayni metinli dugum 0 (0 kume)
+akis_b.mmd: 68 dugum · ayni kapsamda ayni metinli dugum 6 (2 kume)
+    4x comms/iha_komut_alici.py [IhaKomutAlici.isle] 'self.sayac["hata"] += 1'
+    2x comms/iha_komut_alici.py [IhaKomutAlici.isle] 'return False'
+akis_c.mmd: 62 dugum · ayni kapsamda ayni metinli dugum 6 (2 kume)
+    4x comms/inis_kaniti.py [_yerde_mi_sahipli] 'return False'
+    2x comms/inis_kaniti.py [_yerde_mi_sahipli] 'dogrulanan = 0 ⏎ irtifa_bekleniyor = False'
+akis_d.mmd: 98 dugum · ayni kapsamda ayni metinli dugum 3 (1 kume)
+    3x comms/yks_gui.py [YksArayuz.onayla] 'self._kanit_yaz("HAKEM_ONAYI_REDDI", seq=self.rota.get("seq"'
+akis_e.mmd: 70 dugum · ayni kapsamda ayni metinli dugum 2 (1 kume)
+    2x simulation/scripts/ika_nav.py [navigate] 'if not rota_kapisi_acik():'
+TOPLAM: 349 dugum · capa-goreli konuma BAGLI (kapsam tek basina yetmez): 17 (4.9%)

@@ -41,10 +41,16 @@ T226-D (D-448; çürütücü RED 77853afb — küçük haritada etiketler üst �
        kesişmez (istisna yalnız H ↔ HB (hedef)) ve tuvalden taşmaz — boşta,
        road 1/2/3 OPEN_ROUTE, NO_ROUTE (kısa + uzun detay); beklenen metinler
        yerinde, kapalı şerit etiketi kendi şeridinde; ROTA YOK'ta bant metni
-       bandın İÇİNDE, SEMATİK uyarısı bandın ALTINDA; ana haritada (inset
-       dahil) aynı kesişmezlik.
+       bandın İÇİNDE, SEMATİK uyarısı bandın ALTINDA.
+       ANA harita (inset dahil): KESİŞMEZLİK YALNIZ ROTA YOK durumlarında
+       denetlenir. OPEN_ROUTE'ta ana harita H2d gereği master ile BAYT-EŞ
+       DONDURULMUŞTUR ve ÖLÇÜLEN kalıntı kesişimler vardır — bunlar bilinerek
+       KABUL EDİLMİŞTİR (D-448 bayt-eşliği düzeltmeyi yasaklar), bkz. H2f.
   H2d  ANA harita OPEN_ROUTE (road 1/2/3, ANKOR YOK) ve boşta: çağrı listesi
        master (362197e0) ile BAYT-EŞ — 20 senaryo, tests/artifacts/t226d/.
+  H2f  ANA harita OPEN_ROUTE (road 1/2/3) KALINTI kesişimi SAYIYLA kilitli
+       (T226-D3, D-460 bulgu 3): sıfır İDDİA EDİLMEZ — ölçülen çift kümesi
+       aynen beklenir; kalıntı BÜYÜRSE de KÜÇÜLÜRSE de test DÜŞER.
   H6   Görünüm dönüşü: harita → kamera → harita (ve algı; model yüklenmez)
        sonrası harita çerçevesinin paket sırası, winfo_y, yüksekliği ve pack
        seçenekleri ilk açılıştakiyle aynı.
@@ -479,6 +485,18 @@ UZUN_DETAY = ("koridor genişlik tavanı aşıldı · şerit 1 moloz · şerit 3
               " · costmap güvenli rota üretmedi · İKA başlangıçta bekler")
 
 
+# T226-D3 (D-460 bulgu 3) — ANA haritada OPEN_ROUTE'ta ÖLÇÜLEN kalıntı metin
+# kesişimleri. D-448 bayt-eşliği (H2d) düzeltmeyi yasakladığı için BİLİNEREK
+# KABUL EDİLDİ; sessizce değişmesin diye burada SAYIYLA kilitlenir. Ölçüm bu
+# süitin kendi koşumundan (görünür pencere, gerçek Tk): OLCEK 1,0 742×450 ve
+# OLCEK 1,5 945×630 — her iki ölçekte de AYNI çift kümesi, alanlar 36/100 px².
+ANA_OPEN_ROUTE_KALINTI = {
+    1: [],
+    2: [],
+    3: [tuple(sorted(("İKA-KB", "ref")))],
+}
+
+
 def _metin_kutulari(tuval):
     """Gerçek Tk'nin çizdiği METİN öğeleri: ``(metin, bbox, etiketler)``."""
     return [(tuval.itemcget(i, "text"), tuple(tuval.bbox(i)), tuval.gettags(i))
@@ -515,8 +533,20 @@ class H2c_EtiketCakismasi(_GercekEkran):
     Kapı: kamera görünümünde KÜÇÜK haritanın bütün metin kutuları ikişer
     ikişer kesişmez (istisna yalnız H ↔ HB (hedef)) ve tuvalden taşmaz —
     boşta, road 1/2/3 OPEN_ROUTE, NO_ROUTE (kısa + uzun detay); ROTA YOK'ta
-    bant metni bandın İÇİNDE, uyarı bandın ALTINDA; ANA haritada (inset
-    dahil) aynısı. Ölçek: `tk scaling` = OLCEK × 96/72 — main()'in DPI-duyarlı
+    bant metni bandın İÇİNDE, uyarı bandın ALTINDA.
+
+    ⚠ ANA HARİTA — KABUL METNİ ÖLÇÜLENE ÇEKİLDİ (T226-D3, D-460 bulgu 3).
+    Eskiden burada "ANA haritada (inset dâhil) aynısı" yazıyordu; bu YANLIŞTI:
+    `_ana_denetle` YALNIZ iki NO_ROUTE durumunda çağrılıyor, OPEN_ROUTE ana
+    haritada hiç denetlenmiyordu. Kendi ölçümüm (bu süit, görünür pencere):
+    ana haritada OPEN_ROUTE road 3'te "İKA-KB" ↔ "ref" GERÇEKTEN kesişiyor
+    (OLCEK 1,0 · tuval 742×450 → 36 px²; OLCEK 1,5 · 945×630 → 100 px²), ve
+    "HB (hedef)" yazısı H kutusunun Tk bbox'ını her durumda kesiyor (1,0'da
+    52 px², 1,5'te 182 px²) — küçük haritada O6 ile düzeltilen kusurun ta
+    kendisi ana haritada duruyor. Bu davranış master ile BAYT-EŞ olduğu için
+    YENİ bir gerileme DEĞİLDİR ve H2d düzeltmeyi YASAKLAR: kalıntı
+    **bilinerek kabul edilmiştir (D-448 bayt-eşliği)**. Sessizce büyümesin
+    diye H2f ölçüp SAYIYLA kilitler. Ölçek: `tk scaling` = OLCEK × 96/72 — main()'in DPI-duyarlı
     süreci (bu PC 144 DPI → OLCEK 1,5, scaling ≈ 2,0) DPI-duyarsız test
     sürecinde de kurulur; RED 1,5'te ölçülmüştü.
     """
@@ -650,6 +680,53 @@ class H2c_EtiketCakismasi(_GercekEkran):
         with self.subTest(olcek=olcek, durum="ana_no_route"):
             self._mesaj_ver(dict(YOK_ROTA, seq=seq + 3))
             self._ana_denetle("no_route")
+        # H2f: ana harita OPEN_ROUTE'ta ÖLÇÜLÜR — sıfır İDDİA EDİLMEZ.
+        self._ana_open_route_kalinti(olcek, seq + 10)
+
+    def _ana_open_route_kalinti(self, olcek, seq):
+        """H2f — ANA harita OPEN_ROUTE: kalıntı kesişim SAYIYLA kilitli.
+
+        NEDEN (D-460 bulgu 3): kabul metni "ana haritada da aynı kesişmezlik"
+        diyordu ama OPEN_ROUTE ana haritada HİÇ ölçülmüyordu; ölçülünce
+        kalıntı çıktı (bkz. sınıf belgesi). Kalıntı D-448 bayt-eşliği yüzünden
+        DÜZELTİLEMEZ, ama ÖLÇÜLMEDEN de bırakılamaz: burada beklenen çift
+        kümesi AYNEN tutulur — yeni bir kesişim eklenirse de, kalıntı
+        kaybolursa da (H2d ile çelişir) test DÜŞER.
+        """
+        c = self.app.harita
+        self.assertTrue(self._pompala(
+            lambda: any("inset" in c.gettags(i) for i in c.find_all()), 3.0))
+        for yol in (1, 2, 3):
+            seq += 1
+            with self.subTest(olcek=olcek, durum=f"ana_open_route_road{yol}"):
+                self._mesaj_ver(dict(ROTA, seq=seq, road=yol,
+                                     label=yks_gui.ROAD_LABEL[yol]))
+                self._pompala(lambda: False, 0.2)
+                boyut = f"{c.winfo_width()}x{c.winfo_height()}"
+                kutular = _metin_kutulari(c)
+                ciftler = _kesisen_ciftler(kutular)
+                gozlenen = sorted(tuple(sorted((ta, tb)))
+                                  for ta, _ba, tb, _bb in ciftler)
+                beklenen = ANA_OPEN_ROUTE_KALINTI[yol]
+                self.assertEqual(
+                    len(beklenen), len(gozlenen),
+                    f"ana road{yol} {boyut}: KALINTI KESİŞİM SAYISI DEĞİŞTİ "
+                    f"(beklenen {len(beklenen)}, ölçülen {len(gozlenen)}): "
+                    f"{[(ta, ba, tb, bb) for ta, ba, tb, bb in ciftler]}")
+                self.assertEqual(beklenen, gozlenen, f"ana road{yol} {boyut}")
+                # Kalıntı OLMAYAN gerçek güvence: ana haritada taşma YOK.
+                self.assertEqual([], _tasanlar(c, kutular),
+                                 f"ana road{yol} {boyut}")
+                # "HB (hedef)" × H kutusu: küçük haritada O6 ile düzeltildi,
+                # ANA haritada D-448 gereği DURUYOR — ölçülüp kilitlenir.
+                hkutu = self._h_kutusu(c)
+                hb = [b for t, b, _e in kutular if t == "HB (hedef)"]
+                self.assertEqual(1, len(hb), f"ana road{yol}: HB etiketi {hb}")
+                self.assertGreater(
+                    hb[0][3], hkutu[1],
+                    f"ana road{yol} {boyut}: HB {hb[0]} artık H kutusunu "
+                    f"{hkutu} KESMİYOR — kalıntı kayboldu, H2d bayt-eşliği "
+                    "ile çelişir; kabul metni yeniden ölçülmeli")
 
     def test_H2c_olcek_1_0(self):
         self._h2c(1.0)

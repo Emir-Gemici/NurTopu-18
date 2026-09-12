@@ -1,0 +1,53 @@
+$ python -m unittest discover -s tests -p test_akis_kapsam_korumasi.py -v   (HEAD bc79d7de + calisma agaci)
+test_dogrula_baska_dosyadaki_ayni_adli_fonksiyona_kayma (test_akis_kapsam_korumasi.K10_DosyaDegisimi.test_dogrula_baska_dosyadaki_ayni_adli_fonksiyona_kayma) ... ok
+test_dogrula_baska_fonksiyonun_dekoratorune_kayma (test_akis_kapsam_korumasi.K11_DekoratorSatiriTanimaAittir.test_dogrula_baska_fonksiyonun_dekoratorune_kayma) ... ok
+test_tazele_dekorator_dugumu_kendi_fonksiyonunda_kalir (test_akis_kapsam_korumasi.K11_DekoratorSatiriTanimaAittir.test_tazele_dekorator_dugumu_kendi_fonksiyonunda_kalir) ... ok
+test_iki_dekorator_eklenince_ayni_gecise_baglanir (test_akis_kapsam_korumasi.K12_DekoratorEklenenFonksiyondaGoreliKonum.test_iki_dekorator_eklenince_ayni_gecise_baglanir)
+Capa def satiri: 3 + (5-1) = 7. fd65b427'de capa dekoratorlu baslangicti: ... ok
+test_dogrula_async_baska_fonksiyona_kayma (test_akis_kapsam_korumasi.K13_AsyncDef.test_dogrula_async_baska_fonksiyona_kayma) ... ok
+test_tazele_async_kapsam_icinde (test_akis_kapsam_korumasi.K13_AsyncDef.test_tazele_async_kapsam_icinde) ... ok
+test_aralik_sonu_da_kayar (test_akis_kapsam_korumasi.K14_AralikliAtif.test_aralik_sonu_da_kayar) ... ok
+test_goreli_mmd_yolu_cokmez (test_akis_kapsam_korumasi.K15_GoreliMmdYolu.test_goreli_mmd_yolu_cokmez) ... ok
+test_dogrula_basligin_baska_metoda_kaymasini_yakalar (test_akis_kapsam_korumasi.K16_AltGrafikBasliklari.test_dogrula_basligin_baska_metoda_kaymasini_yakalar) ... ok
+test_iki_arac_ayni_dugum_kumesini_gorur (test_akis_kapsam_korumasi.K16_AltGrafikBasliklari.test_iki_arac_ayni_dugum_kumesini_gorur) ... ok
+test_tazele_basliklari_kaydirir_bicimi_bayt_es_korur (test_akis_kapsam_korumasi.K16_AltGrafikBasliklari.test_tazele_basliklari_kaydirir_bicimi_bayt_es_korur) ... ok
+test_acilis_kapanis_uyusmayan_satir (test_akis_kapsam_korumasi.K16b_UyusmayanSekilIkiAractaDaDugumDegil.test_acilis_kapanis_uyusmayan_satir) ... ok
+test_bes_diyagramda_iki_arac_ayni_dugum_kumesi (test_akis_kapsam_korumasi.K16g_GercekDiyagramlar.test_bes_diyagramda_iki_arac_ayni_dugum_kumesi) ... ok
+test_dogrula_baslik_ayni_adli_baska_sinif_metoduna_kayma (test_akis_kapsam_korumasi.K17_DefBasligiAyniAdliBaskaSinifaKaymaz.test_dogrula_baslik_ayni_adli_baska_sinif_metoduna_kayma) ... ok
+test_tazele_baslik_kendi_sinifinin_metodunda_kalir (test_akis_kapsam_korumasi.K17_DefBasligiAyniAdliBaskaSinifaKaymaz.test_tazele_baslik_kendi_sinifinin_metodunda_kalir)
+B'de _tik ustune 10 satir: B._tik 19. Eski algoritma eski satir 9'a en yakin ... ok
+test_f1_icine_ekleme_kapsam_disi_daha_yakin_olsa_da_f1 (test_akis_kapsam_korumasi.K1_KapsamIcindeBaglanir.test_f1_icine_ekleme_kapsam_disi_daha_yakin_olsa_da_f1)
+f1 icine, metnin ustune 10 satir: kapsam basina gore beklenen satir 8; f2'nin ... ok
+test_f1_ustune_ekleme_f1_deki_satira_baglar_f2_ye_degil (test_akis_kapsam_korumasi.K1_KapsamIcindeBaglanir.test_f1_ustune_ekleme_f1_deki_satira_baglar_f2_ye_degil)
+f1 ustune 10 satir: f1 metni 18, f2'ninki 2. Eski algoritma eski satir 8'e EN ... ok
+test_ic_ice_tanimdaki_ayni_metne_baglanmaz (test_akis_kapsam_korumasi.K1c_IcIceTanimHaric.test_ic_ice_tanimdaki_ayni_metne_baglanmaz) ... ok
+test_f1_den_metin_silinirse_bulunamadi_f2_ye_kaymaz (test_akis_kapsam_korumasi.K2_KapsamIcindeYoksaTahminYok.test_f1_den_metin_silinirse_bulunamadi_f2_ye_kaymaz) ... ok
+test_kapsam_silinirse_bulunamadi (test_akis_kapsam_korumasi.K2_KapsamIcindeYoksaTahminYok.test_kapsam_silinirse_bulunamadi) ... ok
+test_kapsamda_iki_aday_en_yakin_secilir (test_akis_kapsam_korumasi.K3_EnYakin.test_kapsamda_iki_aday_en_yakin_secilir) ... ok
+test_esit_uzak_iki_aday_hata_ve_degismez (test_akis_kapsam_korumasi.K3b_Esitlik.test_esit_uzak_iki_aday_hata_ve_degismez) ... ok
+test_mmd_tabana_gore_bayatsa_tahmin_yok (test_akis_kapsam_korumasi.K4_TabandaTutmuyor.test_mmd_tabana_gore_bayatsa_tahmin_yok) ... ok
+test_gecersiz_taban_cikis_2 (test_akis_kapsam_korumasi.K5_KuruVeTaban.test_gecersiz_taban_cikis_2) ... ok
+test_kod_commitlendiyse_varsayilan_supheli_eski_commit_taban_verilir (test_akis_kapsam_korumasi.K5_KuruVeTaban.test_kod_commitlendiyse_varsayilan_supheli_eski_commit_taban_verilir) ... ok
+test_kuru_dosya_yazmaz (test_akis_kapsam_korumasi.K5_KuruVeTaban.test_kuru_dosya_yazmaz) ... ok
+test_dogrula_ayni_adli_baska_tanima_kayma_yakalanir (test_akis_kapsam_korumasi.K6_AyniAdliTanimlar.test_dogrula_ayni_adli_baska_tanima_kayma_yakalanir) ... ok
+test_dogrula_tanim_sayisi_degisirse_belirsiz (test_akis_kapsam_korumasi.K6_AyniAdliTanimlar.test_dogrula_tanim_sayisi_degisirse_belirsiz) ... ok
+test_kacinci_tanim_korunur (test_akis_kapsam_korumasi.K6_AyniAdliTanimlar.test_kacinci_tanim_korunur) ... ok
+test_tanim_sayisi_degisirse_belirsiz (test_akis_kapsam_korumasi.K6_AyniAdliTanimlar.test_tanim_sayisi_degisirse_belirsiz) ... ok
+test_baska_fonksiyona_kayma_yakalanir_metin_denetimi_gormez (test_akis_kapsam_korumasi.K7_DogrulaTaban.test_baska_fonksiyona_kayma_yakalanir_metin_denetimi_gormez) ... ok
+test_gecersiz_taban_cikis_2 (test_akis_kapsam_korumasi.K7_DogrulaTaban.test_gecersiz_taban_cikis_2) ... ok
+test_kapsam_ici_kayma_ve_yeni_dugum_hata_degil (test_akis_kapsam_korumasi.K7_DogrulaTaban.test_kapsam_ici_kayma_ve_yeni_dugum_hata_degil) ... ok
+test_parcalar_ardisik_satirlarda_aranir (test_akis_kapsam_korumasi.K8_CokParcaliEtiket.test_parcalar_ardisik_satirlarda_aranir) ... ok
+test_dogru_taban_elle_verilince_f1 (test_akis_kapsam_korumasi.K9_KodCommitlenince_TabanSupheli.test_dogru_taban_elle_verilince_f1) ... ok
+test_dogrula_dogru_taban_kapsam_degisti (test_akis_kapsam_korumasi.K9_KodCommitlenince_TabanSupheli.test_dogrula_dogru_taban_kapsam_degisti) ... ok
+test_dogrula_taban_head_supheyi_raporlar (test_akis_kapsam_korumasi.K9_KodCommitlenince_TabanSupheli.test_dogrula_taban_head_supheyi_raporlar) ... ok
+test_elle_head_uyariyla_surer_baslik_damgalanmaz (test_akis_kapsam_korumasi.K9_KodCommitlenince_TabanSupheli.test_elle_head_uyariyla_surer_baslik_damgalanmaz) ... ok
+test_kuru_da_supheli (test_akis_kapsam_korumasi.K9_KodCommitlenince_TabanSupheli.test_kuru_da_supheli) ... ok
+test_varsayilan_taban_supheli_cikis_2_hicbir_sey_yazilmaz (test_akis_kapsam_korumasi.K9_KodCommitlenince_TabanSupheli.test_varsayilan_taban_supheli_cikis_2_hicbir_sey_yazilmaz) ... ok
+test_dosya_sonuna_ekleme_commitlenince_supheli_degil (test_akis_kapsam_korumasi.K9b_SatirKaydirmayanCommitSupheliDegil.test_dosya_sonuna_ekleme_commitlenince_supheli_degil) ... ok
+test_ikinci_kosu_supheli_ilk_kosu_dogru (test_akis_kapsam_korumasi.K9c_OncekiTazelemeSonrasiIkinciKosu.test_ikinci_kosu_supheli_ilk_kosu_dogru) ... ok
+
+----------------------------------------------------------------------
+Ran 42 tests in 11.643s
+
+OK
+cikis=0
