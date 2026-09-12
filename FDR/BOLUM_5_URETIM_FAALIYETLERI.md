@@ -446,6 +446,14 @@ Geçen halkalar arasında üretim yolunun kendisi vardır: `rota GECTI (yol_no=2
 | **FEM sonucu** | yapısal emniyet | **ÖLÇÜLEMEDİ** (§5.6/E1) |
 | **`.engine` (TensorRT)** | hızlandırma | **ÖLÇÜLEMEDİ** — Nano'da derlenemiyor (§5.2.7) |
 
+⚠ **Yukarıdaki tablo 03.09.2026 tarihli bir kesittir, güncel durum değil** (D-462 B).
+İki satır o tarihten sonra kapandı: **FPS kapısı** 6 Eylül'de **GEÇTİ** (pt 1,35/1,06,
+engine 1,58/1,33 FPS, eşik 0,61 — D-431, §5.2.7); **`.engine`** aslında Orin Nano'da
+**derlendi** (6 Eylül, TensorRT 10.16.2) — "derlenemiyor" değil, engine↔pt karar
+denkliği ölçülüp **düştü** (D-303, 3/126), bu yüzden uçuş `.pt` ile yapılıyor. Diğer
+satırların (kamera FOV, t_hazırlık, gerçek kütle/CG, FEM) 3 Eylül'den beri kapandığına
+dair kanıt bu oturumda bulunamadı — hâlâ açık sayılır.
+
 ### 5.2.10 Final (yarışma) aracının üretim ve montaj planı
 
 Sabit kanat + mancınık + paraşüt + İKA hattı **üretilmemiştir**. Bugünkü olgunluk:

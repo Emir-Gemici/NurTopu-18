@@ -111,7 +111,9 @@ Markdown kaynağında yapılır ya da yama olarak koordinatöre gönderilir.</p>
 <p><b>Her sayı bir artefakttan gelir:</b> bölüm sonundaki <i>Kanıt dizini</i> dosya yolunu ve
 üreten betiği verir. Yeni bir sayı eklerken kaynağını da yaz; kaynağı yoksa ekleme.</p>
 <p><b>Bu taslakta bilerek eksik:</b> sayfa numarası (nihai dizgide), gerçek arena karesi,
-simülasyon videosu, SiK RF menzil/RTT, Jetson gerçek FPS — bunlar ölçümle kapanır, yazıyla değil.</p>
+simülasyon videosunun genel linki (video kendisi var, YouTube/Drive linki BEYAN GEREKLİ),
+SiK RF menzil/RTT — bunlar ölçümle/beyanla kapanır, yazıyla değil.
+<i>(12 Eylül güncellemesi: "Jetson gerçek FPS" listeden çıkarıldı — 6 Eylül'de ölçüldü, D-431.)</i></p>
 <p class="damga">Kaynak depo sürümü: {commit} · üretici: <code>scripts/fdr_pdf_uret.py</code></p>
 </div>
 """
