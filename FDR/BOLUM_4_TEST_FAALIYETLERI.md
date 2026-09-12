@@ -35,9 +35,9 @@ gereksinim kimlikleriyle (`Y-4-M01` … `Y-4-M12`) aynı sırayı izler.
 | `Y-4-M01` | planlanan yer testleri, fonksiyonel testler, entegrasyon testleri ile tasarımın gereksinimlere uygunluğunun doğrulanması | §4.1 | KISMEN |
 | `Y-4-M02` | testlerin uygulama yöntemleri ve test altyapısı gereksinimlerinin nihai hâli | §4.2 | VAR |
 | `Y-4-M03` | sensör gereksinimleri, sensör yerleşimleri, test takvimi, detaylı test zaman bütçe planlaması | §4.3 | KISMEN |
-| `Y-4-M04` | ekipman kabul testleri — İHA ve İKA'daki **tüm** ekipmanlar | §4.4 | YOK |
+| `Y-4-M04` | ekipman kabul testleri — İHA ve İKA'daki **tüm** ekipmanlar | §4.4 | ~~YOK~~ → **KISMEN** (12 Eylül 2026, D-462 A6 — `YONERGE_HARITASI.md` ile hizalandı; gövde 5–6 Eylül tezgâh ölçümlerini veriyordu: §4.4'te 9 ekipman satırının 2'sinde kabul kapısı koşuldu — Jetson FPS **GEÇTİ**, FS-i6 failsafe **DÜŞTÜ** —, 4'ünde tezgâh ölçümü var, 1'i yalnız BEYAN, 2'sinde hiç ölçüm yok) |
 | `Y-4-M05` | kumanda ve telemetri **menzil** testleri (sahada) | §4.5 | YOK |
-| `Y-4-M06` | IMU, pusula ve pitot tüpü kalibrasyon kanıtları | §4.6 | YOK |
+| `Y-4-M06` | IMU, pusula ve pitot tüpü kalibrasyon kanıtları | §4.6 | ~~YOK~~ → **KISMEN** (12 Eylül 2026, D-462 A6 — `YONERGE_HARITASI.md` ile hizalandı; 6 Eylül 20:22 dökümü `config/pixhawk/arducopter_fda_20260906.param`: IMU accel/gyro/level ofsetleri ve Mag1/Mag2 ofsetleri **< 300** §4.6'da dosya:satır ile; pitot **kapsam dışı** — `ARSPD_ENABLE,0`. Eksik: MP kalibrasyon ekran görüntüsü, 2. pusula kalibrasyonunun dökümü, Jetson takılı kalibrasyon — D-428 §1) |
 | `Y-4-M07` | görev icra simülasyonu + başarı oranları + grafikler + video linki | §4.7 (sahibi **Bölüm 3.3.3**) | ~~YOK~~ **KISMEN** (10 Eylül, T214-A/B: MuJoCo zinciri koşuldu — 105 koşum, 4 grafik, HUD'lu video yerelde; **SENTETİK**; video linki **BEYAN GEREKLİ (insan)**, T222) |
 | `Y-4-M08` | görüntü işleme performansı, benzer koşullarda test sonuçları, doğruluk matrisleri | §4.8 | KISMEN |
 | `Y-4-M09` | haberleşme: paket yapısı, veri hızı, iletişim gecikmesi | §4.9 | KISMEN |
@@ -147,8 +147,8 @@ OK (skipped=3)
 
 | kapı kipi | neden koşulamadı |
 |---|---|
-| `jetson_baslat.sh --kur` / `--kapi` / `--dogrudan` (systemd) | Windows'ta koşulamaz; **Jetson'daki ilk koşum ilk kanıt olacak** (5 Eylül). **5 Eylül güncellemesi:** Jetson o gün araca takılmadı (D-426 §4: *"Jetson takili DEGIL"*); ilk koşum hâlâ **ÖLÇÜLEMEDİ** |
-| TensorRT `.engine` derleme ve karar kıyası | `tensorrt` çalışma zamanı PC'de yok (venv'e bilerek kurulmadı); ORT CPU'ya geri düştü ve betik geri düşmeyi **"dönüştü" saymadı** (fail-closed çalıştı) |
+| `jetson_baslat.sh --kur` / `--kapi` / `--dogrudan` (systemd) | Windows'ta koşulamaz; ~~**Jetson'daki ilk koşum ilk kanıt olacak** (5 Eylül).~~ **5 Eylül güncellemesi:** Jetson o gün araca takılmadı (D-426 §4: *"Jetson takili DEGIL"*); ~~ilk koşum hâlâ **ÖLÇÜLEMEDİ**~~ → **6 Eylül 2026 (D-431):** betik **kartın kendisinde koştu** — `--kuru` kipi: `/etc/navitas.env` ve beş birimin `ExecStart` satırları basıldı, dosya/kullanıcı/yorumlayıcı `[VAR]`, ~~tek `[YOK]`~~ `Pixhawk seri /dev/ttyACM0` → **çıkış 3** (12 Eylül düzeltmesi — D-466: `jetson_baslat_kuru2.log`'da **tek** `[YOK]`, ilk kuru koşumda **iki** (`mavproxy.py` PATH'te de yok); ikisinde de aynı çıkış kodu) (`results/jetson_20260906/jetson_log_20260906/jetson_baslat_kuru.log`, `jetson_baslat_kuru2.log`). ⚠ `--kur` / `--kapi` / `--dogrudan` (systemd) **hâlâ koşulmadı**: Pixhawk Jetson'a bağlanmadı → `--kapi` 3/3 **ÖLÇÜLEMEDİ** (§4.13.1 #7) |
+| TensorRT `.engine` derleme ve karar kıyası | `tensorrt` çalışma zamanı PC'de yok (venv'e bilerek kurulmadı); ORT CPU'ya geri düştü ve betik geri düşmeyi **"dönüştü" saymadı** (fail-closed çalıştı). → **6 Eylül 2026 (D-431):** ölçüm **Jetson Orin Nano'da koşuldu** — TensorRT 10.16.2 ile FP16 engine derlendi (530 s, 57 283 989 B, sha `bb9bd868…0300`, deftere yazıldı) ve karar kıyası yapıldı: F1 **0** · F2 **0,99526** GEÇTİ, **D-303 oransal 3/126 DÜŞTÜ** → uçuş `.pt` (§4.8.3). Bu envanterin kapsamadığı şey artık **PC'de koşum**'dur, ölçümün kendisi değil |
 | Gerçek MAVProxy | PC'de `[YOK] mavproxy.py (PATH)`; kuru koşu bunu **gizlemez, raporlar** |
 | Tam suit, **YKS canlıyken** | D-427 (5 Eylül): `comms/test_comms.py:35-36` loopback'i üretim YKS/İKA portları **5005/5006**'ya bind eder; `comms/link.py` tek-sahipli uçta `SO_EXCLUSIVEADDRUSE` kurduğu için `yks_gui.py` açıkken `test_p8_sim_katmani.test_comms_loopback_gecer` **kesin düşer** (`WinError 10013`). 5 Eylül'de 3 koşumdan 2'si böyle düştü; kod değişmedi. Kuyruk: **T209** (geçici port ya da sebep söyleyen `skipTest`), henüz yapılmadı |
 
@@ -496,29 +496,53 @@ penceresini (`YKS_TESPIT_TAZELIK_S = 5,0` s) bağlarlar:
 > ekipmanların kabul testlerinin gerçekleştirilmiş olması ve elde edilen
 > sonuçların raporda sunulması gerekmektedir."*
 
-🔴 **ÖLÇÜLEMEDİ: hiçbir ekipmanın fiziksel kabul testi yapılmadı. Donanım kutusu
+~~🔴 **ÖLÇÜLEMEDİ: hiçbir ekipmanın fiziksel kabul testi yapılmadı. Donanım kutusu
 5 Eylül 2026'da açılacak; kabul testleri 5–19 Eylül arasında koşulacak ve
-sonuçları bu alt bölüme sayıyla girecektir.**
+sonuçları bu alt bölüme sayıyla girecektir.**~~
 
-Kabul testi bekleyen ekipmanlar ve her biri için **önceden yazılmış** kabul
+~~Kabul testi bekleyen ekipmanlar ve her biri için **önceden yazılmış** kabul
 kapısı aşağıdadır. Sağ sütunda bugün **hiçbir sayı yoktur**; boşluk bilerek
-boştur.
+boştur.~~
+
+*(12 Eylül 2026'da geçersizleşti — D-462 A4: aynı tablo 5 ve 6 Eylül ölçüm sayıları
+taşıyordu; eski metin silinmedi.)*
+
+🔴 **KISMEN — ekipman kabul testleri bugün tamamlanmış DEĞİLDİR.** Kutu 5 Eylül 2026'da
+açıldı (D-426), tezgâh çalışması 6 Eylül'de sürdü (D-428 · D-429 · D-431). Aşağıdaki **9
+ekipman satırının** bugünkü dağılımı, hücre metinlerinden sayılarak:
+
+| durum | satır |
+|---|---:|
+| **önceden yazılmış kabul kapısı KOŞULDU** — Jetson (FPS ≥ 0,61 → **GEÇTİ**) · FS-i6 (failsafe kolu → **DÜŞTÜ**) | **2/9** |
+| kapı koşulmadı ama tezgâh **ÖLÇÜMÜ var** (KISMEN) — Pixhawk · GNSS · motor-ESC-pervane · pil | **4/9** |
+| yalnız **BEYAN** var, ölçüm yok — SiK çifti | **1/9** |
+| **ekipmanın KENDİ kabul ölçümü yok** — RPi HQ (kamera hiçbir gün bağlanmadı; 6 Eylül'de açılan köprü ölçümü Jetson'undur, kameranın değil) · İKA ekipmanları (henüz seçilmedi) | **2/9** |
+
+Yani **hiçbir ekipman için kabul testi zinciri tam kapanmamıştır**; kapısı koşulan iki
+satırın biri **düşmüştür** ve sonuç gevşetilmeden yazılmıştır. Ekipmanlar ve her biri için
+**önceden yazılmış** kabul kapısı aşağıdadır; sağ sütun 5–6 Eylül tezgâhında ölçülenle
+doldurulmuştur ve **hiçbir hücre boş bırakılmamıştır**: ölçülmeyen kalem `ÖLÇÜLEMEDİ`,
+yalnız sözlü olan `BEYAN`, henüz seçilmemiş olan da nedeniyle yazılıdır.
 
 | ekipman | koşulacak kabul kapısı | bugünkü sonuç |
 |---|---|---|
 | ~~Jetson Nano 4GB~~ **Jetson Orin Nano Developer Kit 4 GB** (6 Eylül'de kartla ölçüldü — D-431) | PT ve ONNX için p50 **ve** p95 FPS ≥ 0,61 (türetimi §4.8.2.3) | ~~**ÖLÇÜLEMEDİ** — 5 Eylül'de Jetson araca takılmadı (D-426 §4)~~ → **6 Eylül ÖLÇÜM (D-431):** genel kapı kartta **15/15 · 15/15**; `jetson_fps.py` 120 örnek: **PT 1,35/1,06 FPS · engine 1,58/1,33 FPS** ≥ 0,61 → **GEÇTİ**; 10 dk sürekli 900 örnek, gpu ≤ 56,3 °C; **ONNX HATA** (`cudaErrorNoKernelImageForDevice`) → ONNX kolu bu kartta geçmedi, ölçülemedi; engine↔pt denkliği D-303 oransal **DÜŞTÜ** → uçuş `.pt`; kamera köprüsü dosya kaynağıyla açıldı. **ÖLÇÜLEMEDİ:** CSI kamera (bağlı değil), Pixhawk MAVLink kapısı (`--kuru`: `[YOK]` `/dev/ttyACM0`). Kanıt `results/jetson_20260906/` |
-| Pixhawk 6C + güç modülü (plan PM02; sahada **PM06** — BEYAN, §4.13.4) | `scripts/mavlink_dogrula.py` 3/3 · `EXTENDED_SYS_STATE` akışı (§4.9.4) | **KISMEN**: firmware 4.5.7 + parametre yükleme OLCUM (tutanak 15:08); PM06 → `POWER1` OLCUM (18:03). `mavlink_dogrula.py` kapısı **koşulmadı** → ÖLÇÜLEMEDİ (§4.13.1 #6); parametre dökümü yok (#9) |
-| Holybro M9N GNSS | 3B fix ve `GLOBAL_POSITION_INT` canlı akışı (§4.9.1 G1 ölçütleri) | **KISMEN**: alıcı tanındı — OLCUM `u-blox 1 HW: 000A0000 SW: ROM SPG 5.10` (15:38). 3B fix ve akış kaydı yok → ÖLÇÜLEMEDİ |
+| Pixhawk 6C + güç modülü (plan PM02; sahada **PM06** — BEYAN, §4.13.4) | `scripts/mavlink_dogrula.py` 3/3 · `EXTENDED_SYS_STATE` akışı (§4.9.4) | **KISMEN**: firmware 4.5.7 + parametre yükleme OLCUM (tutanak 15:08); PM06 → `POWER1` OLCUM (18:03). ~~`mavlink_dogrula.py` kapısı **koşulmadı**~~ → **5 Eylül'de koşulmadı** (12 Eylül'de çizikle yazıldı — D-462 A4) → ÖLÇÜLEMEDİ (§4.13.1 #6); ~~parametre dökümü yok (#9)~~ → **6 Eylül 20:22 dökümü repoda** (D-428 §5g): `config/pixhawk/arducopter_fda_20260906.param`, 1025 parametre, şablonla 28/31 uyan · 0 eksik, sapan `RC_PROTOCOLS=1` · `SR1_POSITION=2` · `SR1_EXTRA3=2`. ⚠ `mavlink_dogrula.py` 3/3 kapısı **6 Eylül'de de koşulmadı** — Pixhawk Jetson'a bağlanmadı (`jetson_baslat.sh --kuru`: `[YOK] /dev/ttyACM0`, çıkış 3 — D-431) → **ÖLÇÜLEMEDİ** |
+| Holybro M9N GNSS | 3B fix ve `GLOBAL_POSITION_INT` canlı akışı (§4.9.1 G1 ölçütleri) | **KISMEN**: alıcı tanındı — OLCUM `u-blox 1 HW: 000A0000 SW: ROM SPG 5.10` (15:38). ~~3B fix ve akış kaydı yok → ÖLÇÜLEMEDİ~~ → **6 Eylül OLCUM** (D-428 §1): **18 uydu** ve `EKF3 IMU0/IMU1 is using GPS` (`Messages` yapıştırıldı). ⚠ `GLOBAL_POSITION_INT` **oranı** (§4.9.1 G1: ≥ 4,0 Hz) hiç sayılmadı — kapı Jetson ucunda koşar ve **ÖLÇÜLEMEDİ**; `COMPASS_ORIENT`=6 (Yaw270) ile monte (D-429 §4) |
 | Raspberry Pi HQ (IMX477) | `nvarguscamerasrc` üzerinden köprü kare akışı (§4.10.1 ölçütleri) | **ÖLÇÜLEMEDİ** — 5 Eylül'de Jetson takılmadı; 6 Eylül'de köprü kartta **dosya kaynağıyla** açıldı (ÖLÇÜM, D-431) ama CSI kamera **bağlı değildi** → `nvarguscamerasrc` yolu ölçülmedi |
-| 2 × SiK 433 MHz telsiz | RTT p95 < 0,2 s ve menzil (§4.5) | **KISMEN**: bağlantı BEYAN (~18:45, "tamam oldu"); RTT, kayıp ve menzil ÖLÇÜLEMEDİ (§4.5) |
-| FCHUB-12S V2 · ~~5008 340KV × 4 · 12×10 pervane~~ → SunnySky X2220 980KV V3 × 4 · 10×4,5 (BEYAN, etiket yok — 7 Eylül beyanı, D-435; 5 Eylül motor testinin hangi motorla koştuğu BEYAN GEREKLİ) | tam yükte akım ve `VIBE` titreşim kaydı (§4.3.3 adım 3.1) | **KISMEN**: pervanesiz motor testi OLCUM (18:06); sıra/yön 4/4 BEYAN, video yok; ESC kalibrasyonu YAPILMADI; tam yükte akım ve `VIBE` ÖLÇÜLEMEDİ (pervane takılmadı). ESC künyesi sahada **"60 A V2"** ×4 (plan 80 A) — BEYAN, §4.13.4 |
-| 4S 10 Ah 25C pil + iMAX B6 şarj | kapasite ve şarj çevrimi; günde 2 uçuş kısıtının doğrulanması | **KISMEN**: pil takıldı, `PreArm: Battery 1 low voltage failsafe` kayboldu — OLCUM (18:03). MP gerilimi ↔ multimetre (±0,1 V), kapasite ve şarj çevrimi ÖLÇÜLEMEDİ |
-| FS-i6 kumanda + FS-iA6B alıcı | menzil ve failsafe davranışı (§4.5, §4.12) | **KISMEN**: bind BEYAN (16:18); `RCInput: decoding IBUS(1)` OLCUM (18:03); alıcı FS-iA6B teyit (B harfi, BEYAN). Menzil ve RC failsafe ÖLÇÜLEMEDİ (§4.5, §4.12) |
+| 2 × SiK 433 MHz telsiz | RTT p95 < 0,2 s ve menzil (§4.5) | **KISMEN**: bağlantı BEYAN (~18:45, "tamam oldu"); RTT, kayıp ve menzil ÖLÇÜLEMEDİ (§4.5). **6 Eylül eki:** o gün de RF'e dokunulmadı — `scripts/sik_rf_olc.py` koşum kaydı yok (D-428 tutanağında SiK satırı yok) → **ÖLÇÜLEMEDİ** sürüyor; bu satır bugün **yalnız BEYAN** taşır |
+| FCHUB-12S V2 · ~~5008 340KV × 4 · 12×10 pervane~~ → SunnySky X2220 980KV V3 × 4 · 10×4,5 (BEYAN, etiket yok — 7 Eylül beyanı, D-435; 5 Eylül motor testinin hangi motorla koştuğu BEYAN GEREKLİ) | tam yükte akım ve `VIBE` titreşim kaydı (§4.3.3 adım 3.1) | **KISMEN**: pervanesiz motor testi OLCUM (18:06); sıra/yön 4/4 BEYAN, video yok; ~~ESC kalibrasyonu YAPILMADI;~~ → **6 Eylül'de yapıldı** (BEYAN; başarılı yordam D-428 §3: POWER1 çıkarılmış + USB passthrough + sonra pil → "5'te 5"). ESC künyesi ~~sahada **"60 A V2"** ×4 (plan 80 A) — BEYAN~~ → **Hobbywing Skywalker 60A V2** ×4, etiketten okundu (BEYAN, D-428 §1); `RC_SPEED` dökümde **490**, Skywalker V2 spesi 50–432 Hz → **400 yazılacak** (D-429 §4). ~~tam yükte akım ve `VIBE` ÖLÇÜLEMEDİ (pervane takılmadı)~~ → **6 Eylül 20:45–21:34 pervane TAKILDI** ve 26 gerçek arm yapıldı (tlog, D-429 §1) — üç devrilme; ama tlog akım/`VIBE` taşımaz ve DataFlash `.bin` indirilmedi → **tam yükte akım ve `VIBE` hâlâ ÖLÇÜLEMEDİ**. ⚠ M1 (sağ ön) **hasarlı** (D-429 §2 madde 4); motor künyesi 7 Eylül'de yine değişti (D-435) |
+| 4S 10 Ah 25C pil + iMAX B6 şarj | kapasite ve şarj çevrimi; günde 2 uçuş kısıtının doğrulanması | **KISMEN**: pil takıldı, `PreArm: Battery 1 low voltage failsafe` kayboldu — OLCUM (18:03). ~~MP gerilimi ↔ multimetre (±0,1 V), kapasite ve şarj çevrimi ÖLÇÜLEMEDİ~~ → **6 Eylül: MP ↔ multimetre ÖLÇÜLDÜ** (D-428 §1): multimetre **15,8 V** (balans dış pinleri) ↔ MP **15,8** → **±0,1 V içinde**, `BATT_VOLT_MULT,18.18` dökümde değişmedi (`arducopter_fda_20260906.param:143`). ⚠ Bu sayı önce "aynı" beyanıyla geldi, sayı istenince 11,06'ya sonra 15,8'e döndü (D-428 başlığı). **Kapasite ve şarj çevrimi hâlâ ÖLÇÜLEMEDİ**; günde 2 uçuş kısıtı doğrulanmadı |
+| FS-i6 kumanda + FS-iA6B alıcı | menzil ve failsafe davranışı (§4.5, §4.12) | **KISMEN**: bind BEYAN (16:18); `RCInput: decoding IBUS(1)` OLCUM (18:03); alıcı FS-iA6B teyit (B harfi, BEYAN). ~~Menzil ve RC failsafe ÖLÇÜLEMEDİ (§4.5, §4.12)~~ → **6 Eylül: RC failsafe ÖLÇÜLDÜ ve DÜŞTÜ** (D-428 §2): `Setup → FailSafe` açıkken kumanda kapatıldı, barlar **sabit kaldı**, `Radio Failsafe` gelmedi — FS-iA6B iBUS'ta link kopunca son değerleri tutuyor; `config/pixhawk/arducopter_fda.param:128` yorumundaki varsayım **yanlışlandı**. Düzeltme (kumanda tarafı failsafe ayarı) 10 Eylül itibarıyla **tekrar ölçülmedi** (§4.12). **Menzil hâlâ ÖLÇÜLEMEDİ** (§4.5). Yan olgu: TX pili bitti, akşam iki kez RC koptu (D-428 §4) |
 | İKA ekipmanları | 🔴 **gerçek İKA motor sürücüsü YOKTUR** (R12/T149); İKA ekipman listesi henüz kapalı değildir (§4.11) | ekipman seçilmedi |
 
 Fiziksel künye teyidi §4.13.4 madde 1'de **BEYAN GEREKLİ** olarak durur; 5
-Eylül'de ESC ve güç modülü plandan **farklı** çıktı (D-426 §3), etiket
-fotoğrafı gelmedi.
+Eylül'de ESC ve güç modülü plandan **farklı** çıktı (D-426 §3), ~~etiket
+fotoğrafı gelmedi.~~ → **6 Eylül:** ESC etiketi okundu ve künye **Hobbywing Skywalker
+60A V2** olarak yazıldı (BEYAN, D-428 §1; fotoğraf yine gelmedi), Jetson künyesi
+kartta **ÖLÇÜLDÜ** (Orin Nano Developer Kit 4 GB — D-431); motor künyesi 7 Eylül'de
+bir kez daha değişti (D-435) ve **etiketi yoktur**. Kalan künye satırları
+**BEYAN GEREKLİ (insan)** olarak §4.13.4 madde 1'de durur.
 
 ---
 
@@ -669,6 +693,25 @@ sayılar aynı kaynaklardandır (`results/fdr_sprint_20260910/H1/README_T214A.md
 Ortam MuJoCo 3.13; modeller BASİTLEŞTİRİLMİŞ (İHA sabit kanat mesh'i, DDR ölçülü İKA); İHA uçuşu kinematik; hakem
 onayı sim'de otomatik — **saha kanıtı değildir**. Eşikler ön kayıttan (`results/fdr_sprint_20260910/ON_KAYIT.md` H1), gevşetilmedi.
 
+
+🔴 **Dürüstlük — simülasyonun üretimde OLMAYAN iki yardımı** (12 Eylül 2026 eklendi; D-462 D,
+D-451 olgu 1). Yukarıdaki ÜRETİM MODELİ / ÜRETİM BORU HATTI sayıları, sahada bulunmayan iki
+kolaylıkla ölçülmüştür:
+
+1. **Rota referansı gerçek KB'dir.** İKA'ya verilen rota ankoru simülasyonun **yer gerçeği**
+   KB konumudur, üretim zincirinin kendi kestirimi değil (`simulation/mujoco/gorev_kosumu.py:313`
+   — `kb = H["kb"]; ref = [round(float(kb[0]), 2), round(float(kb[1]), 2)]`). Sahada bu nokta
+   algıdan çıkarılır ve hatası rotaya eklenir.
+2. **Kareler kuzey-yukarı döndürülerek beslenir.** `kerteriz` beslemesinde her tarama karesi,
+   pozdaki yaw'a göre tam çeyrek tur döndürülüp modele öyle verilir
+   (`simulation/mujoco/sim_karar_toplayici.py:183-184` — `k = ceyrek_tur(yaw)` →
+   `np.rot90(img, k)`; `ceyrek_tur` :113). Üretimde kamera karesi böyle bir ön hizalama
+   görmez.
+
+İkisi de rotanın lehinedir ve üretim kodunda karşılığı yoktur; **bu yüzden üretim sayıları sahaya göre İYİMSER ÜST SINIRDIR** — sahada bu
+iki yardım olmadığı için gerçek başarım bu sayıların **altında** beklenir. Zaten düşen kapılar
+(H1-K3, H1-K5) bu yardımlarla bile düşmüştür; hüküm gevşetilmez.
+
 | kapı | ölçüm | eşik | hüküm |
 |---|---|---|---|
 | H1-K3 rota tespiti — üretim modeli, mozaik zinciri | 6/15 doğru (yanlış 0) | ≥ 12/15 | **DÜŞTÜ** |
@@ -703,8 +746,16 @@ kümesi görev icra simülasyonu diye sunulmamıştır.
 > raporda sunulmalıdır."*
 
 🔴 **Yönergenin "yarışma sahasına benzer koşullar" şartı BUGÜN
-KARŞILANMAMIŞTIR.** Aşağıdaki kabul kümesi sentetiktir ve farklı ışık açısı /
-gölge çeşitliliği içermez; gerçek koşul ölçümü §4.13.1 kalem 1'dedir. Elde olan
+KARŞILANMAMIŞTIR.** ~~Aşağıdaki kabul kümesi sentetiktir ve farklı ışık açısı /
+gölge çeşitliliği içermez;~~ *(12 Eylül 2026'da düzeltildi — D-462 E; eski metin
+silinmedi.)* Aşağıdaki **kabul kümesi (n = 260 kadraj)** sentetiktir ve ışık/gölge
+ekseninde bölünmemiştir; **ama ayrı bir SENTETİK ışık/gölge kesiti ÖLÇÜLMÜŞTÜR** —
+T213-A MuJoCo render varyantları, üretim modeli v36 ile: alçak güneş + gölge (v2)
+K3 **0/15**, gölgesiz taban çizgisi v1 **3/15**; gölge HTAB engel oranını
+**0,1314 → 0,2380** çıkardı (tam tablo, ışık parametreleri ve yerleşim sınırı
+Bölüm 3 §3.3.4.2.8 (a); artefakt `results/fdr_sprint_20260910/H1/k3b/`). Bu
+ölçüm **saha değildir** ve şartı karşılamaz; kötü sonuç olduğu için atlanmamış,
+olduğu gibi yazılmıştır. Gerçek koşul ölçümü §4.13.1 kalem 1'dedir. Elde olan
 gerçek görüntü, arenaya **dağılım dışı** olan DJİ uçuş kareleridir ve onlarla
 alınan sonuç §4.8.2.1 ile §4.8.2.3'te **geçilmemiş eşik** olarak yazılıdır.
 
@@ -869,7 +920,25 @@ görüntüsü yoktur; iki sayı alt/üst çerçevedir ve **arası tahmin edilmem
 
 Dört uyuşmazlığın dördü sınır vakasıdır; biri **lehimize** (`sa_000216`: FP32
 yanlış şerit, FP16 doğru). Kalan pay yalnız TensorRT katman birleştirmesidir ve
-**Jetson'da `.engine` ile ölçülecektir** (§4.13.1).
+~~**Jetson'da `.engine` ile ölçülecektir** (§4.13.1).~~
+*(12 Eylül 2026'da geçersizleşti — D-462 A5; eski metin silinmedi.)*
+
+🔴 **6 Eylül 2026 — `.engine` ↔ `.pt` denkliği Jetson Orin Nano'da ÖLÇÜLDÜ ve DÜŞTÜ** (D-431 §3).
+Betik `scripts/olcum/170_engine_karar_denkligi.py`, artefakt
+`results/jetson_20260906/jetson_log_20260906/engine_karar_denkligi.json`, ön kayıt
+`results/b4_fps/ON_KAYIT_FP16.md` §2 + D-303:
+
+| ölçüt | eşik | ölçülen | sonuç |
+|---|---|---|---|
+| F1 · zarar yönü (FP32 doğruyken engine yanlış şerit) | 0 | **0** | GEÇTİ |
+| F2 · karar uyuşması (R = dji_20260822 ≥ 30 m, 1280'e küçültülmüş) | ≥ 0,98 | **0,99526** (n = 633) | GEÇTİ |
+| **D-303 oransal uyuşmazlık** (S = `data/arena_kompozit_v2`, 126 GT'li kare) | ≤ 5/260 = **%1,92** | **3/126 = %2,38** | 🔴 **DÜŞTÜ** |
+
+Eşik **gevşetilmedi**. Sonuç: **engine üretime alınmadı, uçuş `.pt` ile** (D-431 §4 madde 1);
+`.pt` FPS kapısını zaten geçiyor (§4.4). FP16 payı bu yüzden **kapanmadı**. ⚠ Sınır: S kümesi
+**T66 kabul kümesi değildir** ve D-303 T66 için yazılmıştı; 3 uyuşmazlığın üçünde **`.pt` de
+yanlıştır** (iki kol yer gerçeğinde 52/126). Nihai karar T66 ile tekrar ölçülecek — o satır
+**ÖLÇÜLEMEDİ** kalır (§4.13.1 kalem 5).
 
 ### 4.8.4 Doğruluk matrisleri
 
@@ -901,8 +970,14 @@ verilir. Kümenin piksellerinin %39,6'sı etiketsizdir; bu sütun model hatası 
 
 Karar düzeyi ölçüm (K7: *"yayınlanan şerit referansla aynı mı"*, **84/85 = %98,8**, §4.8.1)
 matrisin yerine geçmez, yanında durur. **SINIR:** `test29` arena değildir (kırsal yol; kırmızı H,
-moloz, fiziki bariyer yok) ve ışık/gölge kesiti içermez — o satır **ÖLÇÜLEMEDİ** kalır. Gerçek
-arena karesi geldiğinde (§4.13.1 kalem 1) aynı betik o küme üzerinde koşar.
+moloz, fiziki bariyer yok) ve ışık/gölge kesiti içermez — ~~o satır **ÖLÇÜLEMEDİ** kalır.~~
+*(12 Eylül 2026'da tazelendi — D-462 E; eski metin silinmedi.)* **Bu matris için** o satır
+**ÖLÇÜLEMEDİ** kalır: `176_piksel_karisiklik_matrisi.py` ışık/gölge kesitine bölünmüş bir küme
+üzerinde hiç koşmadı. Ayrı bir SENTETİK ışık/gölge ölçümü (T213-A render varyantları, üretim
+modeli v36: v2 K3 **0/15**, HTAB engel **0,1314 → 0,2380**) **vardır** ve §4.8 girişi ile
+Bölüm 3 §3.3.4.2.8 (a)'dadır — **karışıklık matrisi değildir**, K3 rota sayımıdır ve **saha
+değil render**'dır. Gerçek arena karesi geldiğinde (§4.13.1 kalem 1) aynı betik o küme üzerinde
+koşar.
 
 ---
 
@@ -1661,7 +1736,7 @@ ekran görüntüsü.
 | 4 | **Uçuş testleri** (hover, Loiter/Auto, canlı algı, 3 tam prova, sıkı prova) | Araç monte edilmedi | **6–19 Eylül** | ≤ 10 dk, 0 müdahale, yanlış güzergâh 0 |
 | ~~5~~ | ~~**TensorRT `.engine` ↔ PT karar kıyası**~~ → **ÖLÇÜLDÜ 6 Eylül ve DÜŞTÜ (D-431)** | `tensorrt` PC'de yok → Jetson'da ölçüldü: F1 0 · F2 0,9953 · **D-303 oransal 3/126 DÜŞTÜ** (§4.8.3) | 6 Eylül | FP16 payı **kapanmadı**: engine üretime alınmadı, uçuş `.pt`; T66 ile tekrar |
 | 6 | **Gerçek Pixhawk üzerinde EXTENDED akışı ve `--kapi`** | Pixhawk yok → 5 Eylül: Pixhawk 4.5.7 ile çalışır durumda (§4.4), `scripts/mavlink_dogrula.py` **koşulmadı** (D-426'da koşum kaydı yok) | uçuş öncesi | `mavlink_dogrula` 3/3 |
-| 7 | **`jetson_baslat.sh` systemd / `--kur` / `--kapi` / `--dogrudan`** | Windows'ta koşulamaz → 6 Eylül kartta `--kuru`: dosya/yorumlayıcı `[VAR]`, `[YOK]` yalnız `/dev/ttyACM0`, çıkış 3 (D-431); `--kapi` Pixhawk bağlı olmadığı için **ÖLÇÜLEMEDİ** | Pixhawk Jetson'a bağlanınca | kuru çıktı == gerçek `ExecStart`; `--kapi` 3/3 |
+| 7 | **`jetson_baslat.sh` systemd / `--kur` / `--kapi` / `--dogrudan`** | Windows'ta koşulamaz → 6 Eylül kartta `--kuru`: dosya/yorumlayıcı `[VAR]`, ~~`[YOK]` yalnız~~ `/dev/ttyACM0`, çıkış 3 (12 Eylül düzeltmesi — D-466: `jetson_baslat_kuru2.log`'da **tek** `[YOK]`, ilk kuru koşumda **iki** (`mavproxy.py` PATH'te de yok); ikisinde de aynı çıkış kodu; D-431); `--kapi` Pixhawk bağlı olmadığı için **ÖLÇÜLEMEDİ** | Pixhawk Jetson'a bağlanınca | kuru çıktı == gerçek `ExecStart`; `--kapi` 3/3 |
 | 8 | **Gerçek İKA motor sürücüsü** | Donanım arayüzü kararı verilmedi (R12/T149) | yarışma görevi öncesi | kuru koşuda `motor SAHİPSİZ` |
 | 9 | **Pixhawk geofence parametrelerinin kendisi** | Repo dışı (R17) → 5 Eylül: şablon yüklendi (OLCUM, §4.4 15:08) ama döküm **alınmadı** (D-426 §4) → 6 Eylül 20:22 dökümü `config/pixhawk/arducopter_fda_20260906.param` repoda: `FENCE_ENABLE,1` · `FENCE_ALT_MAX,50` (D-428 §5g); üçüncü döküm bekleniyor | uçuş öncesi | `config/pixhawk/` kanıt olarak |
 | 10 | **K5 figür bilgi px** | verdikt JSON'ında `OLCULEMEDI` | — | — |
@@ -1698,9 +1773,18 @@ ekran görüntüsü.
 onaylayan aynı taraftır** ve bağımsız denetim beklemektedir:
 
 1. **D-407 turundaki düzeltmeler** (Nano belgesi dizin hizası, mühür kapsamı) —
-   mimar-dışı denetim ya da **5 Eylül'de Jetson'daki ilk gerçek koşum**.
+   ~~mimar-dışı denetim ya da **5 Eylül'de Jetson'daki ilk gerçek koşum**.~~
+   *(12 Eylül 2026'da tazelendi — D-462 A5; eski metin silinmedi.)* **6 Eylül'de kartta
+   gerçek koşum yapıldı** (D-431): genel kapı **15/15 · 15/15**
+   (`results/jetson_20260906/jetson_log_20260906/genel_kapi.log`), tam süit kartta koştu,
+   kayıt defteri v36 `.pt` `eslesti`. ⚠ Ama **denetim borcu kapanmadı**: Nano belgesinin
+   dizin hizası bu kartta **konusuz kaldı** (kart Orin Nano çıktı, JetPack 7.2.1 / Py 3.12 —
+   belge bu kart için geçersiz, §4.13.1 #11); yani iddia doğrulanmadı, **dayanağı ortadan
+   kalktı**. Mühür kapsamı için bağımsız denetim hâlâ bekler.
 2. **D-404 §7 madde 4** — `jetson_baslat.sh` systemd kipleri Windows'ta
-   koşulamadı; Jetson'daki ilk koşum ilk kanıttır.
+   koşulamadı; ~~Jetson'daki ilk koşum ilk kanıttır.~~ → **6 Eylül'de yalnız `--kuru`
+   koştu** (çıkış 3, `[YOK] /dev/ttyACM0` — D-431, §4.1.3); **systemd kipleri
+   (`--kur` / `--kapi` / `--dogrudan`) hâlâ KOŞULMADI** → borç **açık**, `ÖLÇÜLEMEDİ ≠ GEÇTİ`.
 3. **D-406 K2/T207 kodu** ajanlar tarafından yazıldı; mimar diff/test/mutasyon
    çıktılarını okudu — **bağımsız üçüncü göz yok**.
 4. **D-412 `_kanit_yaz`** — eksik metot bu turda yazıldı ve 6 testle + mutasyonla

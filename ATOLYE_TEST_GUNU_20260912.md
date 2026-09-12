@@ -161,7 +161,7 @@
 - **Komut (Jetson):** A9 köprüsü açıkken `python -B codes/kamera_dogrula.py --kaynak http://127.0.0.1:8080/video --kare 60 --zincir --model jetson_paket/models/navitas_seg_v36_best.pt --imgsz 512 | tee results/atolye_20260912/A10_canli_fps.txt` · terminalin fotoğrafı `A10_ekran.jpg`. Model yolu 6 Eylül koşumundaki dosyadır (results/jetson_20260906/jetson_fps_20260906_orin_nano/ozet.json `vakalar[0].model`); yoksa `ls jetson_paket/models/*.pt` (manifest `asil_model_pt`).
 - **Beklenen görüntü:** `okunan kare : 60 (dusen: 0)` · `kare gecikmesi : p50=… ms p95=… ms` · `OLCULEN FPS` · `rota durumlari`.
 - **BEKLENTİ (BENZER ÖLÇÜM — ölçüm değil):** aynı kart, pt, imgsz 512, dosya kaynağı: p50/p95 739/942 ms = 1,35/1,06 FPS (results/jetson_20260906/jetson_fps_20260906_orin_nano/ozet.json:69-70, D-431). Canlı kaynakta köprü okuma + JPEG çözme payı eklenir (BİLİNMİYOR) → beklenti ≤ 1,35 FPS.
-- **Kabul (FDR/BOLUM_3_SISTEM_SPESIFIKASYONLARI.md:915):** p50 ve p95 ayrı ayrı ≥ 0,61 FPS ⇔ kare gecikmesi p95 ≤ 1000 / 0,61 = 1639 ms (HESAP).
+- **Kabul (FDR/BOLUM_3_SISTEM_SPESIFIKASYONLARI.md:929):** p50 ve p95 ayrı ayrı ≥ 0,61 FPS ⇔ kare gecikmesi p95 ≤ 1000 / 0,61 = 1639 ms (HESAP).
 - **Sonuç: ÖLÇÜLECEK (12 Eylül atölye)** → `results/atolye_20260912/A10_canli_fps.txt` · `A10_ekran.jpg`
 - `[ ] ÖLÇÜLDÜ  [ ] ÖLÇÜLEMEDİ — neden: …… · saat: …… · kim: ……`
 
