@@ -1,0 +1,12 @@
+# test_faz_b_iha_komut_alici.py — TEK BASINA 3 ardisik kosum (12 Eylul, D-466 dali)
+# Sebep: tam_suit_3.txt kosumunda test_13_gercek_mavlink_hedefi_sahte_pixhawk_command_long_alir DUSTU;
+# ayni test tam_suit_3'un ILK kosumunda dusmemisti -> suit ici kararsizlik olcumu.
+--- kosum 1
+Ran 23 tests in 5.839s
+OK
+--- kosum 2
+Ran 23 tests in 6.111s
+OK
+--- kosum 3
+Ran 23 tests in 5.785s
+OK

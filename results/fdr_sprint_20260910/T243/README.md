@@ -144,6 +144,7 @@ nöbetçi test tarafından yeniden karşılaştırılır (elle yazılmış sayı
 | İKA (`*ika*`) | `kapi/test_ika.txt` | OK |
 | akış doğrulayıcı | `kapi/akis_diyagram.txt` | TÜM DÜĞÜMLER TUTTU |
 | tam süit | `kapi/tam_suit.txt` | aşağıya bakınız |
+| tam süit, **D-466 düzeltmesinden sonra** (3 koşum) | `kapi/tam_suit_3.txt`, `kapi/tam_suit_4.txt`, `kapi/tam_suit_5.txt` | T243 modülünden düşük YOK; küme farkı aşağıda sayıldı |
 
 🔴 **Tam süit bu worktree'de temiz DEĞİLDİR ve bu gizlenmez.** Düşükler
 `kapi/tam_suit.txt` dosyasındadır. Hepsi **izlenmeyen ikili artefakt yokluğu**
@@ -157,6 +158,31 @@ dalda** koşar. Ölçüt, daldaki düşen kümenin tabanın **alt kümesi** olma
 (taban da aynı artefaktlardan yoksundur, hatta bazılarında daha çok düşer).
 Sonuç `kapi/taban_kiyas.txt`: **7/7 modülde dal düşükleri tabanın alt kümesi —
 T243 kaynaklı YENİ düşük YOK.**
+
+D-466 düzeltmesinden sonra tam süit **üç kez** koşuldu; ham çıktılar
+`kapi/tam_suit_3.txt`, `kapi/tam_suit_4.txt`, `kapi/tam_suit_5.txt`. Test
+sayısı 2782 → 2794 (nöbetçiye eklenen D-466 kilitleri). Düşen `FAIL:`/`ERROR:`
+kümesinin `kapi/tam_suit_2.txt` (düzeltme öncesi) kümesinden **farkı**:
+
+| koşum | tam_suit_2'ye göre fark | ne olduğu |
+|---|---|---|
+| `tam_suit_3.txt` | +`test_13_gercek_mavlink_hedefi_sahte_pixhawk_command_long_alir` | **süit içi kararsızlık**: modül tek başına 3/3 GEÇER (`kapi/kararsiz_faz_b_iha_komut_alici.txt`), aynı test `tam_suit_4` ve `tam_suit_5` koşumlarında düşmedi |
+| `tam_suit_4.txt` | +`test_tam_suit_3_dusuk_kumesi_ONCEKIYLE_AYNI` | **testin kendi kusuru**: tam süit çıktısını okuyan bir nöbetçi testi yazmıştım; koşum sırasına bağlıydı. **Kaldırıldı** — aşağıya bakınız |
+| `tam_suit_5.txt` | fark için o dosyaya bakınız | son hâl; T243 modülünden düşük YOK |
+
+🔴 **Kaldırılan test — kayda geçer.** İlk denemede tam süit düşük kümesini
+`tam_suit_2` ile karşılaştıran bir nöbetçi testi yazıldı. Test, tam süit
+**içinde** koşarken okuduğu dosyanın o anda yazılmakta olduğunu göremiyordu ve
+kendi koşumunda düşüyordu; sonraki koşumda da bir önceki koşumun kararsız
+düşüğünü gördüğü için düştü. **Tam küme eşitliği kararsız bir ölçüttür ve
+kilit olamaz.** Yerine ölçülen şey daraltıldı: *bu işin dokunduğu modül tam
+süit içinde hiç düşük üretmiyor mu?* — `tam_suit_5.txt` üzerinde ölçülür.
+Eski çıktılar silinmedi; iki başarısız deneme de yukarıdaki tabloda durur.
+
+⚠ **Sınır (kapatılmadı):** süit içi kararsızlık bu işte **çözülmedi**, yalnız
+ölçüldü ve sayıldı. `test_13_...` tek başına geçer, süitte bazen düşer; sebebi
+(yuva/zamanlama) bu işin kapsamı dışındadır ve T243'ün dokunduğu dosyalarla
+ilişkisi yoktur.
 
 ### 🔴 `test_H2c_olcek_1_5_hakem_ekrani` — ölçüm sonucu: T243'ten DEĞİL
 
@@ -191,6 +217,23 @@ o kapıyı tetikler. Modül koşumdan sonra sha256 ile bayt-eş geri yüklendi.
 Nöbetçi test `tests/test_t243_paket_boyutu.py`: FDR'deki ve bu README'deki her
 sayıyı JSON'dan **yeniden hesaplar** (bayat sayı kilidi), ölçüm betiğini
 yeniden koşarak paket boyutu tablosunun `protocol.encode()` ile hâlâ bayt-eş
-olduğunu doğrular ve belge kilidi kurallarını uygular. Kilidin normalleştirme
+olduğunu doğrular ve belge kilidi kurallarını uygular.
+
+**D-466 ile eklenen üç kilit sınıfı** — bayat sayı değil **YANLIŞ sayı**
+kilidi:
+
+1. **BAĞIMSIZ HESAP.** Duyarlılık sayıları, onları üreten
+   `M.tavan_waypoint_duyarliligi` çağrılmadan, nöbetçinin içinde elle yazılmış
+   JSON aritmetiğiyle (`_bagimsiz`) yeniden hesaplanır ve FDR/TABLO metniyle
+   karşılaştırılır. Eski nöbetçi aynı hatalı fonksiyonu yeniden koştuğu için
+   kusuru onaylıyordu.
+2. **ÇAPRAZ KİLİT ve GEVŞETİLEMEZLİĞİ.** Çerçeve sayısı ölçülen bayt/çerçeve
+   ile ±%2 içinde tutarlı olmalıdır; sentetik bir prob (çerçeve sayısı elle
+   250 → 200) kilide verilir ve kilidin bunu **reddettiği** ölçülür. Eşik
+   gevşetilirse prob geçer ve test düşer.
+3. **METİN EŞİTLİĞİ (D-465).** FDR §3.3.4.3.3'teki duyarlılık bloğu ve
+   "Sonuç (D-466)" bloğu, ön kayıtlı metne **eşit** olmalıdır (normalleştirme
+   yalnız boşluk/satır sonu; çizik/varlık ayıklaması YOK). Canlı sayılar
+   bağımsız hesaptan doldurulur, çizili eski sayılar tarihsel sabittir. Kilidin normalleştirme
 fonksiyonları o dosyada **tek yerde** toplanmıştır ve **T242 ile kanonik
 yardımcıya (`tests/belge_kilidi.py`) geçirilecektir** (D-460, D-461).

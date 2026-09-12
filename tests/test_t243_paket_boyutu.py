@@ -1020,6 +1020,33 @@ class ReadmeSayilariArtefakttan(unittest.TestCase):
         self.assertIn(_ara("T243'ten DEGIL"), self.s)
         self.assertIn(_ara("tam_suit_t243siz.txt"), self.s)
 
+    def test_D466_SONRASI_tam_suit_te_T243_dusugu_YOK(self):
+        """D-466 duzeltmesinden sonraki tam suit kosumu: T243 modulu temiz.
+
+        Tam kume esitligi KILIT DEGILDIR: suit ici kararsizlik olculdu
+        (kapi/kararsiz_faz_b_iha_komut_alici.txt). Olculen sey sudur — bu isin
+        DOKUNDUGU modul tam suit icinde hic dusuk uretmiyor. Kume farki
+        README'de ham dosyalarla sayilarak yazilir.
+        """
+        kapi = DIZIN / "kapi"
+        yol = kapi / "tam_suit_5.txt"
+        self.assertTrue(yol.is_file(), "kanit dosyasi yok: tam_suit_5.txt")
+        metin = yol.read_text(encoding="utf-8")
+        self.assertIsNotNone(re.search(r"^Ran \d+ tests? in ", metin, re.M),
+                             "tam_suit_5.txt yarim (kosum tamamlanmamis)")
+        self.assertIsNotNone(re.search(r"^(OK|FAILED)\b", metin, re.M),
+                             "tam_suit_5.txt yarim (ozet satiri yok)")
+        t243 = [x.strip() for x in metin.splitlines()
+                if x.startswith(("FAIL:", "ERROR:"))
+                and "test_t243_paket_boyutu" in x]
+        self.assertEqual([], t243,
+                         "tam suit icinde T243 nobetcisi dusuyor")
+        for ad in ("tam_suit_3.txt", "tam_suit_4.txt",
+                   "kararsiz_faz_b_iha_komut_alici.txt"):
+            self.assertTrue((kapi / ad).is_file(), f"kanit dosyasi yok: {ad}")
+        for ifade in ("tam_suit_5.txt", "kararsiz_faz_b_iha_komut_alici.txt"):
+            self.assertIn(_ara(ifade), self.s, ifade)
+
     def test_ilk_kosumun_eksikligi_yazili(self):
         """Yeniden kosum SEBEBI ve yonu (sayi KOTULESTI) rapordan dusmemeli."""
         self.assertIn("kosum_ciktisi_v1_eksik.txt", self.s)
