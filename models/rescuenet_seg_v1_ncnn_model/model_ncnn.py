@@ -1,15 +1,17 @@
 import numpy as np
 import ncnn
 import torch
+from pathlib import Path
 
 def test_inference():
     torch.manual_seed(0)
     in0 = torch.rand(1, 3, 512, 512, dtype=torch.float)
     out = []
+    model_dir = Path(__file__).resolve().parent
 
     with ncnn.Net() as net:
-        net.load_param("/home/trs/trs/github/teknofest/runs/segment/runs/segment/rescuenet_seg_v1/weights/best_ncnn_model/model.ncnn.param")
-        net.load_model("/home/trs/trs/github/teknofest/runs/segment/runs/segment/rescuenet_seg_v1/weights/best_ncnn_model/model.ncnn.bin")
+        net.load_param(str(model_dir / "model.ncnn.param"))
+        net.load_model(str(model_dir / "model.ncnn.bin"))
 
         with net.create_extractor() as ex:
             ex.input("in0", ncnn.Mat(in0.squeeze(0).numpy()).clone())

@@ -118,6 +118,33 @@ dosyaları var; korunmuştur. T107'nin başka ajana ait kilidine dokunulmadı.
 
 ---
 
+## Gazebo gerçekçilik · 2026-09-10 · Codex-1
+
+- Son aday `simulation/realism_runs/20260910_v6/candidate.world`;
+  `current` bu sürüme işaret eder. Aç: `bash simulation/docker/realism_open.sh`.
+  Eski dünyalar/kayıt başlatıcıları değiştirilmedi; varsayılan yeni açıcı duraklatılmış açar.
+- Kaynaklar: `simulation/scripts/realism_{assets,scene,support,capture,geometry_check,contact_probe}.py`,
+  `simulation/docker/realism_*.sh`, iki `test_realism_*.py`, `simulation/REALISM.md`.
+  Kilitli T4/T144 dosyalarına yazılmadı. Commit/push/merge yapılmadı.
+- Tamamlanan aday: UV zemin/moloz, gerçek zemin kabartması, 9 aile, 66.395 bağlı
+  parça, açık geçit korumalı destek yerleşimi, 12 materyal/bölge moloz grubu,
+  aynı collision/visual mesh, bariyer açıklığı düzeltmesi. 2.455 → 410 model.
+- Kanıtlar: `results/gazebo_realism_20260910/RAPOR.md`, `TEMAS.md`, önce/sonra
+  6 gerçek JPEG, kaynak/varlık SHA'ları, geometri/temas JSON'ları ve test günlükleri.
+  Gerçek yalıtılmış Gazebo üç kamera çekimi çıkış 0; temas pozitif/negatif 4/4 çıkış 0;
+  collision güzergâh denetimi 9/9 çıkış 0; `unittest discover -s simulation/tests -v`
+  60 test, OK, çıkış 0; `.venv/bin/python -B codes/test_rota_sentetik.py` 15/15, çıkış 0.
+- T156 bağımsız incelemeye hazır. T157 **IN_PROGRESS: Codex-1**, tam kabul değil:
+  6 cm altı temas ve tüm sahada kesin penetrasyon/destek taraması, kısmen gömülü
+  varlıklar, dönüş/görüş/darboğaz zorluk metrikleri eksik. Statik enkaz, araç/flight
+  kalibrasyonu veya kör gerçek algı testi yerine geçmez.
+- Devralan ilk olarak genel kapıyı koşmalı ve bu v6'yı incelemeli; eski
+  `rec_kolay.world` veya rv37 videosunu güncel aday diye göstermemeli. Başka ajan
+  devralacaksa görev kilidi kullanıcı protokolüyle aktarılmalı. Üretilen sürümler
+  Git dışında; push öncesi mevcut kaynak/mesh/profil bağımlılıkları birlikte denetlenmeli.
+
+---
+
 ## GECE KOSUMU · 2026-08-21 (KAPANIS) · Claude 2 (Opus 5, basamele)
 
 **KOSAN IS YOK — tum zincirler bitti, GPU bosta.**

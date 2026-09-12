@@ -16,7 +16,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(Path(__file__).parent))
-from iha_perceive import perceive, LABEL
+from iha_perceive import DEFAULT_MODEL_PROVENANCE, LABEL, perceive
 
 # İHA'nın her seviyede gördüğü aerial görsel (← kendi görsellerinle değiştir)
 IHA_VIEW = {
@@ -41,7 +41,8 @@ def main():
             print(f"[İHA-ALGI] {lv}: HATA {e}", file=sys.stderr)
             road, conf, trav = None, 0.0, 0
         det[lv] = {"road": road, "label": LABEL.get(road, "yok"),
-                   "conf": conf, "image": Path(img).name if img else None}
+                   "conf": conf, "image": Path(img).name if img else None,
+                   **DEFAULT_MODEL_PROVENANCE}
         name = Path(img).name if img else "?"
         print(f"[İHA-ALGI] {lv}: {name} → {LABEL.get(road, 'YOK').upper()} "
               f"(yol {road}, güven {conf})  [GERÇEK best.pt]")

@@ -141,6 +141,18 @@ namespace gazebo
 
     private: double lastSimWrite = -1e9;
 
+    private: void SetFlatView(const std::string &name, double x, double y,
+                              double z, double yaw, double forward = 0.0,
+                              double side = 0.0)
+    {
+      if (auto v = this->world->ModelByName(name))
+      {
+        double px = x + forward * std::cos(yaw) - side * std::sin(yaw);
+        double py = y + forward * std::sin(yaw) + side * std::cos(yaw);
+        v->SetWorldPose(ignition::math::Pose3d(px, py, z, 0, 0, yaw));
+      }
+    }
+
     private: void OnUpdate()
     {
       double t = this->world->SimTime().Double();
@@ -164,8 +176,24 @@ namespace gazebo
                 << " rota=" << this->ikaRouteSrc[kv.first]
                 // rota bitti (son wp'ye ulaşıldı) → kayıt betiği klibi erken keser
                 << (this->ikaIdx[kv.first] >= kv.second.size() ? " durum=BITTI" : "")
+                << (this->ikaRouteSrc[kv.first] == "rota_yok" ? " durum=ROTA_YOK" : "")
                 << "\n";
             }
+        if (auto b = this->world->ModelByName("aftershock_barrier"))
+        {
+          double bz = (t < 45.0) ? 8.0 : 0.65;
+          auto bp = b->WorldPose();
+          b->SetWorldPose(ignition::math::Pose3d(bp.Pos().X(), bp.Pos().Y(), bz,
+                                                 bp.Rot().Roll(), bp.Rot().Pitch(),
+                                                 bp.Rot().Yaw()));
+          f << "aftershock_barrier z=" << bz << "\n";
+        }
+        if (auto iha = this->world->ModelByName("iha"))
+        {
+          auto p = iha->WorldPose();
+          this->SetFlatView("iha_view_footprint", p.Pos().X(), p.Pos().Y(),
+                            0.13, p.Rot().Yaw());
+        }
         // (İHA poz logu artık navitas_scan_cam plugin'inde — kareyle AYNI olayda
         //  yazılır, birebir senkron; buradaki 1 Hz kopya kaldırıldı.)
         this->lastSimWrite = t;
@@ -221,6 +249,13 @@ namespace gazebo
           if (!link) continue;
           auto pose = model->WorldPose();
           double cx = pose.Pos().X(), cy = pose.Pos().Y();
+          std::string sfx = kv.first.substr(4);  // ika_<seviye> -> <seviye>
+          this->SetFlatView("ika_view_" + sfx + "_center", cx, cy, 0.16,
+                            pose.Rot().Yaw(), 6.5, 0.0);
+          this->SetFlatView("ika_view_" + sfx + "_left", cx, cy, 0.16,
+                            pose.Rot().Yaw() + 0.60, 6.2, 0.0);
+          this->SetFlatView("ika_view_" + sfx + "_right", cx, cy, 0.16,
+                            pose.Rot().Yaw() - 0.60, 6.2, 0.0);
           double dx = wps[idx].x - cx, dy = wps[idx].y - cy;
           double dist = std::hypot(dx, dy);
           double hedefRadius = (idx + 1 >= wps.size()) ? FINAL_WP_RADIUS : WP_RADIUS;
@@ -285,6 +320,8 @@ namespace gazebo
           roll = this->ihaRoll; pitch = this->ihaPitch;
         }
         model->SetWorldPose(ignition::math::Pose3d(x, y, z, roll, pitch, yaw));
+        if (kv.first == "iha")
+          this->SetFlatView("iha_view_footprint", x, y, 0.13, yaw);
       }
     }
 

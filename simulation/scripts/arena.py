@@ -29,6 +29,7 @@ HTAB_HALF = HTAB / 2.0
 
 SCENARIOS = ("kolay", "orta", "zor")
 HARITA_N  = 5              # üretilen gerçekçi harita sayısı (--map 1..5)
+ZONE_POS = {"kolay": (-90.0, 0.0), "orta": (0.0, 0.0), "zor": (90.0, 0.0)}
 
 ROAD_LABEL = {1: "sol", 2: "orta", 3: "sag"}
 

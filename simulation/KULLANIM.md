@@ -21,12 +21,12 @@ kurulu değil** — her şey **Podman konteyneri** içinde çalışır (host mas
 
 ```bash
 cd simulation
-                # 3-zonlu 300×300 dünyayı kaydeder → recordings/v<id>/
+                # 3-zonlu 300×300 dünyayı kaydeder → recordings/rv<id>/
 ./docker/record.sh --seed 7       # farklı zon yerleşimi (rastgele 50×50 konumları)
 ```
 
-- **Çıktı:** `simulation/recordings/v<id>/navitas.mp4` (1280×720). Her çalıştırma **yeni v<id>**
-  (en yüksek vN → vN+1).
+- **Çıktı:** `simulation/recordings/rv<id>/navitas.mp4` (1280×720). Her çalıştırma **yeni rv<id>**
+  (en yüksek rvN → rvN+1).
 - Dünya: TEK 300×300 İHA-UB içinde rastgele konumlu **3 adet 50×50 HTAB** (kolay/orta/zor),
   her biri kendi 3-yol moloz challenge'ı. İHA sol→sağ tarar; her zonun İKA'sı alttan üste
   açık yolu kıvrılarak izler.

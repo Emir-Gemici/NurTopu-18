@@ -1,6 +1,6 @@
 import unittest
 
-from codes.model_registry import ModelRegistryError, load_registry, resolve_model
+from codes.model_registry import ModelRegistryError, describe, load_registry, resolve_model
 
 
 class ModelRegistryTests(unittest.TestCase):
@@ -64,6 +64,25 @@ class ModelRegistryTests(unittest.TestCase):
     def test_unknown_profile_fails_closed(self):
         with self.assertRaises(ModelRegistryError):
             resolve_model("latest-maybe")
+
+
+    def test_describe_eksik_alanda_tipli_hata_verir(self):
+        """Eksik alanlı bir kayıtta `describe` ham KeyError/TypeError yerine
+        ModelRegistryError vermeli; hata mesajı hangi alanın eksik olduğunu
+        ve hangi profilden geldiğini söylemeli."""
+        with self.assertRaises(ModelRegistryError) as ctx:
+            describe({"profile": "bozuk", "backend": "ultralytics", "imgsz": 512})
+        mesaj = str(ctx.exception)
+        self.assertIn("model_id", mesaj)
+        self.assertIn("sha256", mesaj)
+        self.assertIn("bozuk", mesaj)
+
+    def test_describe_tam_kayitta_calisir(self):
+        metin = describe({"model_id": "x-1", "backend": "ultralytics", "imgsz": 512,
+                          "sha256": "abcdef0123456789", "metrics": {"mask_map50": 0.5}})
+        self.assertIn("x-1", metin)
+        self.assertIn("abcdef012345", metin)
+        self.assertIn("mAP50=0.5000", metin)
 
 
 if __name__ == "__main__":

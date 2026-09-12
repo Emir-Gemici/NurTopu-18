@@ -7,8 +7,8 @@ Burada GERÇEK comms akışı (UDP loopback) ile üretilir; İKA yalnız
 ``detections.json`` içindeki doğrulanmış dinamik rota varsa hareket eder.
 
 Kullanım:
-  python3 scripts/hakem_log.py --level kolay --detections recordings/vX/detections.json
-  python3 scripts/hakem_log.py --all --detections recordings/vX/detections.json --out recordings/vX/hakem_log.txt
+  python3 scripts/hakem_log.py --level kolay --detections recordings/rvX/detections.json
+  python3 scripts/hakem_log.py --all --detections recordings/rvX/detections.json --out recordings/rvX/hakem_log.txt
 """
 import argparse
 import hashlib
@@ -72,6 +72,7 @@ def _model_kunyesi(kayit=None):
 
 MODEL_NAME, MODEL_IMGSZ, MODEL_SHA8 = _model_kunyesi()
 MODEL_CONF_THR = 0.15       # iha_perceive vars. eşik (CONF_FLOOR 0.05 fallback)
+MAX_LOG_SEGMENT_M = 1.8
 
 
 class Log:
@@ -118,21 +119,85 @@ def _dinamik_rota(det):
             return None
         ref = [round(rota[0][0], 2), round(rota[0][1], 2)]
         yerel = [[round(x - ref[0], 2), round(y - ref[1], 2)] for x, y in rota]
-        yerel = rota_geometrisini_dogrula(ref, yerel)
+        if det.get("rota_kaynak") == "iha_koordinat_yedegi":
+            # Bu rota world_generator'ın metre cinsinden HTAB koordinatlarından
+            # gelir ve Gazebo plugin'i tarafından aynen sürülür. Eski OPEN_ROUTE
+            # doğrulayıcısı MODEL A* piksel/yerel sözleşmesine göre fazla dardır;
+            # burada sadece sayısal/geometrik geçerliliği koruyup logun gerçek
+            # simülasyon davranışını raporlamasını sağlarız.
+            if any(not all(math.isfinite(v) for v in p) for p in yerel):
+                return None
+        else:
+            yerel = rota_geometrisini_dogrula(ref, yerel)
     except (TypeError, ValueError, IndexError):
         return None
     return int(det["road"]), float(det.get("conf", 0.0)), ref, yerel
 
 
-def run_level(level, log, det=None, realtime=False, harita_id=1):
+def _densify_local_waypoints(waypoints, max_segment_m=MAX_LOG_SEGMENT_M):
+    """OPEN_ROUTE log/comms doğrulaması için uzun segmentleri ara noktalarla böl."""
+    if len(waypoints) < 2:
+        return waypoints
+    out = [waypoints[0]]
+    for a, b in zip(waypoints, waypoints[1:]):
+        dx = float(b[0]) - float(a[0])
+        dy = float(b[1]) - float(a[1])
+        steps = max(1, int(math.ceil(math.hypot(dx, dy) / max_segment_m)))
+        for i in range(1, steps + 1):
+            out.append([round(float(a[0]) + dx * i / steps, 2),
+                        round(float(a[1]) + dy * i / steps, 2)])
+    return out
+
+
+def _sn(value):
+    """Meta zamanını log için kayıpsız ve kısa biçimle."""
+    try:
+        return f"{float(value):g}s"
+    except (TypeError, ValueError):
+        return "?s"
+
+
+def run_level(level, log, det=None, realtime=False, harita_id=1, kayit_sonu=None):
     log.raw("")
     log.raw(f"  ─────────── SEVİYE: {level.upper()} ───────────")
+    kayit_sonu = kayit_sonu or {
+        "sebep": "KAYIT_KANITI_YOK",
+        "son_durum": "YOK",
+        "sim_t": None,
+        "record_seconds": None,
+    }
+    sebep = kayit_sonu["sebep"]
+    son_durum = kayit_sonu["son_durum"]
+    log("KAYIT", f"canlı kayıt meta verisi: SEBEP={sebep} SON_DURUM={son_durum} "
+                 f"SIM_T={_sn(kayit_sonu['sim_t'])} "
+                 f"RECORD_SECONDS={_sn(kayit_sonu['record_seconds'])}")
+    if sebep != "GOREV_TAMAMLANDI":
+        log("KAYIT", "SONUÇ: ✗ KAYIT YARIDA KESİLDİ "
+                     f"(sim {_sn(kayit_sonu['sim_t'])} / "
+                     f"hedef {_sn(kayit_sonu['record_seconds'])}) · SEBEP={sebep}")
+        log("KANIT", "ULAŞILDI / BAŞARILI yazılmadı; rota verisi görev sonucu yerine geçmez")
+        return False
+    if son_durum != "BITTI":
+        log("KAYIT", f"SONUÇ: ✗ GÖREV BAŞARISIZ — canlı terminal durum={son_durum} "
+                     "(İKA HB varışı kanıtlanmadı)")
+        return False
+
+    log.raw("    [ÜRETİLMİŞ ROTA ÖZETİ] Aşağıdaki rota adımları ve mesafeler "
+            "detections.json + meta.txt verisinden sonradan üretilmiştir; canlı "
+            "telemetri değildir.")
     dinamik = _dinamik_rota(det)
     if dinamik is None:
         log("MODEL", "Doğrulanmış dinamik A* rota yok → İKA GÜVENLİ DURMA (sabit arena rotası kullanılmadı)")
         return False
     road, conf, ref_xy, yerel_wps = dinamik
-    src = "best.pt / İHA TARAMA MOZAİĞİ" if det.get("kaynak") == "sim-tarama" else "best.pt"
+    if det.get("rota_kaynak") == "iha_koordinat_yedegi":
+        yerel_wps = _densify_local_waypoints(yerel_wps)
+    if det.get("rota_kaynak") == "iha_koordinat_yedegi":
+        src = "İHA KOORDİNAT YEDEĞİ (costmap yok)"
+    elif det.get("kaynak") == "sim-tarama":
+        src = "best.pt / İHA TARAMA MOZAİĞİ"
+    else:
+        src = "best.pt"
 
     ika_link = UDPLink(bind=("127.0.0.1", 0), timeout=0.1)
     yks_link = UDPLink(bind=("127.0.0.1", 0), timeout=0.1)
@@ -205,7 +270,8 @@ def run_level(level, log, det=None, realtime=False, harita_id=1):
     # İKA kapalı koridora yönelir ve fizik onu molozda durdurur → görev BAŞARISIZ.
     gt = arena.open_road(level, harita_id)
     if road_rx == gt:
-        log("İKA", f"══ HEDEF BÖLGE (HB) ULAŞILDI ══  kat edilen={total:.1f}m  SONUÇ: ✓ BAŞARILI")
+        log("İKA", f"══ HEDEF BÖLGE (HB) ULAŞILDI ══  [canlı BITTI + üretilmiş rota özeti] "
+                   f"kat edilen={total:.1f}m  SONUÇ: ✓ BAŞARILI")
     else:
         log("İKA", f"✗ model yanlış yol seçti (tespit={arena.ROAD_LABEL[road_rx]}, "
                    f"gerçek açık={arena.ROAD_LABEL[gt]}) → İKA kapalı koridorda molozda "
@@ -228,6 +294,41 @@ def run_level(level, log, det=None, realtime=False, harita_id=1):
     return True
 
 
+def _meta_for_level(detections_path, level):
+    if not detections_path:
+        return {}
+    meta = Path(detections_path).parent / f"iha_scan_{level}" / "meta.txt"
+    if not meta.is_file():
+        return {}
+    values = {}
+    for line in meta.read_text(encoding="utf-8", errors="replace").splitlines():
+        key, sep, value = line.partition("=")
+        if sep:
+            values[key] = value
+    return values
+
+
+def _meta_map_for_level(detections_path, level, fallback):
+    value = _meta_for_level(detections_path, level).get("MAP")
+    if value is None:
+        return fallback
+    try:
+        return int(value)
+    except ValueError:
+        return fallback
+
+
+def _kayit_sonu_for_level(detections_path, level):
+    """Canlı kayıt sonu kanıtını meta.txt'ten fail-closed oku."""
+    meta = _meta_for_level(detections_path, level)
+    return {
+        "sebep": meta.get("SEBEP", "KAYIT_KANITI_YOK"),
+        "son_durum": meta.get("SON_DURUM", "YOK"),
+        "sim_t": meta.get("SIM_T"),
+        "record_seconds": meta.get("RECORD_SECONDS"),
+    }
+
+
 def main():
     ap = argparse.ArgumentParser(description="Hakem/YKS ekran logu")
     ap.add_argument("--level", choices=arena.SCENARIOS)
@@ -236,9 +337,11 @@ def main():
     ap.add_argument("--detections", help="İHA modelinin tespitleri (detections.json)")
     ap.add_argument("--realtime", type=int, default=0, choices=[0, 1],
                     help="1=gerçekçi süreler+limitler, 0=süresiz (mevcut)")
-    ap.add_argument("--map", type=int, default=1, choices=range(1, arena.HARITA_N + 1),
-                    help="gerçekçi harita no (world_generator --map ile aynı)")
+    ap.add_argument("--map", type=int, default=1,
+                    help="gerçekçi/profil harita no (world_generator --map ile aynı)")
     args = ap.parse_args()
+    if args.map <= 0:
+        ap.error("--map pozitif tam sayı olmalı")
 
     dets = {}
     if args.detections and Path(args.detections).exists():
@@ -250,15 +353,20 @@ def main():
     log.raw(f"  NAVITAS — HAKEM / YKS EKRAN LOGU")
     log.raw(f"  Başlangıç: {start:%Y-%m-%d %H:%M:%S}   |   Süre modu: "
             f"{'GERÇEKÇİ (limitli)' if args.realtime else 'KAPALI (süresiz)'}")
-    log.raw("  (model çıktısı + görev telemetrisi — gerçek comms ile üretildi)")
+    log.raw("  KAYNAK UYARISI: Bu dosya sonradan ÜRETİLMİŞ bir özettir. Yalnız")
+    log.raw("  iha_scan_<seviye>/meta.txt içindeki kayıt sonu alanları canlı koşumdandır;")
+    log.raw("  rota adımları detections.json + meta.txt verisinden üretilmiştir.")
     log.raw("=" * 64)
 
     levels = ["kolay", "orta", "zor"] if args.all or not args.level else [args.level]
     for lv in levels:
-        run_level(lv, log, dets.get(lv), realtime=bool(args.realtime), harita_id=args.map)
+        harita_id = _meta_map_for_level(args.detections, lv, args.map)
+        kayit_sonu = _kayit_sonu_for_level(args.detections, lv)
+        run_level(lv, log, dets.get(lv), realtime=bool(args.realtime),
+                  harita_id=harita_id, kayit_sonu=kayit_sonu)
     end = datetime.now()
     log.raw("\n" + "=" * 64)
-    log.raw(f"  GÖREV OTURUMU TAMAMLANDI   Bitiş: {end:%H:%M:%S}   "
+    log.raw(f"  HAKEM ÖZETİ ÜRETİMİ TAMAMLANDI   Bitiş: {end:%H:%M:%S}   "
             f"(toplam {(end-start).seconds}s)")
     log.raw("=" * 64)
 

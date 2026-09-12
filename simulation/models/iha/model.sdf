@@ -112,7 +112,7 @@
         <visualize>true</visualize>
       </sensor>
 
-      <!-- ── TARAMA kamerası — NADİR (dik aşağı), HER SANİYE kare kaydeder ──
+      <!-- ── TARAMA kamerası — NADİR (dik aşağı), anlık/akıcı kare kaydeder ──
            Şartname: 30m irtifadan 50×50 alanı tarar. Kare + İHA pozu AYNI olayda
            navitas_scan_cam plugin'iyle kaydedilir (/tmp/iha_scan/scan_N.jpg +
            poses.csv, BİREBİR senkron) → host'ta iha_haritala.py ortomozaik kurar,
@@ -125,7 +125,7 @@
           <clip><near>0.1</near><far>120</far></clip>
         </camera>
         <always_on>true</always_on>
-        <update_rate>1</update_rate>
+        <update_rate>10</update_rate>
         <visualize>false</visualize>
         <plugin name="navitas_scan_cam" filename="libnavitas_scan_cam.so"/>
       </sensor>

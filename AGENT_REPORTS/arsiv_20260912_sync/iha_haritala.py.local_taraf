@@ -1,0 +1,1280 @@
+"""
+İHA ALAN HARİTALAMA — tarama karelerinden ORTOMOZAİK + model kararı + İKA rotası.
+
+Dürüst haritalandırma zincirinin HOST tarafı (torch/ultralytics .venv'de):
+
+  Gazebo (konteyner)                           Bu betik (host .venv)
+  ──────────────────                           ─────────────────────
+  İHA 30 m'de serpantin uçar                   kareler + poz logu senkronlanır
+  scan_camera 1 Hz kare kaydeder     ──────►   1) HER KARE: model HAM kare üzerinde
+  plugin İHA pozunu 1 Hz loglar                   koşar (eğitim dağılımı = drone karesi)
+  (t,x,y,z,yaw → iha_scan_poses.csv)           2) OY: kare maskesi kendi pozuyla
+  tarama bitince SCAN_DONE işareti   ──────►      MOZ_PX×MOZ_PX dünya ızgarasına
+                                                  yansır; zemin/engel/gözlem birikir
+  İKA rotayı BEKLER                  ◄──────   3) COSTMAP: oy haritasından zemin/engel
+  (plugin /tmp/navitas_route okur)                → serbest alan → A* → waypoint
+  İKA MODELİN haritasını sürer                 4) KOORDİNAT: piksel → dünya → route.txt
+                                               5) Çıktılar: iha_oy_haritasi.jpg (karar),
+                                                  ortomozaik.jpg + algi.jpg (görsel kanıt),
+                                                  iha_harita.json, detection.json, route.txt
+
+⚠ ORTOMOZAİK ARTIK KARAR VERMEZ. Ölçüldü (aynı model/conf/imgsz, rv32/kolay):
+  mozaikte tek çıkarım  → yol %24,74  moloz % 0,81
+  her karede çıkarım    → yol %11,06  moloz %17,61
+Mozaik engel algısını ~21× yok ediyordu: döndürme+ölçekleme+"son yazan kazanır"
+kolajı, gerçek drone kareleriyle eğitilmiş ağırlıkların dağılımında yok. Mozaik
+yalnız görsel kanıt ve OBB araç katmanı için üretilmeye devam ediyor.
+
+Model yanılırsa İKA yanlış/kapalı yola gider ve fizik onu durdurur — SONUÇ DÜRÜSTTÜR.
+(Eski akış: model sabit fotoğrafa bakar, dünya modelin dediğine göre kurulurdu = sahte.)
+
+KOORDİNAT SÖZLEŞMESİ
+  Mozaik: MOZ_PX×MOZ_PX piksel = HTAB + kenar payı, KUZEY YUKARI (dünya +Y = görüntü yukarı,
+  dünya +X = görüntü sağı). Piksel↔metre: mpp = MOZ_M / MOZ_PX.
+    dünya_x = cx + (px − MOZ_PX/2)·mpp        dünya_y = cy + (MOZ_PX/2 − py)·mpp
+
+KARE↔POZ EŞLEME (kalibrasyon knob'ları — ilk gerçek koşuda doğrulanır):
+  kamera 1 Hz kare çeker, plugin 1 Hz poz yazar → k. kare ↔ t = k + --kare-ofset satırı.
+  Görüntünün "yukarısı" İHA yaw'ına bağlı döner; kuzey-yukarı için kare CCW yönünde
+  yaw·(--rot-isaret) kadar döndürülür (işaret ilk koşuda H/bariyer konumundan doğrulanır).
+
+Kullanım:
+  # record.sh arka planda başlatır (canlı izleme, tüm seviyeler):
+  .venv/bin/python simulation/scripts/iha_haritala.py --watch simulation/recordings/v15 \
+      --levels "kolay orta zor"
+  # offline analiz / kalibrasyon (kaydedilmiş tarama klasörüyle):
+  .venv/bin/python simulation/scripts/iha_haritala.py --once simulation/recordings/v15/iha_scan_kolay
+"""
+import argparse
+import hashlib
+import json
+import math
+import os
+import sys
+import time
+from datetime import datetime, timezone
+from pathlib import Path
+
+for _akim in (sys.stdout, sys.stderr):
+    try:
+        _akim.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, OSError):
+        pass
+
+ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(Path(__file__).parent))
+sys.path.insert(0, str(ROOT / "codes"))
+
+from iha_perceive import _infer, _overlay, DEFAULT_MODEL, LABEL   # noqa: E402
+from costmap_path_finder import rota_bul, serbest_alan            # noqa: E402
+from arac_maskesi import ARAC_SINIFLERI, obb_arac_maskesi         # noqa: E402
+from sinif_semasi import (COSTMAP_ENGEL_KATMANLARI,               # noqa: E402
+                          COSTMAP_YOL_KATMANLARI, costmap_katmanlari)
+
+# ── Mozaik sabitleri ──────────────────────────────────────────────────────────
+MOZ_PX   = 1024            # mozaik kenarı (px) — iha_perceive CANON ile aynı → ölçeksiz infer
+MOZ_M    = 56.0            # mozaiğin kapladığı alan (m) — HTAB 50 + 3 m kenar payı
+MPP      = MOZ_M / MOZ_PX  # metre/piksel (~0.055)
+HTAB_M   = 50.0            # şartname HTAB karesi; 56 m mozaikteki kenar halkası içerik değildir
+KB_TOHUM_KENAR_M = 1.0     # şartname: İKA-KB bir nokta değil, 1 m × 1 m bölgedir
+HB_TOHUM_KENAR_M = 2.0     # şartname: hedef bölgesi 2 m × 2 m'dir
+HFOV     = 1.3             # scan_camera horizontal_fov (models/iha/model.sdf ile AYNI)
+SCAN_Z   = 30.0            # tarama irtifası (world_generator.SCAN_Z ile AYNI)
+BG_GRI   = 114             # boş mozaik zemini (YOLO letterbox nötr grisi)
+DEFAULT_ARAC_MODEL = ROOT / "yolov8m-obb.pt"
+# ARAC_SINIFLERI artik `codes/arac_maskesi.py`'den import ediliyor (S1).
+# Buradaki yerel kopya import'u GOLGELIYORDU: iki kaynak, sessiz sapma riski.
+
+# Kare filtresi: sadece DÜZ tarama bacakları (kuzey/güney uçuş, yatay kanat).
+# Dönüşlerde İHA 40°'ye dek yatar → kare eğik, mozaiğe koyma.
+Z_TOL    = 0.6             # |z − 30| < 0.6 m
+YAW_TOL  = 0.15            # |beklenen ±90°'den sapma| < ~8.6°
+HTAB_HALF_MARJ = 26.0      # İHA bu sınırın dışındayken kare mozaiğe alınmaz
+
+# ── KARE BAŞI OYLAMA eşikleri ─────────────────────────────────────────────────
+# ⚠ Bu iki sayı SONUCA BAKILMADAN, ölçüm koşulmadan ÖNCE sabitlendi (ön kayıt).
+#
+# NEDEN OYLAMA: model (navitas_seg_v32_best.pt) gerçek drone KARELERİYLE eğitildi.
+# Ortomozaik döndürme + ölçekleme + "son yazan kazanır" ile üretilmiş bir kolaj;
+# eğitim dağılımında böyle bir görüntü YOK. Mimarın ölçümü (aynı model, aynı
+# conf/imgsz, rv32/kolay):
+#     MOZAİK (tek çıkarım):  yol %24,74   moloz % 0,81
+#     HER KARE (n=8):        yol %11,06   moloz %17,61   (kare başı yol 0,0 / 46,1)
+# Mozaik engel algısını ~21× yok ediyor. Bu yüzden model artık HER KAREDE ham
+# kare üzerinde koşar, maskeler dünya ızgarasına yansıtılır ve OY BİRİKTİRİLİR.
+#
+# MIN_GOZLEM = 8 GEREKÇESİ
+#   Serpantin tarama, HTAB içindeki tipik bir hücreyi ortalama ~75 kareyle görür
+#   (kare yer ayağı 2·30·tan(0,65) ≈ 45,6 m ≈ 834 px; 154 kabul edilen kare).
+#   8, bu ortalamanın ~%10'udur: iç alanın hiçbir hücresini elemez, yalnız
+#   yalnızca taramanın kenarında/ucunda bir-iki kare görünen dilimleri eler.
+#   8 örnekli ikili oylamada bir TEK karenin hatası kararı çeviremez (çevirmek
+#   için 4 karenin anlaşması gerekir) ve rastgele hata varyansı √8 ≈ 2,8×
+#   küçülür. Altındaki hücre BİLİNMEYEN kalır ve GEÇİLEBİLİR SAYILMAZ
+#   (proje anayasası madde 15: serbest alanı büyüten hiçbir işlem eklenmez).
+#
+# ENGEL_ORANI = 0.35 GEREKÇESİ
+#   Simetrik çoğunluk 0,50 olurdu; ENGEL LEHİNE muhafazakâr olmak için eşik
+#   bilinçli olarak ALTINA çekildi. Asimetri hata maliyetinden gelir:
+#     · engeli yol sanmak  → İKA molozun içine sürer, geri dönüşü YOK.
+#     · yolu engel sanmak  → koridor daralır; planlayıcı ya dar koridoru bulur
+#                            ya fail-closed durur — ikisi de güvenlidir.
+#   0,35, tek kare gürültüsünün ÜSTÜNDE kalacak kadar da yüksektir: asgari
+#   gözlem sayısında (8) 1/8 = %12,5 ve 2/8 = %25 eşiği geçemez; engel demek
+#   için EN AZ 3 bağımsız karenin anlaşması gerekir. Yüksek gözlemli hücrelerde
+#   ise eşik asimptotik olarak %35'e oturur.
+#
+# Oyların hiçbiri sınıf üretmediyse (zemin_oy + engel_oy == 0) hücre, gözlem
+# sayısı ne olursa olsun BİLİNMEYEN'dir — "model susması" yol sayılmaz.
+MIN_GOZLEM   = 8
+ENGEL_ORANI  = 0.35
+OY_RENK = {                # iha_oy_haritasi.jpg (BGR)
+    "zemin":      (60, 200, 60),
+    "engel":      (40, 40, 220),
+    "bilinmeyen": (60, 60, 60),
+}
+
+
+def poz_oku(csv_path):
+    """poses.csv → {kare_no: (x, y, z, yaw)}.
+
+    Yeni format (navitas_scan_cam, KARE İLE AYNI OLAYDA yazılır → birebir senkron):
+        n,t,x,y,z,yaw
+    Eski format (navitas_anim 1 Hz, v15 — senkron kayması vardı, geriye-uyum):
+        t,x,y,z,yaw   (anahtar = t ≈ kare sırası)"""
+    pozlar = {}
+    for line in Path(csv_path).read_text().splitlines():
+        parts = line.strip().split(",")
+        try:
+            if len(parts) == 6:                    # yeni: n,t,x,y,z,yaw
+                pozlar[int(float(parts[0]))] = tuple(float(v) for v in parts[2:])
+            elif len(parts) == 5:                  # eski: t,x,y,z,yaw
+                pozlar[int(float(parts[0]))] = tuple(float(v) for v in parts[1:])
+        except ValueError:
+            continue
+    return pozlar
+
+
+class _KareYerlesimi:
+    """Bir tarama karesinin dünya ızgarasındaki yerleşimi — TEK GEOMETRİ KAYNAĞI.
+
+    Mozaik de, oy haritası da bu nesneden geçer: ölçek, dönüş, geçerlilik maskesi
+    ve tuval dilimi ikisinde de BİREBİR aynıdır. İki ayrı kopya olsaydı
+    (mozaikte bir dönüşüm, oylamada başkası) maskeler sessizce kayardı.
+    """
+    __slots__ = ("k", "t", "poz", "ham", "M", "ayak_px", "gecerli",
+                 "sx0", "sy0", "dx0", "dy0", "w", "h", "px", "py")
+
+    def __init__(self, k, t, poz, ham, M, ayak_px, gecerli,
+                 sx0, sy0, dx0, dy0, w, h, px, py):
+        self.k, self.t, self.poz, self.ham = k, t, poz, ham
+        self.M, self.ayak_px, self.gecerli = M, ayak_px, gecerli
+        self.sx0, self.sy0, self.dx0, self.dy0 = sx0, sy0, dx0, dy0
+        self.w, self.h, self.px, self.py = w, h, px, py
+
+    def dilim(self, tuval):
+        """Bu karenin tuvaldeki hedef dilimini (GÖRÜNÜM — yazınca tuval değişir) dön."""
+        return tuval[self.dy0:self.dy0 + self.h, self.dx0:self.dx0 + self.w]
+
+    def yansit(self, kaynak, *, olcek_interp, dondur_interp, kenar=0):
+        """`kaynak`ı kare ayağına ölçekle + yaw ile döndür + tuval dilimine kırp.
+
+        Döner: (kırpılmış kaynak, geçerlilik maskesi bool). Kare dışına taşan
+        bölge maskede False'tur — orası OY VERMEZ / mozaiğe yazmaz.
+        """
+        import cv2
+
+        a = self.ayak_px
+        if kaynak.shape[0] != a or kaynak.shape[1] != a:
+            kaynak = cv2.resize(kaynak, (a, a), interpolation=olcek_interp)
+        kaynak = cv2.warpAffine(kaynak, self.M, (a, a),
+                                flags=dondur_interp, borderValue=kenar)
+        return (kaynak[self.sy0:self.sy0 + self.h, self.sx0:self.sx0 + self.w],
+                self.gecerli[self.sy0:self.sy0 + self.h,
+                             self.sx0:self.sx0 + self.w] > 0)
+
+
+def _kare_yerlesimleri(kare_dir, pozlar, htab_cx, htab_cy, *, kare_ofset=0,
+                       rot_isaret=1.0, kare_atlama=1, debug=False):
+    """Mozaiğe KABUL EDİLEN kareleri sırayla üret (filtreler tek yerde tanımlı).
+
+    Her karenin yer kapsama genişliği: 2·z·tan(hfov/2)  (z=30, hfov=1.3 → ~45.6 m).
+    Kare bu genişliğe ölçeklenir, İHA yaw'ına göre kuzey-yukarı döndürülür,
+    İHA'nın o anki (x,y) konumu merkez olacak şekilde tuvale oturur.
+    Filtreler: sadece düz tarama bacakları (Z_TOL, YAW_TOL) ve HTAB_HALF_MARJ.
+
+    `kare_atlama` FİLTREDEN GEÇEN kareler üzerinde sayılır; böylece atlama,
+    hangi karenin geçerli olduğunu değil yalnız kaçının işlendiğini değiştirir.
+    """
+    import cv2
+    import numpy as np
+    import re
+
+    atla = max(1, int(kare_atlama))
+    kabul = 0
+    for sira, kf in enumerate(sorted(Path(kare_dir).glob("*.jpg"))):
+        # kare no DOSYA ADINDAN (scan_00042.jpg → 42): senkron plugin poses.csv'nin
+        # n sütunuyla birebir. Numara yoksa (eski kayıt) sıra kullanılır.
+        m = re.search(r"(\d+)\.jpg$", kf.name)
+        k = int(m.group(1)) if m else sira
+        t = k + kare_ofset
+        poz = pozlar.get(t)
+        if poz is None:
+            continue
+        x, y, z, yaw = poz
+        # Sadece düz tarama bacakları: irtifa 30 m ve yaw ≈ ±90° (kuzey/güney uçuş)
+        if abs(z - SCAN_Z) > Z_TOL or abs(abs(yaw) - math.pi / 2) > YAW_TOL:
+            continue
+        # İHA HTAB dışındayken çekilen kare mozaiğe girmez (v15: İHA-İB'ye sokulma
+        # bacağının karesi sağ üstte 'hayalet' yama bırakmıştı)
+        if abs(x - htab_cx) > HTAB_HALF_MARJ or abs(y - htab_cy) > HTAB_HALF_MARJ:
+            continue
+        kabul += 1
+        if (kabul - 1) % atla:
+            continue
+        img = cv2.imread(str(kf))
+        if img is None:
+            continue
+
+        ayak_m = 2.0 * z * math.tan(HFOV / 2.0)          # karenin yerdeki genişliği (m)
+        ayak_px = max(8, int(round(ayak_m / MPP)))
+
+        # Kuzey-yukarı döndür: görüntü "yukarısı" İHA burnunun azimutuna bağlı.
+        # (rot_isaret ilk koşuda kalibre edilir: H kuzeyde, bariyerler güneyde olmalı.)
+        aci_deg = math.degrees(yaw) * rot_isaret
+        M = cv2.getRotationMatrix2D((ayak_px / 2, ayak_px / 2), aci_deg, 1.0)
+        gecerli = cv2.warpAffine(np.full((ayak_px, ayak_px), 255, dtype=np.uint8),
+                                 M, (ayak_px, ayak_px),
+                                 flags=cv2.INTER_NEAREST, borderValue=0)
+
+        # HTAB-yerel konum → tuval pikseli (kuzey yukarı: +y → −py)
+        px = int(round((x - htab_cx) / MPP + MOZ_PX / 2))
+        py = int(round(MOZ_PX / 2 - (y - htab_cy) / MPP))
+        x0, y0 = px - ayak_px // 2, py - ayak_px // 2
+        # tuval sınırlarına kırp
+        sx0, sy0 = max(0, -x0), max(0, -y0)
+        dx0, dy0 = max(0, x0), max(0, y0)
+        w = min(ayak_px - sx0, MOZ_PX - dx0)
+        h = min(ayak_px - sy0, MOZ_PX - dy0)
+        if w <= 0 or h <= 0:
+            continue
+        if debug:
+            print(f"  kare {k:3d} t={t:3d}  poz=({x:6.1f},{y:6.1f},{z:4.1f}) "
+                  f"yaw={math.degrees(yaw):6.1f}° → tuval({px},{py})")
+        yield _KareYerlesimi(k, t, poz, img, M, ayak_px, gecerli,
+                             sx0, sy0, dx0, dy0, w, h, px, py)
+
+
+def _bos_tuval():
+    import numpy as np
+    return np.full((MOZ_PX, MOZ_PX, 3), BG_GRI, dtype=np.uint8)
+
+
+def _tuvale_yaz(yerlesim, tuval):
+    """Kareyi (BGR) mozaik tuvaline yapıştır — sonra gelen öncekinin üstüne yazar."""
+    import cv2
+
+    kaynak, maske = yerlesim.yansit(yerlesim.ham, olcek_interp=cv2.INTER_AREA,
+                                    dondur_interp=cv2.INTER_LINEAR,
+                                    kenar=(BG_GRI,) * 3)
+    yerlesim.dilim(tuval)[maske] = kaynak[maske]
+
+
+def mozaik_kur(kare_dir, pozlar, htab_cx, htab_cy, kare_ofset=0, rot_isaret=1.0,
+               debug=False):
+    """Tarama karelerini kuzey-yukarı saha haritasına diz → (mozaik BGR, kullanılan_n).
+
+    ⚠ Bu mozaik artık YALNIZCA GÖRSEL KANITTIR (ortomozaik.jpg / algi.jpg).
+    Karar zinciri `oy_haritasi_kur()`ten çıkar: model ham karelerde koşar, oylar
+    dünya ızgarasında birikir. Mozaik ölçüldü ve engel algısını ~21× yok ediyor.
+    """
+    kullanilan = 0
+    canvas = _bos_tuval()
+    for yerlesim in _kare_yerlesimleri(kare_dir, pozlar, htab_cx, htab_cy,
+                                       kare_ofset=kare_ofset,
+                                       rot_isaret=rot_isaret, debug=debug):
+        _tuvale_yaz(yerlesim, canvas)
+        kullanilan += 1
+    return canvas, kullanilan
+
+
+def oy_haritasi_kur(kare_dir, pozlar, htab_cx, htab_cy, model, conf, *,
+                    kare_ofset=0, rot_isaret=1.0, kare_atlama=1, debug=False):
+    """HER KAREDE model koştur, dünya ızgarasında OY BİRİKTİR (+ mozaiği aynı geçişte kur).
+
+    Model, kare MOZAİĞE ÖLÇEKLENMEDEN ÖNCE ham hâlinde görür — amacın tamamı bu:
+    ağırlıklar gerçek drone kareleriyle eğitildi, ortomozaik kolajıyla değil.
+    Karenin zemin/engel maskesi, karenin KENDİ pozuyla (mozaikle birebir aynı
+    dönüşüm) MOZ_PX×MOZ_PX ızgaraya yansıtılır; kare dışına taşan bölge OY VERMEZ.
+
+    Döner: (mozaik BGR, kullanılan_kare, oy dict{zemin_oy, engel_oy, gozlem,
+            cikarim_sn, kare_sayisi}).
+    """
+    import cv2
+    import numpy as np
+
+    canvas = _bos_tuval()
+    zemin_oy = np.zeros((MOZ_PX, MOZ_PX), dtype=np.int32)
+    engel_oy = np.zeros((MOZ_PX, MOZ_PX), dtype=np.int32)
+    gozlem = np.zeros((MOZ_PX, MOZ_PX), dtype=np.int32)
+    kullanilan = 0
+    cikarim_sn = 0.0
+
+    for yerlesim in _kare_yerlesimleri(kare_dir, pozlar, htab_cx, htab_cy,
+                                       kare_ofset=kare_ofset,
+                                       rot_isaret=rot_isaret,
+                                       kare_atlama=kare_atlama, debug=debug):
+        _tuvale_yaz(yerlesim, canvas)          # görsel kanıt (karar zinciri DEĞİL)
+
+        # ── MODEL: HAM KARE (ölçeklenmemiş, döndürülmemiş) ────────────────────
+        t0 = time.perf_counter()
+        _icerik, maskeler, _yol, _guv, _wps, _kaz = _infer(
+            yerlesim.ham, model, conf, MOZ_PX)
+        cikarim_sn += time.perf_counter() - t0
+
+        zemin_k = (np.asarray(maskeler[0]) > 0).astype(np.uint8)
+        engel_k = (np.asarray(maskeler[1]) > 0).astype(np.uint8)
+        z_yans, gecerli = yerlesim.yansit(
+            zemin_k, olcek_interp=cv2.INTER_NEAREST,
+            dondur_interp=cv2.INTER_NEAREST, kenar=0)
+        e_yans, _ = yerlesim.yansit(
+            engel_k, olcek_interp=cv2.INTER_NEAREST,
+            dondur_interp=cv2.INTER_NEAREST, kenar=0)
+
+        yerlesim.dilim(gozlem)[gecerli] += 1
+        yerlesim.dilim(zemin_oy)[gecerli & (z_yans > 0)] += 1
+        yerlesim.dilim(engel_oy)[gecerli & (e_yans > 0)] += 1
+        kullanilan += 1
+
+    return canvas, kullanilan, {
+        "zemin_oy": zemin_oy,
+        "engel_oy": engel_oy,
+        "gozlem": gozlem,
+        "cikarim_sn": round(cikarim_sn, 3),
+        "kare_sayisi": kullanilan,
+    }
+
+
+def oy_haritasindan_maske(oy, min_gozlem=MIN_GOZLEM, engel_orani=ENGEL_ORANI):
+    """Oy birikimlerinden zemin/engel/bilinmeyen maskelerini türet.
+
+    KURAL (proje anayasası madde 15 — serbest alan büyütülemez):
+      · gozlem < min_gozlem                → BİLİNMEYEN, zemin=0 (GEÇİLEBİLİR DEĞİL)
+      · zemin_oy + engel_oy == 0           → BİLİNMEYEN (model sustu = yol değil)
+      · engel_oy / (zemin_oy + engel_oy) >= engel_orani → ENGEL
+      · aksi hâlde                         → ZEMİN
+    Eşiklerin gerekçesi MIN_GOZLEM / ENGEL_ORANI tanımlarındadır (ön kayıt).
+
+    Döner: (zemin uint8, engel uint8, bilinmeyen uint8, özet dict).
+    """
+    import numpy as np
+
+    zemin_oy = np.asarray(oy["zemin_oy"], dtype=np.int64)
+    engel_oy = np.asarray(oy["engel_oy"], dtype=np.int64)
+    gozlem = np.asarray(oy["gozlem"], dtype=np.int64)
+
+    toplam = zemin_oy + engel_oy
+    karar_var = (gozlem >= int(min_gozlem)) & (toplam > 0)
+    engel_p = np.zeros(gozlem.shape, dtype=np.float64)
+    np.divide(engel_oy, toplam, out=engel_p, where=toplam > 0)
+
+    engel = (karar_var & (engel_p >= float(engel_orani))).astype(np.uint8)
+    zemin = (karar_var & (engel_p < float(engel_orani))).astype(np.uint8)
+    bilinmeyen = (~karar_var).astype(np.uint8)
+
+    hucre = max(1, int(gozlem.size))
+    gorulen = gozlem[gozlem > 0]
+    ozet = {
+        "yontem": "kare_basi_oylama",
+        "kare_sayisi": int(oy.get("kare_sayisi", 0)),
+        "min_gozlem": int(min_gozlem),
+        "engel_orani": float(engel_orani),
+        "bilinmeyen_hucre_orani": round(float(np.count_nonzero(bilinmeyen)) / hucre, 6),
+        "ortalama_gozlem": (round(float(gorulen.mean()), 3) if gorulen.size else 0.0),
+        "cikarim_sn": float(oy.get("cikarim_sn", 0.0)),
+    }
+    return zemin, engel, bilinmeyen, ozet
+
+
+def oy_haritasi_gorseli(zemin, engel, bilinmeyen):
+    """zemin / engel / bilinmeyen → 3 renkli geliştirici kanıtı görseli (BGR)."""
+    import numpy as np
+
+    gorsel = np.zeros((zemin.shape[0], zemin.shape[1], 3), dtype=np.uint8)
+    gorsel[np.asarray(bilinmeyen) > 0] = OY_RENK["bilinmeyen"]
+    gorsel[np.asarray(zemin) > 0] = OY_RENK["zemin"]
+    gorsel[np.asarray(engel) > 0] = OY_RENK["engel"]   # engel EN ÜSTTE çizilir
+    return gorsel
+
+
+def piksel_to_dunya(wps_px, htab_cx, htab_cy):
+    """Model waypoint'leri (mozaik pikseli, alt→üst) → dünya (x,y) listesi (güney→kuzey)."""
+    out = []
+    for (px, py) in wps_px:
+        wx = htab_cx + (px - MOZ_PX / 2) * MPP
+        wy = htab_cy + (MOZ_PX / 2 - py) * MPP
+        out.append((round(wx, 2), round(wy, 2)))
+    return out
+
+
+def dunya_to_piksel(xy, htab_cx, htab_cy):
+    """Dunya ``(x, y)`` koordinatini kuzey-yukari mozaik pikseline cevir."""
+    if xy is None:
+        return None
+    wx, wy = float(xy[0]), float(xy[1])
+    if not math.isfinite(wx) or not math.isfinite(wy):
+        return None
+    return (int(round((wx - htab_cx) / MPP + MOZ_PX / 2)),
+            int(round(MOZ_PX / 2 - (wy - htab_cy) / MPP)))
+
+
+def _tohum_maskesi(xy, htab_cx, htab_cy, sekil, kenar_m):
+    """KB/HB'nin fiziksel karesini mozaik pikselinde ikili maske olarak üret."""
+    import numpy as np
+
+    maske = np.zeros(sekil, np.uint8)
+    nokta = dunya_to_piksel(xy, htab_cx, htab_cy)
+    if nokta is None:
+        return maske
+    x, y = nokta
+    h, w = sekil
+    if not (0 <= x < w and 0 <= y < h):
+        return maske
+    kenar_px = max(1, int(round(float(kenar_m) / MPP)))
+    x0 = x - kenar_px // 2
+    y0 = y - kenar_px // 2
+    x1 = x0 + kenar_px
+    y1 = y0 + kenar_px
+    maske[max(0, y0):min(h, y1), max(0, x0):min(w, x1)] = 1
+    return maske
+
+
+def _htab_icerik_kutusu(sekil):
+    """56 m mozaikteki merkezî 50 m HTAB karesini piksel kutusu olarak dön."""
+    h, w = sekil[:2]
+    kenar_orani = (MOZ_M - HTAB_M) / (2.0 * MOZ_M)
+    x0 = int(round(w * kenar_orani))
+    y0 = int(round(h * kenar_orani))
+    return (x0, y0, max(0, w - 2 * x0), max(0, h - 2 * y0))
+
+
+def _tohumlari_c_uzayinda_hazirla(costmap_maskeleri, baslangic_xy, hb_xy,
+                                   htab_cx, htab_cy, icerik):
+    """Fiziksel KB/HB karelerini yalnız doğrulanmış C-uzayıyla kesiştir.
+
+    Kareler hiçbir pikseli geçilebilir yapmaz. Önce zemin−engel ve gövde
+    açıklığı hesaplanır; tohumlar bu kümenin dışında sıfırlanır.
+    """
+    import numpy as np
+
+    sonuc = serbest_alan(
+        costmap_maskeleri, mpp=MPP,
+        yol_sinif_idler=COSTMAP_YOL_KATMANLARI,
+        engel_sinif_idler=COSTMAP_ENGEL_KATMANLARI,
+        icerik=icerik,
+    )
+    gecilebilir = (sonuc["dt_px"] >= sonuc["olcek"]["r_gerekli_px"])
+    sekil = costmap_maskeleri[0].shape
+    kb_ham = _tohum_maskesi(
+        baslangic_xy, htab_cx, htab_cy, sekil, KB_TOHUM_KENAR_M)
+    hb_ham = _tohum_maskesi(
+        hb_xy, htab_cx, htab_cy, sekil, HB_TOHUM_KENAR_M)
+    kb_tohum = np.logical_and(kb_ham > 0, gecilebilir).astype(np.uint8)
+    hb_tohum = np.logical_and(hb_ham > 0, gecilebilir).astype(np.uint8)
+    return {
+        "kb_ham": kb_ham,
+        "hb_ham": hb_ham,
+        "kb_tohum": kb_tohum,
+        "hb_tohum": hb_tohum,
+        "gecilebilir": gecilebilir.astype(np.uint8),
+        "serbest": sonuc["serbest"],
+    }
+
+
+def _bos_rota_tanisi():
+    """Rota/costmap tanisi henuz olculemediginde yazilan sabit alanlar."""
+    return {
+        "costmap_durum": None,
+        "costmap_sebep": None,
+        "costmap_darbogaz_m": None,
+        "costmap_ihlalleri": None,
+        "n_kapi": None,
+        "kb_px": None,
+        "hb_px": None,
+        "kb_yolda": None,
+        "hb_yolda": None,
+        "kb_ayni_bilesen": None,
+        "kb_tohum_px": None,
+        "hb_tohum_px": None,
+    }
+
+
+def _plan_n_kapi(plan_sonucu):
+    """rota_bul() tanisindan kapi sayisini yan etki olmadan turet."""
+    if not isinstance(plan_sonucu, dict):
+        return None
+    if "n_kapi" in plan_sonucu:
+        return plan_sonucu["n_kapi"]
+    adaylar = plan_sonucu.get("adaylar")
+    if isinstance(adaylar, list):
+        return len(adaylar)
+    return None
+
+
+def _piksel_maskede(px, maske):
+    if px is None or maske is None:
+        return None
+    x, y = px
+    h, w = maske.shape[:2]
+    if not (0 <= x < w and 0 <= y < h):
+        return False
+    return bool(maske[y, x] > 0)
+
+
+def _ayni_serbest_bilesen(kb_px, hb_px, serbest):
+    """KB/HB pikselleri serbest alanin ayni bagli bilesenindeyse True."""
+    if kb_px is None or hb_px is None or serbest is None:
+        return None
+    import cv2
+    import numpy as np
+
+    h, w = serbest.shape[:2]
+    kx, ky = kb_px
+    hx, hy = hb_px
+    if not (0 <= kx < w and 0 <= ky < h and 0 <= hx < w and 0 <= hy < h):
+        return False
+    n, etiket = cv2.connectedComponents((np.asarray(serbest) > 0).astype(np.uint8), 8)
+    if n <= 1:
+        return False
+    kb_bilesen = int(etiket[ky, kx])
+    hb_bilesen = int(etiket[hy, hx])
+    return bool(kb_bilesen != 0 and kb_bilesen == hb_bilesen)
+
+
+def _tohumlar_ayni_bilesende(kb_tohum, hb_tohum, gecilebilir):
+    """C-uzayındaki KB/HB tohum kümeleri ortak bir bileşene değiyor mu?"""
+    if kb_tohum is None or hb_tohum is None or gecilebilir is None:
+        return None
+    import cv2
+    import numpy as np
+
+    alan = (np.asarray(gecilebilir) > 0).astype(np.uint8)
+    if not alan.any() or not np.asarray(kb_tohum).any() or not np.asarray(hb_tohum).any():
+        return False
+    _n, etiket = cv2.connectedComponents(alan, 8)
+    kb_bilesenleri = set(np.unique(etiket[np.asarray(kb_tohum) > 0])) - {0}
+    hb_bilesenleri = set(np.unique(etiket[np.asarray(hb_tohum) > 0])) - {0}
+    return bool(kb_bilesenleri & hb_bilesenleri)
+
+
+def _costmap_tanisini_ekle(det, plan_sonucu, *, kb_px=None, hb_px=None,
+                           yol_maskesi=None, kb_ham=None, hb_ham=None,
+                           kb_tohum=None, hb_tohum=None, gecilebilir=None):
+    """Costmap sonucunu rota yayin etiketiyle karistirmadan ayri alana yaz."""
+    import numpy as np
+
+    det.update({
+        "costmap_durum": plan_sonucu.get("durum"),
+        "costmap_sebep": plan_sonucu.get("sebep"),
+        "costmap_darbogaz_m": plan_sonucu.get("darbogaz_m"),
+        "costmap_ihlalleri": plan_sonucu.get("ihlaller"),
+        "n_kapi": _plan_n_kapi(plan_sonucu),
+        "kb_px": list(kb_px) if kb_px is not None else None,
+        "hb_px": list(hb_px) if hb_px is not None else None,
+        "kb_yolda": (bool(np.logical_and(kb_ham > 0, yol_maskesi > 0).any())
+                      if kb_ham is not None and yol_maskesi is not None else None),
+        "hb_yolda": (bool(np.logical_and(hb_ham > 0, yol_maskesi > 0).any())
+                      if hb_ham is not None and yol_maskesi is not None else None),
+        "kb_ayni_bilesen": _tohumlar_ayni_bilesende(
+            kb_tohum, hb_tohum, gecilebilir),
+        "kb_tohum_px": (int(np.count_nonzero(kb_tohum))
+                         if kb_tohum is not None else None),
+        "hb_tohum_px": (int(np.count_nonzero(hb_tohum))
+                         if hb_tohum is not None else None),
+    })
+
+
+def _atomik_yaz(path, metin):
+    """Tam yazilmamis bir rota dosyasinin tuketicilerce gorulmesini engelle."""
+    path = Path(path)
+    gecici = path.with_name(f".{path.name}.{os.getpid()}.tmp")
+    try:
+        gecici.write_text(metin, encoding="utf-8")
+        gecici.replace(path)
+    finally:
+        if gecici.exists():
+            gecici.unlink()
+
+
+def _rota_artiklarini_sil(level_dir):
+    """Basarisiz yeni algi sonucunun onceki rota artefaktini kullanmasini onle."""
+    for ad in ("route.txt", "rota.json"):
+        yol = Path(level_dir) / ad
+        if yol.is_file():
+            yol.unlink()
+
+
+def _dosya_sha256(yol):
+    """Varsa model dosyasının SHA-256 özetini dön; dizin/eksik yol uydurulmaz."""
+    if not yol:
+        return None
+    aday = Path(str(yol))
+    if not aday.is_absolute():
+        aday = ROOT / aday
+    if not aday.is_file():
+        return None
+    ozet = hashlib.sha256()
+    with aday.open("rb") as akis:
+        for parca in iter(lambda: akis.read(1024 * 1024), b""):
+            ozet.update(parca)
+    return ozet.hexdigest()
+
+
+def _model_yolu(model, acik_yol=None):
+    if acik_yol:
+        return str(acik_yol)
+    yol = getattr(model, "ckpt_path", None) if model is not None else None
+    if yol:
+        return str(yol)
+    overrides = getattr(model, "overrides", None) if model is not None else None
+    if isinstance(overrides, dict) and overrides.get("model"):
+        return str(overrides["model"])
+    return None
+
+
+def _model_adlari(model):
+    adlar = getattr(model, "names", None) if model is not None else None
+    if isinstance(adlar, dict):
+        return {str(k): str(v) for k, v in adlar.items()}
+    if isinstance(adlar, (list, tuple)):
+        return [str(v) for v in adlar]
+    return None
+
+
+def _maske_ozeti(maskeler=None, arac=None):
+    """Model katmanlarını piksel sayısı ve tüm mozaik yüzdesiyle özetle."""
+    import numpy as np
+
+    if maskeler is None:
+        trav = moloz = np.zeros((MOZ_PX, MOZ_PX), dtype=np.uint8)
+    else:
+        trav = np.asarray(maskeler[0]) > 0
+        moloz = np.asarray(maskeler[1]) > 0
+    if arac is None:
+        arac_m = np.zeros_like(trav, dtype=bool)
+    else:
+        arac_m = np.asarray(arac) > 0
+    engel = np.logical_or(moloz, arac_m)
+    toplam = max(1, int(trav.size))
+
+    def bilgi(maske):
+        n = int(np.count_nonzero(maske))
+        return n, round(100.0 * n / toplam, 4)
+
+    trav_n, trav_yuzde = bilgi(trav)
+    moloz_n, moloz_yuzde = bilgi(moloz)
+    arac_n, arac_yuzde = bilgi(arac_m)
+    engel_n, engel_yuzde = bilgi(engel)
+    return {
+        "toplam_px": toplam,
+        "trav_px": trav_n,
+        "trav_yuzde": trav_yuzde,
+        "moloz_px": moloz_n,
+        "moloz_yuzde": moloz_yuzde,
+        "arac_px": arac_n,
+        "arac_yuzde": arac_yuzde,
+        "engel_px": engel_n,
+        "engel_yuzde": engel_yuzde,
+    }
+
+
+def _oylama_ozeti(ozet=None):
+    """Oylama alanlarını her yolda (hata yolları dâhil) AYNI şemayla dön."""
+    temel = {
+        "yontem": "kare_basi_oylama",
+        "kare_sayisi": 0,
+        "min_gozlem": MIN_GOZLEM,
+        "engel_orani": ENGEL_ORANI,
+        "bilinmeyen_hucre_orani": 1.0,
+        "ortalama_gozlem": 0.0,
+        "cikarim_sn": 0.0,
+    }
+    if ozet:
+        temel.update({k: ozet[k] for k in temel if k in ozet})
+    return temel
+
+
+def _iha_harita_yaz(level_dir, mozaik, *, kaynak, model, model_yolu, conf,
+                     kare_n, htab_cx, htab_cy, kb_xy, hb_xy, det,
+                     maskeler=None, arac=None, rota_px=None, rota_dunya=None,
+                     oylama=None):
+    """İHA algı haritasını makine-okur JSON ve insan-okur ayrı JPG olarak yaz."""
+    import cv2
+    import numpy as np
+
+    level_dir = Path(level_dir)
+    kb_px = dunya_to_piksel(kb_xy, htab_cx, htab_cy)
+    hb_px = dunya_to_piksel(hb_xy, htab_cx, htab_cy)
+    rota_px = [tuple(int(v) for v in p) for p in (rota_px or [])]
+    rota_dunya = [[round(float(x), 2), round(float(y), 2)]
+                  for x, y in (rota_dunya or [])]
+    seg_yolu = _model_yolu(model, model_yolu)
+    kanit = {
+        "kaynak": kaynak,
+        "model": {
+            "yol": seg_yolu,
+            "sha256": _dosya_sha256(seg_yolu),
+            "imgsz": MOZ_PX,
+            "conf": float(conf),
+            "names": _model_adlari(model),
+        },
+        "mozaik": {
+            "dosya": "ortomozaik.jpg",
+            "MOZ_PX": MOZ_PX,
+            "MOZ_M": MOZ_M,
+            "MPP": MPP,
+            "kullanilan_kare": int(kare_n),
+        },
+        "htab_merkez": [float(htab_cx), float(htab_cy)],
+        "kb_xy": ([float(kb_xy[0]), float(kb_xy[1])] if kb_xy is not None else None),
+        "hb_xy": ([float(hb_xy[0]), float(hb_xy[1])] if hb_xy is not None else None),
+        "kb_px": list(kb_px) if kb_px is not None else None,
+        "hb_px": list(hb_px) if hb_px is not None else None,
+        "maske_ozet": _maske_ozeti(maskeler, arac),
+        "costmap": {
+            "durum": det.get("costmap_durum"),
+            "sebep": det.get("costmap_sebep"),
+            "n_kapi": det.get("n_kapi"),
+            "darbogaz_m": det.get("costmap_darbogaz_m"),
+            "ihlaller": det.get("costmap_ihlalleri"),
+        },
+        "tohum": {
+            "kb_tohum_px": det.get("kb_tohum_px"),
+            "hb_tohum_px": det.get("hb_tohum_px"),
+            "kb_yolda": det.get("kb_yolda"),
+            "hb_yolda": det.get("hb_yolda"),
+            "kb_ayni_bilesen": det.get("kb_ayni_bilesen"),
+        },
+        "rota_px": [list(p) for p in rota_px],
+        "rota_dunya": rota_dunya,
+        "uretim_zamani": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+    }
+    # KARAR ZİNCİRİ KANITI: maskeler artık mozaikteki tek çıkarımdan değil,
+    # her karede koşan modelin dünya ızgarasındaki oylarından geliyor.
+    kanit.update(_oylama_ozeti(oylama))
+    _atomik_yaz(level_dir / "iha_harita.json",
+                json.dumps(kanit, ensure_ascii=False, indent=2))
+
+    if mozaik is None or not isinstance(mozaik, np.ndarray) or mozaik.ndim != 3:
+        gorsel = np.full((MOZ_PX, MOZ_PX, 3), BG_GRI, dtype=np.uint8)
+    else:
+        gorsel = mozaik.copy()
+    if len(rota_px) >= 2:
+        cv2.polylines(gorsel, [np.asarray(rota_px, dtype=np.int32)], False,
+                      (0, 255, 255), 4, cv2.LINE_AA)
+    for nokta, renk, etiket in ((kb_px, (0, 255, 0), "KB"),
+                                (hb_px, (0, 0, 255), "HB")):
+        if nokta is None:
+            continue
+        cv2.circle(gorsel, tuple(nokta), 10, renk, 3, cv2.LINE_AA)
+        cv2.putText(gorsel, etiket, (nokta[0] + 12, nokta[1] - 8),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.7, renk, 2, cv2.LINE_AA)
+    kaynak_etiketi = {
+        "model_costmap": "MODEL",
+        "iha_koordinat_yedegi": "KOORDINAT YEDEGI",
+        "yok": "ROTA YOK",
+    }[kaynak]
+    cv2.rectangle(gorsel, (10, 10), (390, 58), (0, 0, 0), -1)
+    cv2.putText(gorsel, kaynak_etiketi, (24, 45), cv2.FONT_HERSHEY_SIMPLEX,
+                1.0, (255, 255, 255), 2, cv2.LINE_AA)
+    cv2.imwrite(str(level_dir / "iha_harita.jpg"), gorsel)
+    return kanit
+
+
+def _arac_maskesi(bgr, arac_model, conf=0.25):
+    """Ayni mozaik koordinatinda OBB arac maskesi uret.
+
+    S1: govde `codes/arac_maskesi.py`'ye TASINDI ve sentetik veri ureteciyle
+    PAYLASILIYOR. Eskiden iki ayri kopya vardi ve ureteci COCO seg kullaniyordu
+    (olculdu: COCO 2 arac / DOTA OBB 93 arac ayni fotografta). Tek kaynak,
+    kahin sapmasini yapisal olarak imkansiz kilar.
+
+    Bu sarmalayici cagri yerlerini bozmamak icin durur.
+    """
+    return obb_arac_maskesi(bgr, arac_model, conf=conf)
+
+
+def haritala(level_dir, model, htab_cx, htab_cy, conf=0.15,
+             kare_ofset=0, rot_isaret=1.0, debug=False, kb_xy=None, hb_xy=None,
+             arac_model=None, arac_conf=0.25, coord_route=None, coord_road=None,
+             yedek_izin=False, model_yolu=None, kare_atlama=1,
+             min_gozlem=MIN_GOZLEM, engel_orani=ENGEL_ORANI):
+    """Bir seviyenin tarama klasörünü işle: kare başı algı → oy haritası → costmap → rota.
+    kb_xy = İKA başlangıç REFERANS noktası (dünya), hb_xy = HB (dünya, önceden bilinir).
+    Çıktılar level_dir'e: ortomozaik/algi jpg + route.txt (plugin) + rota.json (İKA'ya
+    JSON aktarım formatı: referans + yerel koordinatlar). Koordinat yedeği
+    yalnız ``yedek_izin=True`` ile yayınlanır. Döner: detection dict."""
+    import cv2
+
+    level_dir = Path(level_dir)
+    kare_dir = level_dir / "kareler"
+    poses = level_dir / "poses.csv"
+    det = {"road": None, "label": "yok", "conf": 0.0, "image": "ortomozaik.jpg",
+           "kaynak": "sim-tarama", "kare_n": 0}
+    det.update(_bos_rota_tanisi())
+
+    if not kare_dir.is_dir() or not poses.is_file():
+        _rota_artiklarini_sil(level_dir)
+        det.update({
+            "rota_durum": "ROTA_YOK",
+            "rota_sebep": "Tarama kareleri veya poz kaydı bulunamadı.",
+        })
+        _iha_harita_yaz(
+            level_dir, None, kaynak="yok", model=model, model_yolu=model_yolu,
+            conf=conf, kare_n=0, htab_cx=htab_cx, htab_cy=htab_cy,
+            kb_xy=kb_xy, hb_xy=hb_xy, det=det)
+        print(f"[İHA-HARİTA] eksik girdi: {kare_dir} / {poses}", file=sys.stderr)
+        return det
+
+    pozlar = poz_oku(poses)
+    # ── KARE BAŞI OYLAMA: model HER KAREDE ham kare üzerinde koşar ────────────
+    mozaik, n, oy = oy_haritasi_kur(
+        kare_dir, pozlar, htab_cx, htab_cy, model, conf,
+        kare_ofset=kare_ofset, rot_isaret=rot_isaret,
+        kare_atlama=kare_atlama, debug=debug)
+    det["kare_n"] = n
+    cv2.imwrite(str(level_dir / "ortomozaik.jpg"), mozaik)
+    print(f"[İHA-HARİTA] mozaik: {n} tarama karesi → {level_dir / 'ortomozaik.jpg'}")
+    if n == 0:
+        _rota_artiklarini_sil(level_dir)
+        det.update({
+            "rota_durum": "ROTA_YOK",
+            "rota_sebep": "Tarama kareleri pozlarla eşleştirilip mozaiğe oturtulamadı.",
+        })
+        _iha_harita_yaz(
+            level_dir, mozaik, kaynak="yok", model=model, model_yolu=model_yolu,
+            conf=conf, kare_n=n, htab_cx=htab_cx, htab_cy=htab_cy,
+            kb_xy=kb_xy, hb_xy=hb_xy, det=det,
+            oylama=_oylama_ozeti({"kare_sayisi": 0, "min_gozlem": int(min_gozlem),
+                                  "engel_orani": float(engel_orani),
+                                  "cikarim_sn": oy["cikarim_sn"]}))
+        print("[İHA-HARİTA] hiç kare oturtulamadı (poz eşleşmesi?) — rota YOK", file=sys.stderr)
+        (level_dir / "detection.json").write_text(json.dumps(det, ensure_ascii=False, indent=2))
+        return det
+
+    # ── KARAR ZİNCİRİ: mozaikteki tek çıkarım DEĞİL, oy haritası ─────────────
+    # Model her karede ham kare üzerinde koştu; oylar dünya ızgarasında birikti.
+    # Bilinmeyen hücre (az gözlem / model susması) burada zemin=0 olarak çıkar →
+    # serbest_alan() içinde `zemin AND NOT engel` onu GEÇİLEBİLİR SAYAMAZ.
+    zemin_m, engel_m, bilinmeyen_m, oylama = oy_haritasindan_maske(
+        oy, min_gozlem=min_gozlem, engel_orani=engel_orani)
+    masks = [zemin_m, engel_m]
+    cv2.imwrite(str(level_dir / "iha_oy_haritasi.jpg"),
+                oy_haritasi_gorseli(zemin_m, engel_m, bilinmeyen_m))
+    print(f"[İHA-HARİTA] oy haritası: {n} kare, ortalama gözlem "
+          f"{oylama['ortalama_gozlem']}, bilinmeyen "
+          f"%{100 * oylama['bilinmeyen_hucre_orani']:.2f}, "
+          f"min_gozlem={oylama['min_gozlem']} engel_orani={oylama['engel_orani']}, "
+          f"çıkarım {oylama['cikarim_sn']:.1f} sn → iha_oy_haritasi.jpg")
+    # Mozaik artık YALNIZ GÖRSEL: içerik kutusu ve OBB araç maskesi onun
+    # piksel sisteminde (MOZ_PX×MOZ_PX, MPP) tanımlı — oy ızgarasıyla birebir aynı.
+    content = mozaik
+    det.update({"yontem": oylama["yontem"], "cikarim_sn": oylama["cikarim_sn"],
+                "min_gozlem": oylama["min_gozlem"],
+                "engel_orani": oylama["engel_orani"],
+                "bilinmeyen_hucre_orani": oylama["bilinmeyen_hucre_orani"],
+                "ortalama_gozlem": oylama["ortalama_gozlem"]})
+    # Free_Space = Road - (Rubble/blocked | Car).  Segmentasyonun blocked
+    # sinifi molozu tasir; OBB arac poligonlari ayni mozaik piksel sisteminde
+    # ek bir engel kanali olur. Costmap bu iki kanali OR'layarak C-uzayini kurar.
+    arac = _arac_maskesi(content, arac_model, arac_conf)
+    # S2: katman kimlikleri EGITIM sinif id'lerinden AYRI bir ad alanindadir.
+    # Eskiden burada `{0:.., 1:.., 2: arac}` yaziliyordu; 3 sinifli bir model bu
+    # yola verildiginde 2 = HEDEF ile 2 = ARAC cakisir ve hedef ENGEL sayilirdi.
+    costmap_maskeleri = costmap_katmanlari(masks[0], masks[1], arac)
+    # Dinamik rota, fiziksel hedefe (HB) kadar dogrulanmis olmalidir. HB meta
+    # verisi yokken costmap'in varsayilan ust bant tohumuna plan yapmak, IKA'yi
+    # gercek hedefe gitmeyen ama geometri olarak gecerli gorunen bir rotaya
+    # baslatabilirdi. Bu durumda algiyi kaydet, onceki rota artefaktlarini sil
+    # ve IKA'nin guvenli durmasini sagla.
+    if hb_xy is None:
+        kb_px = dunya_to_piksel(kb_xy, htab_cx, htab_cy)
+        det.update({
+            "trav_px": int(masks[0].sum()),
+            "moloz_px": int(masks[1].sum()),
+            "arac_px": int(arac.sum()),
+            "engel_px": int((masks[1] | arac).sum()),
+            "arac_model": (str(getattr(arac_model, "ckpt_path", DEFAULT_ARAC_MODEL))
+                           if arac_model is not None else None),
+            "wp_n": 0,
+            "rota_durum": "ROTA_YOK",
+            "rota_sebep": "HB koordinati bulunamadi; dinamik rota yayinlanmadi.",
+            "darbogaz_m": None,
+            "rota_ihlalleri": [],
+            "kb_px": list(kb_px) if kb_px is not None else None,
+            "kb_yolda": _piksel_maskede(kb_px, costmap_maskeleri[0]),
+        })
+        vis = _overlay(content, costmap_maskeleri, None, 0.0, [],
+                       extra="  [SIM TARAMA MOZAIK]")
+        cv2.imwrite(str(level_dir / "algi.jpg"), vis)
+        _rota_artiklarini_sil(level_dir)
+        _iha_harita_yaz(
+            level_dir, mozaik, kaynak="yok", model=model, model_yolu=model_yolu,
+            conf=conf, kare_n=n, htab_cx=htab_cx, htab_cy=htab_cy,
+            kb_xy=kb_xy, hb_xy=hb_xy, det=det, maskeler=masks, arac=arac,
+            oylama=oylama)
+        print("[IHA-HARITA] HB koordinati yok — IKA guvenli durur")
+        (level_dir / "detection.json").write_text(
+            json.dumps(det, ensure_ascii=False, indent=2), encoding="utf-8")
+        return det
+
+    baslangic_xy = kb_xy or (htab_cx, htab_cy - 23.0)
+    icerik = _htab_icerik_kutusu(costmap_maskeleri[0].shape)
+    tohumlar = _tohumlari_c_uzayinda_hazirla(
+        costmap_maskeleri, baslangic_xy, hb_xy, htab_cx, htab_cy, icerik)
+    baslangic = tohumlar["kb_tohum"]
+    hedef = tohumlar["hb_tohum"]
+    kb_tohum_px = int(baslangic.sum())
+    hb_tohum_px = int(hedef.sum())
+    plan_sonucu = rota_bul(costmap_maskeleri, mpp=MPP,
+                           baslangic=baslangic, hedef=hedef, plan=True,
+                           yol_sinif_idler=COSTMAP_YOL_KATMANLARI,
+                           engel_sinif_idler=COSTMAP_ENGEL_KATMANLARI,
+                           gorsel_cikti=True, icerik=icerik)
+    tohum_sorunlari = []
+    if kb_tohum_px == 0:
+        tohum_sorunlari.append("KB 1x1 m tohum karesi C-uzayıyla kesişmiyor")
+    if hb_tohum_px == 0:
+        tohum_sorunlari.append("HB 2x2 m tohum karesi C-uzayıyla kesişmiyor")
+    if tohum_sorunlari:
+        # Planlayıcı bu durumda zaten fail-closed kalır. Ayrıca bir gelecek
+        # regresyonu AÇIK döndürse bile boş tohumla rota yayınını burada kes.
+        plan_sonucu = dict(plan_sonucu)
+        asil_sebep = str(plan_sonucu.get("sebep") or "").strip()
+        plan_sonucu["sebep"] = "; ".join(
+            ([asil_sebep] if asil_sebep else []) + tohum_sorunlari)
+        if plan_sonucu.get("durum") == "ACIK":
+            plan_sonucu.update({
+                "durum": "DOGRULAMA_BASARISIZ",
+                "yol_no": None,
+                "waypoints_px": [],
+            })
+    kb_px = dunya_to_piksel(baslangic_xy, htab_cx, htab_cy)
+    hb_px = dunya_to_piksel(hb_xy, htab_cx, htab_cy)
+    _costmap_tanisini_ekle(
+        det, plan_sonucu, kb_px=kb_px, hb_px=hb_px,
+        yol_maskesi=costmap_maskeleri[0], kb_ham=tohumlar["kb_ham"],
+        hb_ham=tohumlar["hb_ham"], kb_tohum=baslangic, hb_tohum=hedef,
+        gecilebilir=tohumlar["gecilebilir"])
+    road = plan_sonucu["yol_no"]
+    confidence = plan_sonucu["guven"]
+    wps_px = plan_sonucu["waypoints_px"]
+    det.update({
+        "road": road,
+        "label": LABEL.get(road, "yok"),
+        "conf": confidence,
+        "trav_px": int(masks[0].sum()),
+        "moloz_px": int(masks[1].sum()),
+        "arac_px": int(arac.sum()),
+        "engel_px": int((masks[1] | arac).sum()),
+        "arac_model": (str(getattr(arac_model, "ckpt_path", DEFAULT_ARAC_MODEL))
+                       if arac_model is not None else None),
+        "wp_n": len(wps_px),
+        "rota_durum": plan_sonucu["durum"],
+        "rota_sebep": plan_sonucu["sebep"],
+        "darbogaz_m": plan_sonucu["darbogaz_m"],
+        "rota_ihlalleri": plan_sonucu["ihlaller"],
+    })
+
+    vis = _overlay(content, costmap_maskeleri, road, confidence, wps_px,
+                   extra="  [SIM TARAMA MOZAIK]")
+    cv2.imwrite(str(level_dir / "algi.jpg"), vis)
+
+    # ── ROTA: costmap'in DOGRULADIGI waypoint dizisini degistirmeden aktar ──
+    # Waypoint silmek, yeniden etiketlemek veya dogrudan HB eklemek yeni ve
+    # dogrulanmamis segmentler uretir. KB/HB ankorlari rota_bul() icinde
+    # C-uzayinda dogrulanmistir; burada yalniz koordinat sistemi cevrilir.
+    rota = []
+    if plan_sonucu["durum"] == "ACIK" and road and len(wps_px) >= 2:
+        rota = piksel_to_dunya(wps_px, htab_cx, htab_cy)
+    harita_kaynak = "yok"
+    harita_rota_px = []
+    harita_rota_dunya = []
+    if rota:
+        # Referans, costmap'in dogruladigi ilk fiziksel ankor noktadir. Ilk
+        # yerel waypoint daima [0,0] olur; IKA sahte bir KB->rota segmenti
+        # eklemeden bu diziyi aynen takip eder.
+        ref = rota[0]
+        rota_json = json.dumps({
+            "referans_xy": [round(ref[0], 2), round(ref[1], 2)],
+            "kb_xy": [round(baslangic_xy[0], 2), round(baslangic_xy[1], 2)],
+            "acik_yol": det["label"], "yol_no": road, "guven": confidence,
+            "hb_xy": [round(hb_xy[0], 2), round(hb_xy[1], 2)] if hb_xy else None,
+            "rota_dunya": [[round(x, 2), round(y, 2)] for x, y in rota],
+            "rota_yerel": [[round(x - ref[0], 2), round(y - ref[1], 2)]
+                           for x, y in rota],
+        }, ensure_ascii=False, indent=2)
+        # Tuketici route.txt gorur gormez okumaya baslar; once JSON'u, sonra
+        # route.txt'yi atomik olarak yayinla ki hicbir zaman yarim rota tasinmasin.
+        _atomik_yaz(level_dir / "rota.json", rota_json)
+        _atomik_yaz(level_dir / "route.txt", "".join(f"{x:.2f} {y:.2f}\n" for x, y in rota))
+        det["rota"] = rota
+        harita_kaynak = "model_costmap"
+        harita_rota_px = wps_px
+        harita_rota_dunya = rota
+        print(f"[İHA-HARİTA] MODEL KARARI: AÇIK YOL {det['label'].upper()} ({road}) "
+              f"güven={confidence}  rota {len(rota)} nokta → route.txt + rota.json")
+    else:
+        # Yeniden calistirilan bir seviyede eski rota dosyasi kalirsa IKA'nin
+        # yeni, basarisiz algi sonucuna ragmen onu surmesi tehlikelidir.
+        if yedek_izin and coord_route and len(coord_route) >= 2:
+            road_no = coord_road if coord_road in (1, 2, 3) else None
+            label = LABEL.get(road_no, "koordinat")
+            ref = coord_route[0]
+            rota_json = json.dumps({
+                "referans_xy": [round(ref[0], 2), round(ref[1], 2)],
+                "kb_xy": [round(baslangic_xy[0], 2), round(baslangic_xy[1], 2)],
+                "acik_yol": label,
+                "yol_no": road_no,
+                "guven": 0.50,
+                "kaynak": "iha_koordinat_yedegi",
+                "hb_xy": [round(hb_xy[0], 2), round(hb_xy[1], 2)] if hb_xy else None,
+                "rota_dunya": [[round(x, 2), round(y, 2)] for x, y in coord_route],
+                "rota_yerel": [[round(x - ref[0], 2), round(y - ref[1], 2)]
+                               for x, y in coord_route],
+            }, ensure_ascii=False, indent=2)
+            _atomik_yaz(level_dir / "rota.json", rota_json)
+            _atomik_yaz(level_dir / "route.txt",
+                        "".join(f"{x:.2f} {y:.2f}\n" for x, y in coord_route))
+            det.update({
+                "road": road_no,
+                "label": label,
+                "conf": 0.50,
+                "wp_n": len(coord_route),
+                "rota": coord_route,
+                "rota_durum": "KOORDINAT_YEDEK",
+                "rota_sebep": (
+                    "Model/costmap rotası doğrulanamadı; simülasyon görevi için "
+                    "İHA'nın yayınladığı koordinat rotası kullanıldı."
+                ),
+                "rota_kaynak": "iha_koordinat_yedegi",
+            })
+            harita_kaynak = "iha_koordinat_yedegi"
+            harita_rota_dunya = coord_route
+            harita_rota_px = [dunya_to_piksel(xy, htab_cx, htab_cy)
+                               for xy in coord_route]
+            harita_rota_px = [p for p in harita_rota_px if p is not None]
+            costmap_durum = det.get("costmap_durum")
+            costmap_sebep = det.get("costmap_sebep")
+            costmap_tani = (
+                f" — costmap {costmap_durum}: {costmap_sebep}"
+                if costmap_durum or costmap_sebep else ""
+            )
+            print(f"[İHA-HARİTA] COSTMAP YOK{costmap_tani} — "
+                  f"İHA KOORDİNAT ROTASI yayınlandı ({len(coord_route)} nokta) "
+                  "→ route.txt + rota.json")
+        else:
+            _rota_artiklarini_sil(level_dir)
+            det.update({
+                "road": None,
+                "label": "yok",
+                "wp_n": 0,
+                "rota_durum": "ROTA_YOK",
+            })
+            if not det.get("rota_sebep"):
+                det["rota_sebep"] = (
+                    "Model/costmap izlenebilir en az iki waypoint üretemedi."
+                )
+            print("[İHA-HARİTA] GÜVENİLİR COSTMAP ROTASI YOK — İKA güvenli durur")
+
+    _iha_harita_yaz(
+        level_dir, mozaik, kaynak=harita_kaynak, model=model,
+        model_yolu=model_yolu, conf=conf, kare_n=n,
+        htab_cx=htab_cx, htab_cy=htab_cy,
+        kb_xy=baslangic_xy, hb_xy=hb_xy, det=det,
+        maskeler=masks, arac=arac, rota_px=harita_rota_px,
+        rota_dunya=harita_rota_dunya, oylama=oylama)
+    (level_dir / "detection.json").write_text(
+        json.dumps(det, ensure_ascii=False, indent=2), encoding="utf-8")
+    return det
+
+
+def _detections_birlestir(vdir, level, det):
+    """$VDIR/detections.json'ı (hakem_log formatı: {seviye:{...}}) güncelle."""
+    p = Path(vdir) / "detections.json"
+    d = {}
+    if p.is_file():
+        try:
+            d = json.loads(p.read_text())
+        except json.JSONDecodeError:
+            d = {}
+    d[level] = det
+    p.write_text(json.dumps(d, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def _meta_oku(level_dir):
+    """record_in_container'ın yazdığı meta.txt → dict (HTAB_CENTER vs.)."""
+    meta = {}
+    mp = Path(level_dir) / "meta.txt"
+    if mp.is_file():
+        for line in mp.read_text().splitlines():
+            if "=" in line:
+                k, v = line.split("=", 1)
+                meta[k.strip()] = v.strip()
+    return meta
+
+
+def _htab_merkez(meta, cli_htab):
+    if cli_htab:
+        cx, cy = (float(v) for v in cli_htab.split(","))
+        return cx, cy
+    if "HTAB_CENTER" in meta:
+        cx, cy = (float(v) for v in meta["HTAB_CENTER"].split(","))
+        return cx, cy
+    raise SystemExit("HTAB merkezi bilinmiyor: --htab cx,cy verin (meta.txt de yok)")
+
+
+def _meta_xy(meta, anahtar):
+    """meta.txt'ten 'x,y' çifti oku (KB_XY / HB_XY) — yoksa None."""
+    if anahtar in meta and "," in meta[anahtar]:
+        try:
+            x, y = (float(v) for v in meta[anahtar].split(","))
+            return (x, y)
+        except ValueError:
+            pass
+    return None
+
+
+def _meta_int(meta, anahtar):
+    try:
+        return int(meta.get(anahtar, ""))
+    except (TypeError, ValueError):
+        return None
+
+
+def _meta_route_xy(meta):
+    raw = meta.get("ROUTE_XY", "")
+    rota = []
+    for item in raw.split(";"):
+        if "," not in item:
+            continue
+        try:
+            x, y = (float(v) for v in item.split(",", 1))
+        except ValueError:
+            continue
+        if math.isfinite(x) and math.isfinite(y):
+            rota.append((round(x, 2), round(y, 2)))
+    return rota
+
+
+def watch(vdir, levels, model_path, arac_model_path, conf, arac_conf,
+          kare_ofset, rot_isaret, bekle_sn=1800, yedek_izin=False,
+          kare_atlama=1, min_gozlem=MIN_GOZLEM, engel_orani=ENGEL_ORANI):
+    """record.sh akışı: her seviyenin SCAN_DONE işaretini bekle → haritala → rota yaz.
+    Konteyner route.txt'yi /tmp/navitas_route'a kopyalar, İKA sürmeye başlar."""
+    from ultralytics import YOLO
+    # BİR KEZ yükle: hem seviyeler arası, hem kare başı çıkarım döngüsü için.
+    # (Döngü içinde YOLO(...) çağırmak her karede ağırlık okurdu.)
+    model = YOLO(str(model_path), task="segment")
+    arac_model = YOLO(str(arac_model_path), task="obb")
+    print(f"[İHA-HARİTA] izleme: {vdir}  seviyeler: {levels}")
+
+    for level in levels.split():
+        ldir = Path(vdir) / f"iha_scan_{level}"
+        marker = ldir / "SCAN_DONE"
+        print(f"[İHA-HARİTA] {level}: tarama bekleniyor ({marker})...")
+        t0 = time.time()
+        while not marker.is_file():
+            if time.time() - t0 > bekle_sn:
+                print(f"[İHA-HARİTA] {level}: {bekle_sn}s doldu, atlanıyor", file=sys.stderr)
+                break
+            time.sleep(2)
+        if not marker.is_file():
+            continue
+        time.sleep(2)   # son karelerin senkronu otursun
+        meta = _meta_oku(ldir)
+        cx, cy = _htab_merkez(meta, None)
+        det = haritala(ldir, model, cx, cy, conf=conf,
+                       kare_ofset=kare_ofset, rot_isaret=rot_isaret,
+                       kb_xy=_meta_xy(meta, "KB_XY"), hb_xy=_meta_xy(meta, "HB_XY"),
+                       arac_model=arac_model, arac_conf=arac_conf,
+                       coord_route=_meta_route_xy(meta),
+                       coord_road=_meta_int(meta, "ROUTE_ROAD"),
+                       yedek_izin=yedek_izin, model_yolu=model_path,
+                       kare_atlama=kare_atlama, min_gozlem=min_gozlem,
+                       engel_orani=engel_orani)
+        _detections_birlestir(vdir, level, det)
+    print("[İHA-HARİTA] izleme bitti.")
+
+
+def main():
+    ap = argparse.ArgumentParser(description="İHA tarama → ortomozaik → model → İKA rotası")
+    g = ap.add_mutually_exclusive_group(required=True)
+    g.add_argument("--watch", help="kayıt dizini (v<N>) — seviyeleri canlı bekle/işle")
+    g.add_argument("--once", help="tek iha_scan_<seviye> klasörünü offline işle")
+    ap.add_argument("--levels", default="kolay orta zor")
+    ap.add_argument("--model", default=str(DEFAULT_MODEL))
+    ap.add_argument("--arac-model", default=str(DEFAULT_ARAC_MODEL),
+                    help="OBB araç modeli (small/large vehicle); engel costmapine OR edilir")
+    ap.add_argument("--conf", type=float, default=0.15)
+    ap.add_argument("--arac-conf", type=float, default=0.25)
+    ap.add_argument("--htab", default=None, help="HTAB merkezi 'cx,cy' (--once + meta yoksa)")
+    ap.add_argument("--kare-ofset", type=int, default=0,
+                    help="kare index → poz t kayması (kalibrasyon, vars. 0)")
+    ap.add_argument("--rot-isaret", type=float, default=1.0, choices=[1.0, -1.0],
+                    help="yaw→görüntü dönüş işareti (kalibrasyon, vars. +1)")
+    ap.add_argument("--debug", action="store_true", help="kare yerleşimini satır satır bas")
+    ap.add_argument(
+        "--yedek-rota", action="store_true",
+        help="costmap rota üretemezse koordinat yedeğini açıkça etkinleştir (demo)")
+    ap.add_argument("--kare-atlama", type=int, default=1,
+                    help=("filtreden geçen her N. kareyi işle (vars. 1 = hepsi). "
+                          "⚠ hücre başına gözlem sayısını ~1/N'e düşürür; "
+                          "N>1 kullanılacaksa --min-gozlem de aynı oranda "
+                          "düşürülmeli, yoksa harita yapay olarak BİLİNMEYEN olur"))
+    ap.add_argument("--min-gozlem", type=int, default=MIN_GOZLEM,
+                    help=(f"bir hücrenin karar alabilmesi için asgari kare sayısı "
+                          f"(vars. {MIN_GOZLEM}); altı BİLİNMEYEN ve GEÇİLEBİLİR DEĞİL"))
+    ap.add_argument("--engel-orani", type=float, default=ENGEL_ORANI,
+                    help=(f"engel_oy/(zemin_oy+engel_oy) eşiği (vars. {ENGEL_ORANI}); "
+                          "0.50'nin altı ENGEL LEHİNE muhafazakârdır"))
+    args = ap.parse_args()
+
+    if args.kare_atlama < 1:
+        ap.error("--kare-atlama en az 1 olmalı")
+    if args.min_gozlem < 1:
+        ap.error("--min-gozlem en az 1 olmalı (0 = bilinmeyeni yol saymak)")
+    if not 0.0 < args.engel_orani <= 1.0:
+        ap.error("--engel-orani (0, 1] aralığında olmalı")
+
+    arac_model_path = Path(args.arac_model)
+    if not arac_model_path.is_file():
+        ap.error(f"araç modeli bulunamadı: {arac_model_path}")
+
+    if args.watch:
+        watch(args.watch, args.levels, args.model, arac_model_path,
+              args.conf, args.arac_conf, args.kare_ofset, args.rot_isaret,
+              yedek_izin=args.yedek_rota, kare_atlama=args.kare_atlama,
+              min_gozlem=args.min_gozlem, engel_orani=args.engel_orani)
+        return
+
+    from ultralytics import YOLO
+    ldir = Path(args.once)
+    meta = _meta_oku(ldir)
+    cx, cy = _htab_merkez(meta, args.htab)
+    model = YOLO(str(args.model), task="segment")
+    arac_model = YOLO(str(arac_model_path), task="obb")
+    det = haritala(ldir, model, cx, cy, conf=args.conf,
+                   kare_ofset=args.kare_ofset, rot_isaret=args.rot_isaret, debug=args.debug,
+                   kb_xy=_meta_xy(meta, "KB_XY"), hb_xy=_meta_xy(meta, "HB_XY"),
+                   arac_model=arac_model, arac_conf=args.arac_conf,
+                   coord_route=_meta_route_xy(meta),
+                   coord_road=_meta_int(meta, "ROUTE_ROAD"),
+                   yedek_izin=args.yedek_rota, model_yolu=args.model,
+                   kare_atlama=args.kare_atlama, min_gozlem=args.min_gozlem,
+                   engel_orani=args.engel_orani)
+    print(json.dumps(det, ensure_ascii=False, indent=2))
+
+
+if __name__ == "__main__":
+    main()
