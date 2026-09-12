@@ -33,7 +33,7 @@ Senaryo kırılımı:
 
 ## 3. Teşhis — başarısızlık nedenleri (ölçülen alanlardan sayılır)
 
-`rota_engel_aciklik_m`: rota polyline'ı ile en yakın engel geomunun (moloz/tıkama/chicane/bariyer) XY OBB açıklığı. İKA yarı genişliği 0.22 m (iz 0.39 TAHMİN + teker). Açıklık < 0.22 → rota **inşaat gereği** çarpışmasız izlenemez (sürücü sıfır hatayla gitse bile). 0.22–0.50 → üretim planlayıcısının `TAKIP_HATA_M` payının altında (CONTRACTS §4 `R_GEREKLI_M` 1,10 açıklık garantisi GT merkez hattında YOKTUR).
+`rota_engel_aciklik_m`: rota polyline'ı ile en yakın engel geomunun (moloz/tıkama/chicane/bariyer) XY OBB açıklığı. İKA yarı genişliği 0.25 m (iz 0.4595 TAHMİN + teker). Açıklık < 0.25 → rota **inşaat gereği** çarpışmasız izlenemez (sürücü sıfır hatayla gitse bile). 0.25–0.50 → üretim planlayıcısının `TAKIP_HATA_M` payının altında (CONTRACTS §4 `R_GEREKLI_M` 1,10 açıklık garantisi GT merkez hattında YOKTUR).
 
 | kaynak | temas ∧ geçilemez (< yarı gen.) | temas ∧ takip bandı | temas ∧ açıklık ≥ 0,50 (sürücü adayı) | kod 3 (izin yok) | kod 2 (NO_ROUTE) | kod 4 temassız |
 |---|---|---|---|---|---|---|
@@ -139,7 +139,7 @@ Senaryo kırılımı:
 
 - İHA uçuşu **kinematik** (mocap; aerodinamik yok); `sure_sim_iha_profil` = fırlatma→iniş profil süresi.
 - Hakem onayı sim'de **otomatik** (`sim_hakem`, mesajlar `sim: true`, CONTRACTS §6.7.1) — **saha kanıtı sayılmaz**.
-- İKA iz genişliği 0.39 m **TAHMİN** (DDR'de yok, CONTRACTS §4.1); teker armature 0,01 kg·m² TAHMİN (fizik kararlılığı için, araclar.py); motor tork sınırı yok; modeller basitleştirilmiş (D-438 ek).
+- İKA iz genişliği 0.4595 m **TAHMİN** (DDR'de yok, CONTRACTS §4.1); teker armature 0,01 kg·m² TAHMİN (fizik kararlılığı için, araclar.py); motor tork sınırı yok; modeller basitleştirilmiş (D-438 ek).
 - `haritala` hesap süresi sim'de modellenmez (rota tarama biter bitmez yayınlanır); OBB araç maskesi kapalı.
 - Yer işaretleri (İHA-İB, HB pedi/H, KB karesi) arena MJCF'inde 1–7 cm kalın **çarpışan** kutulardır; sürücü bunları yüklenen modelde çarpışmasız yapar (`isaretleri_carpismasiz_yap`) — MJCF/sha256 değişmez.
 - `ika_nav.steer()` geri gitmez (teker hızı ≥ 0; pivot dönüş yok) — dokunulmadı, kayıt (CONTRACTS §4.1).

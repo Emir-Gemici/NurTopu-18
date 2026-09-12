@@ -226,7 +226,7 @@ Tek kaynak `karar_sozlesmesi` seçildi (**saf Python**; `ika_nav` İKA'da cv2 al
 | Sabit | Değer | Kaynak / durum |
 |---|---|---|
 | `IKA_TEKER_YARICAP_M` | `0.0625` | DDR: Ø125 mm TPU teker |
-| `IKA_IZ_GENISLIGI_M` | `0.39` | **TAHMİN** — DDR'de yok; insan teyidine kadar (ON_KAYIT §3.3, D-438 ek ile varsayılan kabul) |
+| `IKA_IZ_GENISLIGI_M` | ~~`0.39`~~ **`0.4595`** | **ÖLÇÜLDÜ** 12 Eylül (ekip, şerit metre; D-472). Eski değer TAHMİN'di; Gazebo URDF dışa aktarımı 0,319 diyordu — ikisi de yanlış çıktı. |
 | `IKA_AZAMI_HIZ_MS` | `1.3` | DDR: 4× KGX38 24 V 200 rpm → 200 × π × 0,125 / 60 = 1,309 m/s → beyan 1,3 |
 
 **Okuyucular (sayı yazmaz, AD okur):** `simulation/scripts/ika_nav.py` (`MAX_SPEED`),

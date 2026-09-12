@@ -92,7 +92,7 @@ def _atama_isim(kaynak: str, hedef: str):
 class A_TekKaynakSabitler(unittest.TestCase):
     def test_degerler_ddr(self):
         self.assertEqual(ks.IKA_TEKER_YARICAP_M, 0.0625)
-        self.assertEqual(ks.IKA_IZ_GENISLIGI_M, 0.39)
+        self.assertEqual(ks.IKA_IZ_GENISLIGI_M, 0.4595)  # OLCULDU 12 Eylul, D-472 (onceki 0.39 TAHMIN)
         self.assertEqual(ks.IKA_AZAMI_HIZ_MS, 1.3)
         # DDR: 200 rpm × π × Ø0,125 / 60 = 1,309 → 1,3
         self.assertAlmostEqual(200 * math.pi * 0.125 / 60, 1.309, places=3)
