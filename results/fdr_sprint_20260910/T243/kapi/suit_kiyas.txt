@@ -1,5 +1,5 @@
 ONCE  (tam_suit_2.txt) : Ran 2782 tests in 577.418s · FAILED (failures=11, errors=11, skipped=34) · 22 dusuk
-SONRA (tam_suit_7.txt): Ran 2793 tests in 564.103s · FAILED (failures=11, errors=11, skipped=34) · 22 dusuk
+SONRA (tam_suit_9.txt): Ran 2918 tests in 591.542s · FAILED (failures=11, errors=11, skipped=34) · 22 dusuk
 SONRAKI kosumda YENI dusuk: 0
 SONRAKI kosumda GECEN (onceki dusuk): 0
 test_t243_paket_boyutu kaynakli dusuk: 0

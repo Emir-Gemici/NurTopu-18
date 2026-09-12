@@ -1053,7 +1053,15 @@ class ReadmeSayilariArtefakttan(unittest.TestCase):
         #    ayrica FAILED satiri bulunmamalidir.
         unittest_ciktilari = ("test_fdr.txt", "test_faz_b_protocol.txt",
                               "test_sik_genis.txt", "test_comms.txt",
-                              "test_iha_sender.txt", "test_ika.txt")
+                              "test_iha_sender.txt", "test_ika.txt",
+                              "test_belge_kilidi.txt", "test_t120_sahte_kapi.txt")
+        # ⚠ `test_t243_nobetci.txt` BU LISTEDE YOKTUR ve olmamalidir: o dosya
+        #    BU testin KENDI kosumunun ciktisidir. T243-C'de OLCULDU — dosya
+        #    kendi kosumuna yonlendirilince kabuk onu basta bosaltir, hukum
+        #    satiri (^OK) henuz yazilmamistir ve test KENDI kosumunda DUSER
+        #    (rc=1, FAIL: test_kapi_ciktilari_yerinde_ve_hukumleri_dosyadan).
+        #    Ayni sonsuz gerileme D-466'da tam suit icin olculmustu. Dosya yine
+        #    de DONMUS kanit olarak dizinde durur; yalniz VARLIGI asagida.
         for ad in unittest_ciktilari:
             yol = kapi / ad
             self.assertTrue(yol.is_file(), f"kapi ciktisi yok: {yol}")
@@ -1084,7 +1092,8 @@ class ReadmeSayilariArtefakttan(unittest.TestCase):
                    # T243-C olcum artefaktlari (hepsi DONMUS, kosum sirasinda
                    # uretilen dosya EKLENMEZ — yukaridaki D-466 notu)
                    "kilit_penceresi.txt", "sinir_probu.py", "sinir_probu.txt",
-                   "mutasyon_t244_birlesim.txt"):
+                   "mutasyon_t244_birlesim.txt", "tam_suit_8.txt",
+                   "tam_suit_9.txt", "test_t243_nobetci.txt"):
             self.assertTrue((kapi / ad).is_file(), f"kanit dosyasi yok: {ad}")
         for ifade in ("tam_suit_6.txt", "suit_kiyas.txt",
                       "kararsiz_faz_b_iha_komut_alici.txt"):

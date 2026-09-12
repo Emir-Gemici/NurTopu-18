@@ -131,7 +131,7 @@ yüzeyi kusuru** için RED verdi. Üçü de kapatıldı:
 | kusur | ne yanlıştı | ne yapıldı | kanıt |
 |---|---|---|---|
 | K1 | Beyan `udp_jetson` duyarlılığını *"kanıt: TABLO.md §8"* diye gösteriyordu; `4080,6` · `%70,84` · `%141,69` dizgileri **depoda hiçbir dosyada yoktu** | `scripts/paket_boyutu_olc.py` §8 döngüsü `("saha_tavan","udp_tavan")` yerine `k["kosumlar"]` üzerinden geçer; `--kip tablo` yeniden koşuldu | `TABLO.md` §8 ilk tablo **dört** satır |
-| K2 | FDR §3.3.4.3.3 aralığı `4003,6 – 4107,2 B/s` diyordu; aynı bölümün **dört koşumluk** tablosunun gerçek aralığı `3995,8 – 4107,2`. Alt sınır **7,8 B/s yüksek** — yön *riski az gösterme*. D-465 metin eşitliği bu eksik kapsamlı cümleyi **kilitliyordu** | Aralık dört koşuma genişletildi; eski cümle **silinmedi**, ikinci bir ~~çizik~~ + tarih + D atfı ile durur. Ön kayıtlı şablon ve `DUYARLILIK_KOSUMLARI = tuple(K["kosumlar"])` güncellendi | FDR §3.3.4.3.3; M20/M22/M25 |
+| K2 | FDR §3.3.4.3.3 aralığı `4003,6 – 4107,2 B/s` diyordu; aynı bölümün **dört koşumluk** tablosunun gerçek aralığı `3995,8 – 4107,2`. Alt sınır **7,8 B/s yüksek** — yön *riski az gösterme*. D-465 metin eşitliği bu eksik kapsamlı cümleyi **kilitliyordu** | Aralık dört koşuma genişletildi; eski cümle **silinmedi**, ikinci bir üstü çizili blok + tarih + D atfı ile durur. Ön kayıtlı şablon ve `DUYARLILIK_KOSUMLARI = tuple(K["kosumlar"])` güncellendi | FDR §3.3.4.3.3; M20/M22/M25 |
 | K3 | Beyanın gösterdiği aritmetik kendi sayısını üretmiyordu: `… / 61,91 s` → 4094,9, beyan edilen 4107,2 değil | Doğru süre `udp_tavan` `hat_yuku.sure_s` = **61,52149 s**'dir (61,91196 s `udp_jetson_olculmus`'ındır). Betik zaten doğrusunu kullanıyordu; kusur **yalnız beyan metnindeydi** ve düzeltildi | `gorev_veri_hizi.json` |
 
 **Ayrıca kapatılan bir sınır (çürütücünün S3 probu):** `_paragraf` ilk eşleşmeyi
@@ -206,6 +206,13 @@ sayıyı iyileştirmedi, **kötüleştirdi**; ilk çıktı silinmedi, bu dizinde
    **`YOKTUR` kelimesinin içinde** geçtiği için **düşmüş** bir kapı çıktısı
    (`FAILED (failures=2)`) da geçiyordu. Hüküm artık satır başına çivilidir
    (`^OK` aranır, `^FAILED` yasaktır); mutasyon **M27** bunu ölçer.
+11. **Nöbetçinin KENDİ çıktı dosyası hükme bağlanamaz — ölçüldü.**
+   `kapi/test_t243_nobetci.txt` bu testin *kendi* koşumunun çıktısıdır;
+   hüküm satırı ona da çivilenince test **kendi koşumunda düştü**
+   (`rc=1`, `FAIL: test_kapi_ciktilari_yerinde_ve_hukumleri_dosyadan`) —
+   kabuk yönlendirmesi dosyayı başta boşaltır. D-466'da tam süit için ölçülen
+   sonsuz gerilemenin aynısıdır. Dosya **donmuş kanıt** olarak dizinde durur;
+   nöbetçi yalnız **varlığını** kilitler, **hükmünü değil**.
 
 ## Koşulan kapılar
 
@@ -215,7 +222,9 @@ nöbetçi test tarafından yeniden karşılaştırılır (elle yazılmış sayı
 | kapı | çıktı dosyası | sonuç |
 |---|---|---|
 | genel kapı (`codes/test_rota_sentetik.py`) | `kapi/genel_kapi.txt` | **GEÇTİ — kol1 15/15 · kol2 şerit 15/15** |
-| T243 nöbetçisi | süit içinde | OK |
+| T243 nöbetçisi | `kapi/test_t243_nobetci.txt` | **OK — 65 test** (T243-C ile 63 → 65) |
+| kanonik belge kilidi (`test_belge_kilidi`) | `kapi/test_belge_kilidi.txt` | OK — 74 test |
+| sahte kapı yasağı (`test_t120_sahte_kapi_yasagi`) | `kapi/test_t120_sahte_kapi.txt` | OK — 15 test (T243-C'de düzeltildi) |
 | `test_fdr*` | `kapi/test_fdr.txt` | OK |
 | `test_faz_b_protocol*` | `kapi/test_faz_b_protocol.txt` | OK |
 | SiK (`*sik*`) | `kapi/test_sik_genis.txt` | OK |
@@ -245,7 +254,9 @@ sayısı 2782 → 2794 (nöbetçiye eklenen D-466 kilitleri); bu sayı
 `tam_suit_3/4/5` koşumlarınındır — kendi kusuru yüzünden kaldırılan iki test
 sonrası **2793** oldu (`tam_suit_6`, `tam_suit_7` ve bağımsız çürütücü koşumu).
 **T243-C'de master birleştirildikten sonra** (T240 · T244-B · T226-D3 ·
-AKIS-D2 · T235-B/D) sayı **2918**'dir: `kapi/tam_suit_8.txt`. Düşen `FAIL:`/`ERROR:`
+AKIS-D2 · T235-B/D) sayı **2918**'dir (`kapi/tam_suit_8.txt`,
+`kapi/tam_suit_9.txt`); son koşum **`tam_suit_9.txt`**: 2918 test,
+**22 düşük** — `tam_suit_2` kümesiyle birebir aynı. Düşen `FAIL:`/`ERROR:`
 kümesinin `kapi/tam_suit_2.txt` (düzeltme öncesi) kümesinden **farkı**:
 
 | koşum | tam_suit_2'ye göre fark | ne olduğu |
@@ -255,7 +266,8 @@ kümesinin `kapi/tam_suit_2.txt` (düzeltme öncesi) kümesinden **farkı**:
 | `tam_suit_5.txt` | +`test_D466_SONRASI_tam_suit_te_T243_dusugu_YOK` | aynı kusurun ikinci biçimi: testi yeniden yazdım, **yine** kendi koşumunda düştü |
 | `tam_suit_6.txt` | +`test_kapi_ciktilari_yerinde_ve_hukumleri_dosyadan` | **bootstrap**: o koşum sırasında `kapi/suit_kiyas.txt` henüz üretilmemişti |
 | `tam_suit_7.txt` | — | son D-466 koşumu; karşılaştırma `kapi/suit_kiyas.txt` |
-| `tam_suit_8.txt` (**T243-C, master birleşimi sonrası**) | +`test_tests_altinda_sahte_kapi_YOK` | **birleşimin getirdiği düşük, T243-C'den değil**: master'ın `tests/belge_kilidi.py` yardımcı modülü (D-468) sıfır test topluyor ve T120 muafiyet işareti taşımıyordu. Düşük **birleşim commit'i `531f4fb1`'de de ölçüldü** (değişikliklerimden önce). Kural neyi istiyorsa o yapıldı: modül docstring'ine `KESIF MUAFIYETI:` + `KOSUM:` eklendi |
+| `tam_suit_9.txt` (**T243-C son koşum**) | — | `tam_suit_2` ile **birebir aynı** düşen küme: YENİ düşük 0 · GEÇEN düşük 0 · `test_t243_paket_boyutu` kaynaklı düşük 0 (`kapi/suit_kiyas.txt`). Master birleşimi **+136 test** getirdi (2782 → 2918) ve **sıfır** yeni düşük |
+| `tam_suit_8.txt` (**T243-C, master birleşimi sonrası ilk koşum**) | +`test_tests_altinda_sahte_kapi_YOK` | **birleşimin getirdiği düşük, T243-C'den değil**: master'ın `tests/belge_kilidi.py` yardımcı modülü (D-468) sıfır test topluyor ve T120 muafiyet işareti taşımıyordu. Düşük **birleşim commit'i `531f4fb1`'de de ölçüldü** (değişikliklerimden önce). Kural neyi istiyorsa o yapıldı: modül docstring'ine `KESIF MUAFIYETI:` + `KOSUM:` eklendi |
 
 🔴 **Kaldırılan test ve öğrenilen sınır — kayda geçer (silinmedi).** Tam süit
 düşük kümesini `tam_suit_2` ile karşılaştıran bir nöbetçi testi yazıldı;
