@@ -107,6 +107,76 @@ KURULUM_IZINLI_CIZIK = (
     "video/x-raw(memory:NVMM),width=1280,height=720 ! nvdrmvideosink set_mode=1 sync=false'`~~",
 )
 
+# ── T240-B (D-460 kacanlari Y5 / Y10): §5'in KAPALI HUKUM CUMLESI KUMESI ─────
+# NEDEN: §5'in bugunku kilitleri KARA LISTEYE bagliydi ve curutucu iki kacis
+# olctu: (Y5) aile disi es anlamli olumlu hukum — "- **Saha kurali (12 Eylul):**
+# `-v` nabiz satiri bicimi sahada **hatasiz yurudu**; kip **kusursuz isledi**."
+# eklenince suit cikis 0 verdi (aile ICI es anlamli DUSUYORDU); (Y10) esik BIRIM
+# kaydirmasi — "≥ 3 s" -> "≥ 3000 ms" yapilinca G8'in `(?:≥|>=)\s*(\d+)\s*s`
+# kalibi degeri HIC gormedi, §5'teki diger "≥ 3 s" ayakta kaldigi icin
+# set(degerler) == {3.0} tuttu ve mutant KACTI.
+# Kara liste genisletmesi ikisini de ILKECE kapatmaz (D-460'in dersi budur).
+# T221 §6.6'ya ve CONTRACTS §6.8'e verilen YAPISAL cozum buraya da verildi:
+# §5'te hukum tasiyan her cumle (normallestirilmis, kod CITLERI HARIC) bu ON
+# KAYITLI kumede olmak zorundadir. Kumede olmayan yeni bir hukum cumlesi —
+# nereye konursa konsun, kalin baslik tasisin tasimasin — kilidi DUSURUR; var
+# olan bir cumlenin esigi/birimi degisirse cumle kumeden DUSER ve kilit yine
+# DUSER. Kod citleri disaridadir (kod prose hukum degildir; icerikleri ayrica
+# "gst-launch-1.0 -v " ve "identity name=nabiz silent=false" ile kilitli).
+# Kume secicisi ON KAYITLIDIR: belge_kilidi.HUKUM_SOZCUKLERI (gerekcesi orada
+# yazili) + §5'in kendi alan sozcukleri.
+KURULUM_5_HUKUM_ANAHTARLARI = belge_kilidi.HUKUM_SOZCUKLERI + (
+    "nabiz", "boru", "kip", "yoklama", "video", "gosterici", "drm", "kare", "ekran")
+KURULUM_5_HUKUM_CUMLELERI = (
+    "drm kipi (secenek - gdm durur, masaustu gider)",
+    "onkosul ve borular: /usr/bin/python3 ~/navitas/scripts/isaretligosterici.py --kip drm --kuru "
+    "basar:",
+    "→ 10 eylul (t228-d): -v + identity name=nabiz silent=false eklendi (boru ilerlemesi "
+    "izlenir).",
+    "- 🔴 argus uyarisi: nvidia-drm yuklenip nvdrmvideosink calismazsa argus (nvarguscamerasrc) ~3 "
+    "fps'e duser.",
+    "drm ya surekli calisir ya hic acilmaz; kamera fps'i drm acikken olculur.",
+    "- jetpack 7.2'de nvidia-drm varsayilan denylist'te (nv-load-display-modules servisi) - acik "
+    "modprobe'un yukleyip yuklemedigi dogrulanacak.",
+    "- drm kipinde kareye bayat bandi cizilmez (boru /video'yu dogrudan gosterir).",
+    "gozetmen /kare.jpg'yi 1 s'de 1 yoklar; kare 2 s'den uzun sure yeni degilse video borusunu "
+    "durdurur ve kirmizi goruntu yok borusunu (videotestsrc pattern=red ! textoverlay) acar - "
+    "nvdrmvideosink son kareyi ekranda birakamaz.",
+    "- histerezis ve yeniden baslatma sikligi (t228-d, 10 eylul): canli'dan (video borusundan) "
+    "cikis ilk bayat / hata / donmus yoklamada, bekleme yok (guvenli taraf).",
+    "video borusuna donus 2 ardisik taze yoklama ve son boru baslatmasindan ≥ 3 s ister - "
+    "cirpinan yayin nvdrmvideosink'i surekli yeniden acmaz (her acilis setmode=1 ile kip kurar).",
+    "kendiliginden olen video borusunun yerine goruntu yok borusu hemen acilir - yayin tazeyse "
+    "ekrandaki sebep video borusu kendiliginden bitti (rc n) (journal: rc=n omur=...; t228-d2, 10 "
+    "eylul), yayin bayat/yoksa yayinin kendi sebebi; olen goruntu yok borusu ≥ 3 s aralikla "
+    "yeniden acilir.",
+    "acilista kirmizi ekran ~3 s gorunur (bu kurala gore beklenen).",
+    "- boru ilerlemesi - donmus boru (t228-d): video borusunda identity name=nabiz silent=false; "
+    "gst-launch-1.0 -v her tamponda .../gstidentity:nabiz: last-message = chain ... (nabiz:sink) "
+    "... pts: ... biciminde 1 satir basar, gozetmen bunlari okur.",
+    "/kare.jpg taze olsa bile video borusu > 3 s tampon gecirmezse (acilista ilk tampon icin de 3 "
+    's pay) video borusu durur ve goruntu yok borusu acilir (sebep "video borusu ilerlemiyor").',
+    "identity, jpegdec'ten sonra sistem bellegindedir (nvmm caps'li identity olculemedi); boruda "
+    "kuyruk yok → sink takilirsa nabiz da durur.",
+    "- 🔴 -v nabiz satiri bicimi jetson'da olculemedi - dogrulanacak (pc'de gstreamer yok; "
+    "ayristirici toleransli: nabiz elemani + once chain kelimesi; event / caps satirlari "
+    "sayilmaz; pts istege bagli).",
+    "sahada drm kipinden once (§4 adim 9):",
+    "beklenen (~4 s): nabizsina: eslesti - ... 20 nabiz ...; zamaninda: varis yayilimi ≈3,8 s / "
+    "pts yayilimi 3,80 s, cikis 0. cikis 1 2 sebeple: eslesmedi (bicim farkli) ya da toplu "
+    '(satirlar tamponlu, topluca geliyor → saglikli boru "donmus" sayilir).',
+    "ikisinde de drm kipi video borusunu her ~3 s'de 1 goruntu yok'a dusurur (fail-closed: eski "
+    "kare gosterilmez ama canli goruntu de gelmez) → x11 kipinde kal; ekrana basilan satirlari bu "
+    "belgeye yapistir.",
+    "drm calisirken gercek satirlar journal'da gst: onekiyle gorunur (ilk 40 satir).",
+    "- satir tamponu: drmkos video borusunu stdbuf -ol onekiyle kosar (coreutils stdbuf varsa; "
+    "yoksa kirmizi uyari, onek konmaz).",
+    "stdout boruya bagliyken blok tampon nabiz satirlarini topluca getirirdi; gst-launch'in kendi "
+    "fflush'i olculemedi.",
+    "- geri alma: sudo systemctl disable --now navitas-isaretli-gosterici-drm; sudo modprobe -r "
+    "nvidiadrm; sudo systemctl start gdm (modprobe -r basarisizsa yeniden baslat).",
+)
+
 
 def _sessiz(*_a, **_k):
     return None
@@ -1229,8 +1299,13 @@ class GostericiDosyalari(unittest.TestCase):
             satirda '-v' ve identity nabzi var (tipografik tirnakli kopya da yakalanir).
         (5) T240 (D-460 karar 2): belgede BEYAZ LISTE DISI hicbir cizme isareti yok. Tek mesru cizik
             §5'teki tarihli eski komut satiridir; tek tilde, <del>/<s>/<strike>, birlesen uzeri
-            cizgi, tilde benzeri isaretler ve stil tasiyabilen HER HTML etiketi kilidi DUSURUR —
-            gelecekteki yeni cizme sozdizimi icin buraya kalip eklemek gerekmez."""
+            cizgi (HTML VARLIK bicimi `&#822;` / `&#x336;` dahil, T240-B), tilde benzeri isaretler
+            ve stil tasiyabilen HER HTML etiketi kilidi DUSURUR — bu KAPSAMDAKI yeni bir sozdizimi
+            icin buraya kalip eklemek gerekmez (kapsam disi bicim icin iddia YOKTUR).
+        (6) T240-B (D-460 kacanlari Y5/Y10): §5'te hukum tasiyan her cumle ON KAYITLI KAPALI
+            KUMEDEDIR (`KURULUM_5_HUKUM_CUMLELERI`). Aile disi es anlamli olumlu hukum ("hatasiz
+            yurudu / kusursuz isledi") ve esik BIRIM kaydirmasi ("≥ 3 s" -> "≥ 3000 ms") kara
+            listeyle ILKECE gorulemiyordu; kapali kume ikisini de gorur."""
         ham = KURULUM.read_text(encoding="utf-8")
         self.assertEqual([], belge_kilidi.beyaz_liste_disi_cizik(ham, KURULUM_IZINLI_CIZIK),
                          "GOSTERICI_KURULUM'da beyaz liste disi cizik")
@@ -1262,6 +1337,16 @@ class GostericiDosyalari(unittest.TestCase):
             self.assertTrue(degerler, "§5'te {} hukmu yok".format(ad))
             self.assertEqual(set(degerler), {float(sabit)},
                              "§5'te CELISKILI {} hukmu: {} (kod {})".format(ad, degerler, sabit))
+        # T240-B (D-460 kacanlari Y5/Y10): §5'in KAPALI HUKUM CUMLESI KUMESI. Kara liste
+        # ikisini de ILKECE goremiyordu (aile disi es anlamli; s -> ms birim kaydirmasi).
+        bol5_ham = "## 5. DRM kipi" + _kurulum_bolumu(m, "## 5. DRM kipi", "\n## 6.")
+        cumleler = belge_kilidi.hukum_cumleleri(
+            re.sub(r"(?ms)^[ \t]*```.*?^[ \t]*```[ \t]*$", "", bol5_ham),
+            KURULUM_5_HUKUM_ANAHTARLARI)
+        self.assertEqual(KURULUM_5_HUKUM_CUMLELERI, cumleler,
+                         "§5 on kayitli hukum cumlesi kumesi degisti — fazla: {}; eksik: {}"
+                         .format([c for c in cumleler if c not in KURULUM_5_HUKUM_CUMLELERI],
+                                 [c for c in KURULUM_5_HUKUM_CUMLELERI if c not in cumleler]))
         borular = [s for s in n5.splitlines() if "gst-launch" in s and "souphttpsrc" in s]
         self.assertTrue(borular, "§5 video borusu komutu yok")
         for s in borular:

@@ -8,11 +8,17 @@ mutasyonunun 19'u da kacti (T226: 4, T228: 7, T221: 8). Kural tek yerden gelsin
 diye butun belge kilitleri artik bu moduldeki yordamlardan gecer.
 
 TASARIM KARARLARI (hepsi olculmus kacislara dayanir):
-  1. KARA LISTE DEGIL BEYAZ LISTE. Cizme sozdizimi bitmez (`~~`, `~`, `<del>`,
-     `<s>`, `<strike>`, `<span style=...line-through>`, birlesen U+0336 ...).
+  1. KARA LISTE DEGIL BEYAZ LISTE — ama SINIRLI bir iddia ile. Cizme sozdizimi
+     bitmez (`~~`, `~`, `<del>`, `<s>`, `<strike>`,
+     `<span style=...line-through>`, birlesen U+0336 ...).
      `beyaz_liste_disi_cizik` metinde KALAN her cizme adayini bulur; tarihli-
-     gerekceli beyaz listede olmayan her aday HATADIR. Boylece gelecekte cikacak
-     yeni sozdizimi, buraya kalip eklenmeden yakalanir.
+     gerekceli beyaz listede olmayan her aday HATADIR.
+     OLCULEN KAPSAM (fazlasi DEGIL): duz metin ve HTML VARLIK bicimindeki
+     (`&#822;`, `&#x336;`) cizme isaretleri, tilde kosulari, tilde benzeri
+     isaretler ve ZARARSIZ_ETIKETLER disindaki HER etiket. Bu kapsamdaki yeni
+     bir sozdizimi buraya kalip eklenmeden yakalanir; kapsam DISINDA kalan bir
+     bicim icin iddia YOKTUR (D-460 kacani Y4: varlik bicimi kapsam disiydi ve
+     kacmisti — ÖLCULEMEDI != GECTI, bu docstring icin de gecerli).
   2. KOD ICI METIN HARFI HARFINEDIR. Markdown'da ` ... ` ve ```...``` icindeki
      `~` ya da `<s>` cizgi degildir; kod araliklari once maskelenir.
   3. "~<rakam>" YAKLASIK ISARETIDIR, cizgi degil. Uc belgede (CONTRACTS.md,
@@ -29,12 +35,14 @@ TASARIM KARARLARI (hepsi olculmus kacislara dayanir):
 Yalnizca standart kutuphane (CLAUDE.md madde 4).
 """
 
+import html
 import re
 import unicodedata
 
 __all__ = ["cizikleri_ayikla", "beyaz_liste_disi_cizik", "normalize",
            "olumlu_hukum_var", "on_kayitli_metin_esit", "hukum_cumleleri",
-           "HARF", "ZARARSIZ_ETIKETLER"]
+           "kabul_olcutu_tekligi", "HARF", "ZARARSIZ_ETIKETLER",
+           "HUKUM_SOZCUKLERI", "KABUL_CELISKI_SOZCUKLERI"]
 
 # Turkce harfleri kapsayan, ALTCIZGIYI DISLAYAN harf sinifi.
 # NEDEN: T221 kacani W3/W4 — `SITL_OLUMLU_HUKUM` sinirlari `(?<!\w)` idi; `_`
@@ -83,6 +91,61 @@ def _coz(metin, parcalar):
     return re.sub(r"\x00(\d+)\x00", lambda m: parcalar[int(m.group(1))], metin)
 
 
+# ── 0. HTML varlik cozumlemesi ────────────────────────────────────────────────
+# NEDEN (D-460 kacani Y4): CONTRACTS §6.8'de `maliyeti` yerine
+# `m&#822;a&#822;l&#822;i&#822;...` yazildiginda hukum markdown okuyucuda USTU
+# CIZILI gorunuyor, testte ise YURURLUKTE sayiliyordu: `&#822;`, U+0336'nin
+# (birlesen uzeri cizgi) HTML varlik bicimidir ve tarayici onu HIC gormuyordu.
+# Ayni karakterin ciplak hali DUSUYORDU — kacis yolu yalniz YAZIM bicimiydi.
+_VARLIK = re.compile(r"&(?:#[0-9]{1,7}|#[xX][0-9a-fA-F]{1,6}|[A-Za-z][A-Za-z0-9]{1,31});?")
+#: Cozulmesi YASAK varliklar: cozulmus degeri `<` ya da `>` olanlar.
+#: NEDEN: `&lt;s&gt;` markdown'da ETIKET ACMAZ, harfi harfine "<s>" METNI olarak
+#: gorunur. Cozseydik KACINILAN bir etiket ornegi hayalet cizige donerdi (yanlis
+#: pozitif). Kalan butun varliklar COZULUR — `&#126;` (tilde) dahil: fail-closed
+#: taraf, cunku tilde varligi bu belgelerde mesru bir kullanim degildir ve
+#: cozulunce zaten beyaz liste disi cizik sayilir.
+_COZULMEZ = frozenset("<>")
+
+
+def _varlik_cozumle(metin):
+    """(cozulmus, bas_haritasi, son_haritasi) — kod DISINDA HTML varliklari cozulur.
+
+    `bas[i]` / `son[i]`: cozulmus metnin i. karakterinin HAM metindeki baslangic
+    ve bitis indeksidir. Tarama cozulmus KOPYA uzerinde yapilir; hata metnindeki
+    satir ve baglam bu haritayla HAM metinden okunur — konum KAYMAZ.
+
+    Kod araliklari (` ... `, ```...```) cozulmez: kod icinde `&amp;` harfi
+    harfinedir (karar 2'nin varlik ikizi).
+    """
+    kod = _kod_araliklari(metin)
+    cikti, bas, son, onceki = [], [], [], 0
+
+    def aynen(b, s):
+        cikti.append(metin[b:s])
+        bas.extend(range(b, s))
+        son.extend(range(b + 1, s + 1))
+
+    for m in _VARLIK.finditer(metin):
+        b, s = m.span()
+        if b < onceki or any(kb <= b and s <= ks for kb, ks in kod):
+            continue
+        cozulmus = html.unescape(m.group(0))
+        if cozulmus == m.group(0) or set(cozulmus) & _COZULMEZ:
+            continue
+        aynen(onceki, b)
+        cikti.append(cozulmus)
+        bas.extend([b] * len(cozulmus))
+        son.extend([s] * len(cozulmus))
+        onceki = s
+    aynen(onceki, len(metin))
+    return "".join(cikti), bas, son
+
+
+def _varliklari_coz(metin):
+    """Kod araliklari korunarak HTML varliklari cozulmus TARAMA kopyasi."""
+    return _varlik_cozumle(metin)[0]
+
+
 # ── 1. cizik ayiklama ─────────────────────────────────────────────────────────
 _CIFT_TILDE = re.compile(r"~~.*?~~", re.S)
 # Tek tilde: GFM'de `~x~` de uzeri cizili uretir (T228 kacani A3, T221 kacani W1).
@@ -105,8 +168,11 @@ def cizikleri_ayikla(metin):
     Cikti YURURLUKTEKI metindir: yeni icerik BURADA aranir. Eski metnin cizili
     DURDUGUNU denetleyen kilitler HAM metinde kalir (FDR kurali: eski metin
     silinmez, cizilir + tarih).
+
+    Metin ONCE HTML varlik cozumlemesinden gecer (D-460 kacani Y4): `&#822;` ile
+    harf harf cizilmis bir hukum, ciplak U+0336 ile cizilmis olani gibi DUSER.
     """
-    m, parcalar = _maskele(metin)
+    m, parcalar = _maskele(_varliklari_coz(metin))
     m = _CIFT_TILDE.sub("", m)
     m = _TEK_TILDE.sub("", m)
     m = _HTML_CIZGI.sub("", m)
@@ -140,23 +206,30 @@ def beyaz_liste_disi_cizik(metin, izinli=()):
     yakalanmasi gereken aday siniflari:
       · tilde kosusu (`~~x~~`, `~x~`, `~~~x~~~`) — "~<rakam>" yaklasik istisnasi disinda
       · birlesen uzeri cizgi U+0335..U+0338 (gorunurde cizili, sozdizimi yok)
+      · YUKARIDAKILERIN HTML VARLIK BICIMI (`&#822;`, `&#x336;`) — D-460 kacani Y4
       · tilde benzeri isaretler — kopyala-yapistir varyantlari
       · ZARARSIZ_ETIKETLER disindaki HER HTML etiketi — uydurma `<sil>` ya da
         stil tasiyan `<span style="text-decoration:line-through">` dahil
       · icinde `line-through` / `text-decoration` gecen her etiket
     Kod araliklari (` ... `, ```...```) taranmaz: oradaki `~` harfi harfinedir.
+    Ayni nedenle varlik cozumlemesi de kod DISINDA yapilir.
+
+    Tarama varlik-cozumlu KOPYA uzerindedir; hata metnindeki satir ve baglam HAM
+    metinden okunur (`_varlik_cozumle` haritasi) — konum kaymaz.
 
     Doner: hata metinleri listesi (bos liste = temiz).
     """
+    tarama, bas, son = _varlik_cozumle(metin)
     izinli_araliklar = []
     for parca in izinli:
         if not parca:
             continue
-        i = metin.find(parca)
+        cozulmus = _varliklari_coz(parca)
+        i = tarama.find(cozulmus)
         while i >= 0:
-            izinli_araliklar.append((i, i + len(parca)))
-            i = metin.find(parca, i + 1)
-    kod = _kod_araliklari(metin)
+            izinli_araliklar.append((i, i + len(cozulmus)))
+            i = tarama.find(cozulmus, i + 1)
+    kod = _kod_araliklari(tarama)
 
     def mesru(b, s):
         return (any(kb <= b and s <= ks for kb, ks in izinli_araliklar)
@@ -166,19 +239,21 @@ def beyaz_liste_disi_cizik(metin, izinli=()):
 
     def ekle(b, s, tur):
         if not mesru(b, s):
+            hb = bas[b] if b < len(bas) else len(metin)
+            hs = son[s - 1] if 0 < s <= len(son) else hb
             hatalar.append("{}: beyaz liste disi cizik ({}) — {!r}".format(
-                _konum(metin, b), tur, _baglam(metin, b, s)))
+                _konum(metin, hb), tur, _baglam(metin, hb, hs)))
 
-    for m in _TILDE_KOSUSU.finditer(metin):
+    for m in _TILDE_KOSUSU.finditer(tarama):
         b, s = m.span()
-        if len(m.group(0)) == 1 and s < len(metin) and metin[s].isdigit():
+        if len(m.group(0)) == 1 and s < len(tarama) and tarama[s].isdigit():
             continue                      # "~3 s" = yaklasik (belgelenen istisna)
         ekle(b, s, "tilde")
-    for m in _BIRLESEN_CIZGI.finditer(metin):
+    for m in _BIRLESEN_CIZGI.finditer(tarama):
         ekle(m.start(), m.end(), "birlesen uzeri cizgi")
-    for m in _TILDE_BENZERI.finditer(metin):
+    for m in _TILDE_BENZERI.finditer(tarama):
         ekle(m.start(), m.end(), "tilde benzeri isaret")
-    for m in _ETIKET.finditer(metin):
+    for m in _ETIKET.finditer(tarama):
         ad = m.group(1).lower()
         if ad in ZARARSIZ_ETIKETLER and not _CSS_CIZGI.search(m.group(0)):
             continue
@@ -248,7 +323,9 @@ def _sonek(m):
 def normalize(metin):
     """Hukum karsilastirmalari icin tek bicime indirger.
 
-    Sirayla: (1) cizikler DUSER; (2) sifir genislikli karakterler atilir, '≠'
+    Sirayla: (1) `cizikleri_ayikla` — once HTML varliklari cozulur (D-460 kacani
+    Y4: `&#822;` ile cizilmis hukum, ciplak U+0336 ile cizilmis gibi DUSER),
+    sonra cizikler DUSER; (2) sifir genislikli karakterler atilir, '≠'
     korunur ('!=' olur — NFKD'de '=' + U+0338'e ayrisip anlami TERSINE donerdi);
     (3) tipografik kesme/tirnak/tire duz karsiliklarina iner ve vurgu isaretleri
     (** * __ _ backtick) SOZCUK ICI DAHIL sokulur; (4) Turkce kucuk harf (I->ı,
@@ -331,10 +408,42 @@ def on_kayitli_metin_esit(metin, beklenen):
 
 
 # ── 6. hukum cumleleri ────────────────────────────────────────────────────────
-_CUMLE_SONU = re.compile(r"(?<=[.!?])[*_`)\]]*\s+")
+# Cumle siniri: nokta/unlem/soru + bosluk, PARAGRAF siniri, madde (liste) basi ve
+# markdown TABLO satiri sinirlari. NEDEN paragraf/madde/tablo da sinirdir: kapali
+# kume ancak cumle birimleri KUCUK ve KARARLI ise okunabilir bir on kayda iner;
+# tablo satirlari tek bir devasa "cumle"ye yapisinca hem on kayit okunamaz hem de
+# satir eklemesi baska bir satirin metniyle gizlenebilirdi.
+_CUMLE_SONU = re.compile(
+    r"(?<=[.!?])[*_`)\]]*\s+"        # cumle sonu
+    r"|\n[ \t]*\n"                   # paragraf siniri
+    r"|\n(?=[ \t]*\|)"               # tablo satiri basi
+    r"|(?<=\|)[ \t]*\n"              # tablo satiri sonu
+    r"|\n(?=[ \t]*(?:[-*+]|\d+\.)[ \t])")   # madde (liste) basi
+
+#: ON KAYITLI "hukum tasiyan sozcuk" listesi — normallestirilmis KOKLER.
+#: NEDEN BU SOZCUKLER (kara liste degil, KUME SECICISI): kapali cumle kumesi bir
+#: bolumun TUM cumlelerini degil, hukum tasiyanlari kilitler; secici cok dar
+#: olursa hukum kacar, cok genis olursa on kayit bolumun kendisi kadar buyur ve
+#: alakasiz duzenlemelerde kirilir. Liste, D-460 denetiminde OLCULEN kacan
+#: mutantlarin dilinden cikarildi:
+#:   · "kaynak"  — D1e: "`kaynak` alani artik zorunlu degildir" (CONTRACTS §6.8)
+#:   · "zorunlu" — ayni mutant; "bagimsiz"/"serbest" ikizleri de bu cumlede
+#:   · "kilit", "baglayici" — §6.8'in kendi hukum yuzeyinin adi
+#:   · "gecerli"/"gecersiz"/"kaldirildi"/"uretmez" — hukmu GERI ALAN fiiller
+#:   · "yasak" — yasaklayici hukum
+#:   · "olcut"/"prova"/"kabul" — T221 kacanlari V1/V3 ("prova kabul edilir",
+#:     "prova kapilari sorun cikarmadi"): hicbir olumlu hukum sozcugu tasimayan,
+#:     numarasiz celiskili ikinci hukumler
+#:   · "kural"/"hukum" — "Saha kurali (12 Eylul): ..." kalibinin tamami (T228
+#:     kacanlari A6/A7/A8/A9 ve curutucunun Y5 aile disi es anlamlisi)
+#: Cagiran test bu demeti BOLUME OZGU alan sozcukleriyle genisletir (ornegin
+#: GOSTERICI §5 icin "nabiz", "boru", "kip"); daraltmaz.
+HUKUM_SOZCUKLERI = ("kaynak", "kilit", "kural", "hukum", "yasak", "baglayici",
+                    "gecerli", "gecersiz", "kaldirildi", "uretmez", "zorunlu",
+                    "olcut", "prova", "kabul")
 
 
-def hukum_cumleleri(metin, anahtarlar):
+def hukum_cumleleri(metin, anahtarlar=HUKUM_SOZCUKLERI):
     """`anahtarlar`dan (normallestirilmis kok) en az birini tasiyan cumleler.
 
     Cumleler kod araliklari MASKELIYKEN bolunur (`4.5.7`, `AP_Param.cpp:2313`
@@ -344,7 +453,10 @@ def hukum_cumleleri(metin, anahtarlar):
 
     NEDEN: T221 kacanlari V1/V3 — olumlu hukum sozcugu icermeyen, numarasiz
     celiskili ikinci hukum cumleleri. Kara liste onlari goremez, kapali cumle
-    kumesi gorur.
+    kumesi gorur. D-460 kacani Y7 ayni sinifin CONTRACTS §6.8'deki ikizidir:
+    kalin baslik TASIMAYAN ve kaynak paragrafinin hemen ardina DEGIL, bolumun
+    baska bir yerine konan celiskili hukum paragrafi hem kalin baslik demetinden
+    hem komsuluk kilidinden kacmisti; yakalayan tek yapi budur.
     """
     maskeli, parcalar = _maskele(cizikleri_ayikla(metin))
     cumleler = []
@@ -353,3 +465,114 @@ def hukum_cumleleri(metin, anahtarlar):
         if c and any(a in c for a in anahtarlar):
             cumleler.append(" ".join(c.split()))
     return tuple(cumleler)
+
+
+# ── 7. ON KAYIT TEKLIGI (D-461) ───────────────────────────────────────────────
+# NEDEN: T236-B curutucusu olctu — `ON_KAYIT §4`'e IKINCI ve GEVSETILMIS bir
+# kabul olcutu ("T236 SITL kapisi (gozden gecirilmis): ≤ 4,0 m · ±15° · ≥ %70 ·
+# ±3,0 m") eklenince HICBIR test dusmuyordu. Bugunku kilitler yalniz OZGUN
+# SATIRIN VARLIGINI koruyordu; olcutun TEKLIGINI korumuyordu. Ayni sinif
+# ATOLYE-2'de (A10/A7) ve T229-D2'de (§7.5) ayri ayri olculdu: uc belirtinin tek
+# kok nedeni budur. "On kayitli esikler gevsetilmez" kuralinin MEKANIK karsiligi.
+#
+# Kabul yuzeyinde celiskili IKINCI HUKUM sozcukleri — ON KAYITLI liste.
+# Bunlar kara liste DEGIL, YUZEY kuralidir: kabul blogu zaten metin esitligiyle
+# baglidir (kural c); bu sozcukler "kabul olcutunu baska bir yerden gecersiz
+# kilma" girisiminin dilidir ve bolumun HERHANGI bir yerinde yasaktir.
+KABUL_CELISKI_SOZCUKLERI = (
+    r"gozden\s+gecirilmis",
+    r"guncellenmis\s+kapi",
+    r"yalniz\s+[^.;:\n]{1,60}?\s+ile\s+verilir",
+    r"kaldirildi",
+    r"gecersiz",
+    r"revize",
+)
+_KABUL_CELISKI = re.compile("|".join(KABUL_CELISKI_SOZCUKLERI))
+
+# Esik ifadesi: karsilastirma isareti + sayi + (birim). Sayi ZORUNLUDUR —
+# karsilastirmasiz "50 m" (ornegin "FENCE 50 m altinda") esik degildir, olcum
+# baglamidir; rakip esik ancak KARSILASTIRMALI ikinci ifadedir.
+_OLCUT_BIRIMI = r"m/s|ms|s|°|km|m|px|fps|hz|v|a|dk|db|b/s"
+_OLCUT_DESENI = re.compile(
+    r"(?:≥|≤|>|<|±)\s*±?\s*(?P<yuzde>%)?\s*(?P<sayi>\d+(?:[.,]\d+)?)\s*"
+    r"(?P<birim>%|" + _OLCUT_BIRIMI + r")?" + _SINIR_SONRA)
+
+#: Madde siniri `_CUMLE_SONU` ile AYNI yapisal birimleri kullanir (paragraf, liste
+#: maddesi, tablo satiri) — kabul blogu bunlardan biridir. Tablo satiri da birimdir:
+#: T229-D2 kacani kabul hukmunu bir TABLO SATIRININ parantezine koymustu.
+_MADDE_BASI = re.compile(r"\n[ \t]*\n"
+                         r"|\n(?=[ \t]*(?:[-*+]|\d+\.)[ \t])"
+                         r"|\n(?=[ \t]*\|)"
+                         r"|(?<=\|)[ \t]*\n")
+
+
+def _buyuklukler(metin):
+    """{birim: {deger, ...}} — KARSILASTIRMALI esik ifadeleri (normallestirilmis metin)."""
+    kume = {}
+    for m in _OLCUT_DESENI.finditer(metin):
+        birim = "%" if m.group("yuzde") else (m.group("birim") or "")
+        kume.setdefault(birim, set()).add(float(m.group("sayi").replace(",", ".")))
+    return kume
+
+
+def _maddeler(metin):
+    """Madde/paragraf birimleri: kabul blogu bir madde ya da paragraftir."""
+    return [p for p in _MADDE_BASI.split(metin) if p.strip()]
+
+
+def kabul_olcutu_tekligi(metin, kapi_adi, on_kayitli_olcut):
+    """ON KAYIT TEKLIGI kilidi (D-461). Doner: hata metinleri listesi (bos = temiz).
+
+    `metin`            : kabul YUZEYI (ornegin ON_KAYIT'in ilgili bolumu).
+    `kapi_adi`         : kapinin adi, belgedeki yaziliyla ("T236 SITL kapisi").
+    `on_kayitli_olcut` : kabul blogunun ON KAYITLI TAM metni.
+
+    Dort kural (hepsi D-461'de olculmus bir kacisa karsilik gelir):
+      (a) TEKLIK — `kapi_adi` normallestirilmis metinde TAM BIR KEZ gecmeli.
+          Ikinci bir "T236 SITL kapisi (gozden gecirilmis): ..." satiri, ozgun
+          satir yerinde dururken de kabul yuzeyini ikiye boler.
+      (b) RAKIP ESIK YOK — on kayitli olcutun kisitladigi her buyuklugun (m, °,
+          %, s, m/s, a, fps ...) bolumde gecen KARSILASTIRMALI degerleri, on
+          kayitli olcuttekilerin ALT KUMESI olmali. "≤ 4,0 m" ikinci kez,
+          "±15°" ikinci kez: rakip esik.
+      (c) METIN ESITLIGI — `kapi_adi`yi tasiyan madde, `on_kayitli_olcut` ile
+          bosluk-normalize TAM esit olmali; alt dizge `in` YETMEZ (ATOLYE-2 A7
+          kacani: olcute "∧ YKS video paneli BAYAT degil" EKLENMISTI, ozgun metin
+          hala icinde duruyordu).
+      (d) CELISKI SOZCUGU YOK — `KABUL_CELISKI_SOZCUKLERI` kabul yuzeyinde
+          yasaktir (ATOLYE-2 A10 kacani: "kabul yalniz p50 ile verilir";
+          T229-D2 kacani: parantez ICINE konan "... gecersiz" hukmu).
+
+    Kural (b) YALNIZ on kayitli olcutteki birimlere bakar: bolumdeki baska
+    buyuklukler (ornegin "FENCE 50 m altinda") kapi olcutu DEGILDIR ve zaten
+    karsilastirma isareti tasimazlar.
+    """
+    hatalar = []
+    n = normalize(metin)
+    n_ad = " ".join(normalize(kapi_adi).split())
+    n_olcut = normalize(on_kayitli_olcut)
+
+    adet = n.count(n_ad)
+    if adet != 1:
+        hatalar.append("kabul olcutu tekligi: {!r} normallestirilmis metinde {} kez "
+                       "(tam 1 olmali)".format(kapi_adi, adet))
+
+    olcut_buyukluk = _buyuklukler(n_olcut)
+    bolum_buyukluk = _buyuklukler(n)
+    for birim, degerler in sorted(olcut_buyukluk.items()):
+        fazla = sorted(bolum_buyukluk.get(birim, set()) - degerler)
+        if fazla:
+            hatalar.append("rakip esik ({!r}): on kayitta {} varken bolumde ayrica {}"
+                           .format(birim or "birimsiz", sorted(degerler), fazla))
+
+    adayi = [p for p in _maddeler(metin) if n_ad in " ".join(normalize(p).split())]
+    if len(adayi) != 1:
+        hatalar.append("kabul blogu {} madde icinde bulundu (tam 1 olmali)".format(len(adayi)))
+    elif not on_kayitli_metin_esit(adayi[0], on_kayitli_olcut):
+        hatalar.append("kabul blogu on kayitli metinle ayni degil: {!r}"
+                       .format(" ".join(adayi[0].split())))
+
+    for m in _KABUL_CELISKI.finditer(n):
+        hatalar.append("kabul yuzeyinde celiskili ikinci hukum sozcugu: {!r} — {!r}"
+                       .format(m.group(0), " ".join(n[max(0, m.start() - 45):m.end() + 45].split())))
+    return hatalar

@@ -26,13 +26,31 @@ from pathlib import Path
 import numpy as np
 
 KOK = Path(__file__).resolve().parents[1]
-for _p in (KOK / "codes", KOK / "simulation" / "mujoco", KOK / "simulation" / "scripts"):
+for _p in (KOK / "codes", KOK / "simulation" / "mujoco", KOK / "simulation" / "scripts",
+           KOK / "tests"):
     if str(_p) not in sys.path:
         sys.path.insert(0, str(_p))
 
+import belge_kilidi  # noqa: E402  (T240: ORTAK belge kilidi yardimcisi)
 import karar_sozlesmesi as ks  # noqa: E402
 
 ON_KAYIT = KOK / "results" / "fdr_sprint_20260910" / "H1" / "t235" / "ON_KAYIT.md"
+
+# ── D-461 (T236-B curutucusu): ON KAYIT TEKLIGI — §4 T236 SITL kapisi ────────
+# NEDEN: §4'e IKINCI ve GEVSETILMIS bir kabul olcutu eklenince hicbir test
+# dusmuyordu; ozgun satir yerinde durdugu icin butun "varlik" kilitleri yesil
+# kaliyordu. Kapi adi, kabul blogunun TAM metni ve olcutun kisitladigi
+# buyuklukler (m, °, %) burada ON KAYITLIDIR — kabul blogu ancak bu sabitle
+# BIRLIKTE, gorunur bir test degisikligiyle degisebilir.
+T236_BOLUM_BASI = "## 4. FDA görev planı"
+T236_KAPI_ADI = "T236 SITL kapısı"
+T236_KABUL_BASLIGI = "**T236 SITL kapısı**"
+T236_KABUL_OLCUTU = (
+    "- **T236 SITL kapısı** (Windows SITL ikilisi bulunursa): bekleme süresince (ilk 10 s hariç) "
+    "yatay konum merkezden **≤ 2,0 m** ve yaw β'dan **≤ ±5°** zamanın **≥ %90**'ında; irtifa "
+    "hedeften **±1,0 m**. SITL koşulamazsa **ÖLÇÜLEMEDİ** (GEÇTİ değil) ve plan ilk kalkıştan "
+    "önce Mission Planner simülasyonunda insanca doğrulanır (BEYAN)."
+)
 
 # Tipografik kesme/tirnak tek bicime (D-453: "’ ´ ` kesme" varyantlari kilidi delemez).
 _KESME = str.maketrans({"’": "'", "‘": "'", "´": "'", "`": "'", "ʼ": "'",
@@ -243,6 +261,26 @@ class OnKayitKilitleri(unittest.TestCase):
         self.assertRegex(b3, r"kosum_tur3'?\s*20\s*\+\s*kerteriz\s*8\b")
         self.assertEqual((28, 28), t.K1_BEKLENEN_A1)
         self.assertEqual({"kerteriz": (3, 8), "kosum_tur3_uretim": (6, 20)}, t.K1_BEKLENEN_KARE)
+
+    def test_SS4_T236_kabul_olcutu_TEKLIGI(self):
+        """D-461 (T236-B çürütücüsü): ÖN KAYIT TEKLİĞİ kilidi — `belge_kilidi.kabul_olcutu_tekligi`.
+
+        ÖLÇÜLEN KAÇIŞ: `ON_KAYIT §4`'e **ikinci ve gevşetilmiş** bir kabul ölçütü
+        ("T236 SITL kapısı (gözden geçirilmiş): ≤ 4,0 m · ±15° · ≥ %70 · ±3,0 m") eklenince
+        HİÇBİR test düşmüyordu — bugünkü kilitler yalnız ÖZGÜN SATIRIN VARLIĞINI koruyordu,
+        ölçütün TEKLİĞİNİ değil. "Ön kayıtlı eşikler gevşetilmez" kuralının mekanik karşılığı
+        yoktu; ölçümden SONRA yazılan gevşek bir ikinci ölçüt süit yeşilken belgeye girebilirdi.
+
+        Dört kural birden koşar: (a) kapı adı §4'te TAM 1 kez; (b) ön kayıtlı ölçütün
+        kısıtladığı her büyüklükte (m, °, %) RAKİP EŞİK yok; (c) kabul bloğu ön kayıtlı metinle
+        TAM EŞİT (alt dizge `in` değil); (d) kabul yüzeyinde çelişkili ikinci hüküm sözcüğü yok.
+        """
+        ham = ON_KAYIT.read_text(encoding="utf-8")
+        self.assertEqual(1, ham.count(T236_KABUL_BASLIGI), "§4 kabul ölçütü başlığı tam 1 olmalı")
+        bolum = T236_BOLUM_BASI + ham.split(T236_BOLUM_BASI, 1)[1].split("\n## 5.", 1)[0]
+        self.assertEqual([], belge_kilidi.kabul_olcutu_tekligi(
+            bolum, T236_KAPI_ADI, T236_KABUL_OLCUTU),
+            "ON_KAYIT §4 kabul ölçütü tekliği bozuldu (D-461)")
 
 
 class A0AlanSeritKarari(unittest.TestCase):

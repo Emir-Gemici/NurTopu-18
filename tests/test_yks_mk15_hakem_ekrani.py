@@ -142,6 +142,92 @@ SOZLESME_KAYNAK_HUKMU = (
 # kalin baslik TASIMAYAN bir hukum paragrafi sokusturulamaz (D1e varyanti).
 SOZLESME_KAYNAK_SONRASI = "**Tekrar (throttle) kuralı"
 
+# ── T240-B (D-460 kacani Y7): §6.8'in KAPALI HUKUM CUMLESI KUMESI ────────────
+# NEDEN: kalin baslik demeti + komsuluk kilidi YETMEDI. Bagimsiz curutucu, kalin
+# baslik TASIMAYAN ve kaynak paragrafinin hemen ardina DEGIL, §6.8'in baska bir
+# yerine konan celiskili bir hukum paragrafi ("Not (12 Eylul): `kaynak` alani
+# artik zorunlu degildir; ...") kurdu: MK15 suiti de, 233 testlik test_yks_*.py
+# de cikis 0 verdi (KACTI). T221 §6.6'ya verilen YAPISAL cozum (kapali cumle
+# kumesi) buraya VERILMEMISTI; simdi verildi.
+# Kume secicisi ON KAYITLIDIR: belge_kilidi.HUKUM_SOZCUKLERI (gerekcesi orada
+# yazili) + §6.8'in kendi alan sozcukleri. Kumede olmayan her hukum cumlesi —
+# NEREYE konursa konsun, kalin baslik tasisin tasimasin — kilidi DUSURUR.
+SOZLESME_68_HUKUM_ANAHTARLARI = belge_kilidi.HUKUM_SOZCUKLERI + (
+    "kanit", "olay", "hakem", "alan")
+#: ⟨ORNEK⟩ KODDAN (kamera_kanit_kaynagi) doldurulur — belge ile kod ayrisirsa DUSER.
+SOZLESME_68_HUKUM_CUMLELERI = (
+    "### 6.8 hakem kanit kaydinin olay kumesi - baglayici (sartname §2.2.3 / §6.2 · fdr acik "
+    "kalem #25)",
+    "olgu (olculdu, 2026-09-03): comms/yksgui.py hakem kaydina yalniz yksarayuzhazir, uiolayi ve "
+    "2 dongusel satir yaziyordu; onay zincirinin (§2.2.3) ve sure butcesinin (§6.2/§5.3.2) hicbir "
+    "olayi diske dusmuyordu.",
+    "kayit, 21 eylul'de §2.2.3 hakem onayinin dayanagidir; ekrandaki kayan metin ucus sonrasi "
+    "kanit degildir.",
+    "dosya ve omur: comms/hakemkaydi.py · utf-8 jsonl, satir basina flush+fsync.",
+    "yol --hakem-log ile verilir; verilmezse varsayilanhakemlogyolu() = "
+    "results/prova/<yyyymmddhhmmss><pid>/hakemlog.jsonl.",
+    "dosya acilamazsa kurucu yukseltir (fail-closed: saha sessizce kanitsiz baslamaz).",
+    "acildiktan sonraki yazma hatasi arayuzu oldurmez ama saklanmaz: kanitkaydihatasi + gunlukte "
+    "kirmizi satir (fail-visible).",
+    "ortak alanlar (her satirda, hakemkaydi.yaz uretir): v, ts (yerel iso-8601, ms), monotonics, "
+    "oturum, olay.",
+    "asagidaki alanlar bunlara eklenir.",
+    "| olay | ne zaman yazilir (kod yolu) | zorunlu alanlar |",
+    "| rotaalindi | kabul edilen openrouteun yeni seq'i islendiginde (mesajisle) | seq, road, "
+    "label, conf, waypoint, ankor |",
+    "| ackalindi | yapisal olarak gecerli her ack (ref int), dugum ayrimindan once (ackisle) | "
+    "node, ref, reftip |",
+    "| ikaaktarimkaniti | k8 kaniti (§6.6) gecerli rota seq'i icin ilk baglandiginda | seq, "
+    "ihahavada |",
+    '| hakemonayi1 | 1/2 "tespit dogrulandi" (onayla) | seq, road, conf |',
+    "| hakemonayi2 | 2/2 onay ve ack link'e yazildiktan sonra | seq, reftip, fdakipi, dayanak, "
+    "ihaindi |",
+    "| hakemonayireddi | fail-closed ret: ankoryok · bayattespit · ikaackkanitiyok | seq, sebep |",
+    "| ihainiskaniti | yeni ihalanded seq'i, ack gonderildikten sonra | seq, ikarotaackvar |",
+    "| kamerakanit | kamera kanit durumu degistiginde; degismezse tekrar araliginda 1 "
+    "(kameratazele) | durum, degisim, kareyasis, karesira, kaynak, hata, calisiyor |",
+    "| telemetrikanit | dugum tazelik ozeti degistiginde; degismezse tekrar araliginda 1 "
+    "(durumtazele) | durum, degisim, bayat, yass, dugumler |",
+    "| kronometrebasladi | firlatma/kalkis · ikago · alan girisi · mudahale sonrasi devam.",
+    "| uiolayi | logla ile gunluge yazilan her satir (ekranda gorunen ile kayit ayrismasin) | "
+    "mesaj, seviye |",
+    "kamerakanit.kaynak (t226 · d-443, 10 eylul): kaynak = kare url'si [+ [<etiket>]] - yksgui "
+    '--kamera-etiket verildiyse "⟨ORNEK⟩" bicimi (yksgui.kamerakanitkaynagi), verilmediyse yalniz '
+    "url, url yoksa null; video karar uretmez, hakem onayi telsiz verisine verilir (§6.7).",
+    "tekrar (throttle) kurali - kamerakanit ve telemetrikanit icin, gerekceli: bu 2 olay tik "
+    "dongusunden (~8 hz) uretilir ve hakemkaydi.yaz her satirda fsync yapar.",
+    "bu yuzden ikisi kenar olayidir: durum degisirse hemen, degismezse ≤ kanittekrararaligis (= "
+    '30 s, yksgui) aralikla 1 kez daha yazilir - "hala ayni" satiri sureklilik kanitidir (yalniz '
+    'gecisler yazilirsa kaydin "kamera 10 dakika canli kaldi" demeye dayanagi olmaz), maliyeti 2 '
+    "satir/dk'dir.",
+    "degisim (bool) alani gecisi tekrardan ayirir.",
+    "durum ve damga alanlari: kamera kamerakanitdurumu / sonkamerakanitmonotonic, telemetri "
+    "telemetrikanitdurumu / sontelemetrikanitmonotonic.",
+    "baglayici ilkeler:",
+    "- kanit yazimi hicbir karar yolunu degistirmez: kanityaz istisna yukseltmez, donus degeri "
+    "hicbir dalda kosul olarak kullanilmaz.",
+    "- kayit kapaliyken (hakemkaydi is none - test/demo fiksturu) butun olaylar sessizce atlanir; "
+    "kod yollari birebir aynidir.",
+    "- olay adi ve zorunlu alan kumesi bu tablodan okunur; yksgui icinde serbest metin olay adi "
+    "uretilmez (madde 16).",
+    "1 kume: yksgui.kanitolaylari.",
+    "kanit kaydi kilidi - fail-closed + fail-visible (baglayici): yazma hatasi olustugunda "
+    "kanitkaydihatasi kurulur ve kalicidir (kendiliginden temizlenmez).",
+    "kilit yalniz btnfirlat (ucus kronometresi) ve btnonay (§2.2.3 hakem onayi) uzerindedir; "
+    "arm/disarm ve acil komutlar (rtl/land) acik kalir - kanit kaydi bozukken bile araci "
+    "indirebilmek emniyetin kendisidir.",
+    "kilit 2 yerden birden uygulanir ve ikisi de zorunludur:",
+    "cizim: btnfirlat/btnonayin 1 yazarlari firlatdugmesiniciz ve onaydugmesiniciz'dir; ikisi de "
+    "kanitkilidivar() okur.",
+    "kilit: tests/testykshakemkanitolaylari.py - gercek hakemkaydi + gercek gecici dosya ile "
+    "uctan uca: her olay diske duser, zorunlu alanlar tam, kamera/telemetri olaylari kenarda "
+    "yazilip tekrar araligi dolmadan yazilmaz, yazma hatasi arayuzu oldurmez, kilit periyodik "
+    "tazelemeye ragmen acilmaz, arm/acil dugmeleri kullanilabilir kalir, tablo ile kod birebir (3 "
+    "yonlu ad kumesi karsilastirmasi).",
+    "tests/testykshakemkaydi.py hakemkaydinin kendi dayaniklilik kapisidir (fsync sayimi, nan "
+    "reddi, kapali dosyaya yazma).",
+)
+
 
 def _sozlesme_68(ham=None):
     """CONTRACTS §6.8 blogu (ham metin; cizikler AYIKLANMAMIS)."""
@@ -1040,7 +1126,12 @@ class H4_KameraKanitKaynagi(unittest.TestCase):
         · kaynak hükmünün TAMAMI ön kayıtlıdır ve örneği KODDAN doldurulur,
         · §6.8'in kalın başlıklı hüküm paragrafları sıralı+tam ön kayıtlıdır ve
           kaynak hükmünü `Tekrar (throttle)` paragrafı izler — hükmü geri alan
-          çelişkili ikinci paragraf (D1e) eklenemez.
+          çelişkili ikinci paragraf (D1e) eklenemez,
+        · T240-B (D-460 kaçanı Y7): §6.8'in **kapalı hüküm cümlesi kümesi** ön
+          kayıtlıdır. Kalın başlık TAŞIMAYAN ve kaynak paragrafının hemen ardına
+          DEĞİL, bölümün başka bir yerine konan çelişkili hüküm paragrafı
+          yukarıdaki üç kilidin ÜÇÜNDEN DE kaçıyordu (ölçüldü: MK15 ve tüm
+          test_yks_*.py çıkış 0); yakalayan tek yapı budur.
         """
         ham = _sozlesme_68()
         self.assertEqual([], belge_kilidi.beyaz_liste_disi_cizik(
@@ -1061,6 +1152,13 @@ class H4_KameraKanitKaynagi(unittest.TestCase):
             "§6.8 `KAMERA_KANIT.kaynak` hükmü ön kayıtlı metinle aynı değil")
         self.assertTrue(par[par.index(kaynak[0]) + 1].startswith(SOZLESME_KAYNAK_SONRASI),
                         "§6.8 kaynak hükmünün ardına ikinci hüküm paragrafı sokuşturuldu")
+        beklenen = tuple(c.replace("⟨ORNEK⟩", " ".join(belge_kilidi.normalize(ornek).split()))
+                         for c in SOZLESME_68_HUKUM_CUMLELERI)
+        cumleler = belge_kilidi.hukum_cumleleri(blok, SOZLESME_68_HUKUM_ANAHTARLARI)
+        self.assertEqual(beklenen, cumleler,
+                         "§6.8 ön kayıtlı hüküm cümlesi kümesi değişti — fazla: {}; eksik: {}"
+                         .format([c for c in cumleler if c not in beklenen],
+                                 [c for c in beklenen if c not in cumleler]))
 
 
 class H5_VideoOnayiKilitlemez(_GercekEkran):
