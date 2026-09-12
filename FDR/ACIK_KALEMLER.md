@@ -7,16 +7,13 @@
 >
 > Sıralama kapanma tarihine göredir; en üsttekiler rapor teslimini bekletir.
 
-## 0. 🔴 12 Eylül — RAPORU BEKLETEN, en öncelikli (T256, D-470)
+## 0. ✅ KAPANDI (12 Eylül, D-472) — arena 3 güzergâh mimarisi DEĞİŞMİYOR
 
-> **KARARLANDI (kullanıcı, 12 Eylül): Arena artık 1 güzergâh, 3 güzergâh değil.**
-> Rapordaki ve mimarideki eski 3-güzergâh varsayımı (`§3.3.1.3` arena tablosu,
-> README.md, K3 rota-tespit ölçümleri) **geçersiz** — kullanıcı kararı ek doğrulama
-> beklemez (madde 10). Kalan iş **uygulama**: arena üretimi, `CONTRACTS.md`
-> `OPEN_ROUTE.road` alanı, testler ve K3 ölçüm yorumu 1-güzergâha göre güncellenecek
-> — **`TASK_QUEUE.md` T256** (KRİTİK, mimari karar yazıldı, uygulama bekliyor).
-> Bu bölüm tamamlanana kadar §3.3.1.3 ve K3 sayıları **eski mimariye ait** diye
-> işaretli kalır, sessizce "1 güzergâh" diye düzeltilmiş gösterilmez.
+> Önceki not (D-470) yanlış anlaşılmaya dayanıyordu ve geri alındı (D-472). Gerçek
+> durum: **İHA/İKA final yarışması hâlâ 3 güzergâh** (`§3.3.1.3`, README.md, K3
+> ölçümleri **geçerli**, dokunulmadı) — 1 güzergâh yalnız **Adıyaman provası**
+> (21 Eylül) için, ve o etkinlikte bizden "yalnızca dron uçurumu" bekleniyor, arena/
+> rota mimarisiyle ilgisi netleşmedi (`TASK_QUEUE.md` T257).
 
 ## 1. Cumartesi 5 Eylül — donanım geldiği gün kapanır (ÖLÇÜM)
 

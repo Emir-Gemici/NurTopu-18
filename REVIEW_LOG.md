@@ -30884,3 +30884,14 @@ Düşen 6 alt test yalnız `tests/test_yks_mk15_hakem_ekrani.py` `H2e_RotaYokSon
 **Kök neden (örnekleme, ham çıktıdan):** hatanın büyük kısmı `FileNotFoundError: .../jetson_paket/models/navitas_seg_v35_best.pt` (model ağırlığı bu makinede yok) ve `O:\navitas\...` gibi **Windows-yolu bekleyen** karşılaştırmalar (`'O:\\navitas\\dataset\\...' != 'dji_kirsal_...'`). Madde 13'ün kanonik yorumlayıcısı zaten Windows yolu (`O:\navitas-local-train\venv\...`) — bu Linux checkout ikincil bir ayna, büyük model ağırlıkları ve bazı testler o makineye kilitli.
 **Sonuç:** Bu makinede "tam süit yeşil" **ölçülemez** (madde 13 kapsamı dışı); bu bir yazılım gerilemesi **iddiası değildir**, doğrulanmadı. FDR'nin "1896/2620 test OK" gibi sayıları yalnız **Windows makinesinde** tazelenebilir — T245 bu ayrımla güncellendi, bu oturumda **sahte bir sayı yazılmadı**.
 **Yapılmayan:** 108 testin tek tek triyajı — madde 13 kapsamı dışı bir makinede bu, doğrulama kapasitesini (madde 8) yanlış yere harcamak olurdu. Windows makinesinde aynı komut ayrı ölçülmeli.
+
+---
+
+### D-472 — 🔴 D-470/T256 DÜZELTİLİYOR: "1 güzergâh" **tüm mimariyi değiştirmiyor** — iki ayrı etkinlik var, biri 1 yol biri 3 yol
+
+**Tarih:** 12 Eylül 2026 · Bildiren: kullanıcı, D-470'ten sonraki netleştirme.
+**Düzeltme:** D-470/T256, "1 güzergâh" kararını **arenanın tamamına** (yani İHA final yarışmasına) mal etmişti. Kullanıcı bunu düzeltti: **iki farklı etkinlik var**
+  - **Adıyaman provası** (21 Eylül, T237'de adı geçen prova) — bizden **yalnızca dron uçurumu** bekleniyor; bu etkinlikte **1 güzergâh**.
+  - **İHA/İKA final yarışması** (asıl TEKNOFEST etkinliği) — **3 güzergâh mimarisi AYNEN KALIYOR, değişmiyor.**
+**Sonuç: T256 İPTAL** (yanlış anlaşılmaya dayanıyordu) — `arena.py`, `CONTRACTS.md`, `protocol.py`, `dogrula_gereksinimler.py` 3-güzergâh mimarisiyle **DOKUNULMADAN** kalır; K3 ölçümleri (6/15, 1/15 vb.) hâlâ geçerli senaryoya ait, üstü çizilmez.
+**Açık kalan gerçek soru:** Adıyaman provasının "yalnızca dron uçurumu" gereksinimi, mevcut yazılımdan (rota algısı/İKA teslimi) **bağımsız bir uçuş testi mi**, yoksa arena mimarisinin **küçültülmüş bir alt kümesi mi** — bu netleşmeden Adıyaman için kod değişikliği tasarlanmaz. Muhtemelen ayrı, çok daha küçük bir iş (T237'nin FDA tarihi sorusuyla da örtüşüyor olabilir, karıştırılmamalı).
