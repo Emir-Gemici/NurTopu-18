@@ -1,0 +1,63 @@
+.....................................................................C:\Users\yunus\AppData\Local\Programs\Python\Python313\Lib\unittest\case.py:606: ResourceWarning: unclosed <socket.socket fd=816, family=2, type=2, proto=0, laddr=('127.0.0.1', 50062)>
+  if method() is not None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+C:\Users\yunus\AppData\Local\Programs\Python\Python313\Lib\unittest\case.py:655: ResourceWarning: unclosed <socket.socket fd=744, family=2, type=2, proto=0, laddr=('127.0.0.1', 50061)>
+  self.doCleanups()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+.............................................
+----------------------------------------------------------------------
+Ran 114 tests in 19.792s
+
+OK
+[K4_UDP] dusurulen=3 ulasan_deneme=4 ika_go=True tekrar_durdu=1
+[ika_nav] comms dinleniyor (127.0.0.1:0) — İHA açık yolu gönderecek...
+[ika_nav] ✓ İHA'dan dinamik rota ALINDI: ORTA (2) conf=0.95 wp=1
+[ika_nav] YKS IKA_GO + İHA iniş kanıtı bekleniyor — İKA güvenli duruşta
+[ika_nav] ✓ IKA_GO ve IHA_LANDED alındı — İKA sürüş izni açık
+[ika_nav] sürüş süresi başladı: 600 s (şartname §6.2 İKA görev süresi)
+[T12_KAPI] IHA_LANDED_onceden=1 YKS_UDP_TX=1 IKA_GO_oncesi_hareket=0 IKA_GO_sonrasi_nonzero_motor=1 ACK=ika exit=0
+[ika_nav] comms dinleniyor (127.0.0.1:0) — İHA açık yolu gönderecek...
+[ika_nav] ✗ İHA NO_ROUTE bildirdi: KAPALI_DAR — İKA güvenli duruşta; geçerli rota bekleniyor
+[ika_nav] ✓ İHA'dan dinamik rota ALINDI: SAG (3) conf=0.9 wp=1
+[ika_nav] comms dinleniyor (127.0.0.1:0) — İHA açık yolu gönderecek...
+[ika_nav] comms dinleniyor (127.0.0.1:0) — İHA açık yolu gönderecek...
+[ika_nav] ✓ İHA'dan dinamik rota ALINDI: ORTA (2) conf=0.88 wp=1
+[ika_nav] comms dinleniyor (127.0.0.1:0) — İHA açık yolu gönderecek...
+[ika_nav] ✗ İHA NO_ROUTE bildirdi: KAPALI_DAR — geçici maske — İKA güvenli duruşta; geçerli rota bekleniyor
+[ika_nav] ✓ İHA'dan dinamik rota ALINDI: ORTA (2) conf=0.92 wp=2
+
+[ika_nav] Dinamik rota: ORTA | 1 segment
+[ika_nav] Başlangıç: (0.0, 0.0) → Hedef: (1.0, 0.0)
+
+[ika_nav] ── Waypoint 1/1: (1.0, 0.0)
+[ika_nav] ⚠ Rota geçersiz/NO_ROUTE — GÜVENLİ DURMA
+[ika_nav] ✓ Geçerli OPEN_ROUTE geldi — aynı waypoint'ten devam
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.20m)
+
+[ika_nav] ══ HEDEF BÖLGEYE (HB) ULAŞILDI! ══
+[KAPI] NO_ROUTE etkin komut=3, sıfır-olmayan=0; OPEN_ROUTE sonrası sıfır-olmayan=1
+
+[ika_nav] rota | 1 segment
+[ika_nav] Başlangıç: (0.0, 0.0) → Hedef: (5.0, 0.0)
+
+[ika_nav] ── Waypoint 1/1: (5.0, 0.0)
+[ika_nav] ✗ SÜRÜCÜ YANITSIZ (ardışık 3 hata) — GÜVENLİ DURMA
+
+[ika_nav] rota | 1 segment
+[ika_nav] Başlangıç: (0.0, 0.0) → Hedef: (5.0, 0.0)
+
+[ika_nav] ── Waypoint 1/1: (5.0, 0.0)
+[ika_nav] ✗ SÜRÜCÜ YANITSIZ (ardışık 3 hata) — GÜVENLİ DURMA
+[ika_nav] YKS IKA_GO + İHA iniş kanıtı bekleniyor — İKA güvenli duruşta
+[ika_nav] ✗ IKA_GO + IHA_LANDED gelmedi (timeout) — İKA hareket etmez
+[ika_nav] YKS IKA_GO + İHA iniş kanıtı bekleniyor — İKA güvenli duruşta
+[ika_nav] ✓ IKA_GO ve IHA_LANDED alındı — İKA sürüş izni açık
+
+[ika_nav] rota | 1 segment
+[ika_nav] Başlangıç: (0.0, 0.0) → Hedef: (2.0, 0.0)
+
+[ika_nav] ── Waypoint 1/1: (2.0, 0.0)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.25m)
+
+[ika_nav] ══ HEDEF BÖLGEYE (HB) ULAŞILDI! ══
+<sys>:0: ResourceWarning: unclosed <socket.socket fd=744, family=2, type=2, proto=0, laddr=('127.0.0.1', 50068)>

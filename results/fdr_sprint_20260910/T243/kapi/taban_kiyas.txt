@@ -1,0 +1,53 @@
+TABAN dizini: C:\Users\yunus\AppData\Local\Temp\claude\O--navitas\3e104177-9b44-4ec7-a18f-1f32ed2c3f72\scratchpad\master_taban  (master, git archive)
+DAL dizini  : O:\navitas\.claude\worktrees\wf_88f63745-bff-1
+
+[test_imgsz_tek_kaynak]
+  TABAN: Ran 9 tests in 0.018s · FAILED (failures=1, errors=1)
+  DAL  : Ran 9 tests in 0.019s · FAILED (failures=1, errors=1)
+  dal dusukleri TABANIN ALT KUMESI mi: EVET
+    taban: ['test_load_model_hata_mesaji_IMGSZ_degerlerini_yaziyor', 'test_uretim_defteri_ile_INFER_SIZE_UYUSUYOR']
+    dal  : ['test_load_model_hata_mesaji_IMGSZ_degerlerini_yaziyor', 'test_uretim_defteri_ile_INFER_SIZE_UYUSUYOR']
+
+[test_model_registry]
+  TABAN: Ran 4 tests in 0.003s · FAILED (errors=1)
+  DAL  : Ran 4 tests in 0.003s · FAILED (errors=1)
+  dal dusukleri TABANIN ALT KUMESI mi: EVET
+    taban: ['test_default_is_verified_v36_competition_model']
+    dal  : ['test_default_is_verified_v36_competition_model']
+
+[test_saha_parametrik]
+  TABAN: Ran 20 tests in 0.110s · FAILED (failures=1, errors=6)
+  DAL  : Ran 20 tests in 0.108s · FAILED (failures=1, errors=6)
+  dal dusukleri TABANIN ALT KUMESI mi: EVET
+    taban: ['test_GEVSETME_ACIKCA_istenmeli', 'test_UC_UC_ayni_agirligi_gosteriyor', 'test_UYUM_varsa_yuklenir', 'test_UYUSMAZLIKTA_yukselir', 'test_kayit_defteri_YOKSA_uyum_SAYILMAZ', 'test_manifest_ile_kayit_defteri_ESLESIYOR', 'test_varsayilan_MANIFESTTEN_gelir']
+    dal  : ['test_GEVSETME_ACIKCA_istenmeli', 'test_UC_UC_ayni_agirligi_gosteriyor', 'test_UYUM_varsa_yuklenir', 'test_UYUSMAZLIKTA_yukselir', 'test_kayit_defteri_YOKSA_uyum_SAYILMAZ', 'test_manifest_ile_kayit_defteri_ESLESIYOR', 'test_varsayilan_MANIFESTTEN_gelir']
+
+[test_t123_gecis_provasi]
+  TABAN: Ran 6 tests in 0.008s · FAILED (failures=1, errors=4)
+  DAL  : Ran 6 tests in 0.023s · FAILED (failures=1, errors=3)
+  dal dusukleri TABANIN ALT KUMESI mi: EVET  (kume ESIT DEGIL)
+    taban: ['test_BIRINCIL_ve_YEDEK_ikisi_de_pakette', 'test_MUTASYON_kunyedeki_sha_bozulursa_UYUSMAZ_der', 'test_g2_KOSUYOR_ve_PATLAMIYOR', 'test_g2_YEDEGI_OK_diye_dogruluyor', 'test_g2_blogu_IKI_KILAVUZDA_da_var_ve_AYNI']
+    dal  : ['test_BIRINCIL_ve_YEDEK_ikisi_de_pakette', 'test_MUTASYON_kunyedeki_sha_bozulursa_UYUSMAZ_der', 'test_g2_KOSUYOR_ve_PATLAMIYOR', 'test_g2_YEDEGI_OK_diye_dogruluyor']
+
+[test_t202_jetson_paket_butunlugu]
+  TABAN: Ran 7 tests in 5.836s · FAILED (failures=1)
+  DAL  : Ran 7 tests in 5.942s · FAILED (failures=1)
+  dal dusukleri TABANIN ALT KUMESI mi: EVET
+    taban: ['test_KULLANILAN_HER_YOL_KURULUYOR']
+    dal  : ['test_KULLANILAN_HER_YOL_KURULUYOR']
+
+[test_t38_kuru_kosu_fiksturu]
+  TABAN: Ran 11 tests in 2.118s · FAILED (failures=5, skipped=1)
+  DAL  : Ran 11 tests in 2.178s · FAILED (failures=5)
+  dal dusukleri TABANIN ALT KUMESI mi: EVET
+    taban: ['test_kareler_ve_sha_tutuyor', 'test_kareler_ve_sha_tutuyor', 'test_kareler_ve_sha_tutuyor', 'test_okuyucu_dortlu_donuyor', 'test_varsayilan_fiksturden_gelir']
+    dal  : ['test_kareler_ve_sha_tutuyor', 'test_kareler_ve_sha_tutuyor', 'test_kareler_ve_sha_tutuyor', 'test_okuyucu_dortlu_donuyor', 'test_varsayilan_fiksturden_gelir']
+
+[test_yks_gui_uretim_hizasi]
+  TABAN: Ran 55 tests in 5.945s · FAILED (failures=1, errors=4)
+  DAL  : Ran 55 tests in 6.239s · FAILED (failures=1)
+  dal dusukleri TABANIN ALT KUMESI mi: EVET  (kume ESIT DEGIL)
+    taban: ['test_beklenen_serit_KARARA_SIZMIYOR', 'test_beklenen_serit_bilgi_satirinda_gosteriliyor', 'test_kompozit_dizini_listeleniyor', 'test_kompozit_kaynakta_manifest_olcegi_kullanilir', 'test_yer_gercegi_manifestten_okunuyor']
+    dal  : ['test_kompozit_dizini_listeleniyor']
+
+SONUC: 7/7 modulde dal dusukleri tabanin alt kumesi — T243 kaynakli YENI dusuk YOK

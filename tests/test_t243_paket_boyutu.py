@@ -689,14 +689,36 @@ class ReadmeSayilariArtefakttan(unittest.TestCase):
             self.assertIn(_ara(f"{tip} {B['N1_tip_basina_bayt'][tip]} B"),
                           self.s, tip)
 
-    def test_veri_hizi_araligi(self):
-        tx = [K["kosumlar"][a]["veri_hizi"]["gonderilen_bayt_s"]
-              for a in FDR_KOSUM.values()]
-        hat = [K["kosumlar"][a]["hat_yuku"]["gonderilen_bayt_s"]
-               for a in FDR_KOSUM.values()]
-        for ifade in (f"{TR(min(tx), 1)}–{TR(max(tx), 1)} B/s",
-                      f"{TR(min(hat), 1)}–{TR(max(hat), 1)} B/s"):
+    def test_egri_sayilari(self):
+        u = EGRI["uretim_yolu"]
+        tavan = str(EGRI["sozlesme_tavani_waypoint"])
+        for ifade in (f"{TR((u['20'] - u['10']) / 10.0, 1)} B/waypoint",
+                      f"{TR((EGRI['en_genis']['20'] - EGRI['en_genis']['10']) / 10.0, 1)} B/waypoint",
+                      f"{u[tavan]} B'ye cikar"):
             self.assertIn(_ara(ifade), self.s, ifade)
+
+    def test_veri_hizi_araligi(self):
+        def aralik(al, basamak=1):
+            d = [al(K["kosumlar"][a]) for a in FDR_KOSUM.values()]
+            return f"{TR(min(d), basamak)}–{TR(max(d), basamak)}"
+        for ifade in (
+            aralik(lambda r: r["veri_hizi"]["gonderilen_bayt_s"]) + " B/s",
+            aralik(lambda r: r["hat_yuku"]["gonderilen_bayt_s"]) + " B/s",
+            aralik(lambda r: r["veri_hizi"]["gonderilen_paket_s"]) + " pkt/s",
+            aralik(lambda r: r["veri_hizi"]["tepe_gonderilen_bayt_s"], 0)
+            + " B/s",
+            aralik(lambda r: r["gorev_toplami"]["iha_toplam_bayt"], 0) + " B",
+            aralik(lambda r: r["gorev_toplami"]["ika_toplam_bayt"], 0) + " B",
+        ):
+            self.assertIn(_ara(ifade), self.s, ifade)
+
+    def test_yayin_tavani_bulgusu_readmede(self):
+        for a, b in (("saha_jetson_olculmus", "saha_tavan"),
+                     ("udp_jetson_olculmus", "udp_tavan")):
+            ilk = K["kosumlar"][a]["yayinlanan_karar"]
+            son = K["kosumlar"][b]["yayinlanan_karar"]
+            self.assertIn(_ara(f"{a.split('_')[0]} {ilk}/{son}"), self.s)
+        self.assertIn(_ara("1 karar/s"), self.s)
 
     def test_en_yuksek_doluluk_ve_hukum(self):
         d = max(K["kosumlar"][a]["doluluk"]["paylasimli_yuzde"]
@@ -704,6 +726,34 @@ class ReadmeSayilariArtefakttan(unittest.TestCase):
         self.assertIn(_ara(f"%{TR(d, 2)}"), self.s)
         self.assertLess(d, M.RAPOR_DOLULUK_ESIGI_YUZDE)
         self.assertIn("risk satiri acilmadi", self.s)
+
+    def test_kapi_ciktilari_yerinde_ve_hukumleri_dosyadan(self):
+        """README'deki kapi hukumleri `kapi/` ham ciktilarindan dogrulanir."""
+        kapi = DIZIN / "kapi"
+        beklenen = {
+            "genel_kapi.txt": "GENEL KAPI (madde 14): GECTI",
+            "test_fdr.txt": "OK",
+            "test_faz_b_protocol.txt": "OK",
+            "test_sik_genis.txt": "OK",
+            "test_comms.txt": "OK",
+            "test_iha_sender.txt": "OK",
+            "test_ika.txt": "OK",
+            "akis_diyagram.txt": "TÜM DÜĞÜMLER TUTTU",
+            "taban_kiyas.txt": "T243 kaynakli YENI dusuk YOK",
+        }
+        for ad, imza in beklenen.items():
+            yol = kapi / ad
+            self.assertTrue(yol.is_file(), f"kapi ciktisi yok: {yol}")
+            self.assertIn(_ara(imza), _ara(yol.read_text(encoding="utf-8")), ad)
+        self.assertTrue((kapi / "tam_suit.txt").is_file())
+        self.assertIn("kapi/", self.s)
+
+    def test_tam_suit_dusukleri_GIZLENMEMIS(self):
+        """Kotu haber rapordan dusmesin: suit temiz DEGIL diye yazili olmali."""
+        self.assertIn(_ara("Tam suit bu worktreede temiz DEGILDIR"), self.s)
+        self.assertIn(_ara("taban_kiyas"), self.s)
+        for sozcuk in _OLUMLU_CEVIRME:
+            self.assertNotIn(_ara(f"tam suit {sozcuk}"), self.s)
 
     def test_ilk_kosumun_eksikligi_yazili(self):
         """Yeniden kosum SEBEBI ve yonu (sayi KOTULESTI) rapordan dusmemeli."""

@@ -28,6 +28,8 @@ yazılmaz.
 | `TABLO.md` | iki JSON'dan üretilen okunur tablo |
 | `kosum_ciktisi.txt` | ölçümün ham stdout'u |
 | `kosum_ciktisi_v1_eksik.txt` | **eksik** ilk koşumun ham çıktısı — aşağıya bakınız |
+| `mutasyon_t243.py` · `mutasyon_ciktisi.txt` | nöbetçinin mutasyon kontrolü: gerçek dosyalarda 16 mutasyon, her denemeden sonra sha256 ile bayt-eş geri yükleme |
+| `kapi/` | koşulan kapıların ham çıktıları (genel kapı, `test_fdr*`, protokol, SiK, comms, İKA, akış doğrulayıcı, tam süit) |
 
 ## Ölçülen ne, ölçülmeyen ne
 
@@ -101,6 +103,37 @@ sayıyı iyileştirmedi, **kötüleştirdi**; ilk çıktı silinmedi, bu dizinde
 5. Kadans 1,353 Hz Jetson `pt` p50 739,076 ms ölçümünden gelir
    (`results/jetson_20260906/jetson_fps_20260906_orin_nano/ozet.json`); uçuş
    modeli `.pt`'dir (D-431).
+
+## Koşulan kapılar
+
+Ham çıktılar `kapi/` altındadır; aşağıdaki satırlar o dosyalardan okunur ve
+nöbetçi test tarafından yeniden karşılaştırılır (elle yazılmış sayı yok).
+
+| kapı | çıktı dosyası | sonuç |
+|---|---|---|
+| genel kapı (`codes/test_rota_sentetik.py`) | `kapi/genel_kapi.txt` | **GEÇTİ — kol1 15/15 · kol2 şerit 15/15** |
+| T243 nöbetçisi | süit içinde | OK |
+| `test_fdr*` | `kapi/test_fdr.txt` | OK |
+| `test_faz_b_protocol*` | `kapi/test_faz_b_protocol.txt` | OK |
+| SiK (`*sik*`) | `kapi/test_sik_genis.txt` | OK |
+| comms (`*comms*`) | `kapi/test_comms.txt` | OK |
+| `test_iha_sender*` | `kapi/test_iha_sender.txt` | OK |
+| İKA (`*ika*`) | `kapi/test_ika.txt` | OK |
+| akış doğrulayıcı | `kapi/akis_diyagram.txt` | TÜM DÜĞÜMLER TUTTU |
+| tam süit | `kapi/tam_suit.txt` | aşağıya bakınız |
+
+🔴 **Tam süit bu worktree'de temiz DEĞİLDİR ve bu gizlenmez.** Düşükler
+`kapi/tam_suit.txt` dosyasındadır. Hepsi **izlenmeyen ikili artefakt yokluğu**
+sınıfındandır: `models/*.pt` `.gitignore`'ludur (satır 41) ve
+`data/kuru_kosu_fikstur/` altında yalnız `manifest.json` izlenir — bir git
+worktree'si bu dosyaları hiç almaz.
+
+Bu iddia **ölçüldü**, beyan edilmedi: `kapi/taban_kiyas.py` master'ı
+`git archive` ile ayrı bir dizine açar ve düşen yedi modülü **hem tabanda hem
+dalda** koşar. Ölçüt, daldaki düşen kümenin tabanın **alt kümesi** olmasıdır
+(taban da aynı artefaktlardan yoksundur, hatta bazılarında daha çok düşer).
+Sonuç `kapi/taban_kiyas.txt`: **7/7 modülde dal düşükleri tabanın alt kümesi —
+T243 kaynaklı YENİ düşük YOK.**
 
 ## Kilit
 
