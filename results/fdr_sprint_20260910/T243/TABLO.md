@@ -127,7 +127,16 @@ Ham bütçe 5760 B/s (57600 baud, 8N1 = 10 bit/bayt → 0,174 ms/bayt). Doluluk 
 | koşum | waypoint farkı (B) | `OPEN_ROUTE` çerçevesi | ortak ortam (B/s) | paylaşımlı | ECC açıkken |
 |---|---:|---:|---:|---:|---:|
 | `saha_tavan` | 482 | 244 | 4003,6 | %69,51 | %139,01 |
-| `udp_tavan` | 482 | 200 | 3715,4 | %64,50 | %129,01 |
+| `udp_tavan` | 482 | 250 | 4107,2 | %71,31 | %142,61 |
 
 Rota sözleşme tavanındaki waypoint sayısına çıkarsa hat doluluğu yukarıdaki değerlere taşınır; ECC açık sütunu ham bütçeyi aşar. Bu bir ölçüm değil, ölçülen iki büyüklüğün (çerçeve boyutu farkı × çerçeve sayısı) çarpımıdır.
+
+**Çerçeve sayısı ÖLÇÜMDEN gelir** (D-466): `gönderilen_paket − HEARTBEAT_sayısı × akran_sayısı` — yapılandırmaya göre dal yoktur. **Çapraz kilit:** `(gönderilen_bayt − HEARTBEAT çerçevesi × HEARTBEAT bayt) ÷ çerçeve` değeri N1'de ölçülen `OPEN_ROUTE` boyutuna ±%2,00 içinde olmalıdır; tutmazsa hesap **yapılmaz** ve satır OLCULEMEDI yazılır.
+
+| koşum | `HEARTBEAT` çerçevesi | `OPEN_ROUTE` çerçevesi | ima edilen (B/çerçeve) | ölçülen `OPEN_ROUTE` (B) | bağıl sapma | kilit |
+|---|---:|---:|---:|---:|---:|---|
+| `saha_jetson_olculmus` | 60 | 244 | 362,4 | 365 | %-0,71 | TUTTU |
+| `saha_tavan` | 60 | 244 | 363,5 | 365 | %-0,41 | TUTTU |
+| `udp_jetson_olculmus` | 120 | 250 | 363,1 | 365 | %-0,51 | TUTTU |
+| `udp_tavan` | 120 | 250 | 363,3 | 365 | %-0,47 | TUTTU |
 

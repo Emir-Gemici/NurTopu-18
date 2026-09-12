@@ -113,6 +113,10 @@ HAM_BAYT_S = BAUD / BIT_BASINA_BAYT           # 5760 B/s
 MS_BASINA_BAYT = 1000.0 * BIT_BASINA_BAYT / BAUD   # 0,174 ms
 #: ON KAYIT SS4 madde 2 — RAPOR olcutu (kapi degil).
 RAPOR_DOLULUK_ESIGI_YUZDE = 80.0
+#: CAPRAZ KILIT (D-466) — cerceve sayisinin bagil tolerans tavani. Ima edilen
+#: bayt/cerceve, olculen N1 OPEN_ROUTE boyutundan bu orandan FAZLA sapiyorsa
+#: duyarlilik hesabi YAPILMAZ; OLCULEMEDI yazilir. Gevsetilemez.
+CAPRAZ_KILIT_TOLERANS = 0.02
 
 #: Karar kadanslari — ikisi de olculmus artefakttan (ON_KAYIT SS2.2 madde 6).
 JETSON_PT_P50_MS = 739.076         # results/jetson_20260906/.../ozet.json
@@ -605,43 +609,77 @@ def tr(x, basamak=1):
     return f"{x:.{basamak}f}".replace(".", ",")
 
 
+def open_route_cerceve_sayisi(kosum):
+    """IHA'nin HATTA koydugu OPEN_ROUTE cerceve sayisi — OLCUMDEN.
+
+    TEK formul; yapilandirmaya gore DAL YOKTUR (D-466). Gonderilen toplam
+    cerceveden HEARTBEAT cerceveleri dusulur; HEARTBEAT her akrana ayri gider
+    (saha: 1 akran -> 304 - 60x1 = 244; udp: 2 akran -> 370 - 60x2 = 250).
+
+    🔴 Onceki surum `udp` dalinda `yks_gorulen_tipler[OPEN_ROUTE]` kullaniyordu;
+    o sayac YALNIZ YKS'ye ulasan cerceveleri sayar, IKA'ya gidenleri atlar ->
+    250 yerine 200 (D-466, curutucu bulgusu). Hatta giden cerceve, gonderen
+    ucun sayacindan okunur.
+    """
+    return (kosum["veri_hizi"]["gonderilen_paket"]
+            - kosum["heartbeat_sayisi"] * len(kosum["akranlar"]))
+
+
+def capraz_kilit(boyut, kosum):
+    """Cerceve sayisi olculen baytlarla TUTARLI mi (D-466).
+
+    (gonderilen_bayt - HB_cerceve x HEARTBEAT_bayt) / cerceve, N1'de olculen
+    OPEN_ROUTE boyutuna `CAPRAZ_KILIT_TOLERANS` icinde olmali. Tutmuyorsa
+    cerceve sayisi yanlistir ve hesap YAPILMAZ.
+    """
+    cerceve = open_route_cerceve_sayisi(kosum)
+    hb_cerceve = kosum["heartbeat_sayisi"] * len(kosum["akranlar"])
+    olculen = boyut["N1_tip_basina_bayt"][MESAJ_OPEN_ROUTE]
+    if cerceve <= 0 or not olculen:
+        return {"cerceve": cerceve, "hb_cerceve": hb_cerceve,
+                "ima_edilen_bayt": None, "olculen_bayt": olculen,
+                "bagil_sapma": None, "tolerans": CAPRAZ_KILIT_TOLERANS,
+                "tuttu": False}
+    ima = ((kosum["veri_hizi"]["gonderilen_bayt"]
+            - hb_cerceve * boyut["N1_tip_basina_bayt"][MESAJ_HEARTBEAT])
+           / cerceve)
+    sapma = ima / olculen - 1.0
+    return {"cerceve": cerceve, "hb_cerceve": hb_cerceve,
+            "ima_edilen_bayt": ima, "olculen_bayt": olculen,
+            "bagil_sapma": sapma, "tolerans": CAPRAZ_KILIT_TOLERANS,
+            "tuttu": abs(sapma) <= CAPRAZ_KILIT_TOLERANS}
+
+
 def tavan_waypoint_duyarliligi(boyut, kosum):
     """HESAP: rota sozlesme tavanindaki waypoint sayisina cikarsa hat yuku.
 
     Olcum degildir — olculen hat yukune, olculen iki OPEN_ROUTE boyutunun
     farki x olculen OPEN_ROUTE cerceve sayisi eklenir. Her carpan bir
     artefakttan gelir.
+
+    CAPRAZ KILIT tutmazsa `None` doner: sessiz yanlis sayi yerine acik bosluk
+    (tabloda OLCULEMEDI).
     """
     egri = boyut["N2_open_route_egrisi"]
     tavan = str(egri["sozlesme_tavani_waypoint"])
     # Karisimda kullanilan cerceve = N1'deki OPEN_ROUTE ornegidir (ayni rota).
     fark = (egri["uretim_yolu"][tavan]
             - boyut["N1_tip_basina_bayt"][MESAJ_OPEN_ROUTE])
-    cerceve = kosum["yayinlanan_karar"] * _tur_sayisi(kosum)
+    kilit = capraz_kilit(boyut, kosum)
     hat = kosum["hat_yuku"]
     sure = hat["sure_s"]
-    if sure <= 0:
+    if not kilit["tuttu"] or sure <= 0:
         return None
+    cerceve = kilit["cerceve"]
     yeni_bayt_s = hat["gonderilen_bayt_s"] + (fark * cerceve) / sure
     return {
         "waypoint_farki_bayt": fark,
         "open_route_cerceve_sayisi": cerceve,
+        "capraz_kilit": kilit,
         "hat_bayt_s": yeni_bayt_s,
         "paylasimli_yuzde": 100.0 * yeni_bayt_s / HAM_BAYT_S,
         "ecc_acikken_paylasimli_yuzde": 100.0 * yeni_bayt_s / (HAM_BAYT_S / 2.0),
     }
-
-
-def _tur_sayisi(kosum):
-    """Bir kararin hatta kac OPEN_ROUTE cercevesi urettigi — OLCUMDEN."""
-    karar = kosum["yayinlanan_karar"]
-    if not karar:
-        return 0
-    if kosum["yapilandirma"] == "udp":
-        return kosum["yks_gorulen_tipler"].get(MESAJ_OPEN_ROUTE, 0) / karar
-    # saha: tek ortam, IKA gordugu her cerceveye ACK yazar -> ACK sayisi = cerceve
-    return round((kosum["veri_hizi"]["gonderilen_paket"]
-                  - kosum["heartbeat_sayisi"]) / karar, 3)
 
 
 def tablo_uret(boyut, karisim):
@@ -821,6 +859,11 @@ def tablo_uret(boyut, karisim):
     s.append("|---|---:|---:|---:|---:|---:|")
     for ad in ("saha_tavan", "udp_tavan"):
         du = tavan_waypoint_duyarliligi(b, k["kosumlar"][ad])
+        if du is None:
+            kl = capraz_kilit(b, k["kosumlar"][ad])
+            s.append(f"| `{ad}` | — | {kl['cerceve']} | OLCULEMEDI | "
+                     "OLCULEMEDI | OLCULEMEDI |")
+            continue
         s.append(f"| `{ad}` | {du['waypoint_farki_bayt']} | "
                  f"{tr(du['open_route_cerceve_sayisi'], 0)} | "
                  f"{tr(du['hat_bayt_s'], 1)} | %{tr(du['paylasimli_yuzde'], 2)} | "
@@ -830,6 +873,24 @@ def tablo_uret(boyut, karisim):
              "yukarıdaki değerlere taşınır; ECC açık sütunu ham bütçeyi aşar. "
              "Bu bir ölçüm değil, ölçülen iki büyüklüğün (çerçeve boyutu farkı × "
              "çerçeve sayısı) çarpımıdır.")
+    s.append("")
+    s.append("**Çerçeve sayısı ÖLÇÜMDEN gelir** (D-466): "
+             "`gönderilen_paket − HEARTBEAT_sayısı × akran_sayısı` — "
+             "yapılandırmaya göre dal yoktur. **Çapraz kilit:** "
+             "`(gönderilen_bayt − HEARTBEAT çerçevesi × HEARTBEAT bayt) ÷ çerçeve` "
+             "değeri N1'de ölçülen `OPEN_ROUTE` boyutuna "
+             f"±%{tr(100.0 * CAPRAZ_KILIT_TOLERANS, 2)} içinde olmalıdır; "
+             "tutmazsa hesap **yapılmaz** ve satır OLCULEMEDI yazılır.")
+    s.append("")
+    s.append("| koşum | `HEARTBEAT` çerçevesi | `OPEN_ROUTE` çerçevesi | ima edilen (B/çerçeve) | ölçülen `OPEN_ROUTE` (B) | bağıl sapma | kilit |")
+    s.append("|---|---:|---:|---:|---:|---:|---|")
+    for ad in ("saha_jetson_olculmus", "saha_tavan", "udp_jetson_olculmus",
+               "udp_tavan"):
+        kl = capraz_kilit(b, k["kosumlar"][ad])
+        s.append(f"| `{ad}` | {kl['hb_cerceve']} | {kl['cerceve']} | "
+                 f"{tr(kl['ima_edilen_bayt'], 1)} | {kl['olculen_bayt']} | "
+                 f"%{tr(100.0 * kl['bagil_sapma'], 2)} | "
+                 f"{'TUTTU' if kl['tuttu'] else 'TUTMADI'} |")
     s.append("")
     return "\n".join(s) + "\n"
 

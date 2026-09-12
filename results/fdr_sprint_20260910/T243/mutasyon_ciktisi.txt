@@ -13,7 +13,10 @@ TABAN: rc=0 · OK
   [YAKALANDI] M12 protocol HEARTBEAT sozlesmesine alan eklendi · .......OLCULEMEDI: TAM_TELEMETRI alan kumesi sozlesmedeki HEARTBEAT_TELEMETRI_ALANLARI ile ayni degil; eksik/fazla: ['rssi'] · 
   [YAKALANDI] M15 SayanLink recv sayaci oldüruldu · FAILED (failures=1) · FAIL: test_sayan_link_bayt_paket_ve_tepe_kovasi
   [YAKALANDI] M16 tepe kovasi maks yerine son kovayi veriyor · FAILED (failures=1) · FAIL: test_sayan_link_bayt_paket_ve_tepe_kovasi
-  [YAKALANDI] M13 betik: duyarlilik carpimi oldüruldu · FAILED (failures=2) · FAIL: test_duyarlilik_satiri_jsondan; FAIL: test_tablo_json_lardan_yeniden_uretilir
+  [YAKALANDI] M13 betik: duyarlilik carpimi oldüruldu · FAILED (failures=2) · FAIL: test_betigin_hesabi_bagimsiz_hesapla_ayni; FAIL: test_tablo_json_lardan_yeniden_uretilir
   [YAKALANDI] M14 betik: hat yuku yalniz IHA'yi sayiyor (ilk kosumun kusuru geri geldi) · FAILED (failures=1) · FAIL: test_hat_yuku_TUM_UCLARIN_gonderdigini_toplar
-SONUC: 16/16 mutasyon yakalandi
+  [YAKALANDI] M17 FDR duyarlilik sayisi eski HATALI degere dondu (cerceve 250 -> 200) · FAILED (failures=2) · FAIL: test_duyarlilik_paragrafi_ON_KAYITLI_METNE_ESIT; FAIL: test_duyarlilik_satiri_BAGIMSIZ_HESAPTAN
+  [YAKALANDI] M18 betik: capraz kilit toleransi gevsetildi (%2 -> %50) · FAILED (failures=3) · FAIL: test_capraz_kilit_GEVSETILEMEZ; FAIL: test_kilit_tutmazsa_TABLODA_OLCULEMEDI; FAIL: test_tablo_json_lardan_yeniden_uretilir
+  [YAKALANDI] M19 betik: cerceve sayisinda udp dali geri geldi (YKS sayaci) · FAILED (failures=4) · FAIL: test_betigin_hesabi_bagimsiz_hesapla_ayni; FAIL: test_capraz_kilit_GEVSETILEMEZ; FAIL: test_cerceve_sayisi_OLCUMDEN_tek_formul; FAIL: test_tablo_json_lardan_yeniden_uretilir
+SONUC: 19/19 mutasyon yakalandi
 GERI YUKLEME SONRASI: rc=0 · OK

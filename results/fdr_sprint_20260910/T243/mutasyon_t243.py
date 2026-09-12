@@ -61,7 +61,35 @@ MUTASYONLAR = [
      BETIK,
      "    bayt = sum(u.gonderilen_bayt for u in uclar.values())",
      "    bayt = uclar[\"iha\"].gonderilen_bayt"),
+    # ── D-466 (curutucu bulgusu): cerceve sayisi ve capraz kilit ────────────
+    ("M17 FDR duyarlilik sayisi eski HATALI degere dondu (cerceve 250 -> 200)",
+     FDR,
+     "**4003,6 – 4107,2\nB/s**'ye taşınır (paylaşımlı **%69,51 – %71,31**)",
+     "**3715,4 – 4003,6\nB/s**'ye taşınır (paylaşımlı **%64,50 – %69,51**)"),
+    ("M18 betik: capraz kilit toleransi gevsetildi (%2 -> %50)", BETIK,
+     "CAPRAZ_KILIT_TOLERANS = 0.02",
+     "CAPRAZ_KILIT_TOLERANS = 0.5"),
+    ("M19 betik: cerceve sayisinda udp dali geri geldi (YKS sayaci)", BETIK,
+     '    return (kosum["veri_hizi"]["gonderilen_paket"]\n'
+     '            - kosum["heartbeat_sayisi"] * len(kosum["akranlar"]))',
+     '    if kosum["yapilandirma"] == "udp":\n'
+     '        return kosum["yks_gorulen_tipler"][MESAJ_OPEN_ROUTE]\n'
+     '    return (kosum["veri_hizi"]["gonderilen_paket"]\n'
+     '            - kosum["heartbeat_sayisi"] * len(kosum["akranlar"]))'),
 ]
+
+
+def capa(metin, eski, yeni):
+    """Satir sonu bicimine BAGIMSIZ capa (worktree'de dosyalar CRLF olabilir).
+
+    LF varyanti tutmazsa CRLF varyanti denenir; bulunan bicim ikisine de
+    uygulanir. Bulunamazsa (None, None) doner.
+    """
+    for a, b in ((eski, yeni),
+                 (eski.replace("\n", "\r\n"), yeni.replace("\n", "\r\n"))):
+        if a in metin:
+            return a, b
+    return None, None
 
 
 def kos():
@@ -86,9 +114,10 @@ def main():
         ham = yol.read_bytes()
         sha = hashlib.sha256(ham).hexdigest()
         metin = ham.decode("utf-8")
-        if eski not in metin:
+        e, y = capa(metin, eski, yeni)
+        if e is None:
             print(f"  [ATLANDI] {ad} — capa bulunamadi"); continue
-        yol.write_bytes(metin.replace(eski, yeni, 1).encode("utf-8"))
+        yol.write_bytes(metin.replace(e, y, 1).encode("utf-8"))
         try:
             rc2, ozet2, dusen = kos()
         finally:

@@ -28,7 +28,7 @@ yazılmaz.
 | `TABLO.md` | iki JSON'dan üretilen okunur tablo |
 | `kosum_ciktisi.txt` | ölçümün ham stdout'u |
 | `kosum_ciktisi_v1_eksik.txt` | **eksik** ilk koşumun ham çıktısı — aşağıya bakınız |
-| `mutasyon_t243.py` · `mutasyon_ciktisi.txt` | nöbetçinin mutasyon kontrolü: gerçek dosyalarda 16 mutasyon, her denemeden sonra sha256 ile bayt-eş geri yükleme |
+| `mutasyon_t243.py` · `mutasyon_ciktisi.txt` | nöbetçinin mutasyon kontrolü: gerçek dosyalarda 19 mutasyon (D-466 ile +3), her denemeden sonra sha256 ile bayt-eş geri yükleme |
 | `kapi/` | koşulan kapıların ham çıktıları (genel kapı, `test_fdr*`, protokol, SiK, comms, İKA, akış doğrulayıcı, tam süit) |
 
 ## Ölçülen ne, ölçülmeyen ne
@@ -77,9 +77,32 @@ onların yerine geçmez. ECC açıkken etkin hava hızının yarıya indiği bil
 Bu bir kapı değildir; hüküm "ölçüldü"dür, "geçti" değildir.
 
 Ayrı ve **hesaba** dayalı bir uyarı kayda geçer: `TABLO.md` §8, rota sözleşme
-tavanındaki waypoint sayısına çıkarsa ortak ortam yükünün 3715,4–4003,6 B/s'ye
-taşındığını gösterir; ECC açık sütunu ham bütçeyi aşar. Bu bir ölçüm değil,
+tavanındaki waypoint sayısına çıkarsa ortak ortam yükünün ~~3715,4–4003,6 B/s'ye~~
+**4003,6–4107,2 B/s**'ye taşındığını gösterir (12 Eylül düzeltmesi, D-466);
+ECC açık sütunu ham bütçeyi aşar. Bu bir ölçüm değil,
 ölçülen iki büyüklüğün çarpımıdır ve telsiz ayarı okunmadan hükme bağlanamaz.
+
+## 12 Eylül düzeltmesi (D-466) — çerçeve sayısı
+
+Çürütücü kanıtlı kusur buldu: ilk hesapta `udp` kolunun `OPEN_ROUTE` çerçeve
+sayısı, hatta giden **250** yerine **200** alınmıştı — `yks_gorulen_tipler`
+sayacı yalnız YKS'ye ulaşan çerçeveleri sayar, İKA'ya giden 50 çerçeveyi atlar.
+FDR §3.3.4.3.3 bu yüzden hat yükünü **eksik** gösteriyordu (3715,4 B/s · %64,50
+yerine 4107,2 B/s · %71,31; ECC açıkken %129,01 yerine %142,61) — yön **riski az
+gösteriyordu**. Düzeltme:
+
+- Çerçeve sayısı iki yapılandırmada da **tek ölçüm formülüyle** bulunur:
+  `gönderilen_paket − HEARTBEAT_sayısı × akran_sayısı` (saha 304 − 60×1 = 244;
+  udp 370 − 60×2 = 250). Yapılandırmaya göre dal kalmadı.
+- **Çapraz kilit:** `(gönderilen_bayt − HEARTBEAT çerçevesi × HEARTBEAT bayt) ÷
+  çerçeve` değeri N1'de ölçülen `OPEN_ROUTE` boyutuna ±%2 içinde olmalıdır
+  (ölçülen sapma: −%0,71 … −%0,41, `TABLO.md` §8 ikinci tablo). Tutmazsa hesap
+  **yapılmaz**: sessiz yanlış sayı yerine açık boşluk (**OLCULEMEDI**).
+- Eski sayılar **silinmedi**; FDR'de ve yukarıda çizili durur.
+- Nöbetçi artık FDR'deki duyarlılık sayılarını **hesabı üreten fonksiyondan
+  bağımsız** formülle yeniden hesaplayıp karşılaştırır (çürütücünün bulgusu:
+  eski nöbetçi aynı hatalı fonksiyonu yeniden koşuyordu) ve duyarlılık paragrafı
+  D-465 uyarınca **metin eşitliğine** bağlıdır.
 
 ## İlk koşum neden değiştirildi (şeffaflık)
 

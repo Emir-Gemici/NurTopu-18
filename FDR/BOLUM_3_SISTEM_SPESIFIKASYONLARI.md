@@ -2597,10 +2597,22 @@ etken görünür durumdadır: YKS `OPEN_ROUTE`'a ACK **üretmez** (hakem 2/2'ye 
 `CONTRACTS.md` §6.6), bu yüzden her karar tekrar turunun tamamını koşar — YKS ucu 60 s'de
 **200** `OPEN_ROUTE` çerçevesi gördü (50 karar × 4 tur).
 
+**Sonuç (D-466 · ÖLÇÜM):** karar **yayın tavanı ≈ 1 karar/s**'dir; besleme kadansı
+1,353 → 2,0 Hz'e çıkarıldığında **yayınlanan karar sayısı DEĞİŞMEDİ** (`saha` 61 → 61,
+`udp` 50 → 50) ve sebebi hat değil `IhaSender._tekrarli_gonder` tasarımıdır. **Algı
+hızlanırsa yayın hızlanmaz.** Bu bir kusur beyanı değil, ölçülmüş sınırdır.
+
 ⚠ **Duyarlılık (HESAP, ölçüm değil):** rota sözleşme tavanındaki waypoint sayısına
-(`MAX_WAYPOINTS` = 64) çıkarsa ortak ortam yükü **3715,4 – 4003,6 B/s**'ye taşınır
-(paylaşımlı %64,50 – %69,51) ve ECC açık varsayımıyla ham bütçe **aşılır**. Bu bir ölçüm
-değildir: ölçülen çerçeve boyutu farkı (482 B) × ölçülen çerçeve sayısıdır.
+(`MAX_WAYPOINTS` = 64) çıkarsa ortak ortam yükü ~~**3715,4 – 4003,6 B/s**'ye taşınır
+(paylaşımlı %64,50 – %69,51)~~ — **12 Eylül düzeltmesi (D-466)** — **4003,6 – 4107,2
+B/s**'ye taşınır (paylaşımlı **%69,51 – %71,31**) ve ECC açık varsayımıyla ham bütçe
+**aşılır** (**%139,01 – %142,61**). Bu bir ölçüm değildir: ölçülen çerçeve boyutu farkı
+(482 B) × ölçülen çerçeve sayısıdır. Düzeltmenin sebebi: ilk hesap `udp` kolunda hatta
+giden **250** `OPEN_ROUTE` çerçevesinin yalnız YKS'ye ulaşan **200**'ünü saymıştı (İKA'ya
+giden 50 çerçeve atlanmıştı); çerçeve sayısı artık iki yapılandırmada da tek ölçüm
+formülüyle (`gönderilen_paket − HEARTBEAT_sayısı × akran_sayısı`) bulunur ve ölçülen
+bayt/çerçeve ile çapraz kilitlenir — kilit tutmazsa hesap yapılmaz, satıra
+**OLCULEMEDI** yazılır (`TABLO.md` §8).
 
 **Bu alt bölümdeki hiçbir sayı RF ölçümü değildir:** kare gecikmesi UDP loopback, seri ACK
 ölçümü seri köprü (RF değil, D-403 §3), hub ölçümü UDP→seri, **10 Eylül tablosu UDP loopback ve

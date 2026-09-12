@@ -211,6 +211,64 @@ BOLUM_3 = _fdr_bolum("##### 3.3.4.3.3", "##### 3.3.4.3.4")
 METIN_1, METIN_3 = _metin(BOLUM_1), _metin(BOLUM_3)
 
 
+# ══ BAGIMSIZ DUYARLILIK HESABI (D-466) ═══════════════════════════════════════
+# 🔴 Curutucunun bulgusu: eski nobetci FDR'deki duyarlilik sayisini, o sayiyi
+#    URETEN fonksiyonu (`M.tavan_waypoint_duyarliligi`) yeniden kosarak
+#    dogruluyordu — fonksiyon yanlissa kilit de yanlisi onaylar (udp kolunda
+#    250 yerine 200 cerceve). Buradaki hesap betige DOKUNMAZ: iki JSON'dan
+#    elle yazilmis aritmetiktir ve capraz kilidi kendi esigiyle kurar.
+
+#: Capraz kilidin ON KAYITLI bagil tolerans tavani. Gevsetilemez (D-466).
+KILIT_TOLERANS = 0.02
+
+
+def _bagimsiz(anahtar):
+    """FDR/TABLO sayilarinin BAGIMSIZ karsiligi — yalniz JSON aritmetigi."""
+    r = K["kosumlar"][anahtar]
+    v, h = r["veri_hizi"], r["hat_yuku"]
+    hb_cerceve = r["heartbeat_sayisi"] * len(r["akranlar"])
+    cerceve = v["gonderilen_paket"] - hb_cerceve
+    olculen = B["N1_tip_basina_bayt"]["OPEN_ROUTE"]
+    ima = (v["gonderilen_bayt"]
+           - hb_cerceve * B["N1_tip_basina_bayt"]["HEARTBEAT"]) / cerceve
+    sapma = ima / olculen - 1.0
+    tavan = str(EGRI["sozlesme_tavani_waypoint"])
+    fark = EGRI["uretim_yolu"][tavan] - olculen
+    bayt_s = h["gonderilen_bayt_s"] + (fark * cerceve) / h["sure_s"]
+    return {
+        "hb_cerceve": hb_cerceve,
+        "cerceve": cerceve,
+        "ima_edilen_bayt": ima,
+        "bagil_sapma": sapma,
+        "tuttu": abs(sapma) <= KILIT_TOLERANS,
+        "waypoint_farki_bayt": fark,
+        "hat_bayt_s": bayt_s,
+        "paylasimli_yuzde": 100.0 * bayt_s / 5760.0,
+        "ecc_acikken_paylasimli_yuzde": 100.0 * bayt_s / 2880.0,
+    }
+
+
+#: FDR duyarlilik araliginin kaynagi: iki TAVAN kosumu.
+DUYARLILIK_KOSUMLARI = ("saha_tavan", "udp_tavan")
+
+
+def _paragraf(bolum, bas):
+    """Bolumun `bas` ile baslayan PARAGRAFI — HAM metin.
+
+    D-465: olcum hukmu tasiyan yuzeyde cizik/varlik/vurgu AYIKLAMASI YOKTUR;
+    normallestirme yalniz bosluk/satir sonu icindir.
+    """
+    for par in re.split(r"\n[ \t]*\n", bolum):
+        if par.strip().startswith(bas):
+            return _bosluk(par)
+    raise AssertionError(f"paragraf bulunamadi: {bas!r}")
+
+
+def _bosluk(metin):
+    """D-465 normallestirmesi: YALNIZ bosluk/satir sonu."""
+    return re.sub(r"\s+", " ", metin).strip()
+
+
 class Capa(unittest.TestCase):
     def test_artefaktlar_yerinde(self):
         for y in (BETIK, ON_KAYIT, README, TABLO, BOYUT_JSON, KARISIM_JSON):
@@ -500,20 +558,27 @@ class FdrVeriHiziTablosu(unittest.TestCase):
                       f"%{TR(min(ecc), 2)} – %{TR(max(ecc), 2)}"):
             self.assertIn(_ara(ifade), METIN_3, ifade)
 
-    def test_duyarlilik_satiri_jsondan(self):
-        du = [M.tavan_waypoint_duyarliligi(B, K["kosumlar"][a])
-              for a in ("saha_tavan", "udp_tavan")]
+    def test_duyarlilik_satiri_BAGIMSIZ_HESAPTAN(self):
+        """D-466: sayilar hesabi URETEN fonksiyondan bagimsiz dogrulanir."""
+        du = [_bagimsiz(a) for a in DUYARLILIK_KOSUMLARI]
         bs = sorted(x["hat_bayt_s"] for x in du)
         yz = sorted(x["paylasimli_yuzde"] for x in du)
+        ec = sorted(x["ecc_acikken_paylasimli_yuzde"] for x in du)
         for ifade in (f"{TR(bs[0], 1)} – {TR(bs[1], 1)} B/s",
                       f"%{TR(yz[0], 2)} – %{TR(yz[1], 2)}",
+                      f"%{TR(ec[0], 2)} – %{TR(ec[1], 2)}",
                       f"({du[0]['waypoint_farki_bayt']} B)"):
             self.assertIn(_ara(ifade), METIN_3, ifade)
         self.assertIn(_ara("HESAP, olcum degil"), METIN_3)
 
     def test_yayin_tavani_bulgusu_sayilariyla_duruyor(self):
-        """Olcumun asil bulgusu (kotu haber) rapordan dusmemeli."""
-        s = METIN_3
+        """Olcumun asil bulgusu (kotu haber) rapordan dusmemeli.
+
+        Sayilar ASIL BULGU paragrafinda aranir: D-466 ile eklenen "Sonuc"
+        paragrafi ayni sayilari tasidigi icin bolum geneli aramak, bulgunun
+        asil yerinden silinmesini gizlerdi (M4 kacisi).
+        """
+        s = _ara(_normallestir(_paragraf(BOLUM_3, "🔴 **Bu ölçümün asıl")))
         for a, b in (("saha_jetson_olculmus", "saha_tavan"),
                      ("udp_jetson_olculmus", "udp_tavan")):
             ilk = K["kosumlar"][a]["yayinlanan_karar"]
@@ -543,6 +608,194 @@ class FdrVeriHiziTablosu(unittest.TestCase):
             re.search(r"ecc[^.]{0,120}?(dogrulan|kanitlan|teyit edildi|olculdu)",
                       s),
             "ECC hukmu olumluya cevrilmis")
+
+
+class DuyarlilikBagimsizKilit(unittest.TestCase):
+    """🔴 D-466 — KORUNAN KUSUR: `udp` kolunda cerceve sayisi 250 yerine 200.
+
+    Eski nobetci bunu yakalayamiyordu cunku TABLO/FDR sayisini AYNI hatali
+    fonksiyonu yeniden kosarak uretiyordu (bayat sayi kilidi vardi, YANLIS
+    sayi kilidi yoktu). Buradaki testler betigin hesabini kullanmaz.
+    """
+
+    def test_cerceve_sayisi_OLCUMDEN_tek_formul(self):
+        """cerceve = gonderilen_paket - HEARTBEAT x akran; dal YOK."""
+        for ad, r in K["kosumlar"].items():
+            bek = (r["veri_hizi"]["gonderilen_paket"]
+                   - r["heartbeat_sayisi"] * len(r["akranlar"]))
+            self.assertEqual(bek, _bagimsiz(ad)["cerceve"], ad)
+            self.assertEqual(bek, M.open_route_cerceve_sayisi(r),
+                             f"{ad}: betik cerceve sayisi bagimsiz formulden "
+                             f"farkli (yapilandirma dali geri mi geldi?)")
+
+    def test_udp_kolunda_YKS_sayaci_KULLANILMAZ(self):
+        """YKS sayaci yalniz YKS'ye ulasani sayar; hatta giden daha fazladir."""
+        r = K["kosumlar"]["udp_tavan"]
+        yks = r["yks_gorulen_tipler"]["OPEN_ROUTE"]
+        hat = _bagimsiz("udp_tavan")["cerceve"]
+        self.assertGreater(hat, yks,
+                           "udp kolunda hatta giden cerceve, YKS'nin gordugu "
+                           "cerceveden az olamaz")
+        self.assertEqual(hat - yks, r["yayinlanan_karar"],
+                         "aradaki fark IKA'ya giden cerceve sayisi olmali")
+
+    def test_capraz_kilit_HER_kosumda_tutuyor(self):
+        """Ima edilen B/cerceve, olculen OPEN_ROUTE boyutuna +-%2 icinde."""
+        for ad in K["kosumlar"]:
+            d = _bagimsiz(ad)
+            self.assertLessEqual(
+                abs(d["bagil_sapma"]), KILIT_TOLERANS,
+                f"{ad}: capraz kilit TUTMADI — ima edilen "
+                f"{d['ima_edilen_bayt']:.1f} B/cerceve, olculen "
+                f"{B['N1_tip_basina_bayt']['OPEN_ROUTE']} B")
+            self.assertTrue(d["tuttu"], ad)
+
+    def test_betigin_hesabi_bagimsiz_hesapla_ayni(self):
+        """Betik ile bagimsiz aritmetik AYNI sayiyi vermeli (aksi: sapma)."""
+        for ad in DUYARLILIK_KOSUMLARI:
+            bet = M.tavan_waypoint_duyarliligi(B, K["kosumlar"][ad])
+            bag = _bagimsiz(ad)
+            self.assertIsNotNone(bet, ad)
+            self.assertEqual(bag["cerceve"], bet["open_route_cerceve_sayisi"],
+                             ad)
+            for alan in ("hat_bayt_s", "paylasimli_yuzde",
+                         "ecc_acikken_paylasimli_yuzde"):
+                self.assertAlmostEqual(bag[alan], bet[alan], places=6,
+                                       msg=f"{ad}/{alan}")
+
+    def test_capraz_kilit_GEVSETILEMEZ(self):
+        """Esik gevsetilirse YANLIS cerceve sayisi kabul edilir -> bu test duser.
+
+        Sentetik prob: `udp_tavan` kosumunun cerceve sayisi elle 250 -> 200
+        yapilir (eski kusur). Kilit bunu REDDETMELI ve duyarlilik hesabi
+        OLCULEMEDI'ye dusmeli.
+        """
+        self.assertLessEqual(M.CAPRAZ_KILIT_TOLERANS, KILIT_TOLERANS,
+                             "betikteki capraz kilit toleransi ON KAYITLI "
+                             "tavandan gevsek")
+        r = json.loads(json.dumps(K["kosumlar"]["udp_tavan"]))
+        yanlis = r["yks_gorulen_tipler"]["OPEN_ROUTE"]          # 200
+        dogru = M.open_route_cerceve_sayisi(r)                  # 250
+        self.assertNotEqual(yanlis, dogru)
+        # Cerceve sayisini elle yanlis degere cek (paket sayisini dusurerek).
+        r["veri_hizi"]["gonderilen_paket"] -= (dogru - yanlis)
+        self.assertEqual(yanlis, M.open_route_cerceve_sayisi(r))
+        kilit = M.capraz_kilit(B, r)
+        self.assertFalse(kilit["tuttu"],
+                         "capraz kilit YANLIS cerceve sayisini kabul etti — "
+                         "esik gevsetilmis olabilir "
+                         f"(sapma %{100 * kilit['bagil_sapma']:.2f}, "
+                         f"tolerans %{100 * kilit['tolerans']:.2f})")
+        self.assertIsNone(M.tavan_waypoint_duyarliligi(B, r),
+                          "kilit tutmadan hesap yapildi (sessiz yanlis sayi)")
+
+    def test_kilit_tutmazsa_TABLODA_OLCULEMEDI(self):
+        """Sessiz yanlis sayi yerine ACIK BOSLUK: tabloya OLCULEMEDI girer."""
+        k2 = json.loads(json.dumps(K))
+        r = k2["kosumlar"]["udp_tavan"]
+        r["veri_hizi"]["gonderilen_paket"] -= 50
+        metin = M.tablo_uret(B, k2)
+        satir = [x for x in metin.splitlines()
+                 if x.startswith("| `udp_tavan` |") and "OLCULEMEDI" in x]
+        self.assertTrue(satir, "kilit tutmadigi halde tabloda sayi duruyor")
+
+    def test_TABLO_capraz_kilit_tablosu_bagimsiz_hesapla_ayni(self):
+        """TABLO.md §8 kilit tablosunun her hucresi bagimsiz hesapla dogrulanir."""
+        ham = TABLO.read_text(encoding="utf-8")
+        satirlar = {s[0].strip("`"): s for s in _tablo_satirlari(ham)}
+        for ad in K["kosumlar"]:
+            d = _bagimsiz(ad)
+            self.assertIn(ad, satirlar, f"TABLO §8 kilit satiri yok: {ad}")
+            hucre = satirlar[ad]
+            self.assertEqual(
+                [str(d["hb_cerceve"]), str(d["cerceve"]),
+                 TR(d["ima_edilen_bayt"], 1),
+                 str(B["N1_tip_basina_bayt"]["OPEN_ROUTE"]),
+                 f"%{TR(100.0 * d['bagil_sapma'], 2)}", "TUTTU"],
+                hucre[1:], f"{ad}: TABLO §8 kilit satiri bagimsiz hesapla "
+                           "uyusmuyor")
+
+    def test_duyarlilik_satiri_TABLOda_bagimsiz_hesapla_ayni(self):
+        ham = TABLO.read_text(encoding="utf-8")
+        satirlar = [s for s in _tablo_satirlari(ham)
+                    if s[0].strip("`") in DUYARLILIK_KOSUMLARI and len(s) == 6]
+        self.assertEqual(2, len(satirlar), "TABLO §8 duyarlilik satirlari eksik")
+        for hucre in satirlar:
+            d = _bagimsiz(hucre[0].strip("`"))
+            self.assertEqual(
+                [str(d["waypoint_farki_bayt"]), str(d["cerceve"]),
+                 TR(d["hat_bayt_s"], 1), f"%{TR(d['paylasimli_yuzde'], 2)}",
+                 f"%{TR(d['ecc_acikken_paylasimli_yuzde'], 2)}"],
+                hucre[1:], hucre[0])
+
+
+class DuyarlilikMetinKilidi(unittest.TestCase):
+    """D-465 — olcum hukmu tasiyan blok ON KAYITLI METIN ESITLIGINE baglidir.
+
+    Cizik/varlik/vurgu ayiklamasi YOK; normallestirme yalniz bosluk/satir
+    sonudur. Bloktaki CANLI sayilar `_bagimsiz()` hesabindan doldurulur, eski
+    (cizili) sayilar tarihsel sabit olarak durur — bir sozcuk degisirse test
+    duser, hangi sozdizimiyle degistigi onemsizdir.
+    """
+
+    DUYARLILIK = (
+        "⚠ **Duyarlılık (HESAP, ölçüm değil):** rota sözleşme tavanındaki "
+        "waypoint sayısına (`MAX_WAYPOINTS` = {tavan_wp}) çıkarsa ortak ortam "
+        "yükü ~~**3715,4 – 4003,6 B/s**'ye taşınır (paylaşımlı "
+        "%64,50 – %69,51)~~ — **12 Eylül düzeltmesi (D-466)** — "
+        "**{bs0} – {bs1} B/s**'ye taşınır (paylaşımlı **%{yz0} – %{yz1}**) ve "
+        "ECC açık varsayımıyla ham bütçe **aşılır** (**%{ec0} – %{ec1}**). "
+        "Bu bir ölçüm değildir: ölçülen çerçeve boyutu farkı ({fark} B) × "
+        "ölçülen çerçeve sayısıdır. Düzeltmenin sebebi: ilk hesap `udp` "
+        "kolunda hatta giden **{udp_cerceve}** `OPEN_ROUTE` çerçevesinin "
+        "yalnız YKS'ye ulaşan **{yks}**'ünü saymıştı (İKA'ya giden {atlanan} "
+        "çerçeve atlanmıştı); çerçeve sayısı artık iki yapılandırmada da tek "
+        "ölçüm formülüyle (`gönderilen_paket − HEARTBEAT_sayısı × "
+        "akran_sayısı`) bulunur ve ölçülen bayt/çerçeve ile çapraz kilitlenir "
+        "— kilit tutmazsa hesap yapılmaz, satıra **OLCULEMEDI** yazılır "
+        "(`TABLO.md` §8)."
+    )
+
+    SONUC = (
+        "**Sonuç (D-466 · ÖLÇÜM):** karar **yayın tavanı ≈ 1 karar/s**'dir; "
+        "besleme kadansı {k1} → {k2} Hz'e çıkarıldığında **yayınlanan karar "
+        "sayısı DEĞİŞMEDİ** (`saha` {s1} → {s2}, `udp` {u1} → {u2}) ve sebebi "
+        "hat değil `IhaSender._tekrarli_gonder` tasarımıdır. **Algı hızlanırsa "
+        "yayın hızlanmaz.** Bu bir kusur beyanı değil, ölçülmüş sınırdır."
+    )
+
+    def test_duyarlilik_paragrafi_ON_KAYITLI_METNE_ESIT(self):
+        du = {a: _bagimsiz(a) for a in DUYARLILIK_KOSUMLARI}
+        bs = sorted(x["hat_bayt_s"] for x in du.values())
+        yz = sorted(x["paylasimli_yuzde"] for x in du.values())
+        ec = sorted(x["ecc_acikken_paylasimli_yuzde"] for x in du.values())
+        u = K["kosumlar"]["udp_tavan"]
+        beklenen = _bosluk(self.DUYARLILIK.format(
+            tavan_wp=EGRI["sozlesme_tavani_waypoint"],
+            bs0=TR(bs[0], 1), bs1=TR(bs[1], 1),
+            yz0=TR(yz[0], 2), yz1=TR(yz[1], 2),
+            ec0=TR(ec[0], 2), ec1=TR(ec[1], 2),
+            fark=du["saha_tavan"]["waypoint_farki_bayt"],
+            udp_cerceve=du["udp_tavan"]["cerceve"],
+            yks=u["yks_gorulen_tipler"]["OPEN_ROUTE"],
+            atlanan=du["udp_tavan"]["cerceve"]
+                    - u["yks_gorulen_tipler"]["OPEN_ROUTE"]))
+        self.assertEqual(beklenen, _paragraf(BOLUM_3, "⚠ **Duyarlılık"),
+                         "FDR §3.3.4.3.3 duyarlılık bloğu ön kayıtlı metinden "
+                         "farklı (D-465: metin eşitliği)")
+
+    def test_yayin_tavani_SONUC_paragrafi_ON_KAYITLI_METNE_ESIT(self):
+        kj = K["kosumlar"]["udp_jetson_olculmus"]["karar_kadansi_hz"]
+        kt = K["kosumlar"]["udp_tavan"]["karar_kadansi_hz"]
+        beklenen = _bosluk(self.SONUC.format(
+            k1=TR(kj, 3), k2=TR(kt, 1),
+            s1=K["kosumlar"]["saha_jetson_olculmus"]["yayinlanan_karar"],
+            s2=K["kosumlar"]["saha_tavan"]["yayinlanan_karar"],
+            u1=K["kosumlar"]["udp_jetson_olculmus"]["yayinlanan_karar"],
+            u2=K["kosumlar"]["udp_tavan"]["yayinlanan_karar"]))
+        self.assertEqual(beklenen, _paragraf(BOLUM_3, "**Sonuç (D-466"),
+                         "FDR §3.3.4.3.3 'Sonuç (D-466)' bloğu ön kayıtlı "
+                         "metinden farklı (D-465: metin eşitliği)")
 
 
 class BelgeKilidi(unittest.TestCase):
