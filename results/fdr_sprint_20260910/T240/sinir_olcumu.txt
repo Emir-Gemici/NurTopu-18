@@ -1,0 +1,30 @@
+# T240-C — ESITLIK vs YOKLUK/AYIKLAMA (D-465 gerekcesinin OLCUMU)
+# taban blok sayisi: 5
+
+| gizleme bicimi | beyaz_liste_disi_cizik hata | ayiklama hukmu DUSURDU | ESITLIK DUSURDU |
+|---|---|---|---|
+| ~~ cift tilde | 2 | EVET | **EVET** |
+| <s> etiketi | 2 | EVET | **EVET** |
+| &#822; varlik cizgisi | 2 | EVET | **EVET** |
+| &#96; sarmali sahte kod araligi | 4 | EVET | **EVET** |
+| &amp;#96; cift kacisli varlik | 4 | EVET | **EVET** |
+| HTML yorumu | 0 | hayir | **EVET** |
+| markdown baglantisi | 0 | hayir | **EVET** |
+| sifir genislikli karakter | 0 | EVET | **EVET** |
+| U+0333 birlesen cift alt cizgi | 0 | EVET | **EVET** |
+
+## MESRU duzenleme (esitligi BOZMAMALI — bosluk hukmun anlami degildir)
+
+  satir sarmasi          esitlik KORUNDU=True
+  cift bosluk            esitlik KORUNDU=True
+
+## K1 OLCUMU — kod ARALIKLARI DISINDA HTML varligi
+
+| belge | kod disi varlik | cozulen | YAPI ureten |
+|---|---|---|---|
+| `CONTRACTS.md` | 0 | 0 | 0 |
+| `jetson_paket/gosterici/GOSTERICI_KURULUM.md` | 4 | 0 | 0 |
+| `config/pixhawk/README.md` | 0 | 0 | 0 |
+| `results/fdr_sprint_20260910/H1/t235/ON_KAYIT.md` | 0 | 0 | 0 |
+
+HUKUM: her gizleme ESITLIKCE yakalandi, mesru duzenleme yanlis pozitif uretmedi, kilitli belgelerde kod disi YAPI VARLIGI yok

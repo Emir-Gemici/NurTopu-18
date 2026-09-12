@@ -1,0 +1,57 @@
+# T240 mutasyon kaniti — KACAN 31 mutant + 4 kontrol
+#   19'u D-460 mimar denetiminin, 9'u (Y4/Y4b/Y7a-c/Y5/Y10/Y11/D461)
+#   T240-B'ye, 3'u (X15/X16/X17) T240-B'ye RED veren IKINCI bagimsiz
+#   curutucunun (D-465) kacan mutantidir.
+# yorumlayici: O:\navitas-local-train\venv\Scripts\python.exe
+# depo koku : O:\navitas\.claude\worktrees\wf_fabd3bac-230-1
+
+## 0. Mutasyonsuz TABAN
+  test_faz_b_arduplane_sablon.py         cikis=0  OK
+  test_isaretli_gosterici.py             cikis=0  OK (skipped=1)
+  test_t235_alan_etiketi.py              cikis=0  OK
+  test_yks_mk15_hakem_ekrani.py          cikis=0  OK
+  TABAN: YESIL
+
+## 1. Mutasyonlar (her biri gercek dosyaya yazildi, suit kosuldu, sha256 ile geri alindi)
+  [kontr] D1  cift tilde                     CONTRACTS.md                     cikis=1 -> DUSTU  geri_bayt_es=True sha=741a9ca26dde
+  [KACAN] D1b <del>                          CONTRACTS.md                     cikis=1 -> DUSTU  geri_bayt_es=True sha=741a9ca26dde
+  [KACAN] D1c tek tilde                      CONTRACTS.md                     cikis=1 -> DUSTU  geri_bayt_es=True sha=741a9ca26dde
+  [KACAN] D1d <s>                            CONTRACTS.md                     cikis=1 -> DUSTU  geri_bayt_es=True sha=741a9ca26dde
+  [KACAN] D1e celiskili ikinci hukum         CONTRACTS.md                     cikis=1 -> DUSTU  geri_bayt_es=True sha=741a9ca26dde
+  [kontr] D1f tipografik tirnak              CONTRACTS.md                     cikis=1 -> DUSTU  geri_bayt_es=True sha=741a9ca26dde
+  [KACAN] A3 tek tilde                       GOSTERICI_KURULUM.md             cikis=1 -> DUSTU  geri_bayt_es=True sha=e01d16821d44
+  [KACAN] A4 <del>                           GOSTERICI_KURULUM.md             cikis=1 -> DUSTU  geri_bayt_es=True sha=e01d16821d44
+  [KACAN] A5 <s>                             GOSTERICI_KURULUM.md             cikis=1 -> DUSTU  geri_bayt_es=True sha=e01d16821d44
+  [KACAN] A6 sayi yaziyla                    GOSTERICI_KURULUM.md             cikis=1 -> DUSTU  geri_bayt_es=True sha=e01d16821d44
+  [KACAN] A7 'en az' ile esik gevsetme       GOSTERICI_KURULUM.md             cikis=1 -> DUSTU  geri_bayt_es=True sha=e01d16821d44
+  [KACAN] A8 'teyit edildi' / 'basarili'     GOSTERICI_KURULUM.md             cikis=1 -> DUSTU  geri_bayt_es=True sha=e01d16821d44
+  [KACAN] A9 'asan' ile donma esigi          GOSTERICI_KURULUM.md             cikis=1 -> DUSTU  geri_bayt_es=True sha=e01d16821d44
+  [KACAN] W1 baslikta ~OLCULEMEDI~           README.md                        cikis=1 -> DUSTU  geri_bayt_es=True sha=e2efd44838b6
+  [KACAN] W6 ~OLCULEMEDI~ + KANITLANDI       README.md                        cikis=1 -> DUSTU  geri_bayt_es=True sha=e2efd44838b6
+  [KACAN] W2 KANITLANDI                      README.md                        cikis=1 -> DUSTU  geri_bayt_es=True sha=e2efd44838b6
+  [KACAN] W3 _dogrulandi_                    README.md                        cikis=1 -> DUSTU  geri_bayt_es=True sha=e2efd44838b6
+  [KACAN] W4 __kosuldu__                     README.md                        cikis=1 -> DUSTU  geri_bayt_es=True sha=e2efd44838b6
+  [KACAN] W7 'sorunsuz tamamlandi'           README.md                        cikis=1 -> DUSTU  geri_bayt_es=True sha=e2efd44838b6
+  [KACAN] V1 numarasiz celiskili hukum       README.md                        cikis=1 -> DUSTU  geri_bayt_es=True sha=e2efd44838b6
+  [KACAN] V3 ikinci 'Sonuc' cumlesi          README.md                        cikis=1 -> DUSTU  geri_bayt_es=True sha=e2efd44838b6
+  [kontr] W5 duz DOGRULANDI                  README.md                        cikis=1 -> DUSTU  geri_bayt_es=True sha=e2efd44838b6
+  [kontr] W8 duz GECTI                       README.md                        cikis=1 -> DUSTU  geri_bayt_es=True sha=e2efd44838b6
+  [KACAN] Y4  &#822; harf harf               CONTRACTS.md                     cikis=1 -> DUSTU  geri_bayt_es=True sha=741a9ca26dde
+  [KACAN] Y4b &#x336; onaltilik              CONTRACTS.md                     cikis=1 -> DUSTU  geri_bayt_es=True sha=741a9ca26dde
+  [KACAN] Y7a celiskili paragraf (kaynak onu) CONTRACTS.md                     cikis=1 -> DUSTU  geri_bayt_es=True sha=741a9ca26dde
+  [KACAN] Y7b celiskili paragraf (ilkeler onu) CONTRACTS.md                     cikis=1 -> DUSTU  geri_bayt_es=True sha=741a9ca26dde
+  [KACAN] Y7c celiskili paragraf (son paragraf onu) CONTRACTS.md                     cikis=1 -> DUSTU  geri_bayt_es=True sha=741a9ca26dde
+  [KACAN] Y5  aile disi es anlamli           GOSTERICI_KURULUM.md             cikis=1 -> DUSTU  geri_bayt_es=True sha=e01d16821d44
+  [KACAN] Y10 esik birimi s -> ms            GOSTERICI_KURULUM.md             cikis=1 -> DUSTU  geri_bayt_es=True sha=e01d16821d44
+  [KACAN] Y11 anahtarsiz README celiskisi    README.md                        cikis=1 -> DUSTU  geri_bayt_es=True sha=e2efd44838b6
+  [KACAN] D461 ikinci gevsetilmis olcut      ON_KAYIT.md                      cikis=1 -> DUSTU  geri_bayt_es=True sha=7840e9331975
+  [KACAN] X15 &#96; sarmali ~~cizik~~        GOSTERICI_KURULUM.md             cikis=1 -> DUSTU  geri_bayt_es=True sha=e01d16821d44
+  [KACAN] X16 &#96; sarmali nabiz maddesi    GOSTERICI_KURULUM.md             cikis=1 -> DUSTU  geri_bayt_es=True sha=e01d16821d44
+  [KACAN] X17 &#96; sarmali <s>cizik</s>     GOSTERICI_KURULUM.md             cikis=1 -> DUSTU  geri_bayt_es=True sha=e01d16821d44
+
+## 2. OZET
+  KACAN mutantlar   : 31/31 DUSTU
+  KONTROL mutantlar : 4/4 DUSTU
+  geri yukleme      : hepsi bayt-es
+  HUKUM             : GECTI
+mutasyon cikis=0

@@ -1,0 +1,4 @@
+X3 CONTRACTS §6.8 anahtarsiz celiski     cikis=1 -> DUSTU  geri_bayt_es=True
+    AssertionError: Tuples differ: ('###[4574 chars].', '**Bağlayıcı ilkeler:**', '- Kanıt yazımı [1919 chars]a).') != ('###[4574 chars].', 'Not (12 Eylül): etiket biçimi isteğe bağl[2001 chars]a).')
+X7 GOSTERICI §5 anahtarsiz celiski       cikis=1 -> DUSTU  geri_bayt_es=True
+    AssertionError: Tuples differ: ('## [4807 chars]*.", '- **Geri alma:** `sudo systemctl disable[134 chars]t).') != ('## [4807 chars]*.", "- Not (12 Eylül): bu davranış 12 Eylül'd[198 chars]t).')
