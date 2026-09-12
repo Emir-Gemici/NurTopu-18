@@ -135,6 +135,34 @@ dalda** koşar. Ölçüt, daldaki düşen kümenin tabanın **alt kümesi** olma
 Sonuç `kapi/taban_kiyas.txt`: **7/7 modülde dal düşükleri tabanın alt kümesi —
 T243 kaynaklı YENİ düşük YOK.**
 
+### 🔴 `test_H2c_olcek_1_5_hakem_ekrani` — ölçüm sonucu: T243'ten DEĞİL
+
+Bu iş master'la **iki kez** birleştirildi; ikinci birleşim D-463/D-464'ü
+(`tests/test_yks_mk15_hakem_ekrani.py`, 85 satır) getirdi. Birleşimden **sonra**
+tam süitte yeni bir düşük göründü:
+`test_H2c_olcek_1_5_hakem_ekrani (olcek=1.5, durum='ana_open_route_road3')` —
+*"KALINTI KESİŞİM SAYISI DEĞİŞTİ (beklenen 1, ölçülen 0)"*. Ölçülenler:
+
+| ölçüm | sonuç | kanıt |
+|---|---|---|
+| modül **tek başına**, 3 ardışık koşum (dal) | **3/3 OK** | bu bölümdeki koşum |
+| tam süit içinde, birleşimden sonra, iki ardışık koşum | **2/2 DÜŞTÜ** | `kapi/tam_suit.txt`, `kapi/tam_suit_2.txt` |
+| tam süit, **T243 modülü keşif dışına alınarak** | **yine DÜŞTÜ** | `kapi/tam_suit_t243siz.txt` |
+
+Üçüncü satır belirleyicidir: T243 nöbetçisi süitte hiç yokken de aynı test
+düşüyor. Yani bu **süit sırasına bağlı**, master kaynaklı bir düşüktür; T243'ün
+dokunduğu dosyalarla (protokol, `comms/`, `yks_gui`) ilişkisi yoktur — T243 bu
+modüllerin hiçbirini değiştirmedi.
+
+⚠ Bu bir T243 bulgusu değildir ve **burada kapatılmaz**: `H2c` sahibi işe
+(D-459/D-464 hattı) mimar tarafından yönlendirilmelidir. Bu paragraf, düşüğü
+gizlememek için kayda geçirilmiştir.
+
+Not: `kapi/tam_suit_t243siz.txt` koşumundaki fazladan
+`test_tests_altinda_sahte_kapi_YOK` düşüğü **deneyin kendi artefaktıdır** —
+modülü keşif deseninin dışına almak için geçici olarak yeniden adlandırmak
+o kapıyı tetikler. Modül koşumdan sonra sha256 ile bayt-eş geri yüklendi.
+
 ## Kilit
 
 Nöbetçi test `tests/test_t243_paket_boyutu.py`: FDR'deki ve bu README'deki her

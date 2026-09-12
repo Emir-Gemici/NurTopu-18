@@ -1,12 +1,12 @@
-.....................................................................C:\Users\yunus\AppData\Local\Programs\Python\Python313\Lib\unittest\case.py:606: ResourceWarning: unclosed <socket.socket fd=816, family=2, type=2, proto=0, laddr=('127.0.0.1', 50062)>
+.....................................................................C:\Users\yunus\AppData\Local\Programs\Python\Python313\Lib\unittest\case.py:606: ResourceWarning: unclosed <socket.socket fd=752, family=2, type=2, proto=0, laddr=('127.0.0.1', 65325)>
   if method() is not None:
 ResourceWarning: Enable tracemalloc to get the object allocation traceback
-C:\Users\yunus\AppData\Local\Programs\Python\Python313\Lib\unittest\case.py:655: ResourceWarning: unclosed <socket.socket fd=744, family=2, type=2, proto=0, laddr=('127.0.0.1', 50061)>
+C:\Users\yunus\AppData\Local\Programs\Python\Python313\Lib\unittest\case.py:655: ResourceWarning: unclosed <socket.socket fd=628, family=2, type=2, proto=0, laddr=('127.0.0.1', 65324)>
   self.doCleanups()
 ResourceWarning: Enable tracemalloc to get the object allocation traceback
 .............................................
 ----------------------------------------------------------------------
-Ran 114 tests in 19.792s
+Ran 114 tests in 19.694s
 
 OK
 [K4_UDP] dusurulen=3 ulasan_deneme=4 ika_go=True tekrar_durdu=1
@@ -60,4 +60,4 @@ OK
 [ika_nav]   ✓ Ulaşıldı (kalan: 0.25m)
 
 [ika_nav] ══ HEDEF BÖLGEYE (HB) ULAŞILDI! ══
-<sys>:0: ResourceWarning: unclosed <socket.socket fd=744, family=2, type=2, proto=0, laddr=('127.0.0.1', 50068)>
+<sys>:0: ResourceWarning: unclosed <socket.socket fd=628, family=2, type=2, proto=0, laddr=('127.0.0.1', 65485)>

@@ -755,6 +755,18 @@ class ReadmeSayilariArtefakttan(unittest.TestCase):
         for sozcuk in _OLUMLU_CEVIRME:
             self.assertNotIn(_ara(f"tam suit {sozcuk}"), self.s)
 
+    def test_h2c_dusugu_OLCUMLE_raporlanmis(self):
+        """Birlesimden sonra gorunen H2c dusugu ve ucuncu olcum kayitli olmali."""
+        kapi = DIZIN / "kapi"
+        for ad in ("tam_suit.txt", "tam_suit_2.txt", "tam_suit_t243siz.txt"):
+            self.assertTrue((kapi / ad).is_file(), f"kanit dosyasi yok: {ad}")
+        t243siz = (kapi / "tam_suit_t243siz.txt").read_text(encoding="utf-8")
+        self.assertIn("test_H2c_olcek_1_5_hakem_ekrani", t243siz,
+                      "T243'suz kosumda H2c dusugu yok — README'deki hukum "
+                      "artefaktla celisiyor")
+        self.assertIn(_ara("T243'ten DEGIL"), self.s)
+        self.assertIn(_ara("tam_suit_t243siz.txt"), self.s)
+
     def test_ilk_kosumun_eksikligi_yazili(self):
         """Yeniden kosum SEBEBI ve yonu (sayi KOTULESTI) rapordan dusmemeli."""
         self.assertIn("kosum_ciktisi_v1_eksik.txt", self.s)
