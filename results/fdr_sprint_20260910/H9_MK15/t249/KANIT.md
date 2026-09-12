@@ -159,14 +159,19 @@ DEĞİLDİ.
 | B | modül tek başına, DPI AÇIK | 5/5 OK | 5/5 OK |
 | C | `test_sim_mujoco_arena` + hakem modülü **AYNI SÜREÇTE** (tam süitin sırası) | 5/5 OK | 5/5 OK |
 
-Toplam **30 ardışık koşum, 30 yeşil**. Dosyalar: `ardisik_*_{1..5}.txt`,
-`yuklu_*_{1..5}.txt`. C yüzeyinin her çıktısı `[DPI] mujoco SONRASI = 2`
-satırını taşır — yani kilit gerçekten farkındalık açıkken ölçüldü.
+Ağaç son hâline geldikten sonra aynı üçlü bir kez daha koşuldu
+(`son_*_{1..5}.txt`): **15/15 yeşil**.
+
+Toplam **45 ardışık koşum, 45 yeşil**. Dosyalar: `ardisik_*_{1..5}.txt`
+(yüksüz), `yuklu_*_{1..5}.txt` (12 işlemlik CPU yükü), `son_*_{1..5}.txt`
+(son ağaç). C yüzeyinin her çıktısı `[DPI] mujoco SONRASI = 2` satırını
+taşır — yani kilit gerçekten farkındalık açıkken ölçüldü.
 
 ## 5. Dosyalar
 
 | Dosya | Ne |
 |---|---|
+| `probe_yerlesim.py` · `probe_yerlesim_cikti.txt` | pencere/tuval yerleşiminin zaman izi (sabit uykunun bir şey beklemediğinin ölçümü) |
 | `tani_h2f.py` | H2f ölçüm noktasının zaman izi (`--dpi`, `--yuk`) |
 | `dpi_izi.py` · `dpi_izi_cikti.txt` | tam süitte farkındalık geçişinin ATFI |
 | `kos_dpi.py` | modülü DPI farkındalığı AÇIKKEN koşar |
@@ -190,3 +195,23 @@ dosyadan alınan tek veri `[DPI]` satırlarıdır; temiz tam süit kanıtı
    geri alınamaz bir süreç ayarı değiştiriyor; bu, ileride başka Tk/DPI bağımlı
    her ölçümü sessizce bozabilir. Kalıcı çözüm o modülü AYRI BİR SÜREÇTE
    koşturmaktır. Bu görevin kapsamı değildir; karar mimarındır.
+
+## 7. Kapı (T248 + T249 birlikte, son ağaç)
+
+| Kapı | Sonuç |
+|---|---|
+| `test_yks_mk15_hakem_ekrani` tek başına | **41/41 OK** (39 + T248'in 2 yeni testi) |
+| beş ardışık koşum × 3 yüzey (son ağaç) | **15/15 OK** (`son_*`) |
+| `test_yks_*.py` (235 test) | OK |
+| `comms/test_comms.py` | GEÇTİ |
+| ayna testleri + jetson paketi | OK |
+| `scripts/akis_diyagram_dogrula.py` | `TÜM DÜĞÜMLER TUTTU` (akis_d 100/100) |
+| genel kapı (madde 14) | **kol1 15/15 · kol2 şerit 15/15** |
+| `scripts/push_kapisi.py --kuru` #1 | `Ran 2736 · OK (skipped=19)` + kapı 15/15 — `results/push_kapisi/20260912_053049` |
+| `scripts/push_kapisi.py --kuru` #2 | `Ran 2736 · OK (skipped=19)` + kapı 15/15 — `results/push_kapisi/20260912_054022` |
+
+⚠ `results/push_kapisi/20260912_052020` koşumu **KIRMIZIDIR ve kayıtta öyle
+durmalıdır**: T248'in ürün dosyasında yarattığı 14 satırlık kayma üç türev
+kapıyı bayatlatmıştı (`ATOLYE_TEST_GUNU_20260912.md` kod atıfları,
+`akis_d_dugumler.md`, `akis_d.svg`). Üçü de kapatıldıktan sonraki iki koşum
+yukarıdaki gibi yeşildir.
