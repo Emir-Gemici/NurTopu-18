@@ -7,15 +7,16 @@
 >
 > Sıralama kapanma tarihine göredir; en üsttekiler rapor teslimini bekletir.
 
-## 0. 🔴 12 Eylül — RAPORU BEKLETEN, en öncelikli (T255, D-470)
+## 0. 🔴 12 Eylül — RAPORU BEKLETEN, en öncelikli (T256, D-470)
 
-> **Arena "3 güzergâh" mı "1 güzergâh" mı?** Bu rapordaki ve tüm mimarideki 3-güzergâh
-> varsayımı (`§3.3.1.3` arena tablosu, README.md, K3 rota-tespit ölçümleri) kullanıcının
-> bir toplantıda aktardığı "artık 1 güzergâh" resmi bilgisiyle çelişiyor. Kaynak henüz
-> **yazılı doğrulanmadı** (yalnız BEYAN — muhtemel kayıt `İleri_Otonom_Yarı_Finaller-soru-cevap-oturumu.mp4`,
-> transkript çıkarılmadı). Doğrulanıp kapsam kararı verilmeden ne rapor "3 güzergâh" diye
-> eskisi gibi bırakılır (bilinen çelişki sessizce gizlenmiş olur) ne de sessizce "1 güzergâh"a
-> çevrilir (doğrulanmamış BEYAN ölçülmüş gibi yazılmış olur) — **kanıt: `REVIEW_LOG.md` D-470, `TASK_QUEUE.md` T255.**
+> **KARARLANDI (kullanıcı, 12 Eylül): Arena artık 1 güzergâh, 3 güzergâh değil.**
+> Rapordaki ve mimarideki eski 3-güzergâh varsayımı (`§3.3.1.3` arena tablosu,
+> README.md, K3 rota-tespit ölçümleri) **geçersiz** — kullanıcı kararı ek doğrulama
+> beklemez (madde 10). Kalan iş **uygulama**: arena üretimi, `CONTRACTS.md`
+> `OPEN_ROUTE.road` alanı, testler ve K3 ölçüm yorumu 1-güzergâha göre güncellenecek
+> — **`TASK_QUEUE.md` T256** (KRİTİK, mimari karar yazıldı, uygulama bekliyor).
+> Bu bölüm tamamlanana kadar §3.3.1.3 ve K3 sayıları **eski mimariye ait** diye
+> işaretli kalır, sessizce "1 güzergâh" diye düzeltilmiş gösterilmez.
 
 ## 1. Cumartesi 5 Eylül — donanım geldiği gün kapanır (ÖLÇÜM)
 
