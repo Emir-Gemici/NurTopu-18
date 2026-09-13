@@ -6,19 +6,29 @@
   name="IKA_GAZEBO_MODEL">
   <link
     name="base_link">
+    <!-- KUTLE/ATALET DUZELTILDI 13 Eylul 2026 (D-481): SolidWorks "Montaj6v2v20" montaj
+         seviyesinde elle girilmis kutle gecersiz kilma (9308 g) URDF disa aktariminda
+         HER baga (govde + 4 teker) aynen kopyalanmisti. Duzeltilmis deger: resmi parca
+         listeleri (IKA_Sase_Malzemeleri.xlsx + ika.xlsm, toplam 9,4014 kg TAHMIN) ile
+         govde/teker oranina bolunup gercek tartima (7,56 kg, D-480) olceklendi.
+         Atalet tensoru, orijinal (govde boyutlu) tensorun ayni kutle oranina gore
+         olceklenmesiyle elde edildi, KABA TAHMIN, CAD'den yeniden hesaplanmadi.
+         Konum (origin xyz) DOKUNULMADI: montajin CoM'u govdeden ayri bir referansa
+         gore olculmus gibi duruyor (Z=1,019 m, ama zarf 310 mm, REVIEW_LOG D-481),
+         duzeltmek icin CAD erisimi gerekir. -->
     <inertial>
       <origin
         xyz="-0.038334 -0.021751 1.0192"
         rpy="0 0 0" />
       <mass
-        value="9.308" />
+        value="6.907" />
       <inertia
-        ixx="0.16525"
-        ixy="0.00014333"
-        ixz="-0.0082057"
-        iyy="0.21958"
-        iyz="-0.00019684"
-        izz="0.28307" />
+        ixx="0.122624"
+        ixy="0.000106"
+        ixz="-0.006089"
+        iyy="0.16294"
+        iyz="-0.000146"
+        izz="0.210053" />
     </inertial>
     <visual>
       <origin
@@ -46,19 +56,23 @@
   </link>
   <link
     name="sag_on_teker">
+    <!-- KUTLE/ATALET DUZELTILDI 13 Eylul 2026 (D-481), bkz base_link yorumu.
+         Teker kutlesi: jant+lastik+8mm kaplin BOM'u (203 g/teker TAHMIN), gercek
+         toplam tartima (7,56 kg) olceklendi. Atalet: orijinal govde tensorunun
+         ayni kutle oranina gore olceklenmesi, KABA TAHMIN. -->
     <inertial>
       <origin
         xyz="-0.038334 -0.021751 1.0192"
         rpy="0 0 0" />
       <mass
-        value="9.308" />
+        value="0.1632" />
       <inertia
-        ixx="0.16525"
-        ixy="0.00014333"
-        ixz="-0.0082057"
-        iyy="0.21958"
-        iyz="-0.00019684"
-        izz="0.28307" />
+        ixx="0.0028981"
+        ixy="0.0000025"
+        ixz="-0.0001439"
+        iyy="0.0038509"
+        iyz="-0.0000035"
+        izz="0.0049644" />
     </inertial>
     <visual>
       <origin
@@ -99,19 +113,20 @@
   </joint>
   <link
     name="sol_on_teker">
+    <!-- KUTLE/ATALET DUZELTILDI 13 Eylul 2026 (D-481), bkz base_link yorumu. -->
     <inertial>
       <origin
         xyz="-0.038334 -0.021751 1.0192"
         rpy="0 0 0" />
       <mass
-        value="9.308" />
+        value="0.1632" />
       <inertia
-        ixx="0.16525"
-        ixy="0.00014333"
-        ixz="-0.0082057"
-        iyy="0.21958"
-        iyz="-0.00019684"
-        izz="0.28307" />
+        ixx="0.0028981"
+        ixy="0.0000025"
+        ixz="-0.0001439"
+        iyy="0.0038509"
+        iyz="-0.0000035"
+        izz="0.0049644" />
     </inertial>
     <visual>
       <origin
@@ -152,19 +167,20 @@
   </joint>
   <link
     name="sag_arka_teker">
+    <!-- KUTLE/ATALET DUZELTILDI 13 Eylul 2026 (D-481), bkz base_link yorumu. -->
     <inertial>
       <origin
         xyz="-0.038334 -0.021751 1.0192"
         rpy="0 0 0" />
       <mass
-        value="9.308" />
+        value="0.1632" />
       <inertia
-        ixx="0.16525"
-        ixy="0.00014333"
-        ixz="-0.0082057"
-        iyy="0.21958"
-        iyz="-0.00019684"
-        izz="0.28307" />
+        ixx="0.0028981"
+        ixy="0.0000025"
+        ixz="-0.0001439"
+        iyy="0.0038509"
+        iyz="-0.0000035"
+        izz="0.0049644" />
     </inertial>
     <visual>
       <origin
@@ -205,19 +221,20 @@
   </joint>
   <link
     name="sol_arka_teker">
+    <!-- KUTLE/ATALET DUZELTILDI 13 Eylul 2026 (D-481), bkz base_link yorumu. -->
     <inertial>
       <origin
         xyz="-0.038334 -0.021751 1.0192"
         rpy="0 0 0" />
       <mass
-        value="9.308" />
+        value="0.1632" />
       <inertia
-        ixx="0.16525"
-        ixy="0.00014333"
-        ixz="-0.0082057"
-        iyy="0.21958"
-        iyz="-0.00019684"
-        izz="0.28307" />
+        ixx="0.0028981"
+        ixy="0.0000025"
+        ixz="-0.0001439"
+        iyy="0.0038509"
+        iyz="-0.0000035"
+        izz="0.0049644" />
     </inertial>
     <visual>
       <origin

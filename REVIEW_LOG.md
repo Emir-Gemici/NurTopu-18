@@ -31148,3 +31148,59 @@ mimara/kullanıcıya bırakıldı, tek taraflı değiştirilmedi.**
 URDF/DDR değerleri şüpheli" hattını güçlendiriyor — T239 açık kalır.
 
 **Genel kapı:** dokunulmadı (yalnız analiz/kayıt, kod değişmedi).
+
+
+---
+
+### D-481 — KÖK NEDEN KESİNLENDİ + İKA URDF kütle/atalet DÜZELTİLDİ (kaba tahmin, CAD değil); yeni bulgu: montaj CoM referansı da şüpheli
+
+**Tarih:** 13 Eylül 2026 · Mimar oturumu (Claude), kullanıcının paylaştığı SolidWorks
+"Mass properties of Montaj6v2v20" ekran görüntüsüyle.
+
+**Kök neden kesinlendi.** Ekran görüntüsü: `Montaj6v2v20` montajının
+**"Mass (user-overridden) = 9308.00 grams"** olduğunu gösteriyor — yani biri bu montaja
+SolidWorks'te elle bir kütle geçersiz kılması (override) girmiş (muhtemelen DDR'nin
+~9,3-9,4 kg tahminini yansıtmak için). Ekrandaki CoM (X=-38,33 Y=-21,75 Z=1019,22 mm)
+ve atalet (`Lxx=165248481,43 g·mm²` vb.) URDF/CSV'deki `base_link` değerleriyle **birebir
+eşleşiyor** (165248481,43 g·mm² = 0,16525 kg·m² ✓). **SolidWorks→URDF eklentisi bu montaj
+seviyesindeki (geçersiz kılınmış) kütle/atalet raporunu okumuş ve HER bağa (gövde + 4
+teker) aynen kopyalamış** — D-458'in bulduğu "her bağ 9,308 kg" bulmacası artık tahmin
+değil, tam mekanizmasıyla açıklanmış bir dışa aktarma hatası.
+
+**Düzeltme (uygulandı, `IKA_GAZEBO_MODEL/urdf/IKA_GAZEBO_MODEL.urdf`):**
+Gerçek CAD'e erişimim yok, bu yüzden **kaba tahmin** — CAD'den yeniden hesaplanmış
+değer DEĞİL, öyle etiketlendi (dosya içi yorum satırları eklendi):
+
+1. **Kütle dağılımı** — resmî parça listelerinden (D-478: `IKA_Sase_Malzemeleri.xlsx`
+   5,6174 kg + `ika.xlsm` 3,784 kg = 9,4014 kg TAHMİN) teker donanımı (jant+lastik+8mm
+   kaplin, BOM'da 0,812 kg / 4 teker = 0,203 kg/teker) çıkarılıp gövdeye kalanı verildi,
+   sonra tüm oran gerçek tartıma (D-480: 7,56 kg) ölçeklendi:
+   - `base_link`: 9,308 kg → **6,907 kg**
+   - her teker (×4): 9,308 kg → **0,1632 kg**
+   - toplam = 6,907 + 4×0,1632 = **7,5598 kg** ✓ (gerçek tartımla eşleşir)
+2. **Atalet tensörü** — orijinal (montaj-seviyeli, 9,308 kg'a göre hesaplanmış) tensör,
+   her bağın yeni/eski kütle oranıyla ölçeklendi (şekil sabit kalır varsayımı — **kaba
+   tahmin**, gerçek CAD'den yeniden hesaplanmadı).
+3. `<inertial><origin>` (CoM konumu) **DOKUNULMADI** — bkz aşağıdaki yeni bulgu.
+4. `IKA_GAZEBO_MODEL/urdf/IKA_GAZEBO_MODEL.csv` **bilerek değiştirilmedi** — SolidWorks'ün
+   ham (hatalı) çıktısının kanıt kaydı olarak kalıyor; düzeltme yalnız URDF'de (tüketilen
+   dosya).
+
+**Doğrulama:** `gz sdf -p` (gerçek Gazebo11, `navitas-gazebo:11`) çıktısı artık
+`<mass>6.907</mass>` (gövde) ve `<mass>0.1632</mass>` (her teker, ×4) üretiyor — XML
+geçerli, toplam 7,5598 kg.
+
+**YENİ bulgu — montaj CoM referansı da şüpheli.** `Montaj6v2v20`'nin CoM'u
+**Z = 1019,22 mm** — ama `BOLUM_3` §3.3.3.1 tablosuna göre İKA'nın gerçek zarfı
+**488×440×310 mm** (en yüksek boyut 310 mm). Bir robotun kütle merkezi kendi
+zarfının **3 katı** yükseklikte olamaz — bu, montajın orijin/referans noktasının
+robotun kendi geometrisine değil, paylaşılan/uzak bir CAD datumuna göre
+tanımlandığını gösteriyor. `<inertial><origin>` bu yüzden **dokunulmadı** (düzeltmek
+için gerçek CAD'e erişim gerekir, ben tahminle konum icat etmedim). Yeni bir insan/
+CAD görevi gerektirir — **T262 açıldı**.
+
+**T239 kapsamı dışı** (iz genişliği + teker çapı, hâlâ fiziksel ölçüm bekliyor) ama
+aynı montajın güvenilmezliğini bir kez daha gösteriyor.
+
+**Genel kapı:** dokunulmadı (`codes/` altına dokunulmadı, yalnız `IKA_GAZEBO_MODEL/`
+paketi).
