@@ -30997,3 +30997,23 @@ Olası nedenler (ölçülmedi): (a) iki telsizde Air Speed/Max Window farklı ka
 
 **3. Frekans.** Kaptan: *"rfd900a ama 433mhz sanıyordum"* → **915–928 MHz teyit.** T267 (72+ satır 433 düzeltmesi) geçerli; düzenleyici soru (Türkiye'de 868 MHz) organizasyona.
 
+### D-478 — ✅ A6 **GEÇTİ** (telsiz ayarı düzeltilince): RTT p95 **126,5 / 126,5 ms** < eşik 250 / 200 ms, kayıp %0 · Max Window teşhisi ölçümle doğrulandı · eşik gevşetilmedi · ⚠ D-477'deki "geri yüklendi" iddiası `parasut` için YANLIŞTI, düzeltildi
+
+| koşum | ayar | kadans | p50 | **p95** | maks | kayıp | veri hızı | çıkış |
+|---|---|---|---|---|---|---|---|---|
+| 1 (D-476) | Max Window 131 · Air Speed 64 | 0,25 s | 208,3 | **265,2** | 273,3 | %0 | 318,8 B/s | 1 DÜŞTÜ |
+| 1 (D-476) | Max Window 131 · Air Speed 64 | 0,20 s | 229,2 | **229,6** | 230,8 | %0 | 350,5 B/s | 1 DÜŞTÜ |
+| 2 (D-477) | MW 33 + AS 128 aynı anda — telsizler eşleşmedi | 0,25 / 0,20 s | — | — | — | %100 | — | 2 ÖLÇÜLEMEDİ |
+| **3 (bu)** | **ayar 3** (aşağıda) | 0,25 s | 102,3 | **126,5** | 132,6 | %0 | 322,0 B/s | **0 GEÇTİ** |
+| **3 (bu)** | **ayar 3** | 0,20 s | 103,9 | **126,5** | 169,6 | %0 | 401,9 B/s | **0 GEÇTİ** |
+
+**Dosyalar:** 1 → `A6_sik_ikago.json`, `A6_sik_parasut.json` · 2 → `A6_sik_*_mw33_as128_KAYIP.json` · 3 → `A6_sik_*_ayar2_GECTI.json`.
+
+**Ön kayıtlı tahmin tuttu.** D-476 teşhisi RTT ≈ 2 × Max Window (2×131 = 262 ↔ 265,2). MW 33 için ölçümden ÖNCE yazılan tahmin (HANDOFF §0.2): ≈**115 ms**. Ölçülen p95 **126,5 ms** → %10 içinde. p95 **%52 düştü**. İki kadansta p95'in birebir aynı olması gecikmenin artık kadanstan bağımsız bir pencere tavanına oturduğunu gösteriyor.
+
+**Veri hızı çapraz doğrulaması.** RF 322,0 / 401,9 B/s ↔ radyosuz köprü 322,5 / 403 B/s (`results/fdr_sprint_20260910/H2/ozet.json:143, :189`) → fark %0,2 / %0,3. Y-3.3.4-M03 gerçek RF ölçümüyle kapandı.
+
+**⚠ Ayar 3'ün değerleri BEYAN bekliyor.** Önerilen son hâl Max Window 33 + Air Speed 64; hangi değerlerde eşleştiği kaptanca yazılmadı. MP SiK ekranının yeni görüntüsü → `FDR/A6_sik_mp_ekrani_ayar3.png` (T263 kapanış şartı).
+
+**🔴 KANIT KAZASI VE DÜZELTMESİ (mimarın kusuru).** D-477 commit'i (4295e035) sırasında kaptan `parasut` koşumunu **eşzamanlı** çalıştırıyordu; mimarın `git checkout` ile geri yüklediği dosyanın üzerine koşum 2 yeniden yazdı ve **0 ACK'li sürüm commitlendi**. D-477 metnindeki "ikisi 4dda0a24'ten geri yüklendi" iddiası `parasut` için **yanlıştı** — mimar doğrulamadan yazdı. Ayrıca bu turun ilk betiği çöktüğü hâlde commit zinciri `&&` ile bağlanmadığı için 2b622a48 kayıtsız atıldı (D-470 örüntüsünün tekrarı). Düzeltme: geçerli sürüm `git show 4dda0a24:` ile geri alındı ve `ack_alinan == 200` **assert'le doğrulandı**; başarısız sürüm `A6_sik_parasut_mw33_as128_KAYIP.json`. Kanıt kaybı yok.
+**Yordam:** (1) kaptan ölçüm koşarken mimar aynı dizinde geri yükleme yapmaz; (2) geri yüklemeden sonra içerik assert'le doğrulanır; (3) T270 — `sik_rf_olc.py` var olan `--cikti` dosyasının üzerine `--uzerine-yaz` olmadan yazmasın (taban ölçüm 3 kez ezildi).

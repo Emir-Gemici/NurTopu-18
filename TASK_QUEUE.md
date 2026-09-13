@@ -9759,4 +9759,6 @@ _(henüz yok)_
 - [ ] **T266 — FDR veri hızı: köprü 322,5 B/s yerine GERÇEK RF 318,8-350,5 B/s** (Y-3.3.4-M03 gerçek ölçümle kapanıyor)
 - [ ] **T267 — 433 MHz → RFD900A 915–928 MHz** (kaptan teyit etti, D-477) — FDR/CONTRACTS/comms/JETSON belgelerinde; frekans uygunluğu organizasyona sorulacak (İNSAN).
 - [ ] **T269 — takvim değişikliği duyurusunu repoya al** (İNSAN: e-posta/KYS ekran görüntüsü) → sonra `tests/test_fdr_takvim_kapisi.py` 14.09 / 21.09'a bağlanır.
-
+- [x] **T263 — A6 telsiz ayarı** — GEÇTİ (D-478): p95 126,5 / 126,5 ms. Kapanış şartı: ayar ekran görüntüsü `FDR/A6_sik_mp_ekrani_ayar3.png` (İNSAN).
+- [x] **T264 — ECC kapalı ölçüm** — GEREKMEDİ (T263 yetti; ECC açık kalır).
+- [ ] **T270 — `scripts/sik_rf_olc.py` var olan `--cikti` dosyasının üzerine yazmasın** (`--uzerine-yaz` bayrağı yoksa çıkış 2) — amele, test + mutasyon. Taban ölçüm 3 kez ezildi (D-477/D-478).
