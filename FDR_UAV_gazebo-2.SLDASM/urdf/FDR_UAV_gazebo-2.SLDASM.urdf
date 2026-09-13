@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="FDR_UAV_gazebo-2.SLDASM">
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="0.2545 0.025312 0.00019661"
+        rpy="0 0 0" />
+      <mass
+        value="3.4121" />
+      <inertia
+        ixx="0.034703"
+        ixy="-0.009068"
+        ixz="1.9167E-06"
+        iyy="0.082351"
+        iyz="-1.7806E-05"
+        izz="0.068248" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://FDR_UAV_gazebo-2.SLDASM/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.69804 0.69804 0.69804 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://FDR_UAV_gazebo-2.SLDASM/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="sag_aileron">
+    <inertial>
+      <origin
+        xyz="0.014075 -0.0023023 -0.15877"
+        rpy="0 0 0" />
+      <mass
+        value="0.11288" />
+      <inertia
+        ixx="0.0011028"
+        ixy="2.091E-06"
+        ixz="-3.0144E-05"
+        iyy="0.0011173"
+        iyz="-3.5851E-06"
+        izz="1.6809E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://FDR_UAV_gazebo-2.SLDASM/meshes/sag_aileron.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.69804 0.69804 0.69804 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://FDR_UAV_gazebo-2.SLDASM/meshes/sag_aileron.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="sag_aileron"
+    type="continuous">
+    <origin
+      xyz="0.15928 0.55495 0.0013862"
+      rpy="1.5708 0.033337 -0.00017462" />
+    <parent
+      link="base_link" />
+    <child
+      link="sag_aileron" />
+    <axis
+      xyz="0 0.0052331 0.99999" />
+  </joint>
+  <link
+    name="sol_aileron">
+    <inertial>
+      <origin
+        xyz="0.014078 -0.0023022 0.15867"
+        rpy="0 0 0" />
+      <mass
+        value="0.11289" />
+      <inertia
+        ixx="0.0011028"
+        ixy="2.0917E-06"
+        ixz="3.0148E-05"
+        iyy="0.0011173"
+        iyz="3.5869E-06"
+        izz="1.6818E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://FDR_UAV_gazebo-2.SLDASM/meshes/sol_aileron.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.69804 0.69804 0.69804 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://FDR_UAV_gazebo-2.SLDASM/meshes/sol_aileron.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="sol_aileron"
+    type="continuous">
+    <origin
+      xyz="0.15928 -0.55506 0.0013857"
+      rpy="1.5708 0.016908 8.854E-05" />
+    <parent
+      link="base_link" />
+    <child
+      link="sol_aileron" />
+    <axis
+      xyz="0 0.0052352 -0.99999" />
+  </joint>
+  <link
+    name="elevator">
+    <inertial>
+      <origin
+        xyz="0.013115 -0.00065145 3.6133E-07"
+        rpy="0 0 0" />
+      <mass
+        value="0.15719" />
+      <inertia
+        ixx="0.0010775"
+        ixy="1.9272E-07"
+        ixz="-3.3579E-08"
+        iyy="0.0010976"
+        iyz="2.2862E-08"
+        izz="2.1704E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://FDR_UAV_gazebo-2.SLDASM/meshes/elevator.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.69804 0.69804 0.69804 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://FDR_UAV_gazebo-2.SLDASM/meshes/elevator.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="elevator"
+    type="continuous">
+    <origin
+      xyz="0.69425 0 0.079992"
+      rpy="1.5708 0.050132 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="elevator" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="rudder">
+    <inertial>
+      <origin
+        xyz="0.06837 0.13046 -6.8489E-09"
+        rpy="0 0 0" />
+      <mass
+        value="0.12946" />
+      <inertia
+        ixx="0.00071269"
+        ixy="-0.00028213"
+        ixz="4.2775E-11"
+        iyy="0.00014319"
+        iyz="-2.8921E-11"
+        izz="0.00085371" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://FDR_UAV_gazebo-2.SLDASM/meshes/rudder.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.69804 0.69804 0.69804 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://FDR_UAV_gazebo-2.SLDASM/meshes/rudder.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="rudder"
+    type="continuous">
+    <origin
+      xyz="0.72951 0 0.033587"
+      rpy="1.5773 -5.2572E-05 0.016132" />
+    <parent
+      link="base_link" />
+    <child
+      link="rudder" />
+    <axis
+      xyz="0.37461 0.92718 0" />
+  </joint>
+  <link
+    name="pervane1">
+    <inertial>
+      <origin
+        xyz="-2.2149E-06 -4.4004E-06 0.0092885"
+        rpy="0 0 0" />
+      <mass
+        value="0.031881" />
+      <inertia
+        ixx="6.4806E-05"
+        ixy="1.1499E-09"
+        ixz="5.4255E-10"
+        iyy="6.4817E-05"
+        iyz="-9.6381E-10"
+        izz="0.00012893" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://FDR_UAV_gazebo-2.SLDASM/meshes/pervane1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.69804 0.69804 0.69804 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://FDR_UAV_gazebo-2.SLDASM/meshes/pervane1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="pervane1"
+    type="continuous">
+    <origin
+      xyz="-0.04778 -0.25 0.01"
+      rpy="1.5708 0.34264 -1.5708" />
+    <parent
+      link="base_link" />
+    <child
+      link="pervane1" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="pervane2">
+    <inertial>
+      <origin
+        xyz="-5.2561E-06 -5.3344E-06 0.0092888"
+        rpy="0 0 0" />
+      <mass
+        value="0.031883" />
+      <inertia
+        ixx="6.4809E-05"
+        ixy="-1.089E-08"
+        ixz="-7.5157E-10"
+        iyy="6.4831E-05"
+        iyz="6.8501E-11"
+        izz="0.00012894" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://FDR_UAV_gazebo-2.SLDASM/meshes/pervane2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.69804 0.69804 0.69804 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://FDR_UAV_gazebo-2.SLDASM/meshes/pervane2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="pervane2"
+    type="continuous">
+    <origin
+      xyz="-0.04778 0.25 0.01"
+      rpy="1.5708 0.060213 -1.5708" />
+    <parent
+      link="base_link" />
+    <child
+      link="pervane2" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="camera">
+    <inertial>
+      <origin
+        xyz="1.3076E-05 -0.0033636 0.0069832"
+        rpy="0 0 0" />
+      <mass
+        value="0.029915" />
+      <inertia
+        ixx="5.8035E-06"
+        ixy="8.6837E-09"
+        ixz="-3.9948E-10"
+        iyy="3.5157E-06"
+        iyz="6.6254E-08"
+        izz="7.9152E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://FDR_UAV_gazebo-2.SLDASM/meshes/camera.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.89804 0.91765 0.92941 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://FDR_UAV_gazebo-2.SLDASM/meshes/camera.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="camera"
+    type="fixed">
+    <origin
+      xyz="-0.32091 0.00078428 -0.105"
+      rpy="3.1416 0 -1.5708" />
+    <parent
+      link="base_link" />
+    <child
+      link="camera" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+</robot>
