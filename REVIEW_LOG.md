@@ -30984,6 +30984,8 @@ değiştirilecek; ikisinin %1–9 içinde örtüşmesi köprü modelini de doğr
 
 ### D-477 — Takvim ERKENE ÇEKİLDİ (kaptan beyanı); ajanın kapağa yazdığı 21.09.2026 geri alındı · A6 ikinci deneme **%100 kayıp** (bağlantı yok) · telsizin RFD900A 915 MHz olduğu kaptanca **teyit edildi**
 
+⬆ **SONRADAN DÜZELTİLDİ (D-478):** D-477'deki "ikisi 4dda0a24'ten geri yüklendi" iddiası `A6_sik_parasut.json` için yanlıştı; geçerli sürüm D-478'de geri alındı ve doğrulandı.
+
 **1. Takvim.** Kaptan (13 Eyl): *"erkene çekildi bu tarihler doğru değil"*. Güncel: **FDR 14.09.2026, uçuş 21.09.2026** (BEYAN).
 `w2jiddk28`'in BOLUM_0 ajanı `results/sartname_bosluk/sartname_metin.txt:355/:362` (ilk takvim: 21.09 17:00 / 30.09–03.10) ile
 kapağa 21.09.2026 yazmış ve "21 Eylül uçuş günü değildir" hükmü kurmuştu. Kaynağı gerçekti ama **eskiydi**. Mimar da aynı kaynağı
@@ -31023,6 +31025,8 @@ Olası nedenler (ölçülmedi): (a) iki telsizde Air Speed/Max Window farklı ka
 **Yordam:** (1) kaptan ölçüm koşarken mimar aynı dizinde geri yükleme yapmaz; (2) geri yüklemeden sonra içerik assert'le doğrulanır; (3) T270 — `sik_rf_olc.py` var olan `--cikti` dosyasının üzerine `--uzerine-yaz` olmadan yazmasın (taban ölçüm 3 kez ezildi).
 
 ### D-479 — 🔴 MİMARIN TEŞHİSİ ÇÜRÜTÜLDÜ: A6'yı geçiren **Air Speed 64→128**, Max Window **131'de kaldı** · frekans izni ve takvim değişikliği kaptanca teyit (BEYAN)
+
+⬆ **SONRADAN DÜZELTİLDİ (D-481):** 13 Eylül'de 10,5 V'a çekilen parametre `BATT_CRT_VOLT` değil `BATT_LOW_VOLT`'tur; güncel: LOW 10,5 V, CRT 9 V, pil 3S 8000 mAh.
 
 **Kanıt:** `FDR/A6_sik_mp_ekrani_ayar3.png` (kaptan, 13 Eyl) — Local: RFD SiK 1.9 on RFD900A, FREQ_915 · **Air Speed 128** · **Max Window 131** · Net ID 73 · ECC açık · Tx 20 · 50 kanal · 915000–928000 kHz · RSSI L/R 219/221, gürültü 95/91, pkts 12728, txe=0 rxe=0 ecc=0/0. (Görüntüde yalnız Local sütunu var; bağlantı çalıştığı için Remote Air Speed de 128 olmak zorunda — eşleşmeyen Air Speed'de telsizler bağlanmaz, D-477 koşum 2.)
 

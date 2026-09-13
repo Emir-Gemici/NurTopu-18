@@ -1992,7 +1992,8 @@ IKA_SURUS_SURESI_S = SARTNAME_IKA_GOREV_SURESI_S     # izin -> HB
 # Bu modul SAF Python'dur; `ika_nav` (IKA'da kosar) buradan okur, cv2 almaz.
 # `costmap_path_finder` ayni adlari BURADAN alir, yeniden tanimlamaz.
 IKA_TEKER_YARICAP_M = 0.0625          # O125 mm / 2 (DDR)
-IKA_IZ_GENISLIGI_M = 0.39             # TAHMIN — DDR'de yok; insan teyidine kadar (ON_KAYIT SS3.3)
+IKA_IZ_GENISLIGI_M = 0.4595           # OLCULDU 12 Eylul (ekip, serit metre; D-472). Onceki 0.39 TAHMIN'di;
+                                      # URDF disa aktarimi 0.319 diyordu, ikisi de yanlis cikti.
 IKA_AZAMI_HIZ_MS = 1.3                # DDR: 200 rpm x pi x O0,125 / 60 = 1,309 -> 1,3
 
 # ── SS5.3.2 · DRONE ILE GOREV TEST UCUSU (FDA) — T170 · ON_KAYIT SS37 ──────
