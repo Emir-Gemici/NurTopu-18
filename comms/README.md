@@ -20,7 +20,7 @@ iha_komut_alici  ◄──CMD/ACK────  komut_tekrar.py (ACK'lı       ki
 seri_hub.py (SiK tek sahip)      tekrar)                    ▲
         └──────────────┬─────────────┴──────────────────────┘
                        │
-        Taşıyıcı: SiK Radio V3 433 MHz (transparan seri)   [saha]
+        Taşıyıcı: ~~SiK Radio V3 433 MHz~~ RFD900A 915–928 MHz (transparan seri)   [saha]
                   ya da UDP                                  [dev/sim/LAN]
 ```
 
@@ -77,7 +77,7 @@ O:\navitas-local-train\venv\Scripts\python.exe -B -m unittest discover -s tests 
 Port sayıları (5005 YKS · 5006 İKA · 5007 İHA komut alıcı) yalnız `CONTRACTS.md` ve üretim argparse
 varsayılanlarına aittir; testler ve demolar ephemeral port kullanır (T209 / D-427; `mission_demo.py` 10 Eylül).
 
-## Saha (SiK Radio 433 MHz)
+## Saha (~~SiK Radio 433 MHz~~ RFD900A 915–928 MHz)
 
 Telsiz şeffaf seri köprüdür; UDP yerine `--serial` ver. Jetson'da seri hat **tek sahiplidir**:
 üç üretim süreci `seri_hub.py` üzerinden çoğullanır (CONTRACTS §7.5; doğrudan `--serial` yalnız tek süreçli deneme içindir).

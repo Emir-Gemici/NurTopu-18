@@ -31036,3 +31036,10 @@ Olası nedenler (ölçülmedi): (a) iki telsizde Air Speed/Max Window farklı ka
 - *"izin var"* → 915 MHz RFD900A ve MK15 5,8 GHz kullanımı organizasyonca **izinli**. D-445/HANDOFF §0.1b düzenleyici riski **kapandı (BEYAN)**. Kalan tek iş belgelerdeki 433 MHz yazımının düzeltilmesi (T267).
 - *"takvim değişikliği de var sen takma"* → FDR 14.09 / uçuş 21.09 **BEYAN** olarak geçerli; duyuru kanıtı istenmeyecek. T269 kapandı. `tests/test_fdr_takvim_kapisi.py` eski takvimi kilitlemeye devam ediyor — kaptan kararıyla dokunulmadı.
 - `MOT_THST_HOVER` bir sonraki uçuştan sonra okunacak; yeni parametre dökümü kaptan tarafından alındı, repoya istenmiyor (T258 kapandı).
+
+### D-480 — Belgelerde 433 MHz → RFD900A 915–928 MHz (29 yer, betikle) · wmdo68fen token kısıtı yüzünden DURDURULDU (hiç dosyaya dokunmamıştı) · mimarın atölye kâğıdı kusuru düzeltildi
+
+**433 düzeltmesi:** `FDR/BOLUM_*.md`, `CONTRACTS.md`, `comms/README.md`, `FDR/YONERGE_HARITASI.md`, `jetson_paket/JETSON_BASLAT.md` — `~~SiK 433 MHz~~ RFD900A 915–928 MHz` biçimi. **Atlananlar (T267 kalanı):** zaten `~~` içeren 7 satır (elle), iki `JETSON_KILAVUZ.md` (SiK blokları `tests/test_yks_sik_yordami.py` ile birebir kilitli — ikisi birlikte + test ön kaydıyla değişmeli), `comms/*.py` ve `codes/karar_sozlesmesi.py` metinleri (amele, test).
+
+**🔴 Mimarın kusuru:** `ATOLYE_TEST_GUNU_20260912.md` bir **ön kayıt kâğıdıdır**; `tests/test_atolye_test_gunu.py` içinde hüküm kelimesini (GEÇTİ) yasaklar ve her bölümde boş `[ ] ÖLÇÜLDÜ [ ] ÖLÇÜLEMEDİ` kutusunu şart koşar. Mimar D-473/D-476/D-478/D-479'da sonuçları kâğıdın **içine** yazdı → 8 test kırmızıydı, push kapısı fark edilmeden kırılmıştı. Kâğıt `a6a491c5` hâline döndü; sonuçlar **yalnız** REVIEW_LOG D-473…D-479'da. Ayrıca D-472'nin `karar_sozlesmesi.py:1995`'e eklediği satır, kâğıttaki 7 kod atfını (≥1996) 1 kaydırmıştı (K5) → +1 düzeltildi.
+**Kapı:** belge kilidi testleri (tests/ içinde bu dosyaları anan tüm modüller) **824 test OK (skipped=10)** · genel kapı **15/15**. Tam süit (push kapısı) **koşulmadı** → push yok.

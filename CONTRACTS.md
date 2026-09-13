@@ -354,7 +354,7 @@ kendi fail-closed reddidir.
 ## 6. Mesaj protokolü sözleşmesi
 
 `comms/protocol.py` — newline ile çerçevelenmiş JSON, taşıyıcıdan bağımsız
-(UDP sim / SiK Radio 433 MHz saha).
+(UDP sim / ~~SiK Radio 433 MHz~~ RFD900A 915–928 MHz saha).
 
 | Tip | Üretici | Alan | Anlam |
 |---|---|---|---|
@@ -1182,7 +1182,7 @@ Plan: `FAZ_B_GUN_PLANI.md` §1.
 
 ### 7.5 SiK hub — NAVITAS-çerçeve seri çoğullayıcı (Faz B · D-404 · 2026-09-03)
 
-**Olgu:** SiK (433 MHz) kipinde Jetson'daki üç NAVITAS süreci
+**Olgu:** SiK (~~433 MHz~~ RFD900A 915–928 MHz) kipinde Jetson'daki üç NAVITAS süreci
 (`rpi_inference --telsiz-seri`, `iha_inis_yayinci --serial`,
 `iha_komut_alici --serial`) aynı `/dev/ttyUSB0`'ı ister — seri port tek
 sahiplidir (§7.4'ün NAVITAS-protokol ikizi). Çözüm `comms/seri_hub.py`:
@@ -1308,7 +1308,7 @@ Kör bir model %0 moloza basar — **bu bedava bir sıfırdır, başarı değild
 > **Neden var:** `REVIEW_LOG.md` D-22 — saha kod yolunu uçtan uca sınayan tek bir
 > test yok; dört ayrı kopukluk aynı anda görünmüyor. `TASK_QUEUE.md` T21.
 >
-> **Saha** = Jetson/Pi + kamera + SiK 433 MHz telsiz. **Gazebo YOK, ROS YOK, `gz` YOK.**
+> **Saha** = Jetson/Pi + kamera + ~~SiK 433 MHz~~ RFD900A 915–928 MHz telsiz. **Gazebo YOK, ROS YOK, `gz` YOK.**
 
 ### 11.1 Sahiplik kuralı — bağlayıcı
 

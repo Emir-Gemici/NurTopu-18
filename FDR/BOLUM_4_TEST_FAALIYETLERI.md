@@ -11,7 +11,7 @@
 > ve maket çekimi yapılmayacaktır. Uçuş testleri 6–19 Eylül planlıdır ve bu
 > rapor yazılırken **hiçbiri koşulmamıştır**. Jetson üzerinde gerçek FPS ~~**ölçülmemiştir**~~
 > → **6 Eylül'de ÖLÇÜLDÜ** (kart Orin Nano Developer Kit 4 GB; pt 1,35/1,06 · engine 1,58/1,33 FPS,
-> eşik 0,61 — D-431, §4.4); SiK 433 MHz RF menzili **ölçülmemiştir**.
+> eşik 0,61 — D-431, §4.4); ~~SiK 433 MHz~~ RFD900A 915–928 MHz RF menzili **ölçülmemiştir**.
 >
 > **İki araç ayrımı.** Şartname §5.3.2 görev test uçuşu (prova: 21 Eylül Adıyaman · resmî uçuş: 30 Eylül–3 Ekim)
 > **çoklu rotorlu** bir araçla yapılır: 3B baskı quadcopter, Pixhawk 6C + PM02,
@@ -530,7 +530,7 @@ yalnız sözlü olan `BEYAN`, henüz seçilmemiş olan da nedeniyle yazılıdır
 | Pixhawk 6C + güç modülü (plan PM02; sahada **PM06** — BEYAN, §4.13.4) | `scripts/mavlink_dogrula.py` 3/3 · `EXTENDED_SYS_STATE` akışı (§4.9.4) | **KISMEN**: firmware 4.5.7 + parametre yükleme OLCUM (tutanak 15:08); PM06 → `POWER1` OLCUM (18:03). ~~`mavlink_dogrula.py` kapısı **koşulmadı**~~ → **5 Eylül'de koşulmadı** (12 Eylül'de çizikle yazıldı — D-462 A4) → ÖLÇÜLEMEDİ (§4.13.1 #6); ~~parametre dökümü yok (#9)~~ → **6 Eylül 20:22 dökümü repoda** (D-428 §5g): `config/pixhawk/arducopter_fda_20260906.param`, 1025 parametre, şablonla 28/31 uyan · 0 eksik, sapan `RC_PROTOCOLS=1` · `SR1_POSITION=2` · `SR1_EXTRA3=2`. ⚠ `mavlink_dogrula.py` 3/3 kapısı **6 Eylül'de de koşulmadı** — Pixhawk Jetson'a bağlanmadı (`jetson_baslat.sh --kuru`: `[YOK] /dev/ttyACM0`, çıkış 3 — D-431) → **ÖLÇÜLEMEDİ** |
 | Holybro M9N GNSS | 3B fix ve `GLOBAL_POSITION_INT` canlı akışı (§4.9.1 G1 ölçütleri) | **KISMEN**: alıcı tanındı — OLCUM `u-blox 1 HW: 000A0000 SW: ROM SPG 5.10` (15:38). ~~3B fix ve akış kaydı yok → ÖLÇÜLEMEDİ~~ → **6 Eylül OLCUM** (D-428 §1): **18 uydu** ve `EKF3 IMU0/IMU1 is using GPS` (`Messages` yapıştırıldı). ⚠ `GLOBAL_POSITION_INT` **oranı** (§4.9.1 G1: ≥ 4,0 Hz) hiç sayılmadı — kapı Jetson ucunda koşar ve **ÖLÇÜLEMEDİ**; `COMPASS_ORIENT`=6 (Yaw270) ile monte (D-429 §4) |
 | Raspberry Pi HQ (IMX477) | `nvarguscamerasrc` üzerinden köprü kare akışı (§4.10.1 ölçütleri) | **ÖLÇÜLEMEDİ** — 5 Eylül'de Jetson takılmadı; 6 Eylül'de köprü kartta **dosya kaynağıyla** açıldı (ÖLÇÜM, D-431) ama CSI kamera **bağlı değildi** → `nvarguscamerasrc` yolu ölçülmedi |
-| 2 × SiK 433 MHz telsiz | RTT p95 < 0,2 s ve menzil (§4.5) | **KISMEN**: bağlantı BEYAN (~18:45, "tamam oldu"); RTT, kayıp ve menzil ÖLÇÜLEMEDİ (§4.5). **6 Eylül eki:** o gün de RF'e dokunulmadı — `scripts/sik_rf_olc.py` koşum kaydı yok (D-428 tutanağında SiK satırı yok) → **ÖLÇÜLEMEDİ** sürüyor; bu satır bugün **yalnız BEYAN** taşır |
+| 2 × ~~SiK 433 MHz~~ RFD900A 915–928 MHz telsiz | RTT p95 < 0,2 s ve menzil (§4.5) | **KISMEN**: bağlantı BEYAN (~18:45, "tamam oldu"); RTT, kayıp ve menzil ÖLÇÜLEMEDİ (§4.5). **6 Eylül eki:** o gün de RF'e dokunulmadı — `scripts/sik_rf_olc.py` koşum kaydı yok (D-428 tutanağında SiK satırı yok) → **ÖLÇÜLEMEDİ** sürüyor; bu satır bugün **yalnız BEYAN** taşır |
 | FCHUB-12S V2 · ~~5008 340KV × 4 · 12×10 pervane~~ → SunnySky X2220 980KV V3 × 4 · 10×4,5 (BEYAN, etiket yok — 7 Eylül beyanı, D-435; 5 Eylül motor testinin hangi motorla koştuğu BEYAN GEREKLİ) | tam yükte akım ve `VIBE` titreşim kaydı (§4.3.3 adım 3.1) | **KISMEN**: pervanesiz motor testi OLCUM (18:06); sıra/yön 4/4 BEYAN, video yok; ~~ESC kalibrasyonu YAPILMADI;~~ → **6 Eylül'de yapıldı** (BEYAN; başarılı yordam D-428 §3: POWER1 çıkarılmış + USB passthrough + sonra pil → "5'te 5"). ESC künyesi ~~sahada **"60 A V2"** ×4 (plan 80 A) — BEYAN~~ → **Hobbywing Skywalker 60A V2** ×4, etiketten okundu (BEYAN, D-428 §1); `RC_SPEED` dökümde **490**, Skywalker V2 spesi 50–432 Hz → **400 yazılacak** (D-429 §4). ~~tam yükte akım ve `VIBE` ÖLÇÜLEMEDİ (pervane takılmadı)~~ → **6 Eylül 20:45–21:34 pervane TAKILDI** ve 26 gerçek arm yapıldı (tlog, D-429 §1) — üç devrilme; ama tlog akım/`VIBE` taşımaz ve DataFlash `.bin` indirilmedi → **tam yükte akım ve `VIBE` hâlâ ÖLÇÜLEMEDİ**. ⚠ M1 (sağ ön) **hasarlı** (D-429 §2 madde 4); motor künyesi 7 Eylül'de yine değişti (D-435) |
 | 4S 10 Ah 25C pil + iMAX B6 şarj | kapasite ve şarj çevrimi; günde 2 uçuş kısıtının doğrulanması | **KISMEN**: pil takıldı, `PreArm: Battery 1 low voltage failsafe` kayboldu — OLCUM (18:03). ~~MP gerilimi ↔ multimetre (±0,1 V), kapasite ve şarj çevrimi ÖLÇÜLEMEDİ~~ → **6 Eylül: MP ↔ multimetre ÖLÇÜLDÜ** (D-428 §1): multimetre **15,8 V** (balans dış pinleri) ↔ MP **15,8** → **±0,1 V içinde**, `BATT_VOLT_MULT,18.18` dökümde değişmedi (`arducopter_fda_20260906.param:143`). ⚠ Bu sayı önce "aynı" beyanıyla geldi, sayı istenince 11,06'ya sonra 15,8'e döndü (D-428 başlığı). **Kapasite ve şarj çevrimi hâlâ ÖLÇÜLEMEDİ**; günde 2 uçuş kısıtı doğrulanmadı |
 | FS-i6 kumanda + FS-iA6B alıcı | menzil ve failsafe davranışı (§4.5, §4.12) | **KISMEN**: bind BEYAN (16:18); `RCInput: decoding IBUS(1)` OLCUM (18:03); alıcı FS-iA6B teyit (B harfi, BEYAN). ~~Menzil ve RC failsafe ÖLÇÜLEMEDİ (§4.5, §4.12)~~ → **6 Eylül: RC failsafe ÖLÇÜLDÜ ve DÜŞTÜ** (D-428 §2): `Setup → FailSafe` açıkken kumanda kapatıldı, barlar **sabit kaldı**, `Radio Failsafe` gelmedi — FS-iA6B iBUS'ta link kopunca son değerleri tutuyor; `config/pixhawk/arducopter_fda.param:128` yorumundaki varsayım **yanlışlandı**. Düzeltme (kumanda tarafı failsafe ayarı) 10 Eylül itibarıyla **tekrar ölçülmedi** (§4.12). **Menzil hâlâ ÖLÇÜLEMEDİ** (§4.5). Yan olgu: TX pili bitti, akşam iki kez RC koptu (D-428 §4) |
@@ -1055,7 +1055,7 @@ kapı S5d bunu kilitler), `atilan_bayt` sayacı gözlemlenebilir kılar.
 düzeltildi, **aynı eşikle** yeniden koşuldu.
 
 ⚠ **Bu ölçümün KANITLAMADIĞI:** gerçek RF yoktur — menzil, paket kaybı, SiK'in
-kendi çerçeveleme/ECC katmanı, baud uyuşmazlığı burada yoktur. **433 MHz RF
+kendi çerçeveleme/ECC katmanı, baud uyuşmazlığı burada yoktur. **~~433 MHz~~ RFD900A 915–928 MHz RF
 ölçümü 5 Eylül'e ertelendi ve hâlâ ölçülmemiştir** (§4.13.1) — 10 Eylül itibarıyla
 da; aynı köprü düzeneğinde RTT + veri hızı 200 probla ölçüldü (§4.9.6, T216), o da RF değildir.
 
@@ -1152,7 +1152,7 @@ sözleşmeden (IKA_GO 0,25 s · PARAŞÜT 0,20 s), ACK zaman aşımı 0,5 s; ür
 | UDP loopback | PARAŞÜT 0,20 s | 200/200 · %0 | 0,30 / 0,40 / 1,31 | 403,1 · 5,02 | 393,0 · 5,02 | `olcum_udp_loopback_parasut.json` |
 | TCP-seri köprüsü (`socket://`, D-388) | IKA_GO 0,25 s | 200/200 · %0 | 1,33 / 1,83 / 2,16 | 322,5 · 4,01 | 314,5 · 4,01 | `olcum_tcp_seri_koprusu_ikago.json` |
 | TCP-seri köprüsü | PARAŞÜT 0,20 s | 200/200 · %0 | 1,07 / 1,89 / 2,22 | 403,0 · 5,02 | 393,1 · 5,02 | `olcum_tcp_seri_koprusu_parasut.json` |
-| **SiK 433 MHz RF** | — | **ÖLÇÜLEMEDİ** | **ÖLÇÜLEMEDİ** | **ÖLÇÜLEMEDİ** | **ÖLÇÜLEMEDİ** | yok |
+| **~~SiK 433 MHz~~ RFD900A 915–928 MHz RF** | — | **ÖLÇÜLEMEDİ** | **ÖLÇÜLEMEDİ** | **ÖLÇÜLEMEDİ** | **ÖLÇÜLEMEDİ** | yok |
 
 Veri hızı sütunları **kadans yüküdür** (≈ 80 B `CMD` + ≈ 78 B `ACK`), hat kapasitesi değildir;
 iki uç bayt bayt tutarlı (yankının aldığı = ölçün gönderdiği 16 067 B). Tam tablo (bit/s, süre)
@@ -1732,7 +1732,7 @@ ekran görüntüsü.
 |---|---|---|---|---|
 | 1 | **Gerçek arena / HTAB karesi** | Arena benzeri saha + kırmızı H çekimi yok; **maket çekimi yapılmayacaktır** (kullanıcı kararı) | 21 Eylül'e kadar **açık kalır** | — |
 | ~~2~~ | ~~**Jetson Nano gerçek FPS**~~ → **ÖLÇÜLDÜ 6 Eylül (D-431)** — kart Orin Nano Developer Kit 4 GB | 5 Eylül: Jetson araca **takılmadı** (D-426 §4) → 6 Eylül kartta: pt **1,35/1,06** · engine **1,58/1,33** FPS (120 örnek), 10 dk 900 örnek, ONNX HATA | 6 Eylül | **≥ 0,61 FPS** p50 **ve** p95 → **GEÇTİ**; eşik gevşetilmedi. Sınır: kamera bağlı değil, kareler diskten (`results/jetson_20260906/jetson_fps_20260906_orin_nano/ozet.json`) |
-| 3 | **SiK 433 MHz RF menzili / kayıp oranı / veri hızı** | Gerçek SiK çifti yok; UDP loopback ve `socket://` köprü kanıt sayılmaz → 5 Eylül: çift bağlandı (BEYAN, ~18:45), `scripts/sik_rf_olc.py` **koşulmadı**, mesafe kaydı yok (§4.5) → 10 Eylül: araç veri hızı sayacı kazandı, yazılım düzenekleri ölçüldü (§4.9.6), **RF hâlâ koşulmadı** | uçuş testleriyle | RTT p95 < 0,2 s. DDR'deki *">%98, 300 m"* iddiasının kanıtı **yoktur** (R20) |
+| 3 | **~~SiK 433 MHz~~ RFD900A 915–928 MHz RF menzili / kayıp oranı / veri hızı** | Gerçek SiK çifti yok; UDP loopback ve `socket://` köprü kanıt sayılmaz → 5 Eylül: çift bağlandı (BEYAN, ~18:45), `scripts/sik_rf_olc.py` **koşulmadı**, mesafe kaydı yok (§4.5) → 10 Eylül: araç veri hızı sayacı kazandı, yazılım düzenekleri ölçüldü (§4.9.6), **RF hâlâ koşulmadı** | uçuş testleriyle | RTT p95 < 0,2 s. DDR'deki *">%98, 300 m"* iddiasının kanıtı **yoktur** (R20) |
 | 4 | **Uçuş testleri** (hover, Loiter/Auto, canlı algı, 3 tam prova, sıkı prova) | Araç monte edilmedi | **6–19 Eylül** | ≤ 10 dk, 0 müdahale, yanlış güzergâh 0 |
 | ~~5~~ | ~~**TensorRT `.engine` ↔ PT karar kıyası**~~ → **ÖLÇÜLDÜ 6 Eylül ve DÜŞTÜ (D-431)** | `tensorrt` PC'de yok → Jetson'da ölçüldü: F1 0 · F2 0,9953 · **D-303 oransal 3/126 DÜŞTÜ** (§4.8.3) | 6 Eylül | FP16 payı **kapanmadı**: engine üretime alınmadı, uçuş `.pt`; T66 ile tekrar |
 | 6 | **Gerçek Pixhawk üzerinde EXTENDED akışı ve `--kapi`** | Pixhawk yok → 5 Eylül: Pixhawk 4.5.7 ile çalışır durumda (§4.4), `scripts/mavlink_dogrula.py` **koşulmadı** (D-426'da koşum kaydı yok) | uçuş öncesi | `mavlink_dogrula` 3/3 |
@@ -1821,7 +1821,7 @@ Bu maddeler kapanmadan ilgili kayıtlar "tamamlanmış" sayılmaz ve bu raporda 
    FCHUB-12S V2, 5008 340KV ×4, 12×10 pervane (⚠ 7 Eylül: ~~5008 / 12×10~~ → X2220 980KV V3 / 10×4,5 BEYAN, D-435), 2× SiK 433 MHz, 4S 10 Ah 25C.
    Bu rapordaki "Pixhawk 6C + PM02" ifadeleri künye teyidiyle düzeltilecektir.
 2. ~~**BEYAN GEREKLİ (insan):** Jetson Nano üzerinde ölçülen p50/p95 FPS değerleri (PT ve ONNX; `--cihaz` beyanıyla)~~ → **ÖLÇÜLDÜ 6 Eylül (D-431):** `--cihaz 0` (Orin GPU); PT **1,35/1,06** · engine **1,58/1,33** FPS; ONNX **HATA** (sm_87 çekirdeği yok) — `results/jetson_20260906/jetson_fps_20260906_orin_nano/ozet.json`.
-3. **BEYAN GEREKLİ (insan):** SiK 433 MHz çift üzerinde ölçülen RTT p50/p95,
+3. **BEYAN GEREKLİ (insan):** ~~SiK 433 MHz~~ RFD900A 915–928 MHz çift üzerinde ölçülen RTT p50/p95,
    paket kaybı ve **menzil** (metre) — `scripts/sik_rf_olc.py` çıktısı.
 4. **BEYAN GEREKLİ (insan):** 6–19 Eylül uçuş testlerinin her biri için tarih,
    pilot, log dosyası ve kapı sonucu (`results/prova/` üç klasör).

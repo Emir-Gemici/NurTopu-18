@@ -716,7 +716,7 @@ sayılır**, elle tutulmaz.
 - **BEYAN GEREKLİ (insan):** Gerçek kütleler (İHA, İKA, yük) — 5 Eylül tartı listesi.
 - ~~**BEYAN GEREKLİ (insan):** Jetson Nano üzerinde ölçülen kare hızı ve `torch.cuda.is_available()` sonucu.~~ → **ÖLÇÜLDÜ 6 Eylül (D-431):** kart Jetson Orin Nano Developer Kit 4 GB; `torch.cuda.is_available()` **True** (`cuda_adi: Orin`); `scripts/jetson_fps.py` 120 örnek: pt p50/p95 **1,35/1,06 FPS** · engine **1,58/1,33 FPS**, eşik 0,61 → GEÇTİ; ONNX kolu HATA (`cudaErrorNoKernelImageForDevice`) — `results/jetson_20260906/jetson_fps_20260906_orin_nano/ozet.json`.
 - **BEYAN GEREKLİ (insan):** RPi HQ kamera gerçek yatay görüş açısı (`kamera_dogrula` ölçümü); rapordaki 55–63° aralığı lens beyanından türetilmiş **tahmindir**.
-- **BEYAN GEREKLİ (insan):** Gerçek SiK 433 MHz hattında gidiş-dönüş süresi ve paket kayıp oranı.
+- **BEYAN GEREKLİ (insan):** Gerçek ~~SiK 433 MHz~~ RFD900A 915–928 MHz hattında gidiş-dönüş süresi ve paket kayıp oranı.
 - **DOĞRULANACAK:** Bu özetin sayıları rapor teslim edilmeden önce, teslim günündeki kapı koşusuyla **yeniden üretilmelidir**; bayat sayı taşımak bu projede birden çok kez kusur olarak kayda geçti.
 - **DOĞRULANACAK:** Tam test süiti (3 Eylül: 1896 test OK) teslimden önce yeniden koşulacaktır; test dosyası sayısı 155 → 169 değiştiği için 1896 sayısı bugün bayattır.
 - **DOĞRULANACAK:** Bu bölüm, Bölüm 2–7 kesinleştikten sonra **yeniden üretilecektir** (bölüm başındaki üretim sırası uyarısı).

@@ -178,7 +178,7 @@ ve bir hüküm ifade etmez.
 | **IHA_LANDED** | İniş kanıtı çerçevesi (MAVLink `EXTENDED_SYS_STATE` kaynaklı) | 3.3, 4 |
 | **HEARTBEAT** | Hat canlılık çerçevesi; `karar_yas` (algı kararının yaşı) taşır | 3.3, 4 |
 | **K0…K8, K5A** | Karar zinciri kabul kapıları (sentetik arena, n=260) | 3.3, 4, 6 |
-| **SiK** | 433 MHz telemetri radyo bağlantısı | 3.3 |
+| **SiK** | ~~433 MHz~~ RFD900A 915–928 MHz telemetri radyo bağlantısı | 3.3 |
 | **HB dedektörü** | Hedef Bölge (kırmızı branda) tespit modülü | 3.3 |
 | **D-NNN** | Bu projenin kanıt defteri kaydı (`REVIEW_LOG.md`) | her yerde |
 | **Ön kayıt** | Ölçüm eşiğinin **sonuç görülmeden** yazıldığı belge | 4, 6 |

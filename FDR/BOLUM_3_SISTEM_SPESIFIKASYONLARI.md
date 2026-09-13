@@ -263,7 +263,7 @@ Kaynak: kullanıcı beyanı 3 Eylül 2026, `SAHA_HAZIRLIK_PLANI_20260903.md` §0
 | Uçuş kontrolcüsü | **Pixhawk 6C** + **PM02** güç modülü (POWER1, fabrika kalibreli V/I) | kutuda |
 | GNSS / pusula | **Holybro M9N**, direk üstü | kutuda |
 | RC | **FlySky FS-i6** + FS-iA6B alıcı (**iBUS**) | **bind edilmedi** |
-| Telemetri | **2 × SiK 433 MHz** (drone + YKS) | kutuda |
+| Telemetri | **2 × ~~SiK 433 MHz~~ RFD900A 915–928 MHz** (drone + YKS) | kutuda |
 | Görev bilgisayarı | ~~**Jetson Nano 4GB** (JetPack 4.6.x)~~ → **Jetson Orin Nano Developer Kit 4 GB** (JetPack 7.2.1, Ubuntu 24.04, Python 3.12; 3 Eylül beyanı 'Nano 4GB' 6 Eylül'de kartla YANLIŞLANDI — D-431) | **kuruldu 6 Eylül** — genel kapı 15/15 · 15/15, FPS kapısı GEÇTİ; araca takılmadı, Pixhawk/kamera bağlı değil — §3.3.1.1.12 |
 | Kamera | **Raspberry Pi HQ (IMX477, CSI)**, standart lens | kutuda |
 | Pil / şarj | **1 × 4S 10 Ah 25C** · iMAX B6 (50 W → ~3 A → ~3 saat dolum) | **günde en çok 2 uçuş** |
@@ -516,7 +516,7 @@ radyosunun bağlanma noktası (RPi5 mi, STM32 USART2 köprüsü mü — K13; kod
 | **İKA** | (yarışma günü) diferansiyel sürüş aracı — DDR tasarımı: Raspberry Pi 5 + STM32F407VET6 özel kart, **tedarik yok** (İKA şeması yukarıda, 10 Eylül) | rota önbelleği, sürüş izni kilidi, waypoint takibi | `comms/ika_receiver.py`, `simulation/scripts/ika_nav.py`, `simulation/scripts/ika_surucu.py` |
 
 Üç istasyon **tek bir mesaj sözleşmesiyle** konuşur: satır sonu (`\n`) ile çerçevelenmiş
-JSON, taşıyıcıdan bağımsız (UDP simülasyon / SiK 433 MHz saha). Sözleşmenin tamamı
+JSON, taşıyıcıdan bağımsız (UDP simülasyon / ~~SiK 433 MHz~~ RFD900A 915–928 MHz saha). Sözleşmenin tamamı
 `CONTRACTS.md` §6'dadır; kod `comms/protocol.py`.
 
 
@@ -627,7 +627,7 @@ sırasında `OPEN_ROUTE`, `IKA_GO`'dan **önce** gelir, yani YKS adresi `IKA_GO`
    ┌────────┐   6-pin    ┌──────────────┐
    │  PM06  ├───────────►│  Pixhawk 6C  │  POWER1  (5,1–5,3 V · BATT_MONITOR=4)   ← plan PM02, kutudan PM06 çıktı (5 Eylül, BEYAN)
    └───┬────┘            │              │
-       │                 │  TELEM1 ─────┼──► SiK 433 MHz  ──►  YKS (MAVLink)
+       │                 │  TELEM1 ─────┼──► ~~SiK 433 MHz~~ RFD900A 915–928 MHz  ──►  YKS (MAVLink)
        ▼                 │  TELEM2 ─────┼──► Jetson UART /dev/ttyTHS1 (MAVLink2 57600)
   ┌─────────────┐        │  AUX 1..4  ──┼──► ESC Skywalker 60A V2 ×4  ──► motor ~~5008 340KV~~ X2220 980KV V3 ×4 · 10×4,5   ← plan 80 A (BEYAN, tam marka/model BEYAN GEREKLİ); motor 7 Eylül beyanı, etiket yok (D-435)
   │ FCHUB-12S V2│        │  RCIN ◄──────┼─── FS-iA6B `i-BUS SERVO` portu (iBUS; CH1–CH6 DEĞİL)
@@ -650,7 +650,7 @@ sırasında `OPEN_ROUTE`, `IKA_GO`'dan **önce** gelir, yani YKS adresi `IKA_GO`
 | GNSS | Holybro M9N | 15:38: `u-blox 1 HW: 000A0000 SW: ROM SPG 5.10` | ÖLÇÜM |
 | emniyet düğmesi (M9N üstü) | — | 18:05: `PreArm: Hardware safety switch` kayboldu (fiziksel düğme; `BRD_SAFETY_DEFOFF` değiştirilmedi) | ÖLÇÜM |
 | motor / ESC hattı | MAIN 1–4, motor testi pervanesiz | 18:06: `starting motor test` → `finished motor test`; sıra ve yönler 4/4 doğru (kablo taşıma + faz değişimi sonrası) — **video BEYAN GEREKLİ (insan)** | ÖLÇÜM (test koştu) · BEYAN (4/4) |
-| SiK 433 MHz | TELEM1 → YKS | bağlandı (~18:45); RTT / paket kaybı **ÖLÇÜLEMEDİ** | BEYAN |
+| ~~SiK 433 MHz~~ RFD900A 915–928 MHz | TELEM1 → YKS | bağlandı (~18:45); RTT / paket kaybı **ÖLÇÜLEMEDİ** | BEYAN |
 | Jetson Nano | TELEM2 + UBEC | **takılmadı** — pusula kalibrasyonu ve MAVLink kapısı bu yüzden yapılmadı | — |
 
 Ağırlık ve boyut sütunları için 5 Eylül tutanağında tartı satırı yoktur; **BEYAN GEREKLİ (insan)** olarak kalır (§3.3.1.2).
@@ -733,7 +733,7 @@ sonu, gerekçe yorumda):
 
 ##### 3.3.1.1.9 🔴 SiK hub — NAVITAS-çerçeve seri çoğullayıcı (`CONTRACTS.md` §7.5 · D-404/D-405)
 
-§7.4'ün **protokol ikizi**: SiK (433 MHz) kipinde Jetson'daki üç NAVITAS süreci
+§7.4'ün **protokol ikizi**: SiK (~~433 MHz~~ RFD900A 915–928 MHz) kipinde Jetson'daki üç NAVITAS süreci
 (`rpi_inference --telsiz-seri`, `iha_inis_yayinci --serial`, `iha_komut_alici --serial`)
 aynı `/dev/ttyUSB0`'ı ister. Çözüm `comms/seri_hub.py`: portu **yalnız hub** açar,
 tüketiciler kendi UDP kiplerinde kalır — **tüketici kodu değişmez.**
@@ -1149,7 +1149,7 @@ D-438 §2f; bugün `MAX_SPEED` `ika_nav.py:39` = `codes/karar_sozlesmesi.py:1996
 |---|---|---|
 | protokol | MAVLink v2 (Hat-1 İHA↔YKİ, Hat-2 İKA↔YKİ) | **NAVITAS çerçeve protokolü**: satır sonu ile çerçevelenmiş tek satır JSON (`comms/protocol.py`, §3.3.4.3.1) |
 | topoloji | **iki atlamalı**: İHA → YKİ → İKA | İHA → **YKS ve İKA'ya doğrudan** (`comms/iha_sender.py:92 IhaSender(peers)`, `--ika-hedef`); İKA ACK'ı gönderene **ve** YKS'ye (K8, `comms/ika_receiver.py:175`) |
-| taşıyıcı | SiK V3 433 MHz, NetID 26 | aynı sözleşme UDP (WiFi / simülasyon) **ve** SiK seri üzerinde; SiK kipinde Jetson'da tek port sahibi `comms/seri_hub.py` (`CONTRACTS.md` §7.5) |
+| taşıyıcı | ~~SiK V3 433 MHz~~ RFD900A 915–928 MHz, NetID 26 | aynı sözleşme UDP (WiFi / simülasyon) **ve** SiK seri üzerinde; SiK kipinde Jetson'da tek port sahibi `comms/seri_hub.py` (`CONTRACTS.md` §7.5) |
 | bütünlük | Hat-3'te CRC8; RF hattında MAVLink CRC | protokolde CRC **yok** — SiK'in kendi hata düzeltmesine güvenilir (§3.3.4.3.1, ölçülmemiş risk) |
 | hat kaybı | 5 s (DDR aviyonik Şekil 3.3.1.11 metni) | `IkaReceiver.hb_timeout` **3 s** (`comms/ika_receiver.py:27`); İHA heartbeat 1 Hz (`codes/karar_sozlesmesi.py:145`) |
 | ölçüm | — | UDP loopback IKA_GO kadansı RTT p50 0,27 / p95 0,38 ms, kayıp %0, 200/200 ACK, 4,01 pkt/s; TCP-seri köprüsü p50 1,33 / p95 1,83 ms (`results/fdr_sprint_20260910/H2/ozet.json`, T216); **RF hattı ÖLÇÜLEMEDİ** |
@@ -1174,7 +1174,7 @@ RF hattı ve gerçek Pixhawk için ÖLÇÜLEMEDİ satırları §3.3.4.3.4'tedir.
 
 | # | arayüz (yön) | mesaj / sinyal | taşıyıcı | tekrar / ACK | kapı — ne zaman geçerli | üretim kodu | kilit (test) | ölçüm |
 |---|---|---|---|---|---|---|---|---|
-| F1 | İHA → YKS **ve** İKA | `OPEN_ROUTE` (`road`, `label`, `conf`, `ref_xy`, `waypoints`) | UDP (WiFi/sim) ya da SiK 433 MHz seri — aynı çerçeve | 8 × 0,25 s, her akrandan `ACK(ref_tip="OPEN_ROUTE")` gelene dek (`comms/iha_sender.py:171 _tekrarli_gonder`, `:219 send_open_route`); üretimde `KararYayinci` latest-wins kuyruğu (`:301`) | güven kapısı tek yerde, eşik altı `NO_ROUTE` olur (`:219-237`); her karede tam bir mesaj (K1, `CONTRACTS.md` §6.5) | üretici `comms/protocol.py:54 open_route`; alıcılar `comms/ika_receiver.py:234`, `comms/yks_gui.py:1521 _mesaj_isle` | `tests/test_rpi_telsiz_yayin.py`, `comms/test_comms.py`, `tests/test_faz_b_ack_ref_tip.py` | UDP loopback 200/200 ACK, RTT p50 0,27 / p95 0,38 ms (`results/fdr_sprint_20260910/H2/ozet.json`) |
+| F1 | İHA → YKS **ve** İKA | `OPEN_ROUTE` (`road`, `label`, `conf`, `ref_xy`, `waypoints`) | UDP (WiFi/sim) ya da ~~SiK 433 MHz~~ RFD900A 915–928 MHz seri — aynı çerçeve | 8 × 0,25 s, her akrandan `ACK(ref_tip="OPEN_ROUTE")` gelene dek (`comms/iha_sender.py:171 _tekrarli_gonder`, `:219 send_open_route`); üretimde `KararYayinci` latest-wins kuyruğu (`:301`) | güven kapısı tek yerde, eşik altı `NO_ROUTE` olur (`:219-237`); her karede tam bir mesaj (K1, `CONTRACTS.md` §6.5) | üretici `comms/protocol.py:54 open_route`; alıcılar `comms/ika_receiver.py:234`, `comms/yks_gui.py:1521 _mesaj_isle` | `tests/test_rpi_telsiz_yayin.py`, `comms/test_comms.py`, `tests/test_faz_b_ack_ref_tip.py` | UDP loopback 200/200 ACK, RTT p50 0,27 / p95 0,38 ms (`results/fdr_sprint_20260910/H2/ozet.json`) |
 | F2 | İHA → YKS ve İKA | `NO_ROUTE` (`sebep`, `detay`) | aynı | 8 × 0,25 s (`iha_sender.py:240`) | `latest` **ezilmez**; sürüşteyse güvenli duruş, yeni `OPEN_ROUTE` ile devam (`CONTRACTS.md` §6.1; ~~`ika_nav.py:304`~~ `ika_nav.py:343 rota_gecersiz_dur`) | `protocol.py:86 rota_yok`; `ika_receiver.py:247` | `tests/test_ika_no_route_recovery.py`, `tests/test_ika_surus_no_route.py` | — (davranış testi) |
 | F3 | İHA → herkes | `HEARTBEAT` (`node`, `karar_yas`, telemetri alanları) | aynı | 1 Hz (`IHA_HEARTBEAT_ARALIK_S`, `codes/karar_sozlesmesi.py:145`), ACK'sız | İKA: 3 s sessizlik → `link_lost` → durur, hat dönünce aynı waypoint'ten (`ika_receiver.py:27`, `:294`); YKS: tazelik özeti, `karar_yas` yoksa taze sayılmaz | `iha_sender.py:247 send_heartbeat`; `protocol.py:126` | `tests/test_ika_go_gate.py`, `tests/test_dalga2_k1_k5_k8_kusurlari.py` | — |
 | F4 | İHA → YKS ve İKA | `IHA_LANDED` (`seq`) | aynı | 8 × 0,25 s (`iha_sender.py:264 send_iha_landed`); üretici `comms/iha_inis_yayinci.py:361` | **Pixhawk kanıtı** `inis_kaniti.yerde_mi` (`comms/inis_kaniti.py:925`: `ON_GROUND` + `relative_alt` < 1 m, 3 ardışık, aynı sysid); İKA latch (`ika_receiver.py:266`); YKS manuel düğmesi latch'i **açmaz** | `protocol.py:211 iha_landed` | `tests/test_iha_landed_gate.py` (`:313`), `tests/test_iha_inis_yayinci.py`, `tests/test_inis_kaniti.py` | gerçek Pixhawk'ta **ÖLÇÜLEMEDİ** (Jetson–Pixhawk MAVLink kapısı, §3.3.1.3.2) |
@@ -1538,7 +1538,7 @@ içindedir. Adımlar, gerçek çağrı sırasıyla:
    │
    └─[8]─ _karari_yayinla(...)                   rpi_inference.py:281 → 2139
             → KararYayinci.karar(...) → IhaSender.send_open_route / send_no_route
-            → SiK 433 MHz (veya UDP) → YKS + İKA
+            → ~~SiK 433 MHz~~ RFD900A 915–928 MHz (veya UDP) → YKS + İKA
 ```
 
 Aynı zincir `run_video` (satır 2214) ve tek kare için `run_image` (satır 1982) kollarında da
@@ -2357,7 +2357,7 @@ karışımı** — `OPEN_ROUTE` + tam telemetrili `HEARTBEAT` + alıcı ACK'leri
 çıktılar `results/fdr_sprint_20260910/T243/`, nöbetçi `tests/test_t243_paket_boyutu.py`
 (FDR'deki her sayıyı JSON'dan yeniden hesaplar).
 
-##### 3.3.4.3.1 Çerçeve protokolü (SiK 433 MHz / UDP)
+##### 3.3.4.3.1 Çerçeve protokolü (~~SiK 433 MHz~~ RFD900A 915–928 MHz / UDP)
 
 - **Çerçeveleme:** satır sonu (`\n`) ile ayrılmış **tek satır JSON**, UTF-8
   (~~`comms/protocol.py:216 encode` / `:222 decode`~~ `:229 encode` / `:235 decode` — 10 Eylül
@@ -2658,7 +2658,7 @@ sözleşmeden (`IKA_GO_TEKRAR_ARALIGI_S` 0,25 s · `PARASUT_TEKRAR_ARALIGI_S` 0,
 | UDP loopback 127.0.0.1 | PARAŞÜT 0,20 s | 200/200 · %0 | 0,30 / 0,40 / 1,31 | 403,1 · 3 225 · 5,02 | 393,0 · 3 144 · 5,02 | 39,9 | `olcum_udp_loopback_parasut.json` |
 | TCP-seri köprüsü (`socket://`, iki gerçek pyserial ucu — D-388 kalıbı) | IKA_GO 0,25 s | 200/200 · %0 | 1,33 / 1,83 / 2,16 | 322,5 · 2 580 · 4,01 | 314,5 · 2 516 · 4,01 | 49,8 | `olcum_tcp_seri_koprusu_ikago.json` |
 | TCP-seri köprüsü | PARAŞÜT 0,20 s | 200/200 · %0 | 1,07 / 1,89 / 2,22 | 403,0 · 3 224 · 5,02 | 393,1 · 3 144 · 5,02 | 39,9 | `olcum_tcp_seri_koprusu_parasut.json` |
-| **SiK 433 MHz RF (gerçek radyo çifti)** | — | **ÖLÇÜLEMEDİ** | **ÖLÇÜLEMEDİ** | **ÖLÇÜLEMEDİ** | **ÖLÇÜLEMEDİ** | — | yok — ekip radyoları taktığında aynı araç `--port COMx` (§3.3.4.3.4) |
+| **~~SiK 433 MHz~~ RFD900A 915–928 MHz RF (gerçek radyo çifti)** | — | **ÖLÇÜLEMEDİ** | **ÖLÇÜLEMEDİ** | **ÖLÇÜLEMEDİ** | **ÖLÇÜLEMEDİ** | — | yok — ekip radyoları taktığında aynı araç `--port COMx` (§3.3.4.3.4) |
 
 Okuma kuralı: (1) veri hızı sütunları **kadans yüküdür** (≈ 80 B `CMD` + ≈ 78 B `ACK` çerçeve, 4 pkt/s →
 ≈ 320 B/s), hattın **kapasitesi değildir**; 57 600 baud'un kuramsal ≈ 5 760 B/s'si ölçülmedi, tasarım
@@ -2744,7 +2744,7 @@ bağlandı (BEYAN, D-426 §1) ama üzerinden ölçüm alınmadı — §3.3.4.3.4
 
 | büyüklük | durum |
 |---|---|
-| **Gerçek SiK 433 MHz RF üzerinde RTT / paket kaybı** | **ÖLÇÜLEMEDİ.** Araç `scripts/sik_rf_olc.py` **yazıldı** (`--rol yanki` / `--rol olc --n 50`), hedef **RTT p95 < 0,20 s** (`PARASUT_TEKRAR_ARALIGI_S`) ve < 0,25 s (`IKA_GO_TEKRAR_ARALIGI_S`); çıkış kodları UYUMLU 0 / UYARI 1 / ÖLÇÜLEMEDİ 2; kayıp için eşik yok, yalnız raporlanır. **3 Eylül:** radyolar kutuda. **5 Eylül:** hat sahada bağlandı (BEYAN, D-426 §1 "~18:45 SiK telemetri baglandi"), betik koşulmadı; `results/` altında ölçüm dosyası **yoktur** (5 Eylül sayımı). **10 Eylül (T216):** araç veri hızını da sayar ve UDP taşıyıcı (`--tasiyici udp`) kazandı; yazılım düzenekleri ölçüldü (§3.3.4.3.3 "10 Eylül" tablosu, `results/fdr_sprint_20260910/H2/`), **RF'te hâlâ koşulmadı** — `results/` altında SiK RF ölçüm dosyası **yoktur** (10 Eylül sayımı). Kapanma komutu: `--rol yanki --port COMx` / `--rol olc --port COMy --n 200 --json --cikti results/<tarih>/sik_rtt.json`. |
+| **Gerçek ~~SiK 433 MHz~~ RFD900A 915–928 MHz RF üzerinde RTT / paket kaybı** | **ÖLÇÜLEMEDİ.** Araç `scripts/sik_rf_olc.py` **yazıldı** (`--rol yanki` / `--rol olc --n 50`), hedef **RTT p95 < 0,20 s** (`PARASUT_TEKRAR_ARALIGI_S`) ve < 0,25 s (`IKA_GO_TEKRAR_ARALIGI_S`); çıkış kodları UYUMLU 0 / UYARI 1 / ÖLÇÜLEMEDİ 2; kayıp için eşik yok, yalnız raporlanır. **3 Eylül:** radyolar kutuda. **5 Eylül:** hat sahada bağlandı (BEYAN, D-426 §1 "~18:45 SiK telemetri baglandi"), betik koşulmadı; `results/` altında ölçüm dosyası **yoktur** (5 Eylül sayımı). **10 Eylül (T216):** araç veri hızını da sayar ve UDP taşıyıcı (`--tasiyici udp`) kazandı; yazılım düzenekleri ölçüldü (§3.3.4.3.3 "10 Eylül" tablosu, `results/fdr_sprint_20260910/H2/`), **RF'te hâlâ koşulmadı** — `results/` altında SiK RF ölçüm dosyası **yoktur** (10 Eylül sayımı). Kapanma komutu: `--rol yanki --port COMx` / `--rol olc --port COMy --n 200 --json --cikti results/<tarih>/sik_rtt.json`. |
 | **Veri hızı (bit/s, paket/s)** | **RF hattında ÖLÇÜLEMEDİ.** ~~Hiçbir betik ölçmez (`sik_rf_olc.py` RTT ve kayıp verir);~~ **10 Eylül (T216):** `sik_rf_olc.py` artık bayt/s, bit/s ve paket/s sayar (`veri_hizi` alanı; kilit `tests/test_faz_b_sik_rf_olc.py`, 13 test, sayaç mutasyonu yakalandı) ve yazılım düzeneklerinde ölçüldü — §3.3.4.3.3 "10 Eylül" tablosu (UDP loopback / TCP-seri köprüsü: IKA_GO kadansında ≈ 4,0 pkt/s · ≈ 322 B/s TX, PARAŞÜT kadansında ≈ 5,0 pkt/s · ≈ 403 B/s TX; kayıp 0/200). Bunlar **kadans yüküdür, hat kapasitesi değildir** ve **RF değildir**. §3.3.4.3.2'deki 4 pkt/s (`IKA_GO`) ve 5 pkt/s (`PARACHUTE`) tasarım oranları bu ölçümle **loopback'te doğrulandı**; "57600 baud'da ~200 B çerçeve + ACK < 100 ms" (~~`karar_sozlesmesi.py:2075-2076`~~ `karar_sozlesmesi.py:2089-2090`) hâlâ tasarım tahminidir — RF'te ölçülmedi. **12 Eylül (T243 · D-462 C):** gerçek görev karışımının veri hızı ölçüldü (§3.3.4.3.3 "12 Eylül" tablosu) ve mesaj tipi başına paket boyutu tablosu çıkarıldı (§3.3.4.3.1); tahminin **~200 B çerçeve** kısmı ölçümle **yanlışlandı** (`HEARTBEAT` 273 B, `OPEN_ROUTE` 365 B), **ACK < 100 ms** kısmı RF'te hâlâ ölçülmedi. Ölçüm yine UDP loopback'tir; `results/` altında SiK RF ölçüm dosyası **yoktur** (12 Eylül sayımı) |
 | **Menzil** | **ÖLÇÜLEMEDİ.** DDR'deki *">%98, 300 m"* iddiasının repoda kanıtı **yoktur**; 5 Eylül tutanağında (D-426) menzil satırı yok |
 | **SiK telsiz firmware / baud** | **ÖLÇÜLEMEDİ.** Parametre dosyası fabrika 57600 baud bekler; telsizin üzerindeki firmware doğrulanmadı (D-424 §5: "kutusu açılmamış donanım" örüntüsünün açık kalemi). **12 Eylül (T243 · D-462 C):** bu satır **hava hızı (Air Speed) ve ECC ayarını** da kapsar; ikisi de okunmadı (`results/atolye_20260912/SONUC_SABLONU.md` A6 satırı boş, `A6_sik_ayar.txt` yok). Hat doluluğu bu yüzden §3.3.4.3.3'te iki sütunla verilir (ECC kapalı ham bütçe / ECC açık yarı bütçe) ve hangisinin geçerli olduğu **bilinmiyordur** |
@@ -2792,7 +2792,7 @@ BEYAN GEREKLI (insan): Gercek Pixhawk 6C uzerinde `scripts/mavlink_dogrula.py`
   cikitisi -- uc UDP ucunda ayni anda HEARTBEAT sysid, GLOBAL_POSITION_INT >= 4 Hz,
   EXTENDED_SYS_STATE >= 1 Hz.
 
-BEYAN GEREKLI (insan): Gercek SiK 433 MHz cifti uzerinde `scripts/sik_rf_olc.py`
+BEYAN GEREKLI (insan): Gercek ~~SiK 433 MHz~~ RFD900A 915–928 MHz cifti uzerinde `scripts/sik_rf_olc.py`
   RTT p95 ve paket kaybi olcumu; ayrica menzil beyaninin kaniti.
 
 OLCULDU 6 Eylul (D-431): kart Jetson Orin Nano Developer Kit 4 GB (Nano 4GB beyani
@@ -2870,7 +2870,7 @@ OLCULDU (7 Eylul 2026): Sinif bazli karisiklik matrisi — DOGRULAMA
 OLCULEMEDI: Farkli isik acisi / golge kesitlerinde goruntu isleme
   dogrulugu. Arena benzeri gercek kare yok; maket cekimi yapilmayacak.
 
-OLCULEMEDI: SiK 433 MHz hattinda fiili veri hizi (bit/s, paket/s).
+OLCULEMEDI: ~~SiK 433 MHz~~ RFD900A 915–928 MHz hattinda fiili veri hizi (bit/s, paket/s).
   Bugunku sayilar gecikme olcumudur. Kapanma: 5 Eylul,
   `scripts/sik_rf_olc.py`.
 

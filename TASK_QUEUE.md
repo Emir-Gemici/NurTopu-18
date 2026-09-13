@@ -9767,3 +9767,5 @@ _(henüz yok)_
 - [x] **T258 — 13 Eylül dökümü** — kaptan aldı, repoya istenmiyor (D-479).
 - [ ] **T267 — belgelerde 433 MHz → RFD900A 915–928 MHz** — düzenleyici kısım KAPANDI (kaptan: izin var, D-479); yalnız yazım düzeltmesi kaldı.
 - [ ] **T271 — A7 menzil, Air Speed 128 ayarıyla** — hava hızı 2× menzili kısaltır; 425,5 m gereksinimi bu ayarla ölçülmeli (İNSAN, uçuş günü).
+- [ ] **T267 kalanı** — `~~` içeren 7 satır · iki JETSON_KILAVUZ SiK bloğu (test kilitli, birlikte) · `comms/*.py` + `codes/karar_sozlesmesi.py` metinleri (amele) — D-480.
+- [ ] **T272 — atölye sonuçları için ayrı sonuç dosyası** (kâğıt ön kayıttır, hüküm yazılamaz; D-480) — `results/atolye_20260912/SONUCLAR.md`.
