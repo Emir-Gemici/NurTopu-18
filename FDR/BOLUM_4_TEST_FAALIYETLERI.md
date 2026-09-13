@@ -9,9 +9,9 @@
 > **Bu bölümün iddia ETMEDİĞİ.** Hiçbir sayı "sahada çalışır" demez. Arena
 > ölçümlerinin tamamı sentetiktir; elimizde **gerçek arena/HTAB karesi yoktur**
 > ve maket çekimi yapılmayacaktır. Uçuş testleri 6–19 Eylül planlıdır ve bu
-> rapor yazılırken **hiçbiri koşulmamıştır**. Jetson üzerinde gerçek FPS ~~**ölçülmemiştir**~~
+> rapor yazılırken **hiçbiri koşulmamıştır** (→ 12 Eylül 2026: atölyede A12 askısı — GUIDED kipinde kodla 3 m'de 15 s ve kodla LAND, BEYAN, D-473; kart `STAT_FLTTIME,273`, D-474). Jetson üzerinde gerçek FPS ~~**ölçülmemiştir**~~
 > → **6 Eylül'de ÖLÇÜLDÜ** (kart Orin Nano Developer Kit 4 GB; pt 1,35/1,06 · engine 1,58/1,33 FPS,
-> eşik 0,61 — D-431, §4.4); ~~SiK 433 MHz~~ RFD900A 915–928 MHz RF menzili **ölçülmemiştir**.
+> eşik 0,61 — D-431, §4.4); ~~SiK 433 MHz~~ RFD900A 915–928 MHz RF menzili **ölçülmemiştir** (RTT, kayıp ve veri hızı 12–13 Eylül'de gerçek RF'te ölçüldü — A6, §4.5).
 >
 > **İki araç ayrımı.** Şartname §5.3.2 görev test uçuşu (prova: 21 Eylül Adıyaman · resmî uçuş: 30 Eylül–3 Ekim)
 > **çoklu rotorlu** bir araçla yapılır: 3B baskı quadcopter, Pixhawk 6C + PM02,
@@ -38,7 +38,7 @@ gereksinim kimlikleriyle (`Y-4-M01` … `Y-4-M12`) aynı sırayı izler.
 | `Y-4-M04` | ekipman kabul testleri — İHA ve İKA'daki **tüm** ekipmanlar | §4.4 | ~~YOK~~ → **KISMEN** (12 Eylül 2026, D-462 A6 — `YONERGE_HARITASI.md` ile hizalandı; gövde 5–6 Eylül tezgâh ölçümlerini veriyordu: §4.4'te 9 ekipman satırının 2'sinde kabul kapısı koşuldu — Jetson FPS **GEÇTİ**, FS-i6 failsafe **DÜŞTÜ** —, 4'ünde tezgâh ölçümü var, 1'i yalnız BEYAN, 2'sinde hiç ölçüm yok) |
 | `Y-4-M05` | kumanda ve telemetri **menzil** testleri (sahada) | §4.5 | YOK |
 | `Y-4-M06` | IMU, pusula ve pitot tüpü kalibrasyon kanıtları | §4.6 | ~~YOK~~ → **KISMEN** (12 Eylül 2026, D-462 A6 — `YONERGE_HARITASI.md` ile hizalandı; 6 Eylül 20:22 dökümü `config/pixhawk/arducopter_fda_20260906.param`: IMU accel/gyro/level ofsetleri ve Mag1/Mag2 ofsetleri **< 300** §4.6'da dosya:satır ile; pitot **kapsam dışı** — `ARSPD_ENABLE,0`. Eksik: MP kalibrasyon ekran görüntüsü, 2. pusula kalibrasyonunun dökümü, Jetson takılı kalibrasyon — D-428 §1) |
-| `Y-4-M07` | görev icra simülasyonu + başarı oranları + grafikler + video linki | §4.7 (sahibi **Bölüm 3.3.3**) | ~~YOK~~ **KISMEN** (10 Eylül, T214-A/B: MuJoCo zinciri koşuldu — 105 koşum, 4 grafik, HUD'lu video yerelde; **SENTETİK**; video linki **BEYAN GEREKLİ (insan)**, T222) |
+| `Y-4-M07` | görev icra simülasyonu + başarı oranları + grafikler + video linki | §4.7 (sahibi **Bölüm 3.3.3**) | ~~YOK~~ **KISMEN** (10 Eylül, T214-A/B: MuJoCo zinciri koşuldu — 105 koşum, 4 grafik, HUD'lu video yerelde; **SENTETİK**; video linki **BEYAN GEREKLİ (insan)**, T222; 13 Eylül: video 3B modeller (İHA, İKA, mancınık) gelince yeniden üretilecek, link o zaman — D-471) |
 | `Y-4-M08` | görüntü işleme performansı, benzer koşullarda test sonuçları, doğruluk matrisleri | §4.8 | KISMEN |
 | `Y-4-M09` | haberleşme: paket yapısı, veri hızı, iletişim gecikmesi | §4.9 | KISMEN |
 | `Y-4-M10` | sistem üzerinde gerçekleştirilen **tüm** yer testleri | §4.10 | KISMEN |
@@ -434,6 +434,13 @@ GNSS direği yüksekliği, pusula ile güç kablosu arasındaki ayrım, kamera b
 açısı ve titreşim yalıtımı, telsiz anten yönelimi. Montaj 5–19 Eylül'de
 yapılacak; yerleşim ölçüsü ve fotoğrafı bu alt bölüme girecektir.
 
+**Yazılım tarafının bildiği kamera geometrisi (13 Eylül, HESAP — ölçüm değil):** kamera nadir (90°)
+bakacak şekilde konumlanacak (kullanıcı beyanı, D-471); montaj açısı ve yaw'ı ÖLÇÜLEMEDİ, kamera elde yok.
+Yatay FOV **55,3° (HESAP)** = `2·atan(6,287 mm ÷ 12 mm)` — IMX477 etkin genişliği 6,287 mm (veri sayfası),
+lens 6 mm (BEYAN); aynı geometri `scripts/kamera_fov_hesapla.py:41` `fov_derece` içindedir, türetme Bölüm 6
+gereksinim tablosunda. Kamera ölçümleri A9, A10 ve A11 ÖLÇÜLEMEDİ (kamera elde yok, D-473). Yerleşim
+fotoğrafı ve ölçüsü için yukarıdaki BEYAN sürer.
+
 ### 4.3.3 Test takvimi — planlanan uçuş test kapıları (6–19 Eylül) ve gerçekleşen olaylar (5–10 Eylül)
 
 **Gerçekleşen olaylar** (10 Eylül 2026'da ölçülen kayıtlarla yeniden yazıldı; kaynak
@@ -476,6 +483,10 @@ gelecektir.~~** → 10 Eylül itibarıyla **hiç uçuş yok** (6 Eylül: yerde �
 §4.10.5; hover BEYAN, D-439 §4); ilk gerçek sayı D-429 §5 muayenesi sonrası ilk
 provadan gelecektir. Bugün elde olan tek uçuş bütçesi kısıtı yukarıdaki pil kısıtıdır
 (günde en fazla 2 uçuş) ve prova kapısı **≤ 10 dk**'dır (§4.3.3, adım 3.4).
+
+→ **12 Eylül 2026 (BEYAN, D-473):** ilk uçuş A12 atölyede yapıldı — GUIDED kipinde kodla 3 m'de 15 s askı
+ve kodla LAND; kart `STAT_FLTTIME,273` (`config/pixhawk/emir.param:980`, D-474), `.bin` silindi. Bu bir
+askı denemesidir, görev değil: kalkış → tarama → tespit → hakem onayı → iniş süresi hâlâ ÖLÇÜLEMEDİ.
 
 Yer tarafında **ölçülmüş** zaman bütçeleri şunlardır; karar zincirinin tazelik
 penceresini (`YKS_TESPIT_TAZELIK_S = 5,0` s) bağlarlar:
@@ -555,6 +566,15 @@ bir kez daha değişti (D-435) ve **etiketi yoktur**. Kalan künye satırları
 p95 < 0,2 s; ölçüm aracı `scripts/sik_rf_olc.py`, 5 Eylül'de koşulmadı** ~~.~~
 **— 10 Eylül'de de RF'te koşulmadı (araç artık veri hızını da sayar; yazılım
 düzeneklerindeki koşumu §4.9.6, RF değildir).**
+
+**→ 12–13 Eylül 2026 — A6 gerçek RF ölçümü** (`REVIEW_LOG.md` D-476, D-478, D-479; tablo §4.9.6). RFD900A 915–928 MHz
+çifti, `scripts/sik_rf_olc.py`, seri 57600 baud, iki kadansta 200'er prob. İlk ayarda (Air Speed 64) RTT p95
+265,2 ms (IKA_GO) ve 229,6 ms (PARAŞÜT) çıktı ve DÜŞTÜ (D-476). Air Speed 128 ile RTT p95 126,5 ms (IKA_GO)
+ve 126,5 ms (PARAŞÜT) ölçüldü; iki kadans da GEÇTİ (D-478). Bu ikinci koşumda kayıp %0, ACK 400 probun
+400'ünde geldi. Eşikler değiştirilmedi: sözleşme tekrar aralıkları IKA_GO 250 ms ve PARAŞÜT 200 ms. Max
+Window 131'de kaldı; geçiren ayar Air Speed'dir (D-479, `FDR/A6_sik_mp_ekrani_ayar3.png`). **Menzil (metre)
+hâlâ ÖLÇÜLEMEDİ** — A7 koşulmadı; Air Speed 2× menzili kısaltır, ölçüm bu ayarla yapılacak (T271). DDR'deki
+300 m iddiası bu yüzden hâlâ kanıtsızdır.
 
 **5 Eylül 2026'da olan** (`REVIEW_LOG.md` D-426 §1) — menzil ölçümü **değildir**:
 
@@ -721,7 +741,7 @@ iki yardım olmadığı için gerçek başarım bu sayıların **altında** bekl
 | H1-K5 — ÜRETİM MODELİ | 9/45 (harita 0/15) | ≥ 12/15 harita | **DÜŞTÜ** |
 | H1-K5 — ÜRETİM BORU HATTI | 0/15 (harita 0/15; koşulan 5) | ≥ 12/15 harita | **DÜŞTÜ** |
 | H1-K6 sanal görev süresi (sim; YER GERÇEĞİ başarılı, medyan) | İKA sürüşü 71,3 s · toplam görev 108,6 s; 4 grafik | 45 koşum + 4 grafik | **ÜRETİLDİ** |
-| H1-K7 video | 177,88 s · 25 FPS · HUD · üç kamera; sha256 `35ffc33e2f99c833…` | ≥ 90 s · ≥ 24 FPS | **GEÇTİ** — link **BEYAN GEREKLİ (insan)**, T222 |
+| H1-K7 video | 177,88 s · 25 FPS · HUD · üç kamera; sha256 `35ffc33e2f99c833…` | ≥ 90 s · ≥ 24 FPS | **GEÇTİ** — link **BEYAN GEREKLİ (insan)**, T222; video 3B modeller gelince yeniden üretilecek (D-471) |
 
 Dürüstlük notu: depoda bir Gazebo simülasyon ağacı **vardır**
 (`simulation/scripts/` altında `mission_demo.py`, `ika_nav.py`,
@@ -1152,11 +1172,27 @@ sözleşmeden (IKA_GO 0,25 s · PARAŞÜT 0,20 s), ACK zaman aşımı 0,5 s; ür
 | UDP loopback | PARAŞÜT 0,20 s | 200/200 · %0 | 0,30 / 0,40 / 1,31 | 403,1 · 5,02 | 393,0 · 5,02 | `olcum_udp_loopback_parasut.json` |
 | TCP-seri köprüsü (`socket://`, D-388) | IKA_GO 0,25 s | 200/200 · %0 | 1,33 / 1,83 / 2,16 | 322,5 · 4,01 | 314,5 · 4,01 | `olcum_tcp_seri_koprusu_ikago.json` |
 | TCP-seri köprüsü | PARAŞÜT 0,20 s | 200/200 · %0 | 1,07 / 1,89 / 2,22 | 403,0 · 5,02 | 393,1 · 5,02 | `olcum_tcp_seri_koprusu_parasut.json` |
-| **~~SiK 433 MHz~~ RFD900A 915–928 MHz RF** | — | **ÖLÇÜLEMEDİ** | **ÖLÇÜLEMEDİ** | **ÖLÇÜLEMEDİ** | **ÖLÇÜLEMEDİ** | yok |
+| **~~SiK 433 MHz~~ RFD900A 915–928 MHz RF** | — | **ÖLÇÜLEMEDİ** | **ÖLÇÜLEMEDİ** | **ÖLÇÜLEMEDİ** | **ÖLÇÜLEMEDİ** | yok (10 Eylül) → 12–13 Eylül ölçüldü, aşağıdaki A6 tablosu |
 
 Veri hızı sütunları **kadans yüküdür** (≈ 80 B `CMD` + ≈ 78 B `ACK`), hat kapasitesi değildir;
 iki uç bayt bayt tutarlı (yankının aldığı = ölçün gönderdiği 16 067 B). Tam tablo (bit/s, süre)
 Bölüm 3 §3.3.4.3.3. Kilit: `tests/test_faz_b_sik_rf_olc.py` (13 test; 3 sayaç mutantı yakalandı).
+
+**12–13 Eylül (A6) — aynı araç GERÇEK RF'te** (RFD900A 915–928 MHz, `--tasiyici seri`, COM7, 57600 baud,
+n = 200 prob; `REVIEW_LOG.md` D-476, D-477, D-478, D-479; ham JSON `results/atolye_20260912/`):
+
+| telsiz ayarı | kadans | ACK / kayıp | RTT p50 / p95 / maks (ms) | TX B/s · pkt/s | RX B/s · pkt/s | çıkış kodu | kaynak JSON |
+|---|---|---|---|---|---|---|---|
+| Air Speed 64 · Max Window 131 | IKA_GO 0,25 s | 200/200 · %0 | 208,27 / 265,16 / 273,27 | 318,8 · 3,97 | 310,7 · 3,97 | 1 | `A6_sik_ikago.json` |
+| Air Speed 64 · Max Window 131 | PARAŞÜT 0,20 s | 200/200 · %0 | 229,24 / 229,56 / 230,79 | 350,5 · 4,36 | 341,8 · 4,36 | 1 | `A6_sik_parasut.json` |
+| Air Speed 128 · Max Window 131 | IKA_GO 0,25 s | 200/200 · %0 | 102,32 / 126,46 / 132,61 | 322,0 · 4,01 | 314,1 · 4,01 | 0 | `A6_sik_ikago_ayar2_GECTI.json` |
+| Air Speed 128 · Max Window 131 | PARAŞÜT 0,20 s | 200/200 · %0 | 103,90 / 126,55 / 169,64 | 401,9 · 5,00 | 392,0 · 5,00 | 0 | `A6_sik_parasut_ayar2_GECTI.json` |
+
+İlk ayar iki kadansta DÜŞTÜ (D-476). Air Speed 128 ile iki kadans GEÇTİ (D-478). Eşikler sözleşmedeki tekrar
+aralıklarıdır (IKA_GO 250 ms, PARAŞÜT 200 ms) ve değiştirilmedi. Ara deneme (Max Window 33 ve Air Speed 128
+aynı anda) telsizleri eşleştirmedi, ACK gelmedi (`A6_sik_ikago_mw33_as128_KAYIP.json`, D-477). Veri hızı
+sütunları yine **kadans yüküdür**, hat kapasitesi değildir; RF değerleri yukarıdaki köprü değerlerine
+(322,5 ve 403,1 B/s TX) yakındır. **Menzil bu tabloda yoktur ve ÖLÇÜLEMEDİ** (§4.5).
 
 🔴 **ÖLÇÜLEMEDİ: SiK telsiz hattının gerçek etkin veri hızı, paket kaybı ve
 menzili ölçülmedi;** ~~ölçüm 6–19 Eylül'dedir (§4.5).~~ **10 Eylül itibarıyla da
@@ -1166,9 +1202,18 @@ D-426 §1). RTT, kayıp ve menzil için `scripts/sik_rf_olc.py` **koşulmadı**;
 "bağlandı" bir ölçüm değildir. Aynı gün kumanda hattı için bir ÖLÇÜM satırı
 vardır (`RCInput: decoding IBUS(1)`, §4.10.4) — o RC hattıdır, telemetri değil.
 
+→ **12–13 Eylül:** RF hattının paket kaybı ve etkin veri hızı yukarıdaki A6 tablosuyla gerçek RFD900A
+çiftinde ölçüldü. **Menzil hâlâ ÖLÇÜLEMEDİ.**
+
 🔴 **ÖLÇÜLEMEDİ: seri telsiz hattı üzerinden uçtan uca gecikme ölçülmedi.
 Bugünkü p95 0,113 s hükmü yalnız UDP loopback yapılandırmasınındır; üretim seri
 varsayılanlarıyla çevrim 1,0 s ölçülmüştü (§4.9.5).**
+
+→ **12–13 Eylül (A6):** seri RF hattında **komut → ACK** gidiş-dönüş süresi ölçüldü (p95 126,5 ms, Air Speed
+128; tablo yukarıda). Bu, kamera karesinden karar yayınına uçtan uca gecikme değildir; o zincir seri RF'te
+hâlâ ÖLÇÜLEMEDİ. Camdan cama video gecikmesi (A11, MK15 zinciri) de ÖLÇÜLEMEDİ; yerine **HESAP** bütçesi
+vardır: en iyi 328 ms, tipik 482 ms, en kötü 675 ms, eşik 1000 ms (`results/atolye_20260912/A11_gecikme_HESAP.md`;
+4. kalem üretici verisi, kalanı kare süresi hesabı — ölçüm değildir).
 
 🔴 **ÖLÇÜLEMEDİ: İHA↔İKA hattı iki gerçek araç arasında hiç koşulmadı. Bugünkü
 kanıt loopback İKA'dır (§4.11.1) ve gerçek İKA motor sürücüsü yoktur
@@ -1270,6 +1315,13 @@ kapı 15/15 · 15/15.
 ⚠ **Bu ölçümlerin KANITLAMADIĞI:** hat gerçek Pixhawk'a hiç bağlanmadı; 5
 Eylül'de Pixhawk yalnız Mission Planner'a bağlıydı (§4.10.4). Gerçek
 `COMMAND_ACK` bileşen kimliği ve Jetson'un RTC'siz açılış saati **ÖLÇÜLEMEDİ**.
+
+→ **12 Eylül 2026 atölye (BEYAN, D-473):** A12'de araç GUIDED kipinde **kodla** 3 m'de 15 s askıda
+tutuldu ve **kodla** LAND'e indirildi, kumanda müdahalesi olmadı. Kaptan beyanına göre komutlar Jetson'dan
+Pixhawk'a MAVLink ile gitti; bu, komut hattının sahada çalıştığını gösterir ve kanıt sınıfı BEYAN'dır.
+Uçuşun kart üstündeki bağımsız izi `config/pixhawk/emir.param:980` `STAT_FLTTIME,273` (6 Eylül dökümünde 0;
+D-474); `.bin` logu SD karttan silindi. `scripts/mavlink_dogrula.py` 3/3 koşulmadı; gerçek `COMMAND_ACK`
+bileşen kimliği ve RTC'siz açılış saati hâlâ **ÖLÇÜLEMEDİ**.
 
 ---
 
@@ -1395,7 +1447,7 @@ kanıt değildir, yapıştırılan satır kanıttır (D-426 §6, `REVIEW_LOG.md:
 | 18:05 | emniyet düğmesi fiziksel çözüldü | ÖLÇÜM | `PreArm: Hardware safety switch` kayboldu; öncesinde 12× `Motor Test: Safety switch` |
 | 18:06 | **pervanesiz motor testi** | ÖLÇÜM | `starting motor test` → `finished motor test` |
 | ~18:30 | motor sırası ve yönleri 4/4 (kablo taşıma + faz değişimi sonrası) | BEYAN | video yok — **BEYAN GEREKLİ (insan)** |
-| ~18:45 | SiK telemetri bağlandı | BEYAN | "tamam oldu" — RTT/kayıp ÖLÇÜLEMEDİ (§4.9.6) |
+| ~18:45 | SiK telemetri bağlandı | BEYAN | "tamam oldu" — RTT/kayıp ÖLÇÜLEMEDİ (§4.9.6) → 12–13 Eylül A6'da gerçek RF'te ölçüldü (§4.9.6) |
 | — | uçuş modları SwC: Stabilize / Loiter / RTL | BEYAN | — |
 
 **Firmware boşluğu sahada bulundu ve aynı gün kapatıldı (D-424 / D-425).**
@@ -1672,6 +1724,23 @@ CH11–16 + "All channels" görüldü, deneme "olmadı"; "sabah pilli kumandayla
 ölçüm bir **tezgâh alıcı testidir** ve sonucu olumsuzdur: tepkinin (eve dönüş / motor kesme)
 kendisi hiçbir senaryoda tetiklenmedi. Bu bölüm bunu ölçülmüş bir başarı gibi **sunmaz**.
 
+**12 Eylül 2026 atölye test günü** (kaptan beyanı, `REVIEW_LOG.md` D-473; kart dökümü D-474). ⚠ Kanıt sınıfı
+**BEYAN**'dır: atölye kâğıdının istediği ham dosyalar (`A1_kumanda.txt`, A1–A5 ve A12 `.bin` dosyaları,
+videolar) `results/atolye_20260912/` altında **yoktur** (13 Eylül sayımı: yalnız A6 ve A11 dosyaları var).
+
+| atölye adımı | senaryo | 12 Eylül sonucu (BEYAN) | kart değeri — `config/pixhawk/emir.param` (12 Eylül 23:55 dökümü) |
+|---|---|---|---|
+| A1 | RC failsafe (kumanda kapatma, pervanesiz) | **GEÇTİ** — kumanda kapanınca failsafe'e düştü | `FS_THR_ENABLE,3` (Land, `:411`) · `FS_THR_VALUE,975` (`:412`) |
+| A2 | GCS (telemetri) failsafe | **KISMEN** — tetikleme çalıştı; kodla uçuş bu adımda koşulamadı (MP bağlantısı yoktu); `FS_GCS_ENABLE` test sırasında geçici 0 yapıldı | `FS_GCS_ENABLE,5` (Land, `:408`) — döküm geri alındığını gösterir (D-474 §2) |
+| A3 | Pil failsafe (gerilim ayarı geçici yükseltilerek) | **GEÇTİ** | `BATT_FS_LOW_ACT,1` (`:134`) · `BATT_FS_CRT_ACT,1` (`:133`) · `BATT_LOW_VOLT,10` (`:138`) · `BATT_CRT_VOLT,9` (`:131`) · `BATT_CAPACITY,3300` (`:129`); 13 Eylül kaptan beyanı (D-481; bu değerlerle yeni döküm repoda yok): `BATT_LOW_VOLT` 10,5 · `BATT_CRT_VOLT` 9 · `BATT_CAPACITY` 8000, pil 3S 8000 mAh |
+| A4 | Anahtarla LAND (kaptan beyanındaki adıyla) | **GEÇTİ** | `RC6_OPTION,153` (`:735`) — ArduPilot listesinde ArmDisarm; MP menü adıyla doğrulanmadı (D-474 §5) |
+| A5 | YKS–İHA–İKA bağlantı kaybı (gerçek telsiz; İKA tarafı yazılım alıcısı, İKA donanımı yok) | **GEÇTİ** | — (Pixhawk parametresi değil; `comms/yks_gui.py`, `comms/ika_receiver.py`) |
+| A12 | GUIDED kipinde kodla askı + kodla LAND | 3 m'de 15 s askı, ardından kodla LAND, kumanda müdahalesiz | `STAT_FLTTIME,273` (`:980`); `.bin` silindi → A12'nin ön kayıtlı ölçütleri (`MOT_THST_HOVER`, VIBE) **ÖLÇÜLEMEDİ**; `MOT_THST_HOVER,0.35` fabrika değeri (`:580`) |
+
+Bu tablo 6 Eylül tablosunun yerine geçmez; 6 Eylül RC failsafe ölçümü (DÜŞTÜ) tarihsel kayıt olarak
+aşağıda durur. Tepkiyi gösteren makine okunur veri (log, video) hâlâ yoktur; yukarıdaki `Y-4-M12` satırı bu
+yüzden değişmedi.
+
 ~~**5 Eylül 2026 durumu** (`REVIEW_LOG.md` D-426 §4; kart masa üstünde, pervanesiz):~~
 **5 ve 6 Eylül 2026 durumu** (`REVIEW_LOG.md` D-426 §4, D-428 §2/§5; kart masa üstünde,
 pervanesiz; 6 Eylül sütunu 10 Eylül'de eklendi — kart değeri 20:22 dökümü
@@ -1715,7 +1784,9 @@ test edilmiş veri" ~~6–19 Eylül'de üretilecektir~~ → 10 Eylül itibarıyl
 (telemetri kablosunu çekme, geofence sınırını aşma, kumandayı kapatma), tarih,
 pilot rol kodu ve uçuş log dosyasının adı. RC failsafe tekrarı için ayrıca: kumanda
 failsafe ayarının yapıldığı tarih, CH5/CH3 failsafe değerleri ve `Radio Failsafe` satırının
-ekran görüntüsü.
+ekran görüntüsü. Güncelleme 13 Eylül: tarih (12 Eylül 2026) ve senaryo sonuçları BEYAN olarak yukarıdaki
+atölye tablosundadır; tetikleme için yazılı yordam `ATOLYE_TEST_GUNU_20260912.md` A1–A5'tir. Sahada fiilen
+uygulanan yöntem, pilot rol kodu, log dosyası (`.bin` silindi) ve `Radio Failsafe` ekran görüntüsü hâlâ gelmedi.
 
 ---
 
@@ -1732,24 +1803,24 @@ ekran görüntüsü.
 |---|---|---|---|---|
 | 1 | **Gerçek arena / HTAB karesi** | Arena benzeri saha + kırmızı H çekimi yok; **maket çekimi yapılmayacaktır** (kullanıcı kararı) | 21 Eylül'e kadar **açık kalır** | — |
 | ~~2~~ | ~~**Jetson Nano gerçek FPS**~~ → **ÖLÇÜLDÜ 6 Eylül (D-431)** — kart Orin Nano Developer Kit 4 GB | 5 Eylül: Jetson araca **takılmadı** (D-426 §4) → 6 Eylül kartta: pt **1,35/1,06** · engine **1,58/1,33** FPS (120 örnek), 10 dk 900 örnek, ONNX HATA | 6 Eylül | **≥ 0,61 FPS** p50 **ve** p95 → **GEÇTİ**; eşik gevşetilmedi. Sınır: kamera bağlı değil, kareler diskten (`results/jetson_20260906/jetson_fps_20260906_orin_nano/ozet.json`) |
-| 3 | **~~SiK 433 MHz~~ RFD900A 915–928 MHz RF menzili / kayıp oranı / veri hızı** | Gerçek SiK çifti yok; UDP loopback ve `socket://` köprü kanıt sayılmaz → 5 Eylül: çift bağlandı (BEYAN, ~18:45), `scripts/sik_rf_olc.py` **koşulmadı**, mesafe kaydı yok (§4.5) → 10 Eylül: araç veri hızı sayacı kazandı, yazılım düzenekleri ölçüldü (§4.9.6), **RF hâlâ koşulmadı** | uçuş testleriyle | RTT p95 < 0,2 s. DDR'deki *">%98, 300 m"* iddiasının kanıtı **yoktur** (R20) |
-| 4 | **Uçuş testleri** (hover, Loiter/Auto, canlı algı, 3 tam prova, sıkı prova) | Araç monte edilmedi | **6–19 Eylül** | ≤ 10 dk, 0 müdahale, yanlış güzergâh 0 |
+| 3 | **~~SiK 433 MHz~~ RFD900A 915–928 MHz RF menzili / kayıp oranı / veri hızı** | Gerçek SiK çifti yok; UDP loopback ve `socket://` köprü kanıt sayılmaz → 5 Eylül: çift bağlandı (BEYAN, ~18:45), `scripts/sik_rf_olc.py` **koşulmadı**, mesafe kaydı yok (§4.5) → 10 Eylül: araç veri hızı sayacı kazandı, yazılım düzenekleri ölçüldü (§4.9.6), **RF hâlâ koşulmadı** → **12–13 Eylül (A6; D-476, D-478, D-479):** araç gerçek RFD900A çiftinde koşuldu; Air Speed 128 ile RTT p95 126,5 ms (IKA_GO) ve 126,5 ms (PARAŞÜT), kayıpsız, veri hızı 322,0 ve 401,9 B/s TX (§4.5, §4.9.6); **menzil hâlâ ÖLÇÜLEMEDİ** (A7, T271) | uçuş testleriyle | RTT p95 < 0,2 s. DDR'deki *">%98, 300 m"* iddiasının kanıtı **yoktur** (R20) |
+| 4 | **Uçuş testleri** (hover, Loiter/Auto, canlı algı, 3 tam prova, sıkı prova) | Araç monte edilmedi → **12 Eylül 2026:** ilk uçuş A12 — GUIDED kipinde kodla 3 m'de 15 s askı + kodla LAND (BEYAN, D-473); kart `STAT_FLTTIME,273` (`config/pixhawk/emir.param:980`, D-474); `.bin` silindi, askı itkisi ve VIBE ÖLÇÜLEMEDİ. Loiter/Auto, canlı algı ve provalar koşulmadı | ~~**6–19 Eylül**~~ → uçuş 21.09.2026 (kaptan beyanı, D-477, D-479) | ≤ 10 dk, 0 müdahale, yanlış güzergâh 0 |
 | ~~5~~ | ~~**TensorRT `.engine` ↔ PT karar kıyası**~~ → **ÖLÇÜLDÜ 6 Eylül ve DÜŞTÜ (D-431)** | `tensorrt` PC'de yok → Jetson'da ölçüldü: F1 0 · F2 0,9953 · **D-303 oransal 3/126 DÜŞTÜ** (§4.8.3) | 6 Eylül | FP16 payı **kapanmadı**: engine üretime alınmadı, uçuş `.pt`; T66 ile tekrar |
-| 6 | **Gerçek Pixhawk üzerinde EXTENDED akışı ve `--kapi`** | Pixhawk yok → 5 Eylül: Pixhawk 4.5.7 ile çalışır durumda (§4.4), `scripts/mavlink_dogrula.py` **koşulmadı** (D-426'da koşum kaydı yok) | uçuş öncesi | `mavlink_dogrula` 3/3 |
+| 6 | **Gerçek Pixhawk üzerinde EXTENDED akışı ve `--kapi`** | Pixhawk yok → 5 Eylül: Pixhawk 4.5.7 ile çalışır durumda (§4.4), `scripts/mavlink_dogrula.py` **koşulmadı** (D-426'da koşum kaydı yok) → 12 Eylül: A12'de kodla askı ve LAND komutları Pixhawk'a ulaştı (BEYAN, §4.9.7); `mavlink_dogrula.py` yine **koşulmadı** → EXTENDED akışı ve `--kapi` ÖLÇÜLEMEDİ | uçuş öncesi | `mavlink_dogrula` 3/3 |
 | 7 | **`jetson_baslat.sh` systemd / `--kur` / `--kapi` / `--dogrudan`** | Windows'ta koşulamaz → 6 Eylül kartta `--kuru`: dosya/yorumlayıcı `[VAR]`, ~~`[YOK]` yalnız~~ `/dev/ttyACM0`, çıkış 3 (12 Eylül düzeltmesi — D-466: `jetson_baslat_kuru2.log`'da **tek** `[YOK]`, ilk kuru koşumda **iki** (`mavproxy.py` PATH'te de yok); ikisinde de aynı çıkış kodu; D-431); `--kapi` Pixhawk bağlı olmadığı için **ÖLÇÜLEMEDİ** | Pixhawk Jetson'a bağlanınca | kuru çıktı == gerçek `ExecStart`; `--kapi` 3/3 |
 | 8 | **Gerçek İKA motor sürücüsü** | Donanım arayüzü kararı verilmedi (R12/T149) | yarışma görevi öncesi | kuru koşuda `motor SAHİPSİZ` |
-| 9 | **Pixhawk geofence parametrelerinin kendisi** | Repo dışı (R17) → 5 Eylül: şablon yüklendi (OLCUM, §4.4 15:08) ama döküm **alınmadı** (D-426 §4) → 6 Eylül 20:22 dökümü `config/pixhawk/arducopter_fda_20260906.param` repoda: `FENCE_ENABLE,1` · `FENCE_ALT_MAX,50` (D-428 §5g); üçüncü döküm bekleniyor | uçuş öncesi | `config/pixhawk/` kanıt olarak |
+| 9 | **Pixhawk geofence parametrelerinin kendisi** | Repo dışı (R17) → 5 Eylül: şablon yüklendi (OLCUM, §4.4 15:08) ama döküm **alınmadı** (D-426 §4) → 6 Eylül 20:22 dökümü `config/pixhawk/arducopter_fda_20260906.param` repoda: `FENCE_ENABLE,1` · `FENCE_ALT_MAX,50` (D-428 §5g); ~~üçüncü döküm bekleniyor~~ → **12 Eylül 23:55 üçüncü döküm** `config/pixhawk/emir.param`: `FENCE_ENABLE,1` (`:361`) · `FENCE_ACTION,1` (`:358`) · `FENCE_ALT_MAX,50` (`:359`) · `FENCE_RADIUS,60` (`:363`) (D-474); ihlal denemesi yok | uçuş öncesi | `config/pixhawk/` kanıt olarak |
 | 10 | **K5 figür bilgi px** | verdikt JSON'ında `OLCULEMEDI` | — | — |
 | ~~11~~ | ~~**Nano kurulum belgesinin dış iddiaları**~~ (bionic `python3.8`, `jetson-io` IMX477 menüsü, Qengineering CUDA wheel) → **6 Eylül'de KONUSUZ KALDI (D-431):** kart Nano değil Orin Nano Developer Kit 4 GB (JetPack 7.2.1, Python 3.12); belge bu kart için GEÇERSİZ bandı alır | Kaynakla doğrulanmadı; 14/14 aarch64 wheel bu kartta kullanılmadı | — | — |
-| 12 | **RC failsafe** (kumanda kapatma → `Radio Failsafe`, CH3 değeri) — 5 Eylül eklendi | İki kez istendi, sonuç gelmedi (D-426 §4); `config/pixhawk/arducopter_fda.param:128` yorumu **varsayım** → **6 Eylül ÖLÇÜLDÜ ve DÜŞTÜ** (D-428 §2): barlar sabit kaldı, `Radio Failsafe` gelmedi; varsayım **yanlışlandı**; düzeltme kumanda failsafe ayarı, tekrar ölçümü 10 Eylül itibarıyla **yok** (§4.12) | uçuş öncesi (§4.3.3 adım 3.1 öncesi) | `Radio Failsafe` mesajı görülür ve tepki (kartta `FS_THR_ENABLE,3` Land, `arducopter_fda_20260906.param:411`) — §4.12 |
+| 12 | **RC failsafe** (kumanda kapatma → `Radio Failsafe`, CH3 değeri) — 5 Eylül eklendi | İki kez istendi, sonuç gelmedi (D-426 §4); `config/pixhawk/arducopter_fda.param:128` yorumu **varsayım** → **6 Eylül ÖLÇÜLDÜ ve DÜŞTÜ** (D-428 §2): barlar sabit kaldı, `Radio Failsafe` gelmedi; varsayım **yanlışlandı**; düzeltme kumanda failsafe ayarı, tekrar ölçümü 10 Eylül itibarıyla **yok** (§4.12) → **12 Eylül atölye A1: GEÇTİ** (BEYAN, D-473; ham dosya ve `.bin` yok, §4.12 atölye tablosu) | uçuş öncesi (§4.3.3 adım 3.1 öncesi) | `Radio Failsafe` mesajı görülür ve tepki (kartta `FS_THR_ENABLE,3` Land, `arducopter_fda_20260906.param:411`) — §4.12 |
 | 13 | **ESC kalibrasyonu** — 5 Eylül eklendi | YAPILMADI; ESC markası bilinmiyor ("60 A V2" etiketi, BEYAN) → 6 Eylül: yapıldı (BEYAN, yordam D-428 §3); marka Hobbywing Skywalker 60A V2 (etiket, BEYAN); ESC uç noktaları tezgâhta ölçülmedi (D-434 (a) ailesi açık) | uçuş öncesi | ArduPilot "hepsi birden" yordamı ya da marka belgesiyle gereksizlik kanıtı (D-426 §4) |
-| 14 | **Pusula kalibrasyonu** — 5 Eylül eklendi | YAPILMADI — Jetson takılı değil; takılınca yeniden gerekir (D-426 §4) → 6 Eylül: 2 kalibrasyon; 1.'nin ofsetleri dökümde Mag1 15,4 / Mag2 129,5 < 300 → **GEÇTİ** (§4.6); 2.'nin tam dökümü **yok**; Jetson yine takılı değildi → Jetson takılınca yeniden | Jetson takılı, dışarıda | ofset < 300 (`SAHA_HAZIRLIK_PLANI_20260903.md` §2.4) |
-| 15 | **Accel + level teyidi** — 5 Eylül eklendi | BEYAN "yapıldı"; kart sabit değildi, döküm yok (D-426 §4) → 6 Eylül **ÖLÇÜLDÜ**: 18:37 dökümünde 0/1/0 (beyan yanlıştı, flash sıfırlamıştı) → 20:22'de `INS_ACCOFFS` `0.01807415` / `0.002790652` / `-0.2912262`, `AHRS_TRIM_Y` `-0.02569767` rad (§4.6, D-428 §1); kart çift taraflı bantla sabit (BEYAN) | kart sabitlenince | `INS_*` dökümü |
-| 16 | **Parametre dökümü** — 5 Eylül eklendi | 5 Eylül: dosya yok (D-426 §4) → **6 Eylül 20:22:** `config/pixhawk/arducopter_fda_20260906.param` repoda (D-428 §5g); `RC_PROTOCOLS=1` (şablon 4), `FS_THR_ENABLE`/`BATT_FS_LOW_ACT` sapması (D-428 §5b); ikinci pusula kalibrasyonu ve `FS_GCS_ENABLE` bu dökümde yok | uçuş öncesi (üçüncü döküm) | döküm repoda, şablonla `Compare Params` farkı listeli |
+| 14 | **Pusula kalibrasyonu** — 5 Eylül eklendi | YAPILMADI — Jetson takılı değil; takılınca yeniden gerekir (D-426 §4) → 6 Eylül: 2 kalibrasyon; 1.'nin ofsetleri dökümde Mag1 15,4 / Mag2 129,5 < 300 → **GEÇTİ** (§4.6); 2.'nin tam dökümü **yok**; Jetson yine takılı değildi → Jetson takılınca yeniden → **12 Eylül:** pusula ve IMU yeniden kalibre edildi (D-474 §1; D-428 §5g ikinci kalibrasyon borcu kapandı): `COMPASS_OFS` `-1.143088` · `-3.037319` · `16.31717` (`emir.param:246–248`), `COMPASS_OFS2` `29.78056` · `-159.5158` · `98.92135` (`:249–251`); Jetson'un takılı olup olmadığı kayıtlı değil | Jetson takılı, dışarıda | ofset < 300 (`SAHA_HAZIRLIK_PLANI_20260903.md` §2.4) |
+| 15 | **Accel + level teyidi** — 5 Eylül eklendi | BEYAN "yapıldı"; kart sabit değildi, döküm yok (D-426 §4) → 6 Eylül **ÖLÇÜLDÜ**: 18:37 dökümünde 0/1/0 (beyan yanlıştı, flash sıfırlamıştı) → 20:22'de `INS_ACCOFFS` `0.01807415` / `0.002790652` / `-0.2912262`, `AHRS_TRIM_Y` `-0.02569767` rad (§4.6, D-428 §1); kart çift taraflı bantla sabit (BEYAN) → **12 Eylül yeniden kalibre** (D-474 §1): `INS_ACCOFFS` `0.01819063` · `0.004323205` · `-0.2799788` (`emir.param:477–479`), `AHRS_TRIM_Y` `-0.0120333` (`:22`) | kart sabitlenince | `INS_*` dökümü |
+| 16 | **Parametre dökümü** — 5 Eylül eklendi | 5 Eylül: dosya yok (D-426 §4) → **6 Eylül 20:22:** `config/pixhawk/arducopter_fda_20260906.param` repoda (D-428 §5g); `RC_PROTOCOLS=1` (şablon 4), `FS_THR_ENABLE`/`BATT_FS_LOW_ACT` sapması (D-428 §5b); ikinci pusula kalibrasyonu ve `FS_GCS_ENABLE` bu dökümde yok → **12 Eylül 23:55 üçüncü döküm** `config/pixhawk/emir.param` (1025 satır, sha256 `fe41473c…25e2`; D-474): 6 Eylül dökümünden 46 parametre farklı; `FS_GCS_ENABLE,5` (Land, `:408`), pusula ve IMU yeniden kalibre, `STAT_FLTTIME,273` (`:980`), `BATT_CAPACITY,3300` (`:129`) → 13 Eylül kaptan beyanı 8000, `BATT_LOW_VOLT` 10,5, `BATT_CRT_VOLT` 9 (D-481; bu değerlerle yeni döküm repoda yok) | uçuş öncesi (üçüncü döküm) | döküm repoda, şablonla `Compare Params` farkı listeli |
 | 17 | **Pil gerilimi MP ↔ multimetre** — 5 Eylül eklendi | ölçülmedi (D-426 §4) → 6 Eylül **ÖLÇÜLDÜ**: multimetre 15,8 V ↔ MP 15,8 (D-428 §1); `BATT_VOLT_MULT,18.18` (`arducopter_fda_20260906.param:143`) | uçuş öncesi | ±0,1 V |
 | 18 | **Motor sırası/yönü** — 5 Eylül eklendi | BEYAN 4/4, video yok (D-426 §1) → 6 Eylül yine BEYAN (liste ve video gelmedi, D-428 §1); tlog: FC çerçevesi = fiziksel çerçeve, mixer ters değil (D-429 §2) — bu motor **yönünü** kanıtlamaz | pervane takılmadan önce | video — §4.13.4 madde 7 |
 
-| 19 | **Görev icra simülasyonu videosunun linki** (`Y-3.3.3-M03`, `Y-4-M07`) | Video 10 Eylül 2026'da üretildi (MuJoCo, SENTETİK; yerel dosya, sha256 `35ffc33e2f99c833…`, §3.3.3.3); yükleme insan işidir — **BEYAN GEREKLİ (insan)** | T222 (insan) | erişilebilir link |
+| 19 | **Görev icra simülasyonu videosunun linki** (`Y-3.3.3-M03`, `Y-4-M07`) | Video 10 Eylül 2026'da üretildi (MuJoCo, SENTETİK; yerel dosya, sha256 `35ffc33e2f99c833…`, §3.3.3.3); yükleme insan işidir — **BEYAN GEREKLİ (insan)**; 13 Eylül kararı (D-471): video 3B modeller (İHA, İKA, mancınık) gelince yeniden üretilecek, link o zaman; modeller gecikirse mevcut video yüklenecek | T222 (insan) | erişilebilir link |
 | 20 | **Üretim modeliyle simülasyonda rota tespiti ve uçtan uca sürüş** (H1-K3, H1-K5) | ÖLÇÜLDÜ ve **DÜŞTÜ** (10 Eylül 2026): rota tespiti mozaik 6/15, kare-bazlı 1/15; sürüş ÜRETİM MODELİ 9/45, ÜRETİM BORU HATTI 0/15 (YER GERÇEĞİ 45/45 GEÇTİ). Eşik gevşetilmedi; sim'e özel eğitim yapılmaz (ON_KAYIT §5.2). Teşhis: kareye göreli şerit etiketi, KB ile HB aynı karede görülmüyor (§3.3.3.2) | — (sonuç rapora olduğu gibi girer; üretim kodu kararı mimarın) | ≥ 12/15 |
 | 21 | **Simülasyonda CAD modelleri ve aerodinamik** | İHA / İKA STL'leri ekipten gelmedi → BASİTLEŞTİRİLMİŞ MODEL (DDR ölçüleri); İHA uçuşu kinematik (mocap) | insan girdisi (ON_KAYIT §3 madde 1–2) | — |
 
@@ -1810,6 +1881,9 @@ Kayıt: `REVIEW_LOG.md` D-412.
 Bu maddeler kapanmadan ilgili kayıtlar "tamamlanmış" sayılmaz ve bu raporda da
 öyle sayılmamıştır.
 
+
+**13 Eylül uçuş logları — ÖLÇÜM (D-482).** Kaynak `results/ucus_20260913/*.bin` (6 dosya), özet `results/ucus_20260913/ozet.json`: 14 motorlu uçuş, toplam 332,5 s. **Yazılım komut hattı:** GUIDED kipine geçiş ve LAND komutu iki uçuşta `MODE.Rsn = GCS_KOMUT` ile Jetson/YKS'den geldi, kumanda müdahalesi yok (09-59-30: 52,5 s, irtifa maks 9,44 m; 35,3 s). Bu, 12 Eylül A12 beyanının log karşılığıdır. **Failsafe davranışı:** pil failsafe → LAND 3 uçuşta (`MODE.Rsn = PİL_FS`, 9,62–9,87 V), GCS failsafe → LAND 1 uçuşta GUIDED sırasında (`FS_GCS_ENABLE = 5`); 09-42-26'daki ilk GUIDED uçuşunun inişi komutla değil GCS failsafe'iyle olmuştur. **Askı gazı** `MOT_THST_HOVER` 0,448–0,533 öğrenildi; motorlu akım ortalaması 22–34 A → uçuş süresi HESAP 6400 mAh kullanılabilir / 30 A = 12,8 dk. **Risk:** VIBE maks 54–64 m/s² (5 uçuş) ve bir uçuşta 7,51 V anlık gerilim çökmesi ile eşzamanlı EKF lane switch (T274, T275).
+
 ### 4.13.4 BEYAN GEREKLİ (insan)
 
 1. **BEYAN GEREKLİ (insan):** donanım künyesinin fiziksel teyidi. 5 Eylül kutu
@@ -1823,18 +1897,32 @@ Bu maddeler kapanmadan ilgili kayıtlar "tamamlanmış" sayılmaz ve bu raporda 
 2. ~~**BEYAN GEREKLİ (insan):** Jetson Nano üzerinde ölçülen p50/p95 FPS değerleri (PT ve ONNX; `--cihaz` beyanıyla)~~ → **ÖLÇÜLDÜ 6 Eylül (D-431):** `--cihaz 0` (Orin GPU); PT **1,35/1,06** · engine **1,58/1,33** FPS; ONNX **HATA** (sm_87 çekirdeği yok) — `results/jetson_20260906/jetson_fps_20260906_orin_nano/ozet.json`.
 3. **BEYAN GEREKLİ (insan):** ~~SiK 433 MHz~~ RFD900A 915–928 MHz çift üzerinde ölçülen RTT p50/p95,
    paket kaybı ve **menzil** (metre) — `scripts/sik_rf_olc.py` çıktısı.
+   Güncelleme 13 Eylül — RTT ve kayıp kapandı, menzil açık (A6; D-476, D-478, D-479). Kaynak:
+   `results/atolye_20260912/A6_sik_ikago_ayar2_GECTI.json` ve `A6_sik_parasut_ayar2_GECTI.json`.
+   Air Speed 128 ile RTT p50 102,3 ms ve p95 126,5 ms (IKA_GO), p50 103,9 ms ve p95 126,5 ms (PARAŞÜT);
+   kayıp %0, 400 probun 400'ü ACK'li; veri hızı 322,0 B/s ve 401,9 B/s TX. İlk ayarda (Air Speed 64) p95
+   265,2 ms ve 229,6 ms idi ve DÜŞTÜ (`A6_sik_ikago.json`, `A6_sik_parasut.json`, D-476). **Menzil
+   (metre, A7) hâlâ ÖLÇÜLEMEDİ** (T271).
 4. **BEYAN GEREKLİ (insan):** 6–19 Eylül uçuş testlerinin her biri için tarih,
    pilot, log dosyası ve kapı sonucu (`results/prova/` üç klasör).
+   Güncelleme 13 Eylül — kısmen: 12 Eylül 2026 atölyesinde A12 (GUIDED, kodla 3 m'de 15 s askı + kodla LAND)
+   yapıldı, BEYAN (D-473); log dosyası yok (`.bin` SD karttan silindi), kart izi `STAT_FLTTIME,273`
+   (`config/pixhawk/emir.param:980`, D-474); pilot rol kodu gelmedi. Takvim kaptan beyanıyla değişti
+   (D-477, D-479): FDR 14.09.2026, uçuş 21.09.2026.
 5. **BEYAN GEREKLİ (insan):** 21 Eylül Adıyaman uçuş alanı izni ve alan
    koordinatları (mühürden sonra **tek izinli değişiklik**, tutanakla).
 6. **BEYAN GEREKLİ (insan):** sürüm mührünün basıldığı tarih ve künye commit'i
    (planlı: 17 Eylül; `--dogrula` çıkışı 0 olmalıdır).
+   Güncelleme 13 Eylül: plan 13 Eylül'e çekildi (D-471); mühür henüz basılmadı — `config/DONDURMA_KUNYESI.json`
+   repoda yok, T246 açık.
 7. **BEYAN GEREKLİ (insan):** 5 Eylül motor testinin sıra/yön videosu (D-426 §1,
    ~18:30 satırı "video: BEYAN GEREKLİ") ve ESC sinyal kablosundaki kırmızı
    telin (BEC) durumu (D-426 §4, cevap gelmedi).
 8. **BEYAN GEREKLİ (insan):** görev icra simülasyonu videosunun yükleneceği platform (YouTube liste dışı /
    Drive) ve erişilebilir link — T222; yerel dosya `results/fdr_sprint_20260910/video/navitas_sim_gorev_20260910.mp4`
    (sha256 `35ffc33e2f99c8335a7c4fe581cea257e294baea57f6f1edcd1fe1089139347d`, 177,88 s; `results/fdr_sprint_20260910/video/OKUBENI.md`).
+   Güncelleme 13 Eylül (D-471): video 3B modeller (İHA, İKA, mancınık) gelince yeniden üretilecek ve link o
+   zaman yazılacak; modeller gecikirse mevcut video yüklenecek.
 
 ---
 
