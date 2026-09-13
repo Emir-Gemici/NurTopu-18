@@ -1,5 +1,5 @@
 # PIXHAWK 6C — PARAMETRE KILAVUZU (1 SAYFA)
-**ArduCopter 4.5.7 · Quad-X · 3S 6000 mAh · NAVITAS İHA**
+**ArduCopter 4.5.7 · Quad-X · 3S 8000 mAh · NAVITAS İHA**
 **Kaynak döküm: `config/pixhawk/emir.param` (12 Eylül 2026, 23:55) — ÖLÇÜLDÜ, beyan değil**
 
 ## 0. DÖKÜMÜN KANITLADIĞI İKİ ŞEY
@@ -8,14 +8,14 @@
 - **Pusula + ivmeölçer + jiroskop yeniden kalibre edildi** (`COMPASS_OFS/DIA/ODI`, `INS_ACC*`, `INS_GYR*` hepsi
   değişmiş) → D-428 §5g'deki "ikinci pusula kalibrasyonu" borcu **kapandı**.
 
-## 1. DEĞİŞTİRİLECEK — 3S 6000 mAh kararının sonucu
+## 1. DEĞİŞTİRİLECEK — 3S 8000 mAh kararının sonucu
 
 | # | Parametre | ŞU AN | OLMALI | Neden |
 |---|---|---|---|---|
-| 🔴 1 | `BATT_CAPACITY` | **3300** | **6000** | Pil 6000 mAh oldu. Düzeltilmezse MP "kalan %" ve mAh sayacı **yanlış** — yakıt göstergesi bozuk uçarsın. |
+| ✅ 1 | `BATT_CAPACITY` | ~~3300~~ | **8000** (13 Eyl) | Pil 6000 mAh oldu. Düzeltilmezse MP "kalan %" ve mAh sayacı **yanlış** — yakıt göstergesi bozuk uçarsın. |
 | 🟡 2 | `BATT_ARM_VOLT` | **0** | **11.1** | 3S × 3,70 V. Yarı boş pille arm'ı engeller (şu an hiçbir kontrol yok). |
-| 🟡 3 | `BATT_CRT_VOLT` | **9** | **9.9** | 9 V = 3S × **3,00 V/hücre** — yük altında hücre hasarı sınırı. 9,9 V = 3,30 V/hücre güvenli taraf. *Senin kararın; 9 V çalışır ama pili yorar.* |
-| 🟢 4 | `BATT_LOW_VOLT` | **10** | **10** ✅ | 3S × 3,33 V — doğru, dokunma. |
+| ✅ 3 | `BATT_CRT_VOLT` | **9** | **9** (13 Eyl, kaptan kararı) | 9 V = 3S × **3,00 V/hücre** — yük altında hücre hasarı sınırı. 9,9 V = 3,30 V/hücre güvenli taraf. *Senin kararın; 9 V çalışır ama pili yorar.* |
+| ✅ 4 | `BATT_LOW_VOLT` | ~~10~~ | **10,5** (13 Eyl) | 3S × 3,33 V — doğru, dokunma. |
 
 ## 2. DOĞRU — dokunma, sadece bil
 

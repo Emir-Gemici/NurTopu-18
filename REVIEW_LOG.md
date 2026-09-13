@@ -31043,3 +31043,7 @@ Olası nedenler (ölçülmedi): (a) iki telsizde Air Speed/Max Window farklı ka
 
 **🔴 Mimarın kusuru:** `ATOLYE_TEST_GUNU_20260912.md` bir **ön kayıt kâğıdıdır**; `tests/test_atolye_test_gunu.py` içinde hüküm kelimesini (GEÇTİ) yasaklar ve her bölümde boş `[ ] ÖLÇÜLDÜ [ ] ÖLÇÜLEMEDİ` kutusunu şart koşar. Mimar D-473/D-476/D-478/D-479'da sonuçları kâğıdın **içine** yazdı → 8 test kırmızıydı, push kapısı fark edilmeden kırılmıştı. Kâğıt `a6a491c5` hâline döndü; sonuçlar **yalnız** REVIEW_LOG D-473…D-479'da. Ayrıca D-472'nin `karar_sozlesmesi.py:1995`'e eklediği satır, kâğıttaki 7 kod atfını (≥1996) 1 kaydırmıştı (K5) → +1 düzeltildi.
 **Kapı:** belge kilidi testleri (tests/ içinde bu dosyaları anan tüm modüller) **824 test OK (skipped=10)** · genel kapı **15/15**. Tam süit (push kapısı) **koşulmadı** → push yok.
+
+### D-481 — Pil **3S 8000 mAh**, `BATT_CAPACITY` 8000, `BATT_LOW_VOLT` **10,5**, `BATT_CRT_VOLT` **9** (kaptan beyanı, 13 Eyl) — D-479'daki "CRT 10,5" okuması yanlıştı (LOW idi); LOW > CRT sağlandı
+
+Enerji HESAP: 11,1 V × 8,0 Ah = **88,8 Wh**. FDR/kılavuz/HANDOFF'ta 6000→8000 ve eşik satırları betikle güncellendi.

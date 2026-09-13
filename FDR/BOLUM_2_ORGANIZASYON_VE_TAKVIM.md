@@ -529,7 +529,7 @@ beyan edilen toplam **2293 g**). Bugünkü gerçek künye kullanıcı beyanıdı
 | RC alıcı | TBS **Crossfire** Nano RX | **FlySky FS-i6** + FS-iA6B (**iBUS**) | Tedarik. Yazılım etkisi: `RC_PROTOCOLS` iBUS'a alındı (parametre dosyası, TEYİT listesinde) |
 | Motor | SunnySky X2216 V3 1100KV ×2 (sabit kanat) | ~~**5008 340KV ×4** + 12×10 pervane~~ → **SunnySky X2220 980KV V3 ×4** (BEYAN, etiket fotoğrafı yok) + **10×4,5 (1045)** pervane (7 Eylül beyanı, D-435) (çoklu rotor) | **Araç sınıfı farkı** — FDA aracı çoklu rotordur (§1). 7 Eylül: 5008'ler iade edildi; X2220'ler 2 yıl önce kullanılmış eski motorlar (BEYAN, D-435). **İtki bütçesi HESAP olarak türetildi — 13 Eylül, Bölüm 3 §3.2.1.1.1'in 4S satırlarından ölçeklenerek; §3.2.1.1.1'in kendisi hâlâ 4S'tir ve orası da güncellenecek (açık kalem).** Girdi: üreticinin **APC1047 (10×4,7)** satırı, 4S 14,8 V, motor başına **2130 g @ 38,4 A** (`FDR/BOLUM_3_SISTEM_SPESIFIKASYONLARI.md:313`). ⚠ Araçtaki pervane **10×4,5**'tir; bu satır 10×4,5 için **DOĞRULANMADI** (`BOLUM_3:305-306`) ⇒ girdi üreticinin **farklı pervanesine** aittir. Ölçekleme (HESAP, ölçüm değil): sabit pervanede `T ∝ (V₂/V₁)²`, `(12,6/16,8)² = 0,5625` ⇒ **1198 g/motor**, 4 × = **4793 g**, %50 eşiğine denk kütle = **2396 g** (4S'teki 4260 g değil — `BOLUM_3:321`). ⚠ Bu model ESC/motor akım sınırını ve yük altında gerilim düşüşünü hesaba katmaz. 🔴 **KAPI HÂLÂ AÇIK** (`BOLUM_3:325` = **ÖLÇÜLEMEDİ**): kalkış kütlesi **ÖLÇÜLMEDİ** (T10, tartı yok) ⇒ askı itki oranı hesaplanamaz; `MOT_THST_HOVER` öğrenmedi (`emir.param:580` = 0,35 fabrika) ⇒ itki payı **ÖLÇÜLMEDİ** (D-474 §4). **Planlanan ölçüm: pilli tam araç tartısı (T10) + PM06 telemetrisinden askı akımı, 21 Eylül 2026 öncesi** |
 | ESC | Hobbywing FlyFun 40A V5 ×2 | **80 A DShot destekli ×4** (ilk uçuşlarda PWM 400 Hz) | Araç sınıfı farkı |
-| Pil | 4S 14000–15000 mAh Li-ion (1000 g) | ~~**1× 4S 10 Ah 25C**~~ → **1× 3S 6000 mAh** (kullanıcı kararı, gerekçe: **stabilite**), şarj iMAX B6 (50 W — BEYAN) | **Tedarik + stabilite kararı.** Kart dökümü kararı doğruluyor: `emir.param:138` `BATT_LOW_VOLT = 10` (3S × 3,33 V) ve `:131` `BATT_CRT_VOLT = 9` (3S × 3,00 V) — 4S eşikleri değil (`mevcut.param`: 14,4 / 14). 🔴 **12 Eylül dökümünde `BATT_CAPACITY = 3300` HATALI kalmıştı** (pil 6000 mAh; sayaç %45 yanılır — D-474 §3); ⚠ **13 Eylül'de kullanıcı `BATT_CAPACITY = 6000` ve `BATT_CRT_VOLT = 10,5 V` yazdı — BEYAN, yeni döküm alınmadı**, kartla teyidi T258'de (13 Eylül dökümü) kapanır. ⚠ `BATT_AMP_PERVLT = 36,36` ve `BATT_VOLT_MULT = 18,18` **PM06 fabrika değerleridir, doğrulanmadı** → akım/gerilim telemetrisi kalibre edilmeden askı akımı ölçümü geçerli sayılmaz. **Operasyonel sonucu ~~günde en fazla 2 uçuş~~ → dolum ≈ 1,5 saat, günde ≈ 4 uçuş (HESAP, açılımı ve çekinceleri §2.2.5.5)**; buna karşılık enerji **66,6 Wh** = 11,1 V × 6,0 Ah (4S 10 Ah'in 148 Wh'sinin **%45'i**) → askı süresi **≈ 8 dk (HESAP)**, 10 dk görev bütçesinin **altında** — yeni ve **ölçülmemiş** risk |
+| Pil | 4S 14000–15000 mAh Li-ion (1000 g) | ~~**1× 4S 10 Ah 25C**~~ → **1× 3S 8000 mAh** (kullanıcı kararı, gerekçe: **stabilite**), şarj iMAX B6 (50 W — BEYAN) | **Tedarik + stabilite kararı.** Kart dökümü kararı doğruluyor: `emir.param:138` `BATT_LOW_VOLT = 10` (3S × 3,33 V) ve `:131` `BATT_CRT_VOLT = 9` (3S × 3,00 V) — 4S eşikleri değil (`mevcut.param`: 14,4 / 14). 🔴 **12 Eylül dökümünde `BATT_CAPACITY = 3300` HATALI kalmıştı** (pil 6000 mAh; sayaç %45 yanılır — D-474 §3); ⚠ **13 Eylül'de kullanıcı `BATT_CAPACITY = 6000` ve `BATT_CRT_VOLT = 10,5 V` yazdı — BEYAN, yeni döküm alınmadı**, kartla teyidi T258'de (13 Eylül dökümü) kapanır. ⚠ `BATT_AMP_PERVLT = 36,36` ve `BATT_VOLT_MULT = 18,18` **PM06 fabrika değerleridir, doğrulanmadı** → akım/gerilim telemetrisi kalibre edilmeden askı akımı ölçümü geçerli sayılmaz. **Operasyonel sonucu ~~günde en fazla 2 uçuş~~ → dolum ≈ 1,5 saat, günde ≈ 4 uçuş (HESAP, açılımı ve çekinceleri §2.2.5.5)**; buna karşılık enerji **66,6 Wh** = 11,1 V × 6,0 Ah (4S 10 Ah'in 148 Wh'sinin **%45'i**) → askı süresi **≈ 8 dk (HESAP)**, 10 dk görev bütçesinin **altında** — yeni ve **ölçülmemiş** risk |
 | Paraşüt zinciri (kalem 12–16) | Opale Rescue 2,5 m² + pod + servo + mekanizma + tether | **FDA aracında YOK** | §5.3.2 çoklu rotor uçuşunda paraşüt zorunlu değil; final aracında kalır |
 | Servolar (kanat/kuyruk) | EMAX ES08MA II ×4 | **FDA aracında YOK** | Araç sınıfı farkı |
 | Pitot + airspeed | Pitot + Holybro MS5525DSO | **FDA aracında YOK** | Çoklu rotorda hava hızı sensörü kullanılmaz |
@@ -634,12 +634,12 @@ tam suit **1875 test OK** (skipped 3), kuru koşu **9 GEÇTİ / 1 SAHİPSİZ**
 **Analitik sonuç — 2: uçuş bütçesi, takvimin bağlayıcı kısıtıdır.** Plan §3'ün gerektirdiği
 en az uçuş sayısı, kontrol listesinden sayılabilir: 3.1 ilk hover (1) + 3.2 Loiter/Auto + iniş
 kanıtı (1) + 3.3 algı canlı (1) + 3.4 tam prova ×3 (3) + 3.5 sıkı provada tekrar kalkış (≥1)
-= **≥ 7 uçuş**. 🔴 **Bu hesabın pil varsayımı 12 Eylül'de değişti** (~~4S 10 Ah~~ → **3S 6000 mAh**,
+= **≥ 7 uçuş**. 🔴 **Bu hesabın pil varsayımı 12 Eylül'de değişti** (~~4S 10 Ah~~ → **3S 8000 mAh**,
 stabilite gerekçesiyle, kullanıcı kararı); aşağıdaki sayılar **yeniden türetilmiştir**.
 
 **Dolum süresi — HESAP, ölçüm değil; girdilerinin ikisi BEYAN, ikisi varsayım.** Girdiler:
 (a) şarj cihazı çıkış gücü **50 W** — kaynağı `SAHA_HAZIRLIK_PLANI_20260903.md:47`,
-**kullanıcı beyanı**, cihaz künyesi (B6'nın hangi varyantı) doğrulanmadı; (b) pil 3S 6000 mAh
+**kullanıcı beyanı**, cihaz künyesi (B6'nın hangi varyantı) doğrulanmadı; (b) pil 3S 8000 mAh
 (D-474); (c) CC evresi kapasitenin **~%80'i**; (d) CV kuyruğu **~0,3 saat** — (c) ve (d) tipik
 LiPo dolum profili **VARSAYIMIDIR**, ölçüm değildir.
 Türetme: 50 W sabit güçte akım gerilimle ters orantılıdır ⇒ dolumun **başında** (boşalmış 3S
@@ -660,8 +660,8 @@ dolum 1,5 saat ≈ **2,0 saat** → `8 / 2,0 =` **günde ≈ 4 uçuş** (eskiden
 aralığında **8 gün** vardır. **Pay: 6 gün** (eskiden 2). İkinci pil + ≥ 150 W şarj cihazı bu payı
 daha da büyütür; karar kaptandadır (`SAHA_HAZIRLIK_PLANI_20260903.md` §4 "Pil kuralı").
 
-🔴 **Ama aynı geçiş yeni bir kısıt doğurdu ve gizlenmiyor — askı süresi.** 3S 6000 mAh enerjisi
-`11,1 V × 6,0 Ah =` **66,6 Wh**, 4S 10 Ah'in (148 Wh) **%45'i**. Veri sayfası ÖRNEK satırından
+🔴 **Ama aynı geçiş yeni bir kısıt doğurdu ve gizlenmiyor — askı süresi.** 3S 8000 mAh enerjisi
+`11,1 V × 8,0 Ah =` **88,8 Wh**, 4S 10 Ah'in (148 Wh) **%60'ı**. Veri sayfası ÖRNEK satırından
 (`FDR/BOLUM_3_SISTEM_SPESIFIKASYONLARI.md:319`) 2,5 kg için 4S'te 26 A → 3S'te
 `26 × (14,8/11,1) ≈` **35 A**, güç ≈ **388 W** (+ aviyonik ≈ 25 W);
 `0,8 × 66,6 Wh / 413 W ≈` **0,13 saat = ≈ 8 dk askı (HESAP)**. Şartname bütçesi **10 dk**'dır
