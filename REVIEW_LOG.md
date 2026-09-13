@@ -31011,3 +31011,45 @@ raporun kuralı sunuma taşınmaz (`FDR/sablon/OKUBENI.md`).
 
 **Durum:** T258 **KAPANDI** (tarih artık yazılı kaynakla sabit). T259 (sunumun kendisi)
 açık — şablon geldi, **içerik yazılmadı**; teslime **2 gün** var.
+
+
+---
+
+### D-477 — İKA/mancınık Gazebo paketlerinde `package://` mesh URI'leri gerçek klasör adıyla UYUŞMUYOR (ikisi de) + D-458 gerçek Gazebo11 render'ıyla bağımsız doğrulandı
+
+**Tarih:** 13 Eylül 2026 · Mimar oturumu (Claude), kullanıcı isteğiyle.
+
+**Bulgu 1 (YENİ) — paket adı/klasör adı uyuşmazlığı.** Üç paketten ikisinin URDF'lerindeki
+`package://` mesh referansları SolidWorks dışa aktarımının kullandığı montaj adını taşıyor,
+repodaki gerçek klasör adıyla eşleşmiyor (Linux dosya sistemi case-sensitive):
+
+- `IKA_GAZEBO_MODEL/urdf/İKA_GAZEBO_MODEL.urdf` → `package://İKA_GAZEBO_MODEL/...`
+  (noktalı Türkçe **İ**) — gerçek klasör düz **I** ile `IKA_GAZEBO_MODEL`. FARKLI isim.
+- `mancinik_gazebo_model/urdf/mancınık montaj.SLDASM.urdf` → `package://mancınık montaj.SLDASM/...`
+  — gerçek klasör `mancinik_gazebo_model`. Tamamen farklı isim.
+- `FDR_UAV_gazebo-2.SLDASM` tek istisna: klasör adı ile URI'deki ad eşleşiyor.
+
+**Kanıt:** `gz sdf -p` (Gazebo11, `navitas-gazebo:11` konteyneri) ile URDF→SDF çevirisi bu
+URI'leri aynen `model://` şemasına taşıyor. `GAZEBO_MODEL_PATH`'e gerçek klasör adlarıyla
+repo kökü verildiğinde mesh'ler **bulunamadı** (`gzserver` log: `Unable to find uri`); yalnız
+elle `İKA_GAZEBO_MODEL` ve `mancınık montaj.SLDASM` adında symlink eklenince çözüldü.
+**Sonuç: bu iki paket stock bir ROS/Gazebo checkout'unda mesh'siz açılır**, elle isim
+düzeltmesi olmadan. `results/gazebo_model_onizleme_20260913/RAPOR.md` bkz.
+
+**Bulgu 2 — D-458 bağımsız doğrulama (gerçek render, sentetik değil).** D-458'te CSV/URDF
+üzerinden bildirilen İKA kusuru (`base_link` + 4 tekerin hepsi 9,308 kg, aynı atalet/CoM)
+şimdi **gerçek Gazebo11 render'ıyla** görsel olarak doğrulandı:
+`results/gazebo_model_onizleme_20260913/ika_gazebo.jpg` — gövde iki ayrı örtüşen panel
+olarak görünüyor, 4 tekerden yalnız 1'i gövdeye yakın (yine de temas etmiyor), diğer 3'ü
+kadraj dışı/kopuk. Mancınık ve İHA aynı yöntemle render edildi, ikisi de **doğru ve tek
+parça** oturdu (`mancinik_gazebo.jpg`, `iha_gazebo.jpg`) — CSV'lerindeki kütle/atalet
+değerleri de link başına farklı ve fiziksel olarak makul (İKA'nın aksine).
+
+**Etki / öneri:** T239'a ek olarak yeni bir düzeltme görevi gerekir (T261) — iki URDF'deki
+`package://` adlarını gerçek klasör adlarıyla eşitlemek (ya da klasörleri URDF'nin
+beklediği isme çevirmek; Türkçe İ/ı harfleri ASCII'ye indirilmeli, locale'e bağımlı build
+riski var). **CONTRACTS değişmedi**, T239 hâlâ açık (D-458 kapanmadı, yalnız ek kanıtla
+güçlendi).
+
+**Genel kapı:** dokunulmadı (yalnız yeni model dosyaları + render kanıtı eklendi, üretim
+kodu değişmedi) — `codes/test_rota_sentetik.py` bu oturumda koşulmadı, ilgisiz.
