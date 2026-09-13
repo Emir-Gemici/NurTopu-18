@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.3)
 
-project(mancınık montaj.SLDASM)
+project(mancinik_gazebo_model)
 
 find_package(catkin REQUIRED)
 

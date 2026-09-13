@@ -10,7 +10,7 @@
     name="spawn_model"
     pkg="gazebo_ros"
     type="spawn_model"
-    args="-file $(find mancınık montaj.SLDASM)/urdf/mancınık montaj.SLDASM.urdf -urdf -model mancınık montaj.SLDASM"
+    args="-file $(find mancinik_gazebo_model)/urdf/mancinik_gazebo_model.urdf -urdf -model mancinik_gazebo_model"
     output="screen" />
   <node
     name="fake_joint_calibration"

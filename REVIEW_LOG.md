@@ -31079,3 +31079,39 @@ hâlâ ayrıca ölçülmeli (URDF'nin kütle dağıtımı NASIL bozulduğunu gö
 toplamın yanlış olduğunu kanıtlıyor). CONTRACTS değişmedi.
 
 **Genel kapı:** dokunulmadı (yalnız analiz, kod değişmedi).
+
+
+---
+
+### D-479 — T261 KAPANDI: İKA + mancınık paket adı/mesh yolu uyuşmazlığı düzeltildi
+
+**Tarih:** 13 Eylül 2026 · Mimar oturumu (Claude), kullanıcı isteğiyle (D-477'nin devamı).
+
+**Yapılan değişiklik (kod, üretim mantığı değil — sadece isim/yol):**
+- Dosyalar ASCII isme taşındı: `İKA_GAZEBO_MODEL.urdf/.csv` → `IKA_GAZEBO_MODEL.urdf/.csv`,
+  `joint_names_İKA_GAZEBO_MODEL.yaml` → `joint_names_IKA_GAZEBO_MODEL.yaml`;
+  `mancınık montaj.SLDASM.urdf/.csv` → `mancinik_gazebo_model.urdf/.csv`,
+  `joint_names_mancınık montaj.SLDASM.yaml` → `joint_names_mancinik_gazebo_model.yaml`.
+- İçerik (package.xml `<name>`, CMakeLists.txt `project()`, URDF `<robot name>` +
+  tüm `package://` mesh URI'leri, launch dosyalarındaki `$(find ...)` çağrıları) gerçek
+  git klasör adına (`IKA_GAZEBO_MODEL`, `mancinik_gazebo_model`) eşitlendi.
+
+**Doğrulama (gerçek Gazebo11, `navitas-gazebo:11` konteyneri, ELLE SYMLINK OLMADAN):**
+`gz sdf -p` çıktısında mesh URI'leri artık `model://IKA_GAZEBO_MODEL/meshes/...` ve
+`model://mancinik_gazebo_model/meshes/...` — repodaki gerçek klasör adlarıyla birebir
+eşleşiyor. `GAZEBO_MODEL_PATH=/repo` verildiğinde (D-477'deki gibi ek symlink KLASÖRÜ
+olmadan) mesh dosyaları `Unable to find uri` hatası vermeden doğrudan bulunuyor.
+
+**Kapsam dışı bırakılan (T261'in konusu değil, ayrı sorun):** `gz sdf -p` çıktısında hâlâ
+`Non-unique names detected in <model>` uyarısı var (otomatik üretilen `<frame>`
+elemanlarından, muhtemelen tekrarlayan isim) — bu D-477/T261'in mesh-yolu bulgusuyla
+ilgisiz, render'ı engellemiyor (D-477'deki tüm görüntüler bu uyarıyla birlikte üretildi),
+dokunulmadı.
+
+**Dokunulmayan:** `FDR_UAV_gazebo-2.SLDASM` zaten sorunsuzdu. İKA'nın kütle/atalet kusuru
+(D-458/D-478) bu değişiklikle İLGİLİ DEĞİL — T239 hâlâ açık, ayrı bir sorun (dosya yolu
+vs. fiziksel değer).
+
+**Genel kapı:** dokunulmadı (yalnız isim/yol değişikliği, `codes/` altına dokunulmadı).
+
+**T261 → KAPANDI.**

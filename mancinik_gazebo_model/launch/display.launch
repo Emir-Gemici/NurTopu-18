@@ -3,7 +3,7 @@
     name="model" />
   <param
     name="robot_description"
-    textfile="$(find mancınık montaj.SLDASM)/urdf/mancınık montaj.SLDASM.urdf" />
+    textfile="$(find mancinik_gazebo_model)/urdf/mancinik_gazebo_model.urdf" />
   <node
     name="joint_state_publisher_gui"
     pkg="joint_state_publisher_gui"
@@ -16,5 +16,5 @@
     name="rviz"
     pkg="rviz"
     type="rviz"
-    args="-d $(find mancınık montaj.SLDASM)/urdf.rviz" />
+    args="-d $(find mancinik_gazebo_model)/urdf.rviz" />
 </launch>

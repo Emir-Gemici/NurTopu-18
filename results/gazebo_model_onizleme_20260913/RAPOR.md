@@ -34,12 +34,14 @@ headless Gazebo11 render'ı üretildi — bu bir sahte/sentetik görüntü deği
 1. **İKA kütle/mesh kusuru (D-458) bağımsız doğrulandı** — artık gerçek
    Gazebo render'ıyla da görülüyor, sadece CSV okumasıyla değil. T239
    hâlâ açık, CONTRACTS değişmedi.
-2. **YENİ: paket adı uyuşmazlığı.** `IKA_GAZEBO_MODEL` ve
-   `mancinik_gazebo_model` klasörlerinin URDF'leri, mesh'lere SolidWorks
-   montaj adıyla (`İKA_GAZEBO_MODEL` noktalı İ, `mancınık montaj.SLDASM`)
-   referans veriyor — gerçek klasör adlarıyla eşleşmiyor. Bu render'da
-   elle symlink ekleyerek aşıldı; **düzeltilmeden stock bir ROS/Gazebo
-   checkout'unda bu iki paket mesh'siz açılır.** → T261 açıldı.
+2. **Paket adı uyuşmazlığı → DÜZELTİLDİ (T261, D-479, aynı gün).**
+   `IKA_GAZEBO_MODEL` ve `mancinik_gazebo_model` klasörlerinin URDF'leri
+   mesh'lere SolidWorks montaj adıyla (`İKA_GAZEBO_MODEL` noktalı İ,
+   `mancınık montaj.SLDASM`) referans veriyordu — gerçek klasör adıyla
+   eşleşmiyordu (bu render'da elle symlink ekleyerek aşılmıştı). Dosyalar
+   ASCII isme taşındı, package.xml/CMakeLists.txt/URDF/launch içindeki
+   tüm ad referansları düzeltildi. Doğrulama: gerçek Gazebo11'de symlink
+   OLMADAN `GAZEBO_MODEL_PATH=/repo` ile mesh'ler artık doğrudan bulunuyor.
 3. Mancınık ve İHA CSV'lerindeki kütle/atalet değerleri link başına
    farklı ve büyüklük mertebesi makul (İKA'nın aksine, ki orada tüm
    linkler aynı 9,308 kg'ı taşıyor).

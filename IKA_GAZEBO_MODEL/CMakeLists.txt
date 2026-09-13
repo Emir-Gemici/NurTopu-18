@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.3)
 
-project(İKA_GAZEBO_MODEL)
+project(IKA_GAZEBO_MODEL)
 
 find_package(catkin REQUIRED)
 
