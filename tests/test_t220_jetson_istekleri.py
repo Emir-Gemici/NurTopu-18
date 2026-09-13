@@ -19,6 +19,7 @@ results/fdr_sprint_20260910/ON_KAYIT.md SS5.10 (cv2 GStreamer denetimi kusuru).
 from __future__ import annotations
 
 import ast
+import hashlib
 import json
 import os
 import re
@@ -115,6 +116,27 @@ class K2KabulKumeleriDepoda(unittest.TestCase):
                 {"default_profile": "c", "profiles": {"c": {"kabul_kumesi": str(hedef)}}}),
                 encoding="utf-8")
             self.assertEqual(K65.kabul_kumesi_yolu(kok), hedef)
+
+    def test_parmak_izi_platformdan_bagimsiz_tarihi_sira(self):
+        """Windows'ta kaydedilen ozet Linux'ta da korunur (URETIM once gelmez)."""
+        K65 = import_module("65_kabul_denetcisi")
+        # Acili kume hatasini kucuk fixture ile uret: POSIX URETIM'i data'dan
+        # once siralar. Ic ice yollar da Windows yol bileseni sirasini korur.
+        kayitlar = [("data.yaml", b"abc"), ("images/train/a.jpg", b"12345"),
+                    ("manifest.json", b"{}"), ("URETIM_KOMUTU.md", b"komut")]
+        beklenen = hashlib.sha256()
+        for ad, icerik in kayitlar:
+            beklenen.update(ad.encode("utf-8"))
+            beklenen.update(str(len(icerik)).encode("ascii"))
+        with tempfile.TemporaryDirectory() as td:
+            kok = Path(td)
+            for ad, icerik in reversed(kayitlar):
+                hedef = kok / ad
+                hedef.parent.mkdir(parents=True, exist_ok=True)
+                hedef.write_bytes(icerik)
+            sonuc = K65.kume_parmak_izi(kok)
+        self.assertEqual(sonuc["n"], 4)
+        self.assertEqual(sonuc["ozet"], "sha256:" + beklenen.hexdigest())
 
     def test_parmak_izi_DEGISMEDI_bayt_es_kopya(self):
         """Kume tasindi ama DONDURULMUS kaldi: registry parmak izi = dizinden turetilen."""

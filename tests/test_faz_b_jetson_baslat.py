@@ -676,7 +676,17 @@ class JetsonBaslatKuruUdp(unittest.TestCase):
         """D-405: `[YOK] mavproxy` iken "KURU SONUC: tamam" yalani. Hazir makinede tek tek
         eksilt: mavproxy PATH'ten, kullanici, Pixhawk cihazi, kurulu .py — her biri 3."""
         m = self.m
-        e = m.env(KIP="udp", **BEYAN_TAM, NAVITAS_TEST_PATH_ON="")   # shim bin PATH'te DEGIL
+        # Urun PATH'e /usr/local/bin'i geri ekler; kurulu MAVProxy sonucunu
+        # etkileyemez. Yalniz bu alt surecte command lookup'unu izole et.
+        lookup = m.d / "mavproxy_yok.bash"
+        lookup.write_text(
+            'command() {\n'
+            '  if [ "$#" -eq 2 ] && [ "$1" = -v ] && [ "$2" = mavproxy.py ]; then\n'
+            '    return 1\n'
+            '  fi\n'
+            '  builtin command "$@"\n'
+            '}\n', encoding="utf-8")
+        e = m.env(KIP="udp", **BEYAN_TAM, BASH_ENV=_msys(lookup))
         kod, out, _ = _kos(BETIK, e)
         b = _bolumler(out)
         self.assertEqual(kod, 3, out)
