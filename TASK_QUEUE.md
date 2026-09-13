@@ -19,6 +19,16 @@
 
 ---
 
+## Kullanıcı önceliği — FDR, 14 Eylül 2026
+
+- [x] **T263 — FDR açıklarını sırayla giderme, adım 1–2: durum düzeltmesi ve kanıt eşlemesi** → **KAPANDI (14 Eylül, bağımsız denetlendi: Claude, D-483).** Kullanıcının doğrudan "raporun eksiklikleri ne? yapmaya basla, sirayla adim adim todo" talebi. Kapsam: `FDR/BOLUM_3`, `BOLUM_4`, `BOLUM_6`, `ACIK_KALEMLER*`, `YONERGE_HARITASI`, `README`, `TODO_20260914.md` ve `results/fdr_20260914/` kanıtları. Önceden mevcut dört dosyadaki değişiklikler korunur. Fizik/model/eşik değişikliği yok; sonraki adımlar TODO'da izlenir.
+  - **Yazan:** Codex-1 · **Denetleyen:** bekliyor (bağımsız Claude incelemesi) · **Kapı çıktısı:** başlangıç genel kapısı `.venv/bin/python -B codes/test_rota_sentetik.py` → `GENEL KAPI (madde 14): GECTI — kol1 15/15 · kol2 serit 15/15`, çıkış 0; değişiklik sonrası FDR 77 test + şekil 11 test OK; genel kapı iki kolda 15/15; ham liste 569 satır GUNCEL; tümü çıkış 0. Komut/ham çıktı: `results/fdr_20260914/KAPILAR.md`. Adım 3 model/özgün MP4 erişimi bekliyor; bağımsız kabul yapılmadı.
+
+---
+
+- [x] **T264 — FDR yazılım PDF'sini DDR örneğiyle kısa ve resmî biçimde yeniden hazırlama** → **KAPANDI (14 Eylül, Codex-1 üretti + kota bitince Claude devraldı/denetledi, D-483).** Kullanıcı: 271 sayfa fazla; yazılım kapsamı ve DDR düzeni isteniyor. Kaynak: `/home/trs/Downloads/drive-download-20260913T214801Z-1-001.zip`. Çıktı `FDR/pdf/FDR_YZLM_001H.pdf` (18 sayfa); önceki PDF `FDR/pdf/arsiv/`'de. Dizgi kaynağı `FDR/FDR_YZLM_001H_icerik.json` + üreteç `scripts/fdr_yazilim_resmi.py`, QA kanıtı `results/fdr_20260914/pdf_resmi/`. Denetimde 1 kusur bulundu (çift "6" bölüm numarası) ve düzeltildi. Ölçümler/üretim kodu değiştirilmedi.
+  - **Yazan:** Codex-1 · **Denetleyen:** bağımsız inceleme bekliyor · **Kapı çıktısı:** PDF metin/varlık kontrolü, her sayfanın görsel kontrolü ve genel kapı beklenecek.
+
 ## FAZ 0 — İNSAN MÜDAHALESİ
 
 > ⚠ `auto_orchestrator.py` ilk taramada bu satırların **hepsi için sırayla** bekler.

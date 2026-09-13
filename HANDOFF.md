@@ -1,5 +1,25 @@
 # NAVITAS — DEVİR PROTOKOLÜ
 
+## Devir 2026-09-14 · FDR adım 1–2 hazır (T263)
+
+Kullanıcı rapor eksiklerini TODO ile sırayla gidermeyi istedi. Çalışma listesi
+`FDR/TODO_20260914.md`: adım 1–2 tamam, T263 READY_FOR_REVIEW; bağımsız kabul yok.
+Bölüm 3/4/6, yönerge haritası, README ve açık kalemlerde güncel CAD/Gazebo/video
+durumu işlendi; 105 MuJoCo koşumunun sonuçları değişmedi. Kanıt envanteri ve
+kapılar `results/fdr_20260914/`; D-482. FDR 77 + şekil 11 test OK; genel kapı
+iki kolda 15/15, çıkış 0. Tam süit ve yeni simülasyon koşulmadı.
+
+**Sonraki adım:** 3 — v36 `.pt` ve özgün `navitas_sim_gorev_20260910.mp4`
+dosya erişimi. Kullanıcıya klasör/Drive kaynağı soruldu. Bu çalışma kopyasında
+ikisi de yok; rv38 yarım ve hakem günlüğü boş. Fizik/CAD entegrasyonu ve
+7,56/9,3 kg kaynak çelişkisi açık; T239/T262'ye dokunulmadı. Adım 4'ün
+mühendislik/saha/bütçe girdileri TODO'da; adım 5 son PDF üretimi ve görsel kontrol.
+
+Başlangıçtaki FDR satır-atfı düzeltmeleri/test değişikliği korundu. Commit/push
+yapılmadı; T107 kilidine dokunulmadı.
+
+---
+
 ## Devir 2026-09-11 · Onaylı birleşim tamam, tam süit yeşil
 
 **Yetki:** kullanıcının "onay" mesajı, üç hazır dalın commit ve master'a

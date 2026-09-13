@@ -729,7 +729,7 @@ Dürüstlük notu: depoda bir Gazebo simülasyon ağacı **vardır**
 ağaçtan gelen tek kayıt **D-370**'tir ve o da bir simülasyon başarımı değil,
 **ölçen aracın kendi kusurudur**: `simulation/scripts/ika_nav.py` tamamen
 CRLF olduğu için mutasyon betiğinin deseni hiç uygulanmıyordu (§4.2.2).
-~~Yani simülasyon ağacından bu rapora giren **hiçbir başarı sayısı yoktur**.~~ *(10 Eylül 2026: Gazebo ağacından yine sayı girmez — önceki tasarım, koşulmadı; yukarıdaki sayılar MuJoCo koşumlarındandır.)*
+~~Yani simülasyon ağacından bu rapora giren **hiçbir başarı sayısı yoktur**.~~ *(10 Eylül 2026: Gazebo ağacından yine sayı girmez — 10 Eylül görev sonuçlarının kaynağı MuJoCo’dur. 13 Eylül Gazebo CAD önizlemeleri ve tamamlanmamış rv38 kaydı §3.3.3’te ayrı açıklanmıştır.)*
 
 ⚠ Bu bölümdeki sentetik arena ölçümleri (§4.8.1) **görev icra simülasyonu
 değildir**: CAD modeli, kalkış-iniş ve İKA otonom sürüşü içermez; yalnız
@@ -1751,7 +1751,7 @@ ekran görüntüsü.
 
 | 19 | **Görev icra simülasyonu videosunun linki** (`Y-3.3.3-M03`, `Y-4-M07`) | Video 10 Eylül 2026'da üretildi (MuJoCo, SENTETİK; yerel dosya, sha256 `35ffc33e2f99c833…`, §3.3.3.3); yükleme insan işidir — **BEYAN GEREKLİ (insan)** | T222 (insan) | erişilebilir link |
 | 20 | **Üretim modeliyle simülasyonda rota tespiti ve uçtan uca sürüş** (H1-K3, H1-K5) | ÖLÇÜLDÜ ve **DÜŞTÜ** (10 Eylül 2026): rota tespiti mozaik 6/15, kare-bazlı 1/15; sürüş ÜRETİM MODELİ 9/45, ÜRETİM BORU HATTI 0/15 (YER GERÇEĞİ 45/45 GEÇTİ). Eşik gevşetilmedi; sim'e özel eğitim yapılmaz (ON_KAYIT §5.2). Teşhis: kareye göreli şerit etiketi, KB ile HB aynı karede görülmüyor (§3.3.3.2) | — (sonuç rapora olduğu gibi girer; üretim kodu kararı mimarın) | ≥ 12/15 |
-| 21 | **Simülasyonda CAD modelleri ve aerodinamik** | İHA / İKA STL'leri ekipten gelmedi → BASİTLEŞTİRİLMİŞ MODEL (DDR ölçüleri); İHA uçuşu kinematik (mocap) | insan girdisi (ON_KAYIT §3 madde 1–2) | — |
+| 21 | **Simülasyonda CAD modelleri ve aerodinamik** | 10 Eylül koşumu BASİTLEŞTİRİLMİŞ MODEL (DDR ölçüleri); 13 Eylül itibarıyla CAD paketleri ve önizleme var, CAD ile görev koşumu yok. İHA uçuşu kinematik (mocap) | CAD fizik doğrulaması + entegrasyon + yeniden koşum (§3.3.3.1) | — |
 
 ### 4.13.2 Kapı/test boşlukları — **3'ü kapandı, 3'ü açık**
 

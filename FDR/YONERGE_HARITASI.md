@@ -46,7 +46,7 @@
 
 | kimlik | gereksinim | durum |
 |---|---|---|
-| `Y-2.1-M01` | **Bölüm 2.1 Organizasyonel Yapı** — takımın güncel organizasyonel yapılanması ve üyelerin/birimlerin **icra yetkileri şematize** edilmeli | VAR (7 Eylül: `sekiller/organizasyon.svg` §2.1.2'ye gömüldü; rol bazlı, isimsiz; nöbetçi `tests/test_gece_sekiller.py`) |
+| `Y-2.1-M01` | **Bölüm 2.1 Organizasyonel Yapı** — takımın güncel organizasyonel yapılanması ve üyelerin/birimlerin **icra yetkileri şematize** edilmeli | VAR (7 Eylül: Bölüm 2 §2.1, `sekiller/organizasyon.svg`; rol ataması teyitleri ayrı açık) |
 | `Y-2.1-M02` | 🔴 **İSİM YAZILMAZ.** *"üyelerin kişisel verilerinden (isim, görsel vb.) arındırılmış, tamamen rol bazlı ve profesyonel bir anlatım"* | **VAR** — rapor zaten rol bazlı (R1–R8) |
 | `Y-2.2-M01` | **Bölüm 2.2 Proje Takvimi** — DDR'deki takvimin **termin planına uygunluğu teyit** edilmeli | KISMEN |
 | `Y-2.2-M02` | İş takvimine **eklenen yeni iş akışları** varsa planlama analitik yaklaşımla **yeniden değerlendirilip güncellenmeli** | KISMEN |
@@ -152,9 +152,9 @@
 | `Y-3.3.1-M03` | **Entegrasyon Planı** | İHA ve İKA aviyonik entegrasyonunda izlenecek plan | KISMEN (İHA planı rapora girdi: §3.3.1.3.1 kuru koşu zinciri 9/10 + §3.3.1.3.2 kapı özeti; ~~İKA planı §3.3.1.3.3 BEYAN GEREKLİ~~ → 10 Eylül (T217): İKA planının **yazılım kolu** §3.3.1.3.3'te koddan — katman zinciri alıcı→kilit→navigate→sürücü (dosya:satır), kabul turu K1–K6 sahte sürücüyle **6/6 GEÇTİ** (gazebo `gz` yok DÜŞTÜ, gerçek DONANIM_YOK), donanım gelince 6 adım, protokol beyanı NAVITAS çerçeve ≠ DDR MAVLink (D-439 §2); **donanım kolu** BEYAN GEREKLİ — tedarik yok) |
 | `Y-3.3.2-M01` | **Nihai Kablaj Hesapları** | kablo **kesitleri (AWG)** ve uzunlukları, **akım taşıma kapasitesi ve gerilim düşümü hesapları**, **ölçülen** maksimum akıma göre güncelleme; kablo düzenlemesi, ekranlama, konnektör kilitleme **görsellerle** | YOK |
 | `Y-3.3.2-M02` | **Güç Tüketimi Doğrulaması** | tam yükte **ölçülen akım** ↔ batarya kapasitesi uyumu; **teorik hesap ile pratik ölçüm karşılaştırması** | YOK (5 Eylül ölçümü) |
-| `Y-3.3.3-M01` | 🔴 **Üç Boyutlu Simülasyon Ortamı** | İHA ve İKA'nın **3B CAD modelleriyle** sanal görev icrası: kalkış, görüntü işleme ile rota tespiti, **verinin İKA'ya aktarılması**, İKA'nın **otonom sürüşü** | KISMEN (~~Gazebo iskeleti var: 7 dünya + İHA/İKA/mancınık SDF + görev betikleri; CAD yok — mesh 0, koşum yok~~ → **10 Eylül 2026 (T214-A/B): MuJoCo'da uçtan uca koşuldu** — kalkış (mancınık, kinematik) → 30 m tarama → görüntü işleme ile rota tespiti (üretim modeli v36; mozaik ve kare-bazlı iki yol) → OPEN_ROUTE aktarımı (UDP, ACK [ika, yks]) → İKA otonom fizik sürüşü, `BOLUM_3` §3.3.3.1, **SENTETİK**; Gazebo iskeleti önceki tasarım, koşulmadı. **KISMEN kalır:** modeller BASİTLEŞTİRİLMİŞ (ekip CAD STL'i gelmedi; İKA DDR ölçülü), İHA uçuşu kinematik, hakem onayı sim'de otomatik) |
+| `Y-3.3.3-M01` | 🔴 **Üç Boyutlu Simülasyon Ortamı** | İHA ve İKA'nın **3B CAD modelleriyle** sanal görev icrası: kalkış, görüntü işleme ile rota tespiti, **verinin İKA'ya aktarılması**, İKA'nın **otonom sürüşü** | KISMEN (~~Gazebo iskeleti var: 7 dünya + İHA/İKA/mancınık SDF + görev betikleri; CAD yok — mesh 0, koşum yok~~ → **10 Eylül 2026 (T214-A/B): MuJoCo'da uçtan uca koşuldu** — kalkış (mancınık, kinematik) → 30 m tarama → görüntü işleme ile rota tespiti (üretim modeli v36; mozaik ve kare-bazlı iki yol) → OPEN_ROUTE aktarımı (UDP, ACK [ika, yks]) → İKA otonom fizik sürüşü, `BOLUM_3` §3.3.3.1, **SENTETİK**; 14 Eylül: Gazebo CAD önizlemeleri var, rv38 görev kaydı tamamlanmadı. **KISMEN kalır:** 10 Eylül koşumunun modelleri BASİTLEŞTİRİLMİŞ; gelen CAD paketleriyle görev doğrulanmadı (İKA DDR ölçülü), İHA uçuşu kinematik, hakem onayı sim'de otomatik) |
 | `Y-3.3.3-M02` | 🔴 **Simülasyon Verileri** | otonom karar verme **başarı oranları**, **sanal görev süresi**, sistem tepkileri — **grafiklerle** | ~~YOK~~ **VAR** (10 Eylül 2026, T214-A; **SENTETİK**): başarı oranları — rota tespiti H1-K3 6/15 ve 1/15 **DÜŞTÜ**, İKA sürüşü H1-K5 YER GERÇEĞİ 45/45 GEÇTİ, ÜRETİM MODELİ 9/45 ve ÜRETİM BORU HATTI 0/15 **DÜŞTÜ**; sanal görev süresi (sim saati) dağılımları; sistem tepkileri (OPEN_ROUTE / NO_ROUTE / ACK / IKA_GO / temas); 4 grafik `sekiller/sim_*.svg` `BOLUM_3` §3.3.3.2'ye gömülü; eşikler gevşetilmedi — gereksinim oranları grafikle raporlamaktır, eşiği geçmek değil |
-| `Y-3.3.3-M03` | 🔴 **Video Kanıtı** | simülasyonun ekran kaydı videosunun **linki** | ~~YOK~~ **KISMEN** (10 Eylül 2026, T214-B): video üretildi — 177,88 s, 25 FPS, 1280×720, üç kamera + HUD, yerel dosya sha256 `35ffc33e2f99c833…` (`results/fdr_sprint_20260910/video/OKUBENI.md`, `BOLUM_3` §3.3.3.3); **link BEYAN GEREKLİ (insan, T222)** — yönerge linki ister, link gelene kadar KISMEN |
+| `Y-3.3.3-M03` | 🔴 **Video Kanıtı** | simülasyonun ekran kaydı videosunun **linki** | ~~YOK~~ **KISMEN** (10 Eylül 2026, T214-B): video üretildi — 177,88 s, 25 FPS, 1280×720, üç kamera + HUD, yerel dosya sha256 `35ffc33e2f99c833…` (`results/fdr_sprint_20260910/video/OKUBENI.md`, `BOLUM_3` §3.3.3.3); **14 Eylül: özgün MP4 bu çalışma kopyasında yok; dosya erişimi ve link BEYAN GEREKLİ (insan, T222)** — yönerge linki ister, link gelene kadar KISMEN |
 | `Y-3.3.4-M01` | **Detaylı Algoritma Akışı** | İHA ve İKA otonom davranışlarını yöneten ana döngüler ve karar mekanizmalarının **akış diyagramları** | VAR (7 Eylül: 5 diyagram koddan, `FDR/sekiller/akis_a..e.svg` + düğüm tabloları `akis_<x>_dugumler.md`, 337/337 düğüm dosya:satır tam; nöbetçi `tests/test_gece_akis_diyagramlari.py` 13/13) |
 | `Y-3.3.4-M02` | **Görüntü İşleme Başarımı** | yarışma sahasına **benzer koşullarda** (farklı ışık açıları, gölgeler) test sonuçları ve **doğruluk matrisleri** | KISMEN (doğruluk matrisi 7 Eylül'de DOĞRULAMA kümesinde ölçüldü — §3.3.4.2.8 (b), §4.8.4; arena ve ışık/gölge kesiti yok) |
 | `Y-3.3.4-M03` | **Haberleşme Paket Yapısı** | İHA↔İKA ve yer istasyonu↔araçlar arasında aktarılan paketlerin **nihai yapısı, veri hızı ve gecikme test sonuçları** | KISMEN (12 Eylül, T243: yapı + worst-case boyut tablosu + gerçek görev veri hızı yazılım düzeneğinde ölçüldü — §3.3.4.3; gecikme UDP/TCP-seri köprüsünde ölçüldü §3.3.4.3.3; **RF (SiK 433 MHz fiili hat) hâlâ ÖLÇÜLEMEDİ**, radyo takılınca kapanır) |
@@ -195,7 +195,7 @@
 | `Y-6-M03` | Her gereksinim için **uygunluk durumu** ve gereksinimlerin **tasarım kararlarıyla ilişkisi** | VAR |
 | `Y-6-M04` | Gereksinimlerin tasarım sürecinde alınan kararları **nasıl etkilediği**, sistem mimarisi ve performansa **katkısı** | VAR |
 | `Y-6-M05` | **Karşılanamayan veya kısmen karşılanan** gereksinimlerin nedenleri + giderme önlemleri / planlanan iyileştirmeler | VAR (bu raporun güçlü yanı) |
-| `Y-6-M06` | 🔴 Tüm gereksinimlerin **genel uygunluk durumu ÖZET TABLO veya PASTA GRAFİĞİ** ile **görsel** | KISMEN (§6.6.1–§6.6.4 özet tablolar + metin bar var; pasta grafiği dizgide, BEYAN GEREKLİ) |
+| `Y-6-M06` | 🔴 Tüm gereksinimlerin **genel uygunluk durumu ÖZET TABLO veya PASTA GRAFİĞİ** ile **görsel** | VAR (7 Eylül: Bölüm 6 §6.6, `sekiller/uygunluk_pasta.svg` + `uygunluk_yontem.svg`; AÇIK_KALEMLER #41 kapanış kanıtı) |
 
 ## 7. Bölüm 7 — Bütçe Gerçekleme Analizi · **10 puan**
 
@@ -208,6 +208,8 @@
 | `Y-7-M05` | Planlanan ↔ gerçekleşen bütçe **farkı varsa nedenleri** | YOK |
 
 ---
+
+> **14 Eylül kullanım notu:** aşağıdaki toplu sayım tarihli eski özettir; güncel yapılacaklar `TODO_20260914.md` içindedir. Organizasyon şeması ve uygunluk grafikleri mevcuttur; tekrar üretilecek eksik sayılmaz.
 
 ## Boşluk özeti (7 Eylül 2026 — Y-satırları sayılarak yeniden üretildi; 3.1/3.2 değişmedi)
 

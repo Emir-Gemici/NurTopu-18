@@ -122,14 +122,15 @@ takımı ve kontrol yüzeyi **yoktur** (§3.0.1). Bu yüzden 3.1.2–3.1.7 alt b
 çoklu rotor verisiyle **kapatılamaz**; kapatılmaya çalışılırsa iki araç karıştırılmış
 olur.
 
-**Bugün depoda uçuş bilimleri hesabına ait artefakt yoktur.** Yapılan arama
-(`find . -maxdepth 3 -iname "*.step" -o -iname "*.stp" -o -iname "*.inp" -o -iname "*.odb"
--o -iname "*.rst" -o -iname "*.SLDPRT" -o -iname "*.iges"`) **hiçbir dosya** döndürmedi;
-CAD/CFD/FEA çıktısı, kütle-denge tablosu, kararlılık türevi ya da yük zarfı bulunmamaktadır.
-Repodaki tek üç boyutlu geometri, görev test uçuşu aracının 3B baskı STL'leridir
-(`dronesolid/Drone_Frame_STL.STL`, `Drone_Arm_STL.STL`, `Lower_Drone_Frame_STL.STL`,
-`Drone_Legs_STL.STL`, `Drone_Dome_STL.STL`, `GPS_Holder_STL.STL`) — bunlar **quadcopter
-parçalarıdır**, sabit kanat aracı değildir.
+**14 Eylül 2026 — geometri mevcut, uçuş bilimleri kanıtı açık.** Önceki
+"depoda yalnız quadcopter STL'leri var" tespiti güncel değildir: İHA, İKA ve
+mancınık için CAD'den dışa aktarılmış URDF/STL/CSV paketleri gelmiştir (§3.3.3.1).
+`local_assets/extracted_archives/mancınık montaj/` altında native SolidWorks
+parçaları da bulunur. Dosyanın bulunması, analizinin doğrulandığı anlamına gelmez.
+Bu bölüme bağlanmış nihai aerodinamik/kararlılık hesabı, yük zarfı ve doğrulanmış
+kütle-denge tablosu hâlâ eksiktir. Quadcopter verileri final sabit kanat aracının
+bu hesaplarının yerine kullanılmaz. Güncel kanıt envanteri:
+`results/fdr_20260914/KANIT_ESLEMESI.md` ve `envanter.json`.
 
 🔴 **Rol boşluğu (bu raporun kendi bulgusu):** Bölüm 2 §2.1 rol tablosunda R1 Kaptan,
 R2 Pilot, R3 Aviyonik, R4 Görev bilgisayarı/kamera, R5 YKS, R6 İKA, R7 Yazılım,
@@ -696,7 +697,7 @@ kalıp kopyalanmaz, tek yerden okunur):
 
 | süreç | bayrak eklenir | kilit uygulanır |
 |---|---|---|
-| `codes/rpi_inference.py` | `:2539` | `:2684` |
+| `codes/rpi_inference.py` | `:2562` | `:2707` |
 | `comms/iha_inis_yayinci.py` | `:432` | `:475` |
 | `comms/iha_komut_alici.py` | `:855` | `:899` |
 
@@ -1241,8 +1242,8 @@ yapılmaz** (§3.2.1.1); pil tek adettir ve iMAX B6 ile dolum ≈ 3 saat sürdü
 ### 3.3.3 Görev İcra Simülasyonu
 
 > 🧪 **SENTETİK — 10 Eylül 2026 (ölçüm T214-A, metin T214-B; ön kayıt `results/fdr_sprint_20260910/ON_KAYIT.md` H1).**
-> Görev icra simülasyonu **MuJoCo 3.13**'te koşuldu (karar D-438: bu makinede Gazebo ve Podman yok — ölçüldü,
-> ON_KAYIT §0). Aşağıdaki her sayı bir **simülasyon ölçümüdür, saha kanıtı değildir.** Eşikler ön kayıttan alındı ve
+> Görev icra simülasyonu **MuJoCo 3.13**'te koşuldu (karar D-438; ON_KAYIT §0,
+> 10 Eylül koşum ortamı). Aşağıdaki her sayı bir **simülasyon ölçümüdür, saha kanıtı değildir.** Eşikler ön kayıttan alındı ve
 > **gevşetilmedi**; DÜŞEN kapılar olduğu gibi yazılıdır. Sayıların kaynağı `results/fdr_sprint_20260910/H1/README_T214A.md`
 > (105 koşum JSON'undan `simulation/mujoco/t214a_rapor.py` ile üretilir) ve `results/fdr_sprint_20260910/video/OKUBENI.md`.
 
@@ -1269,11 +1270,22 @@ yeniden açıldı (`FDR/ACIK_KALEMLER.md` madde 16, `REVIEW_LOG.md` D-417). Gere
 *"simülasyon saha kanıtı değildir"* doğrudur, ama **yönerge onu saha kanıtı olarak
 istemiyor**; ayrı bir çıktı olarak istiyor.
 
-**Gazebo iskeleti — önceki tasarım, koşulmadı.** Depoda bir Gazebo Classic 11 + Podman ağacı durur
-(`simulation/worlds/` 7 dünya; `simulation/models/{iha,ika,catapult}/model.sdf` — mesh sayısı 0; kayıt yolu
-`simulation/docker/record.sh`). Bu geliştirme makinesinde `gz` ve `podman` bulunmadığı için (ölçüldü, ON_KAYIT §0)
-**hiç koşulmadı**; ağaç silinmedi (`test_p8` kapıları sürer). Bu bölümdeki **hiçbir sayı Gazebo'dan gelmez** —
-hepsi MuJoCo koşumlarındandır.
+**Gazebo — 14 Eylül 2026 durum güncellemesi.** Linux geliştirme ortamında Podman
+içindeki Gazebo Classic 11 ile zemin/temas denemeleri ve CAD önizlemeleri
+üretilmiştir (`results/gazebo_realism_20260910/`,
+`results/gazebo_model_onizleme_20260913/`). Bu nedenle genel bir "Gazebo hiç
+koşulmadı" veya "Podman yok" ifadesi güncel değildir; 10 Eylül MuJoCo koşumunun
+ortam kaydı kendi tarihiyle korunur.
+
+13 Eylül'deki üç seviyeli görev kaydı `simulation/recordings/rv38/` içinde
+tamamlanmamıştır: 14 Eylül disk kontrolünde MP4 yoktur, hakem günlüğü 0 bayttır;
+`iha_haritala.log`, `models/navitas_seg_v36_best.pt` yokluğunda
+`FileNotFoundError` ile sonlanmıştır. Kolay/orta klasörlerinde yalnız işaret ve
+metadata dosyaları vardır, zor klasörü yoktur. Buradan başarı oranı çıkarılmaz.
+Yukarıdaki **105 koşumun bütün görev sonuçları MuJoCo'dan gelir**; CAD
+önizlemeleri ve sınırlı Gazebo temas deneyleri bu sonuçların yerine geçmez.
+Kayıt eklentisinde İHA/paraşüt hareketi kinematiktir
+(`simulation/plugins/navitas_anim.cc`); aerodinamik uçuş doğrulanmış değildir.
 
 *(3 Eylül metni — 10 Eylül 2026'da MuJoCo ölçümüyle geçersizleşti; üstü çizili, silinmedi.)*
 
@@ -1305,6 +1317,16 @@ hepsi MuJoCo koşumlarındandır.
 > İKA'nın otonom sürüşünü kapsamalıdır."*
 
 **10 Eylül 2026 — ortam ve modeller (MuJoCo 3.13 · SENTETİK):**
+
+**14 Eylül eki — gelen CAD paketleri:** aşağıdaki tablo 10 Eylül koşumunun
+girdilerini anlatır; o tarihteki "STL gelmedi" notu güncel envanter değildir.
+İHA: `FDR_UAV_gazebo-2.SLDASM/`; İKA: `IKA_GAZEBO_MODEL/`; mancınık:
+`mancinik_gazebo_model/`. Üçünün Gazebo önizlemesi vardır; CAD ile uçtan uca
+görev koşumu henüz kanıtlanmamıştır. İKA URDF toplamı 7,5598 kg'dır ve
+kütle/atalet dağılımı kaba tahmindir (D-481). Önceki koşumun 9,40 kg girdisi
+bu yeni değerle yeniden koşulmuş gibi gösterilmez. **BEYAN GEREKLİ (insan):**
+7,56 kg ve daha sonra bildirilen 9,3 kg toplam kütle ifadelerinin nihai tartım
+kaynağı; T239 teker ölçüleri ve T262 koordinat/atalet doğrulaması açık kalır.
 
 | bileşen | simülasyonda ne | etiket | kaynak |
 |---|---|---|---|
@@ -1476,6 +1498,12 @@ sayı kümesi aynı tabloya konulamaz. Aynı yasak tersine de geçerlidir: §3.3
 
 **Video linki — BEYAN GEREKLİ (insan):** yükleme platformu (YouTube liste dışı / Drive) ve erişilebilir bağlantı
 (T222). Link gelene kadar `Y-3.3.3-M03` ve `Y-4-M07` **KISMEN** kalır; yerel dosya yukarıdaki sha256 ile tanınır.
+
+**14 Eylül dosya erişimi:** yukarıdaki MP4 bu Linux çalışma kopyasında belirtilen
+yolda bulunmamaktadır; `OKUBENI.md` ve `video_ozeti.json` üretim kayıtları mevcuttur.
+Teslim için özgün MP4 geri getirilmeli, yukarıdaki SHA-256 ile doğrulanmalı ve
+erişilebilir bağlantısı eklenmelidir. Bu kontrol eski üretim sonucunu silmez;
+video bu çalışma kopyasında yeniden izlenmiş veya yüklenmiş sayılmaz.
 
 *(3 Eylül metni — 10 Eylül 2026'da MuJoCo ölçümüyle geçersizleşti; üstü çizili, silinmedi.)*
 
@@ -2788,9 +2816,10 @@ OLCULEMEDI: Gorev icra simulasyonu (3.3.3) — Gazebo Classic 11 kosumu,
   -> 10 Eylul 2026: bu satir GECERSIZ (bir sonraki OLCULDU satiri).
 
 OLCULDU (10 Eylul 2026, SENTETIK): Gorev icra simulasyonu (3.3.3) MuJoCo'da
-  kosuldu — 105 kosum, 4 grafik, HUD'lu video (yerel dosya). Gazebo
-  kosulmadi (onceki tasarim). Modeller basitlestirilmis (CAD STL yok).
-  Acik: video LINKI (asagidaki BEYAN satiri, T222).
+  kosuldu — 105 kosum, 4 grafik, HUD'lu video uretim kaydi. Bu kosumun
+  modelleri basitlestirilmis; olcumler daha sonra gelen CAD ile tekrarlanmadi.
+  14 Eylul: Gazebo CAD onizlemeleri var; rv38 gorev kaydi tamamlanmadi.
+  Acik: CAD ile gorev dogrulamasi, ozgun MP4'un geri getirilmesi ve LINKI (T222).
 
 OLCULDU (7 Eylul 2026): Sinif bazli karisiklik matrisi — DOGRULAMA
   kumesi test29 (arena DEGIL), v36, CPU, piksel + ornek duzeyi; IoU
@@ -2874,7 +2903,7 @@ Bölümde geçen her sayının kaynağı. Biçim: **değer** · *dosya yolu* · 
 | v36 için sınıf bazlı artefakt YOK; `sinif_bazli` en son v15 (rescuenet val/test) | `results/capraz_dogrulama_v15_ft2sinif_20260812/capraz_dogrulama.json` | `scripts/olcum/11_capraz_dogrulama.py` | 2026-08-12 |
 | Sentetik üreteçte ışık açısı/gölge parametresi yok; zemin L bandı 105–190, moloz dL 25–75 | `scripts/olcum/51_sentetik_arena.py:200,218` · `O:\navitas-local-train\calisma\sentetik_arena_kadraj_t66\manifest.json → ornekler[].arena.lab_zemin_hedefi` | üreteç kaynak kodu (okuma) | 2026-09-05 |
 | 5 Eylül: uçuş yok, arena benzeri kare 0 (motor testi 4/4) | `REVIEW_LOG.md` D-426 | saha tutanağı | 2026-09-05 |
-| Tek-yazar kilidi üç süreçte tek mekanizma: `/dev/tty*` · `COM*` · `serial:` → çıkış 2, tek red metni; yalnız `--seri-pixhawk-bilerek` aşar; `iha_komut_alici --serial` reddedilir | `comms/inis_kaniti.py:101-140` · `codes/rpi_inference.py:2539,2684` · `comms/iha_inis_yayinci.py:432,475` · `comms/iha_komut_alici.py:855,891,899` · `REVIEW_LOG.md` D-419 §3–4 | `tests/test_seri_pixhawk_kilidi.py` **13/13** (bu rapor için koşuldu) | 2026-09-04 (birleştirme) |
+| Tek-yazar kilidi üç süreçte tek mekanizma: `/dev/tty*` · `COM*` · `serial:` → çıkış 2, tek red metni; yalnız `--seri-pixhawk-bilerek` aşar; `iha_komut_alici --serial` reddedilir | `comms/inis_kaniti.py:101-140` · `codes/rpi_inference.py:2562,2707` · `comms/iha_inis_yayinci.py:432,475` · `comms/iha_komut_alici.py:855,891,899` · `REVIEW_LOG.md` D-419 §3–4 | `tests/test_seri_pixhawk_kilidi.py` **13/13** (bu rapor için koşuldu) | 2026-09-04 (birleştirme) |
 | H1c: sınıflandırılamayan yayımlanmış çevrilme **0/0**; tohum 7 → (i) 6 + (ii) 1 = 7 · tohum 42 → (i) 9 + (ii) 2 = 11; ikinci koşum ham 13/24, yayımlanan 7/11 birebir; `H1_ozgun: false` değişmedi | `results/p5_histerezis/ON_KAYIT.md` ("H1c — KOŞULDU") · `results/p5_histerezis/olcum_20260903.json` · `results/p5_histerezis/olcum_h1c_tekrar_20260903.json` | `scripts/olcum/171_histerezis_kararliligi.py` · kapı `tests/test_p5_h1c_damgasi.py` **23/23** (bu rapor için koşuldu) | 2026-09-03 |
 | Hakem kanıt olay kümesi **16 olay** · `KANIT_TEKRAR_ARALIGI_S = 30 s` · uçtan uca `--demo --fda` kaydı 18 satır / 9 farklı olay | `CONTRACTS.md` §6.8 · `comms/yks_gui.py:127-144` · `REVIEW_LOG.md` D-412, D-419 §2 | `tests/test_yks_hakem_kanit_olaylari.py` **22/22** · `tests/test_yks_hakem_kanit_yolu.py` **6/6** (bu rapor için koşuldu) | 2026-09-04 |
 | Saha ÖLÇÜM satırları: `ArduCopter V4.5.7 (2a3dc4b7)` · `Frame: QUAD/X` · `u-blox 1 HW: 000A0000 SW: ROM SPG 5.10` · `RCInput: decoding IBUS(1)` · `starting motor test` → `finished motor test` | `REVIEW_LOG.md` D-426 §1 (Mission Planner `Messages`, operatör yapıştırdı) | saha ölçümü; ESC kal. / pusula / RC failsafe / param dökümü **AÇIK** (D-426 §4) | 2026-09-05 |

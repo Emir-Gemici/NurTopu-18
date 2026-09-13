@@ -31204,3 +31204,74 @@ aynı montajın güvenilmezliğini bir kez daha gösteriyor.
 
 **Genel kapı:** dokunulmadı (`codes/` altına dokunulmadı, yalnız `IKA_GAZEBO_MODEL/`
 paketi).
+
+
+### D-482 — FDR durum güncellemesi: CAD önizlemesi, görev kanıtı ve video erişimi ayrıldı (14 Eylül 2026, T263)
+
+**Yazan:** Codex-1 · **Denetleyen:** bağımsız inceleme bekliyor.
+Kullanıcı rapor eksiklerini sırayla giderme talimatı verdi. BOLUM_3'te genel
+"CAD yok / Gazebo hiç koşulmadı" ifadeleri, 13 Eylül CAD paketleri/önizlemeleri
+ve 10 Eylül Gazebo temas kayıtlarıyla uyuşmuyordu. Güncel durum BOLUM_3/4/6,
+yönerge haritası ve açık kalemlere işlendi; 10 Eylül MuJoCo sonuçları ve eşikleri
+korundu (üretim modeli 9/45, üretim boru hattı 0/15 DÜŞTÜ).
+
+**Somut kanıt:** `results/fdr_20260914/envanter.json` dosya varlığı/boyutu/SHA-256
+ve URDF okumasını içerir. `rv38/hakem_log.txt` 0 bayt; MP4 yok; `iha_haritala.log`
+v36 dosyası için FileNotFoundError. Önceki MuJoCo videosunun üretim kayıtları var,
+özgün MP4 bu çalışma kopyasında belirtilen yolda yok. Kayıt varlığı, dosyaya erişim
+ve paylaşım linki ayrı raporlandı. Organizasyon ve uygunluk grafikleri zaten
+mevcut; ilgili eski açık kalemler düzeltildi.
+
+**Kütle sınırı:** GAZEBO oturumunda 7,56 kg ardından 9,3 kg toplam beyanı var.
+URDF yazılı toplamı 7,5598 kg; önceki MuJoCo girdisi 9,40 kg. Nihai kaynağı
+netleştirmeden fizik değişmedi. D-481'in zarf yüksekliği/CoM Z kıyası tek başına
+kusur kanıtı sayılmaz; mesh/link/montaj çerçeveleri birlikte doğrulanmalıdır.
+T239/T262 kapatılmadı.
+
+**Gerçek kapılar:** `results/fdr_20260914/KAPILAR.md`: FDR keşfi 77 test OK,
+şekil 11 test OK, genel kapı kol1 15/15 + kol2 15/15, ham liste 569 satır
+GUNCEL; çıkışlar 0. İlk yanlış modül çağrısının 5 import hatası da korunmuştur.
+Tam süit/yeni simülasyon/saha ölçümü koşulmadı. Başlangıçta var olan dört dosyadaki
+satır-atfı düzeltmeleri korundu; bu görevin üretimi olarak gösterilmedi.
+
+
+---
+
+### D-483 — T263 BAĞIMSIZ DENETLENDİ (KABUL); T264 (FDR yazılım PDF'i) tamamlandı — Codex-1 kota bitince Claude devraldı
+
+**Yazan:** Claude (mimar oturumu) · **Denetleyen:** Codex-1'in D-482/T263 işi için
+bu kayıt bağımsız denetimdir (madde 7 ilkesi: iş, onu yazanın onayıyla kapanmaz).
+
+**Devir nedeni:** Codex-1 (ayrı CLI oturumu, `01a09c96-60e1-71f3-86bb-ace9bb8e6616`)
+T264 üzerinde çalışırken 13 Eylül 22:06 UTC'de kullanım kotasına çarptı
+(`usage_limit_exceeded`, sonraki deneme 05:07 önerildi). Kullanıcı bu oturumdan
+(Claude/GAZEBO) devralmamı istedi. **Not:** bu, benim (Claude) token/bağlam
+durumumla ilgisizdi — ayrı bir ajan/oturumdu, kullanıcı ilk başta karıştırdı.
+
+**T263 denetimi — KABUL.** `FDR/BOLUM_3/4/6`, `ACIK_KALEMLER*`, `YONERGE_HARITASI`,
+`README`, `HANDOFF.md` diff'leri okundu: CAD/Gazebo/video durumu tutarlı şekilde
+güncellenmiş, 10 Eylül MuJoCo eşikleri/sayıları DOKUNULMAMIŞ, önceden var olan
+satır-atfı düzeltmesi (`tests/test_fdr_t244_ic_celiski.py`) korunmuş. Kanıt
+(`results/fdr_20260914/KAPILAR.md`, `envanter.json`) bu oturumda bağımsız olarak
+teyit edilen bulgularla (D-477…D-481: v36 modeli yok, rv38 boş/DUVAR_SINIRI,
+İKA kütlesi 7,56 kg gerçek tartım) birebir örtüşüyor.
+
+**T264 tamamlandı.** Codex kota bitmeden hemen önce `scripts/fdr_yazilim_resmi.py`
+(reportlab) + `FDR/FDR_YZLM_001H_icerik.json` içerik kaynağıyla **18 sayfalık**
+`FDR/pdf/FDR_YZLM_001H.pdf`'i üretmişti (DDR örneğiyle uyumlu Calibri-metrik
+Carlito 11pt, TASNİF DIŞI üstlük/altlık, numaralı tablo/gereksinim izlenebilirlik
+matrisi, 12 kaynakça). Eski 271 sayfalık PDF `FDR/pdf/arsiv/`'e taşınmıştı.
+
+**Denetimde bulunan tek kusur:** İki ayrı bölüm başlığı aynı "6" numarasını
+taşıyordu ("6 Gereksinim İzlenebilirliği ve Değerlendirme" ve "6 Açık konular ve
+iyileştirme planı", sayfa 16/17). `FDR_YZLM_001H_icerik.json`'da düzeltildi
+("7 Açık konular…"), PDF `scripts/fdr_yazilim_resmi.py` ile yeniden derlendi:
+18 sayfa (hedefle eşleşti), 303.160 bayt, sha256 kanıtı
+`results/fdr_20260914/pdf_resmi/pdfinfo_v2.txt`'de. Tüm 18 sayfa PNG'ye çevrilip
+görsel olarak incelendi — içerik doğru, dürüst (ÖLÇÜLDÜ/BEKLİYOR/KISMİ etiketleri
+uyduruma değil), MuJoCo eşikleri değişmedi.
+
+**Değişmeyen:** Üretim kodu, fizik/eşik değerleri, CONTRACTS. Yalnız rapor
+metni/PDF ve QA kanıtı.
+
+**Genel kapı:** dokunulmadı.

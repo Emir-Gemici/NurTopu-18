@@ -1,0 +1,1397 @@
+{
+  "document_id": "FDR_YZLM_001H",
+  "pages": [
+    [
+      {
+        "k": "cover",
+        "s": "NAVITAS\nFinal Değerlendirme Raporu"
+      },
+      {
+        "k": "sub",
+        "s": "Yazılım Bölümü"
+      },
+      {
+        "k": "p",
+        "s": "Bu belge, İHA görüntü işleme ve rota kararını, İKA görev yazılımını, yer kontrol istasyonunu ve bu bileşenlerin haberleşme arayüzlerini sunmaktadır. FDR yönergesindeki 3.3, 4 ve 6 numaralı bölümlerin yazılım kapsamı esas alınmıştır [1]."
+      },
+      {
+        "k": "p",
+        "s": "Yazılım bileşenleri için kayıtlı doğrulama sonuçları bulunmaktadır. Bununla birlikte, üretim algı modeliyle uçtan uca simülasyon başarımı ve fiziksel saha entegrasyonu tamamlanmış kabul edilmemektedir. Ölçülen sonuçlar, benzetim sonuçları ve bekleyen çalışmalar ilgili bölümlerde ayrı belirtilmiştir."
+      },
+      {
+        "k": "t",
+        "head": [
+          "Belge bilgisi",
+          "Değer"
+        ],
+        "rows": [
+          [
+            "Belge kimliği",
+            "FDR_YZLM_001H"
+          ],
+          [
+            "Sürüm ve tarih",
+            "01 / 14.09.2026"
+          ],
+          [
+            "Kapsam",
+            "Yazılım mimarisi, görev algoritması, haberleşme, test ve izlenebilirlik"
+          ],
+          [
+            "Tasarım referansı",
+            "DDR Yazılım Mimarisi ve Görüntü İşleme bölümü [2]"
+          ]
+        ],
+        "w": [
+          1,
+          2.5
+        ]
+      },
+      {
+        "k": "sub",
+        "s": "İçindekiler"
+      },
+      {
+        "k": "t",
+        "head": [
+          "Bölüm",
+          "Sayfa"
+        ],
+        "rows": [
+          [
+            "3.3.1 Nihai Donanım ve Sistem Mimarisi",
+            "2"
+          ],
+          [
+            "3.3.2 Elektriksel Tasarım ve Kablolama",
+            "3"
+          ],
+          [
+            "3.3.3 Görev İcra Simülasyonu",
+            "4-6"
+          ],
+          [
+            "3.3.4 Görev Algoritması ve Yazılım Detayları",
+            "7-14"
+          ],
+          [
+            "4 Test Faaliyetleri",
+            "15"
+          ],
+          [
+            "6 Gereksinim İzlenebilirliği ve Değerlendirme",
+            "16-17"
+          ],
+          [
+            "Kaynaklar",
+            "18"
+          ]
+        ],
+        "w": [
+          4,
+          0.7
+        ]
+      },
+      {
+        "k": "note",
+        "s": "Mekanik tasarım, yapısal üretim ve gerçekleşen bütçe, ana FDR’nin ilgili disiplin bölümlerinde birleştirilmelidir. Bu belge tek başına bütün FDR kapsamını temsil etmez."
+      }
+    ],
+    [
+      {
+        "k": "h",
+        "s": "3.3 Aviyonik ve Yazılım"
+      },
+      {
+        "k": "sub",
+        "s": "3.3.1 Nihai Donanım ve Sistem Mimarisi"
+      },
+      {
+        "k": "p",
+        "s": "Sistem, uçuş kontrolü ile görev kararını farklı hesap birimlerinde yürütür. Pixhawk uçuş durumunu ve araç komutlarını yönetirken, İHA görev bilgisayarı kamera verisinden geçilebilir alanı belirler ve rota yayımlar. Yer kontrol istasyonu görüntü, telemetri ve hakem onayını birlikte izler. İKA yazılımı ise alınan rotayı, görev izinleri sağlandıktan sonra sürücü arayüzüne aktarır [3]."
+      },
+      {
+        "k": "architecture"
+      },
+      {
+        "k": "cap",
+        "s": "Şekil 3.3.1.1. Yazılım bileşenlerinin mantıksal bağlantıları. ACK, alındı onayıdır."
+      },
+      {
+        "k": "t",
+        "head": [
+          "Katman",
+          "Görevi",
+          "Doğrulama durumu"
+        ],
+        "rows": [
+          [
+            "İHA uçuş kontrolü",
+            "MAVLink telemetrisi, uçuş modu ve komut kabulü",
+            "Tezgâh kayıtları var; bütünleşik uçuş doğrulaması açık."
+          ],
+          [
+            "İHA görev bilgisayarı",
+            "Segmentasyon, ölçek, rota ve karar yayını",
+            "Orin Nano üzerinde çıkarım ölçüldü."
+          ],
+          [
+            "Yer kontrol istasyonu",
+            "Canlı görünüm, hakem onayı, komut ve olay kaydı",
+            "Yazılım testleri ve kuru koşum kanıtları var."
+          ],
+          [
+            "İKA görev yazılımı",
+            "Rota alımı, izin kilitleri, gezinim ve sürücü",
+            "MuJoCo/sahte sürücü doğrulaması var; fiziksel kabul açık."
+          ]
+        ],
+        "w": [
+          1.1,
+          1.8,
+          2
+        ]
+      },
+      {
+        "k": "p",
+        "s": "Final yarışma aracındaki sabit kanat düzeni ile görev test uçuşunda kullanılan çoklu rotor aynı araç değildir. Yazılımın FDA kipi, çoklu rotor görevinde İKA ve paraşüt komutlarını devre dışı bırakır."
+      }
+    ],
+    [
+      {
+        "k": "h",
+        "s": "3.3.1 Nihai mimari ve entegrasyon"
+      },
+      {
+        "k": "p",
+        "s": "DDR’de tanımlanan mimarinin FDR karşılığı, eldeki donanım ve çalışan yazılım üzerinden güncellenmiştir. Önceki tasarımda hedeflenen bir bileşen, yalnızca planlandığı için tamamlanmış sayılmaz. Özellikle İKA’nın alt kontrol katmanı ve fiziksel arayüzleri, uygulama ve kabul kanıtlarıyla ayrıca doğrulanmalıdır [2,3]."
+      },
+      {
+        "k": "t",
+        "head": [
+          "Konu",
+          "FDR karşılığı"
+        ],
+        "rows": [
+          [
+            "Görev bilgisayarı",
+            "6 Eylül ölçümünde Jetson Orin Nano Developer Kit 4 GB; JetPack 7.2.1 ve Python 3.12.3."
+          ],
+          [
+            "Algı modeli",
+            "YOLOv8m-seg, v36, 512 piksel; seçilen üretim arka ucu PyTorch."
+          ],
+          [
+            "Uçuş kontrol bağlantısı",
+            "Pixhawk bağlantısını tek süreç açar; diğer süreçlere telemetri çoğullanır."
+          ],
+          [
+            "Görev haberleşmesi",
+            "NAVITAS JSON çerçeveleri; MAVLink, uçuş kontrol arayüzünde kullanılır."
+          ],
+          [
+            "İKA arayüzü",
+            "Rota alıcısı ve gezinim katmanı, sürücü arayüzünden ayrılmıştır. Donanım arka ucu olmadan hareket başlatılmaz."
+          ]
+        ],
+        "w": [
+          1,
+          2.8
+        ]
+      },
+      {
+        "k": "sub",
+        "s": "3.3.2 Elektriksel Tasarım ve Kablolama"
+      },
+      {
+        "k": "p",
+        "s": "Yazılım arayüzünün kurulması, elektriksel bağlantının doğrulandığı anlamına gelmez. İHA ve İKA bağlantı şemaları kaynak raporda mevcuttur; İKA şeması DDR tasarımını gösterir ve ölçülmüş fiziksel hat sayısı sıfırdır. Sinyal/güç ayrımı, kablo kesiti ve uzunluğu, konektör kilitlemesi ve yük altındaki akım ölçümleri ana aviyonik bölümünde tamamlanmalıdır [3]."
+      },
+      {
+        "k": "t",
+        "head": [
+          "Entegrasyon adımı",
+          "Kabul yaklaşımı"
+        ],
+        "rows": [
+          [
+            "Bağlantı ve kimlik",
+            "Beklenen uçuş kontrolcüsü kimliği ve veri uçları doğrulanır."
+          ],
+          [
+            "Veri akışı",
+            "Konum ve iniş durumu akışı, güncellik sınırlarıyla birlikte denetlenir."
+          ],
+          [
+            "Komut yolu",
+            "Kabul onayı gerçek uçuş kontrolcüsünden alınır; iletişim ACK’ı ile karıştırılmaz."
+          ],
+          [
+            "Yük altında çalışma",
+            "Kamera, görev bilgisayarı ve haberleşme birlikte çalışırken güç ve süre ölçülür."
+          ]
+        ],
+        "w": [
+          1.1,
+          2.8
+        ]
+      },
+      {
+        "k": "note",
+        "s": "Tam yük akımı, gerilim düşümü ve batarya süresi henüz doğrulanmadığı için sayısal uygunluk sonucu verilmemiştir."
+      }
+    ],
+    [
+      {
+        "k": "h",
+        "s": "3.3.3 Görev İcra Simülasyonu"
+      },
+      {
+        "k": "sub",
+        "s": "Deney düzeni ve görev kapsamı"
+      },
+      {
+        "k": "p",
+        "s": "10 Eylül 2026 tarihli görev benzetimleri MuJoCo 3.13 ortamında yürütülmüştür. Amaç; algı, veri aktarımı ve İKA sürüş halkalarını aynı görev senaryosunda değerlendirmektir. İHA hareketi kinematik olarak tanımlanmış, İKA sürüşü fizik çözücüsüyle gerçekleştirilmiştir. Bu sonuçlar gerçek uçuş veya saha başarımı değildir [4]."
+      },
+      {
+        "k": "t",
+        "head": [
+          "Parametre",
+          "Deney tanımı"
+        ],
+        "rows": [
+          [
+            "Arena",
+            "50 × 50 m hedef tespit alanı; 2 × 2 m hedef bölge ve 30 × 30 m İHA iniş bölgesi."
+          ],
+          [
+            "Senaryo ailesi",
+            "5 harita × kolay, orta ve zor = 15 harita/seviye birleşimi."
+          ],
+          [
+            "Rota düzeni",
+            "Her birleşimde üç aday güzergâh; biri açık, ikisi bariyer/moloz ile kapalı."
+          ],
+          [
+            "Tarama",
+            "30 m yükseklikte nadir kamera; rota için mozaik ve üretim kare zinciri ayrı incelenir."
+          ],
+          [
+            "Başarı tanımı",
+            "Rota bulunması, HB içinde bitiş, engel temasının olmaması ve İKA sürüşünün 600 simülasyon saniyesini aşmaması."
+          ]
+        ],
+        "w": [
+          1,
+          3
+        ]
+      },
+      {
+        "k": "chain",
+        "labels": [
+          "Kinematik kalkış ve nadir tarama",
+          "Görüntüden rota üretimi veya NO_ROUTE",
+          "OPEN_ROUTE aktarımı ve alındı onayları",
+          "İniş kanıtı ve İKA hareket izni",
+          "Fizik tabanlı İKA sürüşü ve sonuç kaydı"
+        ]
+      },
+      {
+        "k": "cap",
+        "s": "Şekil 3.3.3.1. Benzetimde uygulanan görev sırası."
+      },
+      {
+        "k": "note",
+        "s": "Yer gerçeği rotası ile yapılan koşumlar sürüş halkasını sınar. Algı başarımı, üretim modeli veya üretim boru hattı kullanan koşumlardan değerlendirilir."
+      }
+    ],
+    [
+      {
+        "k": "h",
+        "s": "3.3.3 Simülasyon sonuçları"
+      },
+      {
+        "k": "p",
+        "s": "105 koşumun sonuçları aşağıda aynı kaynak ve kapsamla özetlenmiştir. Yer gerçeği rotasıyla başarı yüksek olmakla birlikte, üretim modelinden gelen rota zinciri önceden belirlenen kabul eşiğini karşılamamıştır. Başarılı sürüş örnekleri, bütün deney kümesinin sonucu yerine kullanılmamıştır [4]."
+      },
+      {
+        "k": "chart",
+        "rows": [
+          [
+            "Yer gerçeği rotası",
+            45,
+            45
+          ],
+          [
+            "Üretim modeli / mozaik",
+            9,
+            45
+          ],
+          [
+            "Üretim boru hattı",
+            0,
+            15
+          ]
+        ]
+      },
+      {
+        "k": "cap",
+        "s": "Şekil 3.3.3.2. Rota kaynağına göre görev başarımı; paydalar farklı deney kollarıdır."
+      },
+      {
+        "k": "t",
+        "head": [
+          "Ölçüt",
+          "Sonuç",
+          "Kabul durumu"
+        ],
+        "rows": [
+          [
+            "Rota tespiti / mozaik",
+            "6/15 doğru etiket",
+            "12/15 eşiğinin altında"
+          ],
+          [
+            "Rota tespiti / kare tabanlı",
+            "1/15 doğru etiket",
+            "12/15 eşiğinin altında"
+          ],
+          [
+            "İKA sürüşü / yer gerçeği",
+            "45/45; 15/15 harita",
+            "Geçti"
+          ],
+          [
+            "İKA sürüşü / üretim modeli",
+            "9/45; harita ölçütü 0/15",
+            "Başarısız"
+          ],
+          [
+            "İKA sürüşü / üretim boru hattı",
+            "0/15",
+            "Başarısız"
+          ]
+        ],
+        "w": [
+          1.5,
+          1.3,
+          1.3
+        ]
+      },
+      {
+        "k": "sub",
+        "s": "Görev süresi ve sistem tepkileri"
+      },
+      {
+        "k": "p",
+        "s": "Üretim modeli kolundaki dokuz başarılı koşumda görev süresi medyanı 104,9 simülasyon saniyesidir; aralık 100,7-125,8 saniyedir. İKA sürüş süresi medyanı 67,6 saniyedir. Bu süreler yalnız başarılı koşumları kapsar. Görüntü işleme hesap süresi simülasyon saatine eklenmediğinden gerçek görev süresi olarak yorumlanamaz."
+      },
+      {
+        "k": "p",
+        "s": "Yer gerçeği kolunda OPEN_ROUTE ve IKA_GO onayları 45/45 koşumda alınmıştır. Karar üretilemeyen koşumlarda NO_ROUTE yayımlanması, görevin başarılı olduğu anlamına gelmez."
+      }
+    ],
+    [
+      {
+        "k": "h",
+        "s": "3.3.3 CAD ve video kanıtı"
+      },
+      {
+        "k": "p",
+        "s": "İHA, İKA ve mancınık için CAD’den dışa aktarılmış paketler 13 Eylül itibarıyla mevcuttur. Gazebo Classic 11 ile önizlemeler alınmıştır. Ancak bu paketlerle tamamlanmış uçtan uca görev kaydı bulunmamaktadır. Aşağıdaki görsel, ayrı bir Gazebo ortam çalışmasının statik önizlemesidir [5]."
+      },
+      {
+        "k": "image",
+        "path": "results/gazebo_realism_20260910/sonra_genel.jpg",
+        "maxh": 250
+      },
+      {
+        "k": "cap",
+        "s": "Şekil 3.3.3.3. Gazebo zemin ve moloz adayı; 10 Eylül 2026. Tam görev başarımı kanıtı değildir."
+      },
+      {
+        "k": "t",
+        "head": [
+          "Konu",
+          "Mevcut durum ve sınır"
+        ],
+        "rows": [
+          [
+            "Araç fiziği",
+            "İKA ölçüleri, kütle merkezi ve atalet doğrulaması açık. 10 Eylül MuJoCo modelindeki 9,40 kg ile güncel URDF değerleri aynı koşum girdisi değildir."
+          ],
+          [
+            "Gazebo kaydı",
+            "13 Eylül rv38 kaydı tamamlanmamıştır. Model dosyası bulunamadığı için algı süreci sonlanmış; MP4 ve dolu hakem günlüğü oluşmamıştır."
+          ],
+          [
+            "MuJoCo videosu",
+            "177,88 s, 25 FPS, 1280 × 720; üç kamera ve durum göstergesi içeren üretim kaydı mevcuttur [6]."
+          ],
+          [
+            "Dosya ve bağlantı",
+            "BEKLENİYOR: v36 model dosyası ve özgün video dosyasının konumu henüz bilinmiyor. Video bağlantısı eklenememiştir."
+          ]
+        ],
+        "w": [
+          1,
+          3
+        ]
+      },
+      {
+        "k": "note",
+        "s": "Video üretim kaydı korunmuştur; bu çalışma kopyasında dosyanın bulunmaması, yeni izleme veya yeniden üretim yapılmış gibi raporlanmamıştır."
+      }
+    ],
+    [
+      {
+        "k": "h",
+        "s": "3.3.4 Görev Algoritması ve Yazılım Detayları"
+      },
+      {
+        "k": "sub",
+        "s": "3.3.4.1 Detaylı Algoritma Akışı"
+      },
+      {
+        "k": "p",
+        "s": "Üretim karar hattı kamera karesinden yayımlanan mesaja kadar ortak bir işlem sırası kullanır. Geçerli rota için yalnız segmentasyon çıktısı yeterli değildir; ölçek, açıklık, hedef ve karar güveni denetimlerinin de sağlanması gerekir [3]."
+      },
+      {
+        "k": "chain",
+        "labels": [
+          "Kamera karesi → dolgulama ve gerçek içerik alanı",
+          "v36 segmentasyonu → zemin ve engel maskeleri",
+          "İnce bariyer katmanı → ek engel çıkarımı",
+          "Güncel ölçek → geometrik geçilebilirlik denetimi",
+          "Açıklık ağırlıklı A* → hedefe giden yol",
+          "Güven eşiği → karar kararlılığı filtresi",
+          "OPEN_ROUTE veya NO_ROUTE → YKS ve İKA"
+        ]
+      },
+      {
+        "k": "cap",
+        "s": "Şekil 3.3.4.1. Üretim görüntü işleme ve karar akışı."
+      },
+      {
+        "k": "t",
+        "head": [
+          "Karar koşulu",
+          "Uygulanan davranış"
+        ],
+        "rows": [
+          [
+            "Ölçek yok veya bayat",
+            "Rota üretimi reddedilir."
+          ],
+          [
+            "Geçit/bağlantı yetersiz",
+            "Geçerli yol yok sonucu üretilir."
+          ],
+          [
+            "Rota güveni 0,20 altında",
+            "Yol ve waypoint yayını kaldırılır."
+          ],
+          [
+            "Karar değişimi",
+            "Yeni açık karar için üç ardışık kare aranır; NO_ROUTE geciktirilmez."
+          ]
+        ],
+        "w": [
+          1.3,
+          2.7
+        ]
+      },
+      {
+        "k": "p",
+        "s": "Filtreleme yayın kararlılığını düzenler; geçersiz bir alanı geçilebilir duruma dönüştürmez. Olumsuz kararın geciktirilmemesi, sistemin eski rotayla hareketi sürdürmesini önlemeye yöneliktir."
+      }
+    ],
+    [
+      {
+        "k": "h",
+        "s": "3.3.4.1 Geometri ve koordinat yönetimi"
+      },
+      {
+        "k": "p",
+        "s": "Rota planlama, piksel maskesini aracın hareket edebileceği geometrik alana dönüştürür. Engel sınırına yakın bir çizgi bulunması yeterli değildir; araç zarfı, segmentasyon belirsizliği ve takip hatası için gerekli açıklığın sağlanması gerekir. Bu nedenle geçilebilirlik, engel uzaklık dönüşümü üzerinden değerlendirilir [3]."
+      },
+      {
+        "k": "t",
+        "head": [
+          "Çerçeve",
+          "Tanım",
+          "Kullanım"
+        ],
+        "rows": [
+          [
+            "Kaynak görüntü",
+            "Kameranın ham piksel alanı",
+            "Sensör karesinin başlangıç koordinatları"
+          ],
+          [
+            "Kare tuval",
+            "Dolgulama sonrası kare görüntü",
+            "Model ve maske hesaplama alanı"
+          ],
+          [
+            "Gerçek içerik",
+            "Tuval içindeki dolgusuz dikdörtgen",
+            "Alan oranları, uç bantlar ve şerit kararı"
+          ],
+          [
+            "Yerel metre",
+            "Metre/piksel ile dönüştürülen yol",
+            "Rota aktarımı ve İKA yerleştirmesi"
+          ]
+        ],
+        "w": [
+          1,
+          1.5,
+          1.8
+        ]
+      },
+      {
+        "k": "sub",
+        "s": "Geçilebilirlik ve yol maliyeti"
+      },
+      {
+        "k": "p",
+        "s": "Gerekli açıklık yarıçapı; araç yarı genişliği, maske hata payı ve takip hata payının toplamıdır. Piksel cinsinden eşik, bu yarıçapın metre/piksel ölçeğine bölünmesiyle hesaplanır. Ölçek bilinmiyorsa güvenli bir fiziksel açıklık hesabı yapılamadığı için rota üretilmez."
+      },
+      {
+        "k": "p",
+        "s": "A* maliyeti, temel ilerleme maliyetine dar açıklıkları cezalandıran bir terim ekler. Böylece aynı hedefe giden adaylar arasında engel kenarına gereksiz yaklaşan yolların maliyeti artar. Hedef pedi görünür ve doğrulanmışsa yolun sonu bu hedef alanına bağlanır."
+      },
+      {
+        "k": "sub",
+        "s": "Maske değişmezi ve uygulama sınırı"
+      },
+      {
+        "k": "p",
+        "s": "Serbest alanın kaynağı segmentasyonun zemin katmanıdır. Nesne ve bariyer katmanları bu alandan yalnız çıkarma yapar. Sonraki bir işlem, çıkarılan alanı yeniden geçilebilir hâle getiremez. Bu kural, ince engellerin son işlem sırasında silinmesini önlemektedir."
+      },
+      {
+        "k": "p",
+        "s": "Mevcut yerel rota yerleştirmesinde ortak yön ve dünya çerçevesi eksiksiz doğrulanmış değildir. Kareye bağlı sol/orta/sağ etiketi ile sahadaki yönün karıştırılması, uçtan uca başarım açısından açık bir risktir. Bu sınırlama yazılım testlerinin geçmiş olmasıyla kapanmış sayılmaz."
+      }
+    ],
+    [
+      {
+        "k": "h",
+        "s": "3.3.4.1 Görev izinleri ve İKA davranışı"
+      },
+      {
+        "k": "p",
+        "s": "İKA hareketi, rota mesajının alınmasıyla tek başına başlamaz. Yarışma kipinde geçerli rota, doğrulanmış İHA inişi ve yer kontrol istasyonundan hareket izni birlikte gerekir. Hakem onayı, veri aktarımının ve göreve başlama koşullarının ayrı değerlendirilmesini sağlar [3]."
+      },
+      {
+        "k": "chain",
+        "labels": [
+          "Geçerli rota ve İKA alındı onayı",
+          "YKS üzerinde iki aşamalı hakem onayı",
+          "Pixhawk telemetrisiyle İHA inişinin doğrulanması",
+          "YKS’den IKA_GO ve alındı onayı",
+          "İKA gezinimi → HB varışı veya güvenli duruş"
+        ]
+      },
+      {
+        "k": "cap",
+        "s": "Şekil 3.3.4.2. Yarışma kipinde hareket izinlerinin sırası."
+      },
+      {
+        "k": "t",
+        "head": [
+          "Durum",
+          "Hareket davranışı"
+        ],
+        "rows": [
+          [
+            "Rota bekleniyor",
+            "Sürücüye hareket komutu verilmez."
+          ],
+          [
+            "Rota var, izinler eksik",
+            "Araç beklemede tutulur."
+          ],
+          [
+            "Rota ve izinler geçerli",
+            "Gezinim katmanı sürücüye hız komutu üretir."
+          ],
+          [
+            "Sürücü hatası veya geçersiz koşul",
+            "Hareket güvenli duruş yönünde kesilir; hata kaydedilir."
+          ],
+          [
+            "Hedefe varış",
+            "Son waypoint için daha dar durma toleransı uygulanır."
+          ]
+        ],
+        "w": [
+          1.2,
+          2.8
+        ]
+      },
+      {
+        "k": "p",
+        "s": "İniş yayını, aynı uçuş kontrolcüsünden gelen yerde olma durumu ve bir metrenin altındaki bağıl irtifanın üç ardışık eşleşmesine dayanır. Arayüzdeki manuel beyan bu koşulun yerine geçmez."
+      },
+      {
+        "k": "note",
+        "s": "FDA kipinde İKA ve paraşüt işlevleri görev dışında tutulur. Yarışma kipinin hareket izinleri bu ayrı görev kipine otomatik olarak taşınmaz."
+      }
+    ],
+    [
+      {
+        "k": "h",
+        "s": "3.3.4.2 Görüntü İşleme Başarımı"
+      },
+      {
+        "k": "sub",
+        "s": "Model künyesi ve gömülü bilgisayar ölçümü"
+      },
+      {
+        "k": "p",
+        "s": "Seçilen üretim modeli YOLOv8m-seg tabanlı v36’dır. Model kimliği, çözünürlük ve dosya özeti kayıt defterinden doğrulanır. Aynı dosya adına sahip farklı ağırlıkların veya kaynağı belirsiz türevlerin yüklenmesi kabul edilmez [3,7]."
+      },
+      {
+        "k": "t",
+        "head": [
+          "Özellik",
+          "Değer"
+        ],
+        "rows": [
+          [
+            "Model kimliği",
+            "navitas-seg-v36-512"
+          ],
+          [
+            "Mimari",
+            "YOLOv8m-seg; 27,2 milyon parametre"
+          ],
+          [
+            "Çıkarım boyutu",
+            "512 piksel"
+          ],
+          [
+            "Sınıflar",
+            "0: geçilebilir zemin; 1: engel"
+          ],
+          [
+            "Üretim arka ucu",
+            "PyTorch (.pt)"
+          ],
+          [
+            "Kayıt doğrulaması",
+            "Model ve türev SHA-256 eşlemesi"
+          ]
+        ],
+        "w": [
+          1.1,
+          2.9
+        ]
+      },
+      {
+        "k": "sub",
+        "s": "Jetson ölçümü"
+      },
+      {
+        "k": "t",
+        "head": [
+          "Arka uç",
+          "p50 FPS",
+          "p95 FPS",
+          "Sonuç"
+        ],
+        "rows": [
+          [
+            "PyTorch",
+            "1,35",
+            "1,06",
+            "0,61 FPS eşiğini geçti"
+          ],
+          [
+            "TensorRT FP16",
+            "1,58",
+            "1,33",
+            "Hız eşiğini geçti; karar denkliği başarısız"
+          ]
+        ],
+        "w": [
+          1.3,
+          0.7,
+          0.7,
+          1.8
+        ]
+      },
+      {
+        "k": "p",
+        "s": "6 Eylül ölçümü Jetson Orin Nano Developer Kit 4 GB üzerinde, 120 örnekle yapılmıştır. On dakikalık sürekli koşumda 900 örnek alınmış; GPU sıcaklığı en fazla 56,3 °C olmuştur. Kamera bağlı değildir ve değerlendirme ölçeksiz Katman-A kipini kullanır. Sonuç, tam kamera-görev zincirinin saha FPS’i olarak sunulmamaktadır [7]."
+      },
+      {
+        "k": "p",
+        "s": "TensorRT türevi derlenmiş olmasına rağmen karar denkliği kabulünü geçememiştir: 3/126 uyuşmazlık, izin verilen 5/260 oranını aşmaktadır. Bu nedenle daha yüksek hız, üretim arka ucunu değiştirmek için yeterli görülmemiş; PyTorch seçimi korunmuştur."
+      },
+      {
+        "k": "note",
+        "s": "ONNX GPU yürütümü aynı kartta hata vermiştir. Başka ortamda alınan CPU denklik sonucu, bu GPU yolunun kabul kanıtı değildir."
+      }
+    ],
+    [
+      {
+        "k": "h",
+        "s": "3.3.4.2 Doğruluk matrisi ve veri kapsamı"
+      },
+      {
+        "k": "p",
+        "s": "7 Eylül 2026’da v36 modeli, 29 adet 3840 × 2160 kırsal görüntüden oluşan test29 doğrulama kümesinde değerlendirilmiştir. Küme kırmızı H, gerçek moloz yığını ve fiziksel bariyer içeren yarışma arenasını temsil etmez. Aşağıdaki piksel sonuçları, üretim maske yoluna aittir [8]."
+      },
+      {
+        "k": "cap",
+        "s": "Tablo 3.3.4.1. Piksel karışıklık matrisi; sütunlar yer gerçeğini, satırlar tahmini gösterir."
+      },
+      {
+        "k": "t",
+        "head": [
+          "Tahmin / gerçek",
+          "Zemin",
+          "Engel",
+          "Etiketsiz"
+        ],
+        "rows": [
+          [
+            "Zemin",
+            "12.004.796",
+            "790.630",
+            "3.445.818"
+          ],
+          [
+            "Engel",
+            "3.080.875",
+            "92.405.877",
+            "11.819.510"
+          ],
+          [
+            "Tahmin yok",
+            "8.515.024",
+            "28.602.498",
+            "79.872.572"
+          ]
+        ],
+        "w": [
+          1.1,
+          1,
+          1,
+          1
+        ]
+      },
+      {
+        "k": "t",
+        "head": [
+          "Ölçüt",
+          "Zemin",
+          "Engel"
+        ],
+        "rows": [
+          [
+            "IoU / etiketli payda",
+            "0,4922",
+            "0,7400"
+          ],
+          [
+            "IoU / tüm payda",
+            "0,4313",
+            "0,6760"
+          ],
+          [
+            "Gerçek sınıf içinde doğru pay",
+            "0,5087",
+            "0,7587"
+          ]
+        ],
+        "w": [
+          2,
+          1,
+          1
+        ]
+      },
+      {
+        "k": "sub",
+        "s": "Sonuçların yorumu"
+      },
+      {
+        "k": "p",
+        "s": "Etiketli piksellerde toplam doğruluk 0,7181’dir. Görüntülerin %39,55’i etiketsiz olduğundan yalnız tek bir doğruluk oranı vermek yanıltıcı olabilir. Bu nedenle etiketli payda ve tüm payda için IoU değerleri birlikte sunulmuştur. Etiketsiz bölgeler hakkındaki tahminlerin değerlendirmeye katılıp katılmaması sonucu değiştirmektedir."
+      },
+      {
+        "k": "p",
+        "s": "Zemin IoU’sunun engel IoU’sundan düşük olması, kullanılabilir alanın bir bölümünün kaybedilebildiğini göstermektedir. Rota güvenliği ile alanı yeterince kullanabilme birlikte değerlendirilmelidir. Piksel doğruluğu, güzergâh kararının doğruluğu veya görevin tamamlanma oranıyla aynı ölçüt değildir."
+      },
+      {
+        "k": "sub",
+        "s": "Benzer koşullarda doğrulama sınırı"
+      },
+      {
+        "k": "p",
+        "s": "Gerçek görüntüler farklı ışık ve gölge kesitlerinde ayrı saha kabul kümelerine bölünmemiştir. Sentetik ışık/gölge denemeleri bulunsa da bunlar gerçek arena kanıtının yerine geçmez. Yeni arena görüntüsü sağlandığında veri kümesi ve karar ölçütleri ayrı raporlanmalıdır."
+      }
+    ],
+    [
+      {
+        "k": "h",
+        "s": "3.3.4.2 Karar zinciri kabul sonuçları"
+      },
+      {
+        "k": "p",
+        "s": "1 Eylül 2026 tarihli üretim karar zinciri değerlendirmesi, sentetik arena kümesinde on kabul ölçütünü karşılamıştır. Her ölçütün paydası farklıdır; toplam kare sayısı bütün satırlara ortak başarı paydası olarak uygulanamaz [9]."
+      },
+      {
+        "k": "t",
+        "head": [
+          "Ölçüt",
+          "Kayıtlı sonuç",
+          "Eşik"
+        ],
+        "rows": [
+          [
+            "K0 / boş maske",
+            "Ham 0/67; kompozit 0/393",
+            "Boş maske yok"
+          ],
+          [
+            "K1 / rota üretimi",
+            "256/260",
+            "En az 230/260"
+          ],
+          [
+            "K2 / moloz teması",
+            "6/256 = %2,34",
+            "En fazla %15"
+          ],
+          [
+            "K3 / ağır temas",
+            "0/256",
+            "En fazla %3"
+          ],
+          [
+            "K4 / arena dışı",
+            "2/256 = %0,78",
+            "En fazla %5"
+          ],
+          [
+            "K5 / bariyer kesişimi",
+            "0/178; 0 piksel",
+            "0 piksel"
+          ],
+          [
+            "K5A / açılı bariyer",
+            "0/176; 0 piksel",
+            "K5 ile aynı"
+          ],
+          [
+            "K6 / yanlış güzergâh",
+            "2/256 = %0,78",
+            "En fazla %5"
+          ],
+          [
+            "K7 / yayımlanan şerit",
+            "84/85 = %98,82",
+            "En az %95; payda en az 80/88"
+          ],
+          [
+            "K8 / tek figür",
+            "Şüpheli zemin reddi yok",
+            "Belirli ret kodunun oluşmaması"
+          ]
+        ],
+        "w": [
+          1.2,
+          1.5,
+          1.5
+        ]
+      },
+      {
+        "k": "cap",
+        "s": "Tablo 3.3.4.2. Sentetik kabul sonuçları; on ölçütün kayıtlı sonucu geçti."
+      },
+      {
+        "k": "p",
+        "s": "K8 yalnız tek bir yapay figür üzerinde belirli hata durumunu sınar. Bu satırın geçmesi, figürde doğru rota bulunduğu anlamına gelmez. Benzer biçimde bariyer ölçütleri yalnız ölçülebilir alt kümeyi kapsar."
+      },
+      {
+        "k": "p",
+        "s": "Bu sonuçlar, 10 Eylül MuJoCo görev deneyindeki 9/45 ve 0/15 sonuçlarını geçersiz kılmaz. Veri üretimi, kamera geometrisi ve görev zinciri farklıdır. Bileşen kabulü ile uçtan uca görevin ayrı ölçülmesi, başarım kaybının hangi aşamada oluştuğunu görünür kılmaktadır."
+      },
+      {
+        "k": "note",
+        "s": "Model seçimi sırasında geçilemeyen iki ön kayıt ölçütü ayrıca kayıtlıdır. Mevcut kabul tablosu, geçmiş seçim kararının bütün eşikleri sağladığı iddiası olarak kullanılmamıştır [3]."
+      }
+    ],
+    [
+      {
+        "k": "h",
+        "s": "3.3.4.3 Haberleşme Paket Yapısı"
+      },
+      {
+        "k": "p",
+        "s": "Görev mesajları, satır sonuyla ayrılan UTF-8 JSON çerçeveleri olarak taşınır. Uçuş kontrolcüsüyle haberleşmede MAVLink 2 kullanılır. Bu iki protokolün görevleri farklıdır: NAVITAS çerçevesi görev kararı ve uygulama onayını taşırken MAVLink, uçuş kontrolcüsünün telemetri ve komut arayüzünü sağlar [3]."
+      },
+      {
+        "k": "t",
+        "head": [
+          "Mesaj",
+          "Temel içerik",
+          "Amaç"
+        ],
+        "rows": [
+          [
+            "OPEN_ROUTE",
+            "road, label, conf, ref_xy, waypoints",
+            "Açık güzergâhın ve yerel rota noktalarının aktarımı"
+          ],
+          [
+            "NO_ROUTE",
+            "sebep, isteğe bağlı detay",
+            "Geçerli rota bulunmadığının bildirilmesi"
+          ],
+          [
+            "HEARTBEAT",
+            "node, mevcut telemetri ve karar_yas",
+            "Düğüm canlılığı ve karar güncelliği"
+          ],
+          [
+            "ACK",
+            "ref, node; gerektiğinde ref_tip, ref_cmd, sonuc",
+            "İlgili mesaj/komutun alındı veya kabul bilgisi"
+          ],
+          [
+            "CMD",
+            "cmd, hedef; gerektiğinde oturum",
+            "Araç komutu ve oturum bağı"
+          ],
+          [
+            "IHA_LANDED",
+            "İHA düğümü ve sıra numarası",
+            "Doğrulanmış iniş durumunun yayını"
+          ]
+        ],
+        "w": [
+          1,
+          1.4,
+          1.8
+        ]
+      },
+      {
+        "k": "p",
+        "s": "Çerçevelerin ortak alanları protokol sürümü, mesaj türü, sıra numarası ve gönderici zamanıdır. Alıcı, onayı yalnız sıra numarasına bakarak değil, ilgili mesaj veya komut türüyle eşleştirir. Eski oturumdan kalan veya bayat mesajların geçerli komut olarak işlenmesi engellenir."
+      },
+      {
+        "k": "sub",
+        "s": "Akış ve hata işleme"
+      },
+      {
+        "k": "p",
+        "s": "Alıcı, parçalı gelen bayt akışından tam satırları ayırır. Bozuk JSON satırı atılır; süreç bir sonraki geçerli çerçeveyi okuyabilir. Tampon 64 KiB ile sınırlıdır ve sınır aşımında yeniden eşzamanlama uygulanır. Uygulama protokolünde ayrıca CRC bulunmamaktadır; fiziksel RF hata davranışı saha testinde değerlendirilmelidir."
+      },
+      {
+        "k": "note",
+        "s": "HEARTBEAT alınması tek başına algının güncel olduğunu göstermez. karar_yas alanı yoksa güncellik bilinmiyor kabul edilir; son karar koşulsuz taze sayılmaz."
+      }
+    ],
+    [
+      {
+        "k": "h",
+        "s": "3.3.4.3 Veri hızı ve gecikme"
+      },
+      {
+        "k": "p",
+        "s": "Haberleşme ölçümleri kullanılan ortamla birlikte sunulmuştur. Yazılım soketi veya seri köprü üzerinden ölçülen gecikme, antenli SiK RF hattının menzil ve parazit altındaki başarımı değildir [10]."
+      },
+      {
+        "k": "t",
+        "head": [
+          "Deney",
+          "p50 RTT",
+          "p95 RTT",
+          "Kapsam"
+        ],
+        "rows": [
+          [
+            "IKA_GO / UDP",
+            "0,27 ms",
+            "0,38 ms",
+            "200/200 ACK; loopback"
+          ],
+          [
+            "TCP-seri köprü",
+            "1,33 ms",
+            "1,83 ms",
+            "Yazılım köprüsü"
+          ]
+        ],
+        "w": [
+          1.2,
+          0.8,
+          0.8,
+          1.5
+        ]
+      },
+      {
+        "k": "p",
+        "s": "12 Eylül gerçek UDP görev yayını deneyinde yalnız YKS ucunda 10,146 saniyede 8.847 bayt alınmıştır. Ortalama 871,96 B/s, 57.600 baud 8N1 nominal kapasitenin %15,1’ine karşılık gelir. Deney tipik üç waypoint’li açık/kapalı karar dönüşümünü kullanır; ortak RF ortamının üst sınırını göstermez [11]."
+      },
+      {
+        "k": "t",
+        "head": [
+          "Çerçeve örneği",
+          "En büyük ölçülen boyut"
+        ],
+        "rows": [
+          [
+            "OPEN_ROUTE / 64 waypoint",
+            "1.344 bayt"
+          ],
+          [
+            "HEARTBEAT / telemetri dolu",
+            "291 bayt"
+          ],
+          [
+            "ACK / ek alanlar dolu",
+            "129 bayt"
+          ],
+          [
+            "CMD / uzun oturum alanı",
+            "155 bayt"
+          ]
+        ],
+        "w": [
+          2,
+          1.2
+        ]
+      },
+      {
+        "k": "sub",
+        "s": "Komut kabulü ve tekrar"
+      },
+      {
+        "k": "p",
+        "s": "ARM, DISARM, RTL ve LAND gibi kritik komutlarda uygulama onayı, uçuş kontrolcüsünün COMMAND_ACK kabul yanıtına bağlanır. Bir ağ paketinin alınmış olması, fiziksel araç komutunun uygulandığı şeklinde yorumlanmaz. IKA_GO için ACK’li tekrar kullanılması, tek paket kaybıyla hareket izninin kaybolmasını önler."
+      },
+      {
+        "k": "p",
+        "s": "Ortak RF ortamındaki toplam düğüm trafiği, uzun waypoint listeleri ve hata düzeltme ayarları için üst yük sınırı hâlâ değerlendirme konusudur. RF menzil, kayıp ve gecikme ölçümleri tamamlanmadan yazılım köprüsü sonuçlarından saha uygunluğu çıkarılmamıştır."
+      }
+    ],
+    [
+      {
+        "k": "h",
+        "s": "4 Test Faaliyetleri"
+      },
+      {
+        "k": "p",
+        "s": "Doğrulama kayıtları; bileşen testleri, gömülü bilgisayar ölçümleri, görev benzetimi ve fiziksel saha testleri olarak ayrılmıştır. Yazılımın doğru davranması ile sensör, kablo, radyo ve aracın birlikte doğru çalışması farklı kabul düzeyleridir [3,7,10,12]."
+      },
+      {
+        "k": "t",
+        "head": [
+          "Test grubu",
+          "Mevcut kanıt",
+          "Açık sınır"
+        ],
+        "rows": [
+          [
+            "Algı ve rota",
+            "Sentetik kabul ölçütleri ve test29 matrisi",
+            "Gerçek arena doğrulaması yok."
+          ],
+          [
+            "Gömülü çıkarım",
+            "Orin Nano FPS ve sürekli çalışma ölçümü",
+            "Kamera/görev zinciri birlikte ölçülmedi."
+          ],
+          [
+            "Görev simülasyonu",
+            "105 MuJoCo koşumu; ayrı rota kaynakları",
+            "Üretim modeli ve boru hattı eşiği geçemedi."
+          ],
+          [
+            "Haberleşme",
+            "UDP ve TCP-seri köprü ölçümleri",
+            "Antenli RF menzil ve yük testi açık."
+          ],
+          [
+            "İKA sürücü arayüzü",
+            "Sahte sürücü kabulü ve MuJoCo sürüşü",
+            "Gerçek araç/sürücü kabulü açık."
+          ],
+          [
+            "Pixhawk yer testleri",
+            "Parametre, kalibrasyon ve motor kayıtları",
+            "Son parametre/kalibrasyon dökümü ve bütünleşik test açık."
+          ],
+          [
+            "Arıza emniyeti",
+            "6 Eylül RC kaybı tezgâh denemesi",
+            "Başarısız; alıcı son değeri tutuyor. Saha RTL/Land doğrulaması yok."
+          ]
+        ],
+        "w": [
+          1.1,
+          1.7,
+          1.8
+        ]
+      },
+      {
+        "k": "sub",
+        "s": "Tamamlanacak doğrulama sırası"
+      },
+      {
+        "k": "p",
+        "s": "İlk aşamada donanım kimliği, kablo bağlantıları ve güncel parametre dökümü doğrulanmalıdır. Ardından kamera, Pixhawk, görev bilgisayarı ve telsiz birlikte çalıştırılarak veri güncelliği ve komut kabulü ölçülmelidir. İKA sürücü kabulü, görev izinleri ve duruş davranışı gerçek araç üzerinde ayrıca sınanmalıdır."
+      },
+      {
+        "k": "p",
+        "s": "Son aşamada, geçerli emniyet koşulları sağlandıktan sonra bütünleşik görev ve menzil denemeleri yapılmalıdır. Her koşum, kullanılan konfigürasyon, zaman kaydı ve sonuçla birlikte saklanmalı; başarısız ve yarım koşumlar başarılı örneklerle değiştirilmemelidir."
+      }
+    ],
+    [
+      {
+        "k": "h",
+        "s": "6 Gereksinim İzlenebilirliği ve Değerlendirme"
+      },
+      {
+        "k": "p",
+        "s": "Aşağıdaki tablo yazılım kapsamındaki on seçili FDR gereksinimini eşler. “Karşılandı”, ilgili çıktı türünün mevcut olduğunu belirtir; bütün aracın uçuşa hazır olduğu anlamına gelmez. Bu alt küme, ana FDR’nin tüm gereksinim sayımı değildir [1,3]."
+      },
+      {
+        "k": "t",
+        "head": [
+          "Gereksinim",
+          "Doğrulama ve kanıt",
+          "Durum"
+        ],
+        "rows": [
+          [
+            "Y-3.3.1-M01 / bağlantı şemaları",
+            "İHA/İKA şemaları var; İKA fiziksel hat doğrulaması açık.",
+            "Kısmi"
+          ],
+          [
+            "Y-3.3.2-M01 / kablaj hesabı",
+            "Kesit, uzunluk ve ölçülen akıma bağlı nihai hesap eksik.",
+            "Bekliyor"
+          ],
+          [
+            "Y-3.3.3-M01 / CAD ile görev",
+            "MuJoCo görev zinciri var; gelen CAD ile görev kanıtı eksik.",
+            "Kısmi"
+          ],
+          [
+            "Y-3.3.3-M02 / simülasyon verileri",
+            "Başarı oranları, süreler ve sistem tepkileri kayıtlı.",
+            "Karşılandı"
+          ],
+          [
+            "Y-3.3.3-M03 / video bağlantısı",
+            "Video üretim kaydı var; özgün dosya erişimi ve bağlantı açık.",
+            "Kısmi"
+          ],
+          [
+            "Y-3.3.4-M01 / algoritma akışı",
+            "Kaynak raporda beş ayrıntılı akış; bu belgede temel karar akışları.",
+            "Karşılandı"
+          ],
+          [
+            "Y-3.3.4-M02 / algı başarımı",
+            "test29 matrisi ve sentetik kabul var; gerçek arena yok.",
+            "Kısmi"
+          ],
+          [
+            "Y-3.3.4-M03 / haberleşme",
+            "Paket yapısı, veri hızı ve köprü gecikmesi var; RF testi açık.",
+            "Kısmi"
+          ],
+          [
+            "Y-4-M07 / görev simülasyonu",
+            "Görev verileri mevcut; CAD ve video bağlantısı açık.",
+            "Kısmi"
+          ],
+          [
+            "Y-4-M12 / arıza emniyeti",
+            "Tezgâh sonucu başarısız; istenen saha doğrulaması yok.",
+            "Bekliyor"
+          ]
+        ],
+        "w": [
+          1.5,
+          2.5,
+          0.85
+        ]
+      },
+      {
+        "k": "cap",
+        "s": "Tablo 6.1. Yazılım kapsamındaki seçili gereksinimlerin uygunluk özeti."
+      },
+      {
+        "k": "t",
+        "head": [
+          "Karşılandı",
+          "Kısmi",
+          "Bekliyor",
+          "Toplam"
+        ],
+        "rows": [
+          [
+            "2",
+            "6",
+            "2",
+            "10"
+          ]
+        ],
+        "w": [
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      {
+        "k": "p",
+        "s": "Doğrulama sonuçları tasarım kararlarını doğrudan etkilemiştir: TensorRT hız üstünlüğüne rağmen karar denkliği sağlanmadığından PyTorch korunmuş; ölçek ve veri güncelliği belirsizken rota yayını sınırlandırılmıştır."
+      }
+    ],
+    [
+      {
+        "k": "h",
+        "s": "7 Açık konular ve iyileştirme planı"
+      },
+      {
+        "k": "p",
+        "s": "Kalan çalışmalar, rapor metnindeki eksikliklerle sınırlı değildir. Bazı başlıklar dosya erişimi, bazıları fiziksel ölçüm ve bazıları da mimari doğrulama gerektirir. Aşağıdaki koşullar tamamlanmadan ilgili maddeler kapatılmamalıdır."
+      },
+      {
+        "k": "t",
+        "head": [
+          "Öncelik",
+          "Açık konu",
+          "Kapanma koşulu"
+        ],
+        "rows": [
+          [
+            "1",
+            "Üretim algı zincirinin görev başarımı",
+            "Kamera geometrisi, hedef görünürlüğü ve koordinat bağlamını doğrulayan tekrar deneyleri; aynı ön kayıt eşikleri."
+          ],
+          [
+            "2",
+            "İKA fizik künyesi",
+            "Nihai kütle kaynağı, teker çapı/iz genişliği ve CAD koordinat/atalet doğrulaması; ardından sürüş deneyi."
+          ],
+          [
+            "3",
+            "Video ve model dosyası",
+            "v36 ağırlıkları ve özgün MP4 konumu belirlenmeli; dosya özeti doğrulanmalı ve erişilebilir video bağlantısı eklenmeli."
+          ],
+          [
+            "4",
+            "Gerçek haberleşme",
+            "Radyo ayarları, menzil, paket kaybı, gecikme ve ortak ortam yük ölçümü."
+          ],
+          [
+            "5",
+            "Fiziksel görev emniyeti",
+            "RC kaybı davranışının düzeltilmesi; iniş, hareket izni ve acil durumların gerçek sistemle doğrulanması."
+          ],
+          [
+            "6",
+            "Gerçek arena dağılımı",
+            "Yarışma koşullarını temsil eden görüntülerle algı ve karar zincirinin bağımsız ölçümü."
+          ]
+        ],
+        "w": [
+          0.45,
+          1.3,
+          2.7
+        ]
+      },
+      {
+        "k": "sub",
+        "s": "Benzetim ve rapor güncellemesi"
+      },
+      {
+        "k": "p",
+        "s": "Model ve video dosyalarının konumu için durum “bekleniyor” olarak korunmuştur. Yeni Gazebo çalışmasında kolay seviye kaydı incelendikten sonra orta ve zor seviyeye geçilmelidir. Ortamın görsel kalitesi, fiziksel temas davranışı ve görev sonucu ayrı değerlendirilmelidir."
+      },
+      {
+        "k": "p",
+        "s": "Bu rapordaki geçmiş ölçümler yeniden koşulmuş gibi güncellenmemiştir. Yeni kanıt geldiğinde önce kaynak kayıt doğrulanmalı, ardından etkilenen tablo, şekil ve gereksinim durumu birlikte değiştirilmelidir."
+      }
+    ],
+    [
+      {
+        "k": "h",
+        "s": "Kaynaklar"
+      },
+      {
+        "k": "note",
+        "s": "[1] TEKNOFEST. İleri Otonom Sistemler Tasarım ve Operasyon Yarışması, Final Değerlendirme Raporu Hazırlama Yönergesi. Bölüm 3.3, 4 ve 6. Proje arşivi: FDR_2_qNiVF.pdf."
+      },
+      {
+        "k": "note",
+        "s": "[2] NAVITAS. DDR 3.3.5 Yazılım Mimarisi ve Görüntü İşleme. Kullanıcı tarafından sağlanan 13 Eylül 2026 arşivindeki MERGED_duzeltmeler sürümü. Bu belgede biçim ve bölüm anlatımı referansı olarak kullanılmıştır."
+      },
+      {
+        "k": "note",
+        "s": "[3] NAVITAS. FDR Bölüm 3 Sistem Spesifikasyonları, Bölüm 4 Test Faaliyetleri ve Bölüm 6 Gereksinim İzlenebilirliği. 14 Eylül 2026 çalışma kaydı; modül ve mesaj sözleşmeleri CONTRACTS.md ile birlikte değerlendirilmiştir."
+      },
+      {
+        "k": "note",
+        "s": "[4] NAVITAS. T214-A MuJoCo görev deneyleri. 10 Eylül 2026, 105 koşum. Kaynak: results/fdr_sprint_20260910/H1/README_T214A.md ve ilişkili koşum JSON kayıtları."
+      },
+      {
+        "k": "note",
+        "s": "[5] NAVITAS. Gazebo gerçekçilik adayı, 10 Eylül 2026; İHA/İKA/mancınık CAD önizlemeleri, 13 Eylül 2026. Kaynak: results/gazebo_realism_20260910 ve results/gazebo_model_onizleme_20260913."
+      },
+      {
+        "k": "note",
+        "s": "[6] NAVITAS. T214-B görev simülasyonu video üretim kaydı. 10 Eylül 2026. Kaynak: results/fdr_sprint_20260910/video/OKUBENI.md ve video_ozeti.json. Video dosyasına erişim beklenmektedir."
+      },
+      {
+        "k": "note",
+        "s": "[7] NAVITAS. Jetson Orin Nano FPS, sürekli çalışma ve karar denkliği ölçümleri. 6 Eylül 2026. Kaynak: results/jetson_20260906; kısa ve 10 dakika koşum özetleri, engine_karar_denkligi.json."
+      },
+      {
+        "k": "note",
+        "s": "[8] NAVITAS. test29 piksel ve nesne düzeyi karışıklık matrisi. 7 Eylül 2026. Kaynak: results/gece_20260907/karisiklik/piksel_karisiklik_test29.json ve .md."
+      },
+      {
+        "k": "note",
+        "s": "[9] NAVITAS. T150 v36 üretim karar zinciri kabul değerlendirmesi. 1 Eylül 2026. Kaynak: scripts/olcum/results/t63/t150_baglama_v36_kabul_verdikt.json."
+      },
+      {
+        "k": "note",
+        "s": "[10] NAVITAS. T216 haberleşme gecikme ve ACK deneyleri. 10 Eylül 2026. Kaynak: results/fdr_sprint_20260910/H2/ozet.json."
+      },
+      {
+        "k": "note",
+        "s": "[11] NAVITAS. T243 paket boyutu ve gerçek UDP görev veri hızı ölçümü. 12 Eylül 2026. Kaynak: FDR Bölüm 3.3.4.3 ve bağlı ölçüm kaydı."
+      },
+      {
+        "k": "note",
+        "s": "[12] NAVITAS. Pixhawk saha ve tezgâh kayıtları. 6 Eylül 2026. Parametre dökümü: config/pixhawk/arducopter_fda_20260906.param; ilgili kalibrasyon, RC kaybı ve motor test kayıtları."
+      },
+      {
+        "k": "sub",
+        "s": "Kanıt kullanım ilkesi"
+      },
+      {
+        "k": "p",
+        "s": "Kaynaklar, kayıtlı sonuçları ve deney koşullarını tanımlar. Bu belgenin hazırlanması sırasında yeni uçuş, RF saha deneyi veya görev simülasyonu yapılmamıştır. İlgili veri kümesi, payda ve ölçüm ortamı her sonuçla birlikte korunmuştur."
+      },
+      {
+        "k": "note",
+        "s": "Dizgi: DDR örneğindeki Calibri ailesine metrik uyumlu Carlito, 11 punto gövde; A4, 25 mm yan boşluk; numaralı tablolar/şekiller ve her sayfada sınıflandırma ile sayfa bilgisi."
+      }
+    ]
+  ]
+}

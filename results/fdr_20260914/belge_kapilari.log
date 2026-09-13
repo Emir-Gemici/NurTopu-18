@@ -1,0 +1,54 @@
+======================================================================
+ERROR: test_fdr_t244_ic_celiski (unittest.loader._FailedTest.test_fdr_t244_ic_celiski)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_fdr_t244_ic_celiski
+Traceback (most recent call last):
+  File "/usr/lib64/python3.14/unittest/loader.py", line 141, in loadTestsFromName
+    module = __import__(module_name)
+ModuleNotFoundError: No module named 'tests.test_fdr_t244_ic_celiski'
+
+
+======================================================================
+ERROR: test_fdr_sarkan_atif_kapisi (unittest.loader._FailedTest.test_fdr_sarkan_atif_kapisi)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_fdr_sarkan_atif_kapisi
+Traceback (most recent call last):
+  File "/usr/lib64/python3.14/unittest/loader.py", line 141, in loadTestsFromName
+    module = __import__(module_name)
+ModuleNotFoundError: No module named 'tests.test_fdr_sarkan_atif_kapisi'
+
+
+======================================================================
+ERROR: test_gece_sekiller (unittest.loader._FailedTest.test_gece_sekiller)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_gece_sekiller
+Traceback (most recent call last):
+  File "/usr/lib64/python3.14/unittest/loader.py", line 141, in loadTestsFromName
+    module = __import__(module_name)
+ModuleNotFoundError: No module named 'tests.test_gece_sekiller'
+
+
+======================================================================
+ERROR: test_fdr_takvim_kapisi (unittest.loader._FailedTest.test_fdr_takvim_kapisi)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_fdr_takvim_kapisi
+Traceback (most recent call last):
+  File "/usr/lib64/python3.14/unittest/loader.py", line 141, in loadTestsFromName
+    module = __import__(module_name)
+ModuleNotFoundError: No module named 'tests.test_fdr_takvim_kapisi'
+
+
+======================================================================
+ERROR: test_fdr_bolum4_6eylul_kaniti (unittest.loader._FailedTest.test_fdr_bolum4_6eylul_kaniti)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_fdr_bolum4_6eylul_kaniti
+Traceback (most recent call last):
+  File "/usr/lib64/python3.14/unittest/loader.py", line 141, in loadTestsFromName
+    module = __import__(module_name)
+ModuleNotFoundError: No module named 'tests.test_fdr_bolum4_6eylul_kaniti'
+
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.000s
+
+FAILED (errors=5)

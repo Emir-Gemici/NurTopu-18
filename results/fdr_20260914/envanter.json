@@ -1,0 +1,94 @@
+{
+  "tarih": "2026-09-14",
+  "yontem": "Disk varlığı, SHA-256 ve URDF XML okuması; fizik veya yeni görev koşumu değildir.",
+  "dosyalar": [
+    {
+      "yol": "FDR_UAV_gazebo-2.SLDASM/urdf/FDR_UAV_gazebo-2.SLDASM.urdf",
+      "var": true,
+      "bayt": 9789,
+      "sha256": "ba27b90229b99b54d394642297697b5e7b72cbe94fcb9fc9950699c16fb05a83",
+      "link_sayisi": 8,
+      "yazili_kutle_kg": 4.018199
+    },
+    {
+      "yol": "IKA_GAZEBO_MODEL/urdf/IKA_GAZEBO_MODEL.urdf",
+      "var": true,
+      "bayt": 8208,
+      "sha256": "9fb74493816965aea4a8dfddb2f070c69ecbb9e01b751357732016c5fd809c7f",
+      "link_sayisi": 6,
+      "yazili_kutle_kg": 7.5598
+    },
+    {
+      "yol": "mancinik_gazebo_model/urdf/mancinik_gazebo_model.urdf",
+      "var": true,
+      "bayt": 3602,
+      "sha256": "04cfd9b9f870691c50dfafe19d61b1dd5d38f0bb9bbb639b3f20cf8e703ae99a",
+      "link_sayisi": 3,
+      "yazili_kutle_kg": 14.192952
+    },
+    {
+      "yol": "results/gazebo_model_onizleme_20260913/RAPOR.md",
+      "var": true,
+      "bayt": 3819,
+      "sha256": "304880a8f109a1ce9a2fcb959006cefe66136ab21af29e80726725ea738bab12"
+    },
+    {
+      "yol": "results/gazebo_realism_20260910/RAPOR.md",
+      "var": true,
+      "bayt": 7150,
+      "sha256": "75442fb0d935def81083a8f4b88a90d7b66d35087aae14c4b868d9e29f79b1a5"
+    },
+    {
+      "yol": "results/fdr_sprint_20260910/H1/README_T214A.md",
+      "var": true,
+      "bayt": 34256,
+      "sha256": "68f0dab5e9dc19e461fde19a2f11dc365c4580250fafe966f1999c3e43dc252d"
+    },
+    {
+      "yol": "results/fdr_sprint_20260910/video/OKUBENI.md",
+      "var": true,
+      "bayt": 6718,
+      "sha256": "8b5b21f8f5f63cb448f5f3afcffc76ff2f49263a2a19f3eac873385e5cc10c1c"
+    },
+    {
+      "yol": "results/fdr_sprint_20260910/video/video_ozeti.json",
+      "var": true,
+      "bayt": 13370,
+      "sha256": "01501b903f5f8ce046ab6ce13d1cd895b27d19ccd105ab5e4b675fa8e1e1fa13"
+    },
+    {
+      "yol": "results/fdr_sprint_20260910/video/navitas_sim_gorev_20260910.mp4",
+      "var": false
+    },
+    {
+      "yol": "models/navitas_seg_v36_best.pt",
+      "var": false
+    },
+    {
+      "yol": "simulation/recordings/rv38/iha_haritala.log",
+      "var": true,
+      "bayt": 3043,
+      "sha256": "cff49e2d3855a02a977088c776739e1add0ee265ed3d000fe32af5e94bef504e"
+    },
+    {
+      "yol": "simulation/recordings/rv38/hakem_log.txt",
+      "var": true,
+      "bayt": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "rv38_seviyeler": {
+    "kolay": [
+      "iha_scan_kolay/SCAN_DONE",
+      "iha_scan_kolay/meta.txt"
+    ],
+    "orta": [
+      "iha_scan_orta/SCAN_DONE",
+      "iha_scan_orta/meta.txt"
+    ],
+    "zor": [
+      "iha_scan_zor/meta.txt"
+    ]
+  },
+  "rv38_mp4": []
+}

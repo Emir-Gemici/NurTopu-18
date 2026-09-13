@@ -8,6 +8,8 @@
 
 ---
 
+**14 Eylül çalışma listesi:** [TODO_20260914.md](TODO_20260914.md) · kanıt eşlemesi: `results/fdr_20260914/KANIT_ESLEMESI.md`. Eski koşum tarihleri ve sonuçları korunur; yeni CAD/önizleme durumu §3.3.3’te ayrıdır.
+
 ## 📌 TAKIM ARKADAŞLARI — BURADAN BAŞLA
 
 Bu klasör ortak sürücüde paylaşıldı. Sırayla üç şey yap:
