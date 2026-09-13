@@ -9736,3 +9736,13 @@ _(henüz yok)_
 - [ ] **T251 — 🔴 `test_sim_mujoco_arena.py` süreç genelinde geri alınamaz iz bırakıyor** (D-467) · MuJoCo GL bağlamı DPI farkındalığını 0→2 yapıyor, `winfo_screenwidth()` 1707→2560; kendisinden sonra koşan her Tk/ekran-boyutu bağımlı testi etkiliyor · çözüm: izi ayrı sürece al ya da etkilenen testler ekrandan türetmeyi bıraksın · **YÜKSEK** (süit güvenilirliği)
 - [ ] **T252 — Öteki Tk testlerinin ekran boyutu bağımlılığı ÖLÇÜLMEDİ** (D-467) · H1, H6 ve benzerleri; sabit uykuları kaldırıldı ama boyut bağımlılığı denetlenmedi · **ORTA**
 - [ ] **T253 — Tekrar kopyası `tespit_bayat`'ı temizliyor ama onay düğmesi tazelenmiyor** (D-467) · "BAYAT TESPİT — ONAY KAPALI" yazısı asılı kalabilir; ölçülmedi · **ORTA** (hakem ekranı)
+
+
+## Jetson acil devir — 2026-09-12, Halil
+
+- [IN_PROGRESS: Claude-Jetson] **JETSON-20260912 — Jetson eksiklerinin kanitla denetimi ve tek fiziksel yol altyapisi**
+  - **Rol devri 2 · 2026-09-13, Jetson oturumu (Claude):** kullanici "codex kismini devral" dedi; gorev Codex'ten bu oturuma gecti (madde 1 gerekce: devir INSAN karari). Codex'in commitlenmemis agaci KORUNDU, uzerine yazilmadi. Devralma aninda olculen durum: **T220 30 test OK (1 atlama)** — yani Codex'in `65_kabul_denetcisi.kume_parmak_izi` duzeltmesi (Windows `PureWindowsPath` siralamasi) acili kume parmak izi hatasini GERCEKTEN cozmus; kapanmasi icin eksik olan: ureticiden bagimsiz denetim, genis suit kosumu, defter kaydi ve commit izni. Devralma ANINDA hicbir Codex dosyasi degistirilmedi.
+  - **Kamerasiz ilerleyebilen kisim (13 Eylul olcumu):** `kapi()` hukmunu 3/3 MAVLink ile veriyor ve tuketici sagligina BAKMIYOR (3/3 sonrasi yalniz `durum` basar) → `--kapi` kamera gelmeden kosulabilir; `navitas-rpi-inference` kamerasiz duser, bu kapinin hukmunu degistirmez ama `durum` ciktisinda gorunur ve kayda oyle yazilir.
+  - **Yetki / rol devri (1):** Halil, Claude oturumunu devralmamizi ve once Jetson eksiklerini gidermemizi, sonra uc yerine tek yol icin altyapiyi uyarlamamizi istedi; komutlar icin tam yetki verdi. Bu gorev kullanicinin acil onceligidir.
+  - **Baslangic:** origin/master bdda2e3b; Jetson genel kapi yeniden kol1 15/15, kol2 15/15. T220 yeniden 29 test: 1 hata (acili kume parmak izi), 1 atlama. K2 eski kosum kesilmis; yeni olcum ayri results/codex_jetson_20260912 altinda.
+  - **Is bolumu:** Codex koordinasyon/Jetson dogrulama; jetson_testleri yalniz dort tasinabilirlik testi; tek_yol_inceleme ve kume_kok_neden salt okunur. Denetim ureticiden bagimsiz yapilacak; mevcut T107 kilidine dokunulmaz.

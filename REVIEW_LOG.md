@@ -25093,6 +25093,8 @@ sonra karara bağlanacak. Kılavuzun kendi ön kayıtlı kuralı da duruyor:
 
 ### D-356 · ⚠ KENDİ HATAM: commit'lerde YANLIŞ E-POSTA kullandım — GitHub onları `navitas26`'ya bağladı (2026-08-28)
 
+> ⬆ **SONRADAN DÜZELTİLDİ → D-471.** Bu kayıttaki **kimlik geçersizdir**: kullanıcı 2026-09-13'te yazarı `trs-1342 <socialmediaoftrs1342@gmail.com>` olarak belirledi (madde 17 güncellendi), `Emir-Gemici <yunusgemici2007@gmail.com>` artık hedef kimlik **değil**. Buradaki "`-c` ile ezme yok" kuralı da **fazla genel** çıktı: bu depo klonunun yerel yapılandırması zaten bu kaydın *yanlış* saydığı `navitas.takimi@gmail.com` adresini taşıyor, dolayısıyla kuralı harfiyen uygulamak kusuru yeniden üretir. Geçerli ders: **kimlik doğru yerde tanımlı olsun**. Önce D-471'i oku.
+
 **Kullanıcı bildirdi:** *"pushları navitas26 olarak atmışsın, Emir-Gemici
 olarak atman lazımdı."*
 
@@ -30883,3 +30885,40 @@ Blok, betiğin stdout'undan **olduğu gibi** alınmıştır; sayılar `mavlink_d
 **Neyin cevabı:** `results/codex_jetson_20260912/DEVIR_VE_ON_DURUM.md` §"Tek yol analizi" sonunda *"Fiziksel tek koridor mu, üçlü parkurdan tek güzergâh mı sorusu Halil'e iletildi. Yanıt gelene kadar saha geometrisine bağlı üretim değişikliği yapılmıyor"* diye beklemeye alınan soru. Cevap: **yakın etkinlik (FDR/Adıyaman, 21 Eylül 2026) tek yol; üç yol 2027 gerçek yarışmanın (İHA + İKA, sabit kanat) gereği.**
 **Sınır — bu karar bir silme emri DEĞİLDİR:** aynı raporun ölçtüğü kısıtlar geçerli kalır — `SERIT_SAYISI=3` küresel sabitini 1 yapmak `W/3` korumasını `W` genişliğine çıkarır ve açık arazi reddini gevşetir; `road=1/2/3` mevcut protokolde sol/orta/sağdır ve tek fiziksel yol kimliği bu semantiğe sessizce yerleştirilmez. Dolayısıyla "1 yol" **senaryo/yapılandırma düzeyinde** ele alınır, küresel sabit değişikliği olarak değil. **Bu kayıtla hiçbir üretim kodu değiştirilmedi** — uygulama biçimi mimar kararıdır.
 **Süreç notu (tekrarlayan hata):** kullanıcı bu ayrımı birden çok ajana birden çok kez anlatmak zorunda kaldı (kendi sözleriyle *"codex/claude ikisi beni uğraştırdı anlamadı"*). Yol sayısı konuşulurken **önce hangi etkinlik** olduğu netleştirilmelidir.
+
+### D-471 — ⚠ **KENDİ BİLDİRİMİM:** commit kimliği `trs-1342`'ye çekildi (madde 17 güncellendi), ama bunu **D-356'nın yasakladığı `-c` ezmesiyle** yaptım; asıl kusur şu: **deponun yerel yapılandırması D-356'nın "yanlış" adresini taşıyor**
+
+**Tarih:** 13 Eylül 2026. **Yazan:** Jetson oturumu. **İlgili commit:** `64ae47cc` (D-469/D-470 kaydı; **itilmedi**).
+**Kullanıcı kararı:** yazar **`trs-1342 <socialmediaoftrs1342@gmail.com>`** — kullanıcının sözleri: *"imzalamada karışıklık oldu doğrusu trs-1342"*. Madde 17 buna göre güncellendi; D-356'nın `Emir-Gemici <yunusgemici2007@gmail.com>` kimliği **yerini bıraktı**.
+**Kendi bildirimim (yordam ihlali):** `64ae47cc`'yi `git -c user.name=… -c user.email=…` ile attım. D-356 tam bu mekanizmayı **yasaklamıştı** ("`-c` ile **EZME**"; `CODEX_WORKERS.md`, `FDA_PLANI_20260829.md` §6). Kararı önce yazıp sonra ölçmedim; bildiriyorum.
+🔴 **Ölçülen asıl kusur — ezmeseydim durum daha kötüydü.** Bu klonun yerel yapılandırması:
+```
+$ git config user.name; git config user.email
+Emir-Gemici
+navitas.takimi@gmail.com
+```
+Bu adres, D-356'da **354 commit'in kimliği olan** `yunusgemici2007@gmail.com` değil; GitHub'ın **`navitas26`** hesabına bağladığı ve kullanıcının *"pushları navitas26 olarak atmışsın"* diye şikâyet ettiği **50 commit'in** adresidir. Yani "yapılandırmaya dokunma" kuralını bu makinede harfiyen uygulamak, D-356 kusurunu **yeniden üretirdi**. Dolayısıyla D-356'nın dersi "asla `-c` kullanma" değil, **"kimlik doğru yerde tanımlı olsun"**dur; burada doğru yerde tanımlı **değil**.
+**Kalan iş (insan yapar — yapılandırmaya ajan dokunmaz):** bu depoda yerel kimliğin kullanıcı kararına çekilmesi:
+```
+git -C ~/proje/github/navitas_github config user.name "trs-1342"
+git -C ~/proje/github/navitas_github config user.email "socialmediaoftrs1342@gmail.com"
+```
+Bu yapıldıktan sonra `-c` ezmesi **gereksizdir** ve madde 17 gereği kullanılmaz.
+**Bayat kalan yönergeler (bu kayıtla işaretlendi, metinleri DEĞİŞTİRİLMEDİ):** `CODEX_WORKERS.md:21,90` · `CLAUDE2_WORKER.md:28,92` · `FDA_PLANI_20260829.md:195` · `CODEX_PROMPTLARI_20260820.md:43,80,104` · `CODEX_PROMPTLARI_20260829.md:8` · `CODEX_PROMPTLARI_20260831.md:6` — hepsi hâlâ `Emir-Gemici` diyor. Codex ve Claude 2 bu dosyalardan besleniyor; düzeltilmezse **eski kimlikle commit atmaya devam ederler**. Yönerge metinlerini değiştirmek alt sürünün davranışını değiştirdiği için **mimar/kullanıcı kararına** bırakıldı.
+**Kapsam:** bu kayıt yalnız kimlik ve atıf yordamıyla ilgilidir; `64ae47cc`'deki ölçüm hükümleri (D-469) etkilenmez. Geçmiş commit'lerin kimliği **yeniden yazılmadı** (D-356 §"Geçmiş commit'ler" iki seçeneği hâlâ kullanıcının kararı).
+
+### D-472 — **Codex'in Jetson işi (JETSON-20260912) üreticiden bağımsız denetlendi: KABUL.** Kök neden doğru bulunmuş (dondurulmuş parmak izleri Windows sıralamasıyla üretilmiş), altı dosyada **hiçbir hüküm gevşetilmemiş**, ikisi güçlendirilmiş; 🔴 ayrı bulgu: `test_kompozit_dizini_listeleniyor` **temiz klonda asla yeşil olamaz** (gitignore'lu veriye bağlı)
+
+**Tarih:** 13 Eylül 2026. **Rol devri:** kullanıcı *"codex kısmını devral"* dedi → görev Codex'ten bu oturuma geçti (`TASK_QUEUE` JETSON-20260912 `[IN_PROGRESS: Claude-Jetson]`). **Bağımsızlık:** kodu Codex yazdı, denetimi bu oturum yaptı — madde 19 "bir iş onu yazanın onayıyla kapanmaz" sağlandı. Codex'in commitlenmemiş ağacı **korundu, üzerine yazılmadı**. **Ham çıktı:** `results/jetson_20260913/codex_devir_denetim_20260913.txt`.
+**Denetlenen değişiklik (6 dosya, commitlenmemiş):** `scripts/olcum/65_kabul_denetcisi.py` (`kume_parmak_izi` sıralaması) + `tests/test_t220_jetson_istekleri.py`, `test_d370_mutasyon_satir_sonu.py`, `test_faz_b_jetson_baslat.py`, `test_faz_b_protocol_dayaniklilik.py`, `test_gece_karisiklik_matrisi.py`, `test_k6_rota_yol_ustunde.py`.
+**Kök neden — DOĞRU bulunmuş (ölçüldü):** açılı kabul kümesinin registry'ye yazılı özeti (`735ecc81…`) Windows'ta üretilmişti; POSIX'te `sorted(rglob)` `URETIM_KOMUTU.md`'yi farklı yere koyduğu için aynı dosyalar `b08680e4…` veriyordu. Düzeltme tarihî sıralamayı `PureWindowsPath` anahtarıyla platformdan bağımsız koruyor; **registry ve veri değiştirilmemiş** (dondurulmuş küme dondurulmuş kalmış) — doğru yön: kayıt değil okuyucu düzeltilmiş.
+**Ölçüm (bu oturum, 19 süit — parmak izi/kabul kümesine dokunan her şey):** 18 süit **OK**; `test_t220_jetson_istekleri` **30 test OK (1 atlama)** — yani Codex'in çözdüğü hata gerçekten kapanmış. Tek kırmızı: `test_yks_gui_uretim_hizasi` 55 testte 1.
+**Gevşetme taraması — hüküm cümleleri korunmuş, ikisi GÜÇLENDİRİLMİŞ:**
+- `test_d370`: eski test *dosyanın CRLF olmasını* ön koşul sayıyordu (LF depoda boş/kırmızı); yeni hâli gerçek kaynaktan **LF ve CRLF fikstürü** üretip mutasyonun ikisinde de uygulandığını, çapanın tek olduğunu ve satır sonlarının karışmadığını doğruluyor → **kapsam arttı**.
+- `test_faz_b_protocol_dayaniklilik`: eski test **eksik** JSON (`[`×3000, kapanış yok) ile `RecursionError` bekliyordu; CPython 3.12'nin C tarayıcısı özyineleme sınırını dinlemediği ve eksik JSON'un `JSONDecodeError` verebildiği için hüküm Python sürümüne bağlıydı. Yeni hâli **tam geçerli** JSON kullanıyor, saf Python tarayıcısına geçiyor, `setUp`'ta hem `RecursionError` ön koşulunu hem yükün `CERCEVE_TAMPON_TAVANI` altında olduğunu **vakum koruması** olarak doğruluyor, UDP `recv` tavanına sığdığını ayrıca ölçüyor ve tarihî eksik-JSON vakasını yeni bir testle koruyor → **belirlenimli ve daha sıkı**.
+- `test_gece_karisiklik_matrisi`: `Path(d["path"]).name` POSIX'te ters bölüyü ayırıcı saymadığı için tüm dizgiyi döndürüyordu; ayırıcı normalleştirildi, **iddia aynı** kaldı.
+- `test_k6_rota_yol_ustunde`: eski satır iki **dizgiyi** `assertIs` ile kıyaslıyordu (string interning'e bağlı kırılgan kimlik); yerine gerçek nesne kimliği + `__code__` eşitliği + kanonik dosya yolu geldi — "kod kopyası değil" iddiası korundu.
+- `test_faz_b_jetson_baslat`: "`[YOK] mavproxy`" senaryosu MAVProxy'nin **gerçekten kurulu olduğu** makinede kurulamıyordu (ürün PATH'e `/usr/local/bin` ekliyor); `BASH_ENV` ile yalnız `command -v mavproxy.py` çağrısı izole edildi, `kod == 3` iddiası aynı. ⚠ Denetim notu: bu dosyadaki `PIXHAWK_SERI == "/dev/ttyACM0"` kilidine (**:616**) **dokunulmamış** — D-469'un bulgusu ve önerisi etkilenmiyor.
+🔴 **Ayrı bulgu (Codex'in işi değil, ondan ÖNCE de vardı):** `test_yks_gui_uretim_hizasi.test_kompozit_dizini_listeleniyor` `data/arena_kompozit/images/` altında `.jpg` bekliyor; o dizin **git ağacında yok** çünkü `.gitignore:92`'deki genel `images/` kalıbı yutuyor (`git check-ignore -v` ile ölçüldü) ve kabul kümelerine konan `!data/kabul/*/images/` istisnasının benzeri buraya konmamış. Kareler yalnız **pakette** var (`~/navitas/data/arena_kompozit/images/` → `train`, `val`). Sonuç: bu test **temiz bir klonda her zaman düşer**, atlama koruması da yok → "tam süit yeşil" ölçütü depo tek başına sağlanamaz. Bu, T220/K2'de kabul kümeleri için çözülen kusurun **aynı sınıfı**. Çözüm seçenekleri (mimar kararı, uygulanmadı): (a) `.gitignore` istisnası + kareleri depoya almak, (b) veri yokken `skipTest` ile dürüst atlama. Sayılarak yazıldı, kovalanmadı.
+**Kapanmayan (Codex'in kendi raporundan devralınan):** `results/codex_jetson_20260912/` altında yalnız `DEVIR_VE_ON_DURUM.md` var; ara raporun *"yeniden tam T66 + R denklik koşumu başlatıldı"* dediği ölçümün **çıktısı yok** — yani K2 denklik koşumu hâlâ **ÖLÇÜLMEDİ**. Ayrıca "üç yerine tek yol altyapısı" kısmı D-470 ile açıldı (FDR/Adıyaman 1 yol, 2027 üç yol) ama henüz tasarlanmadı.
+**Kapı:** genel kapı bu ağaçta kol1 15/15 · kol2 15/15 (çıkış 0). Commit **atılmadı** — kullanıcı "bekle" dedi; Codex'in ağacı hâlâ commitlenmemiş durumda.

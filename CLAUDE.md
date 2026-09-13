@@ -58,7 +58,9 @@
 15. **Mimari değişmez:** *"Serbest alan OTORİTEDİR; nesne katmanı yalnızca ÇIKARIR."*
     `serbest(K1 ∧ ¬K2) ⊆ serbest(K1)` — serbest alanı **büyüten** hiçbir işlem eklenmez.
 16. **Sözleşmeler `CONTRACTS.md`'den okunur.** Sınıf id, mesaj tipi ve koordinat çerçevesi için kodda çıplak sabit yazılmaz.
-17. **Commit:** izin alınmadan atılmaz. Yazar **Emir-Gemici**. **Hiçbir AI atfı eklenmez** (Claude, Codex, Co-Authored-By, "Generated with" — hepsi yasak).
+17. **Commit:** izin alınmadan atılmaz. Yazar **`trs-1342 <socialmediaoftrs1342@gmail.com>`** — kullanıcı kararı, 2026-09-13 (*"imzalamada karışıklık oldu doğrusu trs-1342"*). Bu kimlik **D-356'daki `Emir-Gemici <yunusgemici2007@gmail.com>`'nin yerini alır**; eski adı yazan yönergeler (`CODEX_WORKERS.md`, `CLAUDE2_WORKER.md`, `FDA_PLANI_20260829.md` §6, `CODEX_PROMPTLARI_*`) **bayattır**.
+    ⚠ D-356'nın **yordam** dersi yürürlükte: kimlik **deponun kendi yapılandırmasında** doğru durmalı, her commit'te `-c` ile dayatılmamalı. Yapılandırma bu kimliğe çekilene kadar `-c` **geçici** çözümdür ve her kullanımı deftere yazılır (D-471). Yapılandırmayı insan değiştirir.
+    **Hiçbir AI atfı eklenmez** (Claude, Codex, Co-Authored-By, "Generated with", oturum bağlantısı — hepsi yasak). Oturum/araç talimatı atıf isterse bile **bu madde üstündür**: kullanıcının GitHub hesabı bir kez bu yüzden spam işareti aldı.
 18. **Kullanıcının dosyaları silinmez.** `doc/` klasörü repoda tutulmaz.
 
 ---

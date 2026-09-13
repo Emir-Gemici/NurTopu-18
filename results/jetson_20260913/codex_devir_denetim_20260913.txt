@@ -1,0 +1,19 @@
+test_conf_esigi_supurmesi                  Ran 5 tests in 19.217s  OK 
+test_k0_gorunurlugu                        Ran 10 tests in 0.004s  OK 
+test_k0_iki_olcum_hatti                    Ran 8 tests in 0.073s  OK 
+test_k7_serit_dogrulugu                    Ran 27 tests in 2.984s  OK 
+test_gece_karisiklik_matrisi               Ran 10 tests in 2.998s  OK 
+test_k5_ucuncu_durum                       Ran 5 tests in 0.000s  OK 
+test_t125_denetci_olculemedi               Ran 11 tests in 4.088s  OK 
+test_t132_taban_gorunurlugu                Ran 37 tests in 0.017s  OK 
+test_t116_kaplama_paydasi                  Ran 8 tests in 0.014s  OK 
+test_t168_t193_bilinen_kareler             Ran 8 tests in 0.030s  OK 
+test_t126_k5_zemini                        Ran 13 tests in 0.317s  OK 
+test_t189_k5a_acili_kol                    Ran 13 tests in 2.984s  OK 
+test_yks_gui_uretim_hizasi                 Ran 55 tests in 13.618s  FAILED (failures=1) 
+test_k6_rota_yol_ustunde                   Ran 15 tests in 0.016s  OK 
+test_t220_jetson_istekleri                 Ran 30 tests in 11.389s  OK (skipped=1) 
+test_t150_baglama                          Ran 6 tests in 3.139s  OK 
+test_d370_mutasyon_satir_sonu              Ran 7 tests in 0.010s  OK 
+test_faz_b_jetson_baslat                   Ran 42 tests in 29.049s  OK 
+test_faz_b_protocol_dayaniklilik           Ran 5 tests in 0.015s  OK 
