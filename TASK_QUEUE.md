@@ -9770,3 +9770,7 @@ _(henüz yok)_
 - [ ] **T267 kalanı** — `~~` içeren 7 satır · iki JETSON_KILAVUZ SiK bloğu (test kilitli, birlikte) · `comms/*.py` + `codes/karar_sozlesmesi.py` metinleri (amele) — D-480.
 - [ ] **T272 — atölye sonuçları için ayrı sonuç dosyası** (kâğıt ön kayıttır, hüküm yazılamaz; D-480) — `results/atolye_20260912/SONUCLAR.md`.
 - [ ] **T273 — BOLUM_4 ekipman kabul tablosuna A6 GEÇTİ** — satıra/altına eklemek `test_fdr_t244_ic_celiski` T4d ve T9a kilitlerini düşürdü; 13 Eyl ikinci deneme (eski hücre `~~çizili~~` + **ÖLÇÜLDÜ**) de T4d+T9a'yı düşürdü → çizik sorun değil; `tests/test_fdr_t244_ic_celiski.py` telsiz satırını **ölçülmemiş olarak ön kayıtlı** tutuyor. Yapılacak: testin ön kaydı A6 ölçümüyle (D-478) güncellenir — **kapı değişikliği**, ayrı ön kayıt + çürütücü şart; mimar tek başına yapmaz.
+- [ ] **T274 — titreşim > 60 m/s² (5 uçuş, D-482)** — FC sönümleyici, pervane balansı, kol sıkılığı; düzeltme sonrası tek askı logu (İNSAN, 🔴 21 Eyl öncesi).
+- [ ] **T275 — 7,51 V gerilim çökmesi + EKF lane switch (D-482)** — pil/konnektör/XT60 kontrolü, o pille yük testi (İNSAN, 🔴).
+- [ ] **T276 — log analiz betiğini amele yazsın** (`scripts/ucus_bin_ozet.py` + test; mimarın scratch betiği denetlenmedi, D-482).
+- [ ] **T277 — FDR yazılım koluna 13 Eyl log bulguları** (kodla GUIDED/LAND 2×, failsafe 3+1, askı gazı, titreşim riski) — wlwy3xx3m bitince.

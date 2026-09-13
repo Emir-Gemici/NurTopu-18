@@ -31047,3 +31047,29 @@ Olası nedenler (ölçülmedi): (a) iki telsizde Air Speed/Max Window farklı ka
 ### D-481 — Pil **3S 8000 mAh**, `BATT_CAPACITY` 8000, `BATT_LOW_VOLT` **10,5**, `BATT_CRT_VOLT` **9** (kaptan beyanı, 13 Eyl) — D-479'daki "CRT 10,5" okuması yanlıştı (LOW idi); LOW > CRT sağlandı
 
 Enerji HESAP: 11,1 V × 8,0 Ah = **88,8 Wh**. FDR/kılavuz/HANDOFF'ta 6000→8000 ve eşik satırları betikle güncellendi.
+
+### D-482 — 13 Eylül UÇUŞ LOGLARI (.bin, 6 dosya) OKUNDU: 14 uçuş / 332,5 s motorlu süre · **kodla GUIDED + kodla LAND ÖLÇÜLDÜ (2×)** · pil failsafe→LAND **3×**, GCS failsafe→LAND **1×** ölçüldü · askı gazı 0,46–0,53 · 🔴 titreşim >60 m/s² ve 7,51 V gerilim çökmesi
+
+**Kaynak:** `results/ucus_20260913/2026-09-13 *.bin` (Mission Planner indirmesi, kaptan; sha256 `ozet.json` ilk sürümünde) · özet `results/ucus_20260913/ozet.json`.
+**Yöntem:** pymavlink DFReader; yalnız **arm pencereleri** ve `CTUN.ThO > 0,15` (motorlu) örnekleri; iniş sebebi `MODE.Rsn`, olaylar `ERR`/`MSG`. İlk geçişte "havada" ölçütü (Alt > 0,5 m) disarm'da barometre kaymasını saydığı için **atıldı**. Analiz betiği mimarın geçici betiğidir (scratch, üretim kodu değil) → **denetim borcu** (T276).
+
+| log | pencere (s) | motorlu s | irtifa maks | kip → iniş sebebi | not |
+|---|---|---|---|---|---|
+| 08-34-30 | 165,9–207,2 | 32,7 | 3,16 m | LOIT(RC) → **LAND ← PİL_FS** (195,7) | A3 ölçüldü |
+| 09-26-58 | 5 kısa pencere | 0,8–3,1 | ≤ 2,68 | LOIT/STAB(RC) → LAND(RC) | **4S pil** (16,7 V) — 3S öncesi |
+| 09-42-26 | 180,4–211,2 | 26,1 | 4,64 | **GUID ← GCS_KOMUT** → **LAND ← GCS_FS** (198,0) | A2 ölçüldü (FS_GCS_ENABLE=5) |
+| 09-42-26 | 259,4–305,0 | 39,2 | 6,65 | **GUID ← GCS_KOMUT** → **LAND ← PİL_FS** (288,4) | A3 |
+| 09-53-45 | 86,5–123,7 | 28,0 | 4,83 | LOIT(RC) → **LAND ← PİL_FS** (108,9) | A3 |
+| 09-59-30 | 240,5–297,7 | 52,5 | **9,44** | **GUID ← GCS_KOMUT** (239,9) → **LAND ← GCS_KOMUT** (280,0) | ✅ **kodla kalkış-askı-iniş** |
+| 09-59-30 | 371,2–411,2 | 35,3 | 2,66 | **GUID ← GCS_KOMUT** (371,0) → **LAND ← GCS_KOMUT** (406,4) | ✅ **kodla** |
+| 09-59-30 | 705,7 / 825,8 / 978,5 | 42,5 / 43,4 / 21,4 | ≤ 6,3 | STAB/LOIT(RC) → LAND(RC) | |
+
+**Ölçülenler:**
+- **Kodla uçuş:** GUIDED'e geçiş `GCS_KOMUT` (Jetson/YKS) ve LAND `GCS_KOMUT` ile **iki kez** — kumanda müdahalesiz. 12 Eylül A12 beyanının bağımsız karşılığı artık logda.
+- **Failsafe:** pil failsafe → LAND 3/3 tetiklendi (V 9,62–9,87 V'ta, `BATT_LOW_VOLT` 10). GCS failsafe → LAND 1/1 (GUIDED sırasında). ⚠ 09-42 ilk GUIDED uçuşu **kodla değil GCS failsafe'iyle indi** — "kodla LAND" diye yazılmaz.
+- **Askı gazı** `MOT_THST_HOVER` öğrenildi: 0,35 (fabrika) → **0,448 / 0,466 / 0,460 / 0,533**; motorlu `ThO` ort. 0,42–0,51. İtki/ağırlık **HESAP** (MOT_THST_EXPO 0,65, gerilim telafisi yok): u = 0,46 → itki oranı 0,299 → **T/W ≈ 3,3**; u = 0,533 → 0,371 → **T/W ≈ 2,7**.
+- **Akım (3S):** motorlu ortalama **22–34 A**. Uçuş süresi **HESAP** (8000 mAh, %80 kullanılabilir = 6400 mAh): 30 A → **12,8 dk**; 25 A → **15,4 dk**.
+
+**🔴 Riskler (uçuş emniyeti, 21 Eylül öncesi):**
+1. **Titreşim:** VIBE maks **54–64 m/s²** 5 uçuşta (ArduPilot kılavuzu: < 30 iyi, > 60 sorunlu); kırpma (clip) artışı 0. EKF bu uçuşlarda failsafe'e düşmedi ama pay yok → **T274** (titreşim sönümleme / pervane balansı / FC montajı).
+2. **Gerilim çökmesi:** 09-59-30 825,8 penceresinde V **11,13 → 7,51 V** (3S'te 2,50 V/hücre) — aynı saniyede **EKF lane switch** (869,0, ERR 24). Anlık sarkma, pil failsafe süresi (10 s) dolmadan. Pil iç direnci/konnektör/ölçüm şüphesi → **T275**. Bu pille uçuş 21 Eylül'de önerilmez.

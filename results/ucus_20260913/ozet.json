@@ -1,0 +1,610 @@
+[
+ {
+  "log": "2026-09-13 08-34-30.bin",
+  "arm": 165.9,
+  "disarm": 207.2,
+  "ucus_s": 32.7,
+  "alt_maks": 3.16,
+  "ThO_ort": 0.462,
+  "ThH_son": 0.448,
+  "V_bas": 12.14,
+  "V_min": 9.66,
+  "A_ort": 25.0,
+  "mAh": 287,
+  "vibe_maks": 30.7,
+  "clip": 0,
+  "olay": [
+   [
+    165.9,
+    "MOD",
+    "LOIT<RC"
+   ],
+   [
+    195.7,
+    "ERR",
+    "FS_PIL=1"
+   ],
+   [
+    195.7,
+    "MSG",
+    "Battery Failsafe"
+   ],
+   [
+    195.7,
+    "MOD",
+    "LAND<PIL_FS"
+   ],
+   [
+    209.2,
+    "MSG",
+    "PreArm: Battery failsafe"
+   ]
+  ]
+ },
+ {
+  "log": "2026-09-13 09-26-58.bin",
+  "arm": 234.3,
+  "disarm": 243.9,
+  "ucus_s": 2.8,
+  "alt_maks": 2.52,
+  "ThO_ort": 0.224,
+  "ThH_son": 0.473,
+  "V_bas": 16.73,
+  "V_min": 15.33,
+  "A_ort": 13.9,
+  "mAh": 37,
+  "vibe_maks": 56.6,
+  "clip": 0,
+  "olay": [
+   [
+    234.3,
+    "MOD",
+    "LOIT<RC"
+   ],
+   [
+    241.0,
+    "MOD",
+    "LAND<RC"
+   ]
+  ]
+ },
+ {
+  "log": "2026-09-13 09-26-58.bin",
+  "arm": 352.4,
+  "disarm": 362.6,
+  "ucus_s": 2.0,
+  "alt_maks": 2.14,
+  "ThO_ort": 0.236,
+  "ThH_son": 0.473,
+  "V_bas": 16.64,
+  "V_min": 15.52,
+  "A_ort": 8.3,
+  "mAh": 24,
+  "vibe_maks": 52.1,
+  "clip": 0,
+  "olay": [
+   [
+    351.8,
+    "MOD",
+    "LOIT<RC"
+   ],
+   [
+    352.4,
+    "MOD",
+    "LOIT<RC"
+   ],
+   [
+    361.6,
+    "MOD",
+    "LAND<RC"
+   ]
+  ]
+ },
+ {
+  "log": "2026-09-13 09-26-58.bin",
+  "arm": 403.7,
+  "disarm": 412.2,
+  "ucus_s": 3.1,
+  "alt_maks": 2.68,
+  "ThO_ort": 0.247,
+  "ThH_son": 0.473,
+  "V_bas": 15.98,
+  "V_min": 14.66,
+  "A_ort": 17.2,
+  "mAh": 41,
+  "vibe_maks": 63.6,
+  "clip": 0,
+  "olay": [
+   [
+    401.8,
+    "MOD",
+    "LOIT<RC"
+   ],
+   [
+    403.7,
+    "MOD",
+    "LOIT<RC"
+   ],
+   [
+    405.5,
+    "ERR",
+    "MODE=0"
+   ],
+   [
+    409.0,
+    "MOD",
+    "LAND<RC"
+   ]
+  ]
+ },
+ {
+  "log": "2026-09-13 09-26-58.bin",
+  "arm": 549.5,
+  "disarm": 561.1,
+  "ucus_s": 2.7,
+  "alt_maks": 1.78,
+  "ThO_ort": 0.229,
+  "ThH_son": 0.473,
+  "V_bas": 15.92,
+  "V_min": 14.98,
+  "A_ort": 7.8,
+  "mAh": 25,
+  "vibe_maks": 44.4,
+  "clip": 0,
+  "olay": [
+   [
+    549.5,
+    "MOD",
+    "STAB<RC"
+   ],
+   [
+    555.8,
+    "MOD",
+    "LOIT<RC"
+   ]
+  ]
+ },
+ {
+  "log": "2026-09-13 09-26-58.bin",
+  "arm": 588.9,
+  "disarm": 596.8,
+  "ucus_s": 0.8,
+  "alt_maks": 1.87,
+  "ThO_ort": 0.204,
+  "ThH_son": 0.473,
+  "V_bas": 15.89,
+  "V_min": 15.23,
+  "A_ort": 5.8,
+  "mAh": 13,
+  "vibe_maks": 17.0,
+  "clip": 0,
+  "olay": [
+   [
+    588.9,
+    "MOD",
+    "STAB<RC"
+   ]
+  ]
+ },
+ {
+  "log": "2026-09-13 09-42-26.bin",
+  "arm": 180.4,
+  "disarm": 211.2,
+  "ucus_s": 26.1,
+  "alt_maks": 4.64,
+  "ThO_ort": 0.424,
+  "ThH_son": 0.466,
+  "V_bas": 11.68,
+  "V_min": 9.87,
+  "A_ort": 24.4,
+  "mAh": 209,
+  "vibe_maks": 23.9,
+  "clip": 0,
+  "olay": [
+   [
+    179.0,
+    "MSG",
+    "GCS Failsafe Cleared"
+   ],
+   [
+    179.0,
+    "ERR",
+    "FS_GCS=0"
+   ],
+   [
+    179.9,
+    "MOD",
+    "GUID<GCS_KOMUT"
+   ],
+   [
+    180.4,
+    "MOD",
+    "GUID<GCS_KOMUT"
+   ],
+   [
+    186.0,
+    "MSG",
+    "EKF3 IMU0 MAG0 in-flight yaw alignment c"
+   ],
+   [
+    186.1,
+    "MSG",
+    "EKF3 IMU1 MAG0 in-flight yaw alignment c"
+   ],
+   [
+    198.0,
+    "ERR",
+    "FS_GCS=1"
+   ],
+   [
+    198.0,
+    "MSG",
+    "GCS Failsafe"
+   ],
+   [
+    198.0,
+    "MOD",
+    "LAND<GCS_FS"
+   ],
+   [
+    201.0,
+    "MSG",
+    "GCS Failsafe Cleared"
+   ],
+   [
+    201.0,
+    "ERR",
+    "FS_GCS=0"
+   ],
+   [
+    206.0,
+    "ERR",
+    "FS_GCS=1"
+   ],
+   [
+    206.0,
+    "MSG",
+    "GCS Failsafe"
+   ],
+   [
+    209.6,
+    "MSG",
+    "GCS Failsafe Cleared"
+   ]
+  ]
+ },
+ {
+  "log": "2026-09-13 09-42-26.bin",
+  "arm": 259.4,
+  "disarm": 305.0,
+  "ucus_s": 39.2,
+  "alt_maks": 6.65,
+  "ThO_ort": 0.445,
+  "ThH_son": 0.465,
+  "V_bas": 11.51,
+  "V_min": 9.75,
+  "A_ort": 25.5,
+  "mAh": 323,
+  "vibe_maks": 24.7,
+  "clip": 0,
+  "olay": [
+   [
+    259.4,
+    "MOD",
+    "GUID<GCS_KOMUT"
+   ],
+   [
+    266.7,
+    "MSG",
+    "EKF3 IMU0 MAG0 in-flight yaw alignment c"
+   ],
+   [
+    266.7,
+    "MSG",
+    "EKF3 IMU1 MAG0 in-flight yaw alignment c"
+   ],
+   [
+    288.4,
+    "ERR",
+    "FS_PIL=1"
+   ],
+   [
+    288.4,
+    "MSG",
+    "Battery Failsafe"
+   ],
+   [
+    288.4,
+    "MOD",
+    "LAND<PIL_FS"
+   ],
+   [
+    306.5,
+    "MSG",
+    "PreArm: Battery failsafe"
+   ]
+  ]
+ },
+ {
+  "log": "2026-09-13 09-53-45.bin",
+  "arm": 86.5,
+  "disarm": 123.7,
+  "ucus_s": 28.0,
+  "alt_maks": 4.83,
+  "ThO_ort": 0.436,
+  "ThH_son": 0.46,
+  "V_bas": 11.33,
+  "V_min": 9.62,
+  "A_ort": 22.2,
+  "mAh": 230,
+  "vibe_maks": 46.3,
+  "clip": 0,
+  "olay": [
+   [
+    86.5,
+    "MOD",
+    "LOIT<RC"
+   ],
+   [
+    101.3,
+    "MSG",
+    "EKF3 IMU0 MAG0 in-flight yaw alignment c"
+   ],
+   [
+    101.9,
+    "MSG",
+    "EKF3 IMU1 MAG0 in-flight yaw alignment c"
+   ],
+   [
+    108.9,
+    "ERR",
+    "FS_PIL=1"
+   ],
+   [
+    108.9,
+    "MSG",
+    "Battery Failsafe"
+   ],
+   [
+    108.9,
+    "MOD",
+    "LAND<PIL_FS"
+   ],
+   [
+    124.9,
+    "MSG",
+    "PreArm: Battery failsafe"
+   ]
+  ]
+ },
+ {
+  "log": "2026-09-13 09-59-30.bin",
+  "arm": 240.5,
+  "disarm": 297.7,
+  "ucus_s": 52.5,
+  "alt_maks": 9.44,
+  "ThO_ort": 0.461,
+  "ThH_son": 0.46,
+  "V_bas": 11.47,
+  "V_min": 10.13,
+  "A_ort": 30.5,
+  "mAh": 485,
+  "vibe_maks": 62.2,
+  "clip": 0,
+  "olay": [
+   [
+    239.9,
+    "MOD",
+    "GUID<GCS_KOMUT"
+   ],
+   [
+    240.5,
+    "MOD",
+    "GUID<GCS_KOMUT"
+   ],
+   [
+    246.0,
+    "MSG",
+    "EKF3 IMU1 MAG0 in-flight yaw alignment c"
+   ],
+   [
+    246.0,
+    "MSG",
+    "EKF3 IMU0 MAG0 in-flight yaw alignment c"
+   ],
+   [
+    280.0,
+    "MOD",
+    "LAND<GCS_KOMUT"
+   ]
+  ]
+ },
+ {
+  "log": "2026-09-13 09-59-30.bin",
+  "arm": 371.2,
+  "disarm": 411.2,
+  "ucus_s": 35.3,
+  "alt_maks": 2.66,
+  "ThO_ort": 0.469,
+  "ThH_son": 0.46,
+  "V_bas": 11.21,
+  "V_min": 10.06,
+  "A_ort": 29.2,
+  "mAh": 325,
+  "vibe_maks": 35.5,
+  "clip": 0,
+  "olay": [
+   [
+    369.2,
+    "MSG",
+    "GCS Failsafe Cleared"
+   ],
+   [
+    369.2,
+    "ERR",
+    "FS_GCS=0"
+   ],
+   [
+    371.0,
+    "MOD",
+    "GUID<GCS_KOMUT"
+   ],
+   [
+    371.2,
+    "MOD",
+    "GUID<GCS_KOMUT"
+   ],
+   [
+    406.4,
+    "MOD",
+    "LAND<GCS_KOMUT"
+   ]
+  ]
+ },
+ {
+  "log": "2026-09-13 09-59-30.bin",
+  "arm": 705.7,
+  "disarm": 756.0,
+  "ucus_s": 42.5,
+  "alt_maks": 4.73,
+  "ThO_ort": 0.51,
+  "ThH_son": 0.532,
+  "V_bas": 11.28,
+  "V_min": 9.92,
+  "A_ort": 31.1,
+  "mAh": 435,
+  "vibe_maks": 61.6,
+  "clip": 0,
+  "olay": [
+   [
+    705.7,
+    "MOD",
+    "STAB<RC"
+   ],
+   [
+    712.3,
+    "MOD",
+    "LOIT<RC"
+   ],
+   [
+    722.9,
+    "MSG",
+    "EKF3 IMU0 MAG0 in-flight yaw alignment c"
+   ],
+   [
+    725.5,
+    "MSG",
+    "EKF3 IMU1 MAG0 in-flight yaw alignment c"
+   ],
+   [
+    750.6,
+    "MOD",
+    "LAND<RC"
+   ]
+  ]
+ },
+ {
+  "log": "2026-09-13 09-59-30.bin",
+  "arm": 825.8,
+  "disarm": 872.1,
+  "ucus_s": 43.4,
+  "alt_maks": 4.97,
+  "ThO_ort": 0.513,
+  "ThH_son": 0.533,
+  "V_bas": 11.13,
+  "V_min": 7.51,
+  "A_ort": 34.2,
+  "mAh": 440,
+  "vibe_maks": 62.2,
+  "clip": 0,
+  "olay": [
+   [
+    823.9,
+    "MOD",
+    "LOIT<RC"
+   ],
+   [
+    825.8,
+    "MOD",
+    "LOIT<RC"
+   ],
+   [
+    839.3,
+    "MSG",
+    "EKF3 IMU0 MAG0 in-flight yaw alignment c"
+   ],
+   [
+    840.1,
+    "MSG",
+    "EKF3 IMU1 MAG0 in-flight yaw alignment c"
+   ],
+   [
+    869.0,
+    "MSG",
+    "EKF3 lane switch 1"
+   ],
+   [
+    869.0,
+    "ERR",
+    "24=1"
+   ],
+   [
+    869.0,
+    "MSG",
+    "EKF primary changed:1"
+   ],
+   [
+    870.4,
+    "MOD",
+    "LAND<RC"
+   ],
+   [
+    872.1,
+    "ERR",
+    "24=0"
+   ],
+   [
+    872.1,
+    "MSG",
+    "EKF primary changed:0"
+   ]
+  ]
+ },
+ {
+  "log": "2026-09-13 09-59-30.bin",
+  "arm": 978.5,
+  "disarm": 1007.6,
+  "ucus_s": 21.4,
+  "alt_maks": 6.3,
+  "ThO_ort": 0.499,
+  "ThH_son": 0.533,
+  "V_bas": 11.13,
+  "V_min": 9.9,
+  "A_ort": 26.8,
+  "mAh": 218,
+  "vibe_maks": 54.2,
+  "clip": 0,
+  "olay": [
+   [
+    978.5,
+    "MOD",
+    "LOIT<RC"
+   ],
+   [
+    991.4,
+    "MSG",
+    "EKF3 IMU0 MAG0 in-flight yaw alignment c"
+   ],
+   [
+    991.9,
+    "MSG",
+    "EKF3 IMU1 MAG0 in-flight yaw alignment c"
+   ],
+   [
+    997.5,
+    "MOD",
+    "LAND<RC"
+   ]
+  ]
+ }
+]
