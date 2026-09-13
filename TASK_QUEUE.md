@@ -9757,4 +9757,6 @@ _(henüz yok)_
 - [ ] **T264 — ECC kapalı A6 ölçümü** (İNSAN) — ECC hava süresini 2× yapıyor; açık/kapalı kararı ölçümle verilecek (D-476).
 - [ ] **T265 — (yalnız T263/T264 yetmezse) tekrar aralıklarını tasarım kararıyla büyüt** — ayrı karar kaydı, görev zamanlaması etkisi, yeniden doğrulama.
 - [ ] **T266 — FDR veri hızı: köprü 322,5 B/s yerine GERÇEK RF 318,8-350,5 B/s** (Y-3.3.4-M03 gerçek ölçümle kapanıyor)
+- [ ] **T267 — 433 MHz → RFD900A 915–928 MHz** (kaptan teyit etti, D-477) — FDR/CONTRACTS/comms/JETSON belgelerinde; frekans uygunluğu organizasyona sorulacak (İNSAN).
+- [ ] **T269 — takvim değişikliği duyurusunu repoya al** (İNSAN: e-posta/KYS ekran görüntüsü) → sonra `tests/test_fdr_takvim_kapisi.py` 14.09 / 21.09'a bağlanır.
 

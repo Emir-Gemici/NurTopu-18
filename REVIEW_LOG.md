@@ -30979,3 +30979,21 @@ yapılmadı (D-225 §3 örüntüsü).
 **KAZANÇ (yönerge Y-3.3.4-M03).** "Kullanılan veri hızı" artık **gerçek RF üzerinde ölçüldü**:
 **318,8–350,5 B/s** (önceki 322,5 B/s köprü ölçümüydü, radyosuzdu). FDR'deki köprü sayısı bununla
 değiştirilecek; ikisinin %1–9 içinde örtüşmesi köprü modelini de doğruluyor.
+
+### D-477 — Takvim ERKENE ÇEKİLDİ (kaptan beyanı); ajanın kapağa yazdığı 21.09.2026 geri alındı · A6 ikinci deneme **%100 kayıp** (bağlantı yok) · telsizin RFD900A 915 MHz olduğu kaptanca **teyit edildi**
+
+**1. Takvim.** Kaptan (13 Eyl): *"erkene çekildi bu tarihler doğru değil"*. Güncel: **FDR 14.09.2026, uçuş 21.09.2026** (BEYAN).
+`w2jiddk28`'in BOLUM_0 ajanı `results/sartname_bosluk/sartname_metin.txt:355/:362` (ilk takvim: 21.09 17:00 / 30.09–03.10) ile
+kapağa 21.09.2026 yazmış ve "21 Eylül uçuş günü değildir" hükmü kurmuştu. Kaynağı gerçekti ama **eskiydi**. Mimar da aynı kaynağı
+doğrulayıp kullanıcıya "resmi teslim 21.09" dedi — **yanlıştı**. BOLUM_0 ve HANDOFF düzeltildi, eski tarihler üstü çizili.
+**Ders:** repodaki şartname metni tek sürüm; takvim değişikliği duyurusu repoda yok. `tests/test_fdr_takvim_kapisi.py` hâlâ ESKİ takvimi kilitliyor → **T269** (duyuru kanıtı + kapının yeni takvime bağlanması).
+
+**2. A6 ikinci deneme (Max Window 131→33 ve Air Speed 64→128 aynı anda, port COM14).** 200 prob, **0 ACK**, verdikt ÖLÇÜLEMEDİ.
+Bu gecikme değil **bağlantı yokluğu**. Ham: `results/atolye_20260912/A6_sik_ikago_mw33_as128_KAYIP.json`.
+Koşum `--cikti` ile geçerli `A6_sik_ikago.json`'ın **üzerine yazmıştı**, `A6_sik_parasut.json` da çalışma ağacından silinmişti →
+ikisi `4dda0a24`'ten **geri yüklendi**. Kanıt kaybı yok (git). **Yordam düzeltmesi:** her denemenin çıktı adı ayarı taşır, taban dosyanın üzerine yazılmaz.
+**Mimarın hatası:** iki ayar **aynı anda** değiştirildi → hangisinin bağlantıyı kopardığı ayrılamıyor. Bir seferde bir değişiklik.
+Olası nedenler (ölçülmedi): (a) iki telsizde Air Speed/Max Window farklı kaldı (Remote yazılmadan Local yeniden başladı), (b) yankı ucu yeni COM numarasında koşmuyor.
+
+**3. Frekans.** Kaptan: *"rfd900a ama 433mhz sanıyordum"* → **915–928 MHz teyit.** T267 (72+ satır 433 düzeltmesi) geçerli; düzenleyici soru (Türkiye'de 868 MHz) organizasyona.
+

@@ -23,7 +23,7 @@
    TAKIM ADI   : Navitas Autonomous Systems
    TAKIM ID    : 997827
    BAŞVURU ID  : 5329027
-   RAPOR TARİHİ: 21.09.2026
+   RAPOR TARİHİ: 14.09.2026
 
                                                              2026
 ```
@@ -34,17 +34,14 @@ gelir: `results/fdr_sablon/fdr_yonerge_metin.txt:7` kapak satırı
 "TAKIM ADI:  TAKIM ID: BAŞVURU ID:                    2026"
 (kaynak `FDR_2_qNiVF.pdf` s. 1).
 
-**RAPOR TARİHİ = 21.09.2026 – 17.00**, şartname Tablo 1'in *Final Değerlendirme
-Raporu (FDR) Son Teslim Tarihi* satırıdır — **şartname alıntısı**, ölçüm değil
-(`results/sartname_bosluk/sartname_metin.txt:355`; kapıyla kilitli:
-`tests/test_fdr_takvim_kapisi.py:7`).
+**RAPOR TARİHİ = 14.09.2026** — **güncel FDR son teslim tarihi.** Organizasyon takvimi
+**erkene çekmiştir**; kaynak: kaptan beyanı (13.09.2026, D-477) — etiketi **BEYAN**.
+**Uçuş tarihi: 21.09.2026** (kaptan beyanı, D-471 ve D-477).
 
-⚠ **Karıştırılmaması gereken üç tarih.** (1) Şartname son teslim:
-**21.09.2026 – 17.00**. (2) Takımın **iç bitiriş hedefi: 14.09.2026** — etiketi
-**BEYAN**tır (D-471, commit `3dd54e5d`: "FDR 14 Eylul (ucusa hazir 21 Eylul)");
-bir iç sürüm tarihidir, kapağa yazılmaz. (3) Şartname **Görev Test Uçuşu**
-penceresi: **30.09–03.10.2026** (`sartname_metin.txt:362`). 21 Eylül **uçuş
-günü değildir**; bu kusur bir kez bulunup kapıyla kilitlenmiştir (D-410).
+⚠ **Eski takvim geçersiz.** Repodaki şartname metni ilk yayımlanan takvimi taşır:
+~~FDR son teslim 21.09.2026 – 17.00~~ · ~~Görev Test Uçuşu 30.09–03.10.2026~~
+(`results/sartname_bosluk/sartname_metin.txt:355, :362`). Değişiklik duyurusu repoya
+eklendiğinde (T269) `tests/test_fdr_takvim_kapisi.py` yeni takvime bağlanacaktır.
 
 ⚠ **DOĞRULANACAK (kaptan):** Bu üç alan `navitas-teknofest/references/
 ddr_requirements.md` içinden, **DDR döneminde** alınmıştır. KYS (Kayıt Yönetim
@@ -69,9 +66,8 @@ haliyle rapora girer; açık olan kalem değerin kendisi değil, dış kayıtla
 **teyididir**.
 
 **Doğrulama sahibi ve zamanı — kalem AÇIK.** KYS künye teyidi **kaptana**
-zimmetlidir (`FDR/ACIK_KALEMLER.md:121`, kalem 43); en geç **14.09.2026 iç
-dizgi koşumundan önce** yapılması planlanmıştır (şartname son teslim
-21.09.2026 – 17.00). Teyit bir sapma gösterirse yapılacak tek işlem bu üç
+zimmetlidir (`FDR/ACIK_KALEMLER.md:121`, kalem 43); en geç **14.09.2026 teslim
+dizgi koşumundan önce** yapılır (güncel FDR son teslim 14.09.2026, D-477). Teyit bir sapma gösterirse yapılacak tek işlem bu üç
 satırın güncellenmesidir; künye raporun başka hiçbir yerinde hesaba girmez, bu
 yüzden dizgi bu kalem beklenerek geciktirilmez.
 
@@ -108,16 +104,14 @@ eklenir ve kapağın üst ortasına basılır.
 | V n | **BEYAN GEREKLİ (insan)** | teslim sürümünün numarası ve tarihi — kaptan beyanı bekleniyor |
 
 **BEYAN GEREKLİ (insan) — AÇIK kalem.** Teslim edilecek sürümün numarası ve
-tarihi (21.09.2026 teslimi `V n` olarak buraya eklenecek). Bu kalem **yalnız
+tarihi (14.09.2026 teslimi `V n` olarak buraya eklenecek). Bu kalem **yalnız
 kaptan beyanıyla** kapanır; bir AI'ın ara sürüm satırı eklemesi onu kapatmaz
 (CLAUDE.md md. 9). Ara sürümler bu tabloya satır olarak eklenir; **satır
 silinmez**.
 
-**Takvim — üç tarih ayrı tutulur.** Şartname son teslim **21.09.2026 – 17.00**
-(`results/sartname_bosluk/sartname_metin.txt:355`, kapı
-`tests/test_fdr_takvim_kapisi.py:7`); takımın **iç bitiriş hedefi 14.09.2026**
-(BEYAN — D-471, commit `3dd54e5d`); şartname **Görev Test Uçuşu** penceresi
-**30.09–03.10.2026** (`sartname_metin.txt:362`).
+**Takvim (D-477).** Güncel FDR son teslim **14.09.2026**, uçuş **21.09.2026** — ikisi de
+kaptan beyanı (organizasyon takvimi erkene çekti). Şartname metnindeki ilk takvim
+(~~21.09.2026 – 17.00~~ / ~~30.09–03.10.2026~~) geçersizdir.
 
 **Sürüm satırlarının kanıtı.** V 1.1–V 1.3 numaraları **geriye dönük**
 verilmiştir; dayanakları ölçülmüş türev çıktılardır — sayfa sayıları
@@ -281,8 +275,7 @@ başlık/altlık **ve sayfa numarası üretilmektedir** — "üretilecek" değil
 
 **Kalan iş.** Nihai dizgi **teslim sürümünde** yeniden koşulur; o koşumda kapak
 (Y-0-M01) ve içindekiler sayfa numaraları (Y-0-M04) güncel sayfa sayısıyla
-tazelenir. Takvim: takımın iç dizgi hedefi **13–14.09.2026**; şartname son
-teslim **21.09.2026 – 17.00**.
+tazelenir. Takvim: dizgi **13.09.2026**, FDR teslim **14.09.2026**, uçuş **21.09.2026** (D-477).
 
 ⚠ **Bayat takvim ikizleri (ölçüm: `grep`, 13.09.2026).** Yukarıda üstü çizilen
 "17 Eylül dondurma → 18–20 Eylül dizgi" ifadesinin **dizgiye ait** ikizi iki
