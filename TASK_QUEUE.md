@@ -9762,3 +9762,8 @@ _(henüz yok)_
 - [x] **T263 — A6 telsiz ayarı** — GEÇTİ (D-478): p95 126,5 / 126,5 ms. Kapanış şartı: ayar ekran görüntüsü `FDR/A6_sik_mp_ekrani_ayar3.png` (İNSAN).
 - [x] **T264 — ECC kapalı ölçüm** — GEREKMEDİ (T263 yetti; ECC açık kalır).
 - [ ] **T270 — `scripts/sik_rf_olc.py` var olan `--cikti` dosyasının üzerine yazmasın** (`--uzerine-yaz` bayrağı yoksa çıkış 2) — amele, test + mutasyon. Taban ölçüm 3 kez ezildi (D-477/D-478).
+- [x] **T263 kapanış şartı sağlandı** — `FDR/A6_sik_mp_ekrani_ayar3.png`: geçiren ayar **Air Speed 128** (Max Window 131 değişmedi) — D-479.
+- [x] **T269 — takvim** — kaptan: değişiklik var, kanıt istenmeyecek (BEYAN, D-479).
+- [x] **T258 — 13 Eylül dökümü** — kaptan aldı, repoya istenmiyor (D-479).
+- [ ] **T267 — belgelerde 433 MHz → RFD900A 915–928 MHz** — düzenleyici kısım KAPANDI (kaptan: izin var, D-479); yalnız yazım düzeltmesi kaldı.
+- [ ] **T271 — A7 menzil, Air Speed 128 ayarıyla** — hava hızı 2× menzili kısaltır; 425,5 m gereksinimi bu ayarla ölçülmeli (İNSAN, uçuş günü).

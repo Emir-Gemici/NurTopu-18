@@ -124,7 +124,7 @@
   Seri payı hesapla ≈28 ms; kalan ≈200 ms radyonun kendi çizelgesi.
   **Eşik GEVŞETİLMEDİ.** Düzeltme sırası: T263 Air Speed ↑ → T264 ECC kapat → ancak yetmezse T265 tasarım değişikliği.
   **Kazanç:** "kullanılan veri hızı" artık gerçek RF'te ölçüldü (318,8–350,5 B/s); önceki 322,5 B/s radyosuz köprüydü → Y-3.3.4-M03 kapandı.
-  **⬆ SONRADAN (13 Eyl, D-478): telsiz ayarı düzeltildi → A6 GEÇTİ.** p95 **126,5 / 126,5 ms** < 250 / 200 ms, kayıp %0, veri hızı 322,0 / 401,9 B/s → `A6_sik_ikago_ayar2_GECTI.json`, `A6_sik_parasut_ayar2_GECTI.json`.
+  **⬆ SONRADAN (13 Eyl, D-478/D-479): Air Speed 64→128 (Max Window 131 değişmedi, `FDR/A6_sik_mp_ekrani_ayar3.png`) → A6 GEÇTİ.** p95 **126,5 / 126,5 ms** < 250 / 200 ms, kayıp %0, veri hızı 322,0 / 401,9 B/s → `A6_sik_ikago_ayar2_GECTI.json`, `A6_sik_parasut_ayar2_GECTI.json`.
 
 ### A7 — Menzil: SiK + MK15 video (açık alan varsa; yoksa ÖLÇÜLEMEDİ — sahada) · 25 dk
 - **Amaç:** SiK ve MK15 videonun görev için gereken mesafede çalışmasını göstermek.

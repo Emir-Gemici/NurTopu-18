@@ -30939,6 +30939,8 @@ UDP referans koşumu dâhil — radyonun payı yazılımdan ayrılabilsin diye).
 
 ### D-476 — 🔴 A6 GERÇEK RF ÖLÇÜMÜ **DÜŞTÜ**: RTT p95 265,2 / 229,6 ms, eşikler 250 / 200 ms. Kayıp %0, hat %95 boş → darboğaz **bant genişliği değil, SiK TDM dilim gecikmesi**. Eşik GEVŞETİLMEDİ.
 
+⬆ **SONRADAN DÜZELTİLDİ (D-479):** A6'yı geçiren ayar **Air Speed 64→128**'dir; Max Window **131'de kaldı** (`FDR/A6_sik_mp_ekrani_ayar3.png`). "RTT ≈ 2 × Max Window" açıklaması **çürütüldü**.
+
 **Ölçüm (13 Eylül, kullanıcı, gerçek 433 MHz çift, ham çıktı oturumda):**
 
 | kadans | p50 | **p95** | min | maks | eşik | kayıp | veri hızı | çıkış |
@@ -30999,6 +31001,8 @@ Olası nedenler (ölçülmedi): (a) iki telsizde Air Speed/Max Window farklı ka
 
 ### D-478 — ✅ A6 **GEÇTİ** (telsiz ayarı düzeltilince): RTT p95 **126,5 / 126,5 ms** < eşik 250 / 200 ms, kayıp %0 · Max Window teşhisi ölçümle doğrulandı · eşik gevşetilmedi · ⚠ D-477'deki "geri yüklendi" iddiası `parasut` için YANLIŞTI, düzeltildi
 
+⬆ **SONRADAN DÜZELTİLDİ (D-479):** A6'yı geçiren ayar **Air Speed 64→128**'dir; Max Window **131'de kaldı** (`FDR/A6_sik_mp_ekrani_ayar3.png`). "RTT ≈ 2 × Max Window" açıklaması **çürütüldü**.
+
 | koşum | ayar | kadans | p50 | **p95** | maks | kayıp | veri hızı | çıkış |
 |---|---|---|---|---|---|---|---|---|
 | 1 (D-476) | Max Window 131 · Air Speed 64 | 0,25 s | 208,3 | **265,2** | 273,3 | %0 | 318,8 B/s | 1 DÜŞTÜ |
@@ -31017,3 +31021,18 @@ Olası nedenler (ölçülmedi): (a) iki telsizde Air Speed/Max Window farklı ka
 
 **🔴 KANIT KAZASI VE DÜZELTMESİ (mimarın kusuru).** D-477 commit'i (4295e035) sırasında kaptan `parasut` koşumunu **eşzamanlı** çalıştırıyordu; mimarın `git checkout` ile geri yüklediği dosyanın üzerine koşum 2 yeniden yazdı ve **0 ACK'li sürüm commitlendi**. D-477 metnindeki "ikisi 4dda0a24'ten geri yüklendi" iddiası `parasut` için **yanlıştı** — mimar doğrulamadan yazdı. Ayrıca bu turun ilk betiği çöktüğü hâlde commit zinciri `&&` ile bağlanmadığı için 2b622a48 kayıtsız atıldı (D-470 örüntüsünün tekrarı). Düzeltme: geçerli sürüm `git show 4dda0a24:` ile geri alındı ve `ack_alinan == 200` **assert'le doğrulandı**; başarısız sürüm `A6_sik_parasut_mw33_as128_KAYIP.json`. Kanıt kaybı yok.
 **Yordam:** (1) kaptan ölçüm koşarken mimar aynı dizinde geri yükleme yapmaz; (2) geri yüklemeden sonra içerik assert'le doğrulanır; (3) T270 — `sik_rf_olc.py` var olan `--cikti` dosyasının üzerine `--uzerine-yaz` olmadan yazmasın (taban ölçüm 3 kez ezildi).
+
+### D-479 — 🔴 MİMARIN TEŞHİSİ ÇÜRÜTÜLDÜ: A6'yı geçiren **Air Speed 64→128**, Max Window **131'de kaldı** · frekans izni ve takvim değişikliği kaptanca teyit (BEYAN)
+
+**Kanıt:** `FDR/A6_sik_mp_ekrani_ayar3.png` (kaptan, 13 Eyl) — Local: RFD SiK 1.9 on RFD900A, FREQ_915 · **Air Speed 128** · **Max Window 131** · Net ID 73 · ECC açık · Tx 20 · 50 kanal · 915000–928000 kHz · RSSI L/R 219/221, gürültü 95/91, pkts 12728, txe=0 rxe=0 ecc=0/0. (Görüntüde yalnız Local sütunu var; bağlantı çalıştığı için Remote Air Speed de 128 olmak zorunda — eşleşmeyen Air Speed'de telsizler bağlanmaz, D-477 koşum 2.)
+
+**Ne çürütüldü:** D-476'da mimar "2 × Max Window (131) = 262 ms ↔ ölçülen p95 265,2" örtüşmesini **nedensellik** sandı ve HANDOFF §0.2'de çözümü Max Window'a bağladı; D-478'de de "Max Window teşhisi ölçümle doğrulandı, ön kayıtlı ~115 ms tahmini tuttu" diye yazdı. **İkisi de yanlış:** Max Window hiç değişmedi. 262 ↔ 265 **rastlantısal bir örtüşmeydi**. Bu, bu sprintte ölçümün mimarı çürüttüğü **dördüncü** vakadır (D-457, D-467, D-474, D-479).
+
+**Ne doğrulandı (asıl ön kayıt):** D-476 "DÜZELTME SIRASI" madde 1 — ölçümden ÖNCE yazıldı: *"TDM dilim süresi hava hızından türer; hızı 2× yapmak dilimi ≈yarıya indirir. Beklenti: p95 ≈110–140 ms."* Ölçülen: p95 265,2 → **126,5 ms**, oran **0,477** (≈ 1/2) — **aralığın içinde**. Doğru olan bu hipotezdi; mimar sonradan ekran görüntüsündeki 131'e bakıp kendi ilk hipotezini terk etmişti.
+
+**Bedel (ölçülmedi):** Air Speed 2× → alıcı duyarlılığı düşer, **menzil kısalır** (SiK belgesi). A7 menzil ölçümü (425,5 m gereksinim) bu ayarla yapılmalı; yapılmadıkça menzil **HESAP** kalır. Bağlantı kalitesi atölye mesafesinde temiz: RSSI 219/221 ≫ gürültü 95/91, hata sayaçları 0.
+
+**BEYAN'lar (kaptan, 13 Eyl):**
+- *"izin var"* → 915 MHz RFD900A ve MK15 5,8 GHz kullanımı organizasyonca **izinli**. D-445/HANDOFF §0.1b düzenleyici riski **kapandı (BEYAN)**. Kalan tek iş belgelerdeki 433 MHz yazımının düzeltilmesi (T267).
+- *"takvim değişikliği de var sen takma"* → FDR 14.09 / uçuş 21.09 **BEYAN** olarak geçerli; duyuru kanıtı istenmeyecek. T269 kapandı. `tests/test_fdr_takvim_kapisi.py` eski takvimi kilitlemeye devam ediyor — kaptan kararıyla dokunulmadı.
+- `MOT_THST_HOVER` bir sonraki uçuştan sonra okunacak; yeni parametre dökümü kaptan tarafından alındı, repoya istenmiyor (T258 kapandı).
