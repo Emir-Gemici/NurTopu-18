@@ -1,5 +1,5 @@
 {
-  "document_id": "FDR_YZLM_001H",
+  "document_id": "FDR_YZLM_002H",
   "pages": [
     [
       {
@@ -27,11 +27,11 @@
         "rows": [
           [
             "Belge kimliği",
-            "FDR_YZLM_001H"
+            "FDR_YZLM_002H"
           ],
           [
             "Sürüm ve tarih",
-            "01 / 14.09.2026"
+            "02 / 14.09.2026"
           ],
           [
             "Kapsam",
@@ -80,7 +80,11 @@
           ],
           [
             "6 Gereksinim İzlenebilirliği ve Değerlendirme",
-            "16-17"
+            "16"
+          ],
+          [
+            "7 Açık konular ve iyileştirme planı",
+            "17"
           ],
           [
             "Kaynaklar",
@@ -160,7 +164,7 @@
     [
       {
         "k": "h",
-        "s": "3.3.1 Nihai mimari ve entegrasyon"
+        "s": "3.3.1.1 Nihai mimari ve entegrasyon"
       },
       {
         "k": "p",
@@ -309,7 +313,7 @@
     [
       {
         "k": "h",
-        "s": "3.3.3 Simülasyon sonuçları"
+        "s": "3.3.3.2 Simülasyon sonuçları"
       },
       {
         "k": "p",
@@ -395,7 +399,7 @@
     [
       {
         "k": "h",
-        "s": "3.3.3 CAD ve video kanıtı"
+        "s": "3.3.3.3 CAD ve video kanıtı"
       },
       {
         "k": "p",
@@ -510,7 +514,7 @@
     [
       {
         "k": "h",
-        "s": "3.3.4.1 Geometri ve koordinat yönetimi"
+        "s": "3.3.4.2 Geometri ve koordinat yönetimi"
       },
       {
         "k": "p",
@@ -579,7 +583,7 @@
     [
       {
         "k": "h",
-        "s": "3.3.4.1 Görev izinleri ve İKA davranışı"
+        "s": "3.3.4.3 Görev izinleri ve İKA davranışı"
       },
       {
         "k": "p",
@@ -597,7 +601,7 @@
       },
       {
         "k": "cap",
-        "s": "Şekil 3.3.4.2. Yarışma kipinde hareket izinlerinin sırası."
+        "s": "Şekil 3.3.4.3. Yarışma kipinde hareket izinlerinin sırası."
       },
       {
         "k": "t",
@@ -644,7 +648,7 @@
     [
       {
         "k": "h",
-        "s": "3.3.4.2 Görüntü İşleme Başarımı"
+        "s": "3.3.4.4 Görüntü İşleme Başarımı"
       },
       {
         "k": "sub",
@@ -740,7 +744,7 @@
     [
       {
         "k": "h",
-        "s": "3.3.4.2 Doğruluk matrisi ve veri kapsamı"
+        "s": "3.3.4.5 Doğruluk matrisi ve veri kapsamı"
       },
       {
         "k": "p",
@@ -748,7 +752,7 @@
       },
       {
         "k": "cap",
-        "s": "Tablo 3.3.4.1. Piksel karışıklık matrisi; sütunlar yer gerçeğini, satırlar tahmini gösterir."
+        "s": "Tablo 3.3.4.5. Piksel karışıklık matrisi; sütunlar yer gerçeğini, satırlar tahmini gösterir."
       },
       {
         "k": "t",
@@ -839,7 +843,7 @@
     [
       {
         "k": "h",
-        "s": "3.3.4.2 Karar zinciri kabul sonuçları"
+        "s": "3.3.4.6 Karar zinciri kabul sonuçları"
       },
       {
         "k": "p",
@@ -912,7 +916,7 @@
       },
       {
         "k": "cap",
-        "s": "Tablo 3.3.4.2. Sentetik kabul sonuçları; on ölçütün kayıtlı sonucu geçti."
+        "s": "Tablo 3.3.4.6. Sentetik kabul sonuçları; on ölçütün kayıtlı sonucu geçti."
       },
       {
         "k": "p",
@@ -930,7 +934,7 @@
     [
       {
         "k": "h",
-        "s": "3.3.4.3 Haberleşme Paket Yapısı"
+        "s": "3.3.4.7 Haberleşme Paket Yapısı"
       },
       {
         "k": "p",
@@ -1001,7 +1005,7 @@
     [
       {
         "k": "h",
-        "s": "3.3.4.3 Veri hızı ve gecikme"
+        "s": "3.3.4.8 Veri hızı ve gecikme"
       },
       {
         "k": "p",
@@ -1374,7 +1378,7 @@
       },
       {
         "k": "note",
-        "s": "[11] NAVITAS. T243 paket boyutu ve gerçek UDP görev veri hızı ölçümü. 12 Eylül 2026. Kaynak: FDR Bölüm 3.3.4.3 ve bağlı ölçüm kaydı."
+        "s": "[11] NAVITAS. T243 paket boyutu ve gerçek UDP görev veri hızı ölçümü. 12 Eylül 2026. Kaynak: FDR Bölüm 3.3.4.8 ve bağlı ölçüm kaydı."
       },
       {
         "k": "note",

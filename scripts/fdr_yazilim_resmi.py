@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """NEDEN: FDR yazılım bölümünü DDR tipografisiyle, ölçüm sınırlarını koruyarak dizmek."""
 import json
+import re
 from pathlib import Path
 from xml.sax.saxutils import escape
 from reportlab.pdfgen import canvas
@@ -14,8 +15,8 @@ from reportlab.pdfbase.ttfonts import TTFont
 from pypdf import PdfReader
 
 ROOT=Path(__file__).resolve().parents[1]
-DATA=ROOT/'FDR/FDR_YZLM_001H_icerik.json'
-OUT=ROOT/'FDR/pdf/FDR_YZLM_001H.pdf'
+DATA=ROOT/'FDR/FDR_YZLM_002H_icerik.json'
+OUT=ROOT/'FDR/pdf/FDR_YZLM_002H.pdf'
 FONT=Path('/usr/share/fonts/google-carlito-fonts')
 for n,f in [('C','Carlito-Regular.ttf'),('CB','Carlito-Bold.ttf'),('CI','Carlito-Italic.ttf')]:
     pdfmetrics.registerFont(TTFont(n,str(FONT/f)))
@@ -32,8 +33,21 @@ ST={
 'head':ParagraphStyle('head',fontName='CB',fontSize=9.7,leading=12,textColor=colors.white),
 'cover':ParagraphStyle('cover',fontName='CB',fontSize=24,leading=29,spaceAfter=10),
 }
+CITE_RE=re.compile(r'\[(\d+(?:,\d+)*)\]')
+REF_LEAD_RE=re.compile(r'^\[(\d+)\]')
+def _supercite(t):
+    def repl(m):
+        return ''.join(f'<super><a href="#ref{n}" color="#2E5E88">[{n}]</a></super>' for n in m.group(1).split(','))
+    return CITE_RE.sub(repl,t)
 def p(s,style='p'):
-    return Paragraph(escape(s).replace('\n','<br/>'),ST[style])
+    t=escape(s)
+    lead=REF_LEAD_RE.match(s)
+    if lead and style=='note':
+        n=lead.group(1);tag=f'[{n}]'
+        t=f'<a name="ref{n}"/>{tag}{_supercite(t[len(tag):])}'
+    else:
+        t=_supercite(t)
+    return Paragraph(t.replace('\n','<br/>'),ST[style])
 
 class Chart(Flowable):
     def __init__(self,rows): self.rows=rows; self.width=CW; self.height=30+len(rows)*43
@@ -61,7 +75,9 @@ class Chain(Flowable):
                 c.line(CW/2-3,cy+3,CW/2,cy);c.line(CW/2+3,cy+3,CW/2,cy)
 
 class Architecture(Flowable):
-    width=CW;height=205
+    def __init__(self):
+        Flowable.__init__(self)
+        self.width=CW;self.height=205
     def draw(self):
         c=self.canv
         def box(x,y,w,h,title,desc):
@@ -104,7 +120,7 @@ class Pages(canvas.Canvas):
             self.__dict__.update(s)
             self.setFillColor(colors.black);self.setFont('CB',10);self.drawCentredString(W/2,H-35,'TASNİF DIŞI')
             self.setFont('C',9);self.drawCentredString(W/2,31,f'TASNİF DIŞI - Sayfa {self._pageNumber} / {total}')
-            self.setFont('C',8);self.drawString(M,18,'FDR_YZLM_001H');self.drawRightString(W-M,18,'14.09.2026')
+            self.setFont('C',8);self.drawString(M,18,'FDR_YZLM_002H');self.drawRightString(W-M,18,'14.09.2026')
             canvas.Canvas.showPage(self)
         canvas.Canvas.save(self)
 
