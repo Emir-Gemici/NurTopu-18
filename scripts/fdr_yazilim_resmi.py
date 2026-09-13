@@ -15,8 +15,8 @@ from reportlab.pdfbase.ttfonts import TTFont
 from pypdf import PdfReader
 
 ROOT=Path(__file__).resolve().parents[1]
-DATA=ROOT/'FDR/FDR_YZLM_002H_icerik.json'
-OUT=ROOT/'FDR/pdf/FDR_YZLM_002H.pdf'
+DATA=ROOT/'FDR/FDR_YZLM_003H_icerik.json'
+OUT=ROOT/'FDR/pdf/FDR_YZLM_003H.pdf'
 FONT=Path('/usr/share/fonts/google-carlito-fonts')
 for n,f in [('C','Carlito-Regular.ttf'),('CB','Carlito-Bold.ttf'),('CI','Carlito-Italic.ttf')]:
     pdfmetrics.registerFont(TTFont(n,str(FONT/f)))
@@ -120,7 +120,7 @@ class Pages(canvas.Canvas):
             self.__dict__.update(s)
             self.setFillColor(colors.black);self.setFont('CB',10);self.drawCentredString(W/2,H-35,'TASNİF DIŞI')
             self.setFont('C',9);self.drawCentredString(W/2,31,f'TASNİF DIŞI - Sayfa {self._pageNumber} / {total}')
-            self.setFont('C',8);self.drawString(M,18,'FDR_YZLM_002H');self.drawRightString(W-M,18,'14.09.2026')
+            self.setFont('C',8);self.drawString(M,18,'FDR_YZLM_003H');self.drawRightString(W-M,18,'14.09.2026')
             canvas.Canvas.showPage(self)
         canvas.Canvas.save(self)
 
