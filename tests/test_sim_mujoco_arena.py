@@ -40,7 +40,8 @@ T212_SHA_1_KOLAY = "941c7b84d490422883afaa39868e4a2604a330bd8b372d1680352bb5e5e5
 # bunu bayt-eş üretir (10 Eyl ölçümü: difflib, T212 XML'inden yalnız o 4 satır farklı). 1 kolay'da T212
 # yerleşimi payı zaten sağlıyordu (en küçük açıklık 2,748 m, ret yok) → kilit listesindeki 1_kolay sha'sı
 # da budur; yerleşimin gerçekten değiştiği harita 3 orta'dır (pay=0 ↔ kilit sha farkı orada denetlenir).
-PAY0_SHA_1_KOLAY = "d2c3127b305f00630fda7bd26b1198028bf3bd920dd395435e27b21df57a2f44"
+# D-472 olculen iz genisligi 0.4595; XML farki yalniz IKA teker body_pos (eski d2c3127b…, 13 Eyl).
+PAY0_SHA_1_KOLAY = "16ff6526da3145d05d1b92fc9caf009037850825c5375e48a95294a2bf8b7189"
 
 
 class Determinizm(unittest.TestCase):
