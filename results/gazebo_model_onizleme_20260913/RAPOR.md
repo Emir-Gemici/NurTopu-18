@@ -48,7 +48,16 @@ headless Gazebo11 render'ı üretildi — bu bir sahte/sentetik görüntü deği
 
 Bu üç paketin URDF/STL/CSV'leri SolidWorks'ten **dışa aktarılmış türev**
 dosyalar — orijinal `.SLDASM`/`.SLDPRT` değil. Native SolidWorks dosyalarını
-CAD çekirdeği olmadan (bu ortamda yok) açamıyorum. Kullanıcı bu üç modelin
-SolidWorks çizimlerini bir Drive'a eklerse, PDF/resim/STEP-görsel export
-formatındaysa okuyabilirim; ham `.SLDASM`/`.SLDPRT` ise sadece dosya
-üzerinden değer okuyamam, PDF/resim çıktısı gerekir.
+CAD çekirdeği olmadan (bu ortamda yok) açamıyorum. Kullanıcı Drive klasörünü
+paylaştı (native `.SLDASM`/`.SLDPRT`/`.STEP` dosyaları + parça listesi
+`.xlsx`/`.xlsm` dosyaları) — CAD dosyalarını hâlâ açamıyorum ama parça/malzeme
+listeleri düz veri (xlsx/xlsm), onları okuyup İKA kütle iddiasını bağımsız
+doğruladım (bkz D-478):
+
+- `İKA/IKA_Sase_Malzemeleri.xlsx` (şasi/mekanik parça listesi): toplam
+  **5617,4 gram**.
+- `İKA/ika.xlsm` (elektronik/aviyonik liste): toplam **3,784 kg**.
+- **Toplam = 9,4014 kg** — D-458'in bahsettiği DDR 9,4 kg ile tam örtüşüyor.
+- URDF'nin "her tekerlek 9,308 kg" iddiası bu ışıkta **sayısal olarak
+  imkânsız** (tek tekerlek ≈ aracın tamamı kadar ağır çıkıyor). D-478'e
+  işlendi, T239 hâlâ açık (gerçek tekerlek kütlesi hâlâ ölçülmeli).

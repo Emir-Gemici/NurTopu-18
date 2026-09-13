@@ -31053,3 +31053,29 @@ güçlendi).
 
 **Genel kapı:** dokunulmadı (yalnız yeni model dosyaları + render kanıtı eklendi, üretim
 kodu değişmedi) — `codes/test_rota_sentetik.py` bu oturumda koşulmadı, ilgisiz.
+
+
+---
+
+### D-478 — İKA'nın URDF kütle kusuru (D-458) resmî parça/malzeme listeleriyle SAYISAL olarak da doğrulandı — "her tekerlek 9,308 kg" DDR toplamına neredeyse eşit
+
+**Tarih:** 13 Eylül 2026 · Mimar oturumu (Claude), kullanıcının Drive klasörü
+(`İKA/IKA_Sase_Malzemeleri.xlsx`, `İKA/ika.xlsm`) üzerinden.
+
+**Kanıt (kullanıcının kendi resmî parça listelerinden, tahmin değil):**
+- `IKA_Sase_Malzemeleri.xlsx` — İKA şasi/mekanik parçalarının tam malzeme listesi,
+  toplam: **5617,4 gram** (yalnızca şasi: profil, saclar, tekerlek/jant, cıvata vb.).
+- `ika.xlsm` — İKA elektronik/aviyonik bileşen listesi, toplam: **3,784 kg**.
+- **Toplam araç kütlesi (şasi + elektronik) = 5,6174 + 3,784 = 9,4014 kg** — D-458'in
+  bahsettiği "DDR 9,4 kg" rakamıyla **tam örtüşüyor** (bağımsız iki kaynaktan toplanarak).
+
+**Sonuç:** URDF'nin "`base_link` VE 4 tekerin HER BİRİ 9,308 kg" iddiası artık yalnız
+"mantıksız görünüyor" değil, **sayısal olarak imkânsız** — tek bir tekerleğin kütlesi
+neredeyse **aracın tamamının** resmî toplam kütlesine eşit çıkıyor. D-458/T239'un
+"değer kanıt sayılmaz" hükmü bu rakamla da doğrulanıyor.
+
+**Not:** Bu, T239'un (fiziksel/SolidWorks ölçüm) yerine geçmez — gerçek tekerlek kütlesi
+hâlâ ayrıca ölçülmeli (URDF'nin kütle dağıtımı NASIL bozulduğunu göstermiyor, sadece
+toplamın yanlış olduğunu kanıtlıyor). CONTRACTS değişmedi.
+
+**Genel kapı:** dokunulmadı (yalnız analiz, kod değişmedi).
