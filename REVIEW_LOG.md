@@ -31115,3 +31115,36 @@ vs. fiziksel değer).
 **Genel kapı:** dokunulmadı (yalnız isim/yol değişikliği, `codes/` altına dokunulmadı).
 
 **T261 → KAPANDI.**
+
+
+---
+
+### D-480 — İKA'nın GERÇEK tartılmış toplam kütlesi: **7,56 kg** — DDR/BOM tahmini (9,40 kg) %19,6 fazla tahminmiş; URDF'nin "tekerlek 9,308 kg" iddiası artık aracın TAMAMINDAN bile ağır
+
+**Tarih:** 13 Eylül 2026 · Mimar oturumu (Claude), ekip içi yazışmadan (kullanıcı aktardı).
+
+**Kanıt:** Ekip yazışmasında bildirilen fiziksel tartım (gerçek kartopu/skala ölçümü,
+kâğıt üstü hesap değil): **İKA'nın tüm aracının toplamı 7,56 kg.**
+
+**Karşılaştırma:**
+- URDF kusuru (D-458/D-478): tek bir tekerlek **9,308 kg** iddia ediyor — bu artık
+  yalnız "DDR'nin (9,40 kg) neredeyse tamamı" değil, **gerçek aracın tamamından
+  (7,56 kg) bile ağır bir tekerlek** iddiası. Fiziksel olarak daha da imkânsız.
+- DDR/BOM kâğıt tahmini (D-478): şasi 5,6174 kg + elektronik 3,784 kg = **9,4014 kg**.
+  Gerçek tartım **7,56 kg** — kâğıt tahmininden **1,84 kg (%19,6) daha hafif** çıktı
+  (muhtemelen BOM'daki bağlantı elemanı/cıvata sayıları veya malzeme kalınlığı
+  tahmini fazla; ya da bazı BOM kalemleri henüz monte edilmemişti).
+
+**Etki:** `simulation/mujoco/araclar.py` ve `BOLUM_3` §3.3.3.1 tablosu İKA fizik
+gövdesi için **9,40 kg DDR TAHMİN** kullanıyor — artık elde **gerçek ölçüm (7,56 kg)**
+var. CONTRACTS'ta ayrı bir İKA kütle sabiti yok (yalnız teker yarıçapı/iz genişliği/hız),
+o yüzden bu bir CONTRACTS ihlali değil — ama MuJoCo fizik girdisini güncellemek isteyen
+olursa kaynak burada. **Bilerek değiştirilmedi**: 9,40 kg'lı 105 koşum zaten ön kayıtlı
+eşiklerle GEÇTİ/DÜŞTÜ diye kayda geçmiş (§3.3.3, ON_KAYIT H1); teslime (14 Eylül 17.00)
+bu kadar yakın fizik girdisini değiştirip yeniden koşmak yeni bir risk açar — **karar
+mimara/kullanıcıya bırakıldı, tek taraflı değiştirilmedi.**
+
+**T239 kapsamı dışı** (iz genişliği + teker çapı ölçümü, kütle değil) ama aynı "İKA
+URDF/DDR değerleri şüpheli" hattını güçlendiriyor — T239 açık kalır.
+
+**Genel kapı:** dokunulmadı (yalnız analiz/kayıt, kod değişmedi).
