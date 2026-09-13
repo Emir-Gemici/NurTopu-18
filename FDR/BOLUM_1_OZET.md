@@ -343,6 +343,8 @@ değişikliği.
 ölçülmüştür**: **318,8–350,5 B/s**. Önceki 322,5 B/s **radyosuz köprü** ölçümüydü; ikisi %1–9
 içinde örtüşüyor, yani köprü ölçümü gerçeğe yakın çıktı.
 
+**⬆ SONRADAN (13 Eyl, D-478/D-479): A6 GEÇTİ.** Telsiz Air Speed 64→128 (Max Window 131 değişmedi, `FDR/A6_sik_mp_ekrani_ayar3.png`) → RTT p95 **126,5 / 126,5 ms** < eşik 250 / 200 ms, kayıp %0 (400/400 ACK), veri hızı **322,0 / 401,9 B/s** (`results/atolye_20260912/A6_sik_ikago_ayar2_GECTI.json`, `A6_sik_parasut_ayar2_GECTI.json`). Eşikler gevşetilmedi. Bedel: hava hızı 2× menzili kısaltır; A7 menzil **ölçülmedi** (T271).
+
 ⚠ **Bu ölçüm, daha önce bu raporda duran "RTT ≈ 112–157 ms (HESAP)" sayısını da çürütmüştür:**
 hesap **SiK TDM çerçeve payını hariç tutuyordu** ve darbogazın tam da o olduğu ölçüldü. HESAP
 kaldırılmadı, üstü çizilerek ölçülen değerle değiştirildi.
@@ -607,6 +609,8 @@ D-476). Eşik **gevşetilmedi**; düzeltme sırası T263 → T264 → T265. Daha
 **Menzil (A7) hâlâ ÖLÇÜLEMEDİ.**
 Bu rapor üçünü de bugün ölçülmüş gibi göstermez: (a) ve (c) **ÖLÇÜM**dür — (c) geçmedi ve öyle
 yazıldı —, (b) **HESAP** etiketiyle durur.
+
+**⬆ SONRADAN (13 Eyl, D-478/D-479): A6 GEÇTİ.** Telsiz Air Speed 64→128 (Max Window 131 değişmedi, `FDR/A6_sik_mp_ekrani_ayar3.png`) → RTT p95 **126,5 / 126,5 ms** < eşik 250 / 200 ms, kayıp %0 (400/400 ACK), veri hızı **322,0 / 401,9 B/s** (`results/atolye_20260912/A6_sik_ikago_ayar2_GECTI.json`, `A6_sik_parasut_ayar2_GECTI.json`). Eşikler gevşetilmedi. Bedel: hava hızı 2× menzili kısaltır; A7 menzil **ölçülmedi** (T271).
 
 ### Y-1-M10 — Görev gereksinimlerini karşılama düzeyi analizi, tasarım doğrulama süreci özeti ve teknik olgunluk kanıtı
 

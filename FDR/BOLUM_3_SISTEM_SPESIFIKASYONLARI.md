@@ -266,7 +266,7 @@ Kaynak: kullanıcı beyanı 3 Eylül 2026, `SAHA_HAZIRLIK_PLANI_20260903.md` §0
 | Telemetri | **2 × ~~SiK 433 MHz~~ RFD900A 915–928 MHz** (drone + YKS) | kutuda |
 | Görev bilgisayarı | ~~**Jetson Nano 4GB** (JetPack 4.6.x)~~ → **Jetson Orin Nano Developer Kit 4 GB** (JetPack 7.2.1, Ubuntu 24.04, Python 3.12; 3 Eylül beyanı 'Nano 4GB' 6 Eylül'de kartla YANLIŞLANDI — D-431) | **kuruldu 6 Eylül** — genel kapı 15/15 · 15/15, FPS kapısı GEÇTİ; araca takılmadı, Pixhawk/kamera bağlı değil — §3.3.1.1.12 |
 | Kamera | **Raspberry Pi HQ (IMX477, CSI)**, standart lens | kutuda |
-| Pil / şarj | **1 × 4S 10 Ah 25C** · iMAX B6 (50 W → ~3 A → ~3 saat dolum) | **günde en çok 2 uçuş** |
+| Pil / şarj | ~~1 × 4S 10 Ah 25C~~ **1 × 3S 6000 mAh** (D-474) · iMAX B6 (50 W → ~3 A → ~3 saat dolum) | **günde en çok 2 uçuş** |
 | Güç kesme | anahtar yok — **pil fişi çekilir** (XT60/XT90) | yordam: pervane en son, pil en son |
 
 ~~**Elektriksel kaba hesap (beyan, ölçüm değil):** 4S'te asılı uçuşta yaklaşık 10–12 A/motor, tepe 30+ A/motor. PM02'nin sürekli akım sınırı nedeniyle **sürekli tam gaz yapılmaz**. Bu satır bir **tahmindir**; gerçek akım 5 Eylül'de PM02'nin kendi telemetrisiyle ölçülecektir.~~
@@ -357,7 +357,7 @@ REDDEDİLİR).
 | titreşim (`VIBE`) | **ÖLÇÜLEMEDİ** — ölçüt uçuşta `VIBE` < 30 |
 | pusula ofseti | **ÖLÇÜLEMEDİ** — ölçüt < 300 |
 | itki / asılı kalma akımı | **ÖLÇÜLEMEDİ** — PM02 telemetrisiyle ölçülecek (kutudan PM06 çıktı, D-426 §3); veri sayfası tabanlı bütçe §3.2.1.1.1 (7 Eylül, D-435 — motor X2220 980KV V3, BEYAN) |
-| uçuş süresi (4S 10 Ah ile) | **ÖLÇÜLEMEDİ** — hesap yapılmadı, tahmin yazılmaz |
+| uçuş süresi (~~4S 10 Ah~~ 3S 6000 mAh ile) | **ÖLÇÜLEMEDİ** — hesap yapılmadı, tahmin yazılmaz |
 
 
 #### 3.2.1.4 Yapısal Tasarım süreçleri kapsamında (`Y-3.2.1-T01` … `Y-3.2.1-T18`)
@@ -621,7 +621,7 @@ sırasında `OPEN_ROUTE`, `IKA_GO`'dan **önce** gelir, yani YKS adresi `IKA_GO`
 ##### 3.3.1.1.7 Güç ve sinyal topolojisi
 
 ```
-  4S 10Ah LiPo
+  3S 6000mAh LiPo
       │ XT60/XT90  (tek güç kesici: fiş)
       ▼
    ┌────────┐   6-pin    ┌──────────────┐
@@ -1220,7 +1220,7 @@ Sorumlu rol: **R3 Aviyonik sorumlusu**.
 > karşılaştırılmalıdır."*
 
 **ÖLÇÜLEMEDİ:** Tam yükte ölçülen akım, asılı kalma akımı, tepe akım ve bunların
-**4S 10 Ah** batarya kapasitesiyle uyumu. Ölçüm kaynağı hazırdır — PM02 güç modülü
+~~4S 10 Ah~~ **3S 6000 mAh** batarya kapasitesiyle uyumu. Ölçüm kaynağı hazırdır — PM02 güç modülü
 fabrika kalibreli V/I telemetrisi verir ve `BATT_MONITOR=4` şablonda yazılıdır
 (§3.3.1.1.11) — ama kart kutudadır. Kapanma: 5 Eylül montajı ve ilk hover.
 `ÖLÇÜLEMEDİ ≠ GEÇTİ`.
@@ -2782,7 +2782,7 @@ BEYAN GEREKLI (insan): Kalkis kutlesi, agirlik merkezi ve her parcanin gercek
   tarti degerleri (5 Eylul montaj, SAHA_HAZIRLIK_PLANI §2.1).
 
 BEYAN GEREKLI (insan): PM02 telemetrisinden okunan asili kalma akimi, tepe akim
-  ve olculen ucus suresi (4S 10 Ah pil ile).
+  ve olculen ucus suresi (3S 6000 mAh pil ile).
 
 BEYAN GEREKLI (insan): Kamera yatay FOV'unun `kamera_dogrula` ile OLCULEN degeri
   (bugun 55-63 derece bir LENS HESABIDIR, olcum degildir) ve 30 m irtifada
@@ -3052,4 +3052,4 @@ Bölümde geçen her sayının kaynağı. Biçim: **değer** · *dosya yolu* · 
 | Kuru koşu 4 Eylül: 9 GEÇTİ · 0 DÜŞTÜ · 1 SAHİPSİZ (`motor` — gerçek motor sürücüsü yok; diyagram (e) S1) | `results/saha_kuru_kosu_20260904_095222/ozet.json:263-265, 284-286` | `scripts/saha_kuru_kosu.py` (dizin adı kalıbı; ozet.json üretici alanı taşımıyor) | 2026-09-04 09:52:22 |
 | İKA bağlantı şeması: 16 hat · ölçülmüş 0 · kesik 16 ("DDR tasarımı, tedarik yok"); DDR içi çelişki 5 (K06/K07/K12/K13 + kart adı) | `FDR/sekiller/ika_baglanti.svg` · `FDR/sekiller/ika_baglanti_kaynaklar.md` | `scripts/fdr_ika_baglanti_svg.py` (kaynak `rapor/*.docx`, python-docx okuması + görsel bakış) · nöbetçi `tests/test_gece_ika_baglanti_semasi.py` | 2026-09-10 |
 | İKA sürücü kabul turu K1–K6 **6/6 GEÇTİ** (sahte sürücü, exit 0) · gazebo `gz` yok → K1/K3/K4/K6 DÜŞTÜ (exit 1) · gerçek → DONANIM_YOK (exit 2) | `results/fdr_sprint_20260910/H3/ika_surucu_kabul_sahte.txt` + `.json` · `ika_surucu_kabul_gazebo_gz_yok.txt` · `ika_surucu_kabul_gercek_donanim_yok.txt` | `scripts/ika_surucu_kabul.py --surucu sahte` / `gazebo` / `gercek` | 2026-09-10 |
-| İKA hattı yazılım ölçümü: UDP loopback RTT p50 0,27 / p95 0,38 ms · kayıp %0 · 200/200 ACK · 4,01 pkt/s · 322,5 B/s; TCP-seri köprüsü p50 1,33 / p95 1,83 ms; RF ÖLÇÜLEMEDİ | `results/fdr_sprint_20260910/H2/ozet.json` | `scripts/sik_rf_olc.py` (T216) | 2026-09-10 01:52 |
+| İKA hattı yazılım ölçümü: UDP loopback RTT p50 0,27 / p95 0,38 ms · kayıp %0 · 200/200 ACK · 4,01 pkt/s · 322,5 B/s; TCP-seri köprüsü p50 1,33 / p95 1,83 ms; ~~RF ÖLÇÜLEMEDİ~~ **RF 13 Eyl: p95 126,5 ms, %0, 322,0 B/s (A6 GEÇTİ, D-478)** | `results/fdr_sprint_20260910/H2/ozet.json` | `scripts/sik_rf_olc.py` (T216) | 2026-09-10 01:52 |

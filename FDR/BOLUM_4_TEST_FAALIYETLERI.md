@@ -465,7 +465,7 @@ değişimi, ESC/pervane/kol kontrolü) ve D-429 §6 rampa kuralıdır (`MOT_SLEW
 | 3.5 | Sıkı prova: kapalı kutudan, kronometre, hands-off | **0 müdahale** | YAPILMADI |
 | 3.6 | Sürüm dondurma (türev kaydı → commit → `--dondur` → künye commit) | künye repoda, `--dogrula` **0** | YAPILMADI (4 Eylül `--dogrula`: `DONDURULMADI`, §4.14 #58) |
 
-⚠ **Tek pil (4S 10 Ah) + iMAX B6 ⇒ günde en fazla 2 uçuş.** Bu, prova sayısının
+⚠ **Tek pil (~~4S 10 Ah~~ 3S 6000 mAh, D-474) + iMAX B6 ⇒ günde en fazla 2 uçuş.** Bu, prova sayısının
 en sert kısıtıdır ve planın kendisinde yazılıdır.
 
 ### 4.3.4 Detaylı test zaman bütçe planlaması

@@ -268,7 +268,7 @@ Aşağıdaki kalemler 4 Eylül'e kadar alınacaktır; her satırın **teknik ger
 | D6 | **Yedek pervane seti (~~12×10~~ → 10×4,5 / 1045, CW+CCW — 7 Eylül beyanı, D-435)** | zorunlu | ilk uçuşlarda en sık kırılan parça | BEYAN GEREKLİ | BEYAN GEREKLİ |
 | D7 | Küçük ekran + klavye + ethernet kablosu | zorunlu | Nano ilk açılış | BEYAN GEREKLİ | BEYAN GEREKLİ |
 | D8 | Multimetre, tartı, baret/yelek | zorunlu | kablolama kontrolü, **UHDR kütle ölçümü**, saha emniyeti | BEYAN GEREKLİ | BEYAN GEREKLİ |
-| D9 | 2. pil 4S 10 Ah + ≥ 150 W şarj | öneri | tek pil günde 2 uçuşa kilitliyor; prova sayısını ikiye katlar | BEYAN GEREKLİ | BEYAN GEREKLİ |
+| D9 | 2. pil ~~4S 10 Ah~~ 3S 6000 mAh + ≥ 150 W şarj | öneri | tek pil günde 2 uçuşa kilitliyor; prova sayısını ikiye katlar | BEYAN GEREKLİ | BEYAN GEREKLİ |
 | ~~D10~~ | ~~JetPack 4.6 / Py3.8 **GPU torch** tekerleği (indirme)~~ → gereksiz: kart Orin Nano (JetPack 7.2.1), GPU torch 2.11.0+cu130 kartta kuruldu, FPS kapısı GEÇTİ (D-431) | — | 6 Eylül düzeltmesi | 0 (indirme gerekmedi) | 0 |
 | ~~D11~~ | ~~JetPack 4.6.x SD imajı (indirme)~~ → gereksiz: kart JetPack 7.2.1 kurulu, NVMe kök ile geldi (D-431) | — | 6 Eylül düzeltmesi | 0 (indirme gerekmedi) | 0 |
 | D12 | Taşınabilir bellek (≥ 2 GB boş) | zorunlu | saha paketi **1,27 GB** kopyalanacak | BEYAN GEREKLİ | BEYAN GEREKLİ |
@@ -375,7 +375,7 @@ kayıtlı değildir**; DDR'de kalem listesi ve ağırlıklar var, fiyat yok. Bu 
 | 8 | RC alıcı | TBS Crossfire Nano RX | BEYAN GEREKLİ | FlySky FS-i6 + FS-iA6B (A15) | BEYAN GEREKLİ | HESAPLANAMAZ | azaltıcı | S2 |
 | 9 | Motor | SunnySky X2216 ×2 | BEYAN GEREKLİ | ~~5008 340KV ×4~~ → SunnySky X2220 980KV V3 ×4 (A8; (7 Eylül beyanı, D-435); 5008 iadesi BEYAN GEREKLİ) | BEYAN GEREKLİ | HESAPLANAMAZ | ~~artırıcı~~ → yön BEYAN GEREKLİ | S1 |
 | 10 | Servo (kanat/kuyruk) | EMAX ES08MA II ×4 | BEYAN GEREKLİ | alınmadı — ertelendi (E8) | 0 (harcanmadı) | HESAPLANAMAZ | ertelendi | S1 |
-| 11 | Pil | 4S 14–15 Ah Li-ion | BEYAN GEREKLİ | 4S 10 Ah 25C LiPo (A21) | BEYAN GEREKLİ | HESAPLANAMAZ | azaltıcı | S1/S2 |
+| 11 | Pil | 4S 14–15 Ah Li-ion | BEYAN GEREKLİ | ~~4S 10 Ah 25C LiPo~~ 3S 6000 mAh (A21) | BEYAN GEREKLİ | HESAPLANAMAZ | azaltıcı | S1/S2 |
 | 12 | Paraşüt | Opale Rescue 2,5 m² | BEYAN GEREKLİ | alınmadı — ertelendi (E3) | 0 (harcanmadı) | HESAPLANAMAZ | ertelendi | S1 |
 | 13 | Paraşüt pod | Rescue Pod | BEYAN GEREKLİ | alınmadı — ertelendi (E3) | 0 (harcanmadı) | HESAPLANAMAZ | ertelendi | S1 |
 | 14 | Paraşüt servo | EMAX ES08MA II | BEYAN GEREKLİ | alınmadı — ertelendi (E3) | 0 (harcanmadı) | HESAPLANAMAZ | ertelendi | S1 |
@@ -526,7 +526,7 @@ BEYAN GEREKLİ, ama **kalemler bugünden bellidir** — sahada karar verilecek b
 |---|---|---|---|
 | ~~**FPS < 0,61** (Nano CPU'da YOLOv8m)~~ → **6 Eylül ÖLÇÜLDÜ, GEÇTİ (D-431):** kart zaten Orin Nano Developer Kit 4 GB; GPU ile pt **1,35/1,06** · engine **1,58/1,33** FPS ≥ 0,61 | Gerçek zamanlı tespit tazelik penceresine sığmaz | (a) ONNX Runtime bu kartta GPU'da **çalışmadı** (sm_87 çekirdeği yok); (b) daha güçlü kart **gerekmedi** — satın alma yok | ~~yüksek~~ **kapandı** (6 Eylül) |
 | **CSI kamera yolu açılmaz** | Görüntü hiç gelmez | **USB webcam** (D4, zaten listede) | orta — ucuz sigorta |
-| **Tek pil / 3 saat şarj** | Uçuş günü 2 uçuşla sınırlı; prova sayısı yetmez | **2. pil 4S 10 Ah + ≥ 150 W şarj** (D9) | orta |
+| **Tek pil / 3 saat şarj** | Uçuş günü 2 uçuşla sınırlı; prova sayısı yetmez | **2. pil ~~4S 10 Ah~~ 3S 6000 mAh + ≥ 150 W şarj** (D9) | orta |
 | **Pervane kırılması** | Uçuş günü iptal | **Yedek pervane seti** (D6, zaten listede) | yüksek — en sık kırılan parça |
 | **PM06 sürekli akım sınırı** (plan PM02; 5 Eylül kutudan PM06 çıktı, D-426 §3 — sınır değeri etiketten BEYAN GEREKLİ) | Sürekli tam gazda güç modülü zorlanır | Uçuş profili kısıtı (bedelsiz); gerekirse **ayrı akım sensörü** | düşük |
 | **`.engine` derlenemiyor** | Hızlandırma yok — FPS riski (yukarıdaki satırla aynı kök) | — (yazılım çözümü aranır) | — |
