@@ -8,8 +8,19 @@
 > (Kaynak: `results/fdr_sablon/fdr_yonerge_metin.txt`, Bölüm 2 girişi.)
 
 > **Takım:** Navitas Autonomous Systems · **Takım ID:** 997827 · **Başvuru no:** 5329027
-> *(Kaynak: `navitas-teknofest/references/ddr_requirements.md` — DDR döneminde yazıldı.
-> **DOĞRULANACAK:** KYS kaydıyla teyit edilmeden bu üç alan rapora nihai sayılmaz.)*
+> *(Kaynak: `navitas-teknofest/references/ddr_requirements.md:9-10` — DDR döneminde yazıldı.
+> **Kanıt sınıfı: BEYAN (DDR dönemi, 2026-07).** Üç alanın tek bağımsız kaynağı KYS takım
+> kaydıdır. Depo ölçümü (13 Eylül 2026):
+> `grep -rl "997827\|5329027" --include=*.md . | grep -v "^\./\.claude/"` → **8 dosya**
+> (ham çıktı: `FDR/ACIK_KALEMLER_HAM.md` · `FDR/BOLUM_0_KAPAK_VERSIYON_TANIMLAR.md` ·
+> `FDR/BOLUM_2_ORGANIZASYON_VE_TAKVIM.md` · `navitas-teknofest/references/ddr_requirements.md` ·
+> `navitas-teknofest/SKILL.md` · `OGREN_ADIYAMAN/13_FDR_HARITASI.md` ·
+> `OGREN_ADIYAMAN/ozet/C_fdr_spec.md` · `OGREN_ADIYAMAN/ozet/D_fdr_test_izlenebilirlik.md`).
+> ⚠ `.claude/worktrees/` **hariç tutulmuştur** (çalışma ağacı kopyaları); filtresiz komut 236 satır
+> döner — filtre olmadan sayı yeniden üretilemez. Sekiz dosyanın hepsi tek köke,
+> `ddr_requirements.md`'ye çıkar; bağımsız KYS artefaktı depoda **yok**, bu yüzden depodan
+> **türetilemez**. **Planlanan teyit:** KYS takım sayfası ekran dökümü, **14 Eylül 2026**
+> (FDR teslimi) öncesi; geldiğinde kanıt sınıfı BEYAN → ÖLÇÜM olur ve bu not düşer.)*
 >
 > **Bu bölümün yazım kuralı.** Aşağıdaki her tarih ve her sayı bir artefakttan gelir;
 > satırın sonunda hangi dosyadan ve hangi komutla çıkarıldığı yazılıdır (bölüm sonundaki
@@ -46,7 +57,7 @@ rapordaki her takvim satırı hangi araca ait olduğu belirtilerek yazılmışt�
 | Şartname dayanağı | §5.3.2 — *"çoklu rotorlu ve dikey iniş-kalkış yapabilen bir insansız hava aracı (Drone)"* | §6 — *"sabit kanatlı insansız hava aracı (İHA) konfigürasyonunda olması zorunludur"* |
 | Konfigürasyon | Quadcopter, 3B baskı gövde | Sabit kanat + mancınık fırlatma + paraşütle iniş + İKA |
 | Görev | 20×20 m simüle alanda ≥ 30 m irtifadan açık güzergâh tespiti, YKS'ye canlı aktarım, ≤ 10 dk | Tam görev zinciri (fırlatma → tespit → aktarım → paraşüt → İKA → hedef bölge) |
-| Bu raporda durumu | Gövde basıldı ve monte edildi; aviyonik montajı **5 Eylül 2026**'da yapılacak | **Üretilmedi.** Tasarım DDR'de sunuldu; üretim dalgası 21 Eylül sonrası (bkz. Bölüm 5 §5.2.10) |
+| Bu raporda durumu | **Gövde basıldı, aviyonik monte edildi, kalibre edildi ve araç havalandı.** ~~aviyonik montajı 5 Eylül 2026'da yapılacak~~ → montaj 5–6 Eylül'de yapıldı (D-426), ilk askı **12 Eylül 2026** (A12: ~3 m'de ~15 s askı + **kodla** LAND — **BEYAN**, ham dosya yok). 🔴 **A12 kabul kapısı AÇIK, geçilmedi:** ön kayıt 1–2 m'de **≥ 30 s** askı istiyordu (`ATOLYE_TEST_GUNU_20260912.md:193`), fiilen 3 m'de 15 s; `MOT_THST_HOVER` hâlâ **0,35 fabrika** (`emir.param:580`, `MOT_HOVER_LEARN=2` açık olmasına rağmen öğrenmemiş) ⇒ **itki payı ÖLÇÜLMEDİ** (D-474 §4); VIBE ve askı akımı **ÖLÇÜLMEDİ** (`.bin` çekilmedi, T257); bağlayıcı ön koşul **A13 yapılmadı** (D-473). **ÖLÇÜM (kümülatif — tek güne atfedilemez):** `config/pixhawk/emir.param:980` `STAT_FLTTIME` = **273 s** (4 dk 33 sn); önceki sıfır okuması `config/pixhawk/mevcut.param:980` (6 Eyl **20:22**). Bu pencere 6 Eylül **20:45–21:34**'teki 26 arm / 3 devrilmeyi (D-429) **de** içerir ⇒ 273 s **6 ve 12 Eylül'ün toplamıdır**; 12 Eylül'e düşen pay **ÖLÇÜLEMEDİ**. `STAT_BOOTCNT` 48 → 96. Dökümün kanıtladığı tek şey: 6 Eyl 20:22'den sonra kartta 4 dk 33 sn uçuş/arm süresi **birikmiştir** — A12'nin süresi, irtifası ve başarısı bu sayıdan çıkarılamaz ve **BEYAN** kalır (T257). ✅ Kalibrasyon kanıtlı: `COMPASS_OFS/DIA/ODI`, `INS_ACC*`, `INS_GYR*` 6 Eylül dökümüne göre değişmiş | **Üretilmedi.** Tasarım DDR'de sunuldu; üretim dalgası 21 Eylül sonrası (bkz. Bölüm 5 §5.2.10) |
 | Ağırlık limiti | — (§5.3.2 limit koymuyor) | İHA ≤ 25 kg (yükler dâhil), İKA ≤ 10 kg (yük hariç) — §6 |
 
 ⚠ **Bu ayrım raporun her yerinde korunur.** FDA uçuşunda paraşüt ve İKA **yoktur**; yer kontrol
@@ -155,7 +166,7 @@ Aşağıdaki yapı **rol** üzerinden tanımlıdır; bir kişi birden çok rolü
 |---|---|---|---|---|
 | R1 | **Takım Kaptanı** | Görev günü tutanağı, saha kararları, kişi ataması, alışveriş/tedarik onayı | "Takım Hazır" ilanı; uçuş/uçmama kararı; koordinat girişi onayı | Saha tutanağı, karar kaydı |
 | R2 | **Pilot** | RC kumanda, arm/disarm ön kontrolü, manuel kurtarma (yalnız emniyet) | Uçuşu kesme; mod anahtarı kullanımı | Uçuş logu (`.bin`), hover/loiter kayıtları |
-| R3 | **Aviyonik sorumlusu** | Pixhawk 6C + güç dağıtımı + kablolama + kalibrasyon; failsafe/geofence | Parametre yükleme; kablo hattı kabulü | `config/pixhawk/arducopter_fda_20260906.param` (6 Eylül 20:22 dökümü, D-428 §5g; üçüncü döküm bekleniyor) |
+| R3 | **Aviyonik sorumlusu** | Pixhawk 6C + güç dağıtımı + kablolama + kalibrasyon; failsafe/geofence | Parametre yükleme; kablo hattı kabulü | **`config/pixhawk/emir.param`** (12 Eylül 2026 23:55, 18 148 B) — karttan alınan **üçüncü döküm** (D-474). Önceki iki kart dökümü: `mevcut.param` (18 139 B, **6 Eyl 20:22**) ve `arducopter_fda_20260906.param` (18 139 B, **7 Eyl 01:18** — içerik `mevcut.param` ile aynı, sonradan kopyalandığı için damgası farklı) (D-428 §5g). Aynı dizinde ayrıca iki **şablon** durur, bunlar kart dökümü **değildir**: `arducopter_fda.param` (14 345 B, 7 Eyl 12:10) ve `arduplane_final.param` (24 258 B, 12 Eyl 01:17). Yordam: `ls -la config/pixhawk/*.param` → **5 satır** (13 Eylül 2026). Karşılaştırma: `config/pixhawk/PARAMETRE_KILAVUZU_1SAYFA.md` |
 | R4 | **Görev bilgisayarı / kamera** | Jetson (Orin Nano Developer Kit 4 GB — D-431) kurulumu, kamera köprüsü, FPS kapısı, model yükleme | Sürüm/paket kurulumu; kamera kaynağı seçimi | `jetson_fps.py` çıktısı, `jetson_baslat.sh --kapi` çıktısı |
 | R5 | **YKS operatörü** | Yer kontrol istasyonu, hakem ekranı, aktarım/ACK, kronometreler | Ekran düzeni; ACK'siz onayı reddetme | `hakem_log`, YKS ekran kaydı |
 | R6 | **İKA sorumlusu** | İKA hattı (final dalgası); sürücü entegrasyonu, yük ve temas | İKA sürücü seçimi (donanım kararı) | `scripts/ika_surucu_kabul.py` kabul turu çıktısı |
@@ -187,8 +198,12 @@ Kaynak: `SAHA_HAZIRLIK_PLANI_20260903.md` §2 (montaj günü tablosu) ve §6 (21
 ekranını sürer (gözü ekranda, hakemle birlikte onay basar). Görev ≤ 10 dk
 boyunca ikisi **eşzamanlıdır**; tek kişi ikisini birden yapamaz. Montaj günü
 (5 Eylül) ve yer provalarında çakışma yoktur — orada aynı kişi ikisini de
-yürütebilir. **BEYAN GEREKLİ (insan): uçuş günü için bu iki rolden birine
-ikinci bir kişi atanacaktır.**
+yürütebilir. **Kapanışı ölçüm değil kişi atamasıdır** — çakışmanın kendisi §2.1.4 tablosundan
+ölçülmüştür, çözümü R1'in (kaptan) atama kararıdır ve depodan türetilemez.
+**Planlanan beyan: kaptan, R2 veya R5 rolüne ikinci kişiyi atar — son tarih 14 Eylül 2026**
+(FDR teslimi), uygulama 21 Eylül 2026 uçuş günü. Atama yapılmazsa raporun hükmü şudur:
+**tek kişi ≤ 10 dk görev boyunca iki rolü birden yürütemez ve bu bir ölçülmüş eksikliktir**,
+gizlenmiş bir varsayım değil.
 
 Dayanak: `SAHA_HAZIRLIK_PLANI_20260903.md` §3 uyarı kutusu (3 Eylül beyanı) ve
 `REVIEW_LOG.md` D-414 ("çakışma kayda geçirildi … uçuş günü için ikinci kişi **açık kalemdir**").
@@ -210,33 +225,86 @@ neye bakarak karar verdiğini** de tanımlar. Dört kural bağlayıcıdır:
    olmuştur; aynı kuralın ikinci uygulaması **§2.2.2.b**'dir. Eski numaralar, çapraz atıfları
    bozmamak için satırlarda olduğu gibi bırakılmıştır.)*
 
-Kanıt defteri: `REVIEW_LOG.md` — bugün itibarıyla **420 kayıt başlığı / 414 benzersiz kayıt no**
-(ölçüm: `grep -cE "^### D-[0-9]+" REVIEW_LOG.md` → 420; `... | sort -u | wc -l` → 414; 2026-09-03).
+Kanıt defteri: `REVIEW_LOG.md` — ~~420 kayıt başlığı / 414 benzersiz kayıt no (2026-09-03)~~
+→ **13 Eylül 2026 itibarıyla 481 kayıt başlığı / 475 benzersiz kayıt no.**
+Ölçüm (üreten commit'le birlikte, §2.1.6 kural 4 uyarınca eski okuma silinmedi):
+`grep -cE "^### D-[0-9]+" REVIEW_LOG.md` → **481**;
+`grep -oE "^### D-[0-9]+" REVIEW_LOG.md | sort -u | wc -l` → **475**
+(fark 6 = aynı kayıt numarasının ek/düzeltme başlığıyla tekrarlanması).
+Üreten commit: `d5bf2af5` (**2026-09-13 02:20:19 +0300**) — çalışma kopyası bu commit'le aynıdır,
+dolayısıyla okuma `git show d5bf2af5:REVIEW_LOG.md | grep -cE '^### D-[0-9]+'` ile yeniden üretilir.
 
 🔴 **Aynı defterin üç okuması birbirini tutmuyor — üçü de silinmedi (kural 4).**
 
-| okuma | başlık | benzersiz | tarih / saat | nerede yazılı |
-|---|---|---|---|---|
-| A | 414 | 408 | 2026-09-03 (saat kayıtlı değil) | Kanıt dizini satır 11 |
-| B | 420 | 414 | 2026-09-03 (saat kayıtlı değil) | hemen yukarıdaki paragraf |
-| C | **424** | **418** | **2026-09-04 00:06** | bu satır — yeniden ölçüm |
+| okuma | başlık | benzersiz | ~~kayıtlı saat~~ → **git'ten daraltılan alınma aralığı** | üreten commit | nerede yazılı |
+|---|---|---|---|---|---|
+| A | 414 | 408 | 2026-09-03 (saat kayıtlı değil) — **git'ten daraltıldı:** bu içerik `6c70dd70` (2026-09-02 23:56:28) ile yazıldı, `2705b4eb` (2026-09-03 11:15:50) ile 418'e değişti ⇒ okuma **2026-09-02 23:56 – 2026-09-03 11:15** aralığında alınmıştır; "3 Eylül" etiketi **yanlış değil**, yalnız saatsizdir | `6c70dd70`..`2705b4eb` | Kanıt dizini satır 11 |
+| B | 420 | 414 | 2026-09-03 (saat kayıtlı değil) — **daraltıldı:** `59e1acc2` (2026-09-03 11:42:50) ile yazıldı ⇒ okuma bu andan sonradır | `59e1acc2` | hemen yukarıdaki paragraf |
+| C | **424** | **418** | **2026-09-04 00:06** (yazım anı); üreten commit anı `bb832a2b` **2026-09-04 00:14:18** | `bb832a2b` | §2.1.6, yeniden ölçüm |
+| **D** | **481** | **475** | **2026-09-13 02:20:19** | `d5bf2af5` | bu satır |
 
 Ölçüm komutları (C okuması): `grep -cE "^### D-[0-9]+" REVIEW_LOG.md` → 424;
 `grep -oE "^### D-[0-9]+" REVIEW_LOG.md | sort -u | wc -l` → 418.
-Defter gün içinde büyüdüğü için A ve B aynı günün farklı anları olabilir, ama
-**ÖLÇÜLEMEDİ: A ve B okumalarının hangi saatte alındığı kayıtlı değil**, bu yüzden hangisinin
-o an doğru olduğu belirlenemiyor. Kapanışı: ölçüm satırlarına saat damgası eklenmesi.
+✅ **KAPANDI — 13 Eylül 2026, bir depo ölçümüyle (insan beyanıyla değil).** ~~ÖLÇÜLEMEDİ: A ve B
+okumalarının hangi saatte alındığı kayıtlı değil~~ hükmü fazla karamsardı: defter git'te izlenen
+bir dosyadır, dolayısıyla **her okuma bir commit aralığına daraltılabilir**. Yordam ve ham çıktı:
+
+```text
+$ git log --date=iso --pretty=format:"%h|%ad" -- REVIEW_LOG.md   # dosyaya dokunan commit'ler
+$ git show <sha>:REVIEW_LOG.md | grep -cE '^### D-[0-9]+'        # o andaki başlık sayısı
+$ git show <sha>:REVIEW_LOG.md | grep -oE '^### D-[0-9]+' | sort -u | wc -l
+
+6c70dd70  2026-09-02 23:56:28 +0300   ->  414 / 408      (= A okumasının içeriği yazıldı)
+2705b4eb  2026-09-03 11:15:50 +0300   ->  418 / 412      (= A içeriği burada değişti)
+59e1acc2  2026-09-03 11:42:50 +0300   ->  420 / 414      (= B okuması)
+bb832a2b  2026-09-04 00:14:18 +0300   ->  424 / 418      (= C okuması)
+```
+
+Üç okuma da **birebir** yeniden üretildi; **hiçbiri yanlış değildi** ve hiçbir tarih etiketi
+hatalı çıkmadı. A okumasının içeriği 2 Eylül 23:56'da yazılmış olmakla birlikte **3 Eylül 11:15'e
+kadar HEAD'de aynen durmuştur**; dolayısıyla "2026-09-03" etiketi tutarlıdır — eksik olan yalnız
+**saattir**, ve o eksik artık bir **aralıkla** kapatılmıştır (aralık kapalı değil, açıktır:
+bir commit'in yazılma anı, okumanın alınma anı **değildir**).
+**Kalıcı kapanış:** bundan sonra her defter okuması saat damgası **ve** üreten commit sha'sı ile
+yazılır; yukarıdaki D satırı o biçimin ilk uygulamasıdır.
 
 ### 2.1.7 Bölüm 2.1'in açık kalemleri
 
-1. **BEYAN GEREKLİ (insan): takım üye sayısı ve şartname §4 oran kontrolü** (kaptan dâhil 6–10 kişi;
-   lisansüstü üye oranının şartname sınırını aşmadığı). Bu bir sayı beyanıdır, kişisel veri değildir.
-2. **BEYAN GEREKLİ (insan): danışman öğretim üyesi** bilgisi (unvan/kurum düzeyinde, isimsiz).
-3. **BEYAN GEREKLİ (insan): takım künyesinin KYS teyidi** (ID 997827 / başvuru 5329027).
-4. **BEYAN GEREKLİ (insan): uçuş günü için R2/R5 çakışmasının çözümü** — bu iki rolden birine
-   ikinci bir kişi (§2.1.5).
-5. **BEYAN GEREKLİ (insan): R6 İKA rolünün final dalgasında kime/hangi birime verileceği** —
-   FDA aracında İKA yoktur, rol bugün boştadır.
+1. **Takım üye sayısı ve şartname §4 oran kontrolü** (kaptan dâhil 6–10 kişi; lisansüstü üye
+   oranının şartname sınırını aşmadığı). Bu bir sayı beyanıdır, kişisel veri değildir.
+   **Depodan türetilemez** (üye listesi repoda yok; `git shortlog -sn` yalnız tek commit yazarını
+   gösterir ve takım üyeliğinin kanıtı değildir). **Bugünkü hüküm:** rapordaki organizasyon
+   **8 rol** (R1–R8) tanımlar ve *"bir kişi birden çok rolü üstlenebilir"* (§2.1.3) → rol sayısı
+   üye sayısının **üst sınırını değil yalnız iş kalemini** verir; §2.1.5'te ölçülmüş R2/R5
+   çakışması **en az 2 kişi** gerektiğini kanıtlar. Şartname §4 tabanı (6 kişi) bağlayıcıdır.
+   **Planlanan beyan: KYS üye listesi sayımı (toplam sayı + lisansüstü sayısı), 14 Eylül 2026.**
+2. **Danışman öğretim üyesi** bilgisi (unvan/kurum düzeyinde, isimsiz). Depo ölçümü
+   (13 Eylül 2026): `grep -ril "danışman\|danisman" --include=*.md . | grep -v "^\./\.claude/"`
+   → **5 dosya** (`FDR/ACIK_KALEMLER_HAM.md` · `FDR/BOLUM_2_ORGANIZASYON_VE_TAKVIM.md` ·
+   `OGREN_ADIYAMAN/01_YARISMA_VE_GOREV.md` · `OGREN_ADIYAMAN/ozet/D_fdr_test_izlenebilirlik.md` ·
+   `OGREN_ADIYAMAN/ozet/H_sartname.md`); hepsi **açık-kalem ya da şartname özeti** satırıdır,
+   bir künye kaydı olarak **hiçbir yerde yok** → türetilemez. ⚠ `.claude/worktrees/` hariç
+   tutulmuştur; filtresiz komut 138 satır döner.
+   **Bugünkü hüküm: danışman alanı BOŞ ve bu bir eksikliktir** ("ölçülemedi" değil — kayıt
+   hiç oluşturulmamış). **Planlanan beyan: unvan + kurum (isimsiz), 14 Eylül 2026.**
+3. **Takım künyesinin KYS teyidi** (ID 997827 / başvuru 5329027) — bölüm başındaki künye
+   kalemiyle **aynı kalemdir, iki kez sayılmaz**. Kanıt sınıfı bugün **BEYAN**: iki sayı depoda
+   (filtreli ölçümle) **8 belgede** geçiyor ama hepsi tek kaynağa
+   (`navitas-teknofest/references/ddr_requirements.md:9-10`, 2026-07) çıkıyor; bağımsız doğrulama
+   yalnız KYS kaydıdır. **Planlanan teyit: KYS takım sayfası ekran dökümü, 14 Eylül 2026.**
+4. **Uçuş günü için R2/R5 çakışmasının çözümü** — bu iki rolden birine ikinci bir kişi
+   (§2.1.5 ile **aynı kalem**). Çakışmanın kendisi **ölçülmüştür** (§2.1.4 "Uçuş" satırı:
+   R2 kumandada, R5 hakem ekranında, ≤ 10 dk boyunca eşzamanlı); çözümü kaptanın atama
+   kararıdır, ölçüm ya da türetme değildir. **Planlanan beyan: kaptan ataması, son tarih
+   14 Eylül 2026; uygulama 21 Eylül 2026 uçuş günü** (D-471 ile takvim yeniden kuruldu).
+5. **R6 İKA rolünün final dalgasında kime/hangi birime verileceği.** **Bugünkü hüküm: rol
+   boştadır ve bu 21 Eylül'e kadar bir eksiklik değildir** — FDA görev test uçuşu aracında
+   İKA **yoktur** (Bölüm 2 kapsam notu; `CONTRACTS.md` §6.7: `--fda` kipinde İKA düğmeleri
+   fiilen kapalı), rol ilk kez **final (sabit kanat + İKA) dalgasında** yüklenir ve o dalga
+   21 Eylül 2026 sonrasıdır (Bölüm 5 §5.2.10). Rolün yazılım tarafı boş beklemiyor: İKA iz
+   genişliği **459,5 mm ÖLÇÜLDÜ** (12 Eylül, şerit metre, D-472 — sözleşmedeki 0,39 m TAHMİN'i
+   ve URDF'teki 0,319 m'nin ikisi de yanlıştı), teker çapı Ø125 mm teyit edildi (D-471).
+   **Planlanan atama: final dalgası açılışında, 30 Eylül 2026 (FDA penceresi) sonrası.**
 
 ---
 
@@ -261,25 +329,34 @@ satırlarını taşır. Aşağıdaki tablo bu beş kalemin bugünkü durumudur.
 
 | # | DDR termin planı kalemi (kaynak satır) | DDR'de yazılı | Bugünkü gerçekleşme | Durum |
 |---|---|---|---|---|
-| 1 | **DDR Son Teslim** (`ddr_requirements.md:4`) | 15 Temmuz 2026 | Depoda ölçülen: DDR belgesinin son iz bırakan sürümü **v4.3**, 2026-07-12 (`f4d1583`); belge 2026-07-12'de depo dışına alındı (`38798f2` — *"DDR dokümanları repoda taşınmıyor"*). 15.07.2026'da iki teknik commit var (`cb10e0e`, `bcfab0f`) | **ÖLÇÜLEMEDİ: teslimin 15.07'de yapıldığı depodan görülemez** (belge repoda tutulmuyor); kapanışı KYS teslim kaydıdır → **BEYAN GEREKLİ (insan): DDR teslim tarihi/saati teyidi** |
-| 2 | **DDR Sonuçları** (`ddr_requirements.md:5`) | 29 Temmuz 2026 | Şartname resmî tarihi ile birebir aynı (`results/sartname_bosluk/sartname_metin.txt` s.11). Depoda sonuç/puan artefaktı yok | **BEYAN GEREKLİ (insan): DDR sonuç bildirimi ve alınan puan** |
+| 1 | **DDR Son Teslim** (`ddr_requirements.md:4`) | 15 Temmuz 2026 | Depoda ölçülen: DDR belgesinin son iz bırakan sürümü **v4.3**, 2026-07-12 (`f4d1583`); belge 2026-07-12'de depo dışına alındı (`38798f2` — *"DDR dokümanları repoda taşınmıyor"*). 15.07.2026'da iki teknik commit var (`cb10e0e`, `bcfab0f`) | **ÖLÇÜLEMEDİ ve ÖLÇÜLEMEZ — kaynağı yapısaldır, eksiklik değil.** DDR belgesi **bilerek** depo dışındadır (`38798f2`, 2026-07-12: *"doc/ repo dışı tutuluyor — DDR dokümanları repoda taşınmıyor"* — anayasa madde 18); teslim **anı** git'ten görülmez ve türetilemez. Depodan görülebilen en yakın iz: son sürüm v4.3 `f4d1583` (2026-07-12) + 15.07'de iki teknik commit (`cb10e0e`, `bcfab0f`) → **teslim tarihiyle çelişen hiçbir kanıt yok**, ama bu teyit değildir. **Planlanan beyan: KYS teslim kaydının ekran dökümü (tarih + saat), 14 Eylül 2026** |
+| 2 | **DDR Sonuçları** (`ddr_requirements.md:5`) | 29 Temmuz 2026 | Şartname resmî tarihi ile birebir aynı (`results/sartname_bosluk/sartname_metin.txt` s.11). Depoda sonuç/puan artefaktı yok | **Depoda sonuç/puan artefaktı YOK ve türetilemez** — puan KYS'de bildirilir, git geçmişinde iz bırakmaz. **Bugünkü hüküm: DDR geçildi** (aksi hâlde FDR aşamasına geçilemezdi; takım ID 997827 FDR sürecinde etkindir) — **puan bilinmiyor, sıfır ya da tahmin yazılmıyor**. **Planlanan beyan: KYS sonuç bildirimi ekran dökümü (puan dâhil), 14 Eylül 2026** |
 | 3 | **FDR** (`ddr_requirements.md:6`) | 21 Eylül 2026 | Şartname s.11 ile birebir aynı (**21.09.2026 – 17.00**). Takım planı bu tarihe kilitli (§2.2.8) ve tarih artık **kapı testiyle** korunuyor: `tests/test_fdr_takvim_kapisi.py` **4 test, 4/4 OK** (koşum 2026-09-04) | **UYGUN — termin planı tutuyor** |
 | 4 | *"Proje takvimi (güncelleme gerekli)"* (`:91`) | DDR'de güncelleme borcu olarak işaretlenmiş | Güncellendi: §2.2.2 (ölçülmüş gerçekleşme), §2.2.5 (yeni iş akışları), §2.2.8 (3 → 30 Eylül planı) | **KAPANDI** |
 | 5 | *"Organizasyon şeması"* (`:90`) | DDR'de ÖDR'den taşınacak kalem | §2.1.2'de **isimsiz, rol bazlı** olarak yeniden üretildi (`Y-2.1-M02`) | **KAPANDI** |
-| 6 | *"Planlanan test takvimi"* (`:124`) | DDR'de "yeni gerekli" kalem | §2.2.8 satır satır kapılıdır; test içeriği Bölüm 4'tedir | **KISMEN** — saha testleri 5–19 Eylül'de koşulacak |
+| 6 | *"Planlanan test takvimi"* (`:124`) | DDR'de "yeni gerekli" kalem | §2.2.8 satır satır kapılıdır; test içeriği Bölüm 4'tedir | **KISMEN — koşulan/koşulmayan ayrımıyla, 13 Eylül 2026 itibarıyla.** ~~saha testleri 5–19 Eylül'de koşulacak~~ → Kabul kâğıdı (`ATOLYE_TEST_GUNU_20260912.md`) **14 adım** içerir. **GEÇTİ (4, kanıt sınıfı BEYAN — ham dosya yok):** A1 RC failsafe (`:58`) · A3 pil failsafe (`:82`) · A4 anahtarla LAND (`:93`) · A5 bağlantı kaybı, gerçek SiK (`:105`). **KISMİ (1):** A2 GCS failsafe (`:69`) — tetikleme çalıştı, kodla uçurulamadı (MP bağlantısı yoktu). ⚠ Aynı satırdaki *"`FS_GCS_ENABLE` geçici 0 yapıldı, uçuştan önce 1'e döner"* borcu **ölçümle çürüdü:** `emir.param:408` = **5** ("Enabled always Land"), 6 Eylül dökümünde 1'di (`mevcut.param:408`) ⇒ failsafe kartta **açık ve LAND'e ayarlı**, `FS_THR_ENABLE=3` ile tutarlı, **geri alma borcu YOK** (D-474 §2). **ÖLÇÜLDÜ ve DÜŞTÜ (1):** A6 SiK RTT — 13 Eylül, gerçek RF çifti (`:116`, D-476); ayrıntı §2.2.7. **UÇUŞ OLDU ama KABUL KAPISI AÇIK (1):** A12 askı — 3 m'de ~15 s + kodla LAND (BEYAN); ön kayıtlı 4 kabul kaleminin **4'ü de açık** (bkz. kapsam notu tablosu). **YAPILMADI (7):** A7, A8, A9, A9-ek, A10, A11 (kamera 14 Eylül'e yetişmiyor — A11 yerine **HESAP** yazıldı, `results/atolye_20260912/A11_gecikme_HESAP.md`), A13 (pens ampermetre yok). **Sayı: 14 adımın 4'ü tam geçti, 1'i kısmi, 1'i ölçülüp DÜŞTÜ, 1'i kapısı açık, 7'si yapılmadı** = **%28,6 tam geçiş** |
 
 ⚠ **Kapsam uyarısı — abartılmıyor.** Depodaki DDR referans dosyasının termin planı **üç tarihtir**;
 iş paketi kırılımı, Gantt çizelgesi veya kaynak atama tablosu **depoda yoktur**.
-**ÖLÇÜLEMEDİ: DDR'nin rapora giren tam termin çizelgesi** — kapanışı, DDR belgesinin (depo dışı
-yerel yedek) ilgili sayfasının rapora alınmasıdır; **BEYAN GEREKLİ (insan): DDR proje takvimi
-sayfası**. Bu belge gelene kadar yukarıdaki tablo, termin uygunluğunun **depodan görülebilen**
-kısmıdır.
+**ÖLÇÜLEMEDİ ve depodan türetilemez: DDR'nin rapora giren tam termin çizelgesi.** Depodaki
+referans dosyası (`ddr_requirements.md`) yalnız **3 tarih** taşır (satır 3–6); Gantt, iş paketi
+kırılımı ve kaynak atama tablosu **depo dışı yerel yedektedir** — belgenin depoda tutulmaması
+bilinçli bir karardır (`38798f2`, anayasa madde 18), dolayısıyla bu bir kayıt kusuru değil,
+**kapsam sınırıdır**. **Bugünkü hüküm: yukarıdaki tablo, termin uygunluğunun depodan
+görülebilen tam kısmıdır ve o kısımda 6 kalemin 2'si KAPANDI (4, 5), 1'i UYGUN (3), 1'i KISMEN
+(6), 2'si depodan türetilemez ve KYS beyanı bekler (1, 2).** **Planlanan beyan: DDR proje
+takvimi sayfasının (Gantt + iş paketleri) rapora alınması, 14 Eylül 2026.**
 
 ### 2.2.2 Gerçekleşen proje takvimi — depo geçmişinden ölçüldü
 
 Aşağıdaki tablo tahmin değildir: `O:\navitas` git deposunun tamamı taranarak
-`git log --date=short --pretty=format:"%ad|%h|%s"` ile çıkarılmıştır. Depoda **551 commit** (3 Eylül 2026 gecesi)
-vardır; ilk commit **2026-05-06** (`17258f8`, "start project").
+`git log --date=short --pretty=format:"%ad|%h|%s"` ile çıkarılmıştır. ~~Depoda **551 commit**
+(3 Eylül 2026 gecesi) vardır~~ → **13 Eylül 2026 ölçümü: HEAD'de 846 commit**
+(`git log --oneline | wc -l` → **846**), tüm dallar dâhil **1019**
+(`git log --all --oneline | wc -l` → **1019**); üreten commit `d5bf2af5`
+(**2026-09-13 02:20:19 +0300**). İlk commit **2026-05-06** (`17258f8`, "start project") —
+değişmedi. Eski okuma §2.1.6 kural 4 uyarınca silinmedi; ayrıca artık **yeniden üretilebilir**:
+551, `0ac3a35a` (2026-09-03 10:42:48) commit'inde HEAD'in tam sayısıdır (§2.2.2.b).
 
 #### 2.2.2.a Faaliyet yoğunluğu — gün başına commit (ölçüm, 2026-09-03)
 
@@ -310,13 +387,45 @@ Yukarıdaki tablo **silinmemiştir** (§2.1.6 kural 4). Aynı komut bugün yenid
 
 Ek ölçüm: `git log --all --oneline | wc -l` → **607** (tüm dallar dâhil; Ağustos 465).
 
+#### 2.2.2.c Üçüncü ölçüm (2026-09-13, `d5bf2af5`) — 4 Eylül okuması eskidi, Ağustos donmuş durumda
+
+Önceki iki tablo **silinmedi** (§2.1.6 kural 4). Aynı komutlar bugün yeniden koşuldu:
+
+| ay | commit'li gün | toplam commit | 2026-09-04 okumasıyla farkı |
+|---|---|---|---|
+| Mayıs 2026 | 3 | 4 | aynı |
+| Haziran 2026 | 2 | 4 | aynı |
+| Temmuz 2026 | 5 | 27 | aynı |
+| Ağustos 2026 | **26** | **418** | **aynı** — ay kapandığı için artık dondu; 4 Eylül okumasını **doğruluyor**, 3 Eylül'ün 27/425'ini **yine yanlışlıyor** |
+| Eylül 2026 (1–13) | **12** | **393** | 3 gün / 107 → 12 gün / 393 (büyüme) |
+| **Toplam (HEAD)** | **48** | **846** | 560 → 846 |
+| **Toplam (`--all`)** | — | **1019** | 607 → 1019 (Ağustos `--all` bugün **464**, 4 Eylül'de 465 yazılmıştı) |
+
+Ölçüm komutları (13 Eylül 2026, HEAD = `d5bf2af5`, 02:20:19 +0300):
+`git log --oneline | wc -l` → **846** · `git log --all --oneline | wc -l` → **1019** ·
+`git log --date=short --pretty=format:"%ad" | cut -c1-7 | sort | uniq -c` → ay dağılımı ·
+Ağustos günü: `... | grep "^2026-08" | sort -u | wc -l` → **26**; Eylül günü → **12**.
+Ay toplamları ile HEAD toplamı **birebir tutuyor**: 4 + 4 + 27 + 418 + 393 = **846**.
+
 **İç tutarsızlık, gizlenmeden yazılır.** 2026-09-03 tablosunun ay toplamları
 4 + 4 + 27 + 425 + 93 = **553** eder, ama aynı paragrafta toplam **551** yazılıdır; iki sayı
 kendi içinde de uyuşmuyor. Bugünkü ölçümde toplam ile ayların toplamı birebir tutuyor
 (4 + 4 + 27 + 418 + 107 = 560 = `git log --oneline | wc -l`).
-**ÖLÇÜLEMEDİ: 2026-09-03'teki 425 / 551 sayılarının nasıl üretildiği** — ne HEAD (418) ne de
-`--all` (465) okumasıyla yeniden üretilebiliyor. Doğru sayılması gereken, yeniden üretilebilen
-okumadır (**560 / Ağustos 418**); eski okuma kayıt olarak yerinde bırakılmıştır.
+**Bu hükmün YARISI 13 Eylül 2026'da kapandı, yarısı kayıt olarak kalıyor** — ikisi de silinmedi.
+
+- ✅ **551 KAPANDI — yeniden üretildi.** `git log --oneline | wc -l` bugün 846 verir; 551'inci
+  commit `0ac3a35a`'dır (**2026-09-03 10:42:48 +0300**) ve `git log --oneline 0ac3a35a | wc -l`
+  → **551**. Yani "551 commit" uydurma değildi: 3 Eylül **sabahı** HEAD'in tam sayısıdır; kayıp
+  olan yalnız **saat damgasıydı** ve o damga artık yazılıdır.
+- 🔴 **425 / 27 gün YENİDEN ÜRETİLEMİYOR ve kalıcı olarak kaynaksızdır.** Aynı `0ac3a35a`
+  noktasında Ağustos **418 commit / 26 gün**dür (ölçüldü); bugünkü HEAD'de de **418 / 26**,
+  `--all` okumasında **464 / 26**. Hiçbir dal, hiçbir an 425 ya da 27 gün vermiyor. Komut
+  çıktısı dosyaya yazılmadığı için kaynağı **kalıcı olarak kayıp**tır.
+
+**Hüküm:** Doğru sayılması gereken, yeniden üretilebilen okumadır (bugün **846 / Ağustos 418**);
+3 Eylül'ün 425/27 satırı **kayıt olarak yerinde bırakılmıştır** ve hiçbir yerde hesaba katılmaz.
+**Kalıcı önlem:** her depo ölçümü bundan sonra saat damgası **ve** üreten commit sha'sı ile
+yazılır (§2.1.6 kural 4'ün bu bölümdeki ikinci uygulaması).
 
 ### 2.2.3 Kilometre taşları
 
@@ -374,9 +483,27 @@ kaynağındaki hâliyle korunmuştur.
 | v37 | 2026-08-28 | **geri alındı** | gerçek arena karesi reddetti (D-332) |
 | v8 (gece_v8) | 2026-08-28 | **reddedildi** | kabul zinciri RED (D-331) |
 
-⚠ **DOĞRULANACAK:** v17–v36 satırlarındaki damgalar `jetson_paket/models/` içindeki dosya
-değiştirme zamanlarıdır; bunlar **saha paketine kopyalanma** anıdır, eğitimin bittiği an değildir.
-Eğitim bitiş zamanları eğitim koşum klasörlerinden ayrıca çıkarılmalıdır.
+⚠ **DOĞRULANDI ve sınırı çizildi (13 Eylül 2026).** v17–v36 satırlarındaki damgalar
+`jetson_paket/models/` içindeki dosya değiştirme zamanlarıdır; bunlar **saha paketine
+kopyalanma / dışa aktarım** anıdır, eğitimin bittiği an değildir — bu okuma **doğrudur** ve
+depo ölçümüyle desteklenir. Yordam ve ham çıktı: `ls -d results/*export*` → **8 dizin**
+(`onnx_export_smoke` · `_v17_20260805` · `_v24_20260813` · `_v27_20260814` · `_v30_20260815` ·
+`_v34_20260819` · `_v35_20260821` · `_v36_20260826`); bu damgalar `ls -la jetson_paket/models/`
+çıktısındaki `.pt` değiştirme zamanlarıyla **gün gününe eşleşiyor**.
+
+🔴 **Sınır — eşleşme yalnız 7 sürüm içindir** (v17, v24, v27, v30, v34, v35, v36). Tabloda geçen
+**v20 ve v21** için `results/` altında **dışa aktarım klasörü YOKTUR**; o iki satırın 2026-08-05
+damgası yalnız `.pt` dosya `mtime`'ına dayanır (v20: 07:48, v21: 17:48) ve bağımsız kaydı yoktur.
+
+🔴 **Eğitim bitiş zamanları bu depodan TÜRETİLEMEZ ve bu kalıcıdır.** Arama yordamı:
+`ls -d results/*train* results/*egit* results/*runs* results/terfi*` → yalnızca
+`results/etiket_denetimi_train` (etiket denetimi, eğitim koşumu değil) ve `results/terfi_v36`
+(terfi/değerlendirme). **Epoch/metrik logu taşıyan bir eğitim koşum klasörü depoda yoktur** —
+eğitimler Colab'de koşmuştur ve koşum logları depoya hiç girmemiştir; "ayrıca çıkarılmalıdır"
+borcunun karşılığı yoktur. **Hüküm: tablodaki damgalar paketleme anlarıdır ve rapor boyunca öyle
+okunur; eğitim bitiş anı ÖLÇÜLEMEDİ (kaynak depo dışı) — tahmin edilmez.** Elde olan tek eğitim
+süresi ölçümleri ayrı kanıtlardır: v8 adayı 124 epoch / **6,19 saat** (D-331) ve v31 = v30
+bit-bit kopyasında karşılıksız harcanan **6,4 saat GPU** (D-140).
 
 ### 2.2.5 Revizyonlar ve takvime eklenen yeni iş akışları (`Y-2.2-M02`)
 
@@ -397,17 +524,17 @@ beyan edilen toplam **2293 g**). Bugünkü gerçek künye kullanıcı beyanıdı
 | Uçuş kontrolcüsü | Pixhawk 6C (BOM) / **Pixhawk 6X** (DDR mimari şeması) | **Pixhawk 6C** + PM02 güç modülü | DDR'nin iki belgesi çelişiyordu (BOM 6C, `avionics_software.md` şeması 6X); gerçek donanım **6C**'dir, çelişki bu raporla kapanır |
 | Görev bilgisayarı | Jetson **Orin NX** + carrier + soğutucu (180 g) | ~~**Jetson Nano 4GB** (JetPack 4.6.x, sistem Python 3.6) — 3 Eylül beyanı~~ → **Jetson Orin Nano Developer Kit 4 GB** (JetPack 7.2.1, Ubuntu 24.04, Python 3.12; 3 Eylül beyanı 'Nano 4GB' 6 Eylül'de kartla YANLIŞLANDI — D-431) | Tedarik. 3 Eylül'de sonucu ağır sanıldı (`ultralytics` Py ≥ 3.8 → ayrı Python 3.8 venv + çevrimdışı tekerlek zinciri, Bölüm 5 §5.2.7); 6 Eylül'de kart Python 3.12 ve apt'te TensorRT 10.16 ile geldi, cp38 zinciri kullanılmadı, `~/venv312` + GPU torch 2.11 kuruldu |
 | GNSS | Holybro **M10** GPS + pusula (32 g) | **Holybro M9N** | Tedarik |
-| Kamera | **Arducam** IMX477 12MP (50 g) | **Raspberry Pi HQ** (IMX477, CSI) + standart lens | Aynı sensör (IMX477), farklı kart. Lens FOV'u **ÖLÇÜLMEDİ** — 5 Eylül'de `kamera_dogrula` ile ölçülecek |
+| Kamera | **Arducam** IMX477 12MP (50 g) | **Raspberry Pi HQ** (IMX477, CSI) + standart lens | Aynı sensör (IMX477), farklı kart. **FOV — HESAP (lens + sensör geometrisi), ölçüm DEĞİL; girdisi de BEYAN.** Girdiler: IMX477 aktif alan **6,287 × 4,712 mm** (veri sayfası) ve **f = 6 mm** — bu odak uzaklığı **kullanıcı beyanıdır ve koşulludur** (`SAHA_HAZIRLIK_PLANI_20260903.md:46`: *"RPi'nin standart 6 mm geniş açı lensi **ise**"*); kamera 13 Eylül itibarıyla **elde yok** (D-471) ⇒ lens **doğrulanmadı**. Türetme: yatay `2·atan(6,287/12)` = **55,3°**, dikey `2·atan(4,712/12)` = **42,9°**, köşegen **66,4°**; 30 m'de nadir (90°) kare **31,4 × 23,6 m**. ⚠ **Depodaki eski hesap 55–63° / 31–37 m** (`FDR/BOLUM_3_SISTEM_SPESIFIKASYONLARI.md:284`, `FDR/BOLUM_6_GEREKSINIM_IZLENEBILIRLIGI.md:84`, `FDR/BOLUM_1_OZET.md:499`, `FDR/ACIK_KALEMLER.md:29`) — bu satır **aralığın en dar ucunu** (en kötü durum) kullanır; **aksi hâlde raporda iki farklı FOV kalır** → açık kalem: dört yerdeki aralık bu türetmeyle hizalanacak. Hüküm: 20 × 20 m **hesaben sığar**, ama boyuna pay yalnız **3,6 m**'dir ve bu pay merkezleme/eğim/irtifa hatasına tolerans bırakmaz. ⚠ ~~5 Eylül'de `kamera_dogrula` ile ölçülecek~~ → **5 Eylül'de ölçülmedi** (D-426 §4: Jetson araca takılmadı) → **planlanan ölçüm: `codes/kamera_dogrula.py --fov`, kamera geldiğinde, 21 Eylül 2026 uçuşu öncesi** |
 | Güç dağıtımı / sensör | **Mauch PL-100** + Mauch PL 4-6S BEC + ayrı PDB | **Matek XCLASS FCHUB-12S V2** (PDB + akım sensörü) + **PM02** | Tedarik + sadeleştirme; akım ölçümü PM02'ye taşındı (`BATT_MONITOR=4`) |
 | RC alıcı | TBS **Crossfire** Nano RX | **FlySky FS-i6** + FS-iA6B (**iBUS**) | Tedarik. Yazılım etkisi: `RC_PROTOCOLS` iBUS'a alındı (parametre dosyası, TEYİT listesinde) |
-| Motor | SunnySky X2216 V3 1100KV ×2 (sabit kanat) | ~~**5008 340KV ×4** + 12×10 pervane~~ → **SunnySky X2220 980KV V3 ×4** (BEYAN, etiket fotoğrafı yok) + **10×4,5 (1045)** pervane (7 Eylül beyanı, D-435) (çoklu rotor) | **Araç sınıfı farkı** — FDA aracı çoklu rotordur (§1). 7 Eylül: 5008'ler iade edildi; X2220'ler 2 yıl önce kullanılmış eski motorlar (BEYAN, D-435); itki bütçesi ÖLÇÜLEMEDİ (Bölüm 3 §3.2.1.1.1) |
+| Motor | SunnySky X2216 V3 1100KV ×2 (sabit kanat) | ~~**5008 340KV ×4** + 12×10 pervane~~ → **SunnySky X2220 980KV V3 ×4** (BEYAN, etiket fotoğrafı yok) + **10×4,5 (1045)** pervane (7 Eylül beyanı, D-435) (çoklu rotor) | **Araç sınıfı farkı** — FDA aracı çoklu rotordur (§1). 7 Eylül: 5008'ler iade edildi; X2220'ler 2 yıl önce kullanılmış eski motorlar (BEYAN, D-435). **İtki bütçesi HESAP olarak türetildi — 13 Eylül, Bölüm 3 §3.2.1.1.1'in 4S satırlarından ölçeklenerek; §3.2.1.1.1'in kendisi hâlâ 4S'tir ve orası da güncellenecek (açık kalem).** Girdi: üreticinin **APC1047 (10×4,7)** satırı, 4S 14,8 V, motor başına **2130 g @ 38,4 A** (`FDR/BOLUM_3_SISTEM_SPESIFIKASYONLARI.md:313`). ⚠ Araçtaki pervane **10×4,5**'tir; bu satır 10×4,5 için **DOĞRULANMADI** (`BOLUM_3:305-306`) ⇒ girdi üreticinin **farklı pervanesine** aittir. Ölçekleme (HESAP, ölçüm değil): sabit pervanede `T ∝ (V₂/V₁)²`, `(12,6/16,8)² = 0,5625` ⇒ **1198 g/motor**, 4 × = **4793 g**, %50 eşiğine denk kütle = **2396 g** (4S'teki 4260 g değil — `BOLUM_3:321`). ⚠ Bu model ESC/motor akım sınırını ve yük altında gerilim düşüşünü hesaba katmaz. 🔴 **KAPI HÂLÂ AÇIK** (`BOLUM_3:325` = **ÖLÇÜLEMEDİ**): kalkış kütlesi **ÖLÇÜLMEDİ** (T10, tartı yok) ⇒ askı itki oranı hesaplanamaz; `MOT_THST_HOVER` öğrenmedi (`emir.param:580` = 0,35 fabrika) ⇒ itki payı **ÖLÇÜLMEDİ** (D-474 §4). **Planlanan ölçüm: pilli tam araç tartısı (T10) + PM06 telemetrisinden askı akımı, 21 Eylül 2026 öncesi** |
 | ESC | Hobbywing FlyFun 40A V5 ×2 | **80 A DShot destekli ×4** (ilk uçuşlarda PWM 400 Hz) | Araç sınıfı farkı |
-| Pil | 4S 14000–15000 mAh Li-ion (1000 g) | **1× 4S 10 Ah 25C**, şarj iMAX B6 (~3 saat dolum) | Tedarik. Operasyonel sonucu: **günde en fazla 2 uçuş** (takvim kısıtı, §5) |
+| Pil | 4S 14000–15000 mAh Li-ion (1000 g) | ~~**1× 4S 10 Ah 25C**~~ → **1× 3S 6000 mAh** (kullanıcı kararı, gerekçe: **stabilite**), şarj iMAX B6 (50 W — BEYAN) | **Tedarik + stabilite kararı.** Kart dökümü kararı doğruluyor: `emir.param:138` `BATT_LOW_VOLT = 10` (3S × 3,33 V) ve `:131` `BATT_CRT_VOLT = 9` (3S × 3,00 V) — 4S eşikleri değil (`mevcut.param`: 14,4 / 14). 🔴 **12 Eylül dökümünde `BATT_CAPACITY = 3300` HATALI kalmıştı** (pil 6000 mAh; sayaç %45 yanılır — D-474 §3); ⚠ **13 Eylül'de kullanıcı `BATT_CAPACITY = 6000` ve `BATT_CRT_VOLT = 10,5 V` yazdı — BEYAN, yeni döküm alınmadı**, kartla teyidi T258'de (13 Eylül dökümü) kapanır. ⚠ `BATT_AMP_PERVLT = 36,36` ve `BATT_VOLT_MULT = 18,18` **PM06 fabrika değerleridir, doğrulanmadı** → akım/gerilim telemetrisi kalibre edilmeden askı akımı ölçümü geçerli sayılmaz. **Operasyonel sonucu ~~günde en fazla 2 uçuş~~ → dolum ≈ 1,5 saat, günde ≈ 4 uçuş (HESAP, açılımı ve çekinceleri §2.2.5.5)**; buna karşılık enerji **66,6 Wh** = 11,1 V × 6,0 Ah (4S 10 Ah'in 148 Wh'sinin **%45'i**) → askı süresi **≈ 8 dk (HESAP)**, 10 dk görev bütçesinin **altında** — yeni ve **ölçülmemiş** risk |
 | Paraşüt zinciri (kalem 12–16) | Opale Rescue 2,5 m² + pod + servo + mekanizma + tether | **FDA aracında YOK** | §5.3.2 çoklu rotor uçuşunda paraşüt zorunlu değil; final aracında kalır |
 | Servolar (kanat/kuyruk) | EMAX ES08MA II ×4 | **FDA aracında YOK** | Araç sınıfı farkı |
 | Pitot + airspeed | Pitot + Holybro MS5525DSO | **FDA aracında YOK** | Çoklu rotorda hava hızı sensörü kullanılmaz |
 | Telemetri | Holybro SiK 433 MHz ×2 (uçak + YKS) | **2× SiK 433 MHz** — değişmedi | — |
-| Acil güç kesme | Anahtarlı stop + röle | **Anahtar yok — pil fişi çekilir (XT60/XT90)** | 🔴 **DDR gereksinimi** REQ-25…31 — *takımın kendi* gereksinim kimliğidir (`references/ddr_requirements.md:76`); şartname metninde "REQ-" **hiç geçmez** (çift acil güç kesme) FDA aracında **karşılanmıyor**; final aracı için **açık madde** (Bölüm 6'ya taşınır) |
+| Acil güç kesme | Anahtarlı stop + röle | **Anahtar yok — pil fişi çekilir (XT60/XT90)** | 🔴 **DDR gereksinimi** REQ-25…31 — *takımın kendi* gereksinim kimliğidir (`references/ddr_requirements.md:76`); şartname metninde "REQ-" **hiç geçmez** (çift acil güç kesme) FDA aracında **karşılanmıyor**; final aracı için **açık madde** (Bölüm 6'ya taşınır). **Bugünkü sayısal hüküm: FDA aracında fiziksel acil güç kesme donanımı sayısı = 0**; tek yol pil fişinin (XT60/XT90) elle çekilmesidir ve bu **araç yerdeyken** işler. ⚠ **Karıştırılmaması gereken ayrım:** `emir.param:735` `RC6_OPTION = 153` (**ArmDisarm**, `config/pixhawk/PARAMETRE_KILAVUZU_1SAYFA.md` §2) vardır — bu **yazılımsal disarm anahtarıdır**, güç kesme değildir; havada disarm'ı ArduPilot zaten reddeder. REQ-25…31'in istediği **çift** fiziksel kesme yolu bununla karşılanmaz. Bu bir tedarik/tasarım borcudur; ölçülemez, türetilemez. **Planlanan tasarım: final aracı acil güç kesme (röle + anahtar) şeması, sabit kanat üretim dalgasıyla — 30 Eylül 2026 sonrası** |
 | Gövde | (DDR: sabit kanat yapısal malzeme dağılımı) | **3B baskı quadcopter** (ABS + ABS-CF) | Araç sınıfı farkı; ayrıntı Bölüm 5 |
 
 #### 2.2.5.2 Yazılım ve mimari revizyonları
@@ -418,7 +545,7 @@ beyan edilen toplam **2293 g**). Bugünkü gerçek künye kullanıcı beyanıdı
 | Hızlandırma | TensorRT `.engine` (Jetson'da derlenir) | ~~**Nano'da ÖLÇÜLEMEDİ** — venv38'de `tensorrt` modülü yok (JetPack 4.6 bağı Py3.6). PT/ONNX ile uçulur~~ **6 Eylül (D-431, Orin Nano, TensorRT 10.16.2):** `.engine` `.pt`'den **derlendi** (57 283 989 B, sha256 `bb9bd868…0300`, deftere yazıldı); FPS engine 1,58/1,33 · pt 1,35/1,06 GEÇTİ; engine↔pt **D-303 oransal 3/126 DÜŞTÜ** → **uçuş `.pt`**, engine üretime alınmadı | `jetson_paket/JETSON_ORIN_NANO_KURULUM.md` §4–§5, §8 |
 | Rota karar yolu | tek yol varsayımı | **İki yol ayrıldı:** `analyze_path` üretim, `rota_bul` tanısal | D-295, `CONTRACTS.md` §11.2-EK |
 | Pixhawk erişimi | doğrudan seri | 🔴 **Çoğullayıcı zorunlu** — seri port tek sahipli, üç tüketici ayrı UDP ucundan okur | D-403, `CONTRACTS.md` §7.4 |
-| Kamera yolu | doğrudan `VideoCapture` | **Kamera köprüsü** (sistem Python + GStreamer `nvarguscamerasrc` → MJPEG/HTTP; 3 Eylül'de 'Python 3.6' sanılıyordu, kartın sistem Python'u 3.12 — 6 Eylül'de köprü sistem Python 3.12 + cv2 4.6 ile **dosya kaynağında açıldı**, CSI kamera bağlı değildi → `nvarguscamerasrc` yolu ÖLÇÜLEMEDİ, D-431) | D-406, `scripts/kamera_koprusu.py`; `results/jetson_20260906/jetson_log_20260906/kamera_koprusu_dosya.log` |
+| Kamera yolu | doğrudan `VideoCapture` | **Kamera köprüsü** (sistem Python + GStreamer `nvarguscamerasrc` → MJPEG/HTTP; 3 Eylül'de 'Python 3.6' sanılıyordu, kartın sistem Python'u 3.12 — 6 Eylül'de köprü sistem Python 3.12 + cv2 4.6 ile **dosya kaynağında açıldı** — köprünün kendisi **çalıştığı ölçüldü** (`results/jetson_20260906/jetson_log_20260906/kamera_koprusu_dosya.log`); CSI kamera bağlı değildi → `nvarguscamerasrc` yolu **ÖLÇÜLEMEDİ**, D-431. **13 Eylül 2026 durumu: kamera (RPi HQ IMX477 + 6 mm lens, 90° nadir) elde YOK ve 14 Eylül'e yetişmiyor** (D-471) → CSI yolu bugün de ölçülemez ve türetilebilir bir sayısı yoktur. **Ölçülmüş kısmın hükmü: köprü zinciri dosya kaynağıyla uçtan uca GEÇTİ; ölçülmeyen tek halka `nvarguscamerasrc` sürücü yoludur.** **Planlanan ölçüm: `scripts/kamera_koprusu.py` CSI kaynağıyla, kamera geldiğinde — 21 Eylül 2026 uçuşu öncesi**) | D-406, `scripts/kamera_koprusu.py`; `results/jetson_20260906/jetson_log_20260906/kamera_koprusu_dosya.log` |
 | Hedef Bölge (HB) dedektörü | DDR: üretime bağlanacak | **BAĞLANDI (1 Eylül 2026, D-386)** — kullanıcı renk teyidi + ölçek/şekil çifti kapısıyla; hedef **253/256** doğru pedde, ped örtülüyken **259/260 `HEDEF_YOK`** (fail-closed), karar maliyeti **sıfır**. Ara dönemdeki bağlanmama gerekçesi (gerçek pedde %0 isabet, kırmızı arabada yanlış pozitif) D-295 §2'de durur | D-295 §2 → **D-386** |
 | YKS görev kipi | tek kip | **`--fda` kipi eklendi** — paraşüt/İKA kapalı, bütçe tek 10 dk | D-408, `CONTRACTS.md` §6.7 |
 | Süre limitleri | belgede | **Sözleşme sabiti**: İHA 900 s, İKA 600 s, FDA operasyon 600 s | `codes/karar_sozlesmesi.py`, D-318 |
@@ -427,7 +554,7 @@ beyan edilen toplam **2293 g**). Bugünkü gerçek künye kullanıcı beyanıdı
 
 | olay | şartname resmî tarihi | takım planı |
 |---|---|---|
-| FDR son teslim | **21.09.2026 – 17.00** | rapor bu tarihe yetiştirilir |
+| FDR son teslim | **21.09.2026 – 17.00** | ~~rapor bu tarihe yetiştirilir~~ → **14 Eylül 2026** (takım kendi terminini **7 gün öne çekti**, D-471, 12 Eylül kullanıcı kararı). Şartname tarihi değişmedi; takım payı **7 gün**dür. 21 Eylül böylece teslim günü olmaktan çıkıp **uçuş / genel prova günü** oldu |
 | FDA (FDS + Drone ile Görev Test Uçuşu) | **30.09 – 03.10.2026** | **tek atış** — `SAHA_RUNBOOK.md` başlık satırı |
 | FDR sonuçları | 04.10.2026 | — |
 | SGGS son teslim | 05.02.2027 | Bölüm 7'deki BOM bu sunumun temelidir |
@@ -507,13 +634,66 @@ tam suit **1875 test OK** (skipped 3), kuru koşu **9 GEÇTİ / 1 SAHİPSİZ**
 **Analitik sonuç — 2: uçuş bütçesi, takvimin bağlayıcı kısıtıdır.** Plan §3'ün gerektirdiği
 en az uçuş sayısı, kontrol listesinden sayılabilir: 3.1 ilk hover (1) + 3.2 Loiter/Auto + iniş
 kanıtı (1) + 3.3 algı canlı (1) + 3.4 tam prova ×3 (3) + 3.5 sıkı provada tekrar kalkış (≥1)
-= **≥ 7 uçuş**. Tek pil ve iMAX B6 (~3 saat dolum) uçuş gününü **≤ 2 uçuşa** kilitlediğine göre
-gereken en az uçuş günü **≥ 4**'tür. Plan 6–19 Eylül aralığında **≥ 6 uçuş günü** ayırır
-(Paz 6 · 7–11 arasından kaptanın seçeceği ≥ 2 gün · Cmt 12 · Paz 13 · 14–16 sıkı prova).
-Pay: **2 gün**. İkinci pil + ≥ 150 W şarj cihazı bu payı büyütür; karar kaptandadır
-(`SAHA_HAZIRLIK_PLANI_20260903.md` §4 "Pil kuralı").
-⚠ Bu bir hesaptır, tahmin değildir; ama **kaybedilen uçuş günü sayısı öngörülmemiştir** —
-hava, arıza ve onarım payı §2.2.7'deki risk tablosunda ayrı durur.
+= **≥ 7 uçuş**. 🔴 **Bu hesabın pil varsayımı 12 Eylül'de değişti** (~~4S 10 Ah~~ → **3S 6000 mAh**,
+stabilite gerekçesiyle, kullanıcı kararı); aşağıdaki sayılar **yeniden türetilmiştir**.
+
+**Dolum süresi — HESAP, ölçüm değil; girdilerinin ikisi BEYAN, ikisi varsayım.** Girdiler:
+(a) şarj cihazı çıkış gücü **50 W** — kaynağı `SAHA_HAZIRLIK_PLANI_20260903.md:47`,
+**kullanıcı beyanı**, cihaz künyesi (B6'nın hangi varyantı) doğrulanmadı; (b) pil 3S 6000 mAh
+(D-474); (c) CC evresi kapasitenin **~%80'i**; (d) CV kuyruğu **~0,3 saat** — (c) ve (d) tipik
+LiPo dolum profili **VARSAYIMIDIR**, ölçüm değildir.
+Türetme: 50 W sabit güçte akım gerilimle ters orantılıdır ⇒ dolumun **başında** (boşalmış 3S
+≈ 10,0 V) `I = 50/10,0 =` **5,0 A**, **sonunda** (12,6 V) `I = 50/12,6 =` **3,97 A**.
+⚠ Cihazın **5 A akım sınırı dolumun başında devrededir**; ortalama akım bu yüzden ≈ 4,0–4,5 A
+bandında kalır. Süreyi uzatan (yani güvenli taraftaki) 3,97 A ile:
+CC `0,8 × 6,0 Ah / 3,97 A =` **1,21 saat** + CV ≈ 0,3 saat ⇒ **dolum ≈ 1,5 saat** (band 1,3–1,6).
+*Yöntem doğrulaması:* aynı hesap eski pile uygulandığında `50/16,8 = 2,98 A`,
+`0,8 × 10 / 2,98 = 2,68 sa` + kuyruk ≈ **3,0 saat** verir ve raporun eski **~3 saat** satırını
+yeniden üretir → yöntem **kalibrelidir**. Bu sayı **ÖLÇÜLMEDİ**; kapanış yolu: bir dolumun
+kronometreyle ölçülmesi (açık kalem).
+
+**Günlük uçuş sayısı — HESAP.** 8 saatlik saha günü, çevrim = uçuş ≈ 8 dk + soğuma ≈ 20 dk +
+dolum 1,5 saat ≈ **2,0 saat** → `8 / 2,0 =` **günde ≈ 4 uçuş** (eskiden 2).
+
+**Gereken en az uçuş günü.** 12 Eylül'de 1 uçuş fiilen yapıldı (A12, BEYAN), **6 uçuş kaldı**;
+`⌈6 / 4⌉ =` **≥ 2 gün**. Yeni takvimde (D-471: FDR 14 Eylül, uçuş 21 Eylül) 13–20 Eylül
+aralığında **8 gün** vardır. **Pay: 6 gün** (eskiden 2). İkinci pil + ≥ 150 W şarj cihazı bu payı
+daha da büyütür; karar kaptandadır (`SAHA_HAZIRLIK_PLANI_20260903.md` §4 "Pil kuralı").
+
+🔴 **Ama aynı geçiş yeni bir kısıt doğurdu ve gizlenmiyor — askı süresi.** 3S 6000 mAh enerjisi
+`11,1 V × 6,0 Ah =` **66,6 Wh**, 4S 10 Ah'in (148 Wh) **%45'i**. Veri sayfası ÖRNEK satırından
+(`FDR/BOLUM_3_SISTEM_SPESIFIKASYONLARI.md:319`) 2,5 kg için 4S'te 26 A → 3S'te
+`26 × (14,8/11,1) ≈` **35 A**, güç ≈ **388 W** (+ aviyonik ≈ 25 W);
+`0,8 × 66,6 Wh / 413 W ≈` **0,13 saat = ≈ 8 dk askı (HESAP)**. Şartname bütçesi **10 dk**'dır
+(`codes/karar_sozlesmesi.py:2009` `SARTNAME_FDA_OPERASYON_SURESI_S = 10 * 60.0`) →
+**hesaplanan askı süresi görev bütçesinin ALTINDA kalıyor.** Bu bir ölçüm değildir ve eşik
+**gevşetilmez**; sonucu şudur: **ya kütle 2,5 kg'ın altına iner, ya ikinci pil / daha büyük
+kapasite gerekir.** Kapanışı: pilli tartı (T10) + PM06 telemetrisinden **gerçek askı akımı**,
+21 Eylül 2026 öncesi.
+⚠ **HESAP (sayım) — ÖLÇÜM değil.** ~~Kaybedilen uçuş günü sayısı öngörülmemiştir~~ →
+artık öngörü değil, ama bir ölçüm aleti çıktısı da değil: aşağıdaki sayı depodaki
+artefaktlardan **türetilmiş bir sayımdır**, etiketi bu yüzden **HESAP**'tır.
+
+**Sayım yordamı (açıkça).** Planlanan uçuş penceresi **5–13 Eylül = 9 takvim günü** (§2.2.6):
+
+| planlanan gün | ne oldu | kanıt |
+|---|---|---|
+| Cmt 5 Eyl | **boş** — Jetson araca takılmadı, tartı ve kamera satırları alınmadı, uçuş yok | D-426 §4; `results/ucus_loglari/20260905/` **boş** |
+| Paz 6 Eyl | **hedefine ulaşmadı** — 20:45–21:34 arasında 26 arm, pervaneli **3 devrilme**; FC doğru yönde düzeltti ama **ön itki yetmedi**, **M1 (sağ ön) hasarlı** | D-429 (tlog ölçümü, `results/ucus_loglari/20260906/2026-09-06 19-52-44.tlog`) |
+| Pzt 7 – Cum 11 Eyl | **boş** (5 gün) — motor onarımı/teşhisi | `ls results/ucus_loglari/` → yalnız `20260905`, `20260906` |
+| Cmt 12 Eyl | ✅ **hedefine ulaştı** — A12: ~3 m'de ~15 s askı + kodla LAND (BEYAN) | D-473; `ATOLYE_TEST_GUNU_20260912.md:199` |
+| Paz 13 Eyl | **tamamlanmadı** — sayıma girmiyor (A6 ölçümü yapıldı, uçuş değil) | D-476 |
+
+**Hüküm: 9 günün 6'sı tamamen boş geçti (5, 7, 8, 9, 10, 11 Eylül), 1'i hedefine ulaşmadı
+(6 Eylül), 1'i ulaştı (12 Eylül), 1'i tamamlanmadı (13 Eylül) ⇒ planlanan 3 temiz provanın
+0'ı koşuldu.** Plandaki ilk askı 6 Eylül'e yazılmıştı, gerçekleşen 12 Eylül → **gecikme 6 gün**.
+Hava değil, **donanım arızası** (M1) baskın nedendir; §2.2.7 risk tablosunun "arıza/onarım payı"
+satırı bu sayımla beslenir.
+⚠ **Sayımın kendi sınırı:** boş klasör *"uçuş olmadı"*nın değil **"kayıt yok"**un kanıtıdır —
+nitekim 12 Eylül uçuşunun da `results/ucus_loglari/` altında klasörü **yoktur** (`.bin` çekilmedi,
+T257). Bu yüzden 6 rakamı, kanıt düzeyinde bir **kayıt yokluğu** sayımıdır.
+⚠ Yukarıdaki §2.2.5.5 payı (6 gün) bu kaybı **zaten karşılıyor**, çünkü kayıp gerçekleşmiş ve
+geride kalan 13–20 Eylül penceresi hesaba öyle girmiştir.
 
 ### 2.2.6 Planlanan takvim — 3 → 30 Eylül 2026
 

@@ -77,8 +77,14 @@ nötr `.STEP` ihracı ve gövde için **çözülmüş bir sonlu elemanlar çalı
 giren STL'ler bu parçaların ihraçlarıdır; adları birebir eşleşir. Kaynak parametrik model +
 montaj + analiz zincirinin bir arada bulunması, geometrinin hazır bir ticari platformdan
 alınmadığının **belge düzeyinde** kanıtıdır.
-**BEYAN GEREKLİ (insan): tasarımın takım üyelerince özgün olarak modellendiğine dair imzalı
-beyan** — dosyaların varlığı yazarlığı kanıtlar ama beyan yerine geçmez.
+**Açık kalem — imzalı özgünlük beyanı (hukuki, ölçümle kapanmaz).** Bu satır ölçümle ya da
+türetmeyle kapanmayan tek sınıftandır: §6 intihal hükmü **imza** ister. Depodaki teknik kanıt
+zinciri tamdır ve beyanı destekler — parametrik kaynak dosyalar + montaj + FEM çalışması bir
+aradadır, STL'ler bu parçaların ihraçlarıdır (adlar birebir eşleşir) ve **geometrinin depodaki
+dilimleyici artefaktlarıyla tutarlı olduğu ölçülmüştür** (§5.1.3: sabit kalınlıktaki iki parçada
+katı hacim ÷ kalınlık = dilimleyicinin izdüşüm alanı, altı basamak). **PLANLANAN İŞLEM: takım
+kaptanı imzalı özgünlük beyanı — 14 Eylül teslim paketine eklenecek** (sorumlu: takım kaptanı;
+kanıt: ıslak/e-imzalı PDF).
 
 ### 5.1.3 CAD künyesi — üretime giren ölçülen geometri
 
@@ -96,20 +102,75 @@ tüm dosya üzerinden (betik: bu raporun kanıt betiği, 2026-09-03).
 | `GPS_Holder_STL.STL` (GNSS tutucu) | 4 584 | 229 284 | 49,99 × 60,00 × 77,50 | `7a98ea44e89f` | 1 |
 | TPU taban pedi | *(STL depoda ayrı yok)* | — | — | — | **4** |
 
-⚠ **DOĞRULANACAK — kol gabarisi.** Kol, STL koordinat sisteminde **çapraz** yerleştirilmiştir
-(X ve Z gabarileri birbirine eşit, kalınlık Y = 8 mm). Bu yüzden 174,90 mm **kolun boyu değildir**;
-kolun gerçek boyu parametrik modelden (`Drone_Arm.SLDPRT`) okunmalıdır. Dilimleyicinin ölçtüğü
+✅ **ÇÖZÜLDÜ — kol gabarisi STL'den ÖLÇÜLDÜ.** Kol, STL koordinat sisteminde **çapraz**
+yerleştirilmiştir (X ve Z gabarileri birbirine eşit, kalınlık Y = **8,000 mm**). Bu yüzden
+174,90 mm **kolun boyu değildir**; eksene hizalı gabaridir. Kolun kendi eksenindeki zarfı, tüm
+köşe noktalarının 0,1° adımla döndürülüp **en küçük alanlı yönlü kutunun (OBB)** aranmasıyla
+bulunmuştur: kutu tam **45°**'de oturur ve **189,207 × 98,600 × 8,000 mm**'dir; parçanın en uzun
+köşe-köşe kirişi **196,39 mm**'dir. Yani **kol eksen boyu = 189,21 mm (ÖLÇÜM)**, göbek
+plakasıyla birlikte genişlik 98,60 mm. (174,90 · √2 ≈ 247,3 mm'lik basit çapraz varsayımı
+**yanlıştır** — parça saf dikdörtgen değildir.) Ölçüm betiği ve ham çıktısı **depodadır**:
+`scripts/olcum/stl_kati_hacim.py` → `results/stl_olcum_20260913/ozet.json` + `kosum.log`
+(2026-09-13; `O:\navitas-local-train\venv`, saf Python + NumPy).
+
+⚠ **Depoda İKİNCİ bir kol modeli vardır ve bu rapordaki kol DEĞİLDİR.**
+`dronesolid/uzatılmış yeni drone kolu.STL` (5 Eylül 14:41, git'te izlenmiyor) **farklı
+parçadır**: gabari **211,257 × 8,000 × 211,257 mm**, OBB eksen boyu **240,63 mm**, katı hacim
+**84 043,5 mm³** (87,4 g) — %25 daha uzun, %25 daha ağır. Bu bölümün bütün kütle ve süre
+tabloları **eski (kısa) kola** dayanır ve dayanak beyan değil ölçümdür: basılan plakanın kendi
+ihracı `dronesolid/files (3)/Plaka1_Kol_1-2.stl` katı hacmi **67 204,2 mm³** =
+`Drone_Arm_STL.STL` ile **birebir** → basılan geometri eski koldur.
+🔴 **AÇIK KALEM:** araca takılı dört kolun hangisi olduğu ve dördünün aynı boyda olup olmadığı
+**ölçülmemiştir** (`REVIEW_LOG.md:30141` — *"dördü aynı boy mu"*); kapatma yolu kumpasla dört
+kolun eksen boyu, §5.5.1'in kol kimliği kalemiyle birlikte. Dilimleyicinin ölçtüğü
 tabla izdüşüm alanı kol başına **8 607,19 mm²**'dir (kaynak: `Plaka1_Kol_1-2.3mf` →
 `Metadata/plate_1.json`). Diğer parçaların tabla izdüşüm alanları: alt çerçeve **35 196,2 mm²**,
 üst çerçeve **26 842,4 mm²**, kubbe **3 403,5 mm²**, ayak **189,0 mm²** (her biri), GPS tutucu
 **10,5 mm²**, TPU ped **2 494,3 mm²**.
 
-⚠ **STL birimi mm kabul edilmiştir** (ikili STL biriminde birim bilgisi taşımaz). Dilimleyici
-projelerinin aynı geometriyi Bambu Lab X1C / P2S tablasına (256 × 256 mm) sığdırması bu kabulü
-destekler, ancak nihai teyit CAD'den yapılmalıdır → **BEYAN GEREKLİ (insan): CAD birim ve ölçek teyidi**.
+✅ **STL birimi mm — ÖLÇÜMLE DOĞRULANDI, beyan gerekmiyor.** İki bağımsız artefakt — STL üçgen
+ağından hesaplanan **katı hacim** ile dilimleyicinin bağımsız olarak ölçtüğü **tabla izdüşüm
+alanı** — **sabit kalınlıkta ekstrüzyon olan iki parçada** altı anlamlı basamağa kadar aynı
+sayıyı veriyor:
 
-**BEYAN GEREKLİ (insan): CAD model kütlesi** (parça başına, g) — SGGS §5.4 bunu açıkça ister ve
-depoda hesaplanmış bir CAD kütlesi yoktur.
+| parça | STL katı hacmi | ÷ ölçülen kalınlık | = izdüşüm (HESAP) | dilimleyicinin ölçtüğü | fark |
+|---|---|---|---|---|---|
+| üst çerçeve | 107 369,6 mm³ | 4,000 mm | **26 842,40 mm²** | **26 842,404 mm²** | **%0,00** |
+| alt çerçeve | 281 569,8 mm³ | 8,000 mm | **35 196,22 mm²** | **35 196,22 mm²** | **%0,00** |
+| kol | 67 204,2 mm³ | 8,000 mm | 8 400,53 mm² | 8 607,19 mm² | **%2,40** |
+
+⚠ **Kolda özdeşlik TUTMAZ ve bu bir ölçek hatası değil geometridir:** kol tekdüze kalınlıkta bir
+levha değildir (bir bölgesi 8 mm'den incedir), bu yüzden hacim ÷ azami kalınlık izdüşümün altında
+kalır. Birim/ölçek hükmü **yalnız tam eşleşen iki parçaya** dayanır; kol farkı hükmü kurmaz.
+Birim mm'den farklı olsaydı (ör. inç) iki kayıt arasında 25,4'ün kuvvetleri kadar fark çıkardı;
+çıkmıyor → **ölçek 1:1, birim mm — ÖLÇÜLDÜ.** Zinciri kapatan üçüncü bağımsız kayıt dilimleyicinin
+filament uzunluğu ↔ kütle satırıdır: 22 332,62 mm × π(1,75/2)² = **53 716,2 mm³**, × 1,04 g/cm³ =
+**55,86 g** = G-code'un kendi yazdığı kütle → hem 1,75 mm filament hem 1,04 g/cm³ yoğunluk teyitli.
+Ham çıktı: `results/stl_olcum_20260913/ozet.json` (`ozdeslik_fark_yuzde` alanı).
+
+**CAD model kütlesi (parça başına) — HESAP, artefakttan türetildi.** SGGS §5.4'ün istediği sütun
+artık boş değildir. Yöntem: her STL'in kapalı üçgen ağından **katı hacim** (Σ a·(b×c)/6,
+divergence toplamı, saf Python + NumPy), × **ρ = 1,04 g/cm³** — bu yoğunluk varsayım değil,
+dilimleyicinin kendi kaydından doğrulanmıştır (yukarıdaki satır: 53 716,2 mm³ × 1,04 = 55,86 g =
+G-code'un yazdığı kütle).
+
+| parça | katı hacim | **CAD kütlesi (HESAP)** | adet | toplam |
+|---|---|---|---|---|
+| kol (`Drone_Arm_STL`) | 67,20 cm³ | **69,89 g** | 4 | 279,6 g |
+| üst çerçeve (`Drone_Frame_STL`) | 107,37 cm³ | **111,66 g** | 1 | 111,7 g |
+| alt çerçeve (`Lower_Drone_Frame_STL`) | 281,57 cm³ | **292,83 g** | 1 | 292,8 g |
+| kubbe (`Drone_Dome_STL`) | 119,85 cm³ | **124,64 g** | 1 | 124,6 g |
+| ayak (`Drone_Legs_STL`) | 52,82 cm³ | **54,94 g** | 4 | 219,8 g |
+| GNSS tutucu (`GPS_Holder_STL`) | 14,67 cm³ | **15,26 g** | 1 | 15,3 g |
+| **toplam (katı CAD)** | 1 003,5 cm³ | — | 12 | **1 043,7 g** |
+
+⚠ Bu **katı (%100 dolu) CAD kütlesidir**; basılan parçalar %15–%40 dolguludur. Basılan karşılığı
+§5.3.2'de ölçülen dolgu katsayısıyla **≈ 588 g** çıkar. TPU taban pedinin STL'i depoda ayrı
+olmadığı için tabloda yoktur (izdüşümden hesabı §5.3.2'de). **ÖLÇÜM: parça başına tartı,
+14–20 Eylül** — basılan kütle beklenen bandın (katı kütle × 0,50) dışına çıkarsa dolgu/malzeme
+sapması demektir.
+Kaynak (depo içi, yeniden üretilebilir): `scripts/olcum/stl_kati_hacim.py` →
+`results/stl_olcum_20260913/ozet.json` + `kosum.log`, 2026-09-13.
 
 ### 5.1.4 Eklemeli imalat reçeteleri — plaka plaka ölçüldü
 
@@ -147,8 +208,15 @@ profili yoktur**: sekiz plakanın yedisinde `filament_type` = `ABS` (profiller
 `type="ABS" color="#000000" tray_info_idx="GFB00"`.
 
 Bu rapor çelişkiyi **çözmez, kaydeder**: dilimleyici artefaktları ABS, beyan ABS-CF diyor.
-**BEYAN GEREKLİ (insan): basılan parçaların gerçek filament cinsi** (makara etiketi /
-fatura ile). Yapısal hesaplar hangi malzemeyle yapılacaksa (Bölüm 3), o malzemenin adı
+**Açık kalem — filament cinsi (ABS mi ABS-CF mi); ama artık ÖLÇÜLEBİLİR bir testi var.**
+Artefakt ABS diyor (8 plakanın 7'sinde `filament_type=ABS`, G-code `tray_info_idx="GFB00"`),
+beyan ABS-CF diyor; ikisi bugün ayırt edilmemiştir. Ayırt etmenin **ölçüm yolu** şudur: yoğunluk
+farkı — ABS **1,04 g/cm³**, ABS-CF **≈ 1,11 g/cm³** (üretici verisi). Üst çerçeve dilimleyicide
+ABS profiliyle **55,86 g** olarak hesaplanmıştır; makarada gerçekten ABS-CF olsaydı aynı hacim
+**55,86 × (1,11/1,04) = 59,6 g** gelirdi. **Fark 3,8 g'dir ve ±1 g'lik bir teraziyle ayırt
+edilir** (karışıklık payı: brim/purge ~1–2 g, bu yüzden tartı makara etiketi fotoğrafıyla
+**birlikte** kanıt sayılır). **ÖLÇÜM: (a) basılmış üst çerçevenin tartımı, (b) makara etiketi
+ve/veya fatura fotoğrafı — 14 Eylül öncesi.** Yapısal hesaplar hangi malzemeyle yapılacaksa (Bölüm 3), o malzemenin adı
 buradan gelmelidir; iki farklı malzemeyle iki farklı mukavemet çıkar.
 
 ### 5.1.6 Final (yarışma) aracı için üretim yöntemi — henüz seçilmedi
@@ -158,8 +226,14 @@ Sabit kanat gövde/kanat/kuyruk için depoda **CAD vardır**
 `Left/Right_Elevator`, `Rudder`; `NAVITIAS_XFLR5_Analysis.xfl` 905 868 B) ama **üretim yöntemi
 seçilmemiştir**: kompozit yatırma mı, sıcak tel köpük kesim mi, eklemeli imalat mı olacağı
 kayıtta yoktur. Mancınık için depoda **CAD/analiz dosyası yoktur**.
-**BEYAN GEREKLİ (insan): final aracı yapısal parçaları için seçilecek üretim yöntemi**
-(gövde/kanat/kuyruk ve mancınık ayrı ayrı) ve seçimin dayanağı. Olgunluk tablosu ve üretim
+**Açık kalem — final aracı üretim yöntemi seçimi (KARAR; ölçümle ya da hesapla kapanmaz).**
+Gövde/kanat/kuyruk için kompozit yatırma, sıcak tel köpük kesim ve eklemeli imalat arasındaki
+seçim, mancınık için ray/enerji mimarisi kararı **alınmamıştır** ve bu rapor onu "alınmış"
+göstermez. Karar girdisi hazır: CAD mevcut (dosya adları yukarıda), XFLR5 analizi pakette.
+**PLANLANAN KARAR: 21 Eylül FDA uçuşundan sonraki dalga** — karar tarihi 21 Eylül, sorumlu:
+takım kaptanı + yapı sorumlusu, kayıt yeri: `REVIEW_LOG.md` D-kaydı + bu bölüm. Seçim
+yapılmadığı için §5.2.10'daki final imalat süresi de yazılmamıştır (yöntemsiz süre tahmini
+uydurma olurdu). Olgunluk tablosu ve üretim
 adımları §5.2.10'dadır.
 
 ---
@@ -169,15 +243,24 @@ adımları §5.2.10'dadır.
 > Yönerge (`Y-5-M02`): *"Seçilen üretim yöntemine göre toplam imalat süresi tahmin edilmeli ve
 > buna bağlı bir montaj planı hazırlanmalıdır."*
 
-### 5.2.1 Toplam imalat süresi — bugün hesaplanamıyor
+### 5.2.1 Toplam imalat süresi — ölçülen plakadan türetildi (HESAP)
 
-Sekiz plakadan **yalnız birinin** dilimlenmiş G-code'u depodadır; kalan yedisinin baskı süresi
-**ÖLÇÜLEMEDİ** (ayrıntı ve tek ölçülen plakanın değerleri §5.3.1–§5.3.2). Bu yüzden
-**toplam imalat süresi tahmin edilmemiştir** — yönergenin istediği toplam, yedi eksik ölçüm
-kapatıldığında §5.3.2'deki tablodan toplanarak yazılacaktır. Tahmin yazmak yerine boşluk
-bırakılmıştır.
-**ÖLÇÜLEMEDİ: FDA aracının toplam 3B baskı süresi** — sekiz plakadan yedisinin G-code'u
-üretilmedi; her `.3mf` Bambu Studio'da aynı reçeteyle yeniden dilimlendiğinde kapanır.
+Sekiz plakadan **yalnız birinin** dilimlenmiş G-code'u depodadır (üst çerçeve, §5.3.1). Kalan
+yedisi için süre **uydurulmamış, ölçülen plakadan kalibre edilerek hesaplanmıştır**; yöntem ve
+plaka plaka sonuçlar §5.3.2'dedir. Kalibrasyon sabitlerinin üçü de ölçümden gelir:
+hacimsel akış **Q = 53 716,2 mm³ ÷ 4 980 s = 10,786 mm³/s**, plaka başına sabit ek süre
+**436 s** (= 5 416 − 4 980) ve dolgu katsayısı **k₁ = 55,86 g ÷ 111,66 g = 0,50027**
+(G-code kütlesi ÷ üst çerçevenin katı CAD kütlesi, §5.1.3).
+
+**FDA aracının toplam 3B baskı süresi = 56 761 s ≈ 15 sa 46 dk (HESAP, alt sınır, ±%25)**,
+toplam filament **≈ 588,1 g** (582,0 g ABS + 6,0 g TPU). "Alt sınır" niteliği bilinçlidir: model
+hacimsel akışa dayanır, katman sayısı arttıkça (kubbe 390, ayak ~790 katman) gerçek süre bu
+değerin üstüne çıkar. **ÖLÇÜM: sekiz `.3mf`'in Bambu Studio 02.07.01.62 ile aynı reçeteyle
+yeniden dilimlenmesi — 14–20 Eylül**; hesap ile ölçüm farkı o gün tabloya işlenecektir.
+
+Hesap depo içinden yeniden üretilebilir: `scripts/olcum/plaka_sure_kutle.py` →
+`results/stl_olcum_20260913/plaka_sure_kutle.json` + `kosum.log` (girdi:
+`results/stl_olcum_20260913/ozet.json`). Son işlem / iş gücü süresi ayrıdır ve §5.3.3'tedir.
 
 Montaj tarafının süresi ise planlanmıştır: aviyonik entegrasyonu **5 Eylül 2026** günü
 **09:00–12:30** aralığına bölünmüştür (§5.2.2–§5.2.4). Saha kurulumunun süre bütçesi ayrıdır ve
@@ -193,7 +276,7 @@ Aviyonik entegrasyonu **5 Eylül 2026** günü yapılacaktır. Yordam önceden y
 |---|---|
 | Kutu açılır; künye tablosu (§0.2) ile karşılaştırılır | eksik/fark listesi (tutanak) |
 | **Her parça tartılır**, fotoğraflanır | tartı listesi — UHDR "gerçek kütle" sütununun kaynağı |
-| Gövde kontrolü: kollar sıkı, ayaklar, kubbe, GPS çubuğu; motor delikleri ~~5008~~ → SunnySky X2220 980KV V3 (7 Eylül beyanı, D-435) ile uyumlu — kol delik deseni 5008 için tasarlandı, X2220 ile uyum DOĞRULANMADI | fotoğraf; uyumsuzluk varsa **§5.5.1 kol reçetesi sorusu burada kapanır** |
+| Gövde kontrolü: kollar sıkı, ayaklar, kubbe, GPS çubuğu; motor delikleri ~~5008~~ → **SunnySky X2220 980KV V3** ile uyumlu (delik deseni 5008 için tasarlanmıştı, D-435) | **BEYAN + DOLAYLI KANIT; boyutsal ölçüm YOK.** Dört motor kollara monte edildi ve araç uçtu: `STAT_FLTTIME` 0 → **273 s** (`config/pixhawk/emir.param:980`; 6 Eylül dökümünde 0 idi), `STAT_BOOTCNT` 48 → 96 (`:979`). ⚠ Bu sayaç **kümülatif ARM/uçuş süresidir**, tek bir A12 uçuşunun ölçüsü değildir (beyan edilen hover 15 s) ve **delik deseni uyumunu ölçmez** — iki vidayla, adaptörle ya da zorlanmış montajla da uçulur. Kabul ölçütü (X2220 delik aralığı) **ÖLÇÜLMEDİ**; kapatma yolu: kumpasla delik aralığı + montaj fotoğrafı. ⚠ M1 (sağ ön) motor hasarı (D-429 §2) ve `config/pixhawk/README.md` §3'ün istediği **videolu pervanesiz motor testi tekrarı** hâlâ açık. **§5.5.1 kol reçetesi sorusu bu adımda KAPANMADI**, ayrı kalemdir |
 
 ### 5.2.3 Montaj planı B — mekanik yerleşim (09:30–11:00), pervanesiz
 
@@ -202,8 +285,8 @@ Aviyonik entegrasyonu **5 Eylül 2026** günü yapılacaktır. Yordam önceden y
 | Motorlar kollara; vida boyu stator'a değmeyecek; **quad-X yerleşimi**: 1 sağ ön CCW, 2 sol arka CCW, 3 sol ön CW, 4 sağ arka CW | şema fotoğrafı |
 | ESC'ler kollara; motor kabloları kısa ve burulmuş (EMI) | kablo boyu ölçümü |
 | FCHUB-12S gövde ortasına; güç modülü pil hattına (plan **PM02**; 5 Eylül kutudan **PM06** çıktı — `REVIEW_LOG.md` D-426 §3, BEYAN) | — |
-| Pixhawk 6C ağırlık merkezine, **ok ileri**, damper/köpük üstünde, kablolar gergin değil | uçuşta `VIBE` **< 30** |
-| M9N GNSS direk üstünde, ok ileri, güç hatlarından uzak | pusula ofseti **< 300** |
+| Pixhawk 6C ağırlık merkezine, **ok ileri**, damper/köpük üstünde, kablolar gergin değil | `VIBE` **< 30** → **BUGÜN OKUNAMIYOR**: araç uçtu (`emir.param:980` `STAT_FLTTIME=273 s`) ama **A12'nin `.bin` logu SD karttan silinmiş**, parametre dökümünde titreşim ölçümü yok. Dolaylı kanıt: 3 m'de 15 s kararlı hover + kodla LAND (BEYAN) — aşırı titreşimde EKF konum tutamazdı. Kayıt açık: `LOG_BITMASK=176126` (`:536`), `INS_ACCEL_FILTER=20` (`:476`). **ÖLÇÜM: 21 Eylül uçuş logu (`.bin`) → `VIBE` p95; log SD karttan silinmeden kopyalanacak** |
+| M9N GNSS direk üstünde, ok ileri, güç hatlarından uzak | pusula ofseti **< 300** → **İKİ MANYETOMETRE DE ÖLÇÜLDÜ, ikisi de eşiğin altında**: `COMPASS_OFS` (Mag1, dış) = −1,143 / −3,037 / +16,317 → büyüklük **16,64** ✔ (`emir.param:246-248`); `COMPASS_OFS2` (Mag2, iç) = +29,781 / −159,516 / +98,921 → büyüklük **190,0** ✔ (`:249-251`) — 6 Eylül'de 129,5 idi, **büyüdü**. ⚠ **Yalnız Mag1 yeniden kalibre edildi** (12 Eylül: `COMPASS_DIA` 1,0505 / 0,9548 / 1,0657 ve `COMPASS_ODI` dolu — `:210-212`, `:236-238`). **Mag2 kalibre EDİLMEDİ:** `COMPASS_DIA2 = 1/1/1` (`:213-215`) ve `COMPASS_ODI2 = 0/0/0` (`:239-241`) hâlâ fabrika → D-428 §5g'nin ikinci pusula borcu **AÇIK kalır** |
 | Jetson Nano hava alan yerde, ısı emici açık; **HQ kamera nadir (tam aşağı)**, pervane kadrajda değil, şerit kablo kilitli | yerde çekilen kare temiz |
 | SiK anteni dikey, gövde dışında, ESC'den **≥ 5 cm**; FS alıcısı anteni ayrı | RSSI |
 | Pil yuvası kayışlı, CG ortada (iki parmak testi) | **CG ± 1 cm** |
@@ -212,14 +295,14 @@ Aviyonik entegrasyonu **5 Eylül 2026** günü yapılacaktır. Yordam önceden y
 
 | hat | bağlantı | kabul ölçütü |
 |---|---|---|
-| Ana güç | pil (XT60/XT90) → **PM06** (plan PM02; kutudan PM06 çıktı, D-426 §3) → **FCHUB-12S** → 4× ESC (plan 80 A; kutudan **"60 A V2"** çıktı, D-426 §3 — tam marka/model BEYAN GEREKLİ) | polarite doğru; ohmmetre ile kısa devre yok — 5 Eylül: pil 18:03'te takıldı, kısa devre ölçümü tutanakta yok (ÖLÇÜLEMEDİ) |
-| Pixhawk gücü | PM06 → `POWER1` — PM06'nın 8 pinli kablosu 6 pinli `POWER1`'e uymadı, 6 pinli kablo takıldı; uydurma adaptör yapılmadı (D-426 §2) | **5,1–5,3 V**; `BATT_MONITOR=4` — 5 Eylül ÖLÇÜM: `PreArm: Battery 1 low voltage failsafe` listeden kayboldu (18:03); gerilim MP ↔ multimetre **ÖLÇÜLEMEDİ** |
-| Jetson gücü | FCHUB pad → **5 V / 5 A UBEC** → Nano barrel jack (J25), **`J48` jumper takılı**, ortak GND | yük altında **5,0–5,2 V** |
-| ESC sinyal | ESC PWM → `AUX 1–4` (FMU PWM OUT; Pixhawk ile gelen "PWM IN / PWM OUT" adaptör kartı üzerinden; `SERVO9–12` = M4, M2, M1, M3 — D-428 §1, §5d) | pervanesiz motor testi — 5 Eylül 18:06 ÖLÇÜM (D-426 §1); sıra/yön 4/4 BEYAN, video yok |
-| RC | FS-iA6B'nin **`i-BUS SERVO`** portu (`CH1`–`CH6` değil: tek kanal PWM, Pixhawk görmez — 5 Eylül'de önce `CH6`'ya takılıydı, D-426 §2) → Pixhawk `PPM/SBUS RC`; kumanda bind edilir (`SAHA_HAZIRLIK_PLANI_20260903.md` §2.3 satır 117) | kanallar ekranda, uçlar 1000–2000 — 5 Eylül ÖLÇÜM: `RCInput: decoding IBUS(1)` (18:03); FS-iA6B teyit (B harfi); uç değerleri tutanakta yok |
+| Ana güç | pil (**3S 6000 mAh** — 4S'ten stabilite gerekçesiyle değiştirildi, kullanıcı kararı 12 Eylül, D-474 §2) → XT60/XT90 → **PM06** (plan PM02; kutudan PM06 çıktı, D-426 §3) → **FCHUB-12S** → 4× **Hobbywing Skywalker 60A V2** (plan 80 A idi; künye **etiket beyanı** olarak depoda kayıtlı: `config/pixhawk/README.md:104` — ürün etiketi fotoğrafı ya da veri sayfası eşlemesi **YOK**; kalibrasyon yordamı aynı dosya §2.1) | **[BEYAN]** Polarite **gözle kontrol edildi** (BEYAN; alet/kayıt yok). **Kısa devre ohmmetre ölçümü YAPILMADI** — 5 Eylül'de pil 18:03'te takıldı, tutanakta ölçüm satırı yok. Dolaylı kanıt: güç hattı 273 s'lik uçuş boyunca sağlam kaldı (`emir.param:980`). ⚠ Pil 6000 mAh ama `BATT_CAPACITY=3300` (`:129`) — 🔴 **KUSUR**, mAh sayacı %45 yanılıyor (D-474 §3, T258). **ÖLÇÜM: ohmmetre ile hat direnci, uçuş öncesi 14–20 Eylül** |
+| Pixhawk gücü | PM06 → `POWER1` — PM06'nın 8 pinli kablosu 6 pinli `POWER1`'e uymadı, 6 pinli kablo takıldı; uydurma adaptör yapılmadı (D-426 §2) | `BATT_MONITOR=4` **ÖLÇÜLDÜ** (`emir.param:139`); 3S eşikleri kayıtlı: `BATT_LOW_VOLT=10,0` · `BATT_CRT_VOLT=9,0` V (`:138`, `:131`) ve pil failsafe A3 **GEÇTİ** (12 Eylül, BEYAN). ⚠ Aynı dökümde `BATT_CAPACITY=3300` (`:129`, pil 6000 mAh → 🔴 kusur, D-474 §3) ve `BATT_ARM_VOLT=0` (`:128`, arm gerilim kontrolü yok, D-474 §5). Beslemenin **5,1–5,3 V** olduğu PM06 **üretici verisidir** (5,3 V ±0,1); **MP okuması ↔ multimetre karşılaştırması HİÇ YAPILMADI** ve `BATT_VOLT_MULT=18,18` PM06 **fabrika** değeridir (`:143`) → kart okuması kendi kendinin hakemi olamaz. **ÖLÇÜM: multimetre ile `POWER1` 5 V rayı + pil gerilimi karşılaştırması, 14–20 Eylül** |
+| Jetson gücü | FCHUB pad → **5 V / 5 A UBEC** → **Orin Nano Dev Kit 5 V DC jack** (5,5 × 2,5 mm), ortak GND. ~~Nano barrel jack J25 + `J48` jumper~~ **GEÇERSİZ** (D-431: kart Orin Nano çıktı, bu kartta J48 jumper **yoktur** — üretici verisi) | 🔴 **YAPILMADI — besleme yolu hiç kurulmadı.** 5 V / 5 A UBEC (A20) **henüz alınmadı** (`FDR/BOLUM_7_BUTCE_GERCEKLEME.md:106`) ve Jetson araca **takılmadı** (`FDR/BOLUM_3_SISTEM_SPESIFIKASYONLARI.md:654`; D-426 §4). 6 Eylül FPS koşumu **tezgâh koşumudur** — kart kendi 5 V adaptörüyle beslenmiştir; o koşum drone güç yolu hakkında **hiçbir şey kanıtlamaz**. Yük altında **5,0–5,2 V** hedefi **ÖLÇÜLMEDİ**. Bütçe HESAP: Orin Nano 10 W kipinde ~2,0 A, çevreyle ~2,5 A ≤ 5 A (%50 pay); FCHUB'ın 2 A BEC'i yetmez. **KANIT ŞARTI: UBEC alındıktan sonra FCHUB → UBEC → jack yolunda, Jetson MAXN'de, jack ucunda multimetreyle gerilim kaydı — 14–20 Eylül** |
+| ESC sinyal | ESC PWM → `AUX 1–4` (FMU PWM OUT; Pixhawk ile gelen "PWM IN / PWM OUT" adaptör kartı üzerinden) | Eşleme `SERVO9–12` = **36 / 34 / 33 / 35** (Motor4 / Motor2 / Motor1 / Motor3) dökümde **okundu** (`emir.param:918, 848, 853, 858`); çerçeve `FRAME_CLASS=1` + `FRAME_TYPE=1` = **QUAD/X** (`:395-396`). Pervanesiz motor testi 5 Eylül 18:06 ÖLÇÜM (D-426 §1). ⚠ **ÖLÇÜT KARŞILANMADI:** `config/pixhawk/README.md` §3'ün istediği `SERVO1–8` ve `SERVO13–16` = **0** şartı **DÜŞTÜ** — 12 Eylül dökümünde on iki çıkış hâlâ motor fonksiyonunda (`emir.param:843-913`), 6 Eylül dökümüyle birebir aynı; D-428 §5d'de kaydedilen sıfırlama **yapılmamış**. ⚠ `RC_SPEED=490` (`:659`) ESC spesi **50–432 Hz'in dışında** (`README.md:58`, D-429 §4); 400'e çekilmedi. İkisi de uçuş öncesi kapanmadan bu satır **GEÇTİ sayılmaz** |
+| RC | FS-iA6B'nin **`i-BUS SERVO`** portu (`CH1`–`CH6` değil: tek kanal PWM, Pixhawk görmez — 5 Eylül'de önce `CH6`'ya takılıydı, D-426 §2) → Pixhawk `PPM/SBUS RC`; kumanda bind edilir (`SAHA_HAZIRLIK_PLANI_20260903.md` §2.3 satır 117) | Kanallar ekranda; **uçlar 1000–2000 ÖLÇÜLDÜ**: `RC1_MAX=2000` / `RC1_MIN=1000` (`emir.param:661-662`), `RC3_MAX=2000` / `RC3_MIN=1000` (`:715-716`); `RCInput: decoding IBUS(1)` (5 Eylül 18:03); `RC_PROTOCOLS=1` (`:658`). RC failsafe **A1 GEÇTİ** (12 Eylül atölye, BEYAN) — kayıtlı değerler `FS_THR_ENABLE=3` (LAND) ve `FS_THR_VALUE=975` (`:411-412`) |
 | Telemetri | SiK → `TELEM1` (JST-GH 6 pin, TX↔RX çapraz), 57600 | YKS'de HEARTBEAT |
 | **Jetson ↔ Pixhawk** | `TELEM2` → Nano 40-pin **pin 10 RX / pin 8 TX / pin 6 GND** (3,3 V; **5 V hattı bağlanmaz**) | `mavlink_dogrula` HEARTBEAT `sysid=1` |
-| Kamera | HQ kamera CSI → Nano CSI (mavi taraf dışa), kilit kapalı | `jetson-io` sonrası `nvarguscamerasrc` görüntü verir |
+| Kamera | RPi HQ (IMX477) CSI → Orin Nano CSI (mavi taraf dışa), kilit kapalı; lens 6 mm, montaj **nadir 90°** | **YAPILMADI — kamera elde değil** (13 Eylül itibarıyla; 14 Eylül teslimine yetişmiyor). 6 Eylül'de çıkarım zinciri kartta yalnız **dosya kaynağıyla** (`data/raw_frames`) koşturuldu; CSI yolu hiç denenmedi, `nvarguscamerasrc` bu kartta doğrulanmadı. Yedek yol hazır: USB webcam (UVC) → `--kaynak 0`. **ÖLÇÜM: kamera geldiği gün — (a) `nvarguscamerasrc` ile kare alma, (b) `kamera_dogrula` ile FOV/ölçek; en geç 21 Eylül uçuş öncesi** |
 | Etiketleme + çekme testi | her konnektör etiketli | hiçbiri çıkmadı |
 | **İlk güç** | pil takılır; LED / boot tonu; 60 s koku-ısı gözlemi | Pixhawk + Nano açıldı |
 
@@ -236,8 +319,28 @@ Jetson 5 A @ 12 V → 20 AWG; Pixhawk 2 A @ 5 V → 24 AWG; veri hatları < 0,5 
 ⚠ Bu tablo **sabit kanat konfigürasyonu için** ve **tahmini akımlarla** yazılmıştır (belgenin
 kendi notu: *"Tüm değerler tahmini"*). Çoklu rotorda motor başına havada asılı akım 10–12 A,
 tepe 30+ A beklenmektedir (takım beyanı) — **ölçülmedi**.
-**BEYAN GEREKLİ (insan): gerçek kablo kesitleri ve konnektör tipleri** (5 Eylül'de kullanılan
-kablo demeti üzerinden) ve **ölçülmüş akım değerleri** (ilk hover logunda `BATT_AMP`).
+**Akım bütçesi — HESAP (3S'e göre yeniden türetildi), ölçüm ayrı kalemdir.**
+Pil kararı **3S 6000 mAh** olduğu için DDR taslağının 4S sayıları geçersizdir. Motor verisi:
+SunnySky X2220 980KV V3 + APC1047, **4S'te tam gaz 2130 g @ 38,4 A** (üretici verisi,
+`FDR/BOLUM_3_SISTEM_SPESIFIKASYONLARI.md:313-314`). Aynı itki için gereken güç sabit kabul
+edilirse akım gerilimle ters orantılıdır → **3S'te akım ≈ 4/3 ×**:
+
+| durum (kütle VARSAYIMI) | motor başına itki | 4S akım (üretici verisi) | **3S akım (HESAP, ×4/3)** | 4 motor toplam |
+|---|---|---|---|---|
+| 2,0 kg | 500 g | 4,8 A | **6,4 A** | **≈ 26 A** |
+| 2,5 kg | 625 g | ≈ 6,5 A | **≈ 8,7 A** | **≈ 35 A** |
+| 3,0 kg | 750 g | ≈ 8,7 A | **≈ 11,6 A** | **≈ 46 A** |
+
+Buna göre kesitler: ana hat **12 AWG** (46 A tepede sınırda ama kabul edilebilir), ESC→motor
+**14 AWG** (motor başına ≤ 12 A), BEC 20 AWG, JST-GH veri 26–28 AWG — DDR taslağıyla **uyumlu**.
+⚠ Tablodaki 4S sütunu **üretici verisidir ve 3S sütunu ondan türetilmiştir**; üreticinin 3S
+satırı yayımlanmamıştır, dolayısıyla 3S değerleri **DOĞRULANMADI** (bkz. §5.2.9 kütle satırındaki
+aynı uyarı).
+⚠ **Ölçülmüş akım hâlâ YOK:** 6 Eylül tlog'undaki 0,44 A tepe **geçersizdir** (PM06 akım kanalı
+okumuyordu, D-439) ve `BATT_AMP_PERVLT=36,36` ile `BATT_VOLT_MULT=18,18` PM06 **fabrika**
+değerleridir, doğrulanmamıştır (`config/pixhawk/emir.param:126`, `:143`).
+**ÖLÇÜM: (a) pens ampermetre ile hover akımı + PM06 akım/gerilim kalibrasyonu, (b) kablo
+kesitlerinin kumpasla/etiketten doğrulanması — 14–20 Eylül, uçuş öncesi.**
 
 ### 5.2.6 Montaj planı D — uçuş kontrolcüsü yapılandırmasının üretimi ve yüklenmesi
 
@@ -259,15 +362,49 @@ yapılandırması **dosya olarak üretilmiş** ve testle kilitlenmiştir.
 (`WPNAV_SPEED` 3 m/s, `LAND_SPEED` 0,5 m/s) kötü-durum toplam **221,5 s ≤ 600 s**
 (`SARTNAME_FDA_OPERASYON_SURESI_S`). Bu hesap testin içindedir, metne elle yazılmamıştır.
 
-**Sahada teyit edilecek dört değer** (`config/pixhawk/README.md` §3 TEYİT listesi):
-`BRD_SER2_RTSCTS=0`, `RC_PROTOCOLS=4` (iBUS), `BATT_FS_LOW_ACT`, `BATT_FS_CRT_ACT`.
-5 Eylül: `RC_PROTOCOLS` sahada 4 → 1 (All) yapıldı ve **geri alınmadı** (`REVIEW_LOG.md` D-426 §2);
-iBUS çözümü ÖLÇÜM (`RCInput: decoding IBUS(1)`); diğer üç TEYİT değeri için tutanakta satır yok —
-**ÖLÇÜLEMEDİ**.
-Ayrıca kutudan çıkanla teyit edilecekler: `FRAME_CLASS=1`, `FRAME_TYPE` (X), `MOT_PWM_TYPE=0`,
-`SYSID_THISMAV=1`, `SERIAL1`/`SERIAL2` (57600 MAVLink2), `SRx_POSITION` 4 Hz, `SRx_EXTRA3` 1 Hz,
-`BATT_MONITOR=4`, `FENCE_ENABLE=1` + `FENCE_ALT_MAX 50`, `RTL_ALT 3500`, `LAND_SPEED 50`,
-`FS_THR_ENABLE 1`, `FS_GCS_ENABLE 1`, `BATT_FS_LOW/CRT` (4S: 14,4 / 14,0 V), `ARMING_CHECK=1`.
+**TEYİT listesi (`config/pixhawk/README.md` §3, *sekiz kalem*) — 12 Eylül kart dökümüyle
+karşılaştırma.** Liste dört değil sekiz kalemdir; dökümle karşılaştırıldığında
+**dördü karşılandı, dördü DÜŞTÜ** (`config/pixhawk/emir.param`, 12.09.2026 23:55):
+
+| TEYİT kalemi | beklenen (README §3) | **ölçülen** | hüküm | kaynak satır |
+|---|---|---|---|---|
+| `BRD_SER2_RTSCTS` | 0 (Disabled) | **0** | ✔ | `emir.param:173` |
+| `BATT_FS_CRT_ACT` | 1 (Land) | **1** | ✔ | `:133` |
+| `SERVO9–12` | 36 / 34 / 33 / 35 | **36 / 34 / 33 / 35** | ✔ | `:918, :848, :853, :858` |
+| `BATT_FS_LOW_ACT` | **2 = RTL** | **1 (Land)** | ✗ **SAPMA** — 2 → 1 bilinçsiz değişmiş (D-428 §5b), mimar kararı bekliyor | `:134` |
+| `RC_PROTOCOLS` | **4 (iBUS)** | **1 (All)** | ✗ 5 Eylül'de 4 → 1 yapıldı, **geri alınmadı** (D-426 §2) | `:658` |
+| `SERVO1–8` | **0** | **34/34/33/34/34/36/33/34** | ✗ **DÜŞTÜ** — başıboş motor fonksiyonları sıfırlanmamış (D-428 §5d) | `:843-913` |
+| `SERVO13–16` | **0** | **36/34/33/35** | ✗ **DÜŞTÜ** — aynı | `:863-878` |
+
+⚠ `RC_PROTOCOLS=1` işlevsel olarak çalışıyor (iBUS bu değerle çözülüyor —
+`RCInput: decoding IBUS(1)`, 5 Eylül 18:03; A1 RC failsafe 12 Eylül'de bu değerle geçti), ama
+README §3'ün yazdığı beklenen değer **4**'tür ve *"geri almak tercih edilir (Emir kararı)"* der.
+Bu rapor ölçütü ölçüme uydurmaz: kalem **AÇIK**, ya parametre 4'e alınır ya da sözleşme metni
+(README §3) gerekçesiyle değiştirilir.
+
+**Kutudan çıkanla teyit edilecekler — 12 Eylül dökümünden okundu; *iki kalem DÜŞTÜ*, üç kalem
+sapma bildirdi** (`config/pixhawk/emir.param`):
+
+| parametre | beklenen | **ölçülen** | hüküm |
+|---|---|---|---|
+| `FRAME_CLASS` / `FRAME_TYPE` | 1 / X | **1 / 1** (QUAD/X) | ✔ `emir.param:395-396` |
+| `MOT_PWM_TYPE` | 0 | **0** | ✔ `:569` |
+| `SYSID_THISMAV` | 1 | **1** | ✔ `:988` |
+| `SERIAL1` / `SERIAL2` | 57600 MAVLink2 | **`_BAUD=57` · `_PROTOCOL=2`** (ikisi de) | ✔ `:797-802` |
+| `BATT_MONITOR` | 4 | **4** | ✔ `:139` |
+| `FENCE_ENABLE` · `FENCE_ACTION` · `FENCE_ALT_MAX` · `FENCE_RADIUS` | 1 · 1 · 50 · — | **1 · 1 · 50 · 60** | ✔ `:358-363`; ⚠ `FENCE_TOTAL=0` → **poligon yüklü değil** (`:364`) |
+| `RTL_ALT` | 3500 | **3500** | ✔ `:780` |
+| `LAND_SPEED` | 50 | **50** | ✔ `:532` |
+| `ARMING_CHECK` | 1 | **1** | ✔ `:28` |
+| `LOG_BITMASK` | — | **176126** | ✔ `:536` — log üretimi açık |
+| `SR1_POSITION` / `SR1_EXTRA3` | 4 Hz / 1 Hz | **2 / 2** | 🔴 **SAPMA** `:940, :942` — telemetri hızları şablondan farklı; YKS konum tazeliği 2 Hz |
+| `FS_THR_ENABLE` | 1 (RTL) | **3 (LAND)** | 🔴 **SAPMA** `:411` — bilinçli: A1 bu değerle geçti; şablon metni düzeltilecek |
+| `FS_GCS_ENABLE` | 1 | **5** ("Enabled always Land") | 🔴 **SAPMA** `:408` — failsafe **kapalı değil**, davranış RTL değil LAND; `FS_GCS_TIMEOUT=5 s` (`:409`) |
+| `BATT_LOW_VOLT` / `BATT_CRT_VOLT` | 4S: 14,4 / 14,0 V | **10,0 / 9,0 V** (`:138`, `:131`) | ✔ **3S'e göre** — pil kararı 3S 6000 mAh (D-474 §2); 4S varsayımı **GEÇERSİZ** |
+| `BATT_CAPACITY` | **6000** (3S 6000 mAh pil) | **3300** (`:129`) | ✗ 🔴 **KUSUR** — mAh sayacı **%45 yanılıyor**; failsafe şu an yalnız gerilimle çalışıyor (`BATT_LOW_MAH`/`BATT_CRT_MAH`=0, `:136`/`:130`) → uçuş emniyeti kaybı yok, **gösterge yanlış**. T258, D-474 §3; `config/pixhawk/PARAMETRE_KILAVUZU_1SAYFA.md:15` |
+| `BATT_ARM_VOLT` | önerilen **11,1** | **0** (`:128`) | ✗ arm gerilim kontrolü yok (D-474 §5) |
+| `BATT_AMP_PERVLT` / `BATT_VOLT_MULT` | PM06 | **36,36 / 18,18** (`:126`, `:143`) | ⚠ **PM06 fabrika değeri, doğrulanmadı** (bkz. §5.2.4 Pixhawk gücü satırı) |
+| `MOT_THST_HOVER` | öğrenilmiş | **0,35 = fabrika** (`:580`), `MOT_HOVER_LEARN=2` (`:565`) olmasına rağmen | 🔴 **Öğrenme tetiklenmedi** → hover itkisi ve ondan türetilecek kütle **ÖLÇÜLMEDİ**; 21 Eylül hover'ından sonra yeniden okunacak |
 
 **Üretim çıktısı olarak sahada alınacak kanıt:** yapılandırma bittikten sonra
 `Save to file` → tarihli `config/pixhawk/arducopter_fda_<YYYYMMDD>.param` → depoya işlenecektir.

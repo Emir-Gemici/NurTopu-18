@@ -77,41 +77,54 @@ kapsam bu raporda **beş tabloya** bölünmüştür; §7.1.6 hangi sistemin hang
 ### 7.1.1 Tablo A — FDA görev test uçuşu aracı (çoklu rotor) BOM'u
 
 Kalem listesi kullanıcı beyanından (`SAHA_HAZIRLIK_PLANI_20260903.md` §0.2, 3 Eylül 2026);
-tedarik durumu 03.09.2026 itibarıyladır; **5 Eylül kutu açılışında** üç kalem plandan farklı ya da
-teyitli çıktı (ESC, güç modülü, RC alıcı — `REVIEW_LOG.md` D-426 §3, BEYAN) ve ilgili satırlara
-tarihli not düşüldü. 5 Eylül tutanağında tartı satırı yoktur; "Ölçülen kütle" sütunu BEYAN GEREKLİ kalır.
+**tedarik durumu kesim tarihi 13.09.2026**'dır. Ara kayıtlar: **5 Eylül kutu açılışında** üç kalem
+plandan farklı ya da teyitli çıktı (ESC, güç modülü, RC alıcı — `REVIEW_LOG.md` D-426 §3, BEYAN);
+**12 Eylül 23:55 kart dökümü** (`config/pixhawk/emir.param`) ise künyeyi **ölçümle** günceller:
+`STAT_FLTTIME` **0 → 273 s** (döküm satır 980) → araç **toplam 4 dk 33 sn uçtu**; `STAT_BOOTCNT`
+**48 → 96** (satır 979); pusula/ivmeölçer/jiroskop (`COMPASS_OFS/DIA/ODI`, `INS_ACC*`, `INS_GYR*`)
+yeniden kalibre edildi (`config/pixhawk/PARAMETRE_KILAVUZU_1SAYFA.md`:6-9). Bu tek ölçüm
+A8/A10/A12/A13/A14/A15 satırlarının **çalıştığı** hükmünü beyandan ölçüme taşır: yanlış bağlanmış
+bir itki ya da seyrüsefer zinciriyle karta 273 s uçuş süresi yazılamaz.
+⚠ **Ölçüm işlevi kanıtlar, kimliği değil** — hangi marka/model motorun, ESC'nin ya da güç modülünün
+takılı olduğu hâlâ **BEYAN**dır (D-426 §3, D-435).
+⚠ **Tartı sütunu kapandı:** 5 ve 12 Eylül tutanaklarının ikisinde de tartı satırı yoktur
+ve kullanıcı 10 Eylül'de tartıyı gereksiz görmüştür (`REVIEW_LOG.md` D-439, satır 30425). Bu yüzden
+"Ölçülen kütle" sütunu **tartıyla dolmayacaktır**; kütleler 3B basılan parçalar için **HESAP**
+(3mf katı hacmi × malzeme yoğunluğu × ölçülü dolgu katsayısı), satın alınan alt sistemler için
+**DDR BEYANI** — yalnız veri sayfası gerçekten okunan kalemlerde **ÜRETİCİ VERİSİ** — etiketiyle ve
+türetmesiyle verilmiştir. Hiçbir hücre boş bırakılmamıştır.
 `Ü` = takım üretimi, `S` = hazır satın alınan alt sistem.
 
 | # | Kalem | Model / özellik | Adet | Tür | Üretim yöntemi | Üretim süresi | CAD kütlesi (g) | Ölçülen kütle (g) | Tedarik durumu | Birim fiyat | Toplam fiyat |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| A1 | Kol | `Drone_Arm` (ABS) | 4 | Ü | FDM 3B baskı — bkz. Bölüm 5 §5.1.4 (kol 1–2 ve 3–4 **farklı reçete**) | **ÖLÇÜLEMEDİ** (G-code yok) | BEYAN GEREKLİ | BEYAN GEREKLİ (5 Eyl tartı) | Üretildi | BEYAN GEREKLİ | BEYAN GEREKLİ |
+| A1 | Kol | `Drone_Arm` (ABS) | 4 | Ü | FDM 3B baskı — kol 1–2 **0,20 mm / %15 / 2 duvar**, kol 3–4 **0,16 mm / %40 / 6 duvar** (ÖLÇÜLDÜ: `project_settings.config`, `Plaka1_Kol_1-2.3mf` / `Plaka2_Kol_3-4.3mf`) | **≈ 1 sa 53 dk** (kol 1–2 plakası: baskı kütlesi 69,9 g ÷ 37,1 g/sa) · **≈ 3,5–4,7 sa** (kol 3–4 plakası: 105–140 g ÷ 37,1 × 1,25) — **HESAP**: verim 37,1 g/sa ÖLÇÜLDÜ (55,86 g ÷ 1,504 sa, kanıt #9); ×1,25 = 0,16 mm katman düzeltmesi | **69,9 g/adet · 279,6 g (4 adet) — HESAP**: katı hacim **67,20 cm³**/adet (3mf üçgen ağı işaretli hacim toplamı, bu oturumda yeniden hesaplandı) × ABS **1,04 g/cm³** | **34,9 g/adet (kol 1–2) · 52–70 g/adet (kol 3–4) — HESAP**: k = **0,500** ölçülü dönüşüm (55,86 g gerçek / 111,66 g CAD, Plaka4 aynı reçete); kol 3–4 için k = 0,75–1,00 (6 duvar + %40). Tartı **yapılmayacak** (D-439) | Üretildi | **KAYIT YOK** (§Y.2, 13.09.2026) | **KAYIT YOK** (§Y.2, 13.09.2026) |
 | A2 | Üst çerçeve | `Drone_Frame` (ABS) | 1 | Ü | FDM, X1C, 0,20 mm / %15 grid / 2 duvar | **1 sa 30 dk 16 sn** (ölçüldü) | BEYAN GEREKLİ | BEYAN GEREKLİ | Üretildi | BEYAN GEREKLİ | BEYAN GEREKLİ |
 | A3 | Alt çerçeve | `Lower_Drone_Frame` (ABS) | 1 | Ü | FDM, X1C, 0,20 mm / %15 grid | **ÖLÇÜLEMEDİ** | BEYAN GEREKLİ | BEYAN GEREKLİ | Üretildi | BEYAN GEREKLİ | BEYAN GEREKLİ |
 | A4 | Kubbe | `Drone_Dome` (ABS, **destekli**) | 1 | Ü | FDM, X1C | **ÖLÇÜLEMEDİ** | BEYAN GEREKLİ | BEYAN GEREKLİ | Üretildi | BEYAN GEREKLİ | BEYAN GEREKLİ |
 | A5 | Ayak | `Drone_Legs` (ABS, **destekli**) | 4 | Ü | FDM, P2S | **ÖLÇÜLEMEDİ** | BEYAN GEREKLİ | BEYAN GEREKLİ | Üretildi | BEYAN GEREKLİ | BEYAN GEREKLİ |
 | A6 | GNSS tutucu | `GPS_Holder` (ABS, **destekli**) | 1 | Ü | FDM, P2S | **ÖLÇÜLEMEDİ** | BEYAN GEREKLİ | BEYAN GEREKLİ | Üretildi | BEYAN GEREKLİ | BEYAN GEREKLİ |
 | A7 | Taban pedi | TPU 95A | 4 | Ü | FDM, P2S | **ÖLÇÜLEMEDİ** | BEYAN GEREKLİ | BEYAN GEREKLİ | Üretildi | BEYAN GEREKLİ | BEYAN GEREKLİ |
-| A8 | Motor | ~~**5008 340KV**~~ → **SunnySky X2220 980KV V3** (BEYAN, etiket fotoğrafı yok; 7 Eylül beyanı, D-435) | 4 | S | — | — | — | BEYAN GEREKLİ | Kutu açıldı 5 Eylül; motor testi koştu (ÖLÇÜM `starting motor test` → `finished motor test`, D-426 §1); sıra/yön 4/4 BEYAN, video BEYAN GEREKLİ. **7 Eylül:** 5008'ler iade edildi, X2220'ler 2 yıl önce kullanılmış eski motorlar (BEYAN, D-435) — iade tutarı BEYAN GEREKLİ | BEYAN GEREKLİ | BEYAN GEREKLİ |
+| A8 | Motor | ~~**5008 340KV**~~ → **SunnySky X2220 980KV V3** (BEYAN, etiket fotoğrafı yok; 7 Eylül beyanı, D-435) | 4 | S | — | — | — | **85 g/adet · 340 g (4 adet) — ÜRETİCİ VERİSİ** (kablo dâhil; veri sayfası http://en.rcsunnysky.com/x-fixedwingseries/53.html — `FDR/BOLUM_3_SISTEM_SPESIFIKASYONLARI.md`:302) | Kutu açıldı 5 Eylül; motor testi koştu (ÖLÇÜM `starting motor test` → `finished motor test`, D-426 §1). **12 Eylül dökümü — sıra/yön için ÇIKARIM (doğrudan ölçüm değil):** `STAT_FLTTIME` 0 → **273 s** (`emir.param`:980) ve `FRAME_CLASS=1` / `FRAME_TYPE=1` (Quad-X, :395-396) → yanlış motor sırası ya da yanlış dönüş yönüyle bir Quad-X havalanamayacağından 4/4 sıra/yön **çıkarımla** doğrulanmış sayılır; doğrudan kanıt (sıra/yön videosu) hâlâ **BEYAN GEREKLİ**. ⚠ Bu iki parametre **motor modeli** hakkında hiçbir şey söylemez — model **BEYAN**dır. **7 Eylül:** 5008'ler iade edildi, X2220'ler 2 yıl önce kullanılmış eski motorlar (BEYAN, D-435) — **iade tutarı: KAYIT YOK** (§Y.2, 13.09.2026), tek parasal açık kalem budur | **KAYIT YOK** (§Y.2, 13.09.2026) | **KAYIT YOK** (§Y.2, 13.09.2026) |
 | A9 | Pervane | ~~**12×10**~~ → **10×4,5 (1045)** (7 Eylül beyanı, D-435) | 4 (+ yedek set) | S | — | — | — | BEYAN GEREKLİ | Kutuda; **yedek set alınacak** | BEYAN GEREKLİ | BEYAN GEREKLİ |
-| A10 | ESC | plan **80 A, DShot destekli**; 5 Eylül kutudan **"60 A V2"** çıktı (BEYAN, D-426 §3) — tam marka/model BEYAN GEREKLİ | 4 | S | — | — | — | BEYAN GEREKLİ | Kutu açıldı 5 Eylül; ESC kalibrasyonu YAPILMADI | BEYAN GEREKLİ | BEYAN GEREKLİ |
+| A10 | ESC | plan **80 A, DShot destekli**; 5 Eylül kutudan **Hobbywing Skywalker 60 A V2** çıktı (etiket beyanı — `REVIEW_LOG.md`:29962, D-428; D-426 §3'te "60 A V2"). 🔴 **DShot yolu GERÇEKLEŞMEDİ — ÖLÇÜM:** `MOT_PWM_TYPE = 0` = *Normal PWM* (`emir.param`:569); araç 273 s'lik uçuşu **düz PWM** ile yaptı | 4 | S | — | — | — | **≈ 60 g/adet · 240 g (4 adet) — HESAP (benzetme, DOĞRULANMADI)**: tek taban DDR'nin **plan** tablosudur (`ddr_requirements.md`:51, FlyFun 40 A ×2 = 70 g → 35 g/adet, **BEYAN**); 40 A → 60 A sınıf farkı için uygulanan **×1,7 katsayısının kaynağı YOK**. Skywalker 60 A V2 veri sayfası okunmadı, ESC tartılmadı — hücre veri sayfası gelene ya da 4 ESC tartılana kadar **açıktır** | **Kalibre EDİLMEDEN uçuruldu (ÖLÇÜM, `emir.param` 12 Eyl):** `MOT_SPIN_ARM = 0,1` (:574) ve `MOT_SPIN_MIN = 0,15` (:576) **fabrika değerinde**, buna rağmen `STAT_FLTTIME = 273 s` (:980). Yani "ESC kalibrasyonu YAPILMADI" satırı artık bir plan eksiği değil, **ölçülmüş bir uçuş koşuludur** | **KAYIT YOK** (§Y.2, 13.09.2026) | **KAYIT YOK** (§Y.2, 13.09.2026) |
 | A11 | Güç dağıtım kartı | **Matek XCLASS FCHUB-12S V2** (PDB + akım sensörü) | 1 | S | — | — | — | BEYAN GEREKLİ | Kutuda | BEYAN GEREKLİ | BEYAN GEREKLİ |
-| A12 | Uçuş kontrolcüsü | **Pixhawk 6C** — fabrikadan PX4 ile geldi; ArduCopter **4.5.7** flash edildi ve sabitlendi (ÖLÇÜM `ArduCopter V4.5.7 (2a3dc4b7)`, D-424/D-425/D-426) | 1 | S | — | — | — | BEYAN GEREKLİ (DDR beyanı 59 g) | Kutu açıldı 5 Eylül; çalışıyor | BEYAN GEREKLİ | BEYAN GEREKLİ |
+| A12 | Uçuş kontrolcüsü | **Pixhawk 6C** — fabrikadan PX4 ile geldi; ArduCopter **4.5.7** flash edildi ve sabitlendi (ÖLÇÜM `ArduCopter V4.5.7 (2a3dc4b7)`, D-424/D-425/D-426) | 1 | S | — | — | — | **59 g — DDR BEYANI** (`ddr_requirements.md`:35; Holybro veri sayfası okunmadı, üretici verisi değildir) | Kutu açıldı 5 Eylül; **12 Eylül dökümüyle ÖLÇÜM:** `STAT_FLTTIME = 273 s`, `STAT_BOOTCNT = 96` (`emir.param`:980/:979), pusula+IMU yeniden kalibre → kart çalışıyor ve **uçtu** | **KAYIT YOK** (§Y.2, 13.09.2026) | **KAYIT YOK** (§Y.2, 13.09.2026) |
 | A13 | Güç modülü | plan **PM02** (Pixhawk kutusundan); 5 Eylül kutudan **PM06** çıktı (BEYAN, D-426 §3) — etiket BEYAN GEREKLİ | 1 | S | — | — | — | BEYAN GEREKLİ | Kutu açıldı 5 Eylül; `POWER1`'e 6 pinli kabloyla bağlı, çalışıyor (ÖLÇÜM: pil PreArm uyarısı kayboldu, D-426 §1) | BEYAN GEREKLİ | BEYAN GEREKLİ |
-| A14 | GNSS / pusula | **Holybro M9N** | 1 | S | — | — | — | BEYAN GEREKLİ (DDR'de M10 için 32 g) | Kutuda | BEYAN GEREKLİ | BEYAN GEREKLİ |
+| A14 | GNSS / pusula | **Holybro M9N** | 1 | S | — | — | — | **≈ 32 g — BENZETME (HESAP, DOĞRULANMADI)**: `ddr_requirements.md`:41 **M10** için 32 g verir; takılı donanım **M9N**'dir ve kütlesi okunmadı — M9N veri sayfası gelene kadar bu bir benzetmedir, **üretici verisi değildir** | Kutuda ve **takılı**: pusula 12 Eylül'de yeniden kalibre edildi (ÖLÇÜM — `COMPASS_OFS/DIA/ODI` değerleri 6 Eylül dökümüne göre değişti; `config/pixhawk/PARAMETRE_KILAVUZU_1SAYFA.md`:8-9) ve 273 s'lik uçuş bu pusulayla yapıldı | **KAYIT YOK** (§Y.2, 13.09.2026) | **KAYIT YOK** (§Y.2, 13.09.2026) |
 | A15 | RC kumanda + alıcı | **FlySky FS-i6** + FS-iA6B (iBUS) — FS-iA6B 5 Eylül'de teyit (B harfi, D-426 §3) | 1 set | S | — | — | — | BEYAN GEREKLİ | Kutu açıldı 5 Eylül; **bind edildi** (BEYAN), `RCInput: decoding IBUS(1)` (ÖLÇÜM, D-426 §1); alıcı `i-BUS SERVO` portu | BEYAN GEREKLİ | BEYAN GEREKLİ |
-| A16 | Telemetri | **SiK 433 MHz** | 2 | S | — | — | — | BEYAN GEREKLİ (DDR beyanı 35 g/adet) | Kutuda | BEYAN GEREKLİ | BEYAN GEREKLİ |
+| A16 | Telemetri | ~~**SiK 433 MHz**~~ → 🔴 **RFD900A @ 915 MHz** (ÖLÇÜM, 13 Eylül: telsiz sürüm dizesi `RFD SiK 1.9 on RFD900A FREQ_915` — `HANDOFF_20260913.md`:11-24). Tüm önceki belgeler "SiK 433 MHz" diyordu; **künye yanlıştı**, düzeltme T267'de açık | 2 | S | — | — | — | **≈ 35 g/adet · 70 g (2 adet) — DDR BEYANI, FARKLI ÜRÜN İÇİN (DOĞRULANMADI)**: `ddr_requirements.md`:40 ve :59 **Holybro SiK 433** içindir; takılı telsiz **RFD900A**'dır ve kütlesi okunmadı. **Uçan kütleye giren yalnız 1 adet**, ikincisi YKS tarafındadır | Kutuda ve **çalıştı**: A5 bağlantı kaybı testi gerçek telsizle 12 Eylül'de GEÇTİ (BEYAN — `REVIEW_LOG.md`:30882, D-473) | **KAYIT YOK** (§Y.2, 13.09.2026) | **KAYIT YOK** (§Y.2, 13.09.2026) |
 | A17 | Görev bilgisayarı | ~~**Jetson Nano 4GB** (Dev Kit)~~ → **Jetson Orin Nano Developer Kit 4 GB** (JetPack 7.2.1, Ubuntu 24.04, Python 3.12; 3 Eylül beyanı 'Nano 4GB' 6 Eylül'de kartla YANLIŞLANDI — D-431) | 1 | S | — | — | — | BEYAN GEREKLİ | Teslim alındı; **6 Eylül kuruldu**, genel kapı 15/15 ve FPS kapısı GEÇTİ (ÖLÇÜM, D-431) | BEYAN GEREKLİ | BEYAN GEREKLİ |
-| A18 | microSD | ≥ 64 GB UHS-I + okuyucu | 1 | S | — | — | — | — | **Henüz alınmadı** (alışveriş listesi) | BEYAN GEREKLİ | BEYAN GEREKLİ |
-| A19 | Kamera | **Raspberry Pi HQ** (IMX477, CSI) + standart lens | 1 | S | — | — | — | BEYAN GEREKLİ (DDR'de Arducam için 50 g) | Kutuda; **FOV ölçülmedi** | BEYAN GEREKLİ | BEYAN GEREKLİ |
+| ~~A18~~ | ~~microSD~~ | ~~≥ 64 GB UHS-I + okuyucu~~ → **KALEM DÜŞTÜ** | 0 | — | — | — | 0 g | **Gereksiz — ÖLÇÜM:** kartta **microSD yuvası yok**, kök **NVMe 233 GB** ile geldi ve JetPack 7.2.1 kurulu çıktı (`results/jetson_20260906/JETSON_KESIF_RAPORU_20260906.md`:45 "Kök **NVMe** 233 GB, 21 GB dolu · microSD yok, eMMC yok"; D-431 / D-413). Alışveriş listesinden çıkarıldı | **0** (harcanmadı) | **0** (harcanmadı) |
+| A19 | Kamera | **Raspberry Pi HQ** (IMX477, CSI) + **6 mm lens**, montaj **nadir 90°** (kullanıcı cevabı, 12 Eylül — D-471) | 1 | S | — | — | — | **Kütle ÖLÇÜLEMEDİ — kamera elde değil.** `ddr_requirements.md`:37'deki 50 g **Arducam IMX477** içindir; takılacak ürün **Raspberry Pi HQ**'dur (farklı ürün, farklı kütle). Uçan kütleye bugün **0 g** girer | 🔴 **TEMİN EDİLMEDİ** — kamera elde değildir ve **14 Eylül FDR teslimine yetişmemektedir** (kullanıcı bildirimi, 13 Eylül; D-473: "A11 kamera 14 Eylül'e yetişmiyor"). **FOV artık hesapla biliniyor** (ölçüm gerekmez): IMX477 aktif alan **6,287 × 4,712 mm** (4056 × 3040 px × 1,55 µm), 6 mm lens → **FOV_yatay = 55,3° (HESAP)** = 2·atan(6,287/12) · **FOV_dikey = 42,9° (HESAP)** = 2·atan(4,712/12) · köşegen 66,4°. 30 m nadirde kare **31,4 × 23,6 m** → 20 × 20 m alan **sığar**; GSD = 30 000 × 0,00155 / 6 = **7,75 mm/px (HESAP)**. Bu, `FDR/BOLUM_3_SISTEM_SPESIFIKASYONLARI.md`:283-285'teki 55–63° bandıyla tutarlıdır. Doğrulama ölçümü: `kamera_dogrula`, kamera temin edildiğinde | **KAYIT YOK** (§Y.2, 13.09.2026) | **0** (bugüne kadar harcanmadı) |
 | A20 | Jetson besleme | **UBEC 5 V / 5 A** | 1 | S | — | — | — | — | **Henüz alınmadı** | BEYAN GEREKLİ | BEYAN GEREKLİ |
-| A21 | Pil | **4S 10 Ah 25C** | 1 (2. pil öneri) | S | — | — | — | BEYAN GEREKLİ | Kutuda | BEYAN GEREKLİ | BEYAN GEREKLİ |
+| A21 | Pil | ~~**4S 10 Ah 25C**~~ → **3S 6000 mAh** (kullanıcı kararı, gerekçe **stabilite**; 12 Eylül). Kart eşikleri 6 Eylül'den 12 Eylül'e **4S değerlerinden 3S büyüklüğüne çekilmiştir** (`mevcut.param`:138/:131 = 14,4 / 14 → `emir.param`:138/:131 = **10 / 9**); bu, 3S kararıyla **tutarlı bir değişimdir**, kararın bağımsız kanıtı **değildir** — A3 pil failsafe testi "eşiklerle oynanarak" koşuldu (D-473, `REVIEW_LOG.md`:30882) ve geri alma satırları açıktır (:30885). 🟢 **13 Eylül'de kapandı (kullanıcı BEYANI):** 12 Eylül dökümünde **hatalı** olan `BATT_CAPACITY` (3300 — `emir.param`:129, olması gereken 6000: `PARAMETRE_KILAVUZU_1SAYFA.md`:15) **6000** yazıldı ve `BATT_CRT_VOLT` 9 → **10,5 V** (3S × 3,50 V/hücre) alındı — kılavuzun önerisi 9,9 V idi (:17), kullanıcı daha güvenli tarafı seçti. `BATT_LOW_VOLT = 10` doğrudur, dokunulmadı (:18) | 1 (2. pil öneri) | S | — | — | — | **≈ 460 g — HESAP (VARSAYIMLI)**: 11,1 V × 6,0 Ah = **66,6 Wh** (künyeden) ÷ **140–160 Wh/kg** *varsayılan* LiPo sınıf enerji yoğunluğu → 416–476 g. ⚠ Enerji yoğunluğu **kaynaklandırılmadı**, pil **tartılmadı** (D-439) ve marka/model kayıtlı olmadığı için veri sayfası da okunamadı | Kutuda ve **uçtu** (273 s kümülatif, `emir.param`:980) | **KAYIT YOK** (§Y.2, 13.09.2026) | **KAYIT YOK** (§Y.2, 13.09.2026) |
 | A22 | Şarj cihazı | **iMAX B6** (50 W) | 1 | S | — | — | — | — | Mevcut | BEYAN GEREKLİ | BEYAN GEREKLİ |
 | A23 | Kablolama demeti | XT60/XT90, JST-GH 6-pin, jumper, silikon kablo | lot | Ü | Kesim + lehim + makaron + etiket | BEYAN GEREKLİ | — | BEYAN GEREKLİ | Kısmen kutuda, kısmen **alınacak** | BEYAN GEREKLİ | BEYAN GEREKLİ |
 | A24 | Sarf | kablo bağı, ısı makaronu, çift taraflı bant/damper, vida-somun-pul | lot | S | — | — | — | BEYAN GEREKLİ | **Henüz alınmadı** | BEYAN GEREKLİ | BEYAN GEREKLİ |
 | A25 | Yedek kamera | USB webcam (UVC) | 1 | S | — | — | — | — | **Henüz alınmadı** | BEYAN GEREKLİ | BEYAN GEREKLİ |
 | A26 | Filament | ABS (X1C + P2S profilleri) | BEYAN GEREKLİ (kg) | S | — | — | — | ölçülen tüketim: **≥ 55,86 g** (yalnız A2 için) | Mevcut | BEYAN GEREKLİ | BEYAN GEREKLİ |
 | A27 | Filament | TPU 95A | BEYAN GEREKLİ (kg) | S | — | — | — | **ÖLÇÜLEMEDİ** | Mevcut | BEYAN GEREKLİ | BEYAN GEREKLİ |
-| — | **TOPLAM** | | | | | **ÖLÇÜLEMEDİ** | **ÖLÇÜLEMEDİ** | **ÖLÇÜLEMEDİ** | | **BEYAN GEREKLİ** | **BEYAN GEREKLİ** |
+| — | **TOPLAM** | | | | | **≈ 14,0–15,2 sa (HESAP)** — 8 plaka; 495–530 g ÷ ölçülü **37,1 g/sa** (kanıt #9) + kol 3–4 plakasına 0,16 mm katman düzeltmesi ×1,25 | **920,3 g (HESAP)** — 3B basılan **8 plakanın KATI CAD kütlesi** (k = 1,00): ABS 862,79 cm³ × 1,04 + TPU 18,97 cm³ × 1,21. ⚠ **Baskı kütlesi DEĞİLDİR, yalnız üst sınırdır**; %15 dolgulu bir parça katı hacminin ağırlığında olamaz. Gerçek baskı kütlesi **495–530 g**'dır (ölçülü k = 0,500) ve kalkış kütlesine **o** girer | **≈ 2207 g ≈ 2,21 kg (HESAP — tartı YAPILMADI, D-439)** — tüm araç, dökümü aşağıdaki kütle notunda. **KAPI: İHA ≤ 25 kg → GEÇTİ** (%8,8 doluluk; tüm bantların üst ucu alınsa bile ≈ 2,4 kg, sınır 10 kat uzakta) | | **KAYIT YOK** (§Y.2 taraması 13.09.2026: gerçek fiyat/fatura kaydı 0) | **KAYIT YOK** (§Y.2 taraması 13.09.2026) |
 
 ⚠ **Satır sayısı düzeltmesi (2026-09-04).** Tablo A'nın gerçek satır sayısı **27**'dir
 (A1…A27, atlanan numara yok). Bu raporun önceki sürümünde iki yerde "Tablo A: 26 satır"
@@ -124,13 +137,57 @@ fiyatı** da açıkça ister; önceki sürümde yalnız birim fiyat sütunu vard
 **BEYAN GEREKLİ (insan)** bırakılmıştır — çünkü toplam fiyat birim fiyat × adet'tir ve çarpanın
 biri yoktur.
 
-⚠ **Kütle toplamı bilerek boştur.** Şartname §6 İHA için 25 kg, İKA için 10 kg sınırı koyar; bu
-sınırın karşılandığı **ancak tartılmış kütlelerle** iddia edilebilir. 5 Eylül envanterinde her
-parça tartılacak (`SAHA_HAZIRLIK_PLANI` §2.1) ve bu sütun o tutanaktan doldurulacaktır.
+⚠ **Kütle: tartı YAPILMADI ve kullanıcı kararıyla PLANLANMIYOR.** 5 Eylül tutanağında tartı satırı
+yoktur (D-426, `grep -i tarti` → 0), 12 Eylül atölyesinde de tartılmadı ve kullanıcı 10 Eylül'de
+*"tartılara gerek yok, şu an başarıyla hover yapabiliyoruz"* demiştir (`REVIEW_LOG.md` D-439, satır
+30425). Bu yüzden kütle sütunu **hesapla** doldurulmuştur — uydurma değil, kaynaklı türetme; her
+satırın etiketi ve türetmesi yanındadır ve **zayıf olan satırlar zayıf olduğunu söyler**:
 
-⚠ **Boyut sütunu** bu tabloda yer almamaktadır; satın alınan kalemlerin gabarileri
-**BEYAN GEREKLİ (insan)** — üretici veri sayfalarından toplanacaktır. Üretilen parçaların
-gabarileri **ölçülmüştür** ve Bölüm 5 §5.1.3'tedir.
+| kütle kalemi | değer | etiket ve türetme |
+|---|---|---|
+| 3B basılan parçalar (**baskı** kütlesi, 8 plaka) | **≈ 512 g** (495–530 g) | **HESAP** — 3mf katı hacim (ABS 862,79 cm³ · TPU 18,97 cm³) × yoğunluk (1,04 / 1,21) × **ölçülü k = 0,500** (kanıt #9: 55,86 g basılı / 111,66 g CAD); bant yalnız kol 3–4 plakasının 0,16 mm/%40/6 duvar reçetesinden (k = 0,75–1,00). Katı CAD kütlesi **920,3 g**'dir ve **baskı kütlesi değildir** |
+| Motor ×4 | **340 g** | **ÜRETİCİ VERİSİ** — 85 g/adet, veri sayfası okundu (`BOLUM_3`:302, http://en.rcsunnysky.com/x-fixedwingseries/53.html) |
+| ESC ×4 | **≈ 240 g** | **HESAP (benzetme, DOĞRULANMADI)** — DDR *plan* tablosu 40 A ×2 = 70 g (`ddr_requirements.md`:51) → 35 g/adet; 60 A sınıfı için uygulanan ×1,7 **kaynaksızdır** |
+| Pervane 1045 ×4 | **≈ 52 g** | **TAHMİN (kaynak YOK)** — 10 inç naylon pervane sınıfı 12–14 g/adet; ne tartıldı ne veri sayfası okundu |
+| Pixhawk 6C 59 · PM06 ≈ 22 · M9N ≈ 32 · FS-iA6B ≈ 10 · telsiz ≈ 35 (uçakta 1 adet) | **≈ 158 g** | **DDR BEYANI / benzetme** — 59 g (`ddr_requirements.md`:35, **aynı ürün**); 22 g Mauch PL-100 satırından (:52, farklı ürün); 32 g M10 satırından (:41, farklı ürün); 10 g TBS Crossfire Nano RX satırından (:42, farklı ürün); 35 g Holybro SiK 433 satırından (:40, farklı ürün — takılı telsiz **RFD900A**) |
+| FCHUB-12S (PDB) 60 · UBEC 5 V/5 A 25 | **85 g** | **DDR BEYANI** — PDB (:56) · 12 V 5 A buck (:55, farklı ürün) |
+| Jetson Orin Nano Dev Kit (modül + taşıyıcı + soğutucu) | **≈ 180 g** | **DDR BEYANI / benzetme** — DDR'de **Orin NX** + carrier + soğutucu 180 g (:36); takılı kart **Orin Nano Dev Kit**'tir (`results/jetson_20260906/JETSON_KESIF_RAPORU_20260906.md`:41) ve tartılmadı |
+| Pil 3S 6000 mAh | **≈ 460 g** | **HESAP (varsayımlı)** — 66,6 Wh ÷ **140–160 Wh/kg**; enerji yoğunluğu kaynaksız, pil tartılmadı |
+| Kablolama + sarf | **≈ 180 g** | **DDR BEYANI** (:57, lot 150 g) + %20 sarf payı (**varsayım**) |
+| Kamera (A19) | **0 g** | **ÖLÇÜM/BEYAN** — temin edilmedi, araçta yok |
+| **TOPLAM kalkış kütlesi** | **≈ 2207 g ≈ 2,21 kg (HESAP)** | on kalemin toplamı; **tartı değildir** |
+
+**KAPI — şartname §6, İHA ≤ 25 kg: GEÇTİ.** 2,21 kg, sınırın **%8,8**'idir; hesaptaki tüm bantların
+üst ucu alınsa bile (≈ 2,4 kg) sınır 10 kat uzaktadır — bu hüküm ne tartıya ne de yukarıdaki üç
+zayıf satıra (ESC, pervane, kablolama) duyarlıdır.
+
+🔴 **Ama ikinci kapı SINIRDA (yeni bulgu, 13 Eylül).** Hover itki oranı = kütle ÷ (4 × T_max).
+`BOLUM_3`:313'teki T_max = 2130 g, **4S 14,8 V + APC1047 (10×4,7)** veri sayfası satırıdır ve aynı
+belge bu satırın takılan **10×4,5 için DOĞRULANMADIĞINI** açıkça yazar (:305-306). Pil **3S**'e
+alındığı için devir ∝ KV × V ve itki ∝ devir² → T_max(3S) ≈ 2130 × (11,1/14,8)² = **1198 g/motor
+(HESAP)**, 4 × 1198 = **4793 g**. Oran = 2207 / 4793 = **%46,0 (HESAP)** — %50 kapısının **hemen
+altında**, 4S varsayımıyla hesaplanan %25,9'un neredeyse iki katı. ⚠ Bu **ölçüm değildir** ve iki
+zayıf halkası vardır: (a) taban T_max başka bir pervaneye aittir, (b) `MOT_THST_HOVER` kartta hâlâ
+**0,35 fabrika değerindedir** (`emir.param`:580 — 6 Eylül dökümünden beri değişmemiş,
+`mevcut.param`:580) ve `MOT_HOVER_LEARN = 2` açık olmasına rağmen öğrenme tetiklenmemiştir (:565)
+→ **askı itkisi ve itki payı ÖLÇÜLMEDİ** (`config/pixhawk/PARAMETRE_KILAVUZU_1SAYFA.md`:37-40;
+D-474 §4). Bu iki parametre kütle hakkında hiçbir şey söylemez; burada yalnız **olumsuz kanıt**
+olarak durur. Ölçüm: A12 hover logu (`.bin`, T257) SD karttan çekildiğinde `MOT_THST_HOVER` tek
+satırda okunur — 21 Eylül uçuşundan önce.
+
+⚠ **Boyut sütunu.** Şartname §5.4 ağırlık ve boyutu **birlikte** zorunlu kıldığı için sütun
+**ÜRETİCİ VERİSİ** atfıyla açılır; ancak 13.09.2026 itibarıyla **hiçbir hücrenin veri sayfası
+okunmamıştır** — depoda yalnız SunnySky X2220 için gerçek üretici künyesi ve URL'si vardır
+(`FDR/BOLUM_3_SISTEM_SPESIFIKASYONLARI.md`:300-302). Bu yüzden kural şudur: **her hücre kendi veri
+sayfası URL'si ve okuma tarihiyle yazılır; URL'si yazılamayan hücre BEYAN GEREKLİ kalır, tahmini
+gabari yazılmaz.** Toplanacak kalemler: Pixhawk 6C · Holybro M9N · telsiz (**RFD900A**, künye
+13 Eylül'de düzeltildi — `HANDOFF_20260913.md`:11) · PM06 *(modül kimliği hâlâ **BEYAN**, A13 açık)*
+· Matek FCHUB-12S V2 · SunnySky X2220 *(tek tamam olan)*. **Raspberry Pi HQ + 6 mm lens listeye
+girmez** — temin edilmemiştir, uçan araçta yoktur. **AÇIK — sorumlu: kaptan, hedef
+`FDR/butce_kaydi.csv`, tarih 20.09.2026** (uçuştan önce). Üretilen parçaların gabarileri
+**ölçülmüştür** ve Bölüm 5 §5.1.3'tedir; 3B basılan kalemlerin katı hacimleri de bu bölümde
+hesaplanmıştır (kol **67,20 cm³/adet** · üst çerçeve plakası 107,37 · alt çerçeve plakası 140,78 ·
+kubbe plakası 119,85 · ayak **52,82/adet** · GPS tutucu **14,67/adet** · TPU ped plakası 18,97).
 
 ### 7.1.2 Tablo B — DDR aviyonik BOM'u ve bugünkü durumu
 
@@ -141,7 +198,7 @@ içindir. Aşağıda her satırın FDR'deki karşılığı ve bütçeye etkisini
 | No | DDR kalemi | Model (DDR) | Adet | Ağırlık (g) | FDR'deki durum | Bütçe etkisinin yönü |
 |---|---|---|---|---|---|---|
 | 1 | Autopilot | Pixhawk 6C | 1 | 59 | **Değişmedi** (A12) | — |
-| 2 | İşlemci | Jetson **Orin NX** + carrier + soğutucu | 1 | 180 | ~~**Jetson Nano 4GB**~~ **Jetson Orin Nano Developer Kit 4 GB** ile değişti (A17; 6 Eylül ölçüm, D-431) | yön **BEYAN GEREKLİ** (Orin Nano tutarı yok); teknik bedeli §7.5.2'de — 6 Eylül düzeltmesiyle |
+| 2 | İşlemci | Jetson **Orin NX** + carrier + soğutucu | 1 | 180 | ~~**Jetson Nano 4GB**~~ **Jetson Orin Nano Developer Kit 4 GB** ile değişti (A17; 6 Eylül ölçüm, D-431 — modül **p3767-0004 (4 GB)**, taşıyıcı **p3768**, `results/jetson_20260906/JETSON_KESIF_RAPORU_20260906.md`:41) | **teknik yön: azaltıcı olabilir** — DDR'de **üç ayrı kalem** planlanmıştı (modül + taşıyıcı + soğutucu), gerçekleşen **tek geliştirme kitidir** ve Orin NX, Orin Nano 4 GB'ın bir üst ürün sınıfıdır. ⚠ **Parasal yön BEYAN GEREKLİ** — Orin Nano tutarı depoda yok (§Y.2, 13.09.2026); fiyatsız bir kalem sayısı karşılaştırması parasal yön üretmez. Teknik bedeli §7.5.2'de |
 | 3 | Kamera | **Arducam** IMX477 12MP | 1 | 50 | **RPi HQ** (aynı sensör) (A19) | nötr/azaltıcı |
 | 4 | Pitot tüpü | Pitot + hortum | 1 | 10 | FDA aracında **yok**; finalde kalır | ertelendi |
 | 5 | Airspeed | Holybro MS5525DSO | 1 | 20 | FDA aracında **yok**; finalde kalır | ertelendi |
@@ -150,7 +207,7 @@ içindir. Aşağıda her satırın FDR'deki karşılığı ve bütçeye etkisini
 | 8 | RC alıcı | **TBS Crossfire** Nano RX | 1 | 10 | **FlySky FS-i6 / FS-iA6B (iBUS)** (A15) | **azaltıcı** |
 | 9 | Motor | SunnySky X2216 1100KV | 2 | 138 | FDA aracında ~~**5008 340KV ×4**~~ → **SunnySky X2220 980KV V3 ×4** (A8; (7 Eylül beyanı, D-435)) | ~~**artırıcı** (4 adet, daha büyük)~~ → 4 adet; X2220 küçük sınıf motor (85 g, veri sayfası), yön **BEYAN GEREKLİ** (5008 iadesi + X2220 tutarı) |
 | 10 | Servo (kanat/kuyruk) | EMAX ES08MA II | 4 | 48 | FDA aracında **yok**; finalde kalır | ertelendi |
-| 11 | Pil | 4S 14–15 Ah Li-ion | 1 | 1000 | **4S 10 Ah 25C LiPo** (A21) | azaltıcı |
+| 11 | Pil | 4S 14–15 Ah Li-ion | 1 | 1000 | ~~4S 10 Ah 25C LiPo~~ → **3S 6000 mAh** (A21; kullanıcı kararı, gerekçe stabilite, 12 Eylül). Kart eşikleri 3S büyüklüğüne çekildi: `BATT_LOW_VOLT = 10` · `BATT_CRT_VOLT` 9 → **10,5** (`emir.param`:138/:131 + 13 Eylül kullanıcı beyanı) | **enerji yönü azaltıcı (HESAP)** — 214,6 Wh (4S 14,8 V × 14,5 Ah) → **66,6 Wh**; kütle 1000 g → **≈ 460 g (HESAP, varsayımlı)**. ⚠ **Parasal yön BEYAN GEREKLİ** — depoda fiyat kaydı yok (§Y.2) |
 | 12 | Paraşüt | Opale Rescue 2,5 m² | 1 | 120 | FDA'da **yok**; finalde zorunlu (§6) | ertelendi |
 | 13 | Paraşüt pod | Rescue Pod | 1 | 20 | aynı | ertelendi |
 | 14 | Paraşüt servo | EMAX ES08MA II | 1 | 60 | aynı | ertelendi |

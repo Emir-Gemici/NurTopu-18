@@ -82,21 +82,40 @@ Yönerge üç platformu **ayrı ayrı** ister. Bugünkü olgunluk üç platformd
 değildir ve bu özet eşitmiş gibi yazmaz.
 
 **(1) İHA — FDA görev test uçuşu aracı (çoklu rotor).** Final tasarım faaliyeti
-tamamlanmış, donanım künyesi sabitlenmiştir: Pixhawk 6C + PM02, Holybro M9N,
-~~5008 340KV ×4 motor / 12×10 pervane~~ → **SunnySky X2220 980KV V3 ×4** motor (BEYAN, etiket fotoğrafı yok) / **10×4,5 (1045)** pervane (7 Eylül beyanı, D-435) — 5008'ler iade edildi; itki bütçesi **ÖLÇÜLEMEDİ** (Bölüm 3 §3.2.1.1.1, T211), 80 A ESC, FCHUB-12S V2 güç dağıtımı,
+tamamlanmış, donanım künyesi sabitlenmiştir: Pixhawk 6C + **PM06** güç modülü (~~PM02~~ — 5–6 Eylül kutu açımında **GÖZLENDİ**, D-426; kanıt sınıfı **GÖZLEM/BEYAN**, ölçüm değil. ⚠ `config/pixhawk/emir.param:126` `BATT_AMP_PERVLT,36.36` ve `:143` `BATT_VOLT_MULT,18.18` **Pixhawk 6C hwdef VARSAYILANIDIR** — deponun kendi şablonu bu iki sayıyı PM02 ölçeği diye kaydeder (`config/pixhawk/arducopter_fda.param:171`, `config/pixhawk/README.md:137`) ve değerler 6 Eylül dökümünden (`config/pixhawk/arducopter_fda_20260906.param:126,:143`) beri **birebir aynıdır, yani kartta hiç dokunulmamıştır**; dolayısıyla güç modülünün PM06 olduğuna **bağımsız kanıt DEĞİLDİR**. İkisi de **FABRİKA/VARSAYILAN değeridir ve DOĞRULANMAMIŞTIR** — pens ampermetre/multimetre karşılaştırması (A13) 12 Eylül'de yapılamadı, alet yoktu (D-473); planlanan ölçüm: **A13, 21 Eylül 2026**), Holybro M9N,
+~~5008 340KV ×4 motor / 12×10 pervane~~ → **SunnySky X2220 980KV V3 ×4** motor (**BEYAN** — kullanıcı beyanı 7 Eylül 2026, D-435 ek; **etiket fotoğrafı 13 Eylül 2026 itibariyle hâlâ YOKTUR**, T211'in insan girdisi kapanmadı. 12 Eylül atölye adımlarının hiçbiri — A1, A2, A3, A4, A5, A12 — motor modelini bağımsız doğrulamaz; planlanan kanıt: **motor etiketi fotoğrafı, 14 Eylül 2026**) / **10×4,5 (1045)** pervane (**BEYAN**, aynı kayıt; ⚠ üreticinin hiçbir sayfasında 1045 satırı yoktur, en yakın üretici satırı APC1047 — D-435 ek 2) — 5008'ler iade edildi; itki bütçesi **ÖLÇÜLMEDİ, HESAPLANDI** (Bölüm 3 §3.2.1.1.1, T211): askı itkisi kartta öğrenilmemiştir — `config/pixhawk/emir.param:580` `MOT_THST_HOVER,0.35` **fabrika değeridir** ve 6 Eylül dökümünde de (`config/pixhawk/arducopter_fda_20260906.param:580`) aynıydı; `:565` `MOT_HOVER_LEARN,2` açık olmasına rağmen öğrenme **gerçekleşmemiştir**. ⚠ **Sebebi ÖLÇÜLMÜŞ değildir:** öğrenme yalnız irtifa denetimli kiplerde (AltHold / Loiter / PosHold / Guided) çalışır ve 12 Eylül'ün 15 s askısı **GUIDED** kipinde yapılmıştır (kullanıcı beyanı, 13 Eylül 2026) — yani kip engeli değildir; süre mi yetmedi başka bir şey mi, **BİLİNMİYOR**, çünkü uçuşun `.bin` logu SD karttan **silinmiştir**. Kesin olan tek şey `MOT_THST_HOVER`'ın 6 Eylül'den beri 0,35'te kalmasıdır (D-474 §4). Yerine **HESAP (üretici veri sayfası, ölçüm değil)**: SunnySky X2220-III KV980, **3S + APC1047** → motor başına tepe **1454 gf / 27 A**, dört motor tepe **5,82 kgf** (D-435 ek 2 aynı satırı **5,8 kg** diye yuvarlar); hover ≤ %50 kuralıyla azami araç kütlesi **≤ 2,90 kg**; üreticinin 3S çoklu rotor tasarım noktası 600 gf/motor → **2,40 kg** araçta hover oranı **%41,4**. ⚠ **Araçtaki pervane 10×4,5 (1045)'tir ve üreticide 1045 satırı YOKTUR** (D-435 ek 2 birebir: *"10×4,5 (1045) satırı hiçbir sayfada yok → 1045 için BİLİNMİYOR"*); 27 A **en yakın pervaneden (10×4,7) yapılmış bir YAKLAŞTIRMADIR**, bu pervanenin ölçümü değildir. Askı akımı **HESAP** (ideal itki diski, I ∝ T^1,5): 27 × (600/1454)^1,5 = **7,2 A/motor**, dört motor **28,8 A**; aviyonik ~1,4 A ile toplam **30,2 A** → 3S 6000 mAh pilde %80 kullanımla **uçuş süresi ≈ 9,5 dk (HESAP)**. 3S geçişinin hesaplanan kazancı: tam gaz akımı 27 A, motorun **38 A / 30 s** sürekli sınırının altında kalır (4S + APC1047'de 38,4 A ile sınır aşılıyordu — **D-435 ek 2**; D-436 başka bir motorun, T-Motor VELOX V3115 KV900'ün kaydıdır ve buraya kaynak değildir). **Bu sayıların hiçbiri ölçüm değildir**; kapatma yolu iki adımdır: (a) pilli araç tartısı (T10), (b) AltHold'da 30 s askı → `MOT_THST_HOVER` öğrensin (T261) — planlanan ölçüm **21 Eylül 2026**. **60 A ESC** (Hobbywing Skywalker 60A V2, etiket beyanı D-426; ~~80 A~~ değeri bayattı), FCHUB-12S V2 güç dağıtımı,
 FlySky FS-i6 (iBUS), 2× SiK 433 MHz telemetri, görev bilgisayarı ~~**Jetson Nano 4GB** (JetPack 4.6)~~
-→ **Jetson Orin Nano Developer Kit 4 GB** (JetPack 7.2.1, Ubuntu 24.04, Python 3.12; 3 Eylül beyanı 'Nano 4GB' 6 Eylül'de kartla YANLIŞLANDI — D-431), kamera **Raspberry Pi HQ (IMX477, CSI)**, 4S 10 Ah pil
-(`SAHA_HAZIRLIK_PLANI_20260903.md` §0.2 — **kullanıcı beyanı**, 5 Eylül'de kutu
-açılarak teyit edilecek). Özgün olan taraf gövde değil **karar mimarisidir**:
+→ **Jetson Orin Nano Developer Kit 4 GB** (JetPack 7.2.1, Ubuntu 24.04, Python 3.12; 3 Eylül beyanı 'Nano 4GB' 6 Eylül'de kartla YANLIŞLANDI — D-431), kamera **Raspberry Pi HQ (IMX477, CSI)** — 90° nadir montaj **BEYANI** (D-471, kullanıcı; ⚠ **montaj açısı ÖLÇÜLMEDİ — kamera monte edilmemiştir**); ⚠ **kamera 13 Eylül 2026 itibariyle elde YOKTUR ve 14 Eylül teslimine yetişmemektedir** (D-473) —, ~~4S 10 Ah~~ → **3S 6000 mAh** pil (**kullanıcı BEYANI**, 12 Eylül 2026 kararı, gerekçe **stabilite**; 4S varsayımı **GEÇERSİZ**. Kart dökümü bu beyanla **TUTARLIDIR — doğrulama değildir**: `config/pixhawk/emir.param:138` `BATT_LOW_VOLT,10` ve `:131` `BATT_CRT_VOLT,9`, 6 Eylül dökümünde 14,4 ve 14 idi. ⚠ Bu iki parametre **insanın elle yazdığı failsafe eşikleridir; pilin hücre sayısını ÖLÇMEZLER** — değişmiş olmaları, birinin 3S varsayarak parametreyi değiştirdiğini gösterir, pilin 3S olduğunu değil. Pilin 3S 6000 mAh olduğu hâlâ yalnız **kullanıcı beyanıdır** (D-471 / D-474); bağımsız kanıt = pil etiketi fotoğrafı ya da şarj cihazının hücre sayımı — planlanan **14 Eylül 2026**)
+(`SAHA_HAZIRLIK_PLANI_20260903.md` §0.2 — 3 Eylül **kullanıcı beyanı**; ~~5 Eylül'de kutu
+açılarak teyit edilecek~~ → 5–6 Eylül'de kutu açıldı ve 12 Eylül 23:55'te **gerçek kart dökümü**
+alındı: `config/pixhawk/emir.param`, 1025 satır).
+🔴 **AÇIK RİSK — kullanıcı 13 Eylül'de kapattığını BEYAN etti, kartta DOĞRULANMADI:** 12 Eylül
+dökümünde `emir.param:129` `BATT_CAPACITY,3300` iken pil **6000 mAh**'tir; bu hâliyle kapasite
+sayacı **%45 düşük** okur, Mission Planner'ın "kalan kapasite" göstergesi ve mAh tabanlı uyarılar
+geçersizdir. Uçuş emniyeti bugün korunuyor çünkü `BATT_LOW_MAH`/`BATT_CRT_MAH` = 0, yani failsafe
+**yalnız gerilimle** çalışıyor (D-474 §3). 13 Eylül 2026'da kullanıcı karta **`BATT_CAPACITY,6000`**
+ve **`BATT_CRT_VOLT,10.5`** yazdığını beyan etmiştir (T258) — **kanıt sınıfı BEYAN: yeni kart dökümü
+alınmadığı için depodaki `emir.param` hâlâ 3300 / 9 okumaktadır.** ⚠ Beyan edilen
+`BATT_CRT_VOLT,10.5` V, kartta duran `BATT_LOW_VOLT,10` V'un **ÜSTÜNDEDİR**; kritik eşik düşük
+eşiğin üstünde olamaz. Bu kalem, **uçuş öncesi yeni bir tam döküm alınıp iki parametre birlikte
+okunmadan KAPANMIŞ sayılmaz** — planlanan tarih **14 Eylül 2026**. Özgün olan taraf gövde değil **karar mimarisidir**:
 serbest alan otoritesi + fail-closed + her karede tam mesaj (§Y-1-M01).
 
 **(2) İHA — yarışma final aracı (sabit kanat).** Yapısal ve aerodinamik tasarım
 DDR'de sunulmuştur; FDR seviyesindeki final tasarım faaliyetleri (ağırlık-denge,
 boyut güncellemeleri, kontrol yüzeyi, aerodinamik/kararlılık/performans/yük
 hesapları) **bu özetin kapsamı dışındadır ve Bölüm 3.1'e aittir**.
-- **BEYAN GEREKLİ (insan):** Sabit kanat final aracının DDR sonrası tasarım
-  güncellemeleri (kanat/gövde/kuyruk geometrisi, CG, atalet) — Bölüm 3.1'i
-  yazacak tasarım ekibinden alınacaktır.
+- **AÇIK — İNSAN BEYANI BEKLİYOR; planlanan beyan: 14 Eylül 2026 (FDR teslimi).** Sabit kanat
+  final aracının DDR sonrası tasarım güncellemeleri (kanat/gövde/kuyruk geometrisi, CG, atalet)
+  — Bölüm 3.1'i yazacak tasarım ekibinden alınacaktır.
+  **Net hüküm (13 Eylül 2026):** final sabit kanat aracı **üretilmemiştir**. Depoda sabit kanada ait
+  **tek** geometri/kütle/atalet artefaktı `simulation/models/iha/model.sdf`'tir (kütle **4,0 kg**,
+  `ixx 0,0820` …); bu dosya kendi başlığında **"gelişmiş primitif tasarım"** olduğunu söyler,
+  **TAHMİN**dir, sayılarının kaynağı gösterilmemiştir ve **final aracın CG/atalet verisi yerine
+  geçmez**. Bunun dışında `dronesolid/` altındaki bütün CAD ve 3B dosyaları (kol, alt/üst çerçeve,
+  kubbe, ayak, GPS tutucu, TPU taban pedi) **çoklu rotorlu FDA gövdesine** aittir. 12 Eylül atölye
+  ölçümlerinin hiçbiri bu kalemi kapatmaz. Bu satıra final aracına ait sayı yazılmaz çünkü
+  türetilecek girdi yoktur; girdi geldiği anda hesaplar Bölüm 3.1'de yapılır.
 
 **(3) İKA.** Bugün kanıtlı olan **yazılım mimarisidir**, mekanik tasarım değil.
 İKA hareket katmanı sürücü soyutlamasına ayrılmış, imza tekerlek hızlarıdır
@@ -109,28 +128,62 @@ metinli istisnayla **reddeder** (sessiz iskelet yasaktır). Kabul turunun sekiz
 kabul aracı `scripts/ika_surucu_kabul.py`).
 İKA'nın hareket izni koddaki üçlü kilide bağlıdır: `geçerli OPEN_ROUTE ∧ İHA inişi
 tamamlandı ∧ YKS'den IKA_GO geldi`.
-- **BEYAN GEREKLİ (insan):** İKA şasi/tahrik mekanik tasarımı, malzeme seçimi ve
-  yük bırakma düzeneği — DDR REQ-1 (≤ 10 kg, yük hariç) ve REQ-3 (≥ 200 g yük)
-  ile birlikte Bölüm 3.2.2'ye girecektir.
-- **ÖLÇÜLEMEDİ: gerçek İKA motor sürücüsü.** Arka uç donanımı seçilmediği için
-  `GercekSurucu` boştur; kuru koşuda motor halkası `SAHİPSİZ` çıkar. Donanım
-  kararı verildiğinde (final dalgası, 21 Eylül sonrası) kapanır.
+- **KISMEN KAPANDI (ölçüm) + AÇIK (insan beyanı; planlanan: 14 Eylül 2026).** İKA şasi/tahrik
+  mekanik tasarımı, malzeme seçimi ve yük bırakma düzeneği — DDR REQ-1 (≤ 10 kg, yük hariç) ve
+  REQ-3 (≥ 200 g yük) ile birlikte Bölüm 3.2.2'ye girecektir.
+  **Kapanan kısım — ÖLÇÜLDÜ (12 Eylül 2026, ekip, şerit metre; D-472):** iz genişliği (sol ve sağ
+  tekerin orta düzlemleri arası) **459,5 mm = 0,4595 m**; tekerlek çapı **Ø125 mm** (yarıçap
+  0,0625 m — sözleşmeyle aynı, doğrulandı). Bu ölçüm iki sayıyı birden çürüttü: sözleşmedeki `0,39`
+  bir **TAHMİN**di (%15 küçük), Gazebo URDF dışa aktarımındaki `0,319` ise **dışa aktarma artığıydı**
+  (%31 küçük). Sabit `CONTRACTS.md` §4.1 (`IKA_IZ_GENISLIGI_M`) ve `codes/karar_sozlesmesi.py:1995`
+  içinde güncellendi.
+  ⚠ **Ölçüm depoya YAYILMAMIŞTIR ve bu kalem bu yüzden KAPANMIŞ sayılamaz (13 Eylül 2026):**
+  (a) **uçuşa giden paket kopyası** `jetson_paket/kod/karar_sozlesmesi.py:1995` hâlâ
+  `IKA_IZ_GENISLIGI_M = 0.39 # TAHMIN` okur; (b) MuJoCo gövde konumu **0,46** üretiyor ve tam süit
+  bu yüzden düşüyor (`tests/test_sim_mujoco_arena.py` → `AssertionError: 0.46 != 0.4595`);
+  (c) `simulation/mujoco/araclar.py:44` yorumu hâlâ "(TAHMİN — insan teyidine kadar)" diyor.
+  Yani aynı büyüklüğün depoda **üç canlı değeri** vardır. ⚠ Bağlı borç: T213-B / T214-A İKA sürüş
+  ölçümleri **eski** iz genişliğiyle koşuldu; **eşikler değişmez**, ölçümler yeni sabitle yeniden
+  koşulur ve sonuç ne çıkarsa yazılır (T256).
+  **Açık kalan üç başlık:** (a) şasi **malzemesi**, (b) **tahrik** (motor / redüktör / tekerlek
+  bağlantısı) seçimi, (c) **yük bırakma düzeneği** — üçü için de depoda kanıt yoktur, üçü de yalnız
+  insan beyanıyla kapanır.
+- **ÖLÇÜLEMEDİ: gerçek İKA motor sürücüsü — durum 13 Eylül 2026'da yeniden ölçüldü.** Arka uç
+  donanımı hâlâ **seçilmemiştir**; `GercekSurucu` boştur. Kuru koşu bugün yeniden koşuldu ve üçüncü
+  kez aynı sonucu verdi: **GEÇTİ 9 · DÜŞTÜ 0 · SAHİPSİZ 1 (motor)**, çıkış kodu **1**
+  (`results/saha_kuru_kosu_20260913_011108/ozet.json`, `scripts/saha_kuru_kosu.py`, 2026-09-13
+  01:11:08). 12 Eylül atölye gününde İKA sürücüsüne dair **hiçbir test yapılmadı** — koşulan altı
+  adımın (A1, A2, A3, A4, A5, A12) tamamı hava aracına aittir (D-473). Bu kalemde **ne ölçüm ne
+  türetme** vardır: sürücü seçilmeden tekerlek hızına sayı yazılamaz. Kapanma koşulu donanım
+  kararıdır — **21 Eylül 2026 uçuşundan sonra**, final dalgası.
 
 **(4) Mancınık.** Bugün repoda mancınığa dair olan tek kanıt **arayüz
 sözleşmesidir**: yarışma kipinde YKS'nin FIRLATMA düğmesi "mancınıktan ayrılma
 damgası" üretir ve kronometreyi başlatır; FDA kipinde aynı düğme `KALKIŞ` etiketiyle
 çalışır (`CONTRACTS.md` §6.7, D-393/D-407). Mekanizmanın kendisi (ray geometrisi,
 yay sabiti, fırlatma enerjisi) **tasarlanmamıştır**.
-- **BEYAN GEREKLİ (insan):** Mancınık ray geometrisi (DDR REQ-58), yay sabiti ve
-  İHA'yı ne kadar uzağa fırlatabileceğinin **enerji denklemleriyle** gösterimi
-  (yönerge `Y-3.2.3-A01`, `Y-3.2.3-A02`) — tasarım ekibinden alınacaktır.
+- **AÇIK — TASARIM YOK, İNSAN BEYANI BEKLİYOR; planlanan tasarım + beyan: final dalgası,
+  21 Eylül 2026 sonrası.** Mancınık ray geometrisi (DDR REQ-58), yay sabiti ve İHA'yı ne kadar
+  uzağa fırlatabileceğinin **enerji denklemleriyle** gösterimi (yönerge `Y-3.2.3-A01`, `Y-3.2.3-A02`).
+  **Net hüküm (13 Eylül 2026):** mekanizma **tasarlanmamıştır** (bir üstteki paragrafın kendi
+  ifadesi) ve enerji denkleminin gerektirdiği **dört girdinin dördü de yoktur**: ray boyu L, yay
+  sabiti k, çekiş mesafesi x ve İHA kütlesi m. Bu yüzden bu satıra **sayı uydurulmaz**. Girdi
+  geldiği anda sayı tek satırda çıkar; denklem ve kısıtı bugünden sabittir:
+  **½ k x² · η = ½ m v_çıkış² + m g h + F_sürtünme · L**, kısıt **v_çıkış ≥ 1,15 · V_stall**
+  (DDR REQ-188) ve **m ≤ 25 kg** (DDR REQ-158), kaynak
+  `navitas-teknofest/references/ddr_requirements.md`. Yay sabiti **beyan değil ölçümle** kapanır
+  (tezgâhta F–x eğrisi).
 
 ### Y-1-M03 — ÖDR ve DDR'de tanımlanan gereksinimlerin ve tasarım kriterlerinin nihai tasarım üzerinde doğrulandığı
 
 Rapor bu iddiayı toptan değil **satır satır** kurar. Bölüm 6, şartnamenin yazılıma
-düşen **45 hükmünü** tek tek izler ve kapanmamış **12 gereksinimi** tarihleriyle
+düşen **45 hükmünü** tek tek izler ve kapanmamış ~~12~~ **11 gereksinimi** tarihleriyle
 birlikte ayrı bir tabloda toplar. Bu raporun en güçlü iddiası bir yüzde değil, o
-tablonun **var olmasıdır**.
+tablonun **var olmasıdır**. (⚠ Bu iki sayının tazelik durumu §Y-1-M10'da ayrıca
+işlenmiştir: **45** bugün doğrulandı; açık kalem sayısı **11**'dir — `FDR/BOLUM_6_GEREKSINIM_IZLENEBILIRLIGI.md`
+§6.5.1'in sayım satırı birebir *"Açık satır sayımı: ~~12~~ **11** (A10 6 Eylül'de kapandı, D-431)"*
+der; raporda daha önce yazan 12, 6 Eylül **öncesinin** sayısıdır. 12 Eylül atölye sonuçları ve
+13 Eylül A6 ölçümü Bölüm 6'ya işlendiğinde bu 11 yeniden sayılacaktır.)
 
 DDR'nin operasyonel gereksinimlerinden yazılım tarafında **kod ve testle kilitli**
 olanlar: HTAB'de güzergâh tespiti (REQ-13), güzergâhın İKA'ya aktarılması (REQ-15),
@@ -144,9 +197,17 @@ mancınık, REQ-9 paraşüt, REQ-137 T/W ≥ 0,20, REQ-158 MTOW ≤ 25 kg, REQ-1
 havada kalış ≥ 0,5 saat, REQ-186 iniş dikey hızı < 7 m/s, REQ-188 fırlatma sonrası
 ≥ 1,15 × V_stall) bu özette **doğrulanmış diye yazılmaz**; doğrulama yöntemi
 (analiz/test/gözle muayene/benzerlik) Bölüm 3.2 ve Bölüm 6'da tanımlanacaktır.
-- **ÖLÇÜLEMEDİ: REQ-137, REQ-158, REQ-185, REQ-186, REQ-188.** Final aracı
-  üretilmediği ve tartılmadığı için bu beş gereksinimin hiçbiri bugün ölçülmüş
-  değildir; ölçüm final dalgasının üretim ve test turunda yapılacaktır.
+- **ÖLÇÜLEMEDİ: REQ-137, REQ-158, REQ-185, REQ-186, REQ-188 — beşi de final sabit kanat aracına
+  aittir.** Araç **üretilmedi**, tasarım verisi gelmedi, **tartılmadı**; dolayısıyla hiçbirinin
+  paydası yoktur. Eşik burada eşik olarak durur, sonuç hanesi boş bırakılmaz:
+  REQ-137 T/W ≥ 0,20 → **ÖLÇÜLEMEDİ** · REQ-158 MTOW ≤ 25 kg → **ÖLÇÜLEMEDİ** · REQ-185 havada
+  kalış ≥ 0,5 saat → **ÖLÇÜLEMEDİ** · REQ-186 iniş dikey hızı < 7 m/s → **ÖLÇÜLEMEDİ** ·
+  REQ-188 fırlatma sonrası hız ≥ 1,15 × V_stall → **ÖLÇÜLEMEDİ**.
+  ⚠ **12 Eylül 2026 atölye günü bu beş maddeye değmez:** koşulan altı adımın (A1, A2, A3, A4, A5,
+  A12) tamamı **FDA çoklu rotoruna** aittir (D-473); FDA aracının 3S 6000 mAh / X2220 künyesinden
+  türetilen itki bütçesi de (§Y-1-M02(1)) **final aracına taşınamaz** — iki ayrı araçtır.
+  Planlanan ölçüm: final aracının üretim ve test turu; **tarihi 14 Eylül 2026'da tasarım ekibi
+  beyan edecektir.**
 
 ### Y-1-M04 — Gerçekleştirilen revizyonların tamamlandığı
 
@@ -187,12 +248,18 @@ hem NAVITAS protokolü için çoğullayıcıya bağlanmış ve kapıya alınmı�
 ve zaman aşımı istisnası görev döngüsünü **çökertiyordu**; sürücü katmanı, ardışık hata
 tavanı ve fail-loud `GercekSurucu` ile kapatıldı (§Y-1-M02(3)).
 
-- **BEYAN GEREKLİ (insan):** DDR aviyonik BOM'u (28 kalem, toplam **2293 g**;
-  `navitas-teknofest/references/ddr_requirements.md`) **final aracına** aittir ve
-  bugünkü FDA aracı künyesiyle aynı değildir (DDR'de Jetson Orin NX + Arducam IMX477
-  + Holybro M10 + TBS Crossfire; FDA aracında Jetson Orin Nano Developer Kit 4 GB (6 Eylül ölçüm, D-431; 3 Eylül beyanı 'Nano 4GB' yanlışlandı) + RPi HQ + M9N + FS-i6).
-  Final aracının aviyonik BOM'unun DDR'ye göre revize edilip edilmediği beyan
-  edilecek ve Bölüm 3.3.1'e DDR ↔ FDR karşılaştırmalı olarak girecektir.
+- **AÇIK — İNSAN BEYANI BEKLİYOR; planlanan beyan: 14 Eylül 2026.** DDR aviyonik BOM'u
+  (~~28~~ **26 kalem** — tabloda **No 25 atlanmıştır**: No 1–24 + 26 + 27; 13 Eylül 2026'da satır
+  satır sayıldı —, toplam **2293 g**; `navitas-teknofest/references/ddr_requirements.md:61` TOPLAM
+  satırı, ağırlık sütunu toplamı aynı gün yeniden hesaplandı = 2293 g) **final aracına** aittir ve
+  bugünkü FDA aracı künyesiyle aynı değildir (DDR'de Jetson Orin NX + Arducam IMX477 + Holybro M10
+  + TBS Crossfire; FDA aracında Jetson Orin Nano Developer Kit 4 GB (6 Eylül ölçüm, D-431; 3 Eylül
+  beyanı 'Nano 4GB' yanlışlandı) + RPi HQ + M9N + FS-i6 + **PM06** güç modülü (GÖZLEM, D-426) +
+  **3S 6000 mAh** pil (12 Eylül kullanıcı beyanı) + ESC **Hobbywing Skywalker 60A V2**).
+  **Net hüküm (13 Eylül 2026):** FDA aracının künyesi yukarıdaki üç düzeltmeyle (PM06, 3S 6000 mAh,
+  60 A ESC) **güncellenmiştir**; sorulan şey ise **final aracının** BOM'udur ve ona ait **hiçbir
+  revizyon artefaktı depoda yoktur** — elimizdeki tek kaynak DDR dönemi belgesidir. Bu kalem FDA
+  ölçümleriyle kapanmaz; Bölüm 3.3.1'e DDR ↔ FDR karşılaştırmalı olarak girecektir.
 
 ### Y-1-M05 — Sistemin görev tanımını karşılayacak olgunluğa ulaştığı
 
@@ -214,6 +281,13 @@ doğrulama verisi kırsal bir DJİ çekimidir ve kırmızı H, moloz yığını 
 **içermez**. Bu yüzden bu raporda hiçbir sentetik ölçüm "saha başarımı" diye
 sunulmaz; saha `p` değeri **ÖLÇÜLEMEDİ** olarak durur ve iki çerçevenin (sentetik
 0,98 / gerçek OOD 0,35) arası **tahmin edilmez**.
+Bu kalem **13 Eylül 2026'da da kapanmamıştır** ve nedeni ölçülebilir biçimde bellidir: kamera
+(RPi HQ + 6 mm lens) **elde değildir** ve 14 Eylül FDR teslimine yetişmemektedir; 12 Eylül atölye
+gününde **A9 (gerçek görüş açısı)** ve **A10 (canlı kare hızı)** adımlarının **ikisi de YAPILMADI**
+(D-473). Hedef alanda **kırmızı H'nin bulunduğu teyit edilmiştir** (D-471) — yani sahne artık
+"H içermeyen kırsal DJİ çekimi" değildir, ama **tek bir gerçek arena karesi çekilmemiştir**.
+**Planlanan ölçüm: 21 Eylül 2026 uçuşu**; saha `p` değeri ilk kez orada ölçülecek, o güne kadar
+bu hücreye sayı yazılmayacaktır.
 
 Bu sınırın en somut yüzü şudur: gerçek uçuş kayıtlarında modelin **51 saniye
 boyunca hiç karar üretemediği**, sahne bağıntılı kör aralıklar ölçülmüştür (bir
@@ -231,10 +305,47 @@ kurulmayı **reddeder** (sessiz iskelet yasaktır). Kuru koşu bu halkayı `SAH�
 olarak raporlar ve çıkış kodu 1 verir. Bu bir donanım kararıdır, final dalgasının
 işidir ve görev test uçuşunu etkilemez (o uçuşta İKA yoktur).
 
-**(3) Üçüncüsü: gerçek SiK 433 MHz hattı hiç ölçülmemiştir.** Bugüne kadarki tüm
-aktarım kanıtı UDP loopback üzerindedir. Detay tasarım raporundaki ">%98 teslim,
-300 m" iddiasının bugün kanıtı yoktur; ölçüm aracı yazılmış ve gerçek bayt
-akışında sınanmıştır, ama iki telsiz henüz kutudan çıkmamıştır.
+**(3) Üçüncüsü: gerçek SiK hattı 13 Eylül 2026'da İLK KEZ niceliksel olarak ölçüldü — ve ölçüm
+DÜŞTÜ.** ~~"Gerçek SiK 433 MHz hattı hiç ölçülmemiştir; bugüne kadarki tüm aktarım kanıtı UDP
+loopback üzerindedir; iki telsiz henüz kutudan çıkmamıştır."~~ — bu cümlelerin üçü de **artık
+yanlıştır** ve ölçümle çürütülmüştür (D-476).
+
+**ÖLÇÜM (13 Eylül 2026, 01:24 ve 01:25; iki SiK telsiz, antenli ve dik, aralarında 2–5 m; taşıyıcı
+seri, COM7, 57 600 baud; `scripts/sik_rf_olc.py`, her kolda n = 200 prob):**
+
+| kol (tekrar kadansı) | RTT p50 | **RTT p95** | min / maks | kayıp | veri hızı | hüküm |
+|---|---|---|---|---|---|---|
+| IKA_GO (0,25 s) | 208,3 ms | **265,2 ms** | 93,1 / 273,3 ms | **%0** (200/200 ACK) | 318,8 B/s | **DÜŞTÜ** |
+| PARAŞÜT (0,20 s) | 229,2 ms | **229,6 ms** | 199,1 / 230,8 ms | **%0** (200/200 ACK) | 350,5 B/s | **DÜŞTÜ** |
+
+Ham çıktı: `results/atolye_20260912/A6_sik_ikago.json` · `A6_sik_parasut.json` (her ikisinin
+`verdikt` alanı *"UYARI: RTT p95 tekrar aralığını aşıyor"*, `cikis_kodu` **1**). Toplam **400/400
+ACK, kayıp %0**; hat doluluğu **%4,4**.
+
+⚠ **EŞİK GEVŞETİLMEMİŞTİR ve iki eşik birden yazılır:** ön kayıtlı kabul eşiği
+**p95 < 0,20 s**'dir (`FDR/BOLUM_6_GEREKSINIM_IZLENEBILIRLIGI.md` §6.5.1, A2 satırı); ölçüm
+harness'i ayrıca her kolun **kendi tekrar aralığını** (IKA_GO 0,25 s, PARAŞÜT 0,20 s) ikinci bir
+eşik olarak raporlar. Ölçülen p95 değerleri (265,2 ms ve 229,6 ms) **her iki eşiği de aşmaktadır**
+→ sonuç **DÜŞTÜ**. Sözleşme sabitleri `IKA_GO_TEKRAR_ARALIGI_S = 0,25` ve
+`PARASUT_TEKRAR_ARALIGI_S = 0,20` **aynen durmaktadır**.
+
+**TEŞHİS (ölçümden çıkarılan):** darbogaz **bant genişliği değildir** — kayıp %0 ve doluluk %4,4.
+Darbogaz **SiK TDM dilim gecikmesidir**: 0,20 s kadansında RTT çakılı sabit çıkıyor (p95 − p50 =
+**0,4 ms**), 0,25 s kadansında testere dişi (her probta −21 ms, sonra +90 ms sararak); seri payı
+~28 ms. **Düzeltme sırası:** T263 Air Speed yükselt → T264 ECC kapat → yetmezse T265 tasarım
+değişikliği.
+
+⚠ **Ölçülmeyen ne kaldı:** ölçüm **2–5 m tezgâh mesafesindedir**; detay tasarım raporundaki
+**">%98 teslim, 300 m"** iddiasına **kanıt değildir**. **Menzil (A7) hâlâ ÖLÇÜLEMEDİ**, planlanan
+ölçüm 21 Eylül 2026.
+
+✅ **Kazanç:** yönerge `Y-3.3.4-M03`'ün istediği "kullanılan veri hızı" artık **gerçek RF üzerinde
+ölçülmüştür**: **318,8–350,5 B/s**. Önceki 322,5 B/s **radyosuz köprü** ölçümüydü; ikisi %1–9
+içinde örtüşüyor, yani köprü ölçümü gerçeğe yakın çıktı.
+
+⚠ **Bu ölçüm, daha önce bu raporda duran "RTT ≈ 112–157 ms (HESAP)" sayısını da çürütmüştür:**
+hesap **SiK TDM çerçeve payını hariç tutuyordu** ve darbogazın tam da o olduğu ölçüldü. HESAP
+kaldırılmadı, üstü çizilerek ölçülen değerle değiştirildi.
 
 ### Y-1-M06 — Nihai mekanik, aviyonik ve yazılım mimarileri; alt sistem konfigürasyonları; fiziksel ve fonksiyonel etkileşimler
 
@@ -274,20 +385,66 @@ prova ve 30 Eylül – 3 Ekim'deki görev test uçuşu (§5.3.2) çoklu rotorlu 
 İKA olmadan, YKS'ye aktarım ve hakem onayı ekseninde yapılır; **finalin yarışma
 görevi (§2.2)** sabit kanat + mancınık + paraşüt + İKA ile icra edilir.
 
-- **BEYAN GEREKLİ (insan):** İHA ve İKA için renk kodlu (PWM / UART / I2C ve güç
-  hatları ayrılmış) **bağlantı şemaları** — yönerge `Y-3.3.1-M01` bunları zorunlu
-  kılıyor; bugün metin var, çizim yok.
+- **KAPANDI (çizim depodadır) — 13 Eylül 2026 düzeltmesi.** İHA ve İKA için renk kodlu (PWM /
+  UART / I2C ve güç hatları ayrılmış) **bağlantı şemaları** — yönerge `Y-3.3.1-M01` bunları zorunlu
+  kılıyor. **"Bugün metin var, çizim yok" ifadesi bayattır:** çizimler depodadır —
+  `FDR/sekiller/iha_baglanti.svg` (7 Eylül 2026) ve `FDR/sekiller/ika_baglanti.svg` (10 Eylül 2026);
+  üreteçleri `scripts/fdr_iha_baglanti_svg.py` ve `scripts/fdr_ika_baglanti_svg.py`; hat başına
+  kaynak listeleri `FDR/sekiller/iha_baglanti_kaynaklar.md` ve `ika_baglanti_kaynaklar.md`;
+  bayatlama kapısı `tests/test_gece_baglanti_semasi.py`. Çizimin kuralı da kayıtlıdır ve rapora
+  aynen girer: **kaynaksız hat çizilmez** — düz çizgi bir D-kaydındaki saha ölçümü ya da kart
+  dökümü, kesik çizgi `DOĞRULANACAK` (yalnız plandan bilinen, sahada ölçülmemiş hat).
+  ⚠ **Kalan iş ölçüm değil yeniden üretimdir:** iki SVG 6 Eylül dökümüne
+  (`config/pixhawk/arducopter_fda_20260906.param`) dayanıyor; **PM06** ve **3S 6000 mAh**
+  düzeltmeleriyle 12 Eylül dökümünden (`config/pixhawk/emir.param`) yeniden üretilecek ve kalem
+  tamamen kapanacaktır — planlanan tarih **14 Eylül 2026**, koşum tek komut (üreteç betikleri +
+  kapı testi).
 
 ### Y-1-M07 — Üretim yöntemleri, malzemeler, montaj süreçleri ve saha kurulum prosedürleri
 
 **Üretim (FDA aracı).** Gövde **eklemeli imalatla (3B baskı)** üretilmiştir.
-- **BEYAN GEREKLİ (insan):** Baskı reçetesi (malzeme, katman yüksekliği, dolgu
-  oranı, duvar sayısı) ve kolların hangi reçeteyle basıldığı — yönerge Bölüm 5
-  değişikliklerin **gerekçelendirilmesini** ister; bugün kol 1–2 ile kol 3–4
-  arasındaki reçete farkının gerekçesi kayıtta yoktur (`FDR/YONERGE_HARITASI.md`
-  `Y-5-M05` altında 🔴 RİSK olarak işaretli).
-- **BEYAN GEREKLİ (insan):** Parça başına üretim süresi, iş gücü ihtiyacı ve
-  toplam imalat süresi.
+- **KISMEN KAPANDI — reçeteler dilimleyici proje dosyalarından OKUNDU (13 Eylül 2026); açık kalan
+  yalnız GEREKÇEDİR.** Baskı reçetesi (malzeme, katman yüksekliği, dolgu oranı, duvar sayısı) ve
+  kolların hangi reçeteyle basıldığı — yönerge Bölüm 5 değişikliklerin **gerekçelendirilmesini** ister.
+
+Kaynak: `dronesolid/files (3)/*.3mf` → `Metadata/project_settings.config` (Bambu Studio 02.07.01.62).
+Kanıt sınıfı: **ÖLÇÜLDÜ (dosya içeriği)** — dosyanın taşıdığı reçete budur; parçanın **fiilen** bu
+reçeteyle basıldığı ayrıca basan kişinin beyanıdır.
+
+| plaka | malzeme | katman | dolgu | duvar | üst/alt kabuk | destek | yazıcı |
+|---|---|---|---|---|---|---|---|
+| Kol 1–2 | ABS | 0,20 mm | %15 grid | 2 | 5 / 3 | yok | Bambu X1C 0,4 |
+| **Kol 3–4** | ABS | **0,16 mm** | **%40 gyroid** | **6** | **7 / 7** | yok | (yazıcı alanı boş — dilimlenmemiş) |
+| Alt çerçeve | ABS | 0,20 mm | %15 grid | 2 | 5 / 3 | yok | Bambu X1C 0,4 |
+| Üst çerçeve | ABS | 0,20 mm | %15 grid | 2 | 5 / 3 | yok | Bambu X1C 0,4 |
+| Kubbe | ABS | 0,20 mm | %15 grid | 2 | 5 / 3 | **var** | Bambu X1C 0,4 |
+| Ayak | ABS | 0,20 mm | %15 grid | 2 | 5 / 3 | **var** | Bambu P2S 0,4 |
+| GPS tutucu | ABS | 0,20 mm | %15 grid | 2 | 5 / 3 | **var** | Bambu P2S 0,4 |
+| Taban pedi ×4 | **TPU 95A** (`Bambu TPU 95A @BBL P2S`) | 0,20 mm | %15 grid | 2 | 5 / 3 | yok | Bambu P2S 0,4 |
+
+**Reçete farkı artık sayıyla bellidir:** kol 3–4, kol 1–2'ye göre **daha ince katman (0,16 vs
+0,20 mm), 2,7 kat dolgu (%40 vs %15), 3 kat duvar (6 vs 2)** ve grid yerine **gyroid** dolguyla
+tanımlanmıştır — yani belirgin biçimde **daha güçlü** bir reçete. ⚠ **Açık kalan tek şey bu farkın
+GEREKÇESİDİR** (`FDR/YONERGE_HARITASI.md` `Y-5-M05` altında 🔴 RİSK): iki kol neden farklı basıldı,
+hangi reçeteli kol araçta hangi konumda duruyor ve 6 Eylül'deki üç devrilmede hasar gören **M1 kolu**
+(D-429) hangi reçeteydi. Bunu yalnız basan kişi beyan edebilir — planlanan beyan: **14 Eylül 2026**.
+- **KISMEN HESAPLANDI (dilimleyici çıktısı) + AÇIK (iş gücü, insan beyanı).** Parça başına üretim
+  süresi, iş gücü ihtiyacı ve toplam imalat süresi.
+  **Depoda gerçek dilimleyici çıktısı olan tek plaka vardır ve sayısı buraya yazılır:**
+  `dronesolid/files (3)/Plaka4_Ust_Cerceve_plate_1.gcode.3mf` → `Metadata/slice_info.config`
+  `prediction=5416` s, `weight=55.86` g, `used_m=22.33` → **üst çerçeve: 1 sa 30 dk 16 sn · 55,86 g
+  ABS · 22,33 m filament · 0,4 mm nozul · Bambu X1C**. Kanıt sınıfı **HESAP (dilimleyici tahmini,
+  ölçüm değil)** — gerçek baskı süresi kronometreyle ölçülmedi.
+  **Kalan yedi plakanın süresi HESAPLANMADI:** proje dosyaları depodadır (`Plaka1_Kol_1-2`,
+  `Plaka2_Kol_3-4`, `Plaka3_Alt_Cerceve`, `Plaka5_Kubbe`, `Plaka_Ayak`, `Plaka_GPS_Holder`,
+  `tpu_taban_pedi_x4`) ama **sekiz proje `.3mf` dosyasının hiçbiri** `slice_info.config` içinde
+  `prediction`/`weight` alanı **taşımaz** (yalnız başlık) — yani G-kod çıktısı üretilmemiştir; sayı
+  yalnız `_plate_1.gcode.3mf` uzantılı tek dosyadan gelmektedir. **Bu yüzden toplam imalat süresi
+  bugün yazılmaz: sekiz plakanın yedisinin süresi ve ağırlığı yoktur.** Kapatma yolu insan beyanı
+  değil **tek oturumluk bir koşumdur** — sekiz plaka Bambu Studio'da kendi reçeteleriyle dilimlenir
+  ve `prediction` + `weight` alanları tabloya geçirilir; planlanan tarih **14 Eylül 2026**.
+  **İş gücü ihtiyacı** (kişi-saat: kurulum, destek temizliği, montaj) dilimleyiciden türetilemez ve
+  yalnız insan beyanıyla kapanır — planlanan beyan: **14 Eylül 2026**.
 
 **Yazılım tarafı üretime hazır.** ArduCopter parametre şablonu (**31** parametre, her
 satırda gerekçe) ve QGC görev planı (TAKEOFF 32 m → 20×20 m üzerinde tek pas →
@@ -307,9 +464,16 @@ pil takılı değil) → Pixhawk yapılandırması (13:00–14:30) → Jetson Na
 (14:30–17:00) → yer zinciri (17:00–18:30, pervanesiz)
 (`SAHA_HAZIRLIK_PLANI_20260903.md` §2).
 
-- **BEYAN GEREKLİ (insan):** Yapısal malzeme listesi, bağlantı elemanları ve
-  yapıştırıcı tablosu, tedarikçi ve teslim süreleri (yönerge `Y-3.2.1-T07`,
+- **AÇIK — İNSAN BEYANI BEKLİYOR; planlanan beyan: 14 Eylül 2026.** Yapısal malzeme listesi,
+  bağlantı elemanları ve yapıştırıcı tablosu, tedarikçi ve teslim süreleri (yönerge `Y-3.2.1-T07`,
   `Y-3.2.1-T08`).
+  **Net hüküm (13 Eylül 2026):** depoda **vida / somun / pul tablosu, yapıştırıcı kaydı ya da
+  tedarikçi-teslim süresi kaydı yoktur**; 12 Eylül atölye günü de bunu üretmedi (koşulan adımların
+  hiçbiri envanter değildir — D-473). Türetilebilen tek başlık **gövde malzemesidir** ve o ölçüldü:
+  dilimleyici proje dosyalarına göre gövde **ABS**, taban pedleri **TPU 95A**
+  (`dronesolid/files (3)/*.3mf`, `Metadata/project_settings.config`). Bağlantı elemanları ve
+  yapıştırıcı yalnız **fiziksel envanter çıkarımıyla** (insan) kapanır: araç sökülmeden, takılı
+  vidalar ölçülerek listelenir.
 
 ### Y-1-M08 — Teknik riskler, önleyici tedbirler, risk azaltma stratejileri ve acil durum senaryoları
 
@@ -318,15 +482,19 @@ susmaz, **`NO_ROUTE` der ve sebebini yazar** (§Y-1-M01). Şartname yanlış gü
 0 puan verdiği için asimetri bilinçlidir.
 
 **Uçuş emniyeti — uçuş kontrolcüsü tarafında kilitli acil durum tepkileri.**
-Aşağıdakiler `config/pixhawk/arducopter_fda.param` içinde satır satır gerekçelidir
-ve `tests/test_faz_b_pixhawk_sablon.py` ile kilitlidir:
+⚠ **13 Eylül 2026 düzeltmesi:** aşağıdaki tablo artık **şablonu değil gerçek kart dökümünü**
+gösterir — `config/pixhawk/emir.param`, Pixhawk 6C'den **12 Eylül 2026 23:55**'te alınmış 1025
+satırlık tam döküm. Şablon (`config/pixhawk/arducopter_fda.param`, satır satır gerekçeli,
+`tests/test_faz_b_pixhawk_sablon.py` ile kilitli) ile kart **dört başlıkta ayrışmaktadır** ve bu
+rapor **kartı esas alır**; şablon ↔ kart farkının tam dökümü Bölüm 3'e girer. Kartla **uyuşan**
+satırlar: `FENCE_*` (`emir.param:358–365`) ve `RTL_ALT,3500` (`:780`).
 
 | senaryo | parametre | tepki |
 |---|---|---|
-| Kumanda sinyali kaybı | `FS_THR_ENABLE,1` | **RTL** (eve dön) |
-| YKS heartbeat kaybı | `FS_GCS_ENABLE,1` | **RTL** |
-| Düşük pil | `BATT_LOW_VOLT,14.4` + `BATT_FS_LOW_ACT,2` | **RTL** |
-| Kritik pil | `BATT_CRT_VOLT,14.0` + `BATT_FS_CRT_ACT,1` | **LAND** (bulunduğu yere in) |
+| Kumanda sinyali kaybı | `FS_THR_ENABLE,3` · `FS_THR_VALUE,975` (kart: `emir.param:411`, `:412`) | **LAND** (bulunduğu yere in) — ~~RTL~~; **A1 12 Eyl GEÇTİ** (BEYAN) |
+| YKS heartbeat kaybı | `FS_GCS_ENABLE,5` · `FS_GCS_TIMEOUT,5` (kart: `emir.param:408`, `:409`) | **LAND** — ~~RTL~~; 5 = "Enabled always Land", `FS_THR_ENABLE,3` ile **tutarlı**. A2 12 Eyl **KISMİ** (test sırasında geçici 0 yapılmıştı; 12 Eyl 23:55 dökümünde **5** okunuyor → geri alma yapılmış, D-474 §2). ✅ **Karar verildi ve kayda geçti (D-474 §2): 5 (Land) sabittir, geri alma gerekmez** — D-406 C'nin "1 kalır" hükmü ArduCopter 4.5.7 seçenek listesi genişlediği için güncellendi. D-473'ün "`FS_GCS_ENABLE=0` kartta duruyor" açık riski 12 Eylül 23:55 dökümüyle **KAPANMIŞTIR** (kart 5 okuyor; 6 Eylül dökümünde 1 idi) |
+| Düşük pil | `BATT_LOW_VOLT,10` (3S × 3,33 V) + `BATT_FS_LOW_ACT,1` (kart: `emir.param:138`, `:134`) | **LAND** — ~~RTL~~; 14,4 V değeri **4S varsayımının kalıntısıydı**, pil 3S 6000 mAh (BEYAN). **A3 12 Eyl GEÇTİ** (BEYAN) |
+| Kritik pil | `BATT_CRT_VOLT,9` (3S × 3,00 V) + `BATT_FS_CRT_ACT,1` (kart: `emir.param:131`, `:133`) | **LAND** (bulunduğu yere in) — eylem doğruydu, **gerilim 14,0 → 9** düzeltildi. 🔴 Açık risk: `BATT_CAPACITY,3300` (`:129`) iken pil **6000 mAh**; `BATT_LOW_MAH`/`BATT_CRT_MAH` = 0 olduğu için failsafe bugün **yalnız gerilimle** çalışıyor, ama kalan-kapasite göstergesi **%45 yanlıştır** (T258). 13 Eylül 2026'da kullanıcı `BATT_CAPACITY,6000` **ve** `BATT_CRT_VOLT,10.5` yazdığını **beyan etti** — yeni döküm alınmadı, doğrulanmadı; ⚠ beyan edilen 10,5 V, kartta duran `BATT_LOW_VOLT,10` V'un **üstündedir** ve bu hâliyle tutarsızdır. Uçuş öncesi yeni dökümle birlikte okunacak |
 | Coğrafi çit ihlali (irtifa/yarıçap) | `FENCE_ENABLE,1` · `FENCE_TYPE,3` · `FENCE_ALT_MAX,50` · `FENCE_RADIUS,60` · `FENCE_ACTION,1` | **RTL ya da iniş** |
 | Dönüş irtifası | `RTL_ALT,3500` (35 m) | Görev irtifasının (30 m) üstü, çitin (50 m) altı — RTL çit ihlali üretmez |
 
@@ -346,17 +514,32 @@ gönderilir; kaynak pini olmayan komut kabul edilmez
 | Tek pil | günde ≤ 2 uçuş; ikinci pil / şarj kararı kaptanda |
 | Görev bilgisayarında çökme döngüsü (hands-off) | ekransız kip, `Restart=always`, seri port çoğullayıcı |
 | Pusula / GPS / titreşim | direk montaj, açık alanda kalibrasyon, damper, ilk hover logunun incelenmesi |
-| PM02 akım sınırı | sürekli tam gaz yok, `BATT_AMP` ekranda, motor testi kısa |
+| **PM06** akım sınırı (~~PM02~~ — D-426, GÖZLEM) | sürekli tam gaz yok, `BATT_AMP` ekranda, motor testi kısa. ⚠ `BATT_AMP_PERVLT,36.36` (`emir.param:126`) ve `BATT_VOLT_MULT,18.18` (`:143`) **Pixhawk 6C hwdef VARSAYILANIDIR** (şablonun kendi notu bunları PM02 ölçeği diye kaydeder — `arducopter_fda.param:171`), 6 Eylül dökümünden beri değişmemiştir ve **DOĞRULANMAMIŞTIR**; PM06'ya kanıt değildir. Pens ampermetreyle karşılaştırma (A13) 12 Eylül'de **YAPILMADI**, alet yoktu (D-473). 3S tam gaz akımı **HESAP ≈27 A/motor** — üretici tablosunda yalnız **3S + APC1047 (10×4,7)** satırı vardır (1454 g → 27 A; D-435 ek 2); araçtaki pervane **10×4,5 (1045)**'tir ve üreticide 1045 satırı **YOKTUR**, yani 27 A en yakın pervaneden bir **yaklaştırmadır**. Motor sınırı 38 A / 30 s; planlanan ölçüm **A13, 21 Eylül 2026** |
 
 **Ölçülmüş, kapanmamış teknik risk:** modelin sahne bağıntılı **51 saniyelik kör
 aralığı** (§Y-1-M05(1)). Bugünkü azaltma tedbiri gizlemek değil **göstermektir**:
 heartbeat `karar_yas` taşır, hakem tespitin yaşını ekranda görür, bayat tespit
 canlı sayılmaz.
 
-- **ÖLÇÜLEMEDİ: arıza emniyet tepkilerinin sahada test edilmesi.** Yukarıdaki
-  RTL/LAND/çit tepkileri bugün yalnız parametre ve testle kilitlidir; gerçek
-  uçuşta tetiklenip ölçülmemiştir. Yönerge `Y-4-M12` bunu zorunlu kılar; ölçüm
-  5–19 Eylül uçuş testlerinde yapılacaktır.
+- **KISMEN ÖLÇÜLDÜ — 12 Eylül 2026 atölye günü; "gerçek uçuşta tetiklenip ölçülmemiştir" ifadesi
+  bayattır.** Yukarıdaki tepkilerin **dördü gerçek donanımda tetiklendi ve GEÇTİ**, biri **KISMİ**
+  kaldı, biri hiç sınanmadı. Kanıt sınıfı **BEYAN** (kullanıcı beyanı; ham `.bin` / ekran dökümü yok,
+  D-473):
+  **A1** kumanda sinyali kaybı (RC failsafe) **GEÇTİ** · **A3** pil failsafe **GEÇTİ** ·
+  **A4** anahtarla LAND **GEÇTİ** (`RC6_OPTION,153`, `emir.param:735`) · **A5** gerçek SiK hattında
+  bağlantı kaybı **GEÇTİ** · **A2** YKS heartbeat failsafe **KISMİ** (tetikleme çalıştı; Mission
+  Planner bağlantısı olmadığı için kodla uçurulamadı) · **coğrafi çit (FENCE) sahada hiç sınanmadı.**
+  Ayrıca **A12**: **GUIDED** kipinde, kodla, 3 m'de 15 s askı ve ardından **kodla LAND** (kumanda
+  müdahalesiz) — çok başarılı.
+  ⚠ **Kanıt sınıfı düzeltmesi:** A12'nin `.bin` logu SD karttan **silinmiştir**; bağımsız tek iz
+  parametre dökümüdür: `config/pixhawk/emir.param:980` `STAT_FLTTIME,273` (6 Eylül dökümünde **0**
+  idi) ve `:979` `STAT_BOOTCNT` 48 → 96. **Ama bu sayı A12'yi doğrulamaz:** `STAT_FLTTIME`
+  **kümülatiftir** — iki döküm arasındaki **48 açılış** boyunca biriken toplam uçuş/silahlı süredir,
+  **tek bir uçuşun süresi değildir**; beyan edilen ~15 s askının dışında kalan **258 s
+  açıklanmamıştır**. Kanıtladığı tek şey: 6 Eylül'den sonra kartta uçuş süresi **birikmiştir**
+  (D-474 §1). Yani A12 **parametre dökümüyle desteklenen, ama doğrulanmamış bir beyandır**.
+  **Kalan borç (yönerge `Y-4-M12`):** FENCE tepkisinin sahada tetiklenmesi ve dört GEÇTİ'nin **ham
+  kanıtla** (tlog / ekran dökümü) belgelenmesi — planlanan ölçüm **21 Eylül 2026** uçuşu (T257).
 
 ### Y-1-M09 — Operasyon planı, görev akışı, ekip organizasyonu, görev dağılımı ve kurulum süreçleri
 
@@ -378,16 +561,52 @@ onaylayan rol aynı kişi olamaz.**
 **Ölçülmüş organizasyon riski (kayda geçirildi):** R2 (kumandayı tutar, gözü araçta)
 ile R5 (hakem ekranını sürer) uçuş anında **eşzamanlıdır**; tek kişi ikisini birden
 yapamaz. Montaj gününde ve yer provalarında çakışma yoktur.
-- **BEYAN GEREKLİ (insan):** Uçuş günü için R2 ve R5'ten birine ikinci kişi
-  atanması; sekiz rolün üyelere ataması; şartname §4 kontenjan (6–10 kişi) teyidi.
+- **AÇIK — İNSAN BEYANI BEKLİYOR; planlanan beyan: 14 Eylül 2026 (FDR teslimi).** Uçuş günü için
+  R2 ve R5'ten birine ikinci kişi atanması; sekiz rolün üyelere ataması; şartname §4 kontenjan
+  (6–10 kişi) teyidi.
+  **Net hüküm (13 Eylül 2026):** depoda **üye ↔ rol eşlemesi yoktur** ve kaç kişi olduğumuz yazılı
+  değildir. 12 Eylül atölye günü rolleri fiilen kullandı (kumandayı tutan, kartı süren, sonucu
+  yazan) ama tutanağa **isim/rol eşlemesi kaydedilmedi** (D-473). R2/R5 eşzamanlılığı ölçülmüş bir
+  organizasyon riskidir ve **ikinci kişi ataması 13 Eylül itibariyle yapılmamıştır** — bu, 21 Eylül
+  uçuşu için açık bir operasyon riskidir. Yazılım tarafından türetilebilecek hiçbir sayı yoktur;
+  kalem yalnız insan beyanıyla kapanır.
 
 **Kurulum süreçleri ve takvim.** Kalan işler **donanım ve insan** işleridir ve
-takvimlidir: 5 Eylül montaj ve kablolama günü (kutu ilk kez açılacak), 6 Eylül ilk
-hover, 7–16 Eylül uçuş provaları ve tam prova ×3, 17 Eylül **sürüm dondurma**
-(bundan sonra kod değişmez), 18 Eylül "kesin hazır" tutanağı, 21 Eylül FDR teslimi
-ve Adıyaman provası, 30 Eylül – 3 Ekim resmî görev test uçuşu. Kamera gerçek görüş
-açısı, Nano'da kare hızı ve gerçek telsiz gidiş-dönüş süresi **o günlerde ilk kez
-ölçülecektir**; bu rapor onları bugün ölçülmüş gibi göstermez.
+takvimlidir ve **gerçekleşen / planlanan ayrımıyla** yazılır (13 Eylül 2026 durumu):
+**Gerçekleşen —** 5 Eylül montaj ve kablolama günü (kutu ilk kez açıldı; Jetson **Orin Nano
+Developer Kit 4 GB**, ESC **Skywalker 60A V2**, **PM06** — D-426 / D-431) · 6 Eylül ilk
+pervaneli denemeler: **üç devrilme**; tlog'a göre uçuş kontrolcüsü doğru çalıştı, **ön itki
+yetmedi**, **M1 motoru hasar gördü** (D-429) · 6 Eylül Jetson yığını kartta kuruldu, genel kapı
+15/15 · 15/15 ve FPS kapısı **GEÇTİ** (D-431) · **12 Eylül atölye günü:** A1/A3/A4/A5 **GEÇTİ**,
+A2 **KISMİ**, **A12 askı ÇOK BAŞARILI** (GUIDED, 3 m, 15 s, kodla LAND) — kanıt sınıfı BEYAN ·
+12 Eylül İKA iz genişliği **459,5 mm ÖLÇÜLDÜ** (D-472) · **13 Eylül: gerçek SiK hattı ilk kez
+ölçüldü ve DÜŞTÜ** (RTT p95 265,2 / 229,6 ms, kayıp %0 — D-476).
+**Planlanan (D-471, kullanıcı kararı 12 Eylül — önceki takvim GEÇERSİZ):** **13 Eylül sürüm mührü**
+(17 Eylül'den öne çekildi, T246) · **14 Eylül 2026 FDR teslimi** (21 Eylül değil) · **21 Eylül 2026
+uçuş — kesin tarih** · 30 Eylül – 3 Ekim resmî görev test uçuşu penceresi (şartname).
+**Uçuş öncesi kapanması zorunlu kalemler:** M1 motorunun değişimi, `BATT_CAPACITY` 3300 → 6000 ve
+`BATT_CRT_VOLT` tutarlılığının **kart dökümüyle doğrulanması** (T258), AltHold'da 30 s askı ile
+`MOT_THST_HOVER` öğrenmesi (T261), FENCE tepkisinin sahada tetiklenmesi, SiK RTT'nin eşiğe
+çekilmesi (T263 Air Speed → T264 ECC → T265). Üç "ilk kez ölçülecek" kalemin **ikisi kapandı, biri açık kaldı** — cümle bugün üçe bölünür:
+**(a) Görev bilgisayarında kare hızı ÖLÇÜLDÜ** (6 Eylül 2026, Jetson Orin Nano Developer Kit 4 GB,
+120 örnek): pt **p50 1,35 / p95 1,06 FPS**, TensorRT engine **1,58 / 1,33 FPS**; eşik 0,61 FPS →
+**GEÇTİ** (`results/jetson_20260906/jetson_fps_20260906_orin_nano/ozet.json`, `scripts/jetson_fps.py`,
+D-431; `torch.cuda.is_available()` **True**, `cuda_adi: Orin`).
+**(b) Kamera gerçek görüş açısı ÖLÇÜLEMEDİ** — kamera 13 Eylül itibariyle elde değildir, A9 adımı
+12 Eylül'de yapılamadı. Bugünkü değer **HESAP**'tır: **FOV_yatay = 55,3°** — IMX477 etkin sensör
+genişliği 6,287 mm (raspberrypi.com kamera belgesi), lens 6 mm → 2 · atan(6,287 / 12)
+(`ATOLYE_TEST_GUNU_20260912.md:154`); sensör kipi kırparsa **daha dar** çıkar. Planlanan ölçüm:
+**A9, 21 Eylül 2026**.
+**(c) Gerçek telsiz gidiş-dönüş süresi ÖLÇÜLDÜ — ve DÜŞTÜ** (13 Eylül 2026, iki SiK telsiz, 2–5 m,
+COM7 / 57 600 baud, `scripts/sik_rf_olc.py`, n = 200 + 200): **RTT p95 265,2 ms** (IKA_GO kadansı
+0,25 s) ve **229,6 ms** (paraşüt kadansı 0,20 s); **kayıp %0** (400/400 ACK); veri hızı
+318,8–350,5 B/s. Ön kayıtlı eşik **p95 < 0,20 s** (§6.5.1 A2) ve kolun kendi tekrar aralığı —
+**ikisi de aşıldı** → **DÜŞTÜ** (`results/atolye_20260912/A6_sik_ikago.json`, `A6_sik_parasut.json`;
+D-476). Eşik **gevşetilmedi**; düzeltme sırası T263 → T264 → T265. Daha önce bu satırda duran
+~~RTT ≈ 112–157 ms (HESAP)~~ ölçümle çürütülmüştür (hesap SiK TDM çerçeve payını hariç tutuyordu).
+**Menzil (A7) hâlâ ÖLÇÜLEMEDİ.**
+Bu rapor üçünü de bugün ölçülmüş gibi göstermez: (a) ve (c) **ÖLÇÜM**dür — (c) geçmedi ve öyle
+yazıldı —, (b) **HESAP** etiketiyle durur.
 
 ### Y-1-M10 — Görev gereksinimlerini karşılama düzeyi analizi, tasarım doğrulama süreci özeti ve teknik olgunluk kanıtı
 
@@ -396,7 +615,7 @@ açısı, Nano'da kare hızı ve gerçek telsiz gidiş-dönüş süresi **o gün
 | ne | ölçülen | çerçeve |
 |---|---|---|
 | Genel kapı (`test_rota_sentetik.py`) — iki kol | **15/15** tanısal · **15/15** üretim rotası · **15/15** yayınlanan şerit | 15 belirlenimci arena sahnesi, 3 Eylül 2026 |
-| Tam test süiti | **1896 test OK** (3 atlandı, 390,5 s) | 3 Eylül 2026 |
+| Tam test süiti | ~~1896 test OK (3 atlandı, 390,5 s)~~ → **13 Eylül 2026'da yeniden koşuldu: 2925 test · 603,2 s · 20 BAŞARISIZ · 12 atlandı → SÜİT YEŞİL DEĞİL** (ham çıktı `results/tam_suit_20260913/tam_suit.txt:583`; düşen 20 testin kök nedeni ve tam dökümü aşağıdaki uyarı kutusunda) | 13 Eylül 2026, `-m unittest discover -s tests -q` |
 | Kabul kapıları K0–K6 (sentetik arena, n=260, **terfi anı 26 Ağustos**) | **7/7 GEÇTİ** — rota üretilen kare 255/260, bariyer kesişimi 0, yanlış güzergâh 2,75 | sentetik |
 | Kabul kapıları **K0–K8 + K5A**, üretim kipinde (n=260, **1 Eylül**) | **10/10 GEÇTİ** — K1 256/260, K2 6/256, K3 0/256, K4 2/256, K5/K5A 0 px, K6 2/256, K7 84/85 | sentetik |
 | K7 yayınlanan şerit doğruluğu | **84/85 (%98,8)** | üretim kipinde kabul koşusu |
