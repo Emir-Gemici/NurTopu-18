@@ -31275,3 +31275,46 @@ uyduruma değil), MuJoCo eşikleri değişmedi.
 metni/PDF ve QA kanıtı.
 
 **Genel kapı:** dokunulmadı.
+
+
+---
+
+### D-484 — FDR_YZLM_002H: kullanıcının sayfa-sayfa görsel denetimi 3 gerçek dizgi hatası buldu, düzeltildi
+
+**Yazan:** Claude · **Tetikleyen:** kullanıcının "her bir sayfaya görsel doğrulama
+istiyorum" talebi — D-483'te ben yalnız birkaç sayfayı örneklemiştim, yetersizdi.
+
+**Bulgu 1 (KRİTİK) — sayfa 2 okunamaz hâldeydi.** `Architecture` (mimari kutu
+diyagramı) flowable'ı `Chain`/`Chart`'ın aksine kendi `__init__`'ini tanımlamıyordu;
+`Flowable.__init__` miras yoluyla `width`/`height`'i 0'a çekiyor, `wrap()` sıfır
+alan raporluyordu — reportlab akışta yer ayırmıyor ama `draw()` yine de tam
+boyutlu çiziyordu. Sonuç: diyagram, başlık ve paragrafın **üstüne biniyordu**
+(sayfa görsel olarak bozuktu, TASNİF DIŞI ibaresi bile kutunun içine düşmüştü).
+Düzeltme: `Architecture.__init__` eklendi (`Flowable.__init__(self)` sonrası
+`self.width`/`self.height` instance düzeyinde set edildi).
+
+**Bulgu 2 — 8 yerde çift bölüm numarası.** 3.3.1, 3.3.3 (×2), 3.3.4.1 (×2),
+3.3.4.2 (×3), 3.3.4.3 (×2) — art arda gelen farklı konulu sayfalar aynı alt
+numarayı taşıyordu (D-483'te yalnız "6" ikilisi fark edilmişti, kapsamlı
+tarama yapılmamıştı). Bazı şekil/tablo başlıklarında gömülü doğru numara
+zaten vardı (ör. "Şekil 3.3.3.2" sayfasının başlığı hâlâ "3.3.3" diyordu) —
+bunlar rehber alınarak tüm 3.3.1–3.3.4.8 sıralaması ve Kaynaklar'daki [11]
+çapraz referansı tutarlı hale getirildi.
+
+**Bulgu 3 — atıf biçimi.** Kullanıcı: gövde metnindeki `[n]` işaretleri normal
+satır içi değil, küçük üst simge ve Kaynaklar'a bağlantılı olmalıydı. `<super>`
++ dahili `<a href="#refN">`/`<a name="refN">` eklendi; çoklu atıflar (`[3,7]`)
+ayrı üst simgelere bölündü.
+
+**Doğrulama:** 18 sayfanın TAMAMI 120 DPI'da render edilip tek tek görsel
+olarak incelendi (önceki tur yalnız örneklemişti). Her sayfa temiz.
+
+**Belge ID:** 001H → 002H (kullanıcının ayırdığı slot dolduruldu; `git mv`
+ile taşındı, eski dosya kaybolmadı).
+
+**Ders (kendi kendine not):** İlk denetimde (D-483) "birkaç sayfaya bakıp
+kalanına güven" yaklaşımı yanlıştı — reportlab gibi programatik dizgi
+araçlarında hata TEK bir flowable'da olup görünüşte ilgisiz sayfaları
+etkilemez; tam sayfa taraması gerekiyordu, kullanıcı haklı olarak durdurdu.
+
+**Genel kapı:** dokunulmadı.
