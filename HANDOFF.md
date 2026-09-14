@@ -1,5 +1,44 @@
 # NAVITAS — DEVİR PROTOKOLÜ
 
+## Devir 2026-09-14 (gece/sabah) · FDR_YZLM_003H teslim edildi + durum netleştirmesi (Claude)
+
+**Bugün tamamlanan (özet, ayrıntı D-477…D-484):**
+- Gazebo'da İHA/İKA/mancınık CAD paketleri gerçek Gazebo11'de (podman) render edildi.
+- İKA'nın URDF kütle/atalet kusuru **KESİN KÖK NEDENİYLE ÇÖZÜLDÜ** (D-481): SolidWorks
+  `Montaj6v2v20` montajında elle girilmiş 9308 g kütle geçersiz kılması, dışa aktarımda
+  HER bağa (gövde+4 teker) kopyalanmış. Düzeltildi: gövde 6,907 kg + 4×0,1632 kg teker
+  = 7,5598 kg (gerçek tartımla eşleşiyor). **Bu iş bitti, tekrar açılmasına gerek yok.**
+  Hâlâ açık olan İKA konuları FARKLI: T239 (iz genişliği/teker çapı fiziksel ölçümü),
+  T262 (montajın CoM referans noktası — Z=1019mm ama zarf 310mm, CAD erişimi gerekir).
+- Mesh path uyuşmazlığı (T261) düzeltildi (D-479).
+- FDR yazılım PDF'i (`FDR/pdf/FDR_YZLM_003H.pdf`) DDR biçimiyle yeniden yazıldı, 3 tur
+  görsel denetimden geçti (D-483, D-484): kutu-diyagram/metin çakışması, 8 yerde çift
+  bölüm numarası, atıf biçimi (üst simge+link) düzeltildi. **ID kuralı hatırlatma:**
+  her içerik değişikliğinde belge ID'si +1 artar (001→002→003), önceki numaranın
+  üzerine yazılmaz — 002H'nin üzerine yazma hatası yapılmış, 003H'ye ayrılarak
+  düzeltilmiştir; bundan sonraki her revizyon da yeni numara alacak.
+- Gazebo video kaydı denemesi (rv38/rv39) kullanıcı kararıyla **bilerek bırakıldı** —
+  FDR'nin puanlanan gereksinimini etkilemiyor (o MuJoCo'dan geliyor, bkz [[gazebo-model-durumu-13-eylul]]).
+
+**MuJoCo notu (tekrar sorulmasın diye):** MuJoCo, FDR'nin "3B CAD ile görev simülasyonu"
+gereksinimini (Y-3.3.3) karşılayan fizik motorudur — Gazebo o gün (10 Eylül) bu
+makinede çalışmadığı için tercih edilmiş. 105 koşum, başarı grafikleri, video hep
+oradan gelir; Gazebo (bu hafta eklenen CAD paketleri) ayrı ve tamamlayıcı bir iştir.
+
+**Kalan işler (öncelik sırasıyla):**
+1. **T259 (KRİTİK — TIKAYICI, teslim bugün 17.00):** Sunum içeriği hâlâ yazılmadı.
+2. **`FDR/TODO_20260914.md` adım 3:** v36 model dosyası + 10 Eylül özgün MP4 konumu
+   hâlâ **BEKLENİYOR** (kullanıcıda da yok).
+3. **`FDR/TODO_20260914.md` adım 4:** Eksik mühendislik/saha girdileri (kablaj hesabı,
+   RF menzil/gecikme, üretim kayıtları, gerçekleşen bütçe) — kaynak veri bekliyor.
+4. **T222 (İNSAN — Yunus):** MuJoCo görev videosunu YouTube/Drive'a yükleyip linki bildirmek.
+5. **T239 (İNSAN+ekip):** İKA iz genişliği + teker çapı fiziksel ölçümü.
+6. **T262 (İNSAN+CAD):** İKA montajının CoM referans noktası SolidWorks'te düzeltilmeli.
+7. **İstenmiş, henüz yapılmamış:** repo/GitHub rehber notu (2,2 GB repo boyutu,
+   "nerede ne yapmak istersem nasıl yaparım" — kullanıcı istedi, sıraya alındı).
+
+---
+
 ## Devir 2026-09-14 · FDR adım 1–2 hazır (T263)
 
 Kullanıcı rapor eksiklerini TODO ile sırayla gidermeyi istedi. Çalışma listesi
