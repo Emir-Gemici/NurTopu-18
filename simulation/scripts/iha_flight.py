@@ -6,11 +6,10 @@ Navitas — İHA Uçuş Animasyonu
 İHA statik model; bu script ~/model/modify topic'i aracılığıyla pose'unu
 güncelleyerek uçuş simüle eder. ROS gerektirmez.
 
-Uçuş planı:
-  Fırlatma Bölgesi (-105, 0, 1.5) → tırmanış → seyir (z=20m) → alçalış → İniş Bölgesi (85, 0, 0)
+Tüm İHA uçuş segmentleri tek sabit hızla çalışır: 18.65 m/s.
 
 Kullanım:
-  python3 scripts/iha_flight.py [--fps 20] [--speed 1.0]
+  python3 scripts/iha_flight.py [--fps 20]
 """
 
 import subprocess
@@ -24,6 +23,8 @@ for _akim in (sys.stdout, sys.stderr):
         _akim.reconfigure(encoding="utf-8", errors="replace")
     except (AttributeError, OSError):
         pass
+
+IHA_FLIGHT_SPEED = 18.65  # m/s — tüm sistemde tek İHA uçuş hızı
 
 # Uçuş waypoint'leri: (x, y, z, yaw_derece, faz_adı)
 FLIGHT_PATH = [
@@ -76,27 +77,12 @@ def lerp_angle(a, b, t):
     return a + diff * t
 
 
-def fly(fps: float = 20.0, speed_mult: float = 1.0, verbose: bool = True):
-    """
-    FLIGHT_PATH boyunca İHA'yı hareket ettir.
-    speed_mult: 1.0 = gerçek zamanlı, 2.0 = 2x hızlı
-    """
+def fly(fps: float = 20.0, verbose: bool = True):
+    """FLIGHT_PATH boyunca İHA'yı sabit 18.65 m/s hızla hareket ettir."""
     dt = 1.0 / fps
 
-    # Her segment arasındaki 3D mesafeye göre süreyi belirle
-    # Yaklaşık gerçekçi hız: rampa→kalkış kısa, seyir hızlı
-    SEGMENT_SPEEDS = {   # m/s, her faz için
-        "rampa":     0.0,   # sadece başlangıç noktası
-        "kalkış":   12.0,
-        "tırmanış": 20.0,
-        "seyir-başı": 25.0,
-        "seyir-sonu": 25.0,
-        "alçalış":  18.0,
-        "yaklaşma": 12.0,
-        "iniş":      0.0,
-    }
-
     print("\n[iha_flight] ══ İHA UÇUŞU BAŞLIYOR ══")
+    print(f"[iha_flight] Sabit hız: {IHA_FLIGHT_SPEED:.2f} m/s")
     print(f"[iha_flight] Rota: {FLIGHT_PATH[0][4]} → {FLIGHT_PATH[-1][4]}")
 
     set_pose(*FLIGHT_PATH[0][:3], math.radians(FLIGHT_PATH[0][3]))
@@ -107,20 +93,13 @@ def fly(fps: float = 20.0, speed_mult: float = 1.0, verbose: bool = True):
         x1, y1, z1, yaw1_deg, faz1 = FLIGHT_PATH[seg_i + 1]
 
         seg_dist = math.sqrt((x1-x0)**2 + (y1-y0)**2 + (z1-z0)**2)
-        seg_spd  = SEGMENT_SPEEDS.get(faz0, 20.0) * speed_mult
-        if seg_spd < 0.1:
-            seg_spd = 20.0  # varsayılan
-        seg_dur  = seg_dist / seg_spd
+        seg_dur  = seg_dist / IHA_FLIGHT_SPEED
         steps    = max(1, int(seg_dur * fps))
 
-        yaw0 = math.radians(yaw0_deg)
-        yaw1 = math.radians(yaw1_deg)
-
-        # Yaw: hedefe bakan yön
         flight_yaw = math.atan2(y1 - y0, x1 - x0)
 
         print(f"[iha_flight] Segment {seg_i+1}: {faz0} → {faz1} "
-              f"({seg_dist:.0f}m, {seg_dur:.1f}s, {steps} adım)")
+              f"({seg_dist:.0f}m, {IHA_FLIGHT_SPEED:.2f} m/s, {seg_dur:.1f}s, {steps} adım)")
 
         for step in range(steps + 1):
             t = step / steps
@@ -132,7 +111,6 @@ def fly(fps: float = 20.0, speed_mult: float = 1.0, verbose: bool = True):
                 print(f"[iha_flight]   ({cx:.1f}, {cy:.1f}, {cz:.1f})")
             time.sleep(dt)
 
-    # Son konuma kilitle
     x_f, y_f, z_f, yaw_f_deg, _ = FLIGHT_PATH[-1]
     set_pose(x_f, y_f, z_f, math.radians(yaw_f_deg))
     print(f"\n[iha_flight] ══ İHA İNİŞ YAPTI: ({x_f}, {y_f}) ══")
@@ -141,8 +119,7 @@ def fly(fps: float = 20.0, speed_mult: float = 1.0, verbose: bool = True):
 
 if __name__ == "__main__":
     import argparse
-    p = argparse.ArgumentParser(description="İHA uçuş animasyonu")
+    p = argparse.ArgumentParser(description="İHA uçuş animasyonu — sabit 18.65 m/s")
     p.add_argument("--fps", type=float, default=20.0)
-    p.add_argument("--speed", type=float, default=1.0)
     a = p.parse_args()
-    fly(fps=a.fps, speed_mult=a.speed)
+    fly(fps=a.fps)
