@@ -191,7 +191,7 @@ def ika_govdesi(x: float, y: float, yaw_rad: float) -> str:
     for ad, sx, sy in (("on_sol", hx, hy), ("arka_sol", -hx, hy),
                        ("on_sag", hx, -hy), ("arka_sag", -hx, -hy)):
         tekerler.append(
-            f'      <body name="teker_{ad}" pos="{sx:.3f} {sy:.3f} 0">\n'
+            f'      <body name="teker_{ad}" pos="{sx:.3f} {sy!r} 0">\n'
             f'        <joint name="j_{ad}" type="hinge" axis="0 1 0" damping="0.05" '
             f'armature="{IKA_TEKER_ARMATURE:.4f}"/>\n'
             f'        <geom name="g_teker_{ad}" type="cylinder" size="{r:.4f} {hw:.3f}" '
