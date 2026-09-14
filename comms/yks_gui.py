@@ -36,6 +36,7 @@ import tkinter as tk
 import uuid
 from pathlib import Path
 from tkinter import font as tkfont
+from rota_inceleme import RotaInceleme, rota_plani, harita_ciz as rota_detay_haritasi
 
 from link import UDPLink, SerialLink
 from ika_receiver import IkaReceiver
@@ -91,7 +92,7 @@ MAVI    = "#4aa3df"
 # T80: CLI görünüm adları ↔ iç görünüm adları. İç adlar ("harita"/"algi")
 # butonlara ve V kısayoluna bağlıdır; CLI hakeme/tanıtıma bakar. Eşleme TEK
 # YERDE durur ki iki taraf ayrışmasın (madde 16).
-GORUNUM_SECENEKLERI = {"saha": "harita", "canli": "algi", "kamera": "kamera"}
+GORUNUM_SECENEKLERI = {"saha": "harita", "canli": "algi", "kamera": "kamera", "rota": "rota"}
 
 ARENA_M = 50.0        # HTAB 50×50 m (şartname)
 OLCEK = 1.0           # main() ekran DPI'sine göre ayarlar (yüksek DPI okunurluk)
@@ -789,8 +790,9 @@ class YksArayuz:
     def __init__(
             self, kok, link, otomatik_onay=False, demo=False, ika_peer=None,
             iha_peer=None, kamera_url=None, hakem_log_yolu=None,
-            oturum_kunyesi=None, kamera_etiket=""):
+            oturum_kunyesi=None, kamera_etiket="", tek_rota=False):
         self.kok = kok
+        self.tek_rota = bool(tek_rota)
         self.link = link
         self.reader = FrameReader()
         self.gelen = queue.Queue()
@@ -1027,6 +1029,9 @@ class YksArayuz:
         sol = self._panel(govde, "SAHA HARİTASI — HTAB 50×50 m   |   "
                                  f"CANLI ALGI — {_m} (GERÇEK çıkarım)")
         sol.pack(side="left", fill="both", expand=True, padx=(0, 8))
+        if self.tek_rota:
+            sol.baslik_etiketi.config(text="ALINAN ROTA — HAKEM İNCELEMESİ / METRE")
+            sol.pack_propagate(False)
 
         anahtar = tk.Frame(sol, bg=PANEL)
         anahtar.pack(fill="x", padx=10, pady=(4, 0))
@@ -1046,6 +1051,16 @@ class YksArayuz:
             fg=METIN, bg="#232e3a", relief="flat", padx=8, pady=3,
             command=lambda: self.gorunum("kamera"))
         self.btn_gor_kamera.pack(side="left", padx=(6, 0))
+        self.btn_gor_rota = tk.Button(
+            anahtar, text="Rota / hareket planı", font=self.f_kucuk,
+            fg=METIN, bg="#232e3a", relief="flat", padx=8, pady=3,
+            command=lambda: self.gorunum("rota"))
+        self.btn_gor_rota.pack(side="left", padx=(6, 0))
+        if self.tek_rota:
+            self.btn_gor_harita.config(text="Rota haritası")
+            self.btn_gor_algi.config(text="Yerel algı")
+            self.btn_gor_kamera.config(text="Video / rota")
+        self.rota_paneli = RotaInceleme(sol)
 
         self.harita = tk.Canvas(sol, width=S(480), height=S(420), bg="#121920",
                                 highlightthickness=0)
@@ -1086,6 +1101,8 @@ class YksArayuz:
         # Video karesinin İSTEDİĞİ boyut gövdeye yayılmaz: aksi hâlde geniş
         # kare sol paneli büyütür ve sağdaki onay panelini daraltırdı.
         kamera_govde.pack_propagate(False)
+        self.videosuz_rota = RotaInceleme(kamera_govde)
+        self._videosuz_rota_acik = False
         self.mini_harita_cerceve = tk.Frame(kamera_govde, bg=PANEL)
         self.mini_harita_cerceve.pack(side="right", fill="y", padx=(0, 10),
                                       pady=(4, 4))
@@ -1116,10 +1133,11 @@ class YksArayuz:
         self.gorunum_adi = "harita"
 
         # Acil durum senaryo tatbikatı (yalnız --demo modunda etkin)
-        tk.Label(sol, text="ACİL DURUM SENARYOLARI — arıza emniyet tatbikatı "
+        senaryo_baslik = tk.Label(sol, text="ACİL DURUM SENARYOLARI — arıza emniyet tatbikatı "
                            "(DDR B.3.3.1 tablosu; simülasyon)",
                  font=self.f_kucuk, fg=SOLUK, bg=PANEL, anchor="w",
-                 wraplength=S(660), justify="left").pack(fill="x", padx=10)
+                 wraplength=S(660), justify="left")
+        senaryo_baslik.pack(fill="x", padx=10)
         btnf = tk.Frame(sol, bg=PANEL)
         btnf.pack(fill="x", padx=10, pady=(2, 10))
         for i, (ad, kod) in enumerate((("F1 RC kaybı", "rc"), ("F2 YKS kaybı", "yks"),
@@ -1134,12 +1152,13 @@ class YksArayuz:
 
         # Demo / SS kontrolleri ("hile tuşları") — onay akışını yeniden izlemek
         # ve ekran görüntüsü sahnelemek için
-        tk.Label(sol, text="DEMO / SS KONTROLLERİ — kısayollar: F1–F6 senaryo · "
+        demo_baslik = tk.Label(sol, text="DEMO / SS KONTROLLERİ — kısayollar: F1–F6 senaryo · "
                            "N yeni tespit · R onayı sıfırla · A arm · V harita/algı · "
                            "C RAW kamera · "
                            "←/→ algı görüntüsü · K kaynak",
                  font=self.f_kucuk, fg=SOLUK, bg=PANEL, anchor="w",
-                 wraplength=S(660), justify="left").pack(fill="x", padx=10)
+                 wraplength=S(660), justify="left")
+        demo_baslik.pack(fill="x", padx=10)
         dkf = tk.Frame(sol, bg=PANEL)
         dkf.pack(fill="x", padx=10, pady=(2, 10))
         for ad, kom in (("Yeni tespit üret (N)", self.yeni_tespit),
@@ -1149,6 +1168,10 @@ class YksArayuz:
                       padx=7, pady=3,
                       state=("normal" if self.demo else "disabled"),
                       command=kom).pack(side="left", padx=(0, 6))
+
+        if self.tek_rota and not self.demo:
+            for kontrol in (senaryo_baslik, btnf, demo_baslik, dkf):
+                kontrol.pack_forget()
 
         sag = tk.Frame(govde, bg=BG, width=S(440))
         sag.pack(side="left", fill="y")
@@ -1301,6 +1324,9 @@ class YksArayuz:
             satir3, text="ACİL UÇUŞ KOMUTU: — · RC pilotu fiziksel yedektir",
             font=self.f_orta, fg=SOLUK, bg=PANEL)
         self.lbl_acil.pack(side="left", padx=10)
+        if self.tek_rota:
+            alt.pack_configure(before=govde)
+            gorev.pack_configure(before=govde)
 
         # kısayollar ("hile tuşları")
         for i, kod in enumerate(("rc", "yks", "ika", "bat", "gnss", "algi"), 1):
@@ -1386,6 +1412,11 @@ class YksArayuz:
         if p is not None:
             p.baslik_etiketi.config(text=self.KUTU_BASLIK[kaynak])
         self.lbl_karar.config(text=d["karar"], fg=d["renk"])
+        if (getattr(self, "tek_rota", False) and kaynak == "protokol"
+                and getattr(self, "rota", None) and not getattr(self, "rota_yok", None)
+                and d["karar"] == f"{self.rota['road']} · {self.rota['label'].upper()}"):
+            self.lbl_karar.config(text="TEK ROTA" if self._tek_rota_gecerli() else "GEOMETRİ YOK",
+                                  fg=d["renk"] if self._tek_rota_gecerli() else KIRMIZI)
         self.lbl_detay.config(text=d["detay"])
         self._guven_ciz(d["guven"] if d["guven"] is not None else 0.0)
 
@@ -1564,6 +1595,10 @@ class YksArayuz:
                 self._harita_ciz(mini)
             tuval = self.harita
         c = tuval
+        if getattr(self, "tek_rota", False):
+            plan, durum, renk = self._tek_rota_harita_verisi()
+            rota_detay_haritasi(c, plan, durum=durum, renk=renk)
+            return
         # Inset (İHA-UB genel saha) yalnız ana haritada çizilir.
         inset_var = c is self.harita
         c.delete("all")
@@ -1899,6 +1934,12 @@ class YksArayuz:
                 return
             self._dugum_adresini_ogren("iha", adr)
             yeni = (self.rota is None) or (m["seq"] != self.rota["seq"])
+            if not yeni and getattr(self, "tek_rota", False):
+                yeni = (m.get("ref_xy") != self.rota.get("ref_xy")
+                        or m.get("waypoints") != self.rota.get("waypoints"))
+                if yeni:
+                    self.ika_rota_ack.pop(m["seq"], None)
+                    self._erken_ika_rota_ack.pop(m["seq"], None)
             self.rota, self.rota_adr = m, adr
             # T169 · §6.2: her KABUL EDILEN cerceve tespiti TAZELER — tekrar
             # gonderim de canlilik kanitidir. Bayatlik `_durum_tazele`de olculur.
@@ -1927,8 +1968,11 @@ class YksArayuz:
                                 road=m.get("road"), label=m.get("label"),
                                 conf=m.get("conf"),
                                 waypoint=len(m.get("waypoints") or []),
-                                ankor=not bool(ankor_uyarisi))
-                self._logla(f"OPEN_ROUTE  yol={m['road']}({m['label']}) "
+                                ankor=not bool(ankor_uyarisi),
+                                **self._rota_kanit_geometrisi(m))
+                rota_etiketi = ("tek rota" if getattr(self, "tek_rota", False)
+                                else f"yol={m['road']}({m['label']})")
+                self._logla(f"OPEN_ROUTE  {rota_etiketi} "
                             f"güven={m['conf']} seq={m['seq']} wp={len(m['waypoints'])}",
                             "yesil")
                 if self.t_iha1 is not None:
@@ -2152,6 +2196,7 @@ class YksArayuz:
                     self._logla(f"⚠ ALAN İHLALİ: {_ihlal[1]} — uçuş başarısız "
                                 "sayılır (§6.4)", "sari")
             self.sayac[MESAJ_HEARTBEAT] += 1
+        self._rota_panelini_tazele()
 
     def _open_route_guven_reddini_goster(self, m, guven_reddi):
         """Eşik altı OPEN_ROUTE'u hakeme görünür kıl; rota ACK'i ASLA üretme."""
@@ -2213,6 +2258,9 @@ class YksArayuz:
         doğrulanması, (2) İKA'ya aktarımın doğrulanması → ACK ancak 2. adımda."""
         if not self.rota or self.rota_yok or self.onaylandi:
             return
+        if getattr(self, "tek_rota", False) and not self._tek_rota_gecerli():
+            self._onay_dugmesini_ciz(False, "ROTA GEOMETRİSİ YOK — ONAY KAPALI")
+            return
         # KANIT KİLİDİ — düğme durumu TEK savunma değildir (T180 sınıfı):
         # `--otomatik-onay`, klavye kısayolu ve zamanlayıcı bu yolu düğme
         # kapalıyken de çağırır. Kanıt kaydı yazamıyorsa §2.2.3 hakem onayı
@@ -2246,7 +2294,8 @@ class YksArayuz:
             # CONTRACTS §6.8 — §2.2.3 iki aşamalı onayın 1. aşaması.
             self._kanit_yaz("HAKEM_ONAYI_1", seq=self.rota.get("seq"),
                             road=self.rota.get("road"),
-                            conf=self.rota.get("conf"))
+                            conf=self.rota.get("conf"),
+                            **self._rota_kanit_geometrisi(self.rota))
             self._aktarim_onay_dugmesini_kur()
             return
         # K8 fail-closed: İKA'nın bu rota için OPEN_ROUTE ACK kanıtı ekranda
@@ -2292,7 +2341,8 @@ class YksArayuz:
                         ref_tip=rota_ack.get("ref_tip"),
                         fda_kipi=bool(self.fda_kipi), dayanak=dayanak,
                         iha_indi=bool(self.t_iha1 is not None
-                                      or self.iha_landed_seq is not None))
+                                       or self.iha_landed_seq is not None),
+                        **self._rota_kanit_geometrisi(self.rota))
         self._onay_dugmesini_ciz(False, "ONAYLANDI ✓✓", bg=YESIL)
         if not self._kanit_kilidi_var():
             self.lbl_onay.config(
@@ -2648,6 +2698,21 @@ class YksArayuz:
 
     def _rota_analiz(self, m):
         """Rota noktalarını ref, yerel ve birleşik koordinatlarıyla göster."""
+        if getattr(self, "tek_rota", False):
+            try:
+                plan = rota_plani(m)
+                satirlar = ["TEK ROTA · ref + waypoint / metre · GPS değil"]
+                for adim in plan["adimlar"]:
+                    satirlar.append(f"P{adim['sira']:02d} · X={adim['nokta'][0]:+.2f} "
+                                     f"Y={adim['nokta'][1]:+.2f} · {adim['hareket']}")
+                satirlar.append(f"TOPLAM {plan['toplam']:.2f} m · gerçekleşmiş sürüş değil")
+            except (ValueError, TypeError, OverflowError) as exc:
+                satirlar = ["GEÇERLİ ROTA YOK: " + str(exc)]
+            self.rota_metin.config(state="normal")
+            self.rota_metin.delete("1.0", "end")
+            self.rota_metin.insert("end", "\n".join(satirlar))
+            self.rota_metin.config(state="disabled")
+            return
         wps = m.get("waypoints") or []
         satirlar = []
         onceki = (0.0, 0.0)                 # referans noktasına göre yerel
@@ -2966,7 +3031,7 @@ class YksArayuz:
         return model
 
     def gorunum(self, ad):
-        if ad not in ("harita", "algi", "kamera"):
+        if ad not in ("harita", "algi", "kamera", "rota"):
             raise ValueError(f"bilinmeyen görünüm: {ad!r}")
         self.gorunum_adi = ad
         # T81: kutu GÖRÜNÜMÜN kaynağından beslenir — geçişte yeniden çizilir.
@@ -2979,6 +3044,19 @@ class YksArayuz:
         # düğmelerinin altına düşüyordu (T226 öncesinden; ölçüldü, D-448).
         anahtar = getattr(self, "_gorunum_anahtari", None)
         yer = {"after": anahtar} if anahtar is not None else {}
+        if getattr(self, "rota_paneli", None) is not None:
+            self.rota_paneli.pack_forget()
+            self.btn_gor_rota.config(fg=BG if ad == "rota" else METIN,
+                                     bg=YESIL if ad == "rota" else "#232e3a")
+        if ad == "rota":
+            self.harita.pack_forget()
+            self.algi_cerceve.pack_forget()
+            self.kamera_cerceve.pack_forget()
+            self.rota_paneli.pack(fill="both", expand=True, **yer)
+            for dugme in (self.btn_gor_harita, self.btn_gor_algi, self.btn_gor_kamera):
+                dugme.config(fg=METIN, bg="#232e3a")
+            self._rota_panelini_tazele()
+            return
         if ad == "harita":
             self.algi_cerceve.pack_forget()
             self.kamera_cerceve.pack_forget()
@@ -3028,6 +3106,13 @@ class YksArayuz:
             text=(f"{baslik}\n\n{neden}\n\nRota, hakem onayı ve komutlar "
                   "telsiz verisine dayanır; video karar üretmez."),
             wraplength=max(S(160), self._kamera_resim_kutusu(etiket)[0] - S(16)))
+        if getattr(self, "tek_rota", False) and getattr(self, "videosuz_rota", None) is not None:
+            etiket.pack_forget()
+            self.mini_harita_cerceve.pack_forget()
+            if not self._videosuz_rota_acik:
+                self.videosuz_rota.pack(fill="both", expand=True)
+                self._videosuz_rota_acik = True
+            self._rota_panelini_tazele()
 
     def _kamera_tazele(self):
         """LAN kamera snapshot'ını Tk ana döngüsünde sun; ağ I/O'su yapma."""
@@ -3056,6 +3141,12 @@ class YksArayuz:
                     "kare_yasi_s": None, "kaynak": self.kamera_url}
         jpeg = snap.get("jpeg")
         surum = snap.get("surum")
+        if jpeg is not None and getattr(self, "_videosuz_rota_acik", False):
+            self.videosuz_rota.pack_forget()
+            self._videosuz_rota_acik = False
+            self.mini_harita_cerceve.pack(side="right", fill="y", padx=(0, 10), pady=(4, 4))
+            etiket.pack(side="left", padx=10, pady=(4, 4), fill="both", expand=True)
+            self._kamera_surum = -1
         if jpeg is not None and surum != self._kamera_surum:
             try:
                 from PIL import Image, ImageOps, ImageTk
@@ -3096,6 +3187,67 @@ class YksArayuz:
                 getattr(self, "kamera_etiket", "")),
             hata=(str(hata) if hata else None),
             calisiyor=bool(snap.get("calisiyor")))
+
+    def _rota_kanit_geometrisi(self, mesaj):
+        if not getattr(self, "tek_rota", False):
+            return {}
+        try:
+            plan = rota_plani(mesaj)
+        except (ValueError, TypeError, OverflowError):
+            return {"gosterim": "tek_rota", "geometri": "gecersiz"}
+        return {"gosterim": "tek_rota", "rota_sha256": plan["sha256"],
+                "ref_xy": mesaj["ref_xy"], "waypoints": mesaj["waypoints"],
+                "cerceve": "ref_xy + waypoint; GPS degil"}
+
+    def _tek_rota_gecerli(self):
+        try:
+            rota_plani(getattr(self, "rota", None))
+            return True
+        except (ValueError, TypeError, OverflowError):
+            return False
+
+    def _rota_guncelligi(self):
+        simdi = time.monotonic()
+        karar = getattr(self, "karar_yas_rx", None)
+        damgalar = [damga for damga in (getattr(self, "rota_zaman", None),
+                     getattr(self, "son_hb", {}).get("iha")) if damga is not None]
+        if not damgalar or karar is None:
+            return False
+        karar_yasi = karar[0] + simdi - karar[1]
+        hat_yasi = simdi - max(damgalar)
+        return (math.isfinite(karar_yasi) and 0 <= karar_yasi <= YKS_TESPIT_TAZELIK_S
+                and 0 <= hat_yasi <= YKS_TESPIT_TAZELIK_S)
+
+    def _tek_rota_harita_verisi(self):
+        if getattr(self, "rota_yok", None):
+            return None, "ROTA YOK — " + str(self.rota_yok.get("sebep", "Ret alındı")), KIRMIZI
+        try:
+            plan = rota_plani(getattr(self, "rota", None))
+        except (ValueError, TypeError, OverflowError):
+            return None, "GEÇERLİ ROTA VERİSİ BEKLENİYOR", SOLUK
+        if not self._rota_guncelligi():
+            return plan, "ESKİ PLAN / GÜNCELLİK YOK — GPS DEĞİL", SARI
+        return plan, "ALINAN ROTA / METRE — GPS VE YOL SINIRI DEĞİL", MAVI
+
+    def _rota_panelini_tazele(self):
+        paneller = [panel for panel in (getattr(self, "rota_paneli", None),
+                    getattr(self, "videosuz_rota", None)) if panel is not None]
+        if not paneller:
+            return
+        simdi = time.monotonic()
+        rota = getattr(self, "rota", None)
+        damga = getattr(self, "rota_zaman", None)
+        yas = "paket yok" if damga is None else f"paket alımı {max(0, simdi - damga):.1f} s önce"
+        onay = ("Onay: 2/2 (verildiği anın kaydı)" if self.onaylandi else
+                "Onay: 1/2" if self.tespit_onayli else "Onay bekleniyor")
+        aktarim = ("FDA: İKA sürüşü yok" if self.fda_kipi else
+                   "İKA ACK: var" if rota and rota["seq"] in self.ika_rota_ack else "İKA ACK: yok")
+        video = "Video: bağlı değil" if self.kamera_istemci is None or self._kamera_foto is None else "Video: kare var"
+        kaynak = ("DEMO / SENTETİK PAKET" if self.demo else "İHA'DAN ALINAN ROTA") + " · " + yas
+        for panel in paneller:
+            if panel.winfo_manager():
+                panel.guncelle(rota, ret=self.rota_yok, bayat=not self._rota_guncelligi(),
+                               kaynak=kaynak, onay=onay + " · " + aktarim, video=video)
 
     def _kamera_resim_kutusu(self, etiket):
         """Video karesinin sığacağı kutu (T226): etiketin GERÇEK alanı (küçük
@@ -4411,6 +4563,7 @@ class YksArayuz:
         self.lbl_saat.config(text=time.strftime("%H:%M:%S"))
         simdi = time.time()
         self._tespiti_yaslandir(simdi)
+        self._rota_panelini_tazele()
         _mono = time.monotonic()               # D-384: damgalar monotonik
         tel_durum = {}                         # CONTRACTS §6.8 kanıt özeti
         tel_yas = {}
@@ -4571,6 +4724,8 @@ class YksArayuz:
         Kilitliyken `lbl_onay` da yeniden yazılır: afişi bir kez basıp
         sonra başka metinle ezmek, kilidi ekrandan SİLERDİ.
         """
+        if aktif and getattr(self, "tek_rota", False) and not self._tek_rota_gecerli():
+            aktif, metin = False, "ROTA GEOMETRİSİ YOK — ONAY KAPALI"
         dugme = getattr(self, "btn_onay", None)
         kilit = self._kanit_kilidi_var()
         if dugme is not None:
@@ -4901,8 +5056,10 @@ def main():
               "kronometresi TÜM operasyon için 10 dk gösterir (kalkış + "
               "tespit + aktarım + iniş). Verilmezse §6.2 yarışma günü "
               "bütçesi (15 dk) kullanılır"))
+    ap.add_argument("--tek-rota", action="store_true",
+                    help="Şerit şeması yerine gelen waypoint geometrisi ve hareket planı; FDA'da otomatik açılır")
     ap.add_argument("--gorunum", choices=tuple(GORUNUM_SECENEKLERI),
-                    help="açılış görünümü (varsayılan: saha)")
+                    help="açılış görünümü (varsayılan: saha; --tek-rota/--fda ile rota)")
     args = ap.parse_args()
 
     try:
@@ -4955,7 +5112,7 @@ def main():
         baud=args.baud,
         kamera_url=args.kamera_url,
         algi_kaynagi=args.kaynak or YksArayuz.ALGI_VARSAYILAN_KAYNAK,
-        gorunum=args.gorunum or "saha",
+        gorunum=args.gorunum or ("rota" if args.tek_rota or args.fda else "saha"),
         baslatma_argumanlari=sys.argv[1:],
     )
 
@@ -4969,7 +5126,7 @@ def main():
             iha_peer=iha_peer, kamera_url=args.kamera_url,
             hakem_log_yolu=hakem_log_yolu,
             oturum_kunyesi=oturum_kunyesi,
-            kamera_etiket=args.kamera_etiket)
+            kamera_etiket=args.kamera_etiket, tek_rota=args.tek_rota or args.fda)
     except Exception:
         link.close()
         kok.destroy()
@@ -5016,6 +5173,9 @@ def main():
     if args.gorunum:
         app.gorunum(GORUNUM_SECENEKLERI[args.gorunum])
         app._logla(f"Açılış görünümü (--gorunum): {args.gorunum}", "mavi")
+    elif args.tek_rota or args.fda:
+        app.gorunum("rota")
+        app._logla("TEK ROTA GÖSTERİMİ: alınan waypoint geometrisi; şerit veya GPS konumu uydurulmaz", "mavi")
 
     if args.senaryo:
         # Senaryolar YALNIZ demo kipinde etkindir (`senaryo()` kendi de

@@ -71,7 +71,7 @@ TEKRAR FIRLATMA / RESET YORDAMI (sartname §6.2 — sure 15 dk'dan yer)
 
 
 def komut_uret(kip, ika=None, yks=None, serial=None, baud=None, iha=None,
-               kamera_url=None, fda=False):
+               kamera_url=None, fda=False, tek_rota=False):
     """Istasyon komutunu TEK yerden uret (runbook bu ciktiyi kopyalar).
 
     `iha` yalniz yks kipinde ve yalniz UDP'de anlamlidir: yks_gui serial
@@ -80,10 +80,14 @@ def komut_uret(kip, ika=None, yks=None, serial=None, baud=None, iha=None,
     """
     if fda and kip != "yks":
         raise ValueError("--fda yalnız YKS kipinde kullanılabilir")
+    if tek_rota and kip != "yks":
+        raise ValueError("--tek-rota yalnız YKS kipinde kullanılabilir")
     if kip == "yks":
         komut = [VENV, str(KOK / "comms" / "yks_gui.py")]
         if fda:
             komut.append("--fda")
+        if tek_rota:
+            komut.append("--tek-rota")
         if serial:
             if iha:
                 raise ValueError(
@@ -198,6 +202,8 @@ def main(argv=None):
                     help="Jetson RAW kamera kökü (ayrı Wi-Fi/LAN; SiK değil)")
     ap.add_argument("--fda", action="store_true",
                     help="21 Eylül çoklu-rotor görev kipi (YKS için)")
+    ap.add_argument("--tek-rota", action="store_true",
+                    help="YKS tek-rota / koordinat / hareket incelemesi; --fda ile kendiliğinden açılır")
     ap.add_argument("--komutlar", action="store_true",
                     help="thazirlik kartini yazdir ve cik")
     ap.add_argument("--reset", action="store_true",
@@ -229,6 +235,8 @@ def main(argv=None):
                  "UDP adresi kabul etmez (komutlar seri hattan gider)")
     if args.fda and args.kip != "yks":
         ap.error("--fda yalnız YKS kipinde kullanılabilir")
+    if args.tek_rota and args.kip != "yks":
+        ap.error("--tek-rota yalnız YKS kipinde kullanılabilir")
     if args.kip == "yks" and not args.serial and not args.iha:
         ap.error("UDP YKS kipinde --iha HOST:PORT zorunlu; eyleyici komutlar "
                  "efemer heartbeat portuna gönderilemez")
@@ -238,7 +246,7 @@ def main(argv=None):
 
     komut = komut_uret(args.kip, ika=args.ika, yks=args.yks,
                        serial=args.serial, baud=args.baud, iha=args.iha,
-                       kamera_url=args.kamera_url, fda=args.fda)
+                       kamera_url=args.kamera_url, fda=args.fda, tek_rota=args.tek_rota)
     cocuk = acilis_olc(komut)
     return cocuk.wait()
 
