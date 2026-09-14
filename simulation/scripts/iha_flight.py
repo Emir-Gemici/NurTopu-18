@@ -17,6 +17,8 @@ import math
 import time
 import sys
 
+from iha_speed import IHA_FLIGHT_SPEED_MPS
+
 # cp1254 konsollarda kutu cizim karakterleri patlamasin (ika_nav ile ayni koruma)
 for _akim in (sys.stdout, sys.stderr):
     try:
@@ -24,7 +26,7 @@ for _akim in (sys.stdout, sys.stderr):
     except (AttributeError, OSError):
         pass
 
-IHA_FLIGHT_SPEED = 18.65  # m/s — tüm sistemde tek İHA uçuş hızı
+IHA_FLIGHT_SPEED = IHA_FLIGHT_SPEED_MPS
 
 # Uçuş waypoint'leri: (x, y, z, yaw_derece, faz_adı)
 FLIGHT_PATH = [
