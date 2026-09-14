@@ -162,13 +162,18 @@ def gt_rota(h: int, lv: str):
     return H["open"], 1.0, [round(ref[0], 2), round(ref[1], 2)], yerel
 
 
-def model_rota(ldir: Path, model, conf: float):
-    """iha_haritala (v36, OBB kapalı) → (road, conf, ref_xy, yerel) ya da (None, det)."""
+def model_rota(ldir: Path, model, conf: float, girdi_dir: Path | None = None):
+    """iha_haritala (v36, OBB kapalı) → (road, conf, ref_xy, yerel) ya da (None, det).
+
+    `girdi_dir` (varsayılan None = bu koşumun kendi taraması): kareler/ + poses.csv + meta.txt
+    başka bir KAYITLI taramadan okunur; çıktılar yine `ldir`'e yazılır ve detection.json
+    `girdi_dir` alanıyla kendini etiketler (iha_haritala T213-A kuralı). Model çıkarımı ve A*
+    YENİDEN koşar — kayıtlı rota kopyalanmaz."""
     import iha_haritala as ih
-    meta = ih._meta_oku(ldir)
+    meta = ih._meta_oku(girdi_dir if girdi_dir is not None else ldir)
     cx, cy = ih._htab_merkez(meta, None)
     det = ih.haritala(ldir, model, cx, cy, conf=conf, kb_xy=ih._meta_xy(meta, "KB_XY"),
-                      hb_xy=ih._meta_xy(meta, "HB_XY"), arac_model=None)
+                      hb_xy=ih._meta_xy(meta, "HB_XY"), arac_model=None, girdi_dir=girdi_dir)
     rj = ldir / "rota.json"
     if rj.is_file():
         try:
@@ -419,7 +424,7 @@ def kos(h: int, lv: str, seed: int, rota_kaynak: str, *, res: int, out: Path, mo
         model_kunye=None, conf: float = 0.15, kare_kaydet: bool = False, fizik_tarama: bool = True,
         bekleme_suresi: float = IKA_BEKLEME_SURESI_S, surus_suresi: float = IKA_SURUS_SURESI_S,
         verbose: bool = False, uretim_besleme: str = "kerteriz", cad_modeller: bool = False,
-        video_bosta_aralik_s=None, video_kaydedici=None) -> dict:
+        video_bosta_aralik_s=None, video_kaydedici=None, model_girdi_dir=None) -> dict:
     import mujoco
     if rota_kaynak not in ROTA_KAYNAKLARI:
         raise ValueError(f"rota_kaynak {rota_kaynak!r} — {ROTA_KAYNAKLARI}")
@@ -447,7 +452,7 @@ def kos(h: int, lv: str, seed: int, rota_kaynak: str, *, res: int, out: Path, mo
     if rota_kaynak == "gt":
         rota = gt_rota(h, lv)
     elif rota_kaynak == "model":
-        rota, det = model_rota(ldir, model, conf)
+        rota, det = model_rota(ldir, model, conf, girdi_dir=model_girdi_dir)
     else:   # uretim: kare-bazlı üretim boru hattı (kendi conf'u = üretim CLI varsayılanı)
         rota, det = uretim_rota(ldir, kdir, model, h, lv, seed, besleme=uretim_besleme,
                                 model_kunye=model_kunye)
@@ -614,6 +619,7 @@ def kos(h: int, lv: str, seed: int, rota_kaynak: str, *, res: int, out: Path, mo
             "mozaik_px", "hb_yaricap_m", "birlestirme")}),
         "uretim_teshis": (det if rota_kaynak == "uretim" else None),
         "model": model_kunye,
+        "model_girdi_dir": (None if model_girdi_dir is None else str(model_girdi_dir)),
         "isaretler_carpismasiz": surucu.isaretler_degisti,
         "kare_kaydet": bool(kare_kaydet), "kare_n_video": (kaydedici.n if kaydedici else 0),
         "kare_n_video_ucus": (kaydedici.n_ucus if kaydedici else 0),

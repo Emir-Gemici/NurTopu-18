@@ -22,17 +22,25 @@ YUZ_GOSTERIM_DERECE = 22.0
 TEKER_GOVDESI = {"sol_on_teker": "teker_on_sol", "sol_arka_teker": "teker_arka_sol",
                  "sag_on_teker": "teker_on_sag", "sag_arka_teker": "teker_arka_sag"}
 # TEMSİLİ tahrik zinciri: IKA_GAZEBO_MODEL CAD paketinde motor / mil / braket parçası YOK.
-# Ölçüler İKA gövde çerçevesinde (orijin = aks yüksekliği, +x ileri, +y sol). CAD STL'den
-# ışınla ölçüldü (14 Eyl): yan ray alt yüzü z = 0,067 (x = ±0,18; y = 0,13 ve 0,145),
-# jant göbek diski teker merkezine göre eksen boyunca +0,026…+0,036 m (r ≤ 12 mm).
-MONTAJ = {"govde_alt_z": 0.067, "sac_m": 0.006, "braket_yari_x": 0.020, "flans_ic_y": 0.120,
-          "bacak_alt_z": -0.030, "motor_r": 0.017, "motor_ic_y": 0.100, "reduktor_r": 0.019,
-          "reduktor_boy": 0.035, "mil_r": 0.004, "mil_gomme": 0.005, "gobek_yuz": 0.026,
-          "gobek_orta": 0.031, "kavrama_r": 0.010, "kavrama_boy": 0.014}
+# Motor: Keskinler KGX38 24 V 200 rpm redüktörlü DC (ekip BOM, 14 Eyl) ≈ Ø38 × 120 mm, 480 g, 4 adet;
+# motorlar gövde altında İÇERİDE y ekseni boyunca durur, mil gövde yanından tekere çıkar.
+# Motor / redüktör bölünmesi (80 + 40 mm), mil Ø8, kavrama ve 6 mm braket sacı TEMSİLİDİR (katalog
+# çizimi yok). Ölçüler İKA gövde çerçevesinde (orijin = aks yüksekliği, +x ileri, +y sol).
+# CAD STL'den ışınla ölçüldü (14 Eyl, braket izi x = ±0,16…0,20, y = ±0,110…0,1495): gövde alt yüzü
+# SOL yanda yan duvar dudağı z = 0,0641 (y = 0,1475…0,1495); SAĞ yanda dudak yok, en alçak yüzey
+# z = 0,0670. Jant göbek diski teker merkezine göre eksen boyunca dışa +0,026…+0,036 m (r ≤ 12 mm).
+KGX38 = {"cap_m": 0.038, "boy_m": 0.120, "kutle_kg": 0.480, "adet": 4}
+MONTAJ = {"govde_alt_z": {"sol": 0.0641, "sag": 0.0670}, "sac_m": 0.006, "braket_yari_x": 0.021,
+          "flans_ic_y": 0.110, "bacak_alt_z": -0.025, "motor_r": 0.018, "motor_boy": 0.080,
+          "reduktor_r": 0.019, "reduktor_boy": 0.040, "lastik_acikligi_m": 0.014,
+          "mil_r": 0.004, "mil_gomme": 0.005, "gobek_yuz": 0.026, "gobek_orta": 0.031,
+          "kavrama_r": 0.010, "kavrama_boy": 0.014}
 MONTAJ_GRUBU = "2"
-MONTAJ_MALZEME = {"montaj_braket": "0.21 0.22 0.24 1", "montaj_motor": "0.055 0.06 0.065 1",
-                  "montaj_mil": "0.33 0.34 0.36 1", "montaj_lastik": "0.075 0.08 0.09 1",
-                  "montaj_jant": cad_modeller.RENKLER["ika"]}
+MONTAJ_MALZEME = {"montaj_braket": "0.20 0.21 0.23 1", "montaj_motor": "0.055 0.06 0.065 1",
+                  "montaj_reduktor": "0.29 0.30 0.32 1", "montaj_mil": "0.36 0.37 0.39 1",
+                  "montaj_lastik": "0.075 0.08 0.09 1", "montaj_jant": cad_modeller.RENKLER["ika"]}
+ZINCIR_BAGLARI = ("govde_alti__flans", "flans__bacak", "bacak__reduktor", "reduktor__motor",
+                  "reduktor__mil", "mil__jant_gobegi", "kavrama__jant_gobegi")
 
 
 def hazirla():
@@ -128,46 +136,69 @@ def _teker_merkezi(manifest, teker):
     return np.mean(np.asarray(lastik["zarf_m"]), axis=0)
 
 
-def montaj_parcalari(manifest, iz_m):
-    """İKA gövde çerçevesinde temsili braket / motor / redüktör; teker gövdesinde mil / kavrama."""
-    base = next(parca for parca in manifest["ika"]["parcalar"] if parca["ad"] == "ika_base_link_0")
-    duvar = float(base["zarf_m"][1][1])
-    olcu = MONTAJ
-    sac, alt_z, yari_y = olcu["sac_m"], olcu["govde_alt_z"], iz_m / 2
-    parcalar = []
-    for teker, govde in TEKER_GOVDESI.items():
-        isaret = 1.0 if teker.startswith("sol") else -1.0
-        teker_x = None
-        for ad, x_isaret in (("on", 1.0), ("arka", -1.0)):
-            if f"_{ad}_" in teker:
-                teker_x = x_isaret
-        parcalar.append({"teker": teker, "govde": govde, "isaret": isaret, "x_isaret": teker_x})
-    sonuc = []
-    for kayit in parcalar:
-        s = kayit["isaret"]
-        teker, govde = kayit["teker"], kayit["govde"]
+def montaj_yerlesimi(manifest, iz_m):
+    """Tahrik zincirinin |y| sınırları (m, gövde çerçevesi, dışa doğru pozitif) — TEK hesap.
 
-        def aralik(ic, dis):
+    Sıra (gövde ekseninden tekere): motor_ic → reduktor_ic → bacak_ic (= redüktör çıkış yüzü) →
+    bacak_dis → [lastik_acikligi_m] → lastik_ic → teker merkezi (= iz / 2)."""
+    parcalar = manifest["ika"]["parcalar"]
+    base = next(parca for parca in parcalar if parca["ad"] == "ika_base_link_0")
+    lastik = next(parca for parca in parcalar if parca.get("malzeme") == "lastik")
+    olcu = MONTAJ
+    if (abs(olcu["motor_boy"] + olcu["reduktor_boy"] - KGX38["boy_m"]) > 1e-9
+            or abs(2 * olcu["reduktor_r"] - KGX38["cap_m"]) > 1e-9):
+        raise ValueError("Motor ölçüleri KGX38 (Ø38 × 120 mm) ile tutarsız")
+    yari_iz = float(iz_m) / 2
+    lastik_yari = (float(lastik["zarf_m"][1][1]) - float(lastik["zarf_m"][0][1])) / 2
+    duvar = float(base["zarf_m"][1][1])
+    lastik_ic = yari_iz - lastik_yari
+    bacak_dis = lastik_ic - olcu["lastik_acikligi_m"]
+    bacak_ic = bacak_dis - olcu["sac_m"]
+    reduktor_ic = bacak_ic - olcu["reduktor_boy"]
+    motor_ic = reduktor_ic - olcu["motor_boy"]
+    if motor_ic <= 0:
+        raise ValueError(f"Sol ve sağ motorlar gövde altında çakışır (motor_ic = {motor_ic:.4f} m)")
+    if not olcu["flans_ic_y"] < duvar < bacak_dis:
+        raise ValueError("Flanş gövde altına dayanmıyor ya da bacak gövde duvarının içinde kalıyor")
+    return {"yari_iz": yari_iz, "duvar": duvar, "lastik_yari": lastik_yari, "lastik_ic": lastik_ic,
+            "bacak_dis": bacak_dis, "bacak_ic": bacak_ic, "reduktor_ic": reduktor_ic, "motor_ic": motor_ic}
+
+
+def montaj_parcalari(manifest, iz_m):
+    """İKA gövde çerçevesinde temsili L-braket / redüktör / motor; teker gövdesinde mil / kavrama.
+
+    Zincir: flanş gövde altına dayanır → bacak aks yüksekliğinin altına iner → redüktör çıkış yüzü
+    bacağın iç yüzüne, motor redüktörün arkasına (gövde altında içeride) → mil redüktöre `mil_gomme`
+    gömülü başlar, bacağı ve lastik iç boşluğunu geçip jant göbeğinin ortasında biter; kavrama
+    göbek yüzüne dayanır. Mil ve kavrama teker gövdesindedir: fizik eklemiyle birlikte döner."""
+    y = montaj_yerlesimi(manifest, iz_m)
+    olcu = MONTAJ
+    sac, bx = olcu["sac_m"], olcu["braket_yari_x"]
+    sonuc = []
+    for teker, govde in TEKER_GOVDESI.items():
+        s = 1.0 if teker.startswith("sol") else -1.0
+        alt_z = olcu["govde_alt_z"]["sol" if s > 0 else "sag"]
+        bacak_ust = alt_z - sac
+
+        def aralik(ic, dis, s=s):
             return s * (ic + dis) / 2, (dis - ic) / 2
 
-        flans_y, flans_yari = aralik(olcu["flans_ic_y"], duvar + sac)
-        bacak_y, bacak_yari = aralik(duvar, duvar + sac)
-        motor_y, motor_yari = aralik(olcu["motor_ic_y"], duvar)
-        red_y, red_yari = aralik(duvar + sac, duvar + sac + olcu["reduktor_boy"])
-        mil_ic = duvar + sac + olcu["reduktor_boy"] - olcu["mil_gomme"] - yari_y
-        mil_y, mil_yari = aralik(mil_ic, olcu["gobek_orta"])
+        flans_y, flans_yari = aralik(olcu["flans_ic_y"], y["bacak_dis"])
+        bacak_y, bacak_yari = aralik(y["bacak_ic"], y["bacak_dis"])
+        red_y, red_yari = aralik(y["reduktor_ic"], y["bacak_ic"])
+        motor_y, motor_yari = aralik(y["motor_ic"], y["reduktor_ic"])
+        mil_y, mil_yari = aralik(y["bacak_ic"] - olcu["mil_gomme"] - y["yari_iz"], olcu["gobek_orta"])
         kav_y, kav_yari = aralik(olcu["gobek_yuz"] - olcu["kavrama_boy"], olcu["gobek_yuz"])
-        bx = olcu["braket_yari_x"]
         sonuc += [
             {"ad": f"montaj_flans_{teker}", "govde": "ika", "teker": teker, "tip": "box", "malzeme": "montaj_braket",
              "pos": ("X", flans_y, alt_z - sac / 2), "size": (bx, flans_yari, sac / 2)},
             {"ad": f"montaj_bacak_{teker}", "govde": "ika", "teker": teker, "tip": "box", "malzeme": "montaj_braket",
-             "pos": ("X", bacak_y, (alt_z + olcu["bacak_alt_z"]) / 2),
-             "size": (bx, bacak_yari, (alt_z - olcu["bacak_alt_z"]) / 2)},
+             "pos": ("X", bacak_y, (bacak_ust + olcu["bacak_alt_z"]) / 2),
+             "size": (bx, bacak_yari, (bacak_ust - olcu["bacak_alt_z"]) / 2)},
+            {"ad": f"montaj_reduktor_{teker}", "govde": "ika", "teker": teker, "tip": "cylinder",
+             "malzeme": "montaj_reduktor", "pos": ("X", red_y, 0.0), "size": (olcu["reduktor_r"], red_yari)},
             {"ad": f"montaj_motor_{teker}", "govde": "ika", "teker": teker, "tip": "cylinder", "malzeme": "montaj_motor",
              "pos": ("X", motor_y, 0.0), "size": (olcu["motor_r"], motor_yari)},
-            {"ad": f"montaj_reduktor_{teker}", "govde": "ika", "teker": teker, "tip": "cylinder", "malzeme": "montaj_braket",
-             "pos": ("X", red_y, 0.0), "size": (olcu["reduktor_r"], red_yari)},
             {"ad": f"montaj_mil_{teker}", "govde": govde, "teker": teker, "tip": "cylinder", "malzeme": "montaj_mil",
              "pos": (0.0, mil_y, 0.0), "size": (olcu["mil_r"], mil_yari)},
             {"ad": f"montaj_kavrama_{teker}", "govde": govde, "teker": teker, "tip": "cylinder", "malzeme": "montaj_motor",
@@ -194,6 +225,12 @@ def montaj_uygula(xml, manifest):
             else:
                 geom.set("rgba", "0 0 0 0")
                 geom.set("group", "5")
+    # cad_modeller.uygula'nın BÖLÜNMEMİŞ İKA STL'leri (cad_mesh/) aynı adla asset'te durur; teker
+    # STL'si gövde kopyası içerir (kaynak 50 846 üçgen). Kaldırılmazsa aşağıdaki "mevcut" denetimi
+    # onları yeniden kullanır ve teker merkezi 226 mm kayar (ÖLÇÜLDÜ 14 Eyl, montaj_olcumu).
+    for mesh in list(asset.findall("mesh")):
+        if mesh.get("name", "").startswith("cad_ika_"):
+            asset.remove(mesh)
     mevcut = {oge.get("name") for oge in asset}
     for ad, renk in MONTAJ_MALZEME.items():
         if ad not in mevcut:
@@ -237,10 +274,14 @@ def _iz_m(ika):
 
 
 def montaj_olcumu(model, durum, manifest):
-    """Derlenmiş modelde montaj kanıtı: teker merkezi ↔ fizik eklemi ve zincir boşlukları (m)."""
+    """Derlenmiş modelde montaj kanıtı: teker merkezi ↔ fizik eklemi ve zincir boşlukları (m).
+
+    Boşluk işareti: + = açıklık, − = iç içe geçme (gömülü mil / göbeğe giren mil). Gövde altı ↔
+    flanş: flanş izinde 9 × 81 düşey ışın (yalnız CAD grubu 1), en küçük değer = temas boşluğu;
+    negatifse gövde flanşa girer (`govde_alti_girisim_mm`)."""
     mujoco.mj_forward(model, durum)
     ika = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, "ika")
-    govde_R, govde_p = durum.xmat[ika].reshape(3, 3), durum.xpos[ika]
+    govde_R, govde_p = durum.xmat[ika].reshape(3, 3).copy(), durum.xpos[ika].copy()
 
     def yerel(nokta):
         return govde_R.T @ (np.asarray(nokta) - govde_p)
@@ -267,8 +308,13 @@ def montaj_olcumu(model, durum, manifest):
         (a0, a1), (b0, b1) = kutu(a), kutu(b)
         return float(np.max(np.maximum(b0 - a1, a0 - b1)))
 
+    def dis_y(ad):
+        k0, k1 = kutu(ad)
+        return max(abs(k0[1]), abs(k1[1])), min(abs(k0[1]), abs(k1[1]))
+
     grup = np.zeros(6, dtype=np.uint8)
     grup[1] = 1
+    base = geom("cad_g_ika_base_link_0")
     kayitlar = {}
     for teker, govde_ad in TEKER_GOVDESI.items():
         s = 1.0 if teker.startswith("sol") else -1.0
@@ -277,33 +323,34 @@ def montaj_olcumu(model, durum, manifest):
         lastik = geom("montaj_g_ika_" + teker + "_0")
         adres, sayi = model.mesh_vertadr[model.geom_dataid[lastik]], model.mesh_vertnum[model.geom_dataid[lastik]]
         koseler = durum.geom_xpos[lastik] + model.mesh_vert[adres:adres + sayi] @ durum.geom_xmat[lastik].reshape(3, 3).T
-        merkez = yerel((koseler.min(axis=0) + koseler.max(axis=0)) / 2)
+        koseler_yerel = (koseler - govde_p) @ govde_R
+        merkez = (koseler_yerel.min(axis=0) + koseler_yerel.max(axis=0)) / 2
         anchor = yerel(durum.xanchor[eklem])
         flans0, flans1 = kutu(f"montaj_flans_{teker}")
         alt_bosluk = []
-        base = geom("cad_g_ika_base_link_0")
-        for x in np.linspace(flans0[0] + 1e-3, flans1[0] - 1e-3, 5):
-            for y in np.linspace(min(abs(flans0[1]), abs(flans1[1])) + 1e-3,
-                                 max(abs(flans0[1]), abs(flans1[1])) - 1e-3, 9):
+        for x in np.linspace(flans0[0] + 1e-4, flans1[0] - 1e-4, 9):
+            for y in np.linspace(min(abs(flans0[1]), abs(flans1[1])) + 1e-4,
+                                 max(abs(flans0[1]), abs(flans1[1])) - 1e-4, 81):
                 geomid = np.array([-1], dtype=np.int32)
-                mesafe = mujoco.mj_ray(model, durum, dunya([x, s * y, -0.3]), govde_R[:, 2], grup, 0, govde, geomid)
+                mesafe = mujoco.mj_ray(model, durum, dunya([x, s * y, -0.3]), govde_R[:, 2].copy(),
+                                       grup, 0, govde, geomid)
                 if mesafe >= 0 and geomid[0] == base:
                     alt_bosluk.append(float(-0.3 + mesafe - flans1[2]))
-        red0, red1 = kutu(f"montaj_reduktor_{teker}")
-        mil0, mil1 = kutu(f"montaj_mil_{teker}")
-        kav0, kav1 = kutu(f"montaj_kavrama_{teker}")
-        eksen_bas = [anchor[0], s * (abs(red1[1]) if s > 0 else abs(red0[1])), anchor[2]]
+        red_dis, _ = dis_y(f"montaj_reduktor_{teker}")
+        bacak_dis, _ = dis_y(f"montaj_bacak_{teker}")
+        _, motor_ic = dis_y(f"montaj_motor_{teker}")
+        eksen_bas = [anchor[0], s * red_dis, anchor[2]]
         geomid = np.array([-1], dtype=np.int32)
         mesafe = mujoco.mj_ray(model, durum, dunya(eksen_bas), govde_R[:, 1] * s, grup, 0, ika, geomid)
         jant = geom("montaj_g_ika_" + teker + "_0_jant")
         gobek_y = abs(eksen_bas[1]) + mesafe if mesafe >= 0 and geomid[0] == jant else None
-        mil_uc = max(abs(mil0[1]), abs(mil1[1]))
-        kav_uc = max(abs(kav0[1]), abs(kav1[1]))
+        mil_uc, _ = dis_y(f"montaj_mil_{teker}")
+        kav_uc, _ = dis_y(f"montaj_kavrama_{teker}")
         baglar = {
             "govde_alti__flans": min(alt_bosluk) if alt_bosluk else None,
             "flans__bacak": ayrilik(f"montaj_flans_{teker}", f"montaj_bacak_{teker}"),
-            "bacak__motor": ayrilik(f"montaj_bacak_{teker}", f"montaj_motor_{teker}"),
             "bacak__reduktor": ayrilik(f"montaj_bacak_{teker}", f"montaj_reduktor_{teker}"),
+            "reduktor__motor": ayrilik(f"montaj_reduktor_{teker}", f"montaj_motor_{teker}"),
             "reduktor__mil": ayrilik(f"montaj_reduktor_{teker}", f"montaj_mil_{teker}"),
             "mil__jant_gobegi": None if gobek_y is None else float(gobek_y - mil_uc),
             "kavrama__jant_gobegi": None if gobek_y is None else float(gobek_y - kav_uc),
@@ -313,7 +360,10 @@ def montaj_olcumu(model, durum, manifest):
             "merkez_eklem_farki_mm": float(np.linalg.norm(merkez - anchor) * 1000),
             "baglar_bosluk_m": baglar,
             "govde_alti_isin_n": len(alt_bosluk),
-            "govde_alti_bosluk_maks_m": max(alt_bosluk) if alt_bosluk else None,
+            "govde_alti_girisim_mm": (float(max(0.0, -min(alt_bosluk)) * 1000) if alt_bosluk else None),
+            "jant_gobek_yuzu_y_m": gobek_y,
+            "motor_reduktor_boy_mm": float((red_dis - motor_ic) * 1000),
+            "donen_aciklik_bacak__lastik_mm": float((np.abs(koseler_yerel[:, 1]).min() - bacak_dis) * 1000),
             "zincir_maks_bosluk_mm": (None if any(v is None for v in baglar.values())
                                      else float(max(0.0, *baglar.values()) * 1000)),
         }
