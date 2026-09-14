@@ -9774,3 +9774,4 @@ _(henüz yok)_
 - [ ] **T275 — 7,51 V gerilim çökmesi + EKF lane switch (D-482)** — pil/konnektör/XT60 kontrolü, o pille yük testi (İNSAN, 🔴).
 - [ ] **T276 — log analiz betiğini amele yazsın** (`scripts/ucus_bin_ozet.py` + test; mimarın scratch betiği denetlenmedi, D-482).
 - [ ] **T277 — FDR yazılım koluna 13 Eyl log bulguları** (kodla GUIDED/LAND 2×, failsafe 3+1, askı gazı, titreşim riski) — wlwy3xx3m bitince.
+- [ ] **T278 — yerel master ↔ origin/master uzlaştırması** (29/43 commit, D-474…D-485 numara çakışması; push bundan sonra) — mimar, D-483.
