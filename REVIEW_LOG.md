@@ -31356,3 +31356,41 @@ sıfırdan başlatıldı, unpause ilk denemede doğrulandı (kanıt: `navitas_si
 
 **Genel kapı:** dokunulmadı (yalnız kayıt boru hattı script'i, `codes/` altına
 dokunulmadı).
+
+
+---
+
+### D-486 — rv41 TAMAMLANDI (gerçek v36 + düzeltilmiş unpause) — 3 seviye de video üretti, ÜÇÜ DE rota bulamadı: "gazebo algı boşluğu" gerçek üretim modeliyle DE doğrulandı
+
+**Yazan:** Claude · **Kanıt:** `simulation/recordings/rv41/` (video'lar, `detections.json`,
+`iha_scan_*/meta.txt`).
+
+**Sonuç:** 3 seviyenin (kolay/orta/zor) tümü için gerçek Gazebo11 videoları üretildi
+(`navitas_tum_seviyeler.mp4` 236 s + her seviye için 6 ayrı kamera açısı). Bu D-477'den
+beri istenen "gerçek Gazebo videosu" nihayet var. **Ama hiçbir seviyede İKA rota alamadı:**
+
+- **Kolay** — tarama TAM ZAMANINDA bitti (139 kare, ortomozaik üretildi), v36 modeli
+  gerçekten koştu, ama sonuç: `"rota_durum": "MASKE_YOK", "rota_sebep": "Serbest
+  alanda geçerli kapı bulunamadı."` (`detections.json`). Bu D-482'deki "model dosyası
+  yok" sorunuyla **karıştırılmamalı** — model buradaydı, çalıştı, gerçek çıkarım yaptı,
+  yine de rota bulamadı.
+- **Orta/Zor** — host'taki `iha_haritala.py` izleyicisinin kendi 1800 sn (30 dk)
+  penceresi, konteynerin bugünkü gerçek hızından (seviye başına ~50-55 dk, RTF tahmini
+  eskisinden çok daha düşük) daha kısa kaldığı için tarama karesi işlenemeden atlandı
+  (izleyici zaman aşımı — konteynerin kendisi çökmedi/durmadı, video yine üretildi).
+
+**Yorum — bu YENİ bir bulgu değil, ESKİ bir bulgunun daha güçlü kanıtla teyidi.**
+`memory/gazebo-algi-boslugu-olculdu.md` (2-3 Eylül) zaten "sim düz/dokusuz zemin →
+model %93 blocked, rota yok" diye kaydetmişti. Bugünkü kolay sonucu bunu **gerçek
+üretim modeliyle (v36, sha256 doğrulanmış), doğru çalışan fizikle, doğru unpause
+ile** bağımsız olarak tekrarlıyor — yani sorun model dosyası ya da boru hattı
+güvenilirliği DEĞİL, Gazebo'nun görsel/doku gerçekçiliğinin v36'nın eğitildiği
+gerçek dünya görüntülerinden hâlâ çok farklı olması. Bu iş `gazebo-gelistirme-plani`
+kapsamında önceden zaten TAHMİN edilmiş bir çalışma (arazi modu: plain/textured/relief;
+`--terrain textured` bu koşumda zaten aktifti).
+
+**İzleyici zaman aşımı ayrı bir iyileştirme fırsatı** (1800 sn sabiti, bugünkü ~50-55
+dk/seviye gerçek hıza göre çok kısa) — T262/T239 gibi ayrı bir görev açılabilir ama
+FDR'yi bloklamıyor, şimdilik açılmadı.
+
+**Genel kapı:** dokunulmadı.
