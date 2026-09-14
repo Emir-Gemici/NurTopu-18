@@ -1010,7 +1010,7 @@ class YksArayuz:
         zincir.pack(fill="x", padx=14, pady=4)
         self.zincir_etiket = {}
         adimlar = ["Kamera (İHA)", "YOLOv8-seg", "Rota Üretimi",
-                   "433 MHz TX", "YKS (bu ekran)", "İKA"]
+                   "RFD900A TX", "YKS (bu ekran)", "İKA"]
         for i, ad in enumerate(adimlar):
             e = tk.Label(zincir, text=ad, font=self.f_kucuk, fg=SOLUK, bg=PANEL,
                          padx=10, pady=6)
@@ -1103,13 +1103,13 @@ class YksArayuz:
             kamera_govde, bg="#121920", fg=SOLUK,
             text=("KAMERA URL YOK — --kamera-url http://<JETSON_IP>:8080"
                   if not self.kamera_url else "RAW kamera bağlanıyor…"),
-            font=self.f_kucuk)
+            font=self.f_orta, justify="center")
         self.lbl_kamera_img.pack(side="left", padx=10, pady=(4, 4), fill="both",
                                  expand=True)
         self.lbl_kamera_bilgi = tk.Label(
             self.kamera_cerceve,
             text=(f"Kaynak: {self.kamera_url}" if self.kamera_url else
-                  "Video SiK 433 MHz üzerinden TAŞINMAZ; ayrı LAN gerekir."),
+                  "Video RFD900A üzerinden TAŞINMAZ; ayrı LAN gerekir."),
             font=self.f_kucuk, fg=SOLUK, bg=PANEL, anchor="w",
             wraplength=S(640), justify="left")
         self.lbl_kamera_bilgi.pack(fill="x", padx=10, pady=(2, 4))
@@ -1239,7 +1239,7 @@ class YksArayuz:
         # Alt durum çubuğu
         alt = tk.Frame(self.kok, bg=PANEL)
         alt.pack(fill="x", side="bottom")
-        tasiyici = "SiK 433 MHz (seri)" if isinstance(self.link, SerialLink) \
+        tasiyici = "RFD900A 915–928 MHz (seri)" if isinstance(self.link, SerialLink) \
             else f"UDP :{self.link.port}"
         tk.Label(alt, text=f"  Taşıyıcı: {tasiyici}   ·   Protokol: newline-JSON v1"
                            f"   ·   Çerçeve: OPEN_ROUTE / IHA_LANDED / "
@@ -1967,7 +1967,7 @@ class YksArayuz:
                 self._kutu_yaz("protokol", guven=m["conf"])
                 self._harita_ciz()
                 self._zincir(("Kamera (İHA)", "YOLOv8-seg", "Rota Üretimi",
-                              "433 MHz TX", "YKS (bu ekran)"))
+                              "RFD900A TX", "YKS (bu ekran)"))
                 if self.otomatik_onay and not ankor_uyarisi:
                     self.kok.after(2500, self.onayla)
             elif rota_yok_temizlendi:
@@ -2304,7 +2304,7 @@ class YksArayuz:
              "HAKEM 2/2: İKA'ya aktarım doğrulandı → ACK ref=")
             + str(self.rota["seq"]), "sari")
         self._zincir(("Kamera (İHA)", "YOLOv8-seg", "Rota Üretimi",
-                      "433 MHz TX", "YKS (bu ekran)")
+                      "RFD900A TX", "YKS (bu ekran)")
                      + (() if self.fda_kipi else ("İKA",)))
 
     # ── K8: İKA aktarım kanıtı (fail-closed hakem kapısı) ────────────────────
@@ -2647,13 +2647,28 @@ class YksArayuz:
             self.kok.after(9000, algi_geri)
 
     def _rota_analiz(self, m):
-        """Segment bazlı eksen değişimi tablosu: Δx/Δy, uzunluk, yön, dönüş."""
+        """Rota noktalarını ref, yerel ve birleşik koordinatlarıyla göster."""
         wps = m.get("waypoints") or []
         satirlar = []
         onceki = (0.0, 0.0)                 # referans noktasına göre yerel
         onceki_yon = None
         toplam = yanal = 0.0
         keskin = 0.0
+        ref = m.get("ref_xy")
+        if isinstance(ref, (list, tuple)) and len(ref) == 2:
+            try:
+                ref_x, ref_y = float(ref[0]), float(ref[1])
+                if not math.isfinite(ref_x) or not math.isfinite(ref_y):
+                    raise ValueError
+                satirlar.append(
+                    f"REF [{ref_x:+.2f}, {ref_y:+.2f}] m · rota koordinatı "
+                    "GNSS değil, yerel çerçevedir")
+            except (TypeError, ValueError):
+                ref_x = ref_y = None
+                satirlar.append("REF yok/geçersiz · birleşik koordinat gösterilmiyor")
+        else:
+            ref_x = ref_y = None
+            satirlar.append("REF yok · birleşik koordinat gösterilmiyor")
         for i, (x, y) in enumerate(wps, 1):
             dx, dy = x - onceki[0], y - onceki[1]
             uz = math.hypot(dx, dy)
@@ -2663,6 +2678,9 @@ class YksArayuz:
             kimden = "ref " if i == 1 else f"wp{i-1:<2}"
             satir = (f"{kimden}→wp{i:<2} Δx{dx:+5.1f} Δy{dy:+5.1f} · "
                      f"{uz:4.1f} m · yön {yon:+6.1f}°")
+            if ref_x is not None:
+                satir += (f" · yerel [{x:+.2f}, {y:+.2f}]"
+                          f" · birleşik [{ref_x + x:+.2f}, {ref_y + y:+.2f}]")
             if onceki_yon is not None:
                 donus = (yon - onceki_yon + 180) % 360 - 180
                 keskin = max(keskin, abs(donus))
@@ -2990,6 +3008,27 @@ class YksArayuz:
             self._harita_ciz()          # küçük kopya güncel rotayla
             self._kamera_tazele()
 
+    def _videosuz_panel_yaz(self, etiket, neden):
+        """Video yokken kamera panelini boş bırakma: telemetri kipini söyle.
+
+        NEDEN (ekran görüntüsüyle ölçüldü, 13 Eylül): video kopukken panel
+        yalnız küçük tek satırlık bir yazı taşıyan BOŞ bir kutuydu; hakem
+        ekranın telemetriyle çalışmaya devam ettiğini göremiyordu.
+        "telemetri ile izleniyor" yalnız İHA telemetrisi TAZEYKEN yazılır —
+        telemetri de kesikse panel bunu söyler (ekran kendi kendisiyle
+        çelişmesin, T177 sınıfı). Tazelik ölçütü `lbl_gps` ile AYNI
+        (`ARM_DURUM_TAZELIK_S`). Son kare gösterilmez; video karar üretmez.
+        """
+        hb = (getattr(self, "son_hb", None) or {}).get("iha")
+        taze = hb is not None and time.monotonic() - hb < ARM_DURUM_TAZELIK_S
+        baslik = ("VİDEO BAĞLANTISI YOK — telemetri ile izleniyor" if taze else
+                  "VİDEO BAĞLANTISI YOK — İHA TELEMETRİSİ DE YOK/BAYAT")
+        etiket.config(
+            image="", fg=SARI if taze else KIRMIZI,
+            text=(f"{baslik}\n\n{neden}\n\nRota, hakem onayı ve komutlar "
+                  "telsiz verisine dayanır; video karar üretmez."),
+            wraplength=max(S(160), self._kamera_resim_kutusu(etiket)[0] - S(16)))
+
     def _kamera_tazele(self):
         """LAN kamera snapshot'ını Tk ana döngüsünde sun; ağ I/O'su yapma."""
         istemci = getattr(self, "kamera_istemci", None)
@@ -2998,8 +3037,8 @@ class YksArayuz:
         if etiket is None or bilgi is None:
             return
         if istemci is None:
-            etiket.config(image="", text="KAMERA URL YOK — RAW görüntü kapalı",
-                          fg=KIRMIZI)
+            self._videosuz_panel_yaz(
+                etiket, "KAMERA URL YOK — RAW görüntü kapalı")
             bilgi.config(text="--kamera-url http://<JETSON_IP>:8080 verin · "
                                "video SiK üzerinden taşınmaz", fg=KIRMIZI)
             # CONTRACTS §6.8: "kamera yoktu" da KANITTIR — kayıtta boşluk
@@ -3032,8 +3071,8 @@ class YksArayuz:
                 snap["durum"] = "HATA"
         if jpeg is None:
             self._kamera_foto = None
-            etiket.config(image="", text="KAMERA YOK — son kare kullanılmıyor",
-                          fg=KIRMIZI)
+            self._videosuz_panel_yaz(
+                etiket, "KAMERA YOK — son kare kullanılmıyor")
         yas = snap.get("kare_yasi_s")
         yas_metin = "yaş YOK" if yas is None else f"kare yaşı {float(yas):.2f} sn"
         durum = str(snap.get("durum") or "BİLİNMİYOR")

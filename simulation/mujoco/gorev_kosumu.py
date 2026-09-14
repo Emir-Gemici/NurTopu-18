@@ -330,7 +330,8 @@ class _KareKaydedici:
 
     KAMERALAR = (("iha_nadir", "scan_camera"), ("ucuncu_sahis", "ucuncu_sahis"), ("ika_takip", "ika_takip"))
 
-    def __init__(self, kok: Path, hz: float = KARE_HZ_VIDEO, res=(960, 540), jpg_kalite: int = 85):
+    def __init__(self, kok: Path, hz: float = KARE_HZ_VIDEO, res=(960, 540), jpg_kalite: int = 85,
+                 bosta_aralik_s=None):
         self.kok = Path(kok)
         self.kok.mkdir(parents=True, exist_ok=True)
         for eski in self.kok.glob("*.jpg"):
@@ -341,6 +342,8 @@ class _KareKaydedici:
         self.jpg_kalite = int(jpg_kalite)
         self.n = 0
         self.n_ucus = 0
+        self.bosta_aralik_s = bosta_aralik_s
+        self.son_bosta_kare = None
         self.sonraki_surus = 0.0          # sürüş modeli d.time (görev saati − rota yayını anı)
         self.prof = iha_ucus.UcusProfili(0.0, 0.0)
         self._r = {}                      # id(model) → (model, Renderer, (iha_mocap, parasut_mocap))
@@ -357,6 +360,10 @@ class _KareKaydedici:
 
     def kare(self, m, d, t_gorev: float, durum: dict):
         import cv2
+        if self.bosta_aralik_s and durum.get("no_route") and durum.get("landed"):
+            if self.son_bosta_kare is not None and t_gorev - self.son_bosta_kare < self.bosta_aralik_s - 1e-8:
+                return
+            self.son_bosta_kare = t_gorev
         r = self._cizici(m)[1]
         for ad, kam in self.KAMERALAR:
             r.update_scene(d, camera=kam)
@@ -411,7 +418,8 @@ class _KareKaydedici:
 def kos(h: int, lv: str, seed: int, rota_kaynak: str, *, res: int, out: Path, model=None,
         model_kunye=None, conf: float = 0.15, kare_kaydet: bool = False, fizik_tarama: bool = True,
         bekleme_suresi: float = IKA_BEKLEME_SURESI_S, surus_suresi: float = IKA_SURUS_SURESI_S,
-        verbose: bool = False, uretim_besleme: str = "kerteriz") -> dict:
+        verbose: bool = False, uretim_besleme: str = "kerteriz", cad_modeller: bool = False,
+        video_bosta_aralik_s=None, video_kaydedici=None) -> dict:
     import mujoco
     if rota_kaynak not in ROTA_KAYNAKLARI:
         raise ValueError(f"rota_kaynak {rota_kaynak!r} — {ROTA_KAYNAKLARI}")
@@ -424,12 +432,14 @@ def kos(h: int, lv: str, seed: int, rota_kaynak: str, *, res: int, out: Path, mo
     kdir.mkdir(parents=True, exist_ok=True)
 
     # T214-B video (H1-K7): kaydedici uçuşta `tara` kancasıyla, sürüşte `bekle` üzerinden AYNI aralıkla.
-    kaydedici = _KareKaydedici(kdir / "kareler_video") if kare_kaydet else None
+    kaydedici_sinifi = video_kaydedici or _KareKaydedici
+    kaydedici = (kaydedici_sinifi(kdir / "kareler_video", bosta_aralik_s=video_bosta_aralik_s)
+                 if kare_kaydet else None)
 
     # 1) İHA uçuş + tarama (render GPU, tek süreç)
     tarama = iha_ucus.tara(h, lv, seed, out=ldir, res=res, fizik=fizik_tarama, onizleme=False,
                            kare_kancasi=(kaydedici.ucus_karesi if kaydedici else None),
-                           kanca_aralik_s=(kaydedici.aralik if kaydedici else None))
+                           kanca_aralik_s=(kaydedici.aralik if kaydedici else None), cad_modeller=cad_modeller)
     t_inis, t_tarama_son = float(tarama["t_inis"]), float(tarama["t_tarama_son"])
 
     # 2) Rota (model: çıkarım GPU, aynı süreçte renderdan SONRA)
@@ -449,7 +459,7 @@ def kos(h: int, lv: str, seed: int, rota_kaynak: str, *, res: int, out: Path, mo
         assert max(segler) <= ika_nav.MAX_SEGMENT_M + 1e-9, "segment sözleşmesi"
 
     # 3) Sürüş modeli + sim saati
-    m = arena_mjcf.yukle(h, lv, seed, kam_res=res)
+    m = arena_mjcf.yukle(h, lv, seed, kam_res=res, cad_modeller=cad_modeller)
     d = mujoco.MjData(m)
     surucu = MuJoCoSurucu(m, d)
     t_ofset = t_tarama_son
@@ -608,9 +618,13 @@ def kos(h: int, lv: str, seed: int, rota_kaynak: str, *, res: int, out: Path, mo
         "kare_kaydet": bool(kare_kaydet), "kare_n_video": (kaydedici.n if kaydedici else 0),
         "kare_n_video_ucus": (kaydedici.n_ucus if kaydedici else 0),
         "kare_hz_video": (kaydedici.hz if kaydedici else None),
+        "video_bosta_aralik_s": video_bosta_aralik_s,
         "duvar_saati_s": round(time.perf_counter() - t_duvar0, 2),
         "tarih": time.strftime("%Y-%m-%d %H:%M:%S"),
-        "sinir": SINIR,
+        "sinir": (SINIR if not cad_modeller else
+                  "CAD URDF/STL görselleri; İHA kinematik, İKA mevcut basitleştirilmiş çarpışma/atalet modeli. "
+                  "CAD kütle/ataleti ve fiziksel araç kabulü değildir. Hakem simülasyonda otomatik."),
+        "cad_modeller": bool(cad_modeller),
     }
     (Path(out) / f"{rota_kaynak}_{h}_{lv}_{seed}.json").write_text(
         json.dumps(metrik, ensure_ascii=False, indent=1), encoding="utf-8")

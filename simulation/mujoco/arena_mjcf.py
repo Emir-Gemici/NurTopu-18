@@ -705,7 +705,8 @@ def ucus_baslangici(H: dict):
 def uret(harita_id: int = 1, lv: str = "kolay", seed: int = SEED_VARSAYILAN, *,
          asset_kok: Path | None = None, kam_res: int = KAM_RES_VARSAYILAN,
          layout: str = "field", yol_dokusu: str = YOL_DOKUSU_VARSAYILAN,
-         varyant: str = VARYANT_VARSAYILAN, zemin_dokusu: str = ZEMIN_DOKUSU_VARSAYILAN) -> str:
+         varyant: str = VARYANT_VARSAYILAN, zemin_dokusu: str = ZEMIN_DOKUSU_VARSAYILAN,
+         cad_modeller: bool = False) -> str:
     """MJCF metni. `asset_kok=None` → göreli `mesh/`, `dokular/` (KANONİK, hash'lenir);
     verilirse mutlak dizinler (dosya başka yere yazılınca `from_xml_path` çözsün).
     `varyant` (T213-A): taban | v1 (doku) | v2 (+ışık/gölge) | v3 (+moloz mesh)."""
@@ -756,7 +757,7 @@ def uret(harita_id: int = 1, lv: str = "kolay", seed: int = SEED_VARSAYILAN, *,
     ]
     ika_yaw = math.pi / 2          # kuzeye bakar (açık yolu ELE VERMEZ)
 
-    return f"""<mujoco model="navitas_arena_{H['id']}_{lv}">
+    xml = f"""<mujoco model="navitas_arena_{H['id']}_{lv}">
   <!-- NAVITAS MuJoCo arenası · harita {H['id']} · {lv} · seed {seed} · açık yol {arena.ROAD_LABEL[H['open']]} (GİZLİ: renk/şekil ele vermez) -->
   <!-- ÜRETEÇ: simulation/mujoco/arena_mjcf.py · TEK KAYNAK simulation/scripts/arena.py · deterministik -->
   <compiler angle="degree" meshdir="{meshdir}" texturedir="{texdir}"/>
@@ -794,6 +795,10 @@ def uret(harita_id: int = 1, lv: str = "kolay", seed: int = SEED_VARSAYILAN, *,
 {araclar.ika_aktuatorleri()}
 </mujoco>
 """
+    if cad_modeller:
+        from cad_modeller import uygula
+        return uygula(xml)
+    return xml
 
 
 def hazirla(harita_id: int, lv: str, yol_dokusu: str = YOL_DOKUSU_VARSAYILAN,

@@ -256,3 +256,39 @@ iş yoktur.
   ayrıntı `REVIEW_LOG.md`'de. Yeni iş almadan önce oraya bak, aynı kusuru tekrar üretme.
 - `S1` görevi **TIKAYICI**: veri üreteci araçları "zemin" olarak etiketliyor.
   **S1 düzeltilmeden hiçbir veri üretimi veya eğitim koşusu başlatılmaz.**
+
+---
+
+## 14 Eylül 2026 — Kullanıcının doğrudan istediği FDR Bölüm 3.3 teslimi
+
+- **Yazan:** Codex · **Bağımsız denetleyen:** henüz yok; görev kapatma/onay yapılmadı.
+- **Teslim:** `FDR/JURI/NAVITAS_FDR_3_3_HAKEM.docx`, aynı adlı PDF ve Markdown. Yalnız Bölüm 3.3; 21 PDF sayfası, 22 tablo, 14 görsel. Eski HTML ve bölüm 4/6 belgeleri pakete alınmadı; silinmedi.
+- **Kanıt ZIP'i:** `FDR/JURI/NAVITAS_FDR_3_3_KANIT_PAKETI.zip`; 542 dosya, 540 kaynak arşiv içinden SHA-256 ile doğrulandı. Özet: `5ef663e9955661095853552f2f659d87e4281ef857267263ac23d2b06300dde2`.
+- **Veri:** 6 DataFlash, 13 Mission Planner tlog, 14 ARM penceresi, 105 simülasyon, 6 gerçek RF probu, Jetson kısa/uzun ölçümleri, gerçek 29 kare matrisi, video ve 42 simülasyon waypoint'i. Çıkarımlar `results/fdr_33_20260914/` altında.
+- **YKS:** gerçek GNSS kaydı `demo=False` ile gösterildi; canlı uçuş/İKA/ACK/rota uydurulmadı. İrtifa referansı ve fix kökeni düzeltildi; bilinmeyen hız/uydu ölçüm sayılmadı. Rota analizinde tüm noktaların yerel koordinatı ve `ref_xy + waypoint` toplamı var. RFD900A etiketleri güncel. Önceden mevcut video-yok UI değişiklikleri korundu.
+- **Genel kapı:** `O:\navitas-local-train\venv\Scripts\python.exe -X utf8 -B codes/test_rota_sentetik.py` → `GENEL KAPI (madde 14): GECTI — kol1 15/15 · kol2 serit 15/15`, çıkış 0.
+- **Tam süit:** aynı yorumlayıcıyla `-X utf8 -B -m unittest discover -s tests -v` → `Ran 2925 tests in 603.169s`, `FAILED (failures=7, skipped=13)`, çıkış 1. Son hedefli `-p test_yks_*.py -v` → `Ran 240 tests in 38.953s`, `OK`, çıkış 0. Tam komut/zaman/çıktı: `test_kosum_envanteri.json` ve tarihli test dizinleri.
+- **Belge/paket:** aynı yorumlayıcıyla `-X utf8 -B scripts/fdr_33_paketle.py` → `BELGE_OK 22 TABLO 14 GÖRSEL 21 SAYFA`; `PAKET_OK 542 DOSYA 194.87 MiB`; çıkış 0. PDF görsel olarak incelendi; kontrol kayıtları `belge_dogrulama.json`, `paket_dogrulama.json`.
+- **Açık doğrulamalar:** fiziksel İKA yok; tam yük güç/kablaj, nihai tartım/maliyet, gerçek arena ışığı, menzil ve erişilebilir video URL'si yok. Başarısız testler raporda açık; tam süit geçti denmedi.
+- T107/T260 ve diğer ajan kilitleri değişmedi. Commit/push yapılmadı. Kullanıcının diğer dosyaları silinmedi.
+
+## 14 Eylül 2026 09:06 — Yakın kamera / 1080p CAD videosu
+
+- **Yazan:** Codex · **Denetleyen:** bağımsız denetim bekleniyor. Kullanıcının doğrudan isteği; görev kapatma yok.
+- Yeni teslim: `FDR/JURI/video/navitas_cad_sinematik_1080p.mp4`; 1920×1080, 25 FPS, 4300 kare, 172 s, 73.116.073 bayt. SHA-256 `e79fafd41a8462a21fa575cdb9976afe111e5d18b220075d0a4abb17a5afd44d`. Tüm kareler yeniden okunarak doğrulandı.
+- Üretim komutu: `O:\navitas-local-train\venv\Scripts\python.exe -X utf8 -B scripts/fdr_33_sinematik_video.py --render` → `SINEMATIK_VIDEO_OK 4300 KARE 172.0 s`, çıkış 0. Künye ve yeni qpos/qvel kayıtları `results/fdr_33_20260914/cad_video_sinematik/` altında.
+- Magenta İHA yakın takip, 150° dönen üç CAD incelemesi, orijinal 1 Hz nadir görüntüsü, İKA yerel koordinat/GT rota paneli eklendi. Işık/kamera değişikliği sunum içindir; algı girdisi özgün kayıttır. İHA kinematik, İKA basitleştirilmiş fizik; CAD atalet/aerodinamik doğrulaması değildir.
+- Yeni model koşusu NO_ROUTE / başarısız; GT koşusu başarılı, 63,5 s sürüş, 100,68 s görev, sıfır temas, HB 0,211 m. GT model başarısı sayılmadı. Eski test/video sonuçları değiştirilmedi.
+- `scripts/fdr_33_test_kaydi.py --sinematik` izinli tekrar: genel iki kol 15/15; yeni 5 test `OK` (1,431 s), CAD 10 test `OK` (2,221 s), mevcut video 13 test `OK` (0,581 s); her biri çıkış 0. Ham kayıt: `test_20260914_090018/`. İlk sandbox denemesinde video testi izin hatası verdi; kayıt `test_20260914_085621/` altında korunur.
+- Önceki birleşik DOCX/PDF ve ZIP bu 1080p videoya henüz güncellenmedi. Kullanıcı video bitince durup devam mesajını beklemeyi istedi; rapor çalışmasına devam edilmedi. Eski 60 MB video sınırı bu yüksek çözünürlüklü teslimde karşılanmıyor; karşılandı denmedi.
+
+## 14 Eylül 2026 — CAD hareketli parça onarımı / video tamamlandı
+
+- **Yazan:** Codex · **Denetleyen:** bağımsız denetim bekleniyor; görev kapatma yapılmadı. Kullanıcının doğrudan eklem/CAD hata bildirimi ele alındı.
+- **Teslim:** `FDR/JURI/video/navitas_cad_eklemli_1080p.mp4`; 1920×1080, 25 FPS, 4300 kare, 172 s, 71.320.847 bayt. SHA-256 `ffc79cd8b3db9537bb39b7cbdf0ea43e6fc78c32b44adedb62c00e8d18000a10`. Tüm kareler yeniden okundu; teslimden kanatçık/teker yakın planları ayrıca incelendi. Önceki videolar korunur.
+- **Kök nedenler:** CAD görselleri gövdeye sabit eklenmişti; İKA'nın dört teker STL'si ve kamera STL'si ayrı ayrı 26.594 mükerrer gövde üçgeni içeriyordu. Bağlı bileşen seçimiyle lastik/jant/kamera ayrıldı; kaynak STL/URDF değiştirilmedi. MuJoCo derleyicisinin `geom_sameframe=BODYROT` kısayolu ikinci pervanenin dönüşünü ayrıca engelliyordu; hareketli görsellerde kısayol kaldırıldı.
+- **Hareket kökeni:** 2 pervane + 4 kumanda yüzeyi + 4 teker = 10 bağımsız eklem, jantlarla 14 hareketli mesh. URDF pivot/eksenleri kullanılır. İKA sürüş açısı özgün `cad_video_sinematik/kosum` qpos kaydıdır. İHA pervane/servo ve stüdyo hareketleri TEMSİLİDİR; gerçek RPM/servo telemetrisi, aerodinamik doğrulama veya yeni fizik koşusu değildir. Görüntüde açıkça yazılıdır.
+- **Model teşhisi:** `scripts/fdr_33_model_teshis.py` aynı v36 SHA, imgsz=512, eşik=0,15 ve aynı 15 kare ile tekrarlandı. Mozaik SHA eşleşir; 269.752 zemin / 359.404 engel pikseli, 0 waypoint, `BELIRSIZ_TEK_KAPI` birebir tekrarlandı. Algı başarısızlığı düzeltilmiş sayılmadı; GT yerine konmadı. Komut çıkışı 0 yalnız teşhis betiğinin tamamlanmasıdır, görev başarısı değildir.
+- **Kapı:** `O:\navitas-local-train\venv\Scripts\python.exe -X utf8 -B scripts/fdr_33_test_kaydi.py --eklemli` → genel iki kol 15/15; 11 hareket testi `OK` (3,965 s), 5 sinematik testi `OK` (1,450 s), 10 CAD testi `OK` (2,041 s); her biri çıkış 0. Ham kayıt `results/fdr_33_20260914/test_20260914_093849/`. İlk denemedeki ikinci-pervane testi başarısızlığı `test_20260914_093050/` altında korunur; kusur onarıldıktan sonra tekrar geçti. Tam süit yeniden koşulmadı.
+- **Video komutu:** aynı yorumlayıcıyla `-X utf8 -B scripts/fdr_33_sinematik_video.py --eklemli --render` → `SINEMATIK_VIDEO_OK 4300 KARE 172.0 s`, çıkış 0. Önizleme ve 14 mesh hareket kanıtı `cad_video_eklemli/eklem_kaniti.json`; uçuş görünürlüğü 50 örneğin 46'sında eşiği geçti.
+- `simulation/mujoco/cad_hareket.py`, `scripts/fdr_33_cad_teshis.py`, `scripts/fdr_33_model_teshis.py`, `tests/test_fdr_33_cad_hareket.py` eklendi; sinematik betik ve test kayıt betiği güncellendi. DOCX/PDF/ZIP güncellenmedi. Video tamamlandığından kullanıcının devam mesajı beklenir. Commit/push ve kilit değişikliği yok; 60 MB eski sınır hâlâ karşılanmıyor.

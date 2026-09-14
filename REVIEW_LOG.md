@@ -31077,3 +31077,78 @@ Enerji HESAP: 11,1 V × 8,0 Ah = **88,8 Wh**. FDR/kılavuz/HANDOFF'ta 6000→800
 **🔴 Riskler (uçuş emniyeti, 21 Eylül öncesi):**
 1. **Titreşim:** VIBE maks **54–64 m/s²** 5 uçuşta (ArduPilot kılavuzu: < 30 iyi, > 60 sorunlu); kırpma (clip) artışı 0. EKF bu uçuşlarda failsafe'e düşmedi ama pay yok → **T274** (titreşim sönümleme / pervane balansı / FC montajı).
 2. **Gerilim çökmesi:** 09-59-30 825,8 penceresinde V **11,13 → 7,51 V** (3S'te 2,50 V/hücre) — aynı saniyede **EKF lane switch** (869,0, ERR 24). Anlık sarkma, pil failsafe süresi (10 s) dolmadan. Pil iç direnci/konnektör/ölçüm şüphesi → **T275**. Bu pille uçuş 21 Eylül'de önerilmez.
+
+---
+
+## 2026-09-14 — FDR 3.3 teslimi ve açık başarısızlıklar · Codex
+
+**Kapsam:** kullanıcının doğrudan talebiyle yalnız FDR 3.3 DOCX/PDF ve kanıt paketi üretildi. Bu kayıt bağımsız mimar denetimi veya görev kapatma değildir. Gerçek kayıt, simülasyon, tasarım ve eksik fiziksel doğrulamalar ayrı etiketlendi.
+
+**Veri kökeni:** `scripts/yks_gercek_kayit.py` GPS_RAW_INT mutlak irtifasını bağıl irtifa diye göndermez, GLOBAL_POSITION_INT'ten fix=3 uydurmaz; bilinmeyen hız/uydu sentinellerini ölçüm saymaz. `pixhawk_canli=False` ile kayıt gösterimi sürer. Dört yeni test bu ayrımları sınar. `comms/yks_gui.py` tüm rota noktalarının yerel metre koordinatını gösterir; dünya/GNSS koordinatı iddiası yoktur. Önceden mevcut video-yok UI değişiklikleri korunmuştur.
+
+**Gerçek çalıştırma kanıtları:**
+1. `O:\navitas-local-train\venv\Scripts\python.exe -X utf8 -B codes/test_rota_sentetik.py` → `GENEL KAPI (madde 14): GECTI — kol1 15/15 · kol2 serit 15/15`; çıkış 0. Son çıktı: `results/fdr_33_20260914/test_20260914_003858/genel_kapi.txt`.
+2. `O:\navitas-local-train\venv\Scripts\python.exe -X utf8 -B -m unittest discover -s tests -v` → `Ran 2925 tests in 603.169s`; `FAILED (failures=7, skipped=13)`; çıkış 1. Çıktı: `results/fdr_33_20260914/test_20260914_002450/tam_suit.txt`.
+3. `O:\navitas-local-train\venv\Scripts\python.exe -X utf8 -B -m unittest discover -s tests -p test_yks_*.py -v` → `Ran 240 tests in 38.953s`; `OK`; çıkış 0. Çıktı: `results/fdr_33_20260914/test_20260914_003858/yks_hedef.txt`.
+4. `O:\navitas-local-train\venv\Scripts\python.exe -X utf8 -B scripts/fdr_33_paketle.py` → `BELGE_OK 22 TABLO 14 GÖRSEL 21 SAYFA`; `PAKET_OK 542 DOSYA 194.87 MiB`; çıkış 0. Sonuç: `results/fdr_33_20260914/belge_dogrulama.json` ve `paket_dogrulama.json`.
+
+**Açık test kusurları:** atölye belgesinin iki YKS satır atfı ve gece akış düğüm/tablo atıfları güncel kod satırlarıyla eşleşmiyor; simülasyonun iki XML kilit-özet kontrolü ve 0,4600 m / 0,4595 m iz genişliği kontrolü düşüyor. YKS satır değişikliklerinin belge atıflarına etkisi saklanmadı. Başarısız alt-test kayıt sayısı test metodu sayısı değildir. İlgisiz geometri, kilit özetleri veya eşikler değiştirilmedi; tam süit geçti denmedi. Yarım kalan ilk sandbox denemesi tamamlanmış test olarak raporlanmadı.
+
+**Teslim:** `FDR/JURI/NAVITAS_FDR_3_3_HAKEM.docx` ve PDF, 21 sayfa / 22 tablo / 14 görsel. Kanıt ZIP'i 542 dosya içerir; 540 kaynak arşivden okunup SHA-256 ile eşleştirildi. ZIP özeti: `5ef663e9955661095853552f2f659d87e4281ef857267263ac23d2b06300dde2`. YKS görseli gerçek GNSS kayıt gösterimidir; fiziksel İKA veya canlı uçuş değildir.
+
+**Yazan:** Codex · **Denetleyen:** bağımsız denetim bekleniyor · **Kabul sınırı:** fiziksel İKA, nihai tartım/maliyet, tam yük güç/kablaj, gerçek arena ışığı, menzil ve erişilebilir video URL'si açık. T107/T260 ve diğer ajan kilitleri değişmedi; commit/push yapılmadı.
+
+## 2026-09-14 09:06 — Kullanıcının yakın kamera / belirgin magenta CAD video talebi
+
+Codex üretimi; bağımsız mimar kabulü değildir. Yeni `scripts/fdr_33_sinematik_video.py` tam qpos/qvel/mocap durumlarını ayrı koşuda kaydeder, yalnız sunum kamerası/ışığı değiştirerek oynatır. Varsayılan görev kaydedicisi korunur; yeni kayıt sınıfı isteğe bağlı enjekte edilir. Kaynakta teker STL'leri gövde parçalarını da içerdiğinden İKA teker mesh'ine siyah malzeme uygulanması gövdeyi de karartıyordu; yeni sunum İKA parçalarının tümünde Turan mavisini korur. Kaynak mesh değiştirilmedi.
+
+Komut `O:\navitas-local-train\venv\Scripts\python.exe -X utf8 -B scripts/fdr_33_test_kaydi.py --sinematik`: izinli `test_20260914_090018/` koşusunda genel iki kol 15/15, 5 sinematik test OK, 10 CAD test OK, 13 mevcut video test OK; tüm çıkışlar 0. İlk sandbox izin hatası saklanır. Testler fizik kütle/atalet/çarpışma ve qpos korunmasını, magenta ölçümünde HUD dışlanmasını, renkleri ve boyut uyuşmazlığının reddini sınar. Tam süit yeniden koşulmadı.
+
+`--render` gerçek çıktısı: `SINEMATIK_VIDEO_OK 4300 KARE 172.0 s e79fafd41a8462a21fa575cdb9976afe111e5d18b220075d0a4abb17a5afd44d`; çıkış 0. 1080p/25 FPS video bütün kareleri açılarak doğrulandı. Yeni model NO_ROUTE başarısız; GT ayrı tanısal başarıdır. HUD bunu belirtir. 73.116.073 bayt çıktı eski 60 MB sınırını sağlamaz; geçmiş kapı kabulü iddia edilmedi. Önceki DOCX/PDF/ZIP değiştirilmedi; kullanıcının video sonunda durma talebi uygulanır.
+
+---
+
+### D-485 — FDR_YZLM_004E: 003H'nin kırık kaynak atfı düzeltildi, yeni revizyon numarası alındı (14 Eylül 2026)
+
+**Yazan:** Claude (mimar oturumu) · **Tetikleyen:** kullanıcının GitHub'daki 003H revizyonunu gözden geçirme talebi.
+⚠ **Numara notu:** local `master` origin/master'a göre 43 ileri / 34 geride; origin'de bilinen son sıra D-484'tü (`git show origin/master:REVIEW_LOG.md`). Bu kayıt origin ile henüz birleştirilmedi — birleşme sırasında **çakışma ihtimali var**, o zaman yeniden numaralandırılabilir. Şimdilik hem yereldeki (D-482) hem origin'deki (D-484) bilinen en yüksek numaranın üzerine çıkıldı.
+
+**Bulgu 1 (KRİTİK, kaynak zinciri kırık) — sayfa 6 görseli hiçbir yerde yok.** `FDR_YZLM_003H_icerik.json` sayfa 6'daki görsel `results/gazebo_realism_20260910/sonra_genel.jpg`'i gösteriyordu; bu yol ne yerelde ne `origin/master` ağacında mevcut (`git ls-tree -r origin/master` ve yerel dosya sistemi taraması, ikisi de boş döndü). Muhtemelen 003H'yi üreten makinede (Halil) yerel kalmış, hiç commit edilmemiş bir dosya. Metin de bu görseli "Gazebo zemin ve moloz adayı" diye tanımlıyordu — repoda doğrulanabilir karşılığı yoktu.
+
+**Düzeltme:** `results/gazebo_model_onizleme_20260913/uc_model_birlikte_gazebo.jpg` kullanıldı — bu görsel gerçek, repoda mevcut, D-477'de zaten "gerçek Gazebo11 render'ı" olarak doğrulanmış (`RAPOR.md`). Ancak bu görsel bir zemin/moloz arena sahnesi DEĞİL, üç CAD modelinin (İHA/İKA/mancınık) düz zeminde bir arada render'ı. Paragraf, başlık (Şekil 3.3.3.3) ve kaynakça [5] metni buna göre yeniden yazıldı — görselin gerçekte gösterdiğinden fazlası iddia edilmedi.
+
+**Bulgu 2 (düzenleme) — sayfa 10, farklı paydalı oran karşılaştırması.** "3/126 uyuşmazlık, izin verilen 5/260 oranını aşmaktadır" cümlesi, iki farklı örneklem büyüklüğünü (126 vs 260) yüzdeye çevirmeden yan yana veriyordu. `%2,38` ve `%1,92 (5/260)` olarak açıklığa kavuşturuldu; karar (PyTorch korunması) değişmedi, yalnız ifade netleşti.
+
+**Bulgu 3 (süreç, düzeltilmedi — gözlem) — `FDR/JURI/` klasörü ayrı bir teslim hattı.** İnceleme sırasında `FDR/JURI/NAVITAS_FDR_3_3_BIRLESIK.docx` (9,76 MB) ve ilişkili `.md` kaynakları görüldü; bunlar Codex'in kullanıcı talimatıyla ürettiği ayrı bir "hakem teslimi" paketi (bkz yukarıdaki 2026-09-14 Codex kaydı), bu FDR_YZLM zincirinden bağımsız. Karıştırılmamalı — iki ayrı amaç: FDR_YZLM_* ölçülü/denetimli yazılım bölümü revizyon zinciri, JURI paketi tam FDR 3.3 hakem teslimi. Değişiklik yapılmadı.
+
+**Doğrulama:** `scripts/fdr_yazilim_resmi.py` origin'den çekilip Windows'a taşınabilir hale getirildi (font yolu ve belge kimliği artık `FDR_FONT_DIR`/`FDR_DOCID`/`FDR_DOCDATE` ortam değişkenleriyle parametrik; `DATA.read_text()`'e `encoding='utf-8'` eklendi — Windows'ta cp1254 varsayımıyla UnicodeDecodeError veriyordu). Carlito fontları `C:\Windows\Fonts`'ta bulundu, reportlab+pypdf `O:\navitas-local-train\venv`'e kuruldu.
+Komut: `FDR_DOCID=FDR_YZLM_004E FDR_DOCDATE=14.09.2026 FDR_FONT_DIR="/c/Windows/Fonts" O:\navitas-local-train\venv\Scripts\python.exe scripts/fdr_yazilim_resmi.py`
+Çıktı: `PDF: 18 sayfa; hedef 18; 133652 bayt`; çıkış 0. 18 sayfanın tamamı 120 DPI render edilip tek tek görsel incelendi (D-484'ün dersi tekrarlanmadı) — sayfa taşması yok, üst üste binme yok, dipnot/başlık/atıf tutarlı.
+
+**Değişmeyen:** Üretim kodu, ölçüm/eşik değerleri, CONTRACTS, açık kalemler (Bölüm 7, 6 madde — hiçbiri kapatılmadı, kapatma koşulları gerçek ölçüm/dosya gerektiriyor).
+
+**Dosyalar:** `FDR/FDR_YZLM_004E_icerik.json` (yeni), `FDR/pdf/FDR_YZLM_004E.pdf` (yeni), `scripts/fdr_yazilim_resmi.py` (parametrikleştirme + UTF-8 düzeltmesi, geriye dönük 003H davranışı değişmedi). `FDR_YZLM_003H` dosyalarına dokunulmadı (madde: hatalı sürümün üzerine yazılmaz).
+
+**Genel kapı:** dokunulmadı (yalnız `FDR/` ve `scripts/fdr_yazilim_resmi.py`, `codes/` altına dokunulmadı).
+
+---
+
+### D-486 — FDR_Yazılım.pdf: 004E'nin resmi/stabil adı, iç etiket temizlendi (14 Eylül 2026, kullanıcı kararı)
+
+**Yazan:** Claude (mimar oturumu) · **Karar:** kullanıcı, D-485'te doğrulanan `FDR_YZLM_004E` içeriğini stabil kabul etti ve resmi dış ad istedi: `FDR_Yazılım.pdf`. İç metindeki `FDR_YZLM` iç revizyon etiketi kaldırıldı (yalnız görünüm; ölçüm/eşik/kaynakça içeriği D-485'teki hâliyle birebir aynı).
+
+**Yapılan:** `FDR/FDR_Yazılım_icerik.json` oluşturuldu (004E içeriğinin kopyası; yalnız `document_id` ve kapak tablosundaki "Belge kimliği" hücresi `FDR_YZLM_004E` → `FDR_Yazılım` yapıldı). `FDR_DOCID=FDR_Yazılım` ile aynı üreteçten `FDR/pdf/FDR_Yazılım.pdf` basıldı (altlık artık `FDR_Yazılım` yazıyor, `FDR_YZLM` değil).
+
+**Doğrulama:** `PDF: 18 sayfa; hedef 18` (taşma yok). Üretilen PDF'in metin katmanı programatik taranarak "FDR_YZLM"/"YZLM" arandı — **18 sayfanın hiçbirinde iz yok**. Kapak sayfası görsel olarak da kontrol edildi.
+
+**Geçmiş sürümler korunuyor.** `FDR_YZLM_001H` (arşiv), `002H`'nin ayrı içeriği yok (D-484/003H notunda açıklandı), `003H`, `004E` dosyalarına dokunulmadı — proje kuralı gereği (madde: eski sürümün üzerine yazılmaz) hepsi repoda kalıyor, yalnız dış/resmi teslim adı artık `FDR_Yazılım.pdf`.
+
+**Genel kapı:** dokunulmadı.
+
+### 14 Eylül 2026 — Kullanıcının CAD eklem hatası / uygulayıcı kanıt kaydı
+
+**Yazan:** Codex · **Bağımsız denetleyen:** henüz yok; kendi işini onaylama/görev kapatma yapılmadı.
+
+1. **Ölçülen kusur ve onarım:** sabit gövdeye bağlanan CAD görsellerinde eklem hareketi yoktu. İKA teker ve kamera dışa aktarımlarında beş kez 26.594 ortak gövde üçgeni bulundu; kaynak dosyalara dokunmadan bağlı bileşenler ayrıldı. URDF eksen/pivot dönüşü bağlandı. Yeni test ikinci pervanenin dünya yönünün değişmediğini yakaladı (`test_20260914_093050/cad_hareket.txt`, 10 test / 1 hata, çıkış 1); `geom_sameframe=BODYROT` optimizasyonu kaldırılınca onarım geçti. 10 bağımsız eklem / 14 hareketli mesh yön değişimi `cad_video_eklemli/eklem_kaniti.json` içinde.
+2. **Gerçek kapı çıktısı:** `O:\navitas-local-train\venv\Scripts\python.exe -X utf8 -B scripts/fdr_33_test_kaydi.py --eklemli` → `GENEL KAPI (madde 14): GECTI — kol1 15/15 · kol2 serit 15/15`; `Ran 11 tests in 3.965s / OK`; `Ran 5 tests in 1.450s / OK`; `Ran 10 tests in 2.041s / OK`; bütün çıkışlar 0. Kayıt: `results/fdr_33_20260914/test_20260914_093849/`. Aynı yorumlayıcıyla `scripts/fdr_33_sinematik_video.py --eklemli --render` → `SINEMATIK_VIDEO_OK 4300 KARE 172.0 s`, çıkış 0; teslim `FDR/JURI/video/navitas_cad_eklemli_1080p.mp4`, SHA-256 `ffc79cd8b3db9537bb39b7cbdf0ea43e6fc78c32b44adedb62c00e8d18000a10`, 71.320.847 bayt. Tüm kareler 1080p/25 FPS olarak okundu; yakın planlar incelendi. Eski teslim silinmedi.
+3. **Açık sınır:** İKA sürüş dönüşü ham fizik qpos kaydından, İHA/stüdyo aktüatörleri temsili gösterimden gelir; gerçek RPM/servo ölçümü değildir. `scripts/fdr_33_model_teshis.py` (çıkış 0) aynı mozaik SHA ve v36 ağırlığıyla `BELIRSIZ_TEK_KAPI`, 0 waypoint, 269.752/359.404 zemin/engel pikselini tekrar üretti. Algılama kusuru çözülmüş sayılmadı, GT model başarısı yapılmadı. Tam süit ve 60 MB eski sınırı geçti denmedi. Kullanıcı video bitince beklemeyi istediğinden DOCX/PDF/ZIP işine devam edilmedi; commit/push yok.

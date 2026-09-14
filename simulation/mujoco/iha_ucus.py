@@ -223,7 +223,8 @@ def tara(harita_id: int, lv: str, seed: int = arena_mjcf.SEED_VARSAYILAN, *,
          onizleme_res: int = 640, yol_dokusu: str = arena_mjcf.YOL_DOKUSU_VARSAYILAN,
          varyant: str = arena_mjcf.VARYANT_VARSAYILAN,
          zemin_dokusu: str = arena_mjcf.ZEMIN_DOKUSU_VARSAYILAN,
-         kare_kancasi=None, kanca_aralik_s: float | None = None) -> dict:
+         kare_kancasi=None, kanca_aralik_s: float | None = None,
+         cad_modeller: bool = False) -> dict:
     """Uçuşu koş, 1 Hz tarama karelerini + poses.csv + meta.txt yaz. Döner: özet dict.
     `varyant`/`zemin_dokusu` (T213-A) arena_mjcf render varyantı; meta.txt'ye yazılır.
 
@@ -245,7 +246,7 @@ def tara(harita_id: int, lv: str, seed: int = arena_mjcf.SEED_VARSAYILAN, *,
     H = arena.harita(harita_id, lv)
     t0 = time.perf_counter()
     m = arena_mjcf.yukle(harita_id, lv, seed, kam_res=res, yol_dokusu=yol_dokusu,
-                         varyant=varyant, zemin_dokusu=zemin_dokusu)
+                         varyant=varyant, zemin_dokusu=zemin_dokusu, cad_modeller=cad_modeller)
     d = mujoco.MjData(m)
     t_yukle = time.perf_counter() - t0
     iha = m.body_mocapid[mujoco.mj_name2id(m, mujoco.mjtObj.mjOBJ_BODY, "iha")]
