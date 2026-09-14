@@ -31318,3 +31318,41 @@ araçlarında hata TEK bir flowable'da olup görünüşte ilgisiz sayfaları
 etkilemez; tam sayfa taraması gerekiyordu, kullanıcı haklı olarak durdurdu.
 
 **Genel kapı:** dokunulmadı.
+
+
+---
+
+### D-485 — Gerçek v36 modeli backup diskten kurtarıldı + `record_in_container.sh`'de gerçek gzserver unpause hatası bulundu/düzeltildi
+
+**Yazan:** Claude · **Tetikleyen:** kullanıcı, kayıtlı üretim modelinin (D-482'de eksik
+bulunan) yedeği `/run/media/trs/BACKUP/` diskinde olduğunu bildirdi.
+
+**Model kurtarma.** `models/navitas_seg_v36_best.pt` + `.onnx` + `_512_fp16.engine`
+ve `navitas_seg_v37_best.{pt,onnx}` backup'tan kopyalandı. **SHA-256 tam eşleşme**
+`config/model_registry.json`'daki kayıtlı özetlerle doğrulandı (v36: `1d1caca6…`,
+engine: `bb9bd868…`, onnx: `f4c9f5fe…`) — gerçek, doğru üretim modeli. `.gitignore`
+`models/*.pt` içerdiği için bu dosyalar **commit edilmedi**, yalnız diskte.
+
+**YENİ hata bulundu (v36 devreye girince ortaya çıktı) — `record_in_container.sh`
+gzserver'ı gerçekten duraklatılmamış duruma getiremiyordu.** `gzserver --pause`
+başlatılıp tek seferlik `gz world -p 0 2>/dev/null || true` ile açılmaya
+çalışılıyordu; bu komut bazen dünyayı gerçekten unpause etmiyordu (nedeni
+netleşmedi — muhtemelen `world_stats` topic'inin varlığı "hazır" ile eşdeğer
+değil). Kanıt (`rv40`, kolay seviyesi): `gzserver` 30+ dakika **%77 CPU'da**
+çalıştı ama `/tmp/navitas_simtime` hiç yazılmadı, `/tmp/iha_scan/` **0 kare**
+üretti — host'taki `iha_haritala.py` izleyicisi kendi 1800 sn sınırına çarpıp
+"atlanıyor" dedi (D-482'deki eksik-model semptomuyla **aynı görünüp farklı kök
+nedene** sahip). Konteyner içine `podman exec` ile girilip elle
+`gz world -p 0` çalıştırılınca dünya **anında** kareler üretmeye başladı —
+kesin doğrulama.
+
+**Düzeltme:** tek seferlik unpause, `/tmp/navitas_simtime` dosyası belirene
+kadar (fizik gerçekten adım attığının kanıtı) 15 kez / 2 sn aralıkla tekrar
+denenen bir döngüye çevrildi (`simulation/docker/record_in_container.sh`).
+
+**Sonuç:** `rv40` (kolay kaybedildi, atlandı) durduruldu; düzeltmeyle `rv41`
+sıfırdan başlatıldı, unpause ilk denemede doğrulandı (kanıt: `navitas_simtime`
+40 saniye içinde doldu, 15 kare üretildi).
+
+**Genel kapı:** dokunulmadı (yalnız kayıt boru hattı script'i, `codes/` altına
+dokunulmadı).

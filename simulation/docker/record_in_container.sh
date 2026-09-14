@@ -146,7 +146,21 @@ record_one() {
     done
     sleep 3
     echo "[rec] $level görevi oynatılıyor (${secs} SİM saniyesi)..."
-    gz world -p 0 2>/dev/null || true
+    # UNPAUSE GÜVENİLİRLİK DÜZELTMESİ (14 Eylül, D-485): tek seferlik "gz world -p 0"
+    # bazen dünyayı gerçekten duraklatılmamış hale getirmiyordu (fizik hiç ilerlemiyor,
+    # /tmp/navitas_simtime hiç yazılmıyor, kareler hiç üretilmiyor — rv40'ta 30+ dk
+    # boşa gitti). Artık /tmp/navitas_simtime dosyası belirene kadar (fizik gerçekten
+    # adım attığının kanıtı) unpause komutu tekrar tekrar denenir.
+    rm -f /tmp/navitas_simtime
+    unpause_ok=0
+    for i in $(seq 1 15); do
+        gz world -p 0 2>/dev/null || true
+        sleep 2
+        if [ -s /tmp/navitas_simtime ]; then unpause_ok=1; break; fi
+    done
+    if [ "$unpause_ok" = "0" ]; then
+        echo "[rec] UYARI: $level için unpause 30s içinde doğrulanamadı (navitas_simtime hâlâ boş) — devam ediliyor, aşağıdaki asıl döngü de simt=0 görürse zamanla dolabilir"
+    fi
     # SİM zamanını bekle (duvar saati DEĞİL): render yavaşsa (RTF<1) görev yarım
     # kalmasın. Ölçülen yaklaşık 0,07 RTF için 144 sim s ≈ 2150 duvar s;
     # 20x+120 bütçe 3000 s verir. Bu da dolarsa sessiz başarı YASAKTIR.
