@@ -244,10 +244,17 @@ def ucus_analiz(A, P, k, log_ad):
         R_oz = None
         if len(onc) and (I.mean() - onc[:, 3].mean()) > 5:
             R_oz = (onc[:, 1].mean() - V.mean()) / (I.mean() - onc[:, 3].mean())
-        sl = np.polyfit(V, ThO[aski], 1)[0] if V.std() > 0.05 else None
+        thA = ThO[aski]
+        sl = np.polyfit(V, thA, 1)[0] if V.std() > 0.05 else None
+        kV = float(np.corrcoef(V, thA)[0, 1]) if V.std() > 0 and thA.std() > 0 else None
+        kI = float(np.corrcoef(I, thA)[0, 1]) if I.std() > 0 and thA.std() > 0 else None
         bat["aski"] = {"V": istat(V), "V_hucre_ort": r(V.mean() / 4), "I": istat(I), "P_W": istat(V * I), "VoltR_ort": r(ba[:, 2].mean(), 2),
                        "BAT_Res_ort_ohm": r(ba[:, 6].mean(), 4), "R_ic_hesap_ohm": r(R_oz, 4), "R_ic_hesap_mohm_hucre": r(R_oz * 1000 / 4, 1) if R_oz else None,
-                       "dThO_dV_egim": r(sl, 4), "mAh_per_s": r(I.mean() / 3.6, 2)}
+                       "dThO_dV_egim": r(sl, 4), "mAh_per_s": r(I.mean() / 3.6, 2),
+                       "dThO_dV_gecerlilik": {"V_aralik_V": r(V.max() - V.min(), 3), "ThO_aralik": r(thA.max() - thA.min(), 3),
+                                              "korr_ThO_V": r(kV, 3), "korr_ThO_I": r(kI, 3),
+                                              "ekstrapolasyon_1.5V_HESAP": r(-sl * 1.5, 3) if sl is not None else None,
+                                              "not": "egim yalnizca aski ici dar V araliginda olculdu; ThO-I korelasyonu ThO-V'den guclu ise egim YUKLE KARISIKTIR ve 1,5 V'a ekstrapolasyon ZAYIF DAYANAKTIR (2026-09-15 curutucu bulgusu)"}}
     u["bat"] = bat
     # --- titresim
     v = A["VIBE"]; vm = (v[:, 0] >= t0) & (v[:, 0] <= t1); vv = v[vm]
@@ -764,8 +771,13 @@ sonuc["bulgular"] = [
         min(u["ekf"]["gps"]["NSats_min"] for L in sonuc["loglar"] for u in L["ucuslar"]), 15, u1["ekf"]["gps"]["HDop_p50"], u1["ekf"]["gps"]["HDop_>esik_t"][0], u1["ekf"]["gps"]["HDop_>esik_t"][1], 1.40, u1["ekf"]["gps"]["HDop_maks"]),
     "OLAYLAR: failsafe UCUSTA YOK. 11-18-16 t=63.75 GCS Failsafe (ERR FS_GCS=1) yerde/disarm halinde, 0.33 s sonra temizlendi (FS_GCS_ENABLE=5 Land; FS_OPTIONS=16 pilot kontrollu kiplerde GCS FS yoksayilir); crash check / thrust loss / EKF failsafe / vibe failsafe yok (MOTB FailFlags=2 normal, POWR Flags=1, Vcc %.2f-%.2f V). Inisler: 3 ucus RC ile LAND kipi (LAND_REPO_ACTIVE: pilot inis sirasinda konum duzeltti), LAND_COMPLETE + LANDED disarm. 11-18-16 t=105 'Arm: Throttle too high' (STAB arm denemesi, gaz yuksek), pencere 3 STAB ile armlandi -> sicrama. MOT_THST_HOVER 0.506 STAB'da cubuk ortasini 0.506 gaza esler (askinin 1.56 kati) -> STAB'da sert tirmanma riski." % (
         min(u["powr"]["Vcc_min"] for L in sonuc["loglar"] for u in L["ucuslar"]), max(u["powr"]["Vcc_maks"] for L in sonuc["loglar"] for u in L["ucuslar"])),
-    "PARAMETRE UYUMSUZLUKLARI (4S'e gecis icin): BATT_LOW_VOLT 10.0 / BATT_CRT_VOLT 9.0 (3S) -> 4S icin 14.0 / 13.2 V; BATT_CAPACITY 8000 (3S pil) -> 4S kapasitesi girilmeli; MOT_THST_HOVER 0.506 (3S) -> 0.33 (olculen) ya da cubuk ortada >=30 s askida ogrenme; MOT_BAT_VOLT_MAX/MIN=0 (gerilim telafisi kapali: askida dThO/dV egimi %.2f/%.2f/%.2f 1/V, 1.5 V sarkma boyunca gaz ~%.3f artiyor). INS_HNTCH_ENABLE=0, INS_GYRO_FILTER=20 degismedi." % (
-        u1["bat"]["aski"]["dThO_dV_egim"], u2["bat"]["aski"]["dThO_dV_egim"], u4["bat"]["aski"]["dThO_dV_egim"], -u1["bat"]["aski"]["dThO_dV_egim"] * 1.5),
+    "PARAMETRE UYUMSUZLUKLARI (4S'e gecis icin): BATT_LOW_VOLT 10.0 / BATT_CRT_VOLT 9.0 (3S) -> 4S icin 14.0 / 13.2 V; BATT_CAPACITY 8000 (3S pil) -> 4S kapasitesi girilmeli; MOT_THST_HOVER 0.506 (3S) -> 0.33 (olculen) ya da cubuk ortada >=30 s askida ogrenme; MOT_BAT_VOLT_MAX/MIN=0 (gerilim telafisi kapali). Askida dThO/dV egimi %.2f/%.2f/%.2f 1/V OLCULDU, ama aski ici V araligi yalnizca %.2f/%.2f/%.2f V, ThO araligi %.3f/%.3f/%.3f ve ThO-I korelasyonu (%.2f/%.2f/%.2f) ThO-V korelasyonundan (%.2f/%.2f/%.2f) guclu -> egim yukle karisik; 1,5 V sarkmaya ekstrapolasyon (~%.3f gaz) ZAYIF DAYANAK (HESAP, olcum degil). Telafi onerisinin dayanagi egim degil, ucus ici sarkmanin kendisidir (pencere basi -> min, ort %.2f V). INS_HNTCH_ENABLE=0, INS_GYRO_FILTER=20 degismedi." % (
+        u1["bat"]["aski"]["dThO_dV_egim"], u2["bat"]["aski"]["dThO_dV_egim"], u4["bat"]["aski"]["dThO_dV_egim"],
+        u1["bat"]["aski"]["dThO_dV_gecerlilik"]["V_aralik_V"], u2["bat"]["aski"]["dThO_dV_gecerlilik"]["V_aralik_V"], u4["bat"]["aski"]["dThO_dV_gecerlilik"]["V_aralik_V"],
+        u1["bat"]["aski"]["dThO_dV_gecerlilik"]["ThO_aralik"], u2["bat"]["aski"]["dThO_dV_gecerlilik"]["ThO_aralik"], u4["bat"]["aski"]["dThO_dV_gecerlilik"]["ThO_aralik"],
+        u1["bat"]["aski"]["dThO_dV_gecerlilik"]["korr_ThO_I"], u2["bat"]["aski"]["dThO_dV_gecerlilik"]["korr_ThO_I"], u4["bat"]["aski"]["dThO_dV_gecerlilik"]["korr_ThO_I"],
+        u1["bat"]["aski"]["dThO_dV_gecerlilik"]["korr_ThO_V"], u2["bat"]["aski"]["dThO_dV_gecerlilik"]["korr_ThO_V"], u4["bat"]["aski"]["dThO_dV_gecerlilik"]["korr_ThO_V"],
+        -u1["bat"]["aski"]["dThO_dV_egim"] * 1.5, H["gerilim_sarkmasi"]["sarkma_ort_V"]),
 ]
 out = temizle(sonuc)
 with open(os.path.join(OUT, "ozet.json"), "w", encoding="utf-8") as f:

@@ -31162,3 +31162,450 @@ Komut: `FDR_DOCID=FDR_YZLM_004E FDR_DOCDATE=14.09.2026 FDR_FONT_DIR="/c/Windows/
 **3. Codex'in yerel işi:** 14 Eyl 08:44–09:51 arası ana ağaçta commitlenmemiş kalan değişiklikler (CAD video altyapısı, YKS gerçek kayıt, IKA_GAZEBO_MODEL, kendi REVIEW_LOG/HANDOFF kayıtları) olduğu gibi WIP commit'e alındı — **denetlenmedi**. Kullanıcının dosyalarına (`dronesolid/*.3mf`, `results/prova/*/hakem_log.jsonl`) dokunulmadı.
 
 **4. Kullanıcı şikâyeti (14 Eyl) — CAD videosu:** kök nedenler kanıtla belirlendi: (a) video `kosum/model_5_zor_42` (model sonuç vermemiş) okuyor, aynı model sha `1d1caca6…` ile `kosum_tur3/model_5_zor_42` 2. yolu 0,703 güvenle doğru bulmuş; (b) CAD paketinde motor/mil/braket yok, gövde altı (z 0,064) teker üstünden (0,062) yüksek, CAD izi 0,383 ↔ ölçülen 0,4595; (c) 01:30 sonrası İKA arenadan kopuk sabit kadraj + jüriye uygunsuz iç notlar. Düzeltme iş akışı `wnhef2ho2` (amele + çürütücü) koşuyor.
+
+### 14 Eylül 2026 — Kullanıcı talebi: arena video rev1 teslimi ve FINAL.docx kanıt denetimi
+
+**Yazan:** Codex · **Bağımsız denetleyen:** henüz yok; uygulayıcı kendi işine resmi
+kabul vermedi. Kullanıcı en güncel belgeyi `NAVITAS_FDR_3_3_FINAL.docx` olarak
+belirledi; bu DOCX/PDF ve Claude'un video WIP dosyaları değiştirilmedi.
+T107/T260 kilitleri korunuyor; commit/push yok. Önceki D numarası çakışmaları
+nedeniyle yeni mimar karar numarası atanmadı.
+
+**Video sonucu ve sınırı:** yeni ayrı `scripts/fdr_33_arena_video_rev1.py`;
+teslim `FDR/JURI/video/navitas_cad_arena_rev1_1080p.mp4`, 1920×1080 / 25 FPS /
+4.205 kare / 168,20 s / 81.082.874 bayt; SHA-256
+`e46a9dd5796bfdede20d0c067ebcbc2acde8fa3e69c2302292f7240c8d89177e`.
+Yeşil ince zemin rotası açık model yolunu gösteriyor; 01:30 sonrası teker montajı
+ve arena sürüşü kesintisiz anlaşılır kadrajda. Sonuç kartı HB'deki son konumu
+gösteriyor. Motor/braket/mil CAD'de yoktu; temsilî parçalar fizik kütlesini ve
+çarpışmasını değiştirmeden eklendi, videoda açıkça etiketlendi. İKA tekerleri
+qpos kaydından, İHA aktüatör gösterimi temsili. TUR3 algı kaydı ve yeni fizik
+oynatımıdır; yeni canlı algı/saha testi değildir. Bu koşu 42 model noktası,
+99,88 s görev / 62,6 s sürüş / 0 temas / HB mesafesi 0,248 m'dir. Plan takip
+hatası en çok 0,269 m, ortalama 0,066 m; yol merkez hattı hatasıyla karıştırılmadı.
+Eski NO_ROUTE ve GT kayıtları korunuyor; toplu model başarı oranı değiştirilmedi.
+
+**Gerçek komut/çıktı/çıkış kanıtı** (yorumlayıcı her satırda
+`O:\navitas-local-train\venv\Scripts\python.exe -X utf8 -B`):
+- `scripts/fdr_33_arena_video_rev1.py --render` → `ARENA_VIDEO_OK 4205 KARE 168.2 s`, çıkış 0.
+- `scripts/fdr_33_arena_video_denetle.py --test` → genel iki kol 15/15; `Ran 7 tests in 2.837s / OK`, çıkış 0.
+- `scripts/fdr_33_arena_video_denetle.py --video` → `TESLIM_VIDEO_DOGRULANDI 4205 kare 13 sürüş örneği`, çıkış 0. Kanıt dizini `results/fdr_33_20260914/cad_video_arena_rev1_v2/`. 90/120/166 s kareleri ayrıca incelendi; piksel testi insan görsel onayı değildir.
+- `scripts/fdr_33_test_kaydi.py --hedef` → `Ran 259 tests in 50.718s / OK`, genel iki kol 15/15, çıkış 0; `test_20260914_125633/`. Önceki hedef testin bayat üç-görünüm beklentisi yeni `rota` görünümüne hizalandı; küçük pencere rota listesi 3 satıra düşerek haritanın görünmesini sağlıyor.
+- `scripts/yki_tek_rota_onizleme.py` → `YKI_ONIZLEME_OK 3 görsel 42 nokta`, çıkış 0; `results/fdr_33_20260914/yki_tek_rota/`. Kaynak kayıt/sim etiketi korunuyor; canlı GNSS, ACK veya hakem onayı üretilmedi.
+- `scripts/fdr_33_final_denetle.py` → `FINAL_OKUMA_OK 348 paragraf 50 tablo 61 görsel 54 PDF sayfası`; `FINAL_DENETIM_KAYDEDILDI 10 bulgu; kurulu alt toplam 1.407 kg; TESLIME_HAZIR=False`, çıkış 0.
+- `-m unittest discover -s tests -p test_fdr_33_final_denetle.py -v` → `Ran 6 tests in 0.000s / OK`, çıkış 0; `son_kontrol/final_denetim_test.txt`. PowerShell stderr'i ilk satırda NativeCommandError biçiminde gösterdi; test sürecinin gerçek çıkışı 0 ve sonuç OK.
+- `codes/test_rota_sentetik.py` → `GENEL KAPI (madde 14): GECTI — kol1 15/15 · kol2 serit 15/15`, çıkış 0; `son_kontrol/final_genel_kapi.txt`. Tam süit son girişimi kesildi; genel tam süit yeşil iddiası yok.
+
+**FINAL bulguları:** kaynak SHA-256
+`f3120da5eff126ddb97eb6860ccf16f9ac1792d2d18d104951c94cfca16c6b9c`.
+Tekrar üretilebilir hesap/konum/kaynaklar:
+`results/fdr_33_20260914/son_kontrol/final_denetim.json`.
+1. T8/T9, PDF s.15: kurulu sayısal aviyonik alt toplam 1,407 kg; yazılı 1,876 kg yanlış. 143.098,77 TL, 1.800 TL kablaj bütçesi dahil doğru alt toplamdır; motor fiyatı da eksiktir. Tam araç kütlesi/maliyeti denemez.
+2. P24/P219: U45 12 V etiketli R65/R66=12,4k/3,3k → nominal 5,947 V; U4 5,3 V etiketli R23/R24=10k/3,3k → nominal 5,038 V. [XL4015 üretici belgesi](https://www.xlsemi.com/datasheet/XL4015-EN.pdf), Figure 4, `Vout=1,25×(1+Rüst/Ralt)`. Gerçek kart çıkışı ölçülmedi. U45 giriş ağı 30 V, T27 16,8 V kullanıyor; hedef 12 V / 47 µH / 180 kHz varsayımında ripple sırasıyla 0,851 ve 0,405 A. Elektronikçi güncel şema ve ölçümle kapatmalı.
+3. P17–20/P42–45: fiziksel doğrulama ve çalışır entegrasyon iddiaları görsellerden tek başına kurulamaz. İHA görseli kökteki `Gemini_Generated_Image_3lkrzt3lkrzt3lkr.jpg` ile 128×128 RGB karşılaştırmada ortalama 0,664/255 farkla eşleşiyor. Köken kullanıcıya soruldu; yanıt yok. İKA görseli bu kaynaklarla eşleşmedi, yapay hükmü verilmedi.
+4. P271/T36–37: eski 720p video künyesi ve yerel link var; yeni 1080p model42 koşusu ayrı revizyonla eklenmeli. Kamuya açık Drive linki henüz yok; eski model başarısızlığı veya GT başarı kaydı silinmemeli.
+5. T12/T15 İKA kablajı 250/216 g; T10/T18 İHA ana döngü 0,60/0,50 m ve iki ESC toplamı 1,40/1,20 m. Kesim payı/kurulu boy açıklaması ve gerçek nihai ölçü olmadan uzlaştırılamaz.
+6. Tasarım NX/SiK433 ile ölçüm Nano4GB/RFD900A ayrımı açıklaştırılmalı. Videosuz tek-rota ekranı, gerçek GNSS kaydından ayrı kayıt etiketiyle eklenebilir; gerçek fiziksel 42 nokta uçtan uca sürüş tamamlandı denemez.
+7. P288'de 64 sayısı bütünüyle yanlış değildir: planlayıcı yumuşak hedef, gönderici zorunlu 2..64 sınırıdır (`comms/iha_sender.py:62`). 65/67 nokta planlar telsiz geometri reddine gider; planlayıcı/taşıyıcı kapsamı ayrılmalı. Üretim eşiği/sözleşme değiştirilmedi.
+8. RC kaydı var: 08-34-30 BIN, ERR Subsys5/ECode1; önceki ARM durumu 0. Havada RC failsafe testi değildir. Sonuç `son_kontrol/rc_olay_baglami.json`; eksik fiziksel tam-yük, güncel İKA ve nihai sabit kanat kanıtları multirotor/sim kayıtlarıyla kapatılmadı.
+
+**HUMAN REPORT:** Video yüklemeye hazır; orijinal FINAL korunuyor ama bu haliyle
+gönderilmemeli. Drive görüntüleme linki ve fotoğraf kökeni kullanıcıdan bekleniyor.
+Şema/çıkış uyuşmazlığı ve eksik nihai donanım ölçüleri elektronik sorumlusunun
+gerçek verisiyle kapanmalı; tam puan veya fiziksel doğrulama garantisi verilmedi.
+
+### 14 Eylül 2026 13:52 — Kullanıcı teyidi sonrası FINAL_REV2 / güncel şema ve video bağlantısı
+
+**Yazan:** Codex · **Bağımsız denetleyen:** henüz yok. Kullanıcı `331-332.pdf`'yi
+güncel şema olarak belirtti; iki yerleşim görselinin temsili kullanılmasını istedi
+ve video Drive linkini verdi. Orijinal FINAL DOCX/PDF, kaynak PDF, görev kilitleri
+korundu; commit/push yapılmadı.
+
+**Doğrulanan kaynak:** `331-332.pdf` 38 sayfa; SHA-256
+`e880e266d3e9264c747c80036f3cf8a861213b2d2d4f4544f760a7916d00d090`.
+Önceden incelenen elektronik PDF ile aynı dosya. Sayfa 4'te U45 R65/R66 =
+12,4k/3,3k, U4 R23/R24 = 10k/3,3k; sayfa 6 alt-BOM aynı değerleri doğruluyor.
+Güncel kaynak beyanı elektriksel uyuşmazlığı kapatmıyor. 12 V ve 5,3 V hedeflerine
+karşı nominal 5,947 V ve 5,038 V; yükte ölçüm bulunmadı. Kaynak PDF'nin sarı ÖN
+hücreleri gerçek ölçüm değil; revizyona deney sonucu olarak alınmadı.
+
+**Drive:** onaylı `Invoke-WebRequest` GET (TLS1.2, oturumsuz) → HTTP 200,
+başlık `navitas_cad_arena_rev1_1080p.mp4 - Google Drive`, çıkış 0. Bağlantı:
+`https://drive.google.com/file/d/1xXzQdDCefh2u9UxndF86EfQE8nWI1fjH/view?usp=sharing`.
+Yerel HTML `son_kontrol/drive_paylasim.html`; uzak video baytları indirilip SHA
+eşlenmedi, tam oynatma testi yapılmadı. DOCX ve PDF'de dış bağlantı bulundu.
+
+**Belge revizyonu:** `FDR/JURI/NAVITAS_FDR_3_3_FINAL_REV2.docx` ve PDF.
+İki yerleşim görseli başlık/metin/alt açıklamalarında temsili; fiziksel doğrulama
+iddiaları kaldırıldı. 1,407 kg alt toplam, eksik fiyatlar, İKA kablaj bütçesi
+250 g; İHA ana 0,60 m ve ESC başına 0,70 m hesap boyları tasarım/eşit pay kabulü
+olarak açıklandı. 88,94 A ana hat 0,069 V/6,15 W, 38 A ESC kolu
+0,087 V/3,31 W. Güncel şemadaki 30 V son-kademe girişine göre hedef 12 V
+dalgalanması 0,851 A; devre revizyonu ve fiziksel ölçüm gereği korundu.
+Yeni 1080p video, 42 model noktalı yeni koşu ve 120 s kesiti eklendi; eski model
+başarısızlığı/GT tanısı ayrı arşiv olarak kaldı. Gerçek GNSS görseli korundu;
+videosuz tek-rota ekranı kayıtlı simülasyon etiketiyle ayrıca eklendi.
+
+**Koordinat kanıtı:** 42 tablo noktası `cad_video_duzeltilmis/kosum/model_5_zor_42/
+iha_scan/rota.json` ile testte karşılaştırıldı. Referans (-4,48; -23,02) m;
+arena nokta = referans + yerel nokta; +x sağa/+y ileriye. Tablo 0–41 ile
+video/arayüz P1–P42 ayrımı açık. Fiziksel GNSS/radyo alıcı kaydı denmedi.
+
+**Gerçek komutlar:** yorumlayıcı `O:\navitas-local-train\venv\Scripts\python.exe -X utf8 -B`.
+- `scripts/fdr_33_final_rev2.py` → `FINAL_REV2_OK 351 paragraf 50 tablo 62 görsel; kaynak korundu`, çıkış 0.
+- `scripts/fdr_33_test_kaydi.py --final-rev2` → genel iki kol 15/15; `Ran 15 tests in 0.227s / OK`; her iki süreç çıkışı 0. Kayıt `results/fdr_33_20260914/test_20260914_135031/`.
+- LibreOffice `soffice.com -env:UserInstallation=file:///O:/navitas/results/fdr_33_20260914/lo_final_rev2 --headless --convert-to pdf --outdir FDR/JURI FDR/JURI/NAVITAS_FDR_3_3_FINAL_REV2.docx` → Writer PDF export, çıkış 0.
+- `scripts/fdr_33_final_rev2_pdf.py` → `REV2_PDF_OK 49 sayfa; Drive bağlantısı var; sayfa dışına taşan sözcük yok`, çıkış 0. Sayfa 2/7/13/29/30/36/37/38/46/47/48/49 ayrıca görsel incelendi; tüm 49 sayfaya görsel/bağımsız onay verilmedi.
+
+İlk revizyon testinde gerilim beklentisi 0,069160 olarak erken yuvarlatıldığı
+için 8 testten biri düştü; tam çarpım 0,069159744 ile beklenti düzeltildi.
+Ürün hesabı/eşik gevşetilmedi. Son paket testi kaynak SHA koruma, iki temsili
+etiket, Drive ilişkisinin dış olması, 42 ham koordinat, gerçek GNSS, arşiv/yeni
+sim ayrımı ve şema uyarılarının korunmasını kapsar. Tam depo süiti çalıştırılmadı.
+
+**Teslim kimliği:** DOCX SHA
+`f4b16f21582bf87c3feccd6dd50206c14f8aab14cdc9af723a1bfc31b3f44007`;
+PDF SHA `738fed2e8cf11071b911449f7ec736618b515a9119912a25d4b501064eb7d8c5`.
+Künye `son_kontrol/final_rev2_kunye.json`, PDF kanıtı `son_kontrol/rev2_pdf/denetim.json`.
+**Açık:** şema revizyonu/yük ölçümü, eksik nihai BOM kütle/fiyatları ve fiziksel
+sabit kanat/İKA kabulü. Rapor güncellendi; bu açıklar tamamlandı denmedi.
+
+## 2026-09-14 14:24 · Codex · FINAL_REV3 gömülü CAD ayrıntıları
+
+**İstek:** Kullanıcı raporda hâlâ gövdeden kopuk görünen tekerleri ve benzer
+ayrıntıları düzeltmemizi istedi. Doğrudan kullanıcı belge revizyonu; kuyruktaki
+başka ajan kilitlerine dokunulmadı. Kullanıcı belgeleri silinmedi; kaynaklar korundu.
+
+**Bulgu/kök neden:** REV2 paketindeki P249/P251/P253 CAD kareleri eskiydi;
+video montajındaki görünür motor/braket/mil düzeltmesi bu gömülü karelere
+aktarılmamıştı. Önceki rapor görsel kontrolü bu kusuru yakalayamamıştı.
+P48'deki 2B PCB yerleşiminin açıklaması da yanlışlıkla alternatif 3B diyordu.
+
+**Düzeltme:** `scripts/fdr_33_rapor_cad_gorsel.py` aynı video montajından dört
+yerel MuJoCo stüdyo görseli üretir. Dört teker-gövde zinciri bağlı, lastikler
+siyah/jant-gövde Turan mavisi; İHA magenta/koyu pervaneli, mancınık beyaz ve
+tam kadrajdadır. Kaynak CAD'de olmayan bağlantılar TEMSİLİ olarak açıklanır.
+`scripts/fdr_33_final_rev3.py` eski üç medya ilişkisini kaldırıp yeni kareleri
+yerleştirir, ayrıca İKA bağlantı yakın planı ekler. 2B PCB başlığı, kaynak CAD
+parça/zarf açıklamaları, Kimlik sütunu ve sürelerin ondalık ayracı düzeltildi.
+PDF sayfa 34'te iki bağlı İKA görünüşü birlikte yer alır.
+
+**Gerçek komutlar:** yorumlayıcı `O:\navitas-local-train\venv\Scripts\python.exe -X utf8 -B`.
+- `scripts/fdr_33_rapor_cad_gorsel.py` → `RAPOR_CAD_GORSEL_OK 4 görsel 4 bağlı teker`, çıkış 0.
+- `scripts/fdr_33_final_rev3.py` → `FINAL_REV3_OK 63 görsel; 3 eski CAD çıkarıldı; bağlantı detayı eklendi`, çıkış 0.
+- `scripts/fdr_33_test_kaydi.py --final-rev3` → genel kapı kol1 15/15, kol2 şerit 15/15; `Ran 6 tests in 0.397s / OK`; arena `Ran 7 tests in 2.773s / OK`; üç süreç çıkışı 0. Ham çıktılar `results/fdr_33_20260914/test_20260914_142111/`.
+- LibreOffice `soffice.com -env:UserInstallation=file:///O:/navitas/results/fdr_33_20260914/lo_final_rev3 --headless --convert-to pdf --outdir FDR/JURI FDR/JURI/NAVITAS_FDR_3_3_FINAL_REV3.docx` → Writer PDF export, çıkış 0.
+- `scripts/fdr_33_final_rev3_pdf.py` → `REV3_PDF_OK 50 sayfa; yeni açıklamalar ve Drive bağlantısı var; sayfa dışına taşan sözcük yok`, çıkış 0.
+
+PDF kontrolünün ilk denemesi, font yedekleme nedeniyle Türkçe gliflerin ham
+metinde satır sonunda dönmesi yüzünden beş açıklamayı eşleyemedi; çıkış 1.
+Koordinata göre metin sırası ve boşluksuz eşleme kullanılarak ayrıştırıcı
+düzeltildi; belge içeriği bu testi geçsin diye değiştirilmedi. Tüm 50 sayfa
+küçültülmüş dizinde tarandı; 8/33/34/35/49 büyük görüntüde de incelendi.
+Bu, tam çözünürlükte her satır için veya bağımsız denetçi tarafından onay değildir.
+
+**Teslim:** `FDR/JURI/NAVITAS_FDR_3_3_FINAL_REV3.docx` ve PDF; 353 paragraf,
+50 tablo, 63 görsel, 50 sayfa. DOCX SHA
+`3f01f2473c6c28020df635f17841f447af903d1189bc3fbfef06bac7ff5fea78`;
+PDF SHA `97174011d00bd0f2842c47efbff78eb6fada5cc8434be9c62fb111ce57c5d072`.
+Künye `results/fdr_33_20260914/gorsel_rev3/rev3_kunye.json`;
+PDF kanıtı aynı dizinin `pdf_denetim/denetim.json` dosyası.
+
+**Koruma/sınır:** 17 test/koordinat tablosu REV2 ile hücre hücre aynı; eski üç
+CAD SHA'sı yeni medya paketinde yok, dört yeni kare var. REV2 ve yayımlanan
+video SHA'ları korunuyor. Montaj boşlukları CAD hesabıdır; fiziksel tolerans
+veya ölçüm değildir. Şema/BOM ve fiziksel kabul açıkları kapatıldı denmedi;
+tam depo süiti çalıştırılmadı. Commit/push yok.
+**Yazan:** Codex · **Denetleyen:** bağımsız mimar onayı bekleniyor ·
+**Kapı çıktısı:** gerçek komutlar, sonuçlar ve ham kayıtlar yukarıda.
+
+## 2026-09-14 18:28 · Codex · FINAL_REV4/5/6 kaynak doğrulama ve jüri sunumu
+
+**Yetki/kapsam:** Doğrudan kullanıcı talebiyle yalnız FDR 3.3 belge revizyonu
+ve buna ait üretim/doğrulama araçları. Başka ajan kilitlerine dokunulmadı;
+kaynak belgeler, ham loglar, önceki raporlar ve video korunur. Bu kayıt,
+14:24 REV3 kaydından sonra yapılan üç ardışık belge çalışmasını tamamlar.
+
+**REV4 — klasör karşılaştırması:** `scripts/fdr_33_klasor_denetimi.py` ile
+77 kaynak SHA'sı ve 80 sayısal eşleşme kontrol edildi; 6 DataFlash BIN'in
+BAT/CTUN/GPS/PARM/olayları, 14 ARM penceresi, 13 tlog envanteri ve 105 ayrı
+simülasyon sonucu yeniden okundu. Kanıt `results/fdr_33_20260914/tam_kontrol_rev3/`.
+Jetson `plan=False` / `mpp=None` kapsamı, ONNX başarısızlığı, fiziksel sürücü
+başlatma sınırı, ACK `ref` sözleşmesi, statik itki/dinamik gereksinim ayrımı,
+38 A için 30 saniye sınırı ve kuramsal güç hesaplarının koşulları düzeltildi.
+U45 AMS1117-5.0 ile 3,3 V etiketi ve XL4015 geri besleme/hedef gerilim farkları
+bulundu; şemanın veya donanımın onarıldığı ileri sürülmedi. REV4 DOCX SHA
+`2269acdd7574f3c220375e36a56137c7a24d1ead50d6d44a26e969424ec32872`.
+
+**REV5 — elektronikçi kaynağı:** `33.docx` SHA
+`fb2248dded013030928c18a0ec0c7c3c414b292ed294153c9c6646d578ed4bbf`.
+Önceki elektronik belgesiyle metin, tablo ve gömülü medya karşılaştırıldı.
+Kaynakta 241 paragraf, 33 tablo, 42 görsel vardır; yalnız iki görsel değişmiş,
+elektrik şemaları aynı kalmıştır. 17 eski ÖN sonucu boşaltılmıştır. Pixhawk
+6C + PM02 + M9N, Skywalker 60A V2, Camera Module 3 Wide / IMX708, AS150 ve
+kalem fiyatları birleştirildi. İHA sayısal alt toplamı 1,543 kg / 141.407,57 TL;
+kit 91 g ve kablaj 250 g bütçedir. Kullanıcının temsili fotoğraf talimatı
+korundu. İki eski mimari diyagramı kodla güncellendi; şema/BOM çelişkileri
+kapandı denmedi. Kaynak karşılaştırmaları `elektronik_rev5/` altındadır.
+REV5 DOCX SHA `ad3296ef07aa556e8a75a5717774357eb5c781c4c0be7d6d48851fa98241aa56`.
+Üretici başvuruları rapor K29'da Hobbywing, Raspberry Pi ve Holybro sayfalarıdır.
+
+**REV6 — son kullanıcı talebi:** `scripts/fdr_33_final_rev6.py`, REV5 SHA
+korumasıyla iki boş test tablosunu ve arşiv GT'nin 44 noktalı tablosunu
+çıkarır. 17 “Ölçülmedi” hücresi, tekrarlanan test açığı listeleri ve 6 Ah →
+8 Ah geçmiş anlatımı yerine güncel konfigürasyon ve gerçek ölçüm yöntemleri
+verilir. Ham kayıtlar yeniden yazılmaz. Gerçek deneylerin başarısız sonuçları,
+19 sonuç/koordinat tablosunun hücreleri, videonun 42 model noktası ve bağlı
+İKA CAD görselleri korunur. 63 görselden yalnız iki mimari ve bir kontrol
+akışı güncellenmiştir; diğer 60 medya aynı baytlardadır. DataFlash zaman/
+kanal seçimi, V×I trapez enerji integrali, gerçek 29 kare piksel yöntemi,
+Jetson ısınma ve süre sayacı, RF_PROBE–ACK eşleştirmesi, RTT/kayıp hesabı,
+JSON bayt sayımı ve GNSS kayıt aktarımı açıklanır. Fiziksel çalışma, tasarım,
+temsili görsel, simülasyon ve ölçüm ayrımları korunur. Regülasyon çelişkileri
+kısa tasarım koşulu olarak kalır; gerçekleştirilmeyen ölçüm üretilmez.
+
+**Gerçek komutlar ve ham sonuçlar:** Yorumlayıcı tüm Python komutlarında
+`O:\navitas-local-train\venv\Scripts\python.exe -X utf8 -B`.
+- `scripts/fdr_33_test_kaydi.py --final-rev4` → genel kapı iki kol 15/15; klasör 12 test, önceki raporlar 21 test, arena 7 test OK / çıkış 0. Ham kayıt `results/fdr_33_20260914/test_20260914_161121/`. Bu ilk koşudaki YKS testi Windows geçici dizin izin hatasıyla çıkış 1 verdi.
+- İzinli `scripts/fdr_33_test_kaydi.py --hedef` → genel iki kol 15/15; YKS `Ran 259 tests in 53.996s / OK`, çıkış 0. Ham kayıt `test_20260914_161306/`. İzin hatası başarı olarak sayılmadı.
+- `scripts/fdr_33_test_kaydi.py --final-rev5` → genel iki kol 15/15; `Ran 11 tests in 1.053s / OK`, `Ran 12 tests in 1.014s / OK`; tüm çıkışlar 0. Ham kayıt `test_20260914_163543/`.
+- `scripts/fdr_33_final_rev6.py` → 326 paragraf / 50 tablo / 63 görsel, çıkış 0.
+- `scripts/fdr_33_test_kaydi.py --final-rev6` → genel iki kol 15/15; `Ran 13 tests in 0.900s / OK`, `Ran 11 tests in 0.901s / OK`, `Ran 12 tests in 0.651s / OK`; dört süreç çıkışı 0. Ham kayıt `results/fdr_33_20260914/test_20260914_182755/`.
+- LibreOffice `soffice.com -env:UserInstallation=file:///O:/navitas/results/fdr_33_20260914/lo_final_rev6 --headless --convert-to pdf --outdir FDR/JURI FDR/JURI/NAVITAS_FDR_3_3_FINAL_REV6.docx` → Writer PDF export, çıkış 0.
+- `scripts/fdr_33_final_rev6_pdf.py` → `REV6_PDF_OK 49 sayfa; yeni açıklamalar ve Drive bağlantısı var; sayfa dışına taşan sözcük yok`, çıkış 0. PAGE sırası ve boş gövde sayfası kontrolü de geçti.
+
+**Geliştirme sırasında yakalananlar:** REV5 kaynak karşılaştırmasının ilk
+sabit tablo-adedi varsayımı 34 → 33 değişikliğinde düştü; sıra eşleme ile
+düzeltildi. REV5 testinde iki tek sütunlu tabloya indeks erişimi düzeltildi.
+REV6 ilk testinde düz `6 Ah` araması `0,66 Ah` değerini yanlış yakaladı;
+sayısal sözcük sınırı düzeltildi, gerçek değer değiştirilmedi. İlk REV6 PDF
+50 sayfaydı ve 4. sayfada boş gövde vardı; boş paragrafların biçimi ve tablo
+satırlarının bölünmesi düzenlendi, son çıktı 49 sayfa. Başarısız ilk koşular
+silinmedi. Bütün 49 sayfa küçük dizinde gözle tarandı; bu her satırın tam
+çözünürlükte veya bağımsız denetçi tarafından onaylandığı anlamına gelmez.
+
+**Son teslim:** `FDR/JURI/NAVITAS_FDR_3_3_FINAL_REV6.docx` ve PDF.
+DOCX SHA `a3c6f25f039cee9b03dd4068b4eed701d09f4756f63c7e0fac437d2f7c3d84fa`;
+PDF SHA `fb33466192d5b1e9348ff1dd35b22807fb3996e2398dd98753618bfb340339d0`.
+Künye `results/fdr_33_20260914/sunum_rev6/rev6_kunye.json`; PDF doğrulama
+`sunum_rev6/pdf/denetim.json`; görsel dizin `gorsel_rev3/rev6_sonra/`.
+Video/Drive değişmedi; bağlantı PDF sayfa 38'de, İKA montajı sayfa 34'tedir.
+Tam depo süiti veya fiziksel İKA/sabit kanat kabul testi çalıştırılmadı.
+Commit/push yok. **Yazan:** Codex · **Denetleyen:** bağımsız mimar onayı
+bekleniyor · **Kapı çıktısı:** yukarıdaki gerçek komutlar ve ham kayıtlar.
+
+## 2026-09-14 · Codex · Takım birleşimi ve tablo yerleşimi kanıtı
+
+Doğrudan kullanıcı isteği: yeni 1/2/4/5/6/7 bölümlerini takım içeriğini
+kaybetmeden birleştirmek, gerçek fotoğraf/video karelerini kullanmak ve
+dar tablolardaki kelime yığılmasını gidermek. Özgün belgeler değiştirilmedi.
+
+Kök neden: `Document.tables` yalnız 48 üst düzey tabloyu döndürüyordu;
+88 adet `w:sdtContent` tablosu biçimlendirme dışında kalmıştı. Tüm 136
+tabloya bölüm genişliği, açık sıfır girinti, sabit sütun dağılımı ve otomatik
+satır yüksekliği uygulandı. Yoğun tablolara yatay bölüm, tekrar eden başlık
+satırı eklendi; başlıklar tablodan ayrılmadı ve boş ara bölüm giderildi.
+Gövde ve tablolar 12 punto Times New Roman; sayısal veri/metin kaybı yok.
+
+Gerçek komutlar (yorumlayıcı `O:\navitas-local-train\venv\Scripts\python.exe -X utf8 -B`):
+
+- `scripts/fdr_takim_birlestir.py`: `BIRLESIM_OK 827 paragraf / 136 tablo;
+  korunan 5390 metin parçası / 114 görsel; kayıp=0`; çıkış 0.
+- `-m unittest discover -s tests -p test_fdr_takim_birlestir.py -v`:
+  18 test, OK; çıkış 0. İçerik/medya koruma, 136 tablo, genişlikler, yazı
+  tipi/punto, yatay bölümler, dar başlıklar, PDF boşluk/taşma ve TOC kontrolü.
+- `codes/test_rota_sentetik.py`: genel kapı kol1 15/15, kol2 şerit 15/15;
+  çıkış 0. Tam depo süiti veya fiziksel kabul testi değildir.
+- LibreOffice `--headless --convert-to pdf`: çıkış 0.
+- `scripts/fdr_takim_icindekiler.py --dogrula`: 17 başlangıç sayfası doğrulandı;
+  çıkış 0.
+- `scripts/fdr_takim_pdf_kontrol.py`: birleşik 168 / yeni bölümler 12 sayfa,
+  boş sayfa ve sayfa dışına taşan sözcük yok; çıkış 0.
+
+Ham kayıtlar `results/fdr_bolum1_20260914/` altında `birlestir_cikti.txt`,
+`test_birlestir.txt`, `test_genel.txt`, `pdf_cevir*.txt`, `pdf/denetim.json`.
+169 sayfalık ara çıktı tüm sayfaların küçük dizininde tarandı; nihai değişen
+başlıklar ve yoğun tablo örnekleri ayrıca incelendi. Beş kaynak DOCX ve altı
+özgün medya SHA256 karşılaştırması geçti. Bu kontroller bağımsız teknik onay
+yerine geçmez; kaynak konfigürasyon çelişkileri/mali sınırlar teslim notunda.
+
+Son teslim `fdrtakim/NAVITAS_FDR_BIRLESIK.docx` ve PDF.
+DOCX SHA `e490ceab313235eab3d56f3a1036b27f1cc75eb68da817c40ef6466d8b8ccb91`;
+PDF SHA `53cfa18de185b44b1e565a8446e6a0fd6a02773f98af6ab0af664023b67712a2`.
+Yeni Drive klasör bağlantısı HTTP 200 ile oturum açma sayfasına döndü;
+dosya listesine erişilmiş sayılmadı. Düzenleme yerel kaynaklarla tamamlandı.
+**Yazan:** Codex · **Denetleyen:** bağımsız mimar/ekip onayı bekleniyor ·
+**Kapı çıktısı:** yukarıdaki gerçek komutlar ve ham kayıtlar. Kullanıcı dosyası
+silinmedi, başka görev kilidine dokunulmadı, commit/push yok.
+
+## 2026-09-14 · Codex · Üç sistemli 15 dakikalık teknik sunum
+
+Kullanıcının doğrudan isteğiyle kapak ve takım tanıtımıyla başlayan,
+İHA/İKA/mancınığı eşit özenle anlatan görsel PowerPoint üretildi.
+17 slayt, 900 saniyelik prova planı; her alt sistem dört slayt / 225 saniye.
+29 kaynak görsel kullanımı; CAD, FEA, PCB, gerçek fotoğraf, motor video
+karesi, DataFlash ve YKİ ekranı. Dört nicel grafik düzenlenebilir öğelerle
+üretildi. Asıl raporlar, medya ve `2026_taslak_kDfAV.pptx` değiştirilmedi.
+
+**Kaynak bulguları:** uçuş raporunun V-n görsel başlığı 7,029 kg içerirken
+güncel metni 7,05949 kg diyor. Sunumda eski resim kullanılmadı; pozitif
+n=min[3,(V/VS)²] dalı güncel kütleyle türetildi: VS=14,1967 m/s,
+VA=24,5894 m/s. Mancınık 0,40 MPa enerji senaryosu 1313,6 J ile 1380,6 J
+hedefinin %4,9 altında gösterildi. Simülasyon 45/45,9/45,0/15 sonuçları
+korundu; sonraki tek CAD koşusu toplu başarı yerine sunulmadı.
+Takımda isim/eğitim bilgisi kaynakla doğrulanmadığından rol tanıtımı yapıldı;
+kullanıcıya yöneltilen bilgi sorusu yanıtlanırsa ikinci slayt güncellenebilir.
+
+Gerçek komutlar (yorumlayıcı `O:\navitas-local-train\venv\Scripts\python.exe -X utf8 -B`):
+
+- `scripts/fdr_sunum_kaynaklari.py`: 130 kaynak görsel; çıkış 0.
+- `scripts/fdr_teknik_sunum_uret.py`: `SUNUM_OK 17 slayt / 900 saniye /
+  29 görsel kullanımı`; İHA=İKA=MANCINIK=225 saniye; çıkış 0.
+- LibreOffice `--headless --convert-to pdf`: çıkış 0.
+- `scripts/fdr_sunum_pdf_kontrol.py`: 17 sayfa; boş slayt ve taşma yok; çıkış 0.
+- `-m unittest discover -s tests -p test_fdr_teknik_sunum.py -v`:
+  12 test, OK, çıkış 0. Süre/dengeli kapsam, kaynak ve görsel baytları,
+  konuşmacı notları, metin çakışması, PDF sınırı ve link kontrolü.
+- `codes/test_rota_sentetik.py`: genel kapı kol1 15/15, kol2 15/15; çıkış 0.
+
+Ham kayıtlar `results/fdr_sunum_20260914/` altında: `uret_cikti.txt`,
+`pdf_cevir.txt`, `test_sunum.txt`, `test_genel.txt`, `pdf_denetim.json`.
+Tüm slaytlar görsel dizinde, değişen dört analiz slaytı büyük ölçekte
+incelendi. Tam depo süiti veya fiziksel kabul testi çalıştırılmadı.
+
+**Teslim:** `fdrtakim/NAVITAS_FDR_15_DAKIKA_TEKNIK_SUNUM.pptx` ve PDF;
+ayrıca konuşmacı notları. PPTX SHA
+`437b09dd70361690578de6fb02b3a31e3502a69186c32f280a345332b35257b0`;
+PDF SHA `e9ee9b70bdce55f2c626098bc8562f82fdc3e4d83d31bcd5fe05a562c42a9fe0`.
+python-pptx kullanıcı onayıyla yalnız proje içindeki yardımcı dizine kuruldu.
+**Yazan:** Codex · **Denetleyen:** bağımsız mimar/ekip onayı bekleniyor ·
+**Kapı çıktısı:** yukarıdaki gerçek komutlar ve ham kayıtlar. Başka görev kilidi
+değiştirilmedi; kullanıcı belgesi silinmedi; commit/push yapılmadı.
+
+## 2026-09-15 · Claude alt-ajan (C konfig. uçuş analizi) · `scripts/ucus_bin_analiz.py` RCOU C1–C4 "motor dengesi" bu araçta motor değildir
+
+**Kusur:** T276 aracı `rcou` bloğunda RCOU.C1–C4'ü dört motor sayıyor
+(`ucus_bin_analiz.py` `oku()` yalnız C1–C4 okur; `pencere_analiz` "en_yuksek C3"
+gibi hükümler üretir). Bu araçta ESC'ler AUX1–4 = SERVO9–12'dedir (donanım künyesi)
+ve MAIN çıkışları aynı fonksiyonların aynasıdır.
+
+**Kanıt (PARM, `results/ucus_20260914/2026-09-14 19-43-06.bin` ve `21-10-34.bin`,
+tüm loglarda aynı):** SERVO1/2/4/5/8_FUNCTION=34 (Motor2), SERVO3/7=33 (Motor1),
+SERVO6=36 (Motor4); SERVO9=36, SERVO10=34, SERVO11=33, SERVO12=35.
+Ölçüm: RCOU.C1==C2==C4 örneklerin **%100'ünde** özdeş (1185/1185 ve 890/890);
+C1–C3 farkı yalnız Motor2–Motor1 farkıdır. Motor3 MAIN'de hiç yok → C1–C4'ten
+Motor3 hakkında hiçbir şey söylenemez. `tum_loglar.json` içindeki tüm
+`rcou.C1_C4_ort / yayilim / en_yuksek` alanları bu yüzden **motor dengesi değildir**
+(A/B/D kayıtları dahil). Arm penceresi tespiti (RCOU>1050) etkilenmez (aynalar aynı PWM).
+
+**Doğru eşleme (SERVOn_FUNCTION'dan):** M1=C11, M2=C10, M3=C12, M4=C9. Bununla C
+konfig. askı dengesi: MP68 uçuş1 M1/M2/M3/M4 = 1703/1628/1582/1624 (yayılım 121 PWM,
+M1 %93 en yüksek); MP69 uçuş2 = 1711/1712/1681/1692 (yayılım 31).
+Betik ve JSON: `results/ucus_analiz_20260915/C_3S_9x5x3/analiz_C.py`, `ozet.json`.
+
+**Öneri:** `oku()` C1–C14 okusun, `pencere_analiz` SERVOn_FUNCTION 33–36 ile
+motor→kanal eşlesin; `tum_loglar.json` yeniden üretilsin.
+**Yazan:** Claude alt-ajan · **Denetleyen:** mimar (bekliyor) · **Kapı:** kod
+değişmedi, yalnız analiz betiği eklendi; commit yok.
+
+## 2026-09-15 · Claude alt-ajan (B: 4S+1045 log analizi) · Ortak araç `scripts/ucus_bin_analiz.py` RCOU C1–C4 "motor dengesi" bu araçta YANLIŞ KANAL okuyor
+
+**Bulgu:** Araçta motorlar AUX1–4 = SERVO9–12'de (09-26-58 PARM: SERVO9_FUNCTION=36 M4,
+SERVO10=34 M2, SERVO11=33 M1, SERVO12=35 M3). Ana çıkışlar SERVO1/2/4_FUNCTION=34 (Motor2),
+SERVO3=33 (Motor1). Dolayısıyla `RCOU.C1/C2/C4` = Motor2'nin kopyası, `C3` = Motor1;
+`tum_loglar.json` içindeki `rcou.C1_C4_ort/std/yayilim/en_yuksek` alanları M2,M2,M1,M2'yi
+ölçer; M3 ve M4 hiç görülmez. Tüm konfigürasyonların (A/B/C/D) motor dengesi yorumu bu alana
+dayanıyorsa geçersizdir.
+
+**Kanıt (gerçek çıktı, `O:\navitas-local-train\venv\Scripts\python.exe`, pymavlink DFReader):**
+- `2026-09-13 09-26-58.bin`: RCOU n=2218, aktif (C1>1100) n=339 → `C1==C2 oran 1.000, C1==C4 1.000, C1==C3 0.035`
+- `2026-09-13 09-42-26.bin` (3S): aktif n=1093 → `C1==C2 oran 1.000, C1==C4 1.000, C1==C3 0.027`
+- `tum_loglar.json` her uçuşta `C1_C4_std` [x, x, y, x] örüntüsü (ör. 09-26-58 #1: [96.5, 96.5, 98.4, 96.5]).
+- Motor eşlemeli (M1=C11, M2=C10, M3=C12, M4=C9) 4S havuz: havada ort [1489, 1486, 1465, 1462] us,
+  yayılım 27 us — `results/ucus_analiz_20260915/B_4S_1045/ozet.json` (`havuz_6_sicrama_09-26-58`, `loglar[].motor_kanal`).
+
+**Öneri:** `oku()` içinde RCOU C1..C14 okunup `SERVOn_FUNCTION` 33..36 → M1..M4 eşlemesiyle
+(AUX tercihli) `rcou` dizisi kurulmalı; `C1_C4_*` alanları yeniden üretilmeli.
+**Yazan:** Claude alt-ajan · **Denetleyen:** mimar (bekliyor) · commit/push yok.
+
+### 2026-09-15 · Konfig A (3S+1045) analiz amelesi · Ortak arac `scripts/ucus_bin_analiz.py` motor dengesini YANLIS kanallardan okuyor (kanitli)
+
+**Bulgu.** `pencere_analiz()` "motor dengesi"ni `RCOU.C1..C4` uzerinden hesapliyor (`oku()` yalniz C1-C4 saklar,
+satir ~469; `rcou` sozlugu satir ~634-654). Bu aracta motorlar **AUX1-4 = SERVO9..12**'de:
+`SERVO9_FUNCTION=36 (Motor4), SERVO10=34 (Motor2), SERVO11=33 (Motor1), SERVO12=35 (Motor3)`;
+ana cikislarda `SERVO1=34, SERVO2=34, SERVO4=34 (hepsi Motor2 kopyasi), SERVO3=33 (Motor1 kopyasi)`.
+Her A logunda ayni (18/18 log, `results/ucus_analiz_20260915/A_3S_1045/ozet.json -> loglar[].servo_function`).
+**Sonuc:** ortak aracin `C1_C4_ort` degerleri `[M2, M2, M1, M2]`'dir; M3 ve M4 hic gorulmez, "yayilim"
+yalniz M2-M1 farkidir. Ornek (`tum_loglar.json`, 13 Eyl 09-59-30 #6): arac `[1774,1774,1773,1774]` yayilim 1 PWM
+diyor; gercek motorlar `M1 1773, M2 1775, M3 1608, M4 1621` — yayilim **167 PWM**, CCW-CW farki **+160**.
+Kanit komutu: `results/ucus_analiz_20260915/A_3S_1045/analiz_A.py` (RCOU C9..C12 + PARM SERVOn_FUNCTION), cikti
+`ozet.json -> motor_dengesi.ucus_bazinda`.
+**Oneri:** `oku()` C1..C14 saklasin; `pencere_analiz()` kanal secimini `SERVOn_FUNCTION` 33..36'dan tureterek
+Motor1..4'e eslesin (fonksiyon birden fazla cikisa atanmissa AUX/ilk eslesme kullanilsin). Duzeltme yapilmadi
+(gorev kapsami disi, ortak arac baskasinin zimmetinde).
+
+**Ek not (aynı analiz, kusur degil bilgi):** `MOT_THST_HOVER` ogrenmesi `Copter::update_throttle_hover` kapisina
+bagli: `is_zero(pos_control vel_desired.z)` (PSCD.DVD |.| < 1,2e-9 m/s) — 12 Eylul'de 0 s, 13 Eylul'de 49 s
+kosul saglandi; benzetim gercek ThH'yi 4 basamak tutturdu (0.448/0.4479, 0.4726/0.4726, 0.5317/0.5321).
+GPS'siz `1980-01-12` loglari STAT_BOOTCNT 76/95 ile **12 Eylul**e, `1980-01-06` loglari 117/118 ile **13 Eylul**e
+oturuyor: ilk taramadaki "14 Eylul'de parametre sifirlamasi" suphesi **curutuldu** (14 Eyl logu 0.532559 ile basliyor).
+**Yazan:** Konfig A analiz amelesi (Claude alt ajan) · **Denetleyen:** mimar denetimi bekliyor · commit/push yok.
+
+## 2026-09-15 · Claude alt-ajan (uçuş analizi düzeltme turu) · Bağımsız çürütücü bulgularının doğrulanması ve `RAPOR.md` / `ozet.json` düzeltmeleri
+
+**Kusur 1 (DOĞRULANDI, düzeltildi) — motor çift farkı ölçeği 2× karışıktı.** `A_3S_1045/analiz_A.py` (satır 307–309, `/ 2`) ve
+`C_3S_9x5x3/analiz_C.py` (satır 404–406, `/ 2`) CCW−CW / ön−arka / sağ−sol farklarını **motor başına ortalama** ((M1+M2)−(M3+M4))/2
+ile; `D_4S_9x5x3/analiz_D.py` (319), `E_1240_tam_gaz/analiz_E.py` (255), `F_1311_aski_4S_13Ah/analiz_F.py` (506) ise **toplam**
+(M1+M2)−(M3+M4) ile hesaplıyordu. `RAPOR.md` §1 tablosu aynı satırda iki ölçeği karıştırıyordu ve §5.3 kabul eşiği "CCW−CW ≤ 60 µs"
+(F +16, toplam ölçek) A/C satırlarıyla kıyaslanamıyordu. **Düzeltme:** A ve C toplam ölçeğe alındı, iki betik yeniden koşuldu
+(`O:\navitas-local-train\venv\Scripts\python.exe`), `ozet.json`'lar yedekle derin-diff edildi: A'da 207 fark, hepsi
+`ccw_eksi_cw_pwm / on_eksi_arka_pwm / sag_eksi_sol_pwm` (tam 2×, ±1 yuvarlama) + `cift_farki_olcegi`/`olcek` notları; C'de 26 fark,
+hepsi `karisim_bileseni_pwm` (2×) + yeni sarkma alanları. **Başka hiçbir sayı değişmedi.** Yeni değerler: A havuz CCW−CW ort +60,1
+(p50 +48, p95 +227), 09-59-30 #3/#4/#6 = +63/+204/+319; C = +124,1/+129,0/+50,2. D'nin "+145"i aynı ölçekte A #4/#6'dan küçüktür.
+
+**Kusur 2 (DOĞRULANDI, düzeltildi) — sarkma tanımı C'de farklıydı.** `analiz_C.py` `sarkma_V` = arm öncesi dinlenme medyanı → min
+(satır 323); A (`analiz_A.py` 244: `v[0]-v.min()`), D (238: `bb[0,1]-bmot[imin,1]`), E (472) pencere ilk BAT örneği → min; F (327)
+log başı → min (pencere başından 0,03 V). C'ye `sarkma_V_pencere_basi` eklendi: 1,16/1,39/1,62 V = **0,386/0,462/0,539 V/hücre**
+(dinlenme tanımıyla 0,44/0,474/0,537). Rapor satır başlığı ve C hücresi düzeltildi; sonuç (V_min 3,50 V/hücre, LOW marjı 0,51 V) değişmedi.
+
+**Kusur 3 (DOĞRULANDI, zayıflatıldı) — `MOT_BAT_VOLT_*` dayanağı "1,5 V sarkmada gaz ~0,196" ekstrapolasyondu.** `analiz_D.py`'ye
+`dThO_dV_gecerlilik` eklendi (askı örnekleri): V aralığı 0,558/0,355/0,415 V, ThO aralığı 0,098/0,128/0,083, korr(ThO,I)
+0,890/0,864/0,732, korr(ThO,V) −0,793/−0,677/−0,728 → eğim yükle karışık. Rapor §5.2 dayanağı "uçuş içi sarkma 1,49–1,61 V (D),
+3,18 V (E)" olarak yazıldı, ekstrapolasyon HESAP/zayıf dayanak etiketlendi.
+
+**Kusur 4 (DOĞRULANDI, düzeltildi) — F "0,4 Hz yaw salınımı".** `2026-09-15 13-11-32.bin`, askı dilimi t=244,28–304,68 s: GyrZ FFT
+baskın 0,381 Hz (0,111 rad/s) ✓; ama yaw **açı hatası** (ATT.Yaw−DesYaw, 10 Hz, n=604, RMS 5,55°) FFT tepeleri 0,182 Hz (3,44°),
+0,166 (3,19°), 0,149 (2,71°) > 0,381 (2,68°); göreli güç 0,1–0,25 Hz %53, 0,25–0,5 Hz %35; sıfır geçiş 31 → ~0,26 Hz.
+Rapor "0,2–0,4 Hz" yapıldı (tablo, §2F, §5.2, §6). Betik: scratchpad `f_yaw_fft.py` (numpy rfft, Hann).
+
+**Kusur 5 (DOĞRULANDI, düzeltildi) — E "motorlu AccZ 2,0 Hz (0,31)".** `E_1240_tam_gaz/ozet.json`
+`imu_fft/motorlu/IMU0/AccZ`: tepeler 0,41 Hz 2,26 → 1,02 0,71 → 1,53 0,34 → 2,04 0,31 → tekdüze azalan tırmanma profili;
+"yapisal_2_12.5Hz_tepeler" listesi 2 Hz bant kenarından başladığı için 2,04 Hz "tepe" görünüyordu. Rapor hücresi düzeltildi.
+
+**Küçük (düzeltildi):** §2B roll hız RMS 82/109/113 (B `ozet.json` `pencereler[].rate.havada`: 82,0/108,8/113,4) ile yer/hava ayrımı
+(`sicrama_yer_hava_ayrimi`, alt > 0,2 m: 84,2/104,7/115,2) ikisi de yazıldı (≤ %4); GyrX genliklerinin pencereye ±%10 duyarlılığı not edildi.
+A tablosunda "20 log"un biri `1980-01-12 15-45-52` (beyan yok, arm yok, A varsayıldı, etkisi 0) belirtildi; §7'ye boot 75–76'daki
+BATT_LOW_VOLT 14,4 tek seferlik kullanıcı değeri notu eklendi. §5.1 "3S+9x5x3 neden değil" satırı tek taraflıydı (yalnız mp68 VibeZ 21;
+mp69 10,1 = D) → ayırt edicinin akım/sarkma/FS marjı olduğu yazıldı.
+
+**Reddedilen/değiştirilmeyen:** (a) A tutum roll RMS 1,53 = uçuş başına RMS'lerin ortalaması (n=17, `tutum.aski_roll_rms_deg.ort`);
+çürütücünün 1,60'ı havuz RMS — tanım farkı, rapora tanım eklendi, sayı korundu. (b) B GyrX genlikleri 1,54/2,02/1,66 `ozet.json`
+`bulgular` ile birebir; çürütücünün 1,39/1,79/1,61'i farklı pencere — ozet değeri korundu. (c) E sarkma 3,18 V = arm anı (15,54) →
+min, ozet ile birebir; 3,24 log başı tanımı — tanım rapora yazıldı. (d) F yaw RMS 5,44 (`tutum.aski.yaw_rms_hata_deg` 5,439) korundu.
+(e) C sarkması için çürütücünün "0,39/0,42/0,50" değerleri, D tanımıyla (pencere ilk BAT örneği → min) yeniden hesaplandığında
+0,386/0,462/0,539 çıktı; ilk/son uçuş uyuşuyor, ortadaki (19-43-06 #2) uyuşmuyor → ölçüm tekrarlanıp ozet'e yazılan değer esas alındı.
+
+**Kapı (gerçek çıktı, bu turda):** `cd tests; PYTHONPATH=O:\navitas python -m unittest test_ucus_bin_analiz` → `Ran 17 tests in 0.738s / OK`;
+`codes/test_rota_sentetik.py` → `GENEL KAPI (madde 14): GECTI — kol1 15/15 · kol2 serit 15/15`. Ortak araç (`scripts/ucus_bin_analiz.py`)
+değişmedi. commit/push yok.
+**Yazan:** Claude alt-ajan (düzeltme turu) · **Denetleyen:** mimar denetimi bekliyor.
+
+### D-484 (mimar, 15 Eyl) — Tüm uçuş logları (12–15 Eyl, 29 benzersiz) konfigürasyon analizi BİTTİ; çürütücü 3 bulgu → düzeltildi → KABUL; öneri **4S 13 Ah + 9x5x3**; 14 Eyl "parametre sıfırlaması" hipotezi ÇÜRÜTÜLDÜ; 12:40 "kol sallantısı" BELİRSİZ, M4 (arka-sağ) birinci aday
+
+**Rapor:** `results/ucus_analiz_20260915/RAPOR.md` (236 satır, 17 grafik) · araç `scripts/ucus_bin_analiz.py` + `tests/test_ucus_bin_analiz.py` (17/17 OK, T276 kapandı) · konfig özetleri `A_3S_1045/ B_4S_1045/ C_3S_9x5x3/ D_4S_9x5x3/ E_1240_tam_gaz/ E_1240_ivme/ F_1311_aski_4S_13Ah/ performans_zarfi/`.
+**Çürütücü:** 300+ hücre ham loglardan yeniden hesaplandı; 3 bulgu (A/C'de çift-farkı ölçeği 2× karışık; C sarkma tanımı farklı; MOT_BAT_VOLT önerisinin dayanağı zayıf) → düzeltildi, kapılar yeşil.
+**Mimarın düzeltilen iddiası:** 13 Eyl'de "1980-01-12 loglarında ThH 0,35 → 14 Eyl'de parametre sıfırlaması" demiştim. **Yanlış:** o loglar `STAT_BOOTCNT` 76 ve 95 = 12 Eylül (öğrenmeden önce); `MOT_THST_HOVER` 0,5326 13 Eyl sonundan 14 Eyl 19-43-06 başına kesintisiz taşınmış. Sıfırlama yok.
+**Askı kıyası (askı örneklemi, kısa sıçramalar hariç):** A 3S+1045 ThO 0,467 · 31,6 A · 319 W · VibeZ 17,2 (p95 34) · clip 135 · 4 pil failsafe 22–30 s'de (3S 8 Ah paketler R 33–44 mΩ, askıda 0,49 V/hücre sarkma) | B 4S+1045 askı YOK, "aşırı titreme" = ~4 Hz kontrol salınımı (3S'ten kalan ThH 0,47 ≈ 1,9× gerçek + 1045'in 4S'te ~%78 fazla itkisi) | C 3S+9x5x3 0,472 · 36,6 A · 401 W · VibeZ 18 | D 4S+9x5x3 0,325 · 35,5 A · 523 W · VibeZ 11,6 · clip 0 | F 4S 13 Ah 0,360 · 37,3 A · 524 W · VibeZ 9,3 (p95 12,2) · 64 s kodla askı · R_paket 30,4 mΩ.
+**E (12:40 tam gaz):** 0→5 m/s 0,9 s, tepe 5,19 m/s, ivme 8,93 m/s² → T/W ≥ 1,91; 115 A / 12,36 V; IMU integrali ile bağımsız doğrulandı. Mekanik hipotez: pervane titreşimi YOK (VIBE tam gazda artmadı), PID salınımı YOK, 2–12,5 Hz yapısal içerik D'den yüksek değil; **M4 (arka-sağ CW) hem D askısında hem E'de tutarlı fazla komut alıyor ve tam gazda tek doyan motor**, çubuk ortadayken +5° sağa yatma → gevşek/eğik kol, CG sağ-arkada ya da ESC tepki farkı — log ayırt edemez (IMU 25 Hz, PID logu kapalı).
+**Öneri (RAPOR §5):** 4S 13 000 + 9x5x3; `BATT_CAPACITY 13000`, `BATT_LOW_VOLT 14.0`, `BATT_CRT_VOLT 13.2`, `BATT_FS_VOLTSRC 1`, `BATT_ARM_VOLT 14.4`; `MOT_THST_HOVER` 0,39 koru; kabul testi ≥30 s askı; pil dolu. Yer kontrolü: M4 kolu burulma/gevşeklik, motor eksen dikliği, 4 pervane aynı mı, CG. Kesin ölçüm için tek test uçuşunda `INS_LOG_BAT_MASK=1`, `LOG_BITMASK` PID biti.
+**Performans zarfı (model, denetim KABUL):** irtifa tutarak 0–100 km/h hiçbir konfigde yok; 4S 58°'de 97 km/h (0–60 1,2 s), 3S en fazla 45° (71 km/h, 0–60 2,5 s); kütle VARSAYIM (3,0 / 2,5 kg).

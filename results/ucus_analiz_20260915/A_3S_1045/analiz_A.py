@@ -303,15 +303,18 @@ def ucus_analiz(ham, u, L):
             ar = max(pmaks - pmin, 1.0)
             mot_pwm = {m: float(rc[idx, int(k[1:])].mean()) for m, k in MOTOR_KANAL.items()}
             mot_std = {m: float(rc[idx, int(k[1:])].std()) for m, k in MOTOR_KANAL.items()}
-            on, arka = (mot_pwm["M1"] + mot_pwm["M3"]) / 2, (mot_pwm["M2"] + mot_pwm["M4"]) / 2
-            sag, sol = (mot_pwm["M1"] + mot_pwm["M4"]) / 2, (mot_pwm["M2"] + mot_pwm["M3"]) / 2
-            ccw, cw = (mot_pwm["M1"] + mot_pwm["M2"]) / 2, (mot_pwm["M3"] + mot_pwm["M4"]) / 2
+            # cift farklari TOPLAM olceginde: (M1+M3)-(M2+M4) vb. — D/E/F analizleriyle AYNI olcek
+            # (2026-09-15 curutucu bulgusu: onceki surum /2 = motor basina ort fark kullaniyordu, D/E/F toplam -> 2x karisiklik)
+            on, arka = (mot_pwm["M1"] + mot_pwm["M3"]), (mot_pwm["M2"] + mot_pwm["M4"])
+            sag, sol = (mot_pwm["M1"] + mot_pwm["M4"]), (mot_pwm["M2"] + mot_pwm["M3"])
+            ccw, cw = (mot_pwm["M1"] + mot_pwm["M2"]), (mot_pwm["M3"] + mot_pwm["M4"])
             r["rcou"] = {"kapsam": kapsam, "n": int(len(idx)), "kanal": MOTOR_KANAL,
                          "M1_M4_ort": {m: round(x) for m, x in mot_pwm.items()}, "M1_M4_std": {m: round(x, 1) for m, x in mot_std.items()},
                          "yayilim_pwm": round(max(mot_pwm.values()) - min(mot_pwm.values())),
                          "yayilim_pct_aralik": _r((max(mot_pwm.values()) - min(mot_pwm.values())) / ar * 100, 1),
                          "en_yuksek": max(mot_pwm, key=mot_pwm.get), "en_dusuk": min(mot_pwm, key=mot_pwm.get),
                          "on_eksi_arka_pwm": round(on - arka), "sag_eksi_sol_pwm": round(sag - sol), "ccw_eksi_cw_pwm": round(ccw - cw),
+                         "cift_farki_olcegi": "TOPLAM: (M1+M3)-(M2+M4), (M1+M4)-(M2+M3), (M1+M2)-(M3+M4) us — D/E/F ile ayni; motor basina ort fark = yarisi",
                          "ort_pwm_orani": _r((np.mean(list(mot_pwm.values())) - pmin) / ar),
                          "C1_C4_ortak_arac": [round(float(rc[idx, j].mean())) for j in (1, 2, 3, 4)]}
         else:
@@ -623,10 +626,10 @@ def grafik_motor(ucuslar, yol):
         ax[0].bar(x + (j - 1.5) * 0.2, [u["rcou"]["M1_M4_ort"][m] for u in U], width=0.19, color=RENK[rn], label=f"{m} {MOTOR_KONUM[m]} (RCOU.{MOTOR_KANAL[m]})")
     ax[0].set_ylim(min(min(u["rcou"]["M1_M4_ort"].values()) for u in U) - 40, max(max(u["rcou"]["M1_M4_ort"].values()) for u in U) + 40)
     ax[0].set_ylabel("aski ort PWM (µs)"); ax[0].legend(fontsize=8, frameon=False, ncol=2, loc="upper left")
-    ax[1].plot(x, [u["rcou"]["on_eksi_arka_pwm"] for u in U], "o-", color=RENK["mavi"], label="on − arka (M1+M3 − M2−M4)/2")
-    ax[1].plot(x, [u["rcou"]["sag_eksi_sol_pwm"] for u in U], "s-", color=RENK["turuncu"], label="sag − sol (M1+M4 − M2−M3)/2")
-    ax[1].plot(x, [u["rcou"]["ccw_eksi_cw_pwm"] for u in U], "^-", color=RENK["aqua"], label="CCW − CW (M1+M2 − M3−M4)/2")
-    ax[1].axhline(0, color=RENK["gri"], lw=0.8); ax[1].set_ylabel("PWM farki (µs)"); ax[1].legend(fontsize=8, frameon=False, loc="upper left")
+    ax[1].plot(x, [u["rcou"]["on_eksi_arka_pwm"] for u in U], "o-", color=RENK["mavi"], label="on − arka (M1+M3) − (M2+M4)")
+    ax[1].plot(x, [u["rcou"]["sag_eksi_sol_pwm"] for u in U], "s-", color=RENK["turuncu"], label="sag − sol (M1+M4) − (M2+M3)")
+    ax[1].plot(x, [u["rcou"]["ccw_eksi_cw_pwm"] for u in U], "^-", color=RENK["aqua"], label="CCW − CW (M1+M2) − (M3+M4)")
+    ax[1].axhline(0, color=RENK["gri"], lw=0.8); ax[1].set_ylabel("cift farki, toplam olcek (µs)"); ax[1].legend(fontsize=8, frameon=False, loc="upper left")
     ax[1].set_xticks(x); ax[1].set_xticklabels([u["etiket_kisa"] for u in U], rotation=60, ha="right", fontsize=7)
     ax[0].set_title("Konfig A — motor dengesi askida (SERVO9-12 = M4,M2,M1,M3; ortak aracin C1-C4'u M2/M1 kopyasidir)", fontsize=10)
     fig.tight_layout(); fig.savefig(yol, dpi=120); plt.close(fig)
@@ -792,6 +795,7 @@ def main():
                                       "yaw_rate_rms_dps": (u.get("rate_aski") or {}).get("yaw_rms_hata_dps"),
                                       "yaw_hata_rms_deg": ((u.get("att") or {}).get("aski_yaw") or {}).get("yaw_hata_rms_deg")} for u in mot_U],
                     "kanal": MOTOR_KANAL, "konum": MOTOR_KONUM,
+                    "olcek": "TOPLAM: (M1+M2)-(M3+M4) us (D/E/F analizleriyle ayni). Motor basina ortalama fark = yarisi. 2026-09-15 curutucu bulgusuyla /2 olceginden toplam olcege gecildi",
                     "not": "CCW-CW > 0: FC, CCW motorlari (M1,M2) daha yuksek suruyor = govdeye CW moment uyguluyor; kaynak (montaj egikligi, pervane farki) LOGDAN BELIRLENEMEZ"}
     att_oz = {"aski_roll_rms_deg": ist(np.array([u["att"]["aski"]["roll_rms_hata_deg"] for u in ucuslar if u.get("att", {}).get("aski")]), 2),
               "aski_pitch_rms_deg": ist(np.array([u["att"]["aski"]["pitch_rms_hata_deg"] for u in ucuslar if u.get("att", {}).get("aski")]), 2),

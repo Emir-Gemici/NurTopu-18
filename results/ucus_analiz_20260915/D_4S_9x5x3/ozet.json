@@ -1,7 +1,7 @@
 {
  "meta": {
   "konfigurasyon": "D) 4S + 9x5x3 (9 inc, 5 pitch, 3 pal) - 15 Eylul 2026 sabahi; pil/pervane/kutle LOGDA YOK, kullanici beyani",
-  "uretim_zamani": "2026-09-15T12:32:52",
+  "uretim_zamani": "2026-09-15T16:41:17",
   "python": "3.13.7",
   "numpy": "2.3.5",
   "zaman_ekseni": "TimeUS/1e6 mutlak (tum_loglar.json ile ayni)",
@@ -278,7 +278,15 @@
        "R_ic_hesap_ohm": 0.0417,
        "R_ic_hesap_mohm_hucre": 10.4,
        "dThO_dV_egim": -0.1307,
-       "mAh_per_s": 9.87
+       "mAh_per_s": 9.87,
+       "dThO_dV_gecerlilik": {
+        "V_aralik_V": 0.558,
+        "ThO_aralik": 0.098,
+        "korr_ThO_V": -0.793,
+        "korr_ThO_I": 0.89,
+        "ekstrapolasyon_1.5V_HESAP": 0.196,
+        "not": "egim yalnizca aski ici dar V araliginda olculdu; ThO-I korelasyonu ThO-V'den guclu ise egim YUKLE KARISIKTIR ve 1,5 V'a ekstrapolasyon ZAYIF DAYANAKTIR (2026-09-15 curutucu bulgusu)"
+       }
       }
      },
      "vibe": {
@@ -1725,7 +1733,15 @@
        "R_ic_hesap_ohm": 0.0393,
        "R_ic_hesap_mohm_hucre": 9.8,
        "dThO_dV_egim": -0.2681,
-       "mAh_per_s": 10.11
+       "mAh_per_s": 10.11,
+       "dThO_dV_gecerlilik": {
+        "V_aralik_V": 0.355,
+        "ThO_aralik": 0.128,
+        "korr_ThO_V": -0.677,
+        "korr_ThO_I": 0.864,
+        "ekstrapolasyon_1.5V_HESAP": 0.402,
+        "not": "egim yalnizca aski ici dar V araliginda olculdu; ThO-I korelasyonu ThO-V'den guclu ise egim YUKLE KARISIKTIR ve 1,5 V'a ekstrapolasyon ZAYIF DAYANAKTIR (2026-09-15 curutucu bulgusu)"
+       }
       }
      },
      "vibe": {
@@ -3271,7 +3287,15 @@
        "R_ic_hesap_ohm": 0.0369,
        "R_ic_hesap_mohm_hucre": 9.2,
        "dThO_dV_egim": -0.1237,
-       "mAh_per_s": 9.64
+       "mAh_per_s": 9.64,
+       "dThO_dV_gecerlilik": {
+        "V_aralik_V": 0.415,
+        "ThO_aralik": 0.083,
+        "korr_ThO_V": -0.728,
+        "korr_ThO_I": 0.732,
+        "ekstrapolasyon_1.5V_HESAP": 0.185,
+        "not": "egim yalnizca aski ici dar V araliginda olculdu; ThO-I korelasyonu ThO-V'den guclu ise egim YUKLE KARISIKTIR ve 1,5 V'a ekstrapolasyon ZAYIF DAYANAKTIR (2026-09-15 curutucu bulgusu)"
+       }
       }
      },
      "vibe": {
@@ -4643,6 +4667,6 @@
   "TUTUM IZLEME (askida RMS hata, ATT Des-gercek): roll 0.82/1.67/0.78 deg, pitch 1.51/1.53/1.10 deg (motorlu: roll 0.85/1.53/0.93, pitch 1.38/1.43/1.02); hiz halkasi roll 6.7/13.0/9.2, pitch 9.8/11.5/8.5 deg/s RMS. Pitch maks |20.9| deg (ucus1, Loiter fren/konum duzeltme). Ortalama pitch -1.4/-1.4/-1.7 deg (hafif burun asagi egilim = ruzgar ya da CG). Yaw RMS 4.8/10.7/6.2 deg (ucus2 pilot yaw komutlu, |Y| ort 25 deg/s; ucus4 komutsuz).",
   "EKF SAGLIK: XKF4 (2 cekirdek) test oranlari maks SV 0.24 SP 0.12 SH 0.17 SM 0.47 (esik 1.0), innov>1 = 0, FS=0, lane switch 0 (PI hep 0), errRP maks 0.049. Her ucusta takeoff +14 s civari 'EKF3 in-flight yaw alignment complete' + EV62 EKF_YAW_RESET: EK3_MAG_CAL=3 (ilk tirmanista yaw sifirla) -> NORMAL, ariza degil; IYAW innov maks 3.7 rad bu sifirlamanin izi. GPS: NSats 11-15, HDop p50 0.94; 11-14-33'te t=90.4-114.2 (arm'dan takeoff+13 s'ye kadar) HDop > 1.40 (maks 2.18) -> arm STAB'da (t=86.7), LOIT'e yerde kalkistan once gecildi (t=92.8, kalkis 101.4; kip degisimi HDop'a bakmaz, EKF konum saglikli: SP maks 0.04); inisten sonra 'PreArm: High GPS HDOP' mesajlari. XKF4.TS=48 (bit4 airspeed + bit5 drag timeout: ikisi de kullanilmayan fuzyon) kopterde sabit, ariza degil.",
   "OLAYLAR: failsafe UCUSTA YOK. 11-18-16 t=63.75 GCS Failsafe (ERR FS_GCS=1) yerde/disarm halinde, 0.33 s sonra temizlendi (FS_GCS_ENABLE=5 Land; FS_OPTIONS=16 pilot kontrollu kiplerde GCS FS yoksayilir); crash check / thrust loss / EKF failsafe / vibe failsafe yok (MOTB FailFlags=2 normal, POWR Flags=1, Vcc 5.02-5.16 V). Inisler: 3 ucus RC ile LAND kipi (LAND_REPO_ACTIVE: pilot inis sirasinda konum duzeltti), LAND_COMPLETE + LANDED disarm. 11-18-16 t=105 'Arm: Throttle too high' (STAB arm denemesi, gaz yuksek), pencere 3 STAB ile armlandi -> sicrama. MOT_THST_HOVER 0.506 STAB'da cubuk ortasini 0.506 gaza esler (askinin 1.56 kati) -> STAB'da sert tirmanma riski.",
-  "PARAMETRE UYUMSUZLUKLARI (4S'e gecis icin): BATT_LOW_VOLT 10.0 / BATT_CRT_VOLT 9.0 (3S) -> 4S icin 14.0 / 13.2 V; BATT_CAPACITY 8000 (3S pil) -> 4S kapasitesi girilmeli; MOT_THST_HOVER 0.506 (3S) -> 0.33 (olculen) ya da cubuk ortada >=30 s askida ogrenme; MOT_BAT_VOLT_MAX/MIN=0 (gerilim telafisi kapali: askida dThO/dV egimi -0.13/-0.27/-0.12 1/V, 1.5 V sarkma boyunca gaz ~0.196 artiyor). INS_HNTCH_ENABLE=0, INS_GYRO_FILTER=20 degismedi."
+  "PARAMETRE UYUMSUZLUKLARI (4S'e gecis icin): BATT_LOW_VOLT 10.0 / BATT_CRT_VOLT 9.0 (3S) -> 4S icin 14.0 / 13.2 V; BATT_CAPACITY 8000 (3S pil) -> 4S kapasitesi girilmeli; MOT_THST_HOVER 0.506 (3S) -> 0.33 (olculen) ya da cubuk ortada >=30 s askida ogrenme; MOT_BAT_VOLT_MAX/MIN=0 (gerilim telafisi kapali). Askida dThO/dV egimi -0.13/-0.27/-0.12 1/V OLCULDU, ama aski ici V araligi yalnizca 0.56/0.35/0.41 V, ThO araligi 0.098/0.128/0.083 ve ThO-I korelasyonu (0.89/0.86/0.73) ThO-V korelasyonundan (-0.79/-0.68/-0.73) guclu -> egim yukle karisik; 1,5 V sarkmaya ekstrapolasyon (~0.196 gaz) ZAYIF DAYANAK (HESAP, olcum degil). Telafi onerisinin dayanagi egim degil, ucus ici sarkmanin kendisidir (pencere basi -> min, ort 1.55 V). INS_HNTCH_ENABLE=0, INS_GYRO_FILTER=20 degismedi."
  ]
 }

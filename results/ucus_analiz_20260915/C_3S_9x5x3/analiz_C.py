@@ -322,6 +322,8 @@ def pencere_analiz(ham, u, parm, fn_map, aux):
         "hucre_V_dinlenme": _r(V_dinl / HUCRE_N, 3), "hucre_V_min": _r(bw[V_min_i, 1] / HUCRE_N, 3),
         "sarkma_V": _r(V_dinl - bw[V_min_i, 1], 2), "sarkma_hucre_V": _r((V_dinl - bw[V_min_i, 1]) / HUCRE_N, 3),
         "sarkma_yuzde": _r(100 * (V_dinl - bw[V_min_i, 1]) / V_dinl, 1),
+        "sarkma_tanimi": "sarkma_V = arm ONCESI dinlenme medyani -> pencere min. A/B/D/E ile ayni tanim (pencere ilk BAT ornegi -> min) icin bkz. sarkma_V_pencere_basi; 2026-09-15 curutucu bulgusu",
+        "sarkma_V_pencere_basi": _r(bw[0, 1] - bw[V_min_i, 1], 2), "sarkma_hucre_V_pencere_basi": _r((bw[0, 1] - bw[V_min_i, 1]) / HUCRE_N, 3),
         "V_min_BATT_LOW_VOLT_marji_V": _r(bw[V_min_i, 1] - parm.get("BATT_LOW_VOLT", 10.0), 2),
         "motorlu": {"V": ist(bw[bm_mot, 1], 2), "I": ist(bw[bm_mot, 2], 1)} if bm_mot.sum() else None,
         "aski": {"V": ist(bw[bm_aski, 1], 2), "I": ist(bw[bm_aski, 2], 1),
@@ -397,11 +399,12 @@ def pencere_analiz(ham, u, parm, fn_map, aux):
         mot["yayilim_pct_aralik"] = _r((ortlar.max() - ortlar.min()) / 10.0, 1)
         mot["en_yuksek_ort"] = f"M{int(np.argmax(ortlar))+1}"
         mot["en_yuksek_olma_orani"] = {f"M{i+1}": _r(np.mean(en_yuksek == i), 2) for i in range(4)}
-        # X karisim bilesenleri (PWM): sag-sol, on-arka, CCW-CW
+        # X karisim bilesenleri (PWM): sag-sol, on-arka, CCW-CW — TOPLAM olcegi (A/D/E/F ile ayni; onceki surum /2 idi, 2026-09-15 curutucu bulgusu)
         mot["karisim_bileseni_pwm"] = {
-            "roll_sag_eksi_sol": _r(((pwm["M1"] + pwm["M4"]) - (pwm["M2"] + pwm["M3"])).mean() / 2, 1),
-            "pitch_on_eksi_arka": _r(((pwm["M1"] + pwm["M3"]) - (pwm["M2"] + pwm["M4"])).mean() / 2, 1),
-            "yaw_CCW_eksi_CW": _r(((pwm["M1"] + pwm["M2"]) - (pwm["M3"] + pwm["M4"])).mean() / 2, 1),
+            "roll_sag_eksi_sol": _r(((pwm["M1"] + pwm["M4"]) - (pwm["M2"] + pwm["M3"])).mean(), 1),
+            "pitch_on_eksi_arka": _r(((pwm["M1"] + pwm["M3"]) - (pwm["M2"] + pwm["M4"])).mean(), 1),
+            "yaw_CCW_eksi_CW": _r(((pwm["M1"] + pwm["M2"]) - (pwm["M3"] + pwm["M4"])).mean(), 1),
+            "olcek": "TOPLAM: (M1+M4)-(M2+M3), (M1+M3)-(M2+M4), (M1+M2)-(M3+M4) us — A/D/E/F ile ayni; motor basina ort fark = yarisi",
             "not": "pozitif = ilk grup daha yuksek PWM. FRAME_TYPE=1 X: M1 on-sag, M2 arka-sol, M3 on-sol, M4 arka-sag"}
         mot["doygunluk"] = {"maks_pwm_pencere": int(r[:, [aux[m] for m in sorted(aux)]].max()),
                             "MOT_SPIN_MAX_pwm": int(parm["MOT_PWM_MIN"] + parm["MOT_SPIN_MAX"] * (parm["MOT_PWM_MAX"] - parm["MOT_PWM_MIN"]))}

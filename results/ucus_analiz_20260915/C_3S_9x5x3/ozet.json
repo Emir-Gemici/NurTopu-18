@@ -1,6 +1,6 @@
 {
  "meta": {
-  "uretim_zamani": "2026-09-15T12:24:22",
+  "uretim_zamani": "2026-09-15T16:41:16",
   "betik": "results/ucus_analiz_20260915/C_3S_9x5x3/analiz_C.py",
   "girdi": [
    "results/ucus_20260914/2026-09-14 19-43-06.bin",
@@ -670,6 +670,9 @@
       "sarkma_V": 1.32,
       "sarkma_hucre_V": 0.44,
       "sarkma_yuzde": 10.7,
+      "sarkma_tanimi": "sarkma_V = arm ONCESI dinlenme medyani -> pencere min. A/B/D/E ile ayni tanim (pencere ilk BAT ornegi -> min) icin bkz. sarkma_V_pencere_basi; 2026-09-15 curutucu bulgusu",
+      "sarkma_V_pencere_basi": 1.16,
+      "sarkma_hucre_V_pencere_basi": 0.386,
       "V_min_BATT_LOW_VOLT_marji_V": 1.04,
       "motorlu": {
        "V": {
@@ -1433,9 +1436,10 @@
        "M4": 0.06
       },
       "karisim_bileseni_pwm": {
-       "roll_sag_eksi_sol": 58.6,
-       "pitch_on_eksi_arka": 16.5,
-       "yaw_CCW_eksi_CW": 62.0,
+       "roll_sag_eksi_sol": 117.3,
+       "pitch_on_eksi_arka": 33.1,
+       "yaw_CCW_eksi_CW": 124.1,
+       "olcek": "TOPLAM: (M1+M4)-(M2+M3), (M1+M3)-(M2+M4), (M1+M2)-(M3+M4) us — A/D/E/F ile ayni; motor basina ort fark = yarisi",
        "not": "pozitif = ilk grup daha yuksek PWM. FRAME_TYPE=1 X: M1 on-sag, M2 arka-sol, M3 on-sol, M4 arka-sag"
       },
       "doygunluk": {
@@ -1700,6 +1704,9 @@
       "sarkma_V": 1.42,
       "sarkma_hucre_V": 0.474,
       "sarkma_yuzde": 11.7,
+      "sarkma_tanimi": "sarkma_V = arm ONCESI dinlenme medyani -> pencere min. A/B/D/E ile ayni tanim (pencere ilk BAT ornegi -> min) icin bkz. sarkma_V_pencere_basi; 2026-09-15 curutucu bulgusu",
+      "sarkma_V_pencere_basi": 1.39,
+      "sarkma_hucre_V_pencere_basi": 0.462,
       "V_min_BATT_LOW_VOLT_marji_V": 0.78,
       "motorlu": {
        "V": {
@@ -2463,9 +2470,10 @@
        "M4": 0.03
       },
       "karisim_bileseni_pwm": {
-       "roll_sag_eksi_sol": -0.9,
-       "pitch_on_eksi_arka": 51.0,
-       "yaw_CCW_eksi_CW": 64.5,
+       "roll_sag_eksi_sol": -1.8,
+       "pitch_on_eksi_arka": 102.0,
+       "yaw_CCW_eksi_CW": 129.0,
+       "olcek": "TOPLAM: (M1+M4)-(M2+M3), (M1+M3)-(M2+M4), (M1+M2)-(M3+M4) us — A/D/E/F ile ayni; motor basina ort fark = yarisi",
        "not": "pozitif = ilk grup daha yuksek PWM. FRAME_TYPE=1 X: M1 on-sag, M2 arka-sol, M3 on-sol, M4 arka-sag"
       },
       "doygunluk": {
@@ -2927,6 +2935,9 @@
       "sarkma_V": 0.08,
       "sarkma_hucre_V": 0.027,
       "sarkma_yuzde": 0.7,
+      "sarkma_tanimi": "sarkma_V = arm ONCESI dinlenme medyani -> pencere min. A/B/D/E ile ayni tanim (pencere ilk BAT ornegi -> min) icin bkz. sarkma_V_pencere_basi; 2026-09-15 curutucu bulgusu",
+      "sarkma_V_pencere_basi": 0.07,
+      "sarkma_hucre_V_pencere_basi": 0.025,
       "V_min_BATT_LOW_VOLT_marji_V": 2.03,
       "motorlu": null,
       "aski": null,
@@ -3009,6 +3020,7 @@
        "roll_sag_eksi_sol": 0.0,
        "pitch_on_eksi_arka": 0.0,
        "yaw_CCW_eksi_CW": 0.0,
+       "olcek": "TOPLAM: (M1+M4)-(M2+M3), (M1+M3)-(M2+M4), (M1+M2)-(M3+M4) us — A/D/E/F ile ayni; motor basina ort fark = yarisi",
        "not": "pozitif = ilk grup daha yuksek PWM. FRAME_TYPE=1 X: M1 on-sag, M2 arka-sol, M3 on-sol, M4 arka-sag"
       },
       "doygunluk": {
@@ -3229,6 +3241,9 @@
       "sarkma_V": 1.61,
       "sarkma_hucre_V": 0.537,
       "sarkma_yuzde": 13.3,
+      "sarkma_tanimi": "sarkma_V = arm ONCESI dinlenme medyani -> pencere min. A/B/D/E ile ayni tanim (pencere ilk BAT ornegi -> min) icin bkz. sarkma_V_pencere_basi; 2026-09-15 curutucu bulgusu",
+      "sarkma_V_pencere_basi": 1.62,
+      "sarkma_hucre_V_pencere_basi": 0.539,
       "V_min_BATT_LOW_VOLT_marji_V": 0.51,
       "motorlu": {
        "V": {
@@ -3992,9 +4007,10 @@
        "M4": 0.29
       },
       "karisim_bileseni_pwm": {
-       "roll_sag_eksi_sol": 5.3,
-       "pitch_on_eksi_arka": -6.1,
-       "yaw_CCW_eksi_CW": 25.1,
+       "roll_sag_eksi_sol": 10.5,
+       "pitch_on_eksi_arka": -12.3,
+       "yaw_CCW_eksi_CW": 50.2,
+       "olcek": "TOPLAM: (M1+M4)-(M2+M3), (M1+M3)-(M2+M4), (M1+M2)-(M3+M4) us — A/D/E/F ile ayni; motor basina ort fark = yarisi",
        "not": "pozitif = ilk grup daha yuksek PWM. FRAME_TYPE=1 X: M1 on-sag, M2 arka-sol, M3 on-sol, M4 arka-sag"
       },
       "doygunluk": {
