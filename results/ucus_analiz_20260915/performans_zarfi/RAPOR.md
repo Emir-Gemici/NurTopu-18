@@ -1,6 +1,6 @@
 # Performans zarfı — 4S 13 Ah + 9x5x3 ve 3S 8 Ah + 1045 (yazılımsal sınırlar yok sayıldı)
 
-Üretim: 2026-09-15T16:36:09 · betik: `results/ucus_analiz_20260915/performans_zarfi/performans_modeli.py` · numpy 2.3.5 · tüm sayılar betik çıktısıdır (`tablolar.json`).
+Üretim: 2026-09-15T19:59:21 · betik: `results/ucus_analiz_20260915/performans_zarfi/performans_modeli.py` · numpy 2.3.5 · tüm sayılar betik çıktısıdır (`tablolar.json`).
 
 **Bu bir HESAPTIR, ölçüm değil.** Ölçülen yalnız kalibrasyon noktalarıdır (askı ve 4S tam gaz). Kütle, CdA, ρ ve KV ölçülmedi — parametre olarak alındı ve aşağıda yazılıdır. ANGLE_MAX 30°, LOIT_SPEED 12,5 m/s, WPNAV_SPEED 3 m/s **yok sayıldı** (kullanıcı: "yazılımsal sınırlar kalksaydı").
 
@@ -25,17 +25,17 @@
 
 | büyüklük | değer | kaynak |
 |---|---|---|
-| kütle (VARSAYIM) | 3,00 kg → W = 29,42 N | kullanıcı parametresi; ölçülmedi |
+| kütle (VARSAYIM) | 4,00 kg → W = 39,23 N | kullanıcı parametresi; ölçülmedi |
 | askı ankrajı | ThO 0,360, V_yük 14,00 V, I 37,3 A, P 522 W (64 s) | F_1311_aski_4S_13Ah/ozet.json: ThO_aski_ort 0,3591 / p50 0,3604; I p50; 62,9 s GUIDED askı (13-11-32 logu) |
 | u_eff(askı), PWM | 0,568 → 1568 µs (expo'lu); ölçülen ort. PWM 1583 µs | model / F ozet.json `rcou.ort_pwm_orani` |
 | RPM_askı (KV modeli) | 7789 rpm | KV·V·u_eff |
-| k_T | 4.8487e-07 N/rpm² (motor başına askı itkisi 7,35 N) | W/RPM_askı² |
+| k_T | 6.4650e-07 N/rpm² (motor başına askı itkisi 9,81 N) | W/RPM_askı² |
 | k_P | 1.1049e-09 W/rpm³ (motor başına askı gücü 130,5 W) | P_askı/RPM_askı³ |
 | tam gaz ankrajı | T/W 1,91 (a 8,93 m/s², alt sınır: hava direnci ihmal), V_yük 12,36 V, I 115 A, RCOU maks 1949 | E_1240_ivme/ozet.json: TW_alt_sinir 1,91 (a 8,934 m/s²); E_1240_tam_gaz/ozet.json: I_maks 115 A, V_min 12,36 V, RCOU M4 maks 1949 |
 | T/W_TG yüksüz KV modeli (s_TG = 1) | 2,18 | k_T·(KV·12,36·0,95)²/W — ölçülenden 14,3 % yüksek → sarkma gerekli |
 | **s_TG** (RPM sarkma çarpanı) | **0,9355** (c_T = s² = 0,875; RPM_TG model 10765 rpm) | √(T/W_ölçülen / T/W_KV) — ÖLÇÜM (bu konfigin tam gaz noktası) |
 | çapraz kontrol: tam gaz güç | model 1378 W / 111,5 A; ölçülen 1421 W / 115 A (sapma -3,0 %) | P ∝ T^1,5 tutarlılığı |
-| motor başına tam gaz itkisi | 14,05 N (1,43 kgf) @ 28,8 A/motor | T_max/4 |
+| motor başına tam gaz itkisi | 18,73 N (1,91 kgf) @ 28,8 A/motor | T_max/4 |
 | çapraz kontrol: D logu askısı | model T/W 1,01, I 35,8 A; ölçülen I 35,5 A | D_4S_9x5x3 (F ozet.json kıyas bloğu 'D': aski_ThO_ort 0,327, aski_V 14,719, aski_I_A 35,514) |
 | R_paket | 30,4 mΩ | F ozet.json ic_direnc.a_kalkis_gecisi (r² 0,995) |
 | pil senaryoları V_açık | 17,00 V (fazla dolu 4,25 V/hücre); 16,80 V (dolu 4,20 V/hücre); 15,60 V (F logu başı) | kullanıcı |
@@ -44,11 +44,11 @@
 
 | büyüklük | değer | kaynak |
 |---|---|---|
-| kütle (VARSAYIM) | 2,50 kg → W = 24,52 N | kullanıcı parametresi; ölçülmedi |
+| kütle (VARSAYIM) | 3,50 kg → W = 34,32 N | kullanıcı parametresi; ölçülmedi |
 | askı ankrajı | ThO 0,467, V_yük 10,08 V, I 31,6 A, P 319 W (311 s) | A_3S_1045/ozet.json: havuz_ThO ort 0,466 (ThO_motorlu_ort 0,467), havuz_V ort 10,09, havuz_I_A ort 31,6, askida_toplam_s 312,2 (n=3122 örnek, 18 uçuş) |
 | u_eff(askı), PWM | 0,646 → 1646 µs (expo'lu); ölçülen ort. PWM havuz değeri yok | model / F ozet.json `rcou.ort_pwm_orani` |
 | RPM_askı (KV modeli) | 6382 rpm | KV·V·u_eff |
-| k_T | 6.0186e-07 N/rpm² (motor başına askı itkisi 6,13 N) | W/RPM_askı² |
+| k_T | 8.4260e-07 N/rpm² (motor başına askı itkisi 8,58 N) | W/RPM_askı² |
 | k_P | 1.2252e-09 W/rpm³ (motor başına askı gücü 79,6 W) | P_askı/RPM_askı³ |
 | tam gaz ankrajı | **ÖLÇÜM YOK** | — |
 | **s_TG** | **0,9355** (c_T = 0,875) | 4S ölçümünden AKTARILDI (aynı motor/ESC varsayımı) |
@@ -62,34 +62,34 @@ Satırlar: eğim θ × pil senaryosu. "tam gaz A @ V_yük": ivmelenme başı, ka
 
 | θ | pil V_açık | gereken T/W | T_max/W | irtifa | a0 m/s² | v_üst m/s (km/h) | %95 v_üst süre | 0–60 km/h | 0–100 km/h | tam gaz A @ V_yük | v_üst'te A | azami rüzgar m/s | 1 dk mAh | %80 pil dk | sınırlayıcı |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 0° | 17,00 V fazla dolu 4,25 V/hücre | 1,00 | 2,16 | ✓ | 11,42 | 10,9 (39) | 2,6 s | ✗ (asimptot 39 km/h) | ✗ (asimptot 39 km/h) | 126 @ 13,16 V | 126 | — | 2106 | 4,9 | pitch hızı; akım: tam gaz > PM06 tepe 120 A; v_üst'te > PM06 sürekli 60 A |
-| 0° | 16,80 V dolu 4,20 V/hücre | 1,00 | 2,12 | ✓ | 11,01 | 10,7 (38) | 2,6 s | ✗ (asimptot 38 km/h) | ✗ (asimptot 38 km/h) | 124 @ 13,03 V | 124 | — | 2066 | 5,0 | pitch hızı; akım: tam gaz > PM06 tepe 120 A; v_üst'te > PM06 sürekli 60 A |
-| 0° | 15,60 V F logu başı | 1,00 | 1,88 | ✓ | 8,63 | 9,0 (33) | 2,9 s | ✗ (asimptot 33 km/h) | ✗ (asimptot 33 km/h) | 110 @ 12,26 V | 110 | — | 1830 | 5,7 | pitch hızı; akım: v_üst'te > PM06 sürekli 60 A |
-| 30° | 17,00 V fazla dolu 4,25 V/hücre | 1,15 | 2,16 | ✓ | 5,66 | 17,2 (62) | 5,6 s | 6,3 s | ✗ (asimptot 62 km/h) | 126 @ 13,16 V | 41 | 17,2 | 686 | 15,2 | sürükleme; akım: tam gaz > PM06 tepe 120 A |
-| 30° | 16,80 V dolu 4,20 V/hücre | 1,15 | 2,12 | ✓ | 5,66 | 17,2 (62) | 5,6 s | 6,3 s | ✗ (asimptot 62 km/h) | 124 @ 13,03 V | 42 | 17,2 | 695 | 15,0 | sürükleme; akım: tam gaz > PM06 tepe 120 A |
-| 30° | 15,60 V F logu başı | 1,15 | 1,88 | ✓ | 5,66 | 17,2 (62) | 5,6 s | 6,3 s | ✗ (asimptot 62 km/h) | 110 @ 12,26 V | 46 | 17,2 | 760 | 13,7 | sürükleme |
-| 45° | 17,00 V fazla dolu 4,25 V/hücre | 1,41 | 2,16 | ✓ | 9,81 | 21,7 (78) | 4,1 s | 2,2 s | ✗ (asimptot 78 km/h) | 126 @ 13,16 V | 58 | 21,7 | 960 | 10,8 | sürükleme; akım: tam gaz > PM06 tepe 120 A |
-| 45° | 16,80 V dolu 4,20 V/hücre | 1,41 | 2,12 | ✓ | 9,81 | 21,7 (78) | 4,1 s | 2,2 s | ✗ (asimptot 78 km/h) | 124 @ 13,03 V | 58 | 21,7 | 974 | 10,7 | sürükleme; akım: tam gaz > PM06 tepe 120 A |
-| 45° | 15,60 V F logu başı | 1,41 | 1,88 | ✓ | 9,81 | 21,7 (78) | 4,1 s | 2,2 s | ✗ (asimptot 78 km/h) | 110 @ 12,26 V | 64 | 21,7 | 1073 | 9,7 | sürükleme; akım: v_üst'te > PM06 sürekli 60 A |
-| 58° | 17,00 V fazla dolu 4,25 V/hücre | 1,89 | 2,16 | ✓ | 15,69 | 26,8 (97) | 3,1 s | 1,2 s | ✗ (asimptot 97 km/h) | 126 @ 13,16 V | 96 | 26,8 | 1603 | 6,5 | sürükleme; akım: tam gaz > PM06 tepe 120 A; v_üst'te > PM06 sürekli 60 A |
-| 58° | 16,80 V dolu 4,20 V/hücre | 1,89 | 2,12 | ✓ | 15,69 | 26,8 (97) | 3,1 s | 1,2 s | ✗ (asimptot 97 km/h) | 124 @ 13,03 V | 98 | 26,8 | 1632 | 6,4 | sürükleme; akım: tam gaz > PM06 tepe 120 A; v_üst'te > PM06 sürekli 60 A |
-| 58° | 15,60 V F logu başı | 1,89 | 1,88 | ✗ düşüş a_z -0,04 | 15,64 | 26,8 (96) yalnız dalışta | 3,1 s | 1,2 s | ✗ (asimptot 96 km/h) | 110 @ 12,26 V | 110 | — | 1830 | 5,7 | itki; akım: v_üst'te > PM06 sürekli 60 A |
-| 66° | 17,00 V fazla dolu 4,25 V/hücre | 2,46 | 2,16 | ✗ düşüş a_z -1,17 | 19,39 | 29,5 (106) yalnız dalışta | 2,8 s | 1,0 s | 2,7 s | 126 @ 13,16 V | 126 | — | 2106 | 4,9 | itki; akım: tam gaz > PM06 tepe 120 A; v_üst'te > PM06 sürekli 60 A |
-| 66° | 16,80 V dolu 4,20 V/hücre | 2,46 | 2,12 | ✗ düşüş a_z -1,34 | 19,02 | 29,2 (105) yalnız dalışta | 2,8 s | 1,0 s | 2,8 s | 124 @ 13,03 V | 124 | — | 2066 | 5,0 | itki; akım: tam gaz > PM06 tepe 120 A; v_üst'te > PM06 sürekli 60 A |
-| 66° | 15,60 V F logu başı | 2,46 | 1,88 | ✗ düşüş a_z -2,31 | 16,84 | 27,5 (99) yalnız dalışta | 3,0 s | 1,1 s | ✗ (asimptot 99 km/h) | 110 @ 12,26 V | 110 | — | 1830 | 5,7 | itki; akım: v_üst'te > PM06 sürekli 60 A |
-| 90° | 17,00 V fazla dolu 4,25 V/hücre | ∞ | 2,16 | ✗ düşüş a_z -9,81 | 21,23 | 30,4 (109) yalnız dalışta | 2,6 s | 0,9 s | 2,2 s | 126 @ 13,16 V | 126 | — | 2106 | 4,9 | itki; akım: tam gaz > PM06 tepe 120 A; v_üst'te > PM06 sürekli 60 A |
-| 90° | 16,80 V dolu 4,20 V/hücre | ∞ | 2,12 | ✗ düşüş a_z -9,81 | 20,82 | 30,1 (108) yalnız dalışta | 2,6 s | 0,9 s | 2,3 s | 124 @ 13,03 V | 124 | — | 2066 | 5,0 | itki; akım: tam gaz > PM06 tepe 120 A; v_üst'te > PM06 sürekli 60 A |
-| 90° | 15,60 V F logu başı | ∞ | 1,88 | ✗ düşüş a_z -9,81 | 18,44 | 28,3 (102) yalnız dalışta | 2,8 s | 1,0 s | 3,6 s | 110 @ 12,26 V | 110 | — | 1830 | 5,7 | itki; akım: v_üst'te > PM06 sürekli 60 A |
+| 0° | 17,00 V fazla dolu 4,25 V/hücre | 1,00 | 2,16 | ✓ | 11,42 | 11,4 (41) | 2,7 s | ✗ (asimptot 41 km/h) | ✗ (asimptot 41 km/h) | 126 @ 13,16 V | 126 | — | 2106 | 4,9 | pitch hızı; akım: tam gaz > PM06 tepe 120 A; v_üst'te > PM06 sürekli 60 A |
+| 0° | 16,80 V dolu 4,20 V/hücre | 1,00 | 2,12 | ✓ | 11,01 | 11,1 (40) | 2,8 s | ✗ (asimptot 40 km/h) | ✗ (asimptot 40 km/h) | 124 @ 13,03 V | 124 | — | 2066 | 5,0 | pitch hızı; akım: tam gaz > PM06 tepe 120 A; v_üst'te > PM06 sürekli 60 A |
+| 0° | 15,60 V F logu başı | 1,00 | 1,88 | ✓ | 8,63 | 9,3 (34) | 3,0 s | ✗ (asimptot 34 km/h) | ✗ (asimptot 34 km/h) | 110 @ 12,26 V | 110 | — | 1830 | 5,7 | pitch hızı; akım: v_üst'te > PM06 sürekli 60 A |
+| 30° | 17,00 V fazla dolu 4,25 V/hücre | 1,15 | 2,16 | ✓ | 5,66 | 19,8 (71) | 6,4 s | 4,3 s | ✗ (asimptot 71 km/h) | 126 @ 13,16 V | 41 | 19,8 | 686 | 15,2 | sürükleme; akım: tam gaz > PM06 tepe 120 A |
+| 30° | 16,80 V dolu 4,20 V/hücre | 1,15 | 2,12 | ✓ | 5,66 | 19,8 (71) | 6,4 s | 4,3 s | ✗ (asimptot 71 km/h) | 124 @ 13,03 V | 42 | 19,8 | 695 | 15,0 | sürükleme; akım: tam gaz > PM06 tepe 120 A |
+| 30° | 15,60 V F logu başı | 1,15 | 1,88 | ✓ | 5,66 | 19,8 (71) | 6,4 s | 4,3 s | ✗ (asimptot 71 km/h) | 110 @ 12,26 V | 46 | 19,8 | 760 | 13,7 | sürükleme |
+| 45° | 17,00 V fazla dolu 4,25 V/hücre | 1,41 | 2,16 | ✓ | 9,81 | 25,1 (90) | 4,7 s | 2,0 s | ✗ (asimptot 90 km/h) | 126 @ 13,16 V | 58 | 25,1 | 960 | 10,8 | sürükleme; akım: tam gaz > PM06 tepe 120 A |
+| 45° | 16,80 V dolu 4,20 V/hücre | 1,41 | 2,12 | ✓ | 9,81 | 25,1 (90) | 4,7 s | 2,0 s | ✗ (asimptot 90 km/h) | 124 @ 13,03 V | 58 | 25,1 | 974 | 10,7 | sürükleme; akım: tam gaz > PM06 tepe 120 A |
+| 45° | 15,60 V F logu başı | 1,41 | 1,88 | ✓ | 9,81 | 25,1 (90) | 4,7 s | 2,0 s | ✗ (asimptot 90 km/h) | 110 @ 12,26 V | 64 | 25,1 | 1073 | 9,7 | sürükleme; akım: v_üst'te > PM06 sürekli 60 A |
+| 58° | 17,00 V fazla dolu 4,25 V/hücre | 1,89 | 2,16 | ✓ | 15,69 | 31,0 (111) | 3,6 s | 1,2 s | 2,9 s | 126 @ 13,16 V | 96 | 31,0 | 1603 | 6,5 | sürükleme; akım: tam gaz > PM06 tepe 120 A; v_üst'te > PM06 sürekli 60 A |
+| 58° | 16,80 V dolu 4,20 V/hücre | 1,89 | 2,12 | ✓ | 15,69 | 31,0 (111) | 3,6 s | 1,2 s | 2,9 s | 124 @ 13,03 V | 98 | 31,0 | 1632 | 6,4 | sürükleme; akım: tam gaz > PM06 tepe 120 A; v_üst'te > PM06 sürekli 60 A |
+| 58° | 15,60 V F logu başı | 1,89 | 1,88 | ✗ düşüş a_z -0,04 | 15,64 | 30,9 (111) yalnız dalışta | 3,6 s | 1,2 s | 2,9 s | 110 @ 12,26 V | 110 | — | 1830 | 5,7 | itki; akım: v_üst'te > PM06 sürekli 60 A |
+| 66° | 17,00 V fazla dolu 4,25 V/hücre | 2,46 | 2,16 | ✗ düşüş a_z -1,17 | 19,39 | 34,0 (122) yalnız dalışta | 3,2 s | 0,9 s | 2,0 s | 126 @ 13,16 V | 126 | — | 2106 | 4,9 | itki; akım: tam gaz > PM06 tepe 120 A; v_üst'te > PM06 sürekli 60 A |
+| 66° | 16,80 V dolu 4,20 V/hücre | 2,46 | 2,12 | ✗ düşüş a_z -1,34 | 19,02 | 33,7 (121) yalnız dalışta | 3,2 s | 1,0 s | 2,1 s | 124 @ 13,03 V | 124 | — | 2066 | 5,0 | itki; akım: tam gaz > PM06 tepe 120 A; v_üst'te > PM06 sürekli 60 A |
+| 66° | 15,60 V F logu başı | 2,46 | 1,88 | ✗ düşüş a_z -2,31 | 16,84 | 31,7 (114) yalnız dalışta | 3,4 s | 1,1 s | 2,6 s | 110 @ 12,26 V | 110 | — | 1830 | 5,7 | itki; akım: v_üst'te > PM06 sürekli 60 A |
+| 90° | 17,00 V fazla dolu 4,25 V/hücre | ∞ | 2,16 | ✗ düşüş a_z -9,81 | 21,23 | 35,1 (126) yalnız dalışta | 3,0 s | 0,9 s | 1,8 s | 126 @ 13,16 V | 126 | — | 2106 | 4,9 | itki; akım: tam gaz > PM06 tepe 120 A; v_üst'te > PM06 sürekli 60 A |
+| 90° | 16,80 V dolu 4,20 V/hücre | ∞ | 2,12 | ✗ düşüş a_z -9,81 | 20,82 | 34,7 (125) yalnız dalışta | 3,1 s | 0,9 s | 1,8 s | 124 @ 13,03 V | 124 | — | 2066 | 5,0 | itki; akım: tam gaz > PM06 tepe 120 A; v_üst'te > PM06 sürekli 60 A |
+| 90° | 15,60 V F logu başı | ∞ | 1,88 | ✗ düşüş a_z -9,81 | 18,44 | 32,7 (118) yalnız dalışta | 3,2 s | 1,0 s | 2,2 s | 110 @ 12,26 V | 110 | — | 1830 | 5,7 | itki; akım: v_üst'te > PM06 sürekli 60 A |
 
-**Parametreler (4S 13 Ah + 9x5x3):** kütle 3,00 kg (VARSAYIM), W = 29,42 N, CdA(θ) = 0,08·(1 + 0,5·sinθ) m², ρ = 1,15 kg/m³, R_paket = 30,4 mΩ, pervane 9x5x3 (3 pal) (pitch 0,1270 m), KV 980 rpm/V, SPIN_MIN/MAX 0,15/0,95, EXPO 0,65, kapasite 13 Ah (%80 kullanılabilir), kalibrasyon: askı (ThO 0,360, 14,00 V, 37,3 A) → k_T 4.849e-07 N/rpm², k_P 1.105e-09 W/rpm³; s_TG 0,9355 (ÖLÇÜM (bu konfigin tam gaz noktası)).
+**Parametreler (4S 13 Ah + 9x5x3):** kütle 4,00 kg (VARSAYIM), W = 39,23 N, CdA(θ) = 0,08·(1 + 0,5·sinθ) m², ρ = 1,15 kg/m³, R_paket = 30,4 mΩ, pervane 9x5x3 (3 pal) (pitch 0,1270 m), KV 980 rpm/V, SPIN_MIN/MAX 0,15/0,95, EXPO 0,65, kapasite 13 Ah (%80 kullanılabilir), kalibrasyon: askı (ThO 0,360, 14,00 V, 37,3 A) → k_T 6.465e-07 N/rpm², k_P 1.105e-09 W/rpm³; s_TG 0,9355 (ÖLÇÜM (bu konfigin tam gaz noktası)).
 
 **Senaryo başına θ_max (T_max ile sürdürülebilir azami eğim) ve o eğimde rüzgar:**
 
 | V_açık | tam gaz V_yük / I | T_max/W | θ_max | rüzgar @ θ_max (m/s, km/h) | v_pitch (0°) |
 |---|---|---|---|---|---|
-| 17,00 V (fazla dolu 4,25 V/hücre) | 13,16 V / 126 A (31,6 A/motor) | 2,16 | 62,5° | 29,2 (105) | 24,3 m/s |
-| 16,80 V (dolu 4,20 V/hücre) | 13,03 V / 124 A (31,0 A/motor) | 2,12 | 61,9° | 28,8 (104) | 24,0 m/s |
-| 15,60 V (F logu başı) | 12,26 V / 110 A (27,4 A/motor) | 1,88 | 57,9° | 26,7 (96) | 22,6 m/s |
+| 17,00 V (fazla dolu 4,25 V/hücre) | 13,16 V / 126 A (31,6 A/motor) | 2,16 | 62,5° | 33,7 (121) | 24,3 m/s |
+| 16,80 V (dolu 4,20 V/hücre) | 13,03 V / 124 A (31,0 A/motor) | 2,12 | 61,9° | 33,3 (120) | 24,0 m/s |
+| 15,60 V (F logu başı) | 12,26 V / 110 A (27,4 A/motor) | 1,88 | 57,9° | 30,9 (111) | 22,6 m/s |
 
 **Sınırlayıcı etken sütunu:** *sürükleme* = v_üst'ü CdA belirler (itki yeter); *itki* = T_max < W/cosθ, irtifa tutulamaz; *pitch hızı* = dikey tırmanışta pervane pitch hızı sürüklemeden önce sınırlar; *pil (güç aktarımı)* = V_açık² < 4·R·P; *akım* ekleri = ESC/PM06 sınırının aşıldığı yer (PM06 sınırları veri sayfasından doğrulanmadı).
 
@@ -99,34 +99,34 @@ Satırlar: eğim θ × pil senaryosu. "tam gaz A @ V_yük": ivmelenme başı, ka
 
 | θ | pil V_açık | gereken T/W | T_max/W | irtifa | a0 m/s² | v_üst m/s (km/h) | %95 v_üst süre | 0–60 km/h | 0–100 km/h | tam gaz A @ V_yük | v_üst'te A | azami rüzgar m/s | 1 dk mAh | %80 pil dk | sınırlayıcı |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 0° | 12,75 V fazla dolu 4,25 V/hücre | 1,00 | 1,74 | ✓ | 7,22 | 6,1 (22) | 2,4 s | ✗ (asimptot 22 km/h) | ✗ (asimptot 22 km/h) | 75 @ 9,66 V | 75 | — | 1258 | 5,1 | pitch hızı; akım: v_üst'te > PM06 sürekli 60 A |
-| 0° | 12,60 V dolu 4,20 V/hücre | 1,00 | 1,70 | ✓ | 6,90 | 5,9 (21) | 2,4 s | ✗ (asimptot 21 km/h) | ✗ (asimptot 21 km/h) | 74 @ 9,56 V | 74 | — | 1234 | 5,2 | pitch hızı; akım: v_üst'te > PM06 sürekli 60 A |
-| 0° | 11,50 V A uçuş başı ort | 1,00 | 1,47 | ✓ | 4,60 | 4,3 (16) | 2,7 s | ✗ (asimptot 16 km/h) | ✗ (asimptot 16 km/h) | 64 @ 8,88 V | 64 | — | 1064 | 6,0 | pitch hızı; akım: v_üst'te > PM06 sürekli 60 A |
-| 30° | 12,75 V fazla dolu 4,25 V/hücre | 1,15 | 1,74 | ✓ | 5,66 | 15,7 (56) | 5,1 s | ✗ (asimptot 56 km/h) | ✗ (asimptot 56 km/h) | 75 @ 9,66 V | 35 | 15,7 | 582 | 11,0 | sürükleme |
-| 30° | 12,60 V dolu 4,20 V/hücre | 1,15 | 1,70 | ✓ | 5,66 | 15,7 (56) | 5,1 s | ✗ (asimptot 56 km/h) | ✗ (asimptot 56 km/h) | 74 @ 9,56 V | 35 | 15,7 | 591 | 10,8 | sürükleme |
-| 30° | 11,50 V A uçuş başı ort | 1,15 | 1,47 | ✓ | 5,66 | 15,7 (56) | 5,1 s | ✗ (asimptot 56 km/h) | ✗ (asimptot 56 km/h) | 64 @ 8,88 V | 40 | 15,7 | 668 | 9,6 | sürükleme |
-| 45° | 12,75 V fazla dolu 4,25 V/hücre | 1,41 | 1,74 | ✓ | 9,81 | 19,8 (71) | 3,7 s | 2,5 s | ✗ (asimptot 71 km/h) | 75 @ 9,66 V | 50 | 19,8 | 835 | 7,7 | sürükleme |
-| 45° | 12,60 V dolu 4,20 V/hücre | 1,41 | 1,70 | ✓ | 9,81 | 19,8 (71) | 3,7 s | 2,5 s | ✗ (asimptot 71 km/h) | 74 @ 9,56 V | 51 | 19,8 | 849 | 7,5 | sürükleme |
-| 45° | 11,50 V A uçuş başı ort | 1,41 | 1,47 | ✓ | 9,81 | 19,8 (71) | 3,7 s | 2,5 s | ✗ (asimptot 71 km/h) | 64 @ 8,88 V | 59 | 19,8 | 983 | 6,5 | sürükleme |
-| 58° | 12,75 V fazla dolu 4,25 V/hücre | 1,89 | 1,74 | ✗ düşüş a_z -0,78 | 14,44 | 23,5 (85) yalnız dalışta | 3,0 s | 1,4 s | ✗ (asimptot 85 km/h) | 75 @ 9,66 V | 75 | — | 1258 | 5,1 | itki; akım: v_üst'te > PM06 sürekli 60 A |
-| 58° | 12,60 V dolu 4,20 V/hücre | 1,89 | 1,70 | ✗ düşüş a_z -0,95 | 14,17 | 23,3 (84) yalnız dalışta | 3,0 s | 1,5 s | ✗ (asimptot 84 km/h) | 74 @ 9,56 V | 74 | — | 1234 | 5,2 | itki; akım: v_üst'te > PM06 sürekli 60 A |
-| 58° | 11,50 V A uçuş başı ort | 1,89 | 1,47 | ✗ düşüş a_z -2,17 | 12,22 | 21,6 (78) yalnız dalışta | 3,2 s | 1,8 s | ✗ (asimptot 78 km/h) | 64 @ 8,88 V | 64 | — | 1064 | 6,0 | itki; akım: v_üst'te > PM06 sürekli 60 A |
-| 66° | 12,75 V fazla dolu 4,25 V/hücre | 2,46 | 1,74 | ✗ düşüş a_z -2,88 | 15,55 | 24,1 (87) yalnız dalışta | 2,8 s | 1,3 s | ✗ (asimptot 87 km/h) | 75 @ 9,66 V | 75 | — | 1258 | 5,1 | itki; akım: v_üst'te > PM06 sürekli 60 A |
-| 66° | 12,60 V dolu 4,20 V/hücre | 2,46 | 1,70 | ✗ düşüş a_z -3,01 | 15,26 | 23,9 (86) yalnız dalışta | 2,9 s | 1,4 s | ✗ (asimptot 86 km/h) | 74 @ 9,56 V | 74 | — | 1234 | 5,2 | itki; akım: v_üst'te > PM06 sürekli 60 A |
-| 66° | 11,50 V A uçuş başı ort | 2,46 | 1,47 | ✗ düşüş a_z -3,95 | 13,16 | 22,2 (80) yalnız dalışta | 3,1 s | 1,6 s | ✗ (asimptot 80 km/h) | 64 @ 8,88 V | 64 | — | 1064 | 6,0 | itki; akım: v_üst'te > PM06 sürekli 60 A |
-| 90° | 12,75 V fazla dolu 4,25 V/hücre | ∞ | 1,74 | ✗ düşüş a_z -9,81 | 17,03 | 24,8 (89) yalnız dalışta | 2,7 s | 1,2 s | ✗ (asimptot 89 km/h) | 75 @ 9,66 V | 75 | — | 1258 | 5,1 | itki; akım: v_üst'te > PM06 sürekli 60 A |
-| 90° | 12,60 V dolu 4,20 V/hücre | ∞ | 1,70 | ✗ düşüş a_z -9,81 | 16,71 | 24,6 (89) yalnız dalışta | 2,7 s | 1,2 s | ✗ (asimptot 89 km/h) | 74 @ 9,56 V | 74 | — | 1234 | 5,2 | itki; akım: v_üst'te > PM06 sürekli 60 A |
-| 90° | 11,50 V A uçuş başı ort | ∞ | 1,47 | ✗ düşüş a_z -9,81 | 14,41 | 22,8 (82) yalnız dalışta | 2,9 s | 1,5 s | ✗ (asimptot 82 km/h) | 64 @ 8,88 V | 64 | — | 1064 | 6,0 | itki; akım: v_üst'te > PM06 sürekli 60 A |
+| 0° | 12,75 V fazla dolu 4,25 V/hücre | 1,00 | 1,74 | ✓ | 7,22 | 6,3 (23) | 2,5 s | ✗ (asimptot 23 km/h) | ✗ (asimptot 23 km/h) | 75 @ 9,66 V | 75 | — | 1258 | 5,1 | pitch hızı; akım: v_üst'te > PM06 sürekli 60 A |
+| 0° | 12,60 V dolu 4,20 V/hücre | 1,00 | 1,70 | ✓ | 6,90 | 6,1 (22) | 2,5 s | ✗ (asimptot 22 km/h) | ✗ (asimptot 22 km/h) | 74 @ 9,56 V | 74 | — | 1234 | 5,2 | pitch hızı; akım: v_üst'te > PM06 sürekli 60 A |
+| 0° | 11,50 V A uçuş başı ort | 1,00 | 1,47 | ✓ | 4,60 | 4,4 (16) | 2,8 s | ✗ (asimptot 16 km/h) | ✗ (asimptot 16 km/h) | 64 @ 8,88 V | 64 | — | 1064 | 6,0 | pitch hızı; akım: v_üst'te > PM06 sürekli 60 A |
+| 30° | 12,75 V fazla dolu 4,25 V/hücre | 1,15 | 1,74 | ✓ | 5,66 | 18,6 (67) | 6,0 s | 4,8 s | ✗ (asimptot 67 km/h) | 75 @ 9,66 V | 35 | 18,6 | 582 | 11,0 | sürükleme |
+| 30° | 12,60 V dolu 4,20 V/hücre | 1,15 | 1,70 | ✓ | 5,66 | 18,6 (67) | 6,0 s | 4,8 s | ✗ (asimptot 67 km/h) | 74 @ 9,56 V | 35 | 18,6 | 591 | 10,8 | sürükleme |
+| 30° | 11,50 V A uçuş başı ort | 1,15 | 1,47 | ✓ | 5,66 | 18,6 (67) | 6,0 s | 4,8 s | ✗ (asimptot 67 km/h) | 64 @ 8,88 V | 40 | 18,6 | 668 | 9,6 | sürükleme |
+| 45° | 12,75 V fazla dolu 4,25 V/hücre | 1,41 | 1,74 | ✓ | 9,81 | 23,5 (85) | 4,4 s | 2,1 s | ✗ (asimptot 85 km/h) | 75 @ 9,66 V | 50 | 23,5 | 835 | 7,7 | sürükleme |
+| 45° | 12,60 V dolu 4,20 V/hücre | 1,41 | 1,70 | ✓ | 9,81 | 23,5 (85) | 4,4 s | 2,1 s | ✗ (asimptot 85 km/h) | 74 @ 9,56 V | 51 | 23,5 | 849 | 7,5 | sürükleme |
+| 45° | 11,50 V A uçuş başı ort | 1,41 | 1,47 | ✓ | 9,81 | 23,5 (85) | 4,4 s | 2,1 s | ✗ (asimptot 85 km/h) | 64 @ 8,88 V | 59 | 23,5 | 983 | 6,5 | sürükleme |
+| 58° | 12,75 V fazla dolu 4,25 V/hücre | 1,89 | 1,74 | ✗ düşüş a_z -0,78 | 14,44 | 27,8 (100) yalnız dalışta | 3,5 s | 1,3 s | ✗ (asimptot 100 km/h) | 75 @ 9,66 V | 75 | — | 1258 | 5,1 | itki; akım: v_üst'te > PM06 sürekli 60 A |
+| 58° | 12,60 V dolu 4,20 V/hücre | 1,89 | 1,70 | ✗ düşüş a_z -0,95 | 14,17 | 27,5 (99) yalnız dalışta | 3,6 s | 1,4 s | ✗ (asimptot 99 km/h) | 74 @ 9,56 V | 74 | — | 1234 | 5,2 | itki; akım: v_üst'te > PM06 sürekli 60 A |
+| 58° | 11,50 V A uçuş başı ort | 1,89 | 1,47 | ✗ düşüş a_z -2,17 | 12,22 | 25,5 (92) yalnız dalışta | 3,8 s | 1,6 s | ✗ (asimptot 92 km/h) | 64 @ 8,88 V | 64 | — | 1064 | 6,0 | itki; akım: v_üst'te > PM06 sürekli 60 A |
+| 66° | 12,75 V fazla dolu 4,25 V/hücre | 2,46 | 1,74 | ✗ düşüş a_z -2,88 | 15,55 | 28,5 (103) yalnız dalışta | 3,4 s | 1,2 s | 4,0 s | 75 @ 9,66 V | 75 | — | 1258 | 5,1 | itki; akım: v_üst'te > PM06 sürekli 60 A |
+| 66° | 12,60 V dolu 4,20 V/hücre | 2,46 | 1,70 | ✗ düşüş a_z -3,01 | 15,26 | 28,2 (102) yalnız dalışta | 3,4 s | 1,3 s | 4,5 s | 74 @ 9,56 V | 74 | — | 1234 | 5,2 | itki; akım: v_üst'te > PM06 sürekli 60 A |
+| 66° | 11,50 V A uçuş başı ort | 2,46 | 1,47 | ✗ düşüş a_z -3,95 | 13,16 | 26,2 (94) yalnız dalışta | 3,6 s | 1,5 s | ✗ (asimptot 94 km/h) | 64 @ 8,88 V | 64 | — | 1064 | 6,0 | itki; akım: v_üst'te > PM06 sürekli 60 A |
+| 90° | 12,75 V fazla dolu 4,25 V/hücre | ∞ | 1,74 | ✗ düşüş a_z -9,81 | 17,03 | 29,4 (106) yalnız dalışta | 3,2 s | 1,1 s | 3,1 s | 75 @ 9,66 V | 75 | — | 1258 | 5,1 | itki; akım: v_üst'te > PM06 sürekli 60 A |
+| 90° | 12,60 V dolu 4,20 V/hücre | ∞ | 1,70 | ✗ düşüş a_z -9,81 | 16,71 | 29,1 (105) yalnız dalışta | 3,2 s | 1,1 s | 3,3 s | 74 @ 9,56 V | 74 | — | 1234 | 5,2 | itki; akım: v_üst'te > PM06 sürekli 60 A |
+| 90° | 11,50 V A uçuş başı ort | ∞ | 1,47 | ✗ düşüş a_z -9,81 | 14,41 | 27,0 (97) yalnız dalışta | 3,4 s | 1,3 s | ✗ (asimptot 97 km/h) | 64 @ 8,88 V | 64 | — | 1064 | 6,0 | itki; akım: v_üst'te > PM06 sürekli 60 A |
 
-**Parametreler (3S 8 Ah + 1045):** kütle 2,50 kg (VARSAYIM), W = 24,52 N, CdA(θ) = 0,08·(1 + 0,5·sinθ) m², ρ = 1,15 kg/m³, R_paket = 41,0 mΩ, pervane 10x4.5 (1045, 2 pal) (pitch 0,1143 m), KV 980 rpm/V, SPIN_MIN/MAX 0,15/0,95, EXPO 0,65, kapasite 8 Ah (%80 kullanılabilir), kalibrasyon: askı (ThO 0,467, 10,08 V, 31,6 A) → k_T 6.019e-07 N/rpm², k_P 1.225e-09 W/rpm³; s_TG 0,9355 (4S ölçümünden AKTARILDI (aynı motor/ESC varsayımı)).
+**Parametreler (3S 8 Ah + 1045):** kütle 3,50 kg (VARSAYIM), W = 34,32 N, CdA(θ) = 0,08·(1 + 0,5·sinθ) m², ρ = 1,15 kg/m³, R_paket = 41,0 mΩ, pervane 10x4.5 (1045, 2 pal) (pitch 0,1143 m), KV 980 rpm/V, SPIN_MIN/MAX 0,15/0,95, EXPO 0,65, kapasite 8 Ah (%80 kullanılabilir), kalibrasyon: askı (ThO 0,467, 10,08 V, 31,6 A) → k_T 8.426e-07 N/rpm², k_P 1.225e-09 W/rpm³; s_TG 0,9355 (4S ölçümünden AKTARILDI (aynı motor/ESC varsayımı)).
 
 **Senaryo başına θ_max (T_max ile sürdürülebilir azami eğim) ve o eğimde rüzgar:**
 
 | V_açık | tam gaz V_yük / I | T_max/W | θ_max | rüzgar @ θ_max (m/s, km/h) | v_pitch (0°) |
 |---|---|---|---|---|---|
-| 12,75 V (fazla dolu 4,25 V/hücre) | 9,66 V / 75 A (18,9 A/motor) | 1,74 | 54,8° | 23,2 (83) | 16,0 m/s |
-| 12,60 V (dolu 4,20 V/hücre) | 9,56 V / 74 A (18,5 A/motor) | 1,70 | 54,1° | 22,9 (82) | 15,9 m/s |
-| 11,50 V (A uçuş başı ort) | 8,88 V / 64 A (16,0 A/motor) | 1,47 | 47,1° | 20,5 (74) | 14,7 m/s |
+| 12,75 V (fazla dolu 4,25 V/hücre) | 9,66 V / 75 A (18,9 A/motor) | 1,74 | 54,8° | 27,4 (99) | 16,0 m/s |
+| 12,60 V (dolu 4,20 V/hücre) | 9,56 V / 74 A (18,5 A/motor) | 1,70 | 54,1° | 27,1 (97) | 15,9 m/s |
+| 11,50 V (A uçuş başı ort) | 8,88 V / 64 A (16,0 A/motor) | 1,47 | 47,1° | 24,2 (87) | 14,7 m/s |
 
 **Sınırlayıcı etken sütunu:** *sürükleme* = v_üst'ü CdA belirler (itki yeter); *itki* = T_max < W/cosθ, irtifa tutulamaz; *pitch hızı* = dikey tırmanışta pervane pitch hızı sürüklemeden önce sınırlar; *pil (güç aktarımı)* = V_açık² < 4·R·P; *akım* ekleri = ESC/PM06 sınırının aşıldığı yer (PM06 sınırları veri sayfasından doğrulanmadı).
 
@@ -141,7 +141,7 @@ Satırlar: eğim θ × pil senaryosu. "tam gaz A @ V_yük": ivmelenme başı, ka
 ## 6. Uyarılar ve varsayımlar
 
 - Kütle ÖLÇÜLMEDİ: 4S 3,0 kg ve 3S 2,5 kg VARSAYIM. T/W ölçümü kütleden bağımsızdır; Newton cinsinden itki, ivme (a0 = g·(T/W−1) hariç), v_üst (√W ile) ve enerji kütleyle ölçeklenir.
-- 4S T/W = 1,91 hava direnci ihmal edilmiş ALT SINIRDIR (E_1240_ivme/ozet.json: ivme tepesi t0+0,5 s'de hız ≈ 2,2 m/s → sürükleme ½ρ·CdA(0)·v² = 0,22 N = W'nin %0,8'i; tepe hız 5,20 m/s'de 1,24 N = %4,2). Tablolar bu alt sınıra kalibre olduğundan itki türevli sayılar (T_max/W, θ_max, a0) da alt sınırdır.
+- 4S T/W = 1,91 hava direnci ihmal edilmiş ALT SINIRDIR (E_1240_ivme/ozet.json: ivme tepesi t0+0,5 s'de hız ≈ 2,2 m/s → sürükleme ½ρ·CdA(0)·v² = 0,22 N = W'nin %0,6'i; tepe hız 5,20 m/s'de 1,24 N = %3,2). Tablolar bu alt sınıra kalibre olduğundan itki türevli sayılar (T_max/W, θ_max, a0) da alt sınırdır.
 - MODEL SAPMASI (görev tanımına göre): görev tanımı u_eff = SPIN_MIN + (SPIN_MAX − SPIN_MIN)·ThO (expo'suz) der; bu haritayla iki 4S ankrajı BAĞDAŞMAZ (askı ThO 0,36 → u_eff 0,438, tam gaz u_eff 0,95: T/W_TG = (12,36·0,95/(14,0·0,438))² = 3,67, ölçülen 1,91) ve F logunda ölçülen askı PWM'i (1583 µs) expo'suz haritanın (1438 µs) değil expo'lu haritanın (1568 µs) yanındadır. Bu yüzden ArduPilot'un gerçek ThO→PWM eğrisi (MOT_THST_EXPO 0,65) kullanıldı ve tam gaz ankrajı bir RPM sarkma çarpanıyla (s_TG = 0,9355) sağlandı. k_T ve k_P askı noktasından, s_TG tam gaz noktasından: iki ankraj da BİREBİR sağlanır; tam gaz gücü bağımsız çapraz kontroldür (model 111,5 A, ölçülen 115 A).
 - 3S + 1045 için TAM GAZ ÖLÇÜMÜ YOK: T_max, 4S'ten aktarılan RPM sarkma çarpanı s_TG = 0,9355 ile askı noktasından ekstrapolasyondur; s_TG = 1 üst sınırı §2'de verildi. 1045 2 pal ve 9x5x3 3 pal farklı pervanelerdir — k_T/k_P her biri kendi askısından, sarkma ortak varsayıldı.
 - Model RPM ∝ V_yük·u_eff (yüksüz KV) varsayar; sarkma tek çarpanla yalnız tam gazda düzeltildi. Kısmi gazda (v_üst'te akım) P ∝ T^1,5 zinciri kullanıldığından RPM haritası devreye girmez; tam gazda 4S için 12,36 V civarında doğru, uzak V_yük'te belirsiz.

@@ -76,7 +76,7 @@ KONFIGLER = [
     dict(
         kimlik="4S_13Ah_9x5x3",
         ad="4S 13 Ah + 9x5x3",
-        kutle_kg=3.0,             # VARSAYIM (kullanıcı): kütle ölçülmedi
+        kutle_kg=4.0,             # KULLANICI BEYANI 15 Eyl: 'drone şu an 4 kg civarı' (4S 13 Ah takılı varsayıldı)
         kapasite_Ah=13.0,
         hucre=4,
         R_paket_ohm=0.0304,       # ÖLÇÜM: F logu kalkış geçişi polyfit, r² 0,995 (F ozet.json "ic_direnc.a_kalkis_gecisi")
@@ -98,7 +98,7 @@ KONFIGLER = [
     dict(
         kimlik="3S_8Ah_1045",
         ad="3S 8 Ah + 1045",
-        kutle_kg=2.5,             # VARSAYIM (kullanıcı): paket farkı ~0,5 kg
+        kutle_kg=3.5,             # VARSAYIM: 4 kg (4S 13 Ah) − ~0,5 kg paket farkı; 3S ile tartılmadı
         kapasite_Ah=8.0,
         hucre=3,
         R_paket_ohm=0.041,        # ÖLÇÜM: A ozet.json "R_uydurma_ohm_paket.ort" 0,0409 (n=18 uçuş)
