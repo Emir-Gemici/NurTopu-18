@@ -1,0 +1,2929 @@
+{
+ "meta": {
+  "konfigurasyon": "F) 4S 13 000 mAh + 9x5x3, kodla GUIDED kalkis -> ~1 dk aski -> LAND (15 Eylul 2026 13:11:32)",
+  "uretim_zamani": "2026-09-15T13:50:17",
+  "betik": "results/ucus_analiz_20260915/F_1311_aski_4S_13Ah/analiz_F.py",
+  "python": "3.13.7",
+  "numpy": "2.3.5",
+  "log": {
+   "dosya": "results/ucus_20260915/2026-09-15 13-11-32.bin",
+   "sha256": "605d5ed70d447fd57749729be3a5c09b730d24eb5a3ace6aea8baf8a7eb7f18d",
+   "bayt": 2199552,
+   "yazilim": "ArduCopter V4.5.7 (2a3dc4b7)",
+   "STAT_BOOTCNT": 145.0,
+   "STAT_FLTTIME_kayitlari": [
+    [
+     202.0,
+     1027.0
+    ],
+    [
+     246.2,
+     1034.0
+    ],
+    [
+     277.2,
+     1065.0
+    ],
+    [
+     307.2,
+     1095.0
+    ]
+   ],
+   "log_t_ilk": 202.04,
+   "log_t_son": 324.74
+  },
+  "kullanici_beyani": {
+   "pil": "4S 13 000 mAh",
+   "pervane": "9x5x3 (9 inc, 5 pitch, 3 pal)",
+   "gorev": "~3 m'de 1 dk aski, kodla GUIDED + LAND",
+   "kaynak": "kullanici beyani 15 Eylul 2026; pil/pervane/kutle/KV LOGDA YOK"
+  },
+  "olcutler": {
+   "motorlu_ThO_esik": 0.15,
+   "aski": {
+    "alt_min_m": 1.0,
+    "vz_maks_ms": 0.5,
+    "ThO": [
+     0.25,
+     0.75
+    ],
+    "en_az_ornek": 10,
+    "vz_kaynak": "CTUN.Alt turevi (np.gradient), 5 ornek hareketli ortalama"
+   },
+   "alt_taban": "arm sonrasi ilk 1 s CTUN.Alt medyani (CTUN.Alt EKF-orijinine goredir; POS.RelHomeAlt ile capraz kontrol edildi)",
+   "vibe_esikleri_ms2": [
+    30.0,
+    60.0
+   ],
+   "hucre_n_dayanak": "ilk BAT.Volt 15.57 V / 4 = 3.891 V/hucre (3S olsa 5.19 V/hucre: imkansiz)"
+  },
+  "mesaj_n": {
+   "CTUN": 1043,
+   "BAT": 1043,
+   "VIBE": 2086,
+   "RCOU": 1043,
+   "ATT": 1043,
+   "RATE": 1044,
+   "IMU": 5216,
+   "XKF4": 2087,
+   "PSCD": 884,
+   "MOTB": 1043,
+   "EV": 10,
+   "ARM": 3,
+   "MODE": 4,
+   "ERR": 5,
+   "MSG": 21,
+   "PARM": 1034,
+   "ESC": 0,
+   "RPM": 0,
+   "ISBH": 0,
+   "DSF": 104
+  },
+  "DSF_dusurulen_toplam": 1248,
+  "DSF_not": "DSF.Dp her saniye sabit 12 (bir mesaj tipi surekli yazilamiyor); CTUN/BAT/VIBE/RCOU 10 Hz, ATT/RATE 10 Hz, IMU 25 Hz arm penceresinde EKSIKSIZ (bosluk yok; tek 18,6 s bosluk 217,7-236,3 s arm ONCESI, disarm kayit durmasi)",
+  "imu_hz": 24.99,
+  "imu_not": "INS_LOG_BAT_MASK=0 -> hizli IMU (ISBH/ISBD) YOK; IMU mesaji 25.0 Hz -> Nyquist 12.49 Hz; ESC/RPM mesaji YOK -> pervane frekansi olculemez"
+ },
+ "ucus": {
+  "arm_t": 236.28,
+  "disarm_t": 310.68,
+  "pencere_s": 74.4,
+  "arm_yontemi": "MAVLINK",
+  "disarm_yontemi": "LANDED",
+  "kip_arm": "GUIDED",
+  "kip_gecisleri": [
+   {
+    "t": 202.02,
+    "kip": "STAB",
+    "sebep": "RC"
+   },
+   {
+    "t": 235.89,
+    "kip": "GUIDED",
+    "sebep": "GCS"
+   },
+   {
+    "t": 236.28,
+    "kip": "GUIDED",
+    "sebep": "GCS"
+   },
+   {
+    "t": 303.0,
+    "kip": "LAND",
+    "sebep": "GCS"
+   }
+  ],
+  "olaylar_EV": [
+   {
+    "t": 202.84,
+    "olay": "DISARMED"
+   },
+   {
+    "t": 236.28,
+    "olay": "ARMED"
+   },
+   {
+    "t": 236.68,
+    "olay": "AUTO_ARMED"
+   },
+   {
+    "t": 238.28,
+    "olay": "MOTORS_INTERLOCK_ENABLED"
+   },
+   {
+    "t": 239.15,
+    "olay": "NOT_LANDED"
+   },
+   {
+    "t": 241.98,
+    "olay": "EKF_YAW_RESET"
+   },
+   {
+    "t": 309.38,
+    "olay": "LAND_COMPLETE_MAYBE"
+   },
+   {
+    "t": 310.18,
+    "olay": "LAND_COMPLETE"
+   },
+   {
+    "t": 310.68,
+    "olay": "DISARMED"
+   },
+   {
+    "t": 310.69,
+    "olay": "MOTORS_INTERLOCK_DISABLED"
+   }
+  ],
+  "ctun_hz": 10.0,
+  "ctun_n_pencere": 744,
+  "alt_taban_m_CTUN_Alt": 1.83,
+  "alt_maks_m": 3.07,
+  "alt_maks_m_POS_RelHomeAlt": 3.08,
+  "DAlt_maks_m_taban_cikarilmis": 3.0,
+  "motorlu_s": 69.6,
+  "motorlu_t": [
+   239.1,
+   308.7
+  ],
+  "tur": "ucus",
+  "ThH_bas": 0.3895,
+  "ThH_son": 0.3895,
+  "ThH_min": 0.3895,
+  "ThH_maks": 0.3895,
+  "MOT_THST_HOVER_PARM_kayitlari": [
+   [
+    201.96,
+    0.389487
+   ],
+   [
+    202.84,
+    0.389487
+   ],
+   [
+    310.68,
+    0.389487
+   ]
+  ],
+  "ThO_motorlu": {
+   "n": 696,
+   "ort": 0.358,
+   "p50": 0.36,
+   "p05": 0.331,
+   "p95": 0.381,
+   "min": 0.178,
+   "maks": 0.42,
+   "std": 0.02
+  },
+  "aski_s": 62.9,
+  "hover_ogrenme": {
+   "MOT_HOVER_LEARN": 2.0,
+   "havada_s_EV28_EV17": 70.2,
+   "kosul_oranlari_havada": {
+    "is_zero(PSCD.DVD)": 0.0,
+    "|VD|<0.6m/s": 0.949,
+    "|roll|,|pitch|<5deg": 1.0,
+    "hepsi": 0.0
+   },
+   "uygun_s": 0.0,
+   "DVD_havada_abs_p50_ms": 0.0001,
+   "DVD_havada_abs_p90_ms": 0.4999,
+   "DVD_askida_abs_p50_ms": 0.0001,
+   "DVD_askida_sifir_orani": 0.0,
+   "ThH_degisim_log": 0.0,
+   "not": "GUIDED kipinde pos_control hedef dikey hiz (PSCD.DVD) tam sifir olmadikca ogrenme calismaz (is_zero, FLT_EPSILON). PSCD 10 Hz orneklendigi icin 100 Hz'deki kisa sifir anlari kacabilir."
+  }
+ },
+ "aski": {
+  "n": 629,
+  "sure_s": 62.9,
+  "n_CRt_kaynakli_capraz": 623,
+  "dilim_n": 2,
+  "en_uzun_dilim_t": [
+   242.44,
+   303.74
+  ],
+  "en_uzun_dilim_s": 61.3,
+  "alt_m": {
+   "n": 629,
+   "ort": 2.973,
+   "p50": 2.994,
+   "p05": 2.924,
+   "p95": 3.047,
+   "min": 1.828,
+   "maks": 3.069,
+   "std": 0.143
+  },
+  "alt_egim_en_uzun_dilim_ms": 0.0,
+  "vz_abs_ort_ms": 0.049,
+  "DCRt_sifir_orani": 0.245,
+  "ThO": {
+   "n": 629,
+   "ort": 0.359,
+   "p50": 0.36,
+   "p05": 0.335,
+   "p95": 0.38,
+   "min": 0.302,
+   "maks": 0.394,
+   "std": 0.015
+  },
+  "ThI": {
+   "n": 629,
+   "ort": 0.359,
+   "p50": 0.36,
+   "p05": 0.335,
+   "p95": 0.381,
+   "min": 0.3,
+   "maks": 0.398,
+   "std": 0.015
+  },
+  "V": {
+   "n": 629,
+   "ort": 14.038,
+   "p50": 13.985,
+   "p05": 13.879,
+   "p95": 14.367,
+   "min": 13.827,
+   "maks": 14.56,
+   "std": 0.153
+  },
+  "V_hucre": {
+   "ort": 3.509,
+   "min": 3.457,
+   "maks": 3.64,
+   "bas": 3.637,
+   "son": 3.492
+  },
+  "VoltR_dinlenme_tahmini_FC": {
+   "n": 629,
+   "ort": 15.235,
+   "p50": 15.207,
+   "p05": 15.097,
+   "p95": 15.446,
+   "min": 15.014,
+   "maks": 15.564,
+   "std": 0.105
+  },
+  "I_A": {
+   "n": 629,
+   "ort": 37.302,
+   "p50": 37.354,
+   "p05": 34.684,
+   "p95": 39.909,
+   "min": 28.87,
+   "maks": 42.491,
+   "std": 1.638
+  },
+  "P_W": {
+   "n": 629,
+   "ort": 523.546,
+   "p50": 524.252,
+   "p05": 488.946,
+   "p95": 557.206,
+   "min": 405.553,
+   "maks": 596.381,
+   "std": 21.599
+  },
+  "P_W_ort_x_ort": 523.6,
+  "mAh_per_s": 10.362,
+  "mAh_per_dk": 622.0,
+  "MOT_THST_HOVER_vs_ThO": {
+   "MOT_THST_HOVER": 0.3895,
+   "ThO_aski_ort": 0.3591,
+   "ThO_aski_p50": 0.3604,
+   "fark": 0.0304,
+   "fark_pct_ThO": 8.5
+  }
+ },
+ "pil": {
+  "hucre_n": 4,
+  "V_ilk_log": 15.57,
+  "V_ilk_hucre": 3.891,
+  "dolu_degil_notu": "ilk gerilim 15.57 V = 3.891 V/hucre; dolu LiPo 4,20 V/hucre (16,8 V) -> pil DOLU DEGILDI (yaklasik 56% kalan, HESAP: 4,2-3,5 V araliginin dogrusal bolumu; olcum degil)",
+  "V_arm_oncesi_5s_ort": 15.615,
+  "I_arm_oncesi_5s_ort": 0.313,
+  "arm_oncesi_referans": "kayit boslugu (217,7-236,3 s) oncesi son 5 s, motor kapali (arm oncesi 5 s'de BAT ornegi yok)",
+  "arm_oncesi_t": [
+   212.84,
+   217.74
+  ],
+  "V_bas_pencere": 15.598,
+  "V_son_pencere": 14.916,
+  "V_min": 13.827,
+  "V_min_hucre": 3.457,
+  "V_min_t": 299.44,
+  "V_min_I": 37.8,
+  "VoltR_min": 15.014,
+  "VoltR_min_hucre": 3.753,
+  "sarkma_V_ilk_askiya": 1.528,
+  "sarkma_V_ilk_min": 1.739,
+  "sarkma_V_hucre_ilk_min": 0.435,
+  "toparlanma_V_disarm_10s": 1.378,
+  "V_disarm_sonrasi_10s": 15.205,
+  "I_motorlu": {
+   "n": 696,
+   "ort": 37.219,
+   "p50": 37.278,
+   "p05": 34.238,
+   "p95": 40.076,
+   "min": 15.874,
+   "maks": 47.832,
+   "std": 2.297
+  },
+  "I_maks_t": 240.24,
+  "mAh_pencere": 724.4,
+  "mAh_motorlu": 719.0,
+  "Wh_pencere": 10.18,
+  "mAh_log_toplam": 746.1,
+  "RemPct_son_log_BATT_CAPACITY_8000": 90.0,
+  "RemPct_13000_ile_HESAP": 94.3,
+  "ic_direnc": {
+   "yontem": "numpy.polyfit(I, V, 1) egimi = -R_paket; hucre = R_paket/4. (a) kalkis gecisi (arm-2 s -> ilk aski ornegi) ve (b) inis gecisi (EV17 -> disarm+3 s) SoC sabitken akim 0->37 A / 37->0 A tarar: TERCIH EDILEN. (c) tum pencere SoC kaymasiyla karisik. (d) yalniz aski: akim araligi dar. (e) D-yontemi: (V_arm_oncesi - V_aski)/(I_aski - I_arm_oncesi). (f) BAT.Res = FC'nin kendi tahmini (AP_BattMonitor)",
+   "a_kalkis_gecisi": {
+    "n": 62,
+    "I_aralik_A": [
+     0.2,
+     47.8
+    ],
+    "R_paket_ohm": 0.0304,
+    "R_paket_mohm": 30.4,
+    "R_hucre_mohm": 7.6,
+    "V_kesim_I0": 15.586,
+    "r2": 0.995
+   },
+   "b_inis_gecisi": {
+    "n": 48,
+    "I_aralik_A": [
+     0.2,
+     15.5
+    ],
+    "R_paket_ohm": 0.0417,
+    "R_paket_mohm": 41.7,
+    "R_hucre_mohm": 10.4,
+    "V_kesim_I0": 15.058,
+    "r2": 0.82
+   },
+   "c_tum_pencere": {
+    "n": 794,
+    "I_aralik_A": [
+     0.2,
+     47.8
+    ],
+    "R_paket_ohm": 0.0312,
+    "R_paket_mohm": 31.2,
+    "R_hucre_mohm": 7.8,
+    "V_kesim_I0": 15.214,
+    "r2": 0.812
+   },
+   "d_yalniz_aski": {
+    "n": 629,
+    "I_aralik_A": [
+     28.9,
+     42.5
+    ],
+    "R_paket_ohm": 0.034,
+    "R_paket_mohm": 34.0,
+    "R_hucre_mohm": 8.5,
+    "V_kesim_I0": 15.306,
+    "r2": 0.133
+   },
+   "e_arm_oncesi_vs_aski": {
+    "R_paket_ohm": 0.0426,
+    "R_hucre_mohm": 10.7
+   },
+   "f_BAT_Res_FC": {
+    "aski_ort_ohm": 0.0321,
+    "aski_ort_mohm_hucre": 8.0,
+    "pencere_min_maks_ohm": [
+     0.0296,
+     0.0389
+    ]
+   },
+   "secilen_R_paket_ohm": 0.0304,
+   "secilen_kaynak": "a_kalkis_gecisi",
+   "sarkma_HESAP_askida_V": 1.134,
+   "sarkma_olculen_ilk_askiya_V": 1.528
+  },
+  "BAT_Temp": "0 (sicaklik sensoru yok)"
+ },
+ "ucus_suresi": {
+  "I_aski_A": 37.3,
+  "I_motorlu_A": 37.22,
+  "P_aski_W": 523.5,
+  "yontem_1": "t_dk = 80% x 13000 mAh / (I_aski A x 1000/60)  [kullanici beyani kapasite; dolu pil varsayimi]",
+  "kullanilabilir_mAh": 10400.0,
+  "tahmin_dk_aski_akimi": 16.7,
+  "tahmin_dk_motorlu_ort_akim": 16.8,
+  "tahmin_dk_aski_p95_akim": 15.6,
+  "tahmin_dk_%100_kapasite": 20.9,
+  "yontem_2_3.5V_hucre": {
+   "aciklama": "askida yuklu gerilim V(CurrTot) dogrusal uydurma (numpy.polyfit), 14,0 V'a (3,5 V/hucre yuklu; LOW esigi ham gerilime bakar, BATT_FS_VOLTSRC=0) ve 14,0 - I_aski*R_paket'e (sarkma cikarilmis = dinlenme 3,5 V/hucre) ekstrapolasyon. Iki uydurma: (i) TUM aski - kalkis polarizasyon gecisini icerir (ilk ~20 s'de 14,4 -> 14,0 V), SoC egimi DEGIL, yalniz kiyas; (ii) PLATO - askinin son 30 s'i (gecis bitmis, yuk sabit) = TERCIH. Ek: (iii) dinlenme gerilimi egimi = (V_log_sonu_yuksuz - V_log_basi_yuksuz)/mAh; disarm+14 s toparlanma tamamlanmamis -> pesimist ALT SINIR. Hepsi logdaki 658 mAh (beyan kapasitenin %5.1'i) uzerinden EKSTRAPOLASYON = HESAP; LiPo egrisi dogrusal degildir (3,85-3,65 plato yavas, <3,6 diz hizli) -> gercek deger tam bosaltma testiyle olculmeli",
+   "sarkma_I_R_V": 1.134,
+   "R_paket_ohm": 0.0304,
+   "V_hedef_yuklu": 14.0,
+   "V_hedef_dinlenme_esdeger_yuklu": 12.866,
+   "olculen_yuklu_14.0V_ilk_inis": {
+    "t": 255.4,
+    "aski_basindan_s": 13.0,
+    "aski_basindan_mAh": 130.0,
+    "not": "OLCUM: bu ucusta yuklu gerilim 14,0 V'in altina indi"
+   },
+   "i_tum_aski_uydurma": {
+    "n": 629,
+    "mAh_aralik": [
+     58.0,
+     716.0
+    ],
+    "V_aralik": [
+     14.547,
+     13.966
+    ],
+    "egim_V_per_Ah": -0.663,
+    "egim_std_hata_V_per_Ah": 0.018,
+    "egim_mV_per_100mAh": -66.3,
+    "kesim_V": 14.292,
+    "r2": 0.68,
+    "yuklu_14.0V_kalan_mAh_aski_basindan": 383.0,
+    "dinlenme_3.5V_kalan_mAh_aski_basindan": 2094.0,
+    "dinlenme_3.5V_kalan_dk": 3.4,
+    "gecerlilik": "GECERSIZ/asiri pesimist: egim gecis kaynakli (bkz. plato)"
+   },
+   "ii_plato_uydurma_TERCIH": {
+    "n": 294,
+    "t_aralik": [
+     275.9,
+     305.9
+    ],
+    "mAh_aralik": [
+     406.0,
+     716.0
+    ],
+    "V_aralik_ort": 13.934,
+    "egim_V_per_Ah": -0.095,
+    "egim_std_hata_V_per_Ah": 0.03,
+    "egim_mV_per_100mAh": -9.5,
+    "kesim_V": 13.987,
+    "r2": 0.033,
+    "gecerlilik": "KOTU KOSULLU: r2 0.03, egim -9.5 +/- 3.0 mV/100 mAh (std hata) -> egim sifirdan ayirt ediliyor; ekstrapolasyon OLCUM DEGIL, yalniz buyukluk sirasi",
+    "yuklu_14.0V": "aski sonunda zaten altinda (V_son 13.966 V)",
+    "dinlenme_3.5V_kalan_mAh_aski_sonundan": 11062.0,
+    "dinlenme_3.5V_kalan_dk_aski_akimi": 17.8,
+    "dinlenme_3.5V_toplam_mAh_log_basindan": 11777.0,
+    "toplam_dk_log_basindan_HESAP": 18.9
+   },
+   "iii_dinlenme_gerilimi_egimi": {
+    "V_log_basi_yuksuz": 15.566,
+    "V_log_sonu_yuksuz": 15.279,
+    "disarm_sonrasi_s": 14.1,
+    "mAh": 729.0,
+    "egim_V_per_Ah": -0.394,
+    "dinlenme_3.5V_kalan_mAh_log_sonundan_ALT_SINIR": 3242.0,
+    "not": "toparlanma tamamlanmamis (VoltR ve Volt hala yukseliyor) -> egim abartili, kalan mAh ALT SINIR"
+   },
+   "not": "pil bu ucusa 3,89 V/hucre ile basladi (dolu degil); 'kalan' degerler BU pil durumundan itibarendir, dolu pilden degil. Uc yontem 13 000 mAh beyaniyla dogrudan karsilastirilamaz (beyan dolu pil icindir); beyan yalniz tam bosaltma testiyle dogrulanir"
+  }
+ },
+ "vibe": {
+  "kapsam_pencere": {
+   "IMU0": {
+    "X": {
+     "n": 744,
+     "ort": 3.718,
+     "p50": 3.856,
+     "p05": 0.998,
+     "p95": 5.056,
+     "min": 0.007,
+     "maks": 6.691,
+     "std": 1.063
+    },
+    "Y": {
+     "n": 744,
+     "ort": 3.223,
+     "p50": 3.077,
+     "p05": 1.413,
+     "p95": 5.412,
+     "min": 0.006,
+     "maks": 7.511,
+     "std": 1.167
+    },
+    "Z": {
+     "n": 744,
+     "ort": 8.838,
+     "p50": 9.223,
+     "p05": 1.411,
+     "p95": 12.242,
+     "min": 0.009,
+     "maks": 19.428,
+     "std": 2.744
+    }
+   },
+   "IMU1": {
+    "X": {
+     "n": 744,
+     "ort": 3.941,
+     "p50": 4.083,
+     "p05": 0.996,
+     "p95": 5.336,
+     "min": 0.028,
+     "maks": 7.017,
+     "std": 1.125
+    },
+    "Y": {
+     "n": 744,
+     "ort": 3.419,
+     "p50": 3.236,
+     "p05": 1.399,
+     "p95": 5.751,
+     "min": 0.032,
+     "maks": 7.812,
+     "std": 1.252
+    },
+    "Z": {
+     "n": 744,
+     "ort": 9.495,
+     "p50": 9.866,
+     "p05": 1.56,
+     "p95": 12.81,
+     "min": 0.031,
+     "maks": 20.588,
+     "std": 2.847
+    }
+   }
+  },
+  "kapsam_motorlu": {
+   "IMU0": {
+    "X": {
+     "n": 696,
+     "ort": 3.92,
+     "p50": 3.907,
+     "p05": 2.859,
+     "p95": 5.067,
+     "min": 1.498,
+     "maks": 6.691,
+     "std": 0.698
+    },
+    "Y": {
+     "n": 696,
+     "ort": 3.385,
+     "p50": 3.125,
+     "p05": 2.32,
+     "p95": 5.471,
+     "min": 1.653,
+     "maks": 7.511,
+     "std": 0.982
+    },
+    "Z": {
+     "n": 696,
+     "ort": 9.343,
+     "p50": 9.433,
+     "p05": 6.259,
+     "p95": 12.271,
+     "min": 3.985,
+     "maks": 19.428,
+     "std": 1.894
+    }
+   },
+   "IMU1": {
+    "X": {
+     "n": 696,
+     "ort": 4.157,
+     "p50": 4.143,
+     "p05": 3.053,
+     "p95": 5.35,
+     "min": 1.64,
+     "maks": 7.017,
+     "std": 0.733
+    },
+    "Y": {
+     "n": 696,
+     "ort": 3.593,
+     "p50": 3.286,
+     "p05": 2.415,
+     "p95": 5.842,
+     "min": 1.739,
+     "maks": 7.812,
+     "std": 1.058
+    },
+    "Z": {
+     "n": 696,
+     "ort": 10.041,
+     "p50": 10.067,
+     "p05": 7.057,
+     "p95": 12.829,
+     "min": 4.041,
+     "maks": 20.588,
+     "std": 1.877
+    }
+   },
+   "IMU_birlesik": {
+    "X": {
+     "n": 1392,
+     "ort": 4.038,
+     "p50": 4.025,
+     "p05": 2.923,
+     "p95": 5.216,
+     "min": 1.498,
+     "maks": 7.017,
+     "std": 0.725
+    },
+    "Y": {
+     "n": 1392,
+     "ort": 3.489,
+     "p50": 3.207,
+     "p05": 2.354,
+     "p95": 5.645,
+     "min": 1.653,
+     "maks": 7.812,
+     "std": 1.026
+    },
+    "Z": {
+     "n": 1392,
+     "ort": 9.692,
+     "p50": 9.715,
+     "p05": 6.631,
+     "p95": 12.664,
+     "min": 3.985,
+     "maks": 20.588,
+     "std": 1.917
+    }
+   }
+  },
+  "kapsam_aski": {
+   "IMU0": {
+    "X": {
+     "n": 629,
+     "ort": 3.899,
+     "p50": 3.894,
+     "p05": 2.868,
+     "p95": 5.042,
+     "min": 2.059,
+     "maks": 6.048,
+     "std": 0.674
+    },
+    "Y": {
+     "n": 629,
+     "ort": 3.394,
+     "p50": 3.111,
+     "p05": 2.338,
+     "p95": 5.562,
+     "min": 1.653,
+     "maks": 7.511,
+     "std": 0.998
+    },
+    "Z": {
+     "n": 629,
+     "ort": 9.269,
+     "p50": 9.278,
+     "p05": 6.256,
+     "p95": 12.194,
+     "min": 4.624,
+     "maks": 14.61,
+     "std": 1.837
+    }
+   },
+   "IMU1": {
+    "X": {
+     "n": 629,
+     "ort": 4.13,
+     "p50": 4.127,
+     "p05": 3.042,
+     "p95": 5.318,
+     "min": 2.36,
+     "maks": 6.776,
+     "std": 0.708
+    },
+    "Y": {
+     "n": 629,
+     "ort": 3.597,
+     "p50": 3.274,
+     "p05": 2.416,
+     "p95": 5.888,
+     "min": 1.739,
+     "maks": 7.812,
+     "std": 1.073
+    },
+    "Z": {
+     "n": 629,
+     "ort": 9.969,
+     "p50": 9.951,
+     "p05": 7.055,
+     "p95": 12.8,
+     "min": 5.31,
+     "maks": 15.401,
+     "std": 1.807
+    }
+   },
+   "IMU_birlesik": {
+    "X": {
+     "n": 1258,
+     "ort": 4.015,
+     "p50": 4.002,
+     "p05": 2.918,
+     "p95": 5.159,
+     "min": 2.059,
+     "maks": 6.776,
+     "std": 0.701
+    },
+    "Y": {
+     "n": 1258,
+     "ort": 3.496,
+     "p50": 3.203,
+     "p05": 2.354,
+     "p95": 5.741,
+     "min": 1.653,
+     "maks": 7.812,
+     "std": 1.041
+    },
+    "Z": {
+     "n": 1258,
+     "ort": 9.619,
+     "p50": 9.645,
+     "p05": 6.629,
+     "p95": 12.551,
+     "min": 4.624,
+     "maks": 15.401,
+     "std": 1.855
+    }
+   }
+  },
+  "clip": {
+   "IMU0": {
+    "bas": 0,
+    "son": 0,
+    "artis": 0
+   },
+   "IMU1": {
+    "bas": 0,
+    "son": 0,
+    "artis": 0
+   }
+  },
+  "kalkis_dilimi_maks_XYZ": [
+   6.0,
+   5.9,
+   14.4
+  ],
+  "inis_dilimi_maks_XYZ": [
+   7.0,
+   5.8,
+   20.6
+  ],
+  "clip_toplam": 0,
+  "log_tamami_clip_son": [
+   0,
+   0
+  ],
+  "esik_kiyasi": {
+   "esik_iyi_ms2": 30.0,
+   "esik_kotu_ms2": 60.0,
+   "aski_p95_XYZ": [
+    5.159,
+    5.741,
+    12.551
+   ],
+   "aski_maks_XYZ": [
+    6.776,
+    7.812,
+    15.401
+   ],
+   "aski_p95_30_orani_Z": 0.42,
+   "motorlu_maks_Z": 20.588,
+   "ornek_ustu_30_orani_aski": 0.0,
+   "ornek_ustu_30_orani_motorlu": 0.0,
+   "hukum": "askida p95 ve maks 30 m/s2 esiginin ALTINDA"
+  }
+ },
+ "fft": {
+  "dilim_aski_t": [
+   242.44,
+   303.74
+  ],
+  "IMU_hz": 24.99,
+  "nyquist_hz": 12.49,
+  "aski": {
+   "IMU0": {
+    "AccZ": {
+     "fs_hz": 24.99,
+     "nyquist_hz": 12.49,
+     "n": 1532,
+     "sure_s": 61.24,
+     "cozunurluk_hz": 0.016,
+     "rms": 0.282,
+     "tepeler": [
+      {
+       "f_hz": 0.44,
+       "genlik": 0.055
+      },
+      {
+       "f_hz": 0.38,
+       "genlik": 0.052
+      },
+      {
+       "f_hz": 0.31,
+       "genlik": 0.048
+      },
+      {
+       "f_hz": 0.62,
+       "genlik": 0.045
+      },
+      {
+       "f_hz": 2.19,
+       "genlik": 0.044
+      },
+      {
+       "f_hz": 0.41,
+       "genlik": 0.044
+      }
+     ],
+     "band_2_15Hz_tepeler": [
+      {
+       "f_hz": 2.19,
+       "genlik": 0.044
+      },
+      {
+       "f_hz": 10.34,
+       "genlik": 0.038
+      },
+      {
+       "f_hz": 12.12,
+       "genlik": 0.035
+      },
+      {
+       "f_hz": 2.43,
+       "genlik": 0.034
+      }
+     ],
+     "band_2_15Hz_rms": 0.268
+    },
+    "AccX": {
+     "fs_hz": 24.99,
+     "nyquist_hz": 12.49,
+     "n": 1532,
+     "sure_s": 61.24,
+     "cozunurluk_hz": 0.016,
+     "rms": 0.152,
+     "tepeler": [
+      {
+       "f_hz": 0.31,
+       "genlik": 0.03
+      },
+      {
+       "f_hz": 0.62,
+       "genlik": 0.023
+      },
+      {
+       "f_hz": 0.42,
+       "genlik": 0.022
+      },
+      {
+       "f_hz": 2.64,
+       "genlik": 0.018
+      },
+      {
+       "f_hz": 7.47,
+       "genlik": 0.018
+      },
+      {
+       "f_hz": 3.0,
+       "genlik": 0.018
+      }
+     ],
+     "band_2_15Hz_tepeler": [
+      {
+       "f_hz": 2.64,
+       "genlik": 0.018
+      },
+      {
+       "f_hz": 7.47,
+       "genlik": 0.018
+      },
+      {
+       "f_hz": 3.0,
+       "genlik": 0.018
+      },
+      {
+       "f_hz": 5.84,
+       "genlik": 0.017
+      }
+     ],
+     "band_2_15Hz_rms": 0.124
+    },
+    "AccY": {
+     "fs_hz": 24.99,
+     "nyquist_hz": 12.49,
+     "n": 1532,
+     "sure_s": 61.24,
+     "cozunurluk_hz": 0.016,
+     "rms": 0.138,
+     "tepeler": [
+      {
+       "f_hz": 0.39,
+       "genlik": 0.026
+      },
+      {
+       "f_hz": 0.47,
+       "genlik": 0.021
+      },
+      {
+       "f_hz": 1.47,
+       "genlik": 0.018
+      },
+      {
+       "f_hz": 2.97,
+       "genlik": 0.016
+      },
+      {
+       "f_hz": 5.46,
+       "genlik": 0.015
+      },
+      {
+       "f_hz": 0.62,
+       "genlik": 0.015
+      }
+     ],
+     "band_2_15Hz_tepeler": [
+      {
+       "f_hz": 2.97,
+       "genlik": 0.016
+      },
+      {
+       "f_hz": 5.46,
+       "genlik": 0.015
+      },
+      {
+       "f_hz": 4.11,
+       "genlik": 0.014
+      },
+      {
+       "f_hz": 5.82,
+       "genlik": 0.014
+      }
+     ],
+     "band_2_15Hz_rms": 0.111
+    },
+    "GyrX": {
+     "fs_hz": 24.99,
+     "nyquist_hz": 12.49,
+     "n": 1532,
+     "sure_s": 61.24,
+     "cozunurluk_hz": 0.016,
+     "rms": 0.079,
+     "tepeler": [
+      {
+       "f_hz": 0.9,
+       "genlik": 0.027
+      },
+      {
+       "f_hz": 0.46,
+       "genlik": 0.024
+      },
+      {
+       "f_hz": 0.52,
+       "genlik": 0.023
+      },
+      {
+       "f_hz": 0.7,
+       "genlik": 0.022
+      },
+      {
+       "f_hz": 1.55,
+       "genlik": 0.02
+      },
+      {
+       "f_hz": 1.6,
+       "genlik": 0.02
+      }
+     ],
+     "band_2_15Hz_tepeler": [
+      {
+       "f_hz": 2.3,
+       "genlik": 0.012
+      },
+      {
+       "f_hz": 2.38,
+       "genlik": 0.012
+      },
+      {
+       "f_hz": 2.09,
+       "genlik": 0.012
+      },
+      {
+       "f_hz": 2.58,
+       "genlik": 0.011
+      }
+     ],
+     "band_2_15Hz_rms": 0.062
+    },
+    "GyrY": {
+     "fs_hz": 24.99,
+     "nyquist_hz": 12.49,
+     "n": 1532,
+     "sure_s": 61.24,
+     "cozunurluk_hz": 0.016,
+     "rms": 0.066,
+     "tepeler": [
+      {
+       "f_hz": 0.95,
+       "genlik": 0.024
+      },
+      {
+       "f_hz": 1.11,
+       "genlik": 0.021
+      },
+      {
+       "f_hz": 0.88,
+       "genlik": 0.02
+      },
+      {
+       "f_hz": 1.16,
+       "genlik": 0.017
+      },
+      {
+       "f_hz": 0.38,
+       "genlik": 0.015
+      },
+      {
+       "f_hz": 2.09,
+       "genlik": 0.015
+      }
+     ],
+     "band_2_15Hz_tepeler": [
+      {
+       "f_hz": 2.09,
+       "genlik": 0.015
+      },
+      {
+       "f_hz": 2.27,
+       "genlik": 0.014
+      },
+      {
+       "f_hz": 2.04,
+       "genlik": 0.014
+      },
+      {
+       "f_hz": 2.59,
+       "genlik": 0.011
+      }
+     ],
+     "band_2_15Hz_rms": 0.054
+    },
+    "GyrZ": {
+     "fs_hz": 24.99,
+     "nyquist_hz": 12.49,
+     "n": 1532,
+     "sure_s": 61.24,
+     "cozunurluk_hz": 0.016,
+     "rms": 0.144,
+     "tepeler": [
+      {
+       "f_hz": 0.38,
+       "genlik": 0.114
+      },
+      {
+       "f_hz": 0.33,
+       "genlik": 0.056
+      },
+      {
+       "f_hz": 0.59,
+       "genlik": 0.055
+      },
+      {
+       "f_hz": 0.46,
+       "genlik": 0.041
+      },
+      {
+       "f_hz": 0.65,
+       "genlik": 0.04
+      },
+      {
+       "f_hz": 0.88,
+       "genlik": 0.026
+      }
+     ],
+     "band_2_15Hz_tepeler": [
+      {
+       "f_hz": 2.19,
+       "genlik": 0.003
+      },
+      {
+       "f_hz": 2.06,
+       "genlik": 0.003
+      },
+      {
+       "f_hz": 2.4,
+       "genlik": 0.002
+      },
+      {
+       "f_hz": 2.87,
+       "genlik": 0.002
+      }
+     ],
+     "band_2_15Hz_rms": 0.01
+    }
+   },
+   "IMU1": {
+    "AccZ": {
+     "fs_hz": 24.99,
+     "nyquist_hz": 12.49,
+     "n": 1532,
+     "sure_s": 61.24,
+     "cozunurluk_hz": 0.016,
+     "rms": 0.29,
+     "tepeler": [
+      {
+       "f_hz": 0.57,
+       "genlik": 0.055
+      },
+      {
+       "f_hz": 0.47,
+       "genlik": 0.054
+      },
+      {
+       "f_hz": 0.44,
+       "genlik": 0.052
+      },
+      {
+       "f_hz": 2.19,
+       "genlik": 0.049
+      },
+      {
+       "f_hz": 0.31,
+       "genlik": 0.048
+      },
+      {
+       "f_hz": 0.38,
+       "genlik": 0.045
+      }
+     ],
+     "band_2_15Hz_tepeler": [
+      {
+       "f_hz": 2.19,
+       "genlik": 0.049
+      },
+      {
+       "f_hz": 2.43,
+       "genlik": 0.045
+      },
+      {
+       "f_hz": 6.13,
+       "genlik": 0.043
+      },
+      {
+       "f_hz": 10.91,
+       "genlik": 0.038
+      }
+     ],
+     "band_2_15Hz_rms": 0.286
+    },
+    "AccX": {
+     "fs_hz": 24.99,
+     "nyquist_hz": 12.49,
+     "n": 1532,
+     "sure_s": 61.24,
+     "cozunurluk_hz": 0.016,
+     "rms": 0.159,
+     "tepeler": [
+      {
+       "f_hz": 0.31,
+       "genlik": 0.032
+      },
+      {
+       "f_hz": 0.6,
+       "genlik": 0.024
+      },
+      {
+       "f_hz": 0.42,
+       "genlik": 0.021
+      },
+      {
+       "f_hz": 10.91,
+       "genlik": 0.019
+      },
+      {
+       "f_hz": 4.16,
+       "genlik": 0.018
+      },
+      {
+       "f_hz": 1.58,
+       "genlik": 0.018
+      }
+     ],
+     "band_2_15Hz_tepeler": [
+      {
+       "f_hz": 10.91,
+       "genlik": 0.019
+      },
+      {
+       "f_hz": 4.16,
+       "genlik": 0.018
+      },
+      {
+       "f_hz": 6.87,
+       "genlik": 0.017
+      },
+      {
+       "f_hz": 2.66,
+       "genlik": 0.017
+      }
+     ],
+     "band_2_15Hz_rms": 0.133
+    },
+    "AccY": {
+     "fs_hz": 24.99,
+     "nyquist_hz": 12.49,
+     "n": 1532,
+     "sure_s": 61.24,
+     "cozunurluk_hz": 0.016,
+     "rms": 0.137,
+     "tepeler": [
+      {
+       "f_hz": 2.89,
+       "genlik": 0.021
+      },
+      {
+       "f_hz": 0.59,
+       "genlik": 0.019
+      },
+      {
+       "f_hz": 1.45,
+       "genlik": 0.018
+      },
+      {
+       "f_hz": 0.49,
+       "genlik": 0.018
+      },
+      {
+       "f_hz": 2.84,
+       "genlik": 0.016
+      },
+      {
+       "f_hz": 1.04,
+       "genlik": 0.016
+      }
+     ],
+     "band_2_15Hz_tepeler": [
+      {
+       "f_hz": 2.89,
+       "genlik": 0.021
+      },
+      {
+       "f_hz": 2.84,
+       "genlik": 0.016
+      },
+      {
+       "f_hz": 5.51,
+       "genlik": 0.016
+      },
+      {
+       "f_hz": 2.38,
+       "genlik": 0.015
+      }
+     ],
+     "band_2_15Hz_rms": 0.117
+    },
+    "GyrX": {
+     "fs_hz": 24.99,
+     "nyquist_hz": 12.49,
+     "n": 1532,
+     "sure_s": 61.24,
+     "cozunurluk_hz": 0.016,
+     "rms": 0.079,
+     "tepeler": [
+      {
+       "f_hz": 0.9,
+       "genlik": 0.027
+      },
+      {
+       "f_hz": 0.46,
+       "genlik": 0.024
+      },
+      {
+       "f_hz": 0.52,
+       "genlik": 0.023
+      },
+      {
+       "f_hz": 0.7,
+       "genlik": 0.022
+      },
+      {
+       "f_hz": 1.55,
+       "genlik": 0.02
+      },
+      {
+       "f_hz": 1.6,
+       "genlik": 0.019
+      }
+     ],
+     "band_2_15Hz_tepeler": [
+      {
+       "f_hz": 2.3,
+       "genlik": 0.012
+      },
+      {
+       "f_hz": 2.58,
+       "genlik": 0.012
+      },
+      {
+       "f_hz": 5.45,
+       "genlik": 0.011
+      },
+      {
+       "f_hz": 2.09,
+       "genlik": 0.011
+      }
+     ],
+     "band_2_15Hz_rms": 0.062
+    },
+    "GyrY": {
+     "fs_hz": 24.99,
+     "nyquist_hz": 12.49,
+     "n": 1532,
+     "sure_s": 61.24,
+     "cozunurluk_hz": 0.016,
+     "rms": 0.066,
+     "tepeler": [
+      {
+       "f_hz": 0.95,
+       "genlik": 0.023
+      },
+      {
+       "f_hz": 1.11,
+       "genlik": 0.021
+      },
+      {
+       "f_hz": 0.88,
+       "genlik": 0.02
+      },
+      {
+       "f_hz": 1.16,
+       "genlik": 0.017
+      },
+      {
+       "f_hz": 0.38,
+       "genlik": 0.016
+      },
+      {
+       "f_hz": 0.6,
+       "genlik": 0.015
+      }
+     ],
+     "band_2_15Hz_tepeler": [
+      {
+       "f_hz": 2.09,
+       "genlik": 0.015
+      },
+      {
+       "f_hz": 2.27,
+       "genlik": 0.014
+      },
+      {
+       "f_hz": 2.04,
+       "genlik": 0.014
+      },
+      {
+       "f_hz": 2.59,
+       "genlik": 0.011
+      }
+     ],
+     "band_2_15Hz_rms": 0.053
+    },
+    "GyrZ": {
+     "fs_hz": 24.99,
+     "nyquist_hz": 12.49,
+     "n": 1532,
+     "sure_s": 61.24,
+     "cozunurluk_hz": 0.016,
+     "rms": 0.145,
+     "tepeler": [
+      {
+       "f_hz": 0.38,
+       "genlik": 0.115
+      },
+      {
+       "f_hz": 0.33,
+       "genlik": 0.056
+      },
+      {
+       "f_hz": 0.59,
+       "genlik": 0.055
+      },
+      {
+       "f_hz": 0.46,
+       "genlik": 0.041
+      },
+      {
+       "f_hz": 0.65,
+       "genlik": 0.041
+      },
+      {
+       "f_hz": 0.88,
+       "genlik": 0.026
+      }
+     ],
+     "band_2_15Hz_tepeler": [
+      {
+       "f_hz": 2.19,
+       "genlik": 0.003
+      },
+      {
+       "f_hz": 2.06,
+       "genlik": 0.003
+      },
+      {
+       "f_hz": 2.87,
+       "genlik": 0.002
+      },
+      {
+       "f_hz": 2.4,
+       "genlik": 0.002
+      }
+     ],
+     "band_2_15Hz_rms": 0.01
+    }
+   }
+  },
+  "taban_motor_kapali": {
+   "IMU0": {
+    "AccZ": {
+     "fs_hz": 25.0,
+     "nyquist_hz": 12.5,
+     "n": 350,
+     "sure_s": 13.96,
+     "cozunurluk_hz": 0.071,
+     "rms": 0.006,
+     "tepeler": [
+      {
+       "f_hz": 1.07,
+       "genlik": 0.001
+      },
+      {
+       "f_hz": 0.5,
+       "genlik": 0.001
+      },
+      {
+       "f_hz": 0.93,
+       "genlik": 0.001
+      },
+      {
+       "f_hz": 6.71,
+       "genlik": 0.001
+      },
+      {
+       "f_hz": 1.71,
+       "genlik": 0.001
+      },
+      {
+       "f_hz": 5.43,
+       "genlik": 0.001
+      }
+     ],
+     "band_2_15Hz_tepeler": [
+      {
+       "f_hz": 6.71,
+       "genlik": 0.001
+      },
+      {
+       "f_hz": 5.43,
+       "genlik": 0.001
+      },
+      {
+       "f_hz": 12.29,
+       "genlik": 0.001
+      },
+      {
+       "f_hz": 11.29,
+       "genlik": 0.001
+      }
+     ],
+     "band_2_15Hz_rms": 0.004
+    },
+    "GyrX": {
+     "fs_hz": 25.0,
+     "nyquist_hz": 12.5,
+     "n": 350,
+     "sure_s": 13.96,
+     "cozunurluk_hz": 0.071,
+     "rms": 0.0,
+     "tepeler": [
+      {
+       "f_hz": 6.5,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 6.21,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 8.07,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 2.86,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 6.71,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 3.64,
+       "genlik": 0.0
+      }
+     ],
+     "band_2_15Hz_tepeler": [
+      {
+       "f_hz": 6.5,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 6.21,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 8.07,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 2.86,
+       "genlik": 0.0
+      }
+     ],
+     "band_2_15Hz_rms": 0.0
+    },
+    "GyrY": {
+     "fs_hz": 25.0,
+     "nyquist_hz": 12.5,
+     "n": 350,
+     "sure_s": 13.96,
+     "cozunurluk_hz": 0.071,
+     "rms": 0.0,
+     "tepeler": [
+      {
+       "f_hz": 8.5,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 11.86,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 2.86,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 7.64,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 6.57,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 2.29,
+       "genlik": 0.0
+      }
+     ],
+     "band_2_15Hz_tepeler": [
+      {
+       "f_hz": 8.5,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 11.86,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 2.86,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 7.64,
+       "genlik": 0.0
+      }
+     ],
+     "band_2_15Hz_rms": 0.0
+    }
+   },
+   "IMU1": {
+    "AccZ": {
+     "fs_hz": 25.0,
+     "nyquist_hz": 12.5,
+     "n": 350,
+     "sure_s": 13.96,
+     "cozunurluk_hz": 0.071,
+     "rms": 0.01,
+     "tepeler": [
+      {
+       "f_hz": 10.79,
+       "genlik": 0.004
+      },
+      {
+       "f_hz": 8.0,
+       "genlik": 0.003
+      },
+      {
+       "f_hz": 12.36,
+       "genlik": 0.003
+      },
+      {
+       "f_hz": 11.29,
+       "genlik": 0.003
+      },
+      {
+       "f_hz": 11.86,
+       "genlik": 0.003
+      },
+      {
+       "f_hz": 3.14,
+       "genlik": 0.002
+      }
+     ],
+     "band_2_15Hz_tepeler": [
+      {
+       "f_hz": 10.79,
+       "genlik": 0.004
+      },
+      {
+       "f_hz": 8.0,
+       "genlik": 0.003
+      },
+      {
+       "f_hz": 12.36,
+       "genlik": 0.003
+      },
+      {
+       "f_hz": 11.29,
+       "genlik": 0.003
+      }
+     ],
+     "band_2_15Hz_rms": 0.011
+    },
+    "GyrX": {
+     "fs_hz": 25.0,
+     "nyquist_hz": 12.5,
+     "n": 350,
+     "sure_s": 13.96,
+     "cozunurluk_hz": 0.071,
+     "rms": 0.001,
+     "tepeler": [
+      {
+       "f_hz": 1.43,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 7.5,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 6.43,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 1.0,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 4.71,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 4.36,
+       "genlik": 0.0
+      }
+     ],
+     "band_2_15Hz_tepeler": [
+      {
+       "f_hz": 7.5,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 6.43,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 4.71,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 4.36,
+       "genlik": 0.0
+      }
+     ],
+     "band_2_15Hz_rms": 0.001
+    },
+    "GyrY": {
+     "fs_hz": 25.0,
+     "nyquist_hz": 12.5,
+     "n": 350,
+     "sure_s": 13.96,
+     "cozunurluk_hz": 0.071,
+     "rms": 0.003,
+     "tepeler": [
+      {
+       "f_hz": 10.29,
+       "genlik": 0.001
+      },
+      {
+       "f_hz": 10.64,
+       "genlik": 0.001
+      },
+      {
+       "f_hz": 2.79,
+       "genlik": 0.001
+      },
+      {
+       "f_hz": 6.14,
+       "genlik": 0.001
+      },
+      {
+       "f_hz": 8.79,
+       "genlik": 0.001
+      },
+      {
+       "f_hz": 1.64,
+       "genlik": 0.001
+      }
+     ],
+     "band_2_15Hz_tepeler": [
+      {
+       "f_hz": 10.29,
+       "genlik": 0.001
+      },
+      {
+       "f_hz": 10.64,
+       "genlik": 0.001
+      },
+      {
+       "f_hz": 2.79,
+       "genlik": 0.001
+      },
+      {
+       "f_hz": 6.14,
+       "genlik": 0.001
+      }
+     ],
+     "band_2_15Hz_rms": 0.003
+    }
+   }
+  },
+  "taban_armli_rolanti": {
+   "IMU0": {
+    "sure_s": 2.86,
+    "AccZ": {
+     "fs_hz": 25.0,
+     "nyquist_hz": 12.5,
+     "n": 71,
+     "sure_s": 2.8,
+     "cozunurluk_hz": 0.352,
+     "rms": 0.037,
+     "tepeler": [
+      {
+       "f_hz": 0.35,
+       "genlik": 0.003
+      },
+      {
+       "f_hz": 7.04,
+       "genlik": 0.002
+      },
+      {
+       "f_hz": 3.17,
+       "genlik": 0.002
+      },
+      {
+       "f_hz": 4.23,
+       "genlik": 0.002
+      },
+      {
+       "f_hz": 2.47,
+       "genlik": 0.002
+      },
+      {
+       "f_hz": 9.86,
+       "genlik": 0.002
+      }
+     ],
+     "band_2_15Hz_tepeler": [
+      {
+       "f_hz": 7.04,
+       "genlik": 0.002
+      },
+      {
+       "f_hz": 3.17,
+       "genlik": 0.002
+      },
+      {
+       "f_hz": 4.23,
+       "genlik": 0.002
+      },
+      {
+       "f_hz": 2.47,
+       "genlik": 0.002
+      }
+     ],
+     "band_2_15Hz_rms": 0.004
+    },
+    "GyrX": {
+     "fs_hz": 25.0,
+     "nyquist_hz": 12.5,
+     "n": 71,
+     "sure_s": 2.8,
+     "cozunurluk_hz": 0.352,
+     "rms": 0.004,
+     "tepeler": [
+      {
+       "f_hz": 3.87,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 5.63,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 8.45,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 4.93,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 7.4,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 2.82,
+       "genlik": 0.0
+      }
+     ],
+     "band_2_15Hz_tepeler": [
+      {
+       "f_hz": 3.87,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 5.63,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 8.45,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 4.93,
+       "genlik": 0.0
+      }
+     ],
+     "band_2_15Hz_rms": 0.0
+    },
+    "GyrY": {
+     "fs_hz": 25.0,
+     "nyquist_hz": 12.5,
+     "n": 71,
+     "sure_s": 2.8,
+     "cozunurluk_hz": 0.352,
+     "rms": 0.003,
+     "tepeler": [
+      {
+       "f_hz": 3.52,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 11.27,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 10.21,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 7.04,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 2.47,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 9.51,
+       "genlik": 0.0
+      }
+     ],
+     "band_2_15Hz_tepeler": [
+      {
+       "f_hz": 3.52,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 11.27,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 10.21,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 7.04,
+       "genlik": 0.0
+      }
+     ],
+     "band_2_15Hz_rms": 0.0
+    }
+   },
+   "IMU1": {
+    "sure_s": 2.86,
+    "AccZ": {
+     "fs_hz": 25.0,
+     "nyquist_hz": 12.5,
+     "n": 71,
+     "sure_s": 2.8,
+     "cozunurluk_hz": 0.352,
+     "rms": 0.032,
+     "tepeler": [
+      {
+       "f_hz": 3.52,
+       "genlik": 0.006
+      },
+      {
+       "f_hz": 4.58,
+       "genlik": 0.005
+      },
+      {
+       "f_hz": 9.51,
+       "genlik": 0.005
+      },
+      {
+       "f_hz": 7.75,
+       "genlik": 0.004
+      },
+      {
+       "f_hz": 11.27,
+       "genlik": 0.004
+      },
+      {
+       "f_hz": 2.11,
+       "genlik": 0.004
+      }
+     ],
+     "band_2_15Hz_tepeler": [
+      {
+       "f_hz": 3.52,
+       "genlik": 0.006
+      },
+      {
+       "f_hz": 4.58,
+       "genlik": 0.005
+      },
+      {
+       "f_hz": 9.51,
+       "genlik": 0.005
+      },
+      {
+       "f_hz": 7.75,
+       "genlik": 0.004
+      }
+     ],
+     "band_2_15Hz_rms": 0.012
+    },
+    "GyrX": {
+     "fs_hz": 25.0,
+     "nyquist_hz": 12.5,
+     "n": 71,
+     "sure_s": 2.8,
+     "cozunurluk_hz": 0.352,
+     "rms": 0.004,
+     "tepeler": [
+      {
+       "f_hz": 1.76,
+       "genlik": 0.001
+      },
+      {
+       "f_hz": 4.23,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 10.57,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 9.16,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 3.17,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 11.62,
+       "genlik": 0.0
+      }
+     ],
+     "band_2_15Hz_tepeler": [
+      {
+       "f_hz": 4.23,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 10.57,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 9.16,
+       "genlik": 0.0
+      },
+      {
+       "f_hz": 3.17,
+       "genlik": 0.0
+      }
+     ],
+     "band_2_15Hz_rms": 0.001
+    },
+    "GyrY": {
+     "fs_hz": 25.0,
+     "nyquist_hz": 12.5,
+     "n": 71,
+     "sure_s": 2.8,
+     "cozunurluk_hz": 0.352,
+     "rms": 0.004,
+     "tepeler": [
+      {
+       "f_hz": 5.99,
+       "genlik": 0.002
+      },
+      {
+       "f_hz": 7.75,
+       "genlik": 0.001
+      },
+      {
+       "f_hz": 9.86,
+       "genlik": 0.001
+      },
+      {
+       "f_hz": 11.27,
+       "genlik": 0.001
+      },
+      {
+       "f_hz": 0.7,
+       "genlik": 0.001
+      },
+      {
+       "f_hz": 8.45,
+       "genlik": 0.001
+      }
+     ],
+     "band_2_15Hz_tepeler": [
+      {
+       "f_hz": 5.99,
+       "genlik": 0.002
+      },
+      {
+       "f_hz": 7.75,
+       "genlik": 0.001
+      },
+      {
+       "f_hz": 9.86,
+       "genlik": 0.001
+      },
+      {
+       "f_hz": 11.27,
+       "genlik": 0.001
+      }
+     ],
+     "band_2_15Hz_rms": 0.003
+    }
+   }
+  },
+  "pervane_temel_frekansi_HESAP": {
+   "yontem": "RPM ~= KV x V_aski x PWM_orani (yuksuz motor ust siniri; yuklu pervane %10-20 dusuk doner). f_temel = RPM/60; pal gecis = 3 x f_temel (3 pal). KV kullanici beyani, ESC/RPM telemetrisi LOGDA YOK -> bu bir HESAP, olcum DEGIL",
+   "KV_beyan": 980,
+   "V_aski": 14.04,
+   "pwm_ort_M1_M4_us": 1583.0,
+   "pwm_orani": 0.583,
+   "rpm_ust_sinir": 8017.0,
+   "f_temel_hz_ust_sinir": 133.6,
+   "f_temel_hz_%85": 113.6,
+   "f_pal_gecis_hz_ust_sinir": 400.8,
+   "alias_25Hz_HESAP_hz": {
+    "f_temel_ust": 8.6,
+    "f_temel_%85": 11.4
+   },
+   "alias_notu": "IMU 25 Hz ile kaydedildigi icin ~100-130 Hz pervane bileseni 0-12,5 Hz bandina KATLANIR (alias). INS_ACCEL/GYRO_FILTER=20 Hz 2 kutuplu LPF 120 Hz'i ~%3'e (~-31 dB) indirir ama sifirlamaz -> 2-12,5 Hz'de gorulen kucuk bir tepe kol esnekligi de, katlanmis pervane bileseni de olabilir; AYIRT EDILEMEZ. Kesin olcum icin INS_LOG_BAT_MASK=1 (hizli IMU, ISBH/ISBD) gerekir"
+  },
+  "band_2_15Hz_ozet": {
+   "IMU0_AccZ": {
+    "aski_2_15Hz_tepe": [
+     {
+      "f_hz": 2.19,
+      "genlik": 0.044
+     },
+     {
+      "f_hz": 10.34,
+      "genlik": 0.038
+     }
+    ],
+    "aski_2_15Hz_rms": 0.268,
+    "kapali_2_15Hz_rms": 0.004,
+    "rolanti_2_15Hz_rms": 0.004,
+    "aski_tum_rms": 0.282,
+    "kapali_tum_rms": 0.006
+   },
+   "IMU0_GyrX": {
+    "aski_2_15Hz_tepe": [
+     {
+      "f_hz": 2.3,
+      "genlik": 0.012
+     },
+     {
+      "f_hz": 2.38,
+      "genlik": 0.012
+     }
+    ],
+    "aski_2_15Hz_rms": 0.062,
+    "kapali_2_15Hz_rms": 0.0,
+    "rolanti_2_15Hz_rms": 0.0,
+    "aski_tum_rms": 0.079,
+    "kapali_tum_rms": 0.0
+   },
+   "IMU0_GyrY": {
+    "aski_2_15Hz_tepe": [
+     {
+      "f_hz": 2.09,
+      "genlik": 0.015
+     },
+     {
+      "f_hz": 2.27,
+      "genlik": 0.014
+     }
+    ],
+    "aski_2_15Hz_rms": 0.054,
+    "kapali_2_15Hz_rms": 0.0,
+    "rolanti_2_15Hz_rms": 0.0,
+    "aski_tum_rms": 0.066,
+    "kapali_tum_rms": 0.0
+   },
+   "IMU1_AccZ": {
+    "aski_2_15Hz_tepe": [
+     {
+      "f_hz": 2.19,
+      "genlik": 0.049
+     },
+     {
+      "f_hz": 2.43,
+      "genlik": 0.045
+     }
+    ],
+    "aski_2_15Hz_rms": 0.286,
+    "kapali_2_15Hz_rms": 0.011,
+    "rolanti_2_15Hz_rms": 0.012,
+    "aski_tum_rms": 0.29,
+    "kapali_tum_rms": 0.01
+   },
+   "IMU1_GyrX": {
+    "aski_2_15Hz_tepe": [
+     {
+      "f_hz": 2.3,
+      "genlik": 0.012
+     },
+     {
+      "f_hz": 2.58,
+      "genlik": 0.012
+     }
+    ],
+    "aski_2_15Hz_rms": 0.062,
+    "kapali_2_15Hz_rms": 0.001,
+    "rolanti_2_15Hz_rms": 0.001,
+    "aski_tum_rms": 0.079,
+    "kapali_tum_rms": 0.001
+   },
+   "IMU1_GyrY": {
+    "aski_2_15Hz_tepe": [
+     {
+      "f_hz": 2.09,
+      "genlik": 0.015
+     },
+     {
+      "f_hz": 2.27,
+      "genlik": 0.014
+     }
+    ],
+    "aski_2_15Hz_rms": 0.053,
+    "kapali_2_15Hz_rms": 0.003,
+    "rolanti_2_15Hz_rms": 0.003,
+    "aski_tum_rms": 0.066,
+    "kapali_tum_rms": 0.003
+   }
+  }
+ },
+ "rcou": {
+  "motor_kanallari_AUX": {
+   "M1": "C11",
+   "M2": "C10",
+   "M3": "C12",
+   "M4": "C9"
+  },
+  "SERVO1_4_FUNCTION": [
+   34.0,
+   34.0,
+   33.0,
+   34.0
+  ],
+  "not": "ESC'ler AUX1-4 = SERVO9-12 (36,34,33,35 -> C9=M4, C10=M2, C11=M1, C12=M3). C1..C4 (MAIN) fonksiyonlari 34,34,33,34 = M2,M2,M1,M2 (ayni motorun kopyalari; IOMCU cikisi, AUX ile ayni anda ort. 4 us farkli). Gorev C1-C4 istedi: ikisi de verildi; MOTOR DENGESI icin C9-C12 gecerlidir",
+  "C1_C4_aski": {
+   "ort_us": [
+    1575.0,
+    1575.0,
+    1598.0,
+    1575.0
+   ],
+   "std_us": [
+    33.4,
+    33.4,
+    34.9,
+    33.4
+   ],
+   "yayilim_ort_us": 23.0,
+   "min_us": [
+    1492.0,
+    1492.0,
+    1515.0,
+    1492.0
+   ],
+   "maks_us": [
+    1678.0,
+    1678.0,
+    1720.0,
+    1678.0
+   ]
+  },
+  "C9_C12_motorlar_aski": {
+   "n": 629,
+   "M_ort_us": {
+    "M1": 1598.0,
+    "M2": 1575.0,
+    "M3": 1569.0,
+    "M4": 1588.0
+   },
+   "M_std_us": {
+    "M1": 35.1,
+    "M2": 33.2,
+    "M3": 35.6,
+    "M4": 37.8
+   },
+   "M_p05_p95_us": {
+    "M1": [
+     1548.0,
+     1662.0
+    ],
+    "M2": [
+     1524.0,
+     1632.0
+    ],
+    "M3": [
+     1513.0,
+     1629.0
+    ],
+    "M4": [
+     1518.0,
+     1644.0
+    ]
+   },
+   "yayilim_ort_us": 29.0,
+   "yayilim_pct_aralik": 2.9,
+   "en_yuksek": "M1",
+   "en_dusuk": "M3",
+   "ort_pwm_orani": 0.583,
+   "cift_farklari_us": {
+    "CCW(M1+M2)-CW(M3+M4)_yaw": 16.0,
+    "on(M1+M3)-arka(M2+M4)_pitch": 4.0,
+    "sag(M1+M4)-sol(M2+M3)_roll": 42.0
+   }
+  },
+  "ThO_aski_beklenen_pwm_HESAP": 1567.0,
+  "motorlu_maks_us": {
+   "M1": 1712.0,
+   "M2": 1679.0,
+   "M3": 1706.0,
+   "M4": 1694.0
+  }
+ },
+ "tutum": {
+  "motorlu": {
+   "n": 696,
+   "roll_rms_hata_deg": 1.022,
+   "pitch_rms_hata_deg": 0.84,
+   "yaw_rms_hata_deg": 5.191,
+   "roll_hata_maks_abs_deg": 3.73,
+   "pitch_hata_maks_abs_deg": 2.76,
+   "roll_maks_abs_deg": 4.73,
+   "pitch_maks_abs_deg": 3.73,
+   "roll_ort_deg": 0.875,
+   "pitch_ort_deg": -0.187,
+   "DesRoll_ort_deg": 0.89,
+   "DesPitch_ort_deg": -0.116,
+   "ErrRP_ort": 0.0232,
+   "ErrRP_maks": 0.07,
+   "ErrYaw_maks": 0.05
+  },
+  "aski": {
+   "n": 629,
+   "roll_rms_hata_deg": 1.036,
+   "pitch_rms_hata_deg": 0.836,
+   "yaw_rms_hata_deg": 5.439,
+   "roll_hata_maks_abs_deg": 3.73,
+   "pitch_hata_maks_abs_deg": 2.76,
+   "roll_maks_abs_deg": 4.73,
+   "pitch_maks_abs_deg": 3.73,
+   "roll_ort_deg": 0.835,
+   "pitch_ort_deg": -0.285,
+   "DesRoll_ort_deg": 0.859,
+   "DesPitch_ort_deg": -0.202,
+   "ErrRP_ort": 0.0207,
+   "ErrRP_maks": 0.06,
+   "ErrYaw_maks": 0.04
+  },
+  "aski_hiz": {
+   "roll_rate_rms_hata_dps": 6.88,
+   "pitch_rate_rms_hata_dps": 5.39,
+   "yaw_rate_rms_hata_dps": 24.19,
+   "ROut_ort": -0.0259,
+   "POut_ort": 0.0025,
+   "YOut_ort": 0.0098,
+   "YOut_maks_abs": 0.208,
+   "not": "ROut/POut/YOut -1..1 karistirici cikisi; ort != 0 -> surekli tork dengesizligi"
+  },
+  "yaw": {
+   "parm": {
+    "ATC_ANG_YAW_P": 4.5,
+    "ATC_RAT_YAW_P": 0.18000000715255737,
+    "ATC_RAT_YAW_I": 0.017999999225139618,
+    "ATC_RAT_YAW_D": 0.0,
+    "ATC_RAT_YAW_IMAX": 0.5,
+    "ATC_RAT_YAW_FLTE": 2.5,
+    "ATC_RAT_YAW_FLTT": 20.0,
+    "ATC_ACCEL_Y_MAX": 27000.0,
+    "ATC_SLEW_YAW": 6000.0,
+    "MOT_YAW_HEADROOM": 200.0,
+    "ATC_RATE_Y_MAX": 0.0
+   },
+   "aski_hata_rms_deg": 5.44,
+   "aski_hata_maks_abs_deg": 16.05,
+   "aski_hata_p95_abs_deg": 11.48,
+   "DesYaw_aski_ort_deg": 136.4,
+   "DesYaw_aski_std_deg": 0.11,
+   "Yaw_aski_std_deg": 5.46,
+   "dilimler_10s": [
+    {
+     "t": [
+      240.0,
+      250.0
+     ],
+     "rms_deg": 2.03,
+     "maks_abs_deg": 4.42
+    },
+    {
+     "t": [
+      250.0,
+      260.0
+     ],
+     "rms_deg": 2.99,
+     "maks_abs_deg": 6.89
+    },
+    {
+     "t": [
+      260.0,
+      270.0
+     ],
+     "rms_deg": 6.85,
+     "maks_abs_deg": 16.05
+    },
+    {
+     "t": [
+      270.0,
+      280.0
+     ],
+     "rms_deg": 6.31,
+     "maks_abs_deg": 12.33
+    },
+    {
+     "t": [
+      280.0,
+      290.0
+     ],
+     "rms_deg": 6.97,
+     "maks_abs_deg": 15.18
+    },
+    {
+     "t": [
+      290.0,
+      300.0
+     ],
+     "rms_deg": 5.48,
+     "maks_abs_deg": 15.26
+    },
+    {
+     "t": [
+      300.0,
+      310.0
+     ],
+     "rms_deg": 4.05,
+     "maks_abs_deg": 6.85
+    }
+   ],
+   "GyrZ_FFT_IMU0_baskin": [
+    {
+     "f_hz": 0.38,
+     "genlik": 0.114
+    },
+    {
+     "f_hz": 0.33,
+     "genlik": 0.056
+    },
+    {
+     "f_hz": 0.59,
+     "genlik": 0.055
+    }
+   ],
+   "GyrZ_rms_rad_s": 0.144,
+   "YOut_ort": 0.0098,
+   "YOut_maks_abs": 0.208,
+   "YOut_p95_abs": 0.157,
+   "yaw_rate_Y_p05_p95_dps": [
+    -13.6,
+    13.3
+   ],
+   "EKF_yaw_reset_t": 241.978533,
+   "not": "DesYaw ~sabit (GUIDED, yaw hedefi sabit); Yaw hedef etrafinda salinir -> kapali cevrim yaw salinimi. Kaynak (ayar mi, 3 pal pervanenin dusuk yaw otoritesi mi, ruzgar mi) bu logdan AYRISTIRILAMAZ; EKF yaw reset (in-flight alignment) yalniz baslangicta"
+  }
+ },
+ "ekf_olaylar": {
+  "cekirdek": {
+   "0": {
+    "n": 744,
+    "SV_maks": 0.11,
+    "SP_maks": 0.02,
+    "SH_maks": 0.05,
+    "SM_maks": 0.15,
+    "SVT_maks": 0.0,
+    "errRP_maks": 0.0295,
+    "innov_>1_n": 0,
+    "PI_uniq": [
+     0
+    ]
+   },
+   "1": {
+    "n": 744,
+    "SV_maks": 0.09,
+    "SP_maks": 0.02,
+    "SH_maks": 0.05,
+    "SM_maks": 0.15,
+    "SVT_maks": 0.0,
+    "errRP_maks": 0.0265,
+    "innov_>1_n": 0,
+    "PI_uniq": [
+     0
+    ]
+   }
+  },
+  "innov_esik": 1.0,
+  "lane_switch_n": 0,
+  "gps": {
+   "Status_uniq": [
+    3
+   ],
+   "NSats_min_maks": [
+    21,
+    25
+   ],
+   "HDop_min_maks": [
+    0.6,
+    0.77
+   ]
+  },
+  "PM": {
+   "NLon_toplam": 1,
+   "MaxT_us_maks": 20010,
+   "Load_binde_maks": 252
+  },
+  "ERR_tumu": [
+   {
+    "t": 210.06,
+    "subsys": "FS_GCS",
+    "ecode": 1,
+    "ucus_icinde": false
+   },
+   {
+    "t": 233.66,
+    "subsys": "FS_GCS",
+    "ecode": 0,
+    "ucus_icinde": false
+   },
+   {
+    "t": 315.13,
+    "subsys": "FS_GCS",
+    "ecode": 1,
+    "ucus_icinde": false
+   },
+   {
+    "t": 318.57,
+    "subsys": "RADIO",
+    "ecode": 2,
+    "ucus_icinde": false
+   },
+   {
+    "t": 318.57,
+    "subsys": "FS_RADYO",
+    "ecode": 1,
+    "ucus_icinde": false
+   }
+  ],
+  "ERR_ucus_icinde_n": 0,
+  "MSG_tumu": [
+   {
+    "t": 202.02,
+    "mesaj": "ArduCopter V4.5.7 (2a3dc4b7)"
+   },
+   {
+    "t": 202.02,
+    "mesaj": "ChibiOS: 6a85082c"
+   },
+   {
+    "t": 202.02,
+    "mesaj": "Pixhawk6C 00440022 35335114 38323631"
+   },
+   {
+    "t": 202.02,
+    "mesaj": "Param space used: 907/5376"
+   },
+   {
+    "t": 202.02,
+    "mesaj": "RC Protocol: IBUS"
+   },
+   {
+    "t": 202.02,
+    "mesaj": "RCOut: PWM:1-16"
+   },
+   {
+    "t": 202.02,
+    "mesaj": "New mission"
+   },
+   {
+    "t": 202.02,
+    "mesaj": "New rally"
+   },
+   {
+    "t": 202.02,
+    "mesaj": "New fence"
+   },
+   {
+    "t": 202.02,
+    "mesaj": "Frame: QUAD/X"
+   },
+   {
+    "t": 202.02,
+    "mesaj": "GPS 1: detected as u-blox at 230400 baud"
+   },
+   {
+    "t": 202.02,
+    "mesaj": "u-blox 1 HW: 000A0000 SW: ROM SPG 5.10 (7b202e)"
+   },
+   {
+    "t": 210.06,
+    "mesaj": "GCS Failsafe"
+   },
+   {
+    "t": 221.24,
+    "mesaj": "PreArm: GCS failsafe on"
+   },
+   {
+    "t": 233.66,
+    "mesaj": "GCS Failsafe Cleared"
+   },
+   {
+    "t": 241.98,
+    "mesaj": "EKF3 IMU0 MAG0 in-flight yaw alignment complete"
+   },
+   {
+    "t": 241.98,
+    "mesaj": "EKF3 IMU1 MAG0 in-flight yaw alignment complete"
+   },
+   {
+    "t": 315.13,
+    "mesaj": "GCS Failsafe"
+   },
+   {
+    "t": 318.57,
+    "mesaj": "Radio Failsafe - Disarming"
+   },
+   {
+    "t": 320.24,
+    "mesaj": "PreArm: GCS failsafe on"
+   },
+   {
+    "t": 320.24,
+    "mesaj": "PreArm: Radio failsafe on"
+   }
+  ],
+  "EV_ucus": [
+   {
+    "t": 236.28,
+    "olay": "ARMED"
+   },
+   {
+    "t": 236.68,
+    "olay": "AUTO_ARMED"
+   },
+   {
+    "t": 238.28,
+    "olay": "MOTORS_INTERLOCK_ENABLED"
+   },
+   {
+    "t": 239.15,
+    "olay": "NOT_LANDED"
+   },
+   {
+    "t": 241.98,
+    "olay": "EKF_YAW_RESET"
+   },
+   {
+    "t": 309.38,
+    "olay": "LAND_COMPLETE_MAYBE"
+   },
+   {
+    "t": 310.18,
+    "olay": "LAND_COMPLETE"
+   },
+   {
+    "t": 310.68,
+    "olay": "DISARMED"
+   },
+   {
+    "t": 310.69,
+    "olay": "MOTORS_INTERLOCK_DISABLED"
+   }
+  ],
+  "MODE_ucus": [
+   {
+    "t": 202.02,
+    "kip": "STAB",
+    "sebep": "RC"
+   },
+   {
+    "t": 235.89,
+    "kip": "GUIDED",
+    "sebep": "GCS"
+   },
+   {
+    "t": 236.28,
+    "kip": "GUIDED",
+    "sebep": "GCS"
+   },
+   {
+    "t": 303.0,
+    "kip": "LAND",
+    "sebep": "GCS"
+   }
+  ],
+  "yorum": "ucus icinde ERR/failsafe YOK; GCS failsafe (ERR 8) arm ONCESI 210,1-233,7 s ve disarm SONRASI 315,1 s; radyo failsafe (ERR 5) disarm sonrasi 318,6 s (kumanda kapatildi). EKF innovasyon oranlari <<1, lane switch yok, GPS 3D fix"
+ },
+ "failsafe": {
+  "logdaki_parametreler": {
+   "BATT_MONITOR": 4.0,
+   "BATT_CAPACITY": 8000.0,
+   "BATT_LOW_VOLT": 10.0,
+   "BATT_CRT_VOLT": 9.0,
+   "BATT_ARM_VOLT": 9.0,
+   "BATT_ARM_MAH": 0.0,
+   "BATT_LOW_MAH": 0.0,
+   "BATT_CRT_MAH": 0.0,
+   "BATT_FS_LOW_ACT": 1.0,
+   "BATT_FS_CRT_ACT": 1.0,
+   "BATT_LOW_TIMER": 10.0,
+   "BATT_FS_VOLTSRC": 0.0,
+   "BATT_VOLT_MULT": 18.38775062561035,
+   "BATT_AMP_PERVLT": 36.36000061035156,
+   "FS_OPTIONS": 16.0
+  },
+  "hucre_basina_mevcut": {
+   "LOW": 2.5,
+   "CRT": 2.25,
+   "ARM": 2.25
+  },
+  "hukum": "UYGUN DEGIL: 10,0/9,0 V esikleri 4S'te 2,50/2,25 V/hucre demektir; LiPo 3,0 V/hucre altinda kalici hasar gorur -> failsafe HICBIR ZAMAN tetiklenmez, pil once biter. BATT_CAPACITY 8000 = 3S pilin degeri (13 000 beyan) -> RemPct ve mAh-tabanli esikler yanlis. BATT_ARM_VOLT 9,0 V = 2,25 V/hucre -> bos pille kalkisi engellemez",
+  "oneri": {
+   "BATT_LOW_VOLT": 14.0,
+   "BATT_CRT_VOLT": 13.2,
+   "BATT_CAPACITY": 13000.0,
+   "BATT_ARM_VOLT": 14.4,
+   "BATT_ARM_VOLT_not": "oneri 14.4 V (3.6 V/hucre): LOW'un ustunde olmali ki yarim pille kalkilmasin; 14,8 V (3,7 V/hucre) daha tutucu",
+   "BATT_LOW_MAH_oneri_HESAP": 3250.0,
+   "BATT_CRT_MAH_oneri_HESAP": 1950.0,
+   "BATT_FS_LOW_ACT_mevcut": 1.0,
+   "BATT_FS_CRT_ACT_mevcut": 1.0,
+   "act_not": "1=Land (mevcut) 3 m aski icin uygun; RTL(2) gerekmez",
+   "BATT_FS_VOLTSRC_not": "0=ham gerilim (mevcut). 1=sarkma-telafili (BAT.VoltR, R tahmini ile) yuk altinda yanlis tetiklemeyi azaltir; bu logda VoltR min 15.01 V vs ham 13.83 V"
+  },
+  "bu_logda_gerilim_vs_onerilen_esikler": {
+   "V_min_ham": 13.827,
+   "V_min_ham_hucre": 3.457,
+   "V_min_t": 299.44,
+   "V_min_I_A": 37.8,
+   "LOW_14.0V_marj_V": -0.173,
+   "CRT_13.2V_marj_V": 0.627,
+   "ham_V_LOW_altinda_toplam_s": 37.3,
+   "ham_V_LOW_altinda_en_uzun_kosu_s": 11.9,
+   "ham_V_LOW_altinda_ornek_orani_motorlu": 0.536,
+   "ham_V_CRT_altinda_toplam_s": 0.0,
+   "VoltR_LOW_altinda_toplam_s": 0.0,
+   "VoltR_min": 15.014,
+   "BATT_LOW_TIMER_s": 10.0,
+   "LOW_tetiklenir_miydi_ham": true,
+   "LOW_tetiklenir_miydi_VoltR": false,
+   "ARM_14.4V_ile_kalkis": "ilk gerilim 15.57 V >= 14.4 V -> arm IZIN verilirdi",
+   "mevcut_10V_esigine_marj_V": 3.83
+  }
+ },
+ "kiyas_C_D": {
+  "kaynaklar": {
+   "C": "O:/navitas\\results/ucus_analiz_20260915/C_3S_9x5x3/ozet.json",
+   "D": "O:/navitas\\results/ucus_analiz_20260915/D_4S_9x5x3/ozet.json"
+  },
+  "C": {
+   "pil_pervane": "3S + 9x5x3",
+   "ucus_n": 3,
+   "aski_s": 63.4,
+   "aski_ThO_ort": 0.472,
+   "aski_ThO_p50": [
+    0.431,
+    0.467,
+    0.517
+   ],
+   "aski_V": 10.999,
+   "aski_I_A": 36.581,
+   "aski_P_W": 401.391,
+   "vibe_aski_ort_XYZ": [
+    11.4,
+    7.5,
+    18.0
+   ],
+   "vibe_aski_p95_XYZ": [
+    15.41,
+    9.79,
+    21.8
+   ],
+   "vibe_aski_maks_XYZ": [
+    15.5,
+    9.9,
+    21.8
+   ],
+   "clip": 0,
+   "MOT_THST_HOVER": {
+    "13_Eylul_sonu": 0.532559,
+    "mp68_ucus1_sonu": 0.515692,
+    "mp68_ucus2_sonu": 0.49768,
+    "mp69_ucus2_sonu": 0.506167,
+    "15_Eylul_mp_11-14-33_bas": 0.506167,
+    "kaynak": "PARM MOT_THST_HOVER degisim kayitlari (bu loglar + tum_loglar.json D kaydi)"
+   },
+   "not": "vibe = 3 ucusun ucus-ortalamalarinin istatistigi (n=3), ornek bazli degil"
+  },
+  "D": {
+   "pil_pervane": "4S + 9x5x3 (LOIT/STAB, kumanda)",
+   "ucus_n": 3,
+   "aski_s": 73.7,
+   "aski_ThO_ort": 0.327,
+   "aski_ThO_p50": 0.325,
+   "aski_V": 14.719,
+   "aski_I_A": 35.514,
+   "aski_P_W": 522.646,
+   "vibe_aski_ort_XYZ": [
+    4.675,
+    4.455,
+    11.927
+   ],
+   "vibe_aski_p95_XYZ": [
+    6.179,
+    5.972,
+    16.703
+   ],
+   "vibe_aski_maks_XYZ": [
+    8.126,
+    7.064,
+    22.551
+   ],
+   "clip_ucus": 0,
+   "clip_kisa_sicrama": 19,
+   "kisa_sicrama_VibeZ_maks": 55.845,
+   "ucus_bazinda_VibeZ_ort_p95_maks": [
+    [
+     "2026-09-15 11-14-33.bin",
+     1,
+     13.594,
+     17.114,
+     22.551
+    ],
+    [
+     "2026-09-15 11-18-16.bin",
+     2,
+     12.488,
+     16.456,
+     21.701
+    ],
+    [
+     "2026-09-15 11-18-16.bin",
+     4,
+     8.699,
+     11.456,
+     14.411
+    ]
+   ],
+   "MOT_THST_HOVER": 0.5061665177345276
+  },
+  "F_bu_log": {
+   "pil_pervane": "4S 13 Ah + 9x5x3 (GUIDED, kodla)",
+   "ucus_n": 1,
+   "aski_s": 62.9,
+   "aski_ThO_ort": 0.359,
+   "aski_ThO_p50": 0.36,
+   "aski_V": 14.038,
+   "aski_I_A": 37.302,
+   "aski_P_W": 523.546,
+   "vibe_aski_ort_XYZ": [
+    4.015,
+    3.496,
+    9.619
+   ],
+   "vibe_aski_p95_XYZ": [
+    5.159,
+    5.741,
+    12.551
+   ],
+   "vibe_aski_maks_XYZ": [
+    6.776,
+    7.812,
+    15.401
+   ],
+   "clip": 0,
+   "MOT_THST_HOVER": 0.3895
+  },
+  "F_vs_D_ayni_konfig": {
+   "ThO_ort_fark": 0.032,
+   "ThO_ort_fark_pct": 9.8,
+   "I_fark_A": 1.79,
+   "P_fark_W": 0.9,
+   "P_fark_pct": 0.2,
+   "V_fark": -0.681,
+   "VibeZ_ort_fark": -2.31,
+   "VibeZ_p95_fark": -4.15,
+   "VibeX_ort_fark": -0.66,
+   "not": "D pili ayri (4S, kapasite bilinmiyor; D analizinde belirtildi), F pili 4S 13 Ah beyan -> kutle farki logda yok; ThO/guc farkinin kutle mi pil mi kaynakli oldugu AYRISTIRILAMAZ"
+  },
+  "F_vs_C": {
+   "ThO_ort_fark_pct": -23.9,
+   "P_fark_pct": 30.4,
+   "VibeZ_ort_fark": -8.38
+  }
+ },
+ "grafikler": [
+  "O:/navitas/results/ucus_analiz_20260915/F_1311_aski_4S_13Ah/zaman_ThO_akim_gerilim.png",
+  "O:/navitas/results/ucus_analiz_20260915/F_1311_aski_4S_13Ah/vibe_xyz.png",
+  "O:/navitas/results/ucus_analiz_20260915/F_1311_aski_4S_13Ah/rcou_C1_C4_ve_motorlar.png",
+  "O:/navitas/results/ucus_analiz_20260915/F_1311_aski_4S_13Ah/fft_aski_AccZ_gyro.png",
+  "O:/navitas/results/ucus_analiz_20260915/F_1311_aski_4S_13Ah/att_roll_pitch_des_hata.png",
+  "O:/navitas/results/ucus_analiz_20260915/F_1311_aski_4S_13Ah/pil_ic_direnc_ve_ekstrapolasyon.png",
+  "O:/navitas/results/ucus_analiz_20260915/F_1311_aski_4S_13Ah/kiyas_C_D_F.png"
+ ],
+ "bulgular": [
+  "UCUS: arm 236.28 s (MAVLINK, GUIDED) -> LAND 303.00 s (GCS) -> disarm 310.68 s (LANDED); pencere 74.4 s, motorlu 69.6 s, aski 62.9 s (n=629, en uzun kesintisiz dilim 61.3 s). Irtifa: CTUN.Alt tabani 1.83 m (EKF orijini) cikarilinca aski ort 2.97 m, maks 3.07 m; POS.RelHomeAlt maks 3.08 m -> ilk taramadaki '4,76 m' EKF-orijin gorelidir, yerden yukseklik ~3 m (kullanici beyani '~3 m' ile UYUMLU). Ucus icinde ERR/failsafe/EKF olayi YOK.",
+  "ASKI (n=629, 62.9 s): ThO ort 0.359 / p50 0.360 / p05 0.335 / p95 0.380; V ort 14.04 V (3.509 V/hucre; bas 3.637, min 3.457 V/hucre); I ort 37.3 A (p95 39.9, maks 42.5); P=V*I ort 524 W (p95 557). Tuketim 622 mAh/dk. MOT_THST_HOVER 0.3895 log boyunca SABIT (PARM 3 kayit ayni) ve aski ThO'dan +8.5% yuksek: ogrenme GUIDED'da calismadi (havada is_zero(PSCD.DVD) orani 0.000, uygun 0.0 s).",
+  "MOT_THST_HOVER kokeni: 11-18-16 logu 0,5017 ile bitti (BOOTCNT 139, FLTTIME 942 s); 12-40-55 (BOOTCNT 143, FLTTIME 1027 s) ve bu log (BOOTCNT 145, FLTTIME 1027->1095 s) 0,3895 ile basliyor -> 0,3895 klasorde OLMAYAN 140-142 acilislarindaki ~85 s ucusta ogrenilmis; bu logda degismedi.",
+  "PIL DOLU DEGILDI: ilk gerilim 15.57 V = 3.891 V/hucre (dolu 4,20). Sarkma: ilk -> aski ort 1.53 V, ilk -> min 1.74 V (0.435 V/hucre); V_min 13.827 V (3.457 V/hucre) t=299.4 s @ 37.8 A; VoltR (FC sarkma-telafili) min 15.01 V; disarm+10 s toparlanma +1.38 V. Ic direnc (numpy.polyfit dV/dI): kalkis gecisi 7.6 mOhm/hucre (r2 0.995, I [0.2, 47.8] A), inis gecisi 10.4 mOhm/hucre (r2 0.82), tum pencere 7.8 (SoC kaymasi karisik), arm-oncesi/aski yontemi 10.7, FC BAT.Res 8.0 mOhm/hucre; HESAP sarkma I*R = 1.13 V vs olculen 1.53 V.",
+  "UCUS SURESI (HESAP, kapasite kullanici beyani 13 000 mAh, DOLU pil varsayimi): %80 kural -> 10400 mAh / 37.3 A = 16.7 dk (motorlu ort akim 37.2 A ile 16.8 dk; p95 39.9 A ile 15.6 dk). 3,5 V/hucre yontemi (bu pil 3,89 V/hucre ile basladi): OLCUM - yuklu gerilim 14,0 V'in altina t=255.4 s'de, aski basindan 13 s / 130 mAh sonra indi. Ekstrapolasyon: (i) tum aski uydurmasi -66.3 mV/100 mAh (r2 0.68) kalkis polarizasyon gecisini icerdigi icin GECERSIZ (dinlenme 3,5 V'a 2094.0 mAh verir, asiri pesimist); (ii) PLATO (son 30 s, 406-716 mAh) egimi -9.5 +/- 3.0 mV/100 mAh (r2 0.03, egim gurultu icinde -> KOTU KOSULLU): sarkma I*R=1.13 V cikarilinca dinlenme 3,5 V/hucre'ye aski sonundan 11062.0 mAh = 17.8 dk (log basindan toplam 11777.0 mAh = 18.9 dk) - buyukluk sirasi, olcum degil; (iii) yuksuz gerilim egimi (15.57 -> 15.28 V, 729 mAh, disarm+14 s eksik toparlanma) alt sinir 3242.0 mAh. Hepsi 658 mAh gozlemden (beyanin %5.1'i) ekstrapolasyon; LiPo egrisi dogrusal degil -> 63 s / 658 mAh aski 3,5 V'a kalan mAh'i BELIRLEYEMEZ (aralik 3,2 Ah alt sinir .. ~11 Ah kotu kosullu); 13 Ah beyani ancak tam bosaltma testiyle dogrulanir.",
+  "TITRESIM (askida, IMU0+IMU1 birlesik n=1258): X ort 4.0 / p95 5.2 / maks 6.8; Y 3.5 / 5.7 / 7.8; Z 9.6 / 12.6 / 15.4 m/s2; clip 0/0 (log tamaminda da 0). 30 m/s2 esigi: askida hicbir ornek asmiyor (0.0%), motorlu tumunde 0.0%; Z p95 esigin 42%'i. Kalkis dilimi maks XYZ [6.0, 5.9, 14.4], inis dilimi [7.0, 5.8, 20.6] (motorlu maks Z 20.6) -> hepsi <30, <<60.",
+  "FFT (en uzun aski dilimi 61.3 s, IMU 25.0 Hz -> Nyquist 12.49 Hz): AccZ IMU0 tepeler [(0.44, 0.055), (0.38, 0.052), (0.31, 0.048)] (rms 0.282 m/s2; motor-kapali taban rms 0.006); IMU1 [(0.57, 0.055), (0.47, 0.054), (0.44, 0.052)]. 2-12,5 Hz bandinda AccZ IMU0 en buyuk tepe [{'f_hz': 2.19, 'genlik': 0.044}], GyrX [{'f_hz': 2.3, 'genlik': 0.012}], GyrY [{'f_hz': 2.09, 'genlik': 0.015}]. Pervane temel frekansi HESAP (KV 980 beyan x 14.04 V x PWM orani 0.583): <=134 Hz (yuklu ~114 Hz), pal gecis <=401 Hz -> 25 Hz kayitla COZULEMEZ, 8.6/11.4 Hz'e katlanir (alias): 2-12,5 Hz'deki tepe kol esnekligi mi katlanmis pervane mi AYIRT EDILEMEZ; kesin sonuc icin INS_LOG_BAT_MASK=1 gerekli.",
+  "RCOU askida: C1-C4 (MAIN, fonksiyon M2/M2/M1/M2 kopyalari) ort [1575.0, 1575.0, 1598.0, 1575.0] us, yayilim 23 us. Gercek ESC kanallari C9-C12: {'M1': 1598.0, 'M2': 1575.0, 'M3': 1569.0, 'M4': 1588.0} us (std {'M1': 35.1, 'M2': 33.2, 'M3': 35.6, 'M4': 37.8}), yayilim 29 us = %2.9 aralik, en yuksek M1 / en dusuk M3; cift farklari yaw(CCW-CW) +16, pitch(on-arka) +4, roll(sag-sol) +42 us; ThO 0.359 icin beklenen PWM 1567 us (expo 0.65). Motorlu maks {'M1': 1712.0, 'M2': 1679.0, 'M3': 1706.0, 'M4': 1694.0}.",
+  "TUTUM askida: Roll-DesRoll RMS 1.04 deg (maks |hata| 3.73), Pitch RMS 0.84 (maks 2.76), Yaw RMS 5.44; |roll| maks 4.7, |pitch| maks 3.7 deg; roll ort +0.83 pitch ort -0.28 (DesRoll +0.86 DesPitch -0.20); ErrRP maks 0.060. Hiz halkasi RMS hata roll/pitch/yaw 6.9/5.4/24.2 dps; ROut/POut/YOut ort -0.0259/+0.0025/+0.0098.",
+  "YAW SALINIMI (askida): DesYaw sabit (136.4 deg, std 0.11) ama Yaw-DesYaw RMS 5.44 deg, p95 |hata| 11.48, maks 16.05 deg; 10 s dilimlerde RMS [(240.0, 2.03), (250.0, 2.99), (260.0, 6.85), (270.0, 6.31), (280.0, 6.97), (290.0, 5.48), (300.0, 4.05)]; GyrZ FFT baskin [(0.38, 0.114), (0.33, 0.056)] (rms 0.144 rad/s) -> ~0.4 Hz kapali cevrim yaw salinimi; yaw hizi p05/p95 [-13.6, 13.3] dps, YOut maks |0.208| p95 0.157. Yaw ayarlari: {'ATC_ANG_YAW_P': 4.5, 'ATC_RAT_YAW_P': 0.18000000715255737, 'ATC_RAT_YAW_I': 0.017999999225139618, 'ATC_RAT_YAW_D': 0.0, 'ATC_RAT_YAW_IMAX': 0.5, 'ATC_RAT_YAW_FLTE': 2.5, 'ATC_RAT_YAW_FLTT': 20.0, 'ATC_ACCEL_Y_MAX': 27000.0, 'ATC_SLEW_YAW': 6000.0, 'MOT_YAW_HEADROOM': 200.0, 'ATC_RATE_Y_MAX': 0.0}. Kaynak (ayar / 3 pal pervanenin yaw otoritesi / ruzgar) bu logdan ayristirilamaz; roll/pitch RMS ~1 deg iken yaw 5 deg -> 21 Eylul oncesi bakilmali.",
+  "EKF/OLAYLAR: XKF4 core0 SV/SP/SH/SM maks 0.11/0.02/0.05/0.15 (esik 1), innov>1 ornek 0, lane switch 0, GPS 3D fix 21-25 uydu HDOP 0.60-0.77, PM NLon 1. ERR: ucus icinde 0; arm oncesi GCS failsafe (210.1-233.7 s, arm oncesi PreArm engeli sonra temizlendi), disarm sonrasi GCS FS 315.1 s ve radyo FS 318.6 s ('Radio Failsafe - Disarming', zaten disarm). EV: ARMED 236,28, AUTO_ARMED, INTERLOCK_ENABLED, NOT_LANDED 239,15, EKF_YAW_RESET 241,98 (in-flight yaw alignment), LAND_COMPLETE_MAYBE 309,38, LAND_COMPLETE 310,18, DISARMED 310,68.",
+  "FAILSAFE UYUMU: logda BATT_LOW_VOLT 10.0 / BATT_CRT_VOLT 9.0 / BATT_ARM_VOLT 9.0 V (= 2.50 / 2.25 / 2.25 V/hucre @4S), BATT_CAPACITY 8000 (3S pil degeri), BATT_LOW_TIMER 10 s, BATT_FS_VOLTSRC 0 (ham), FS_LOW/CRT_ACT 1/1 (Land). UYGUN DEGIL: hucre 3,0 V altinda hasar gorur, esikler hicbir zaman tetiklenmez; RemPct 90% (8000 ile) yerine 13 000 ile 94.3% olurdu. ONERI: LOW 14,0 V, CRT 13,2 V, CAPACITY 13000, ARM_VOLT 14,4 V (3,6 V/hucre; 14,8 daha tutucu). BU LOGDA: V_min ham 13.827 V (3.457 V/hucre) -> 14,0 V'a marj -0.17 V = ESIGIN ALTINA INDI: ham V<14,0 toplam 37.3 s, en uzun kesintisiz 11.9 s (LOW_TIMER 10 s) -> LOW failsafe TETIKLENIRDI (LAND); VoltR (sarkma-telafili) min 15.01 V, <14,0 V 0.0 s -> VOLTSRC=1 ile tetiklenmezdi. 13,2 V'a marj +0.63 V. Yorum: 3,89 V/hucre ile (dolu degil) baslayan pil 37 A yukte 3,46 V/hucre'ye sarktigi icin 3,5 V/hucre HAM esigi bu ucusta LAND tetiklerdi; dolu pil (4,2 V) ile marj ~1,2 V daha genis. Esik secimi VOLTSRC ile birlikte dusunulmeli.",
+  "KIYAS: aski ThO C 0.472 / D 0.327 / F 0.359; guc C 401 / D 523 / F 524 W; akim C 36.6 / D 35.5 / F 37.3 A; VibeZ ort C 18.0 / D 11.9 / F 9.6 (p95 C 21.8 / D 16.7 / F 12.6). F vs D (ayni pervane, baska 4S pil; kutle logda yok): ThO +9.8%, guc +0.2%, VibeZ ort -2.3, VibeX ort -0.7. D'nin yuksek VIBE'i KISA SICRAMADAN: D ucuslarinda askida VibeZ ort/p95/maks [(13.594, 17.114, 22.551), (12.488, 16.456, 21.701), (8.699, 11.456, 14.411)] (hepsi <30), clip 0; clip 19 ve VibeZ maks 55.8 yalniz 11-18-16 pencere 3 kisa sicramasinda (yer carpmasi). Bu logda ayni konfigin 62.9 s temiz askisi: VibeZ ort 9.6, maks 15.4, clip 0 -> D'nin aski titresimi de dusuktu; sicrama olayi konfige ait degil."
+ ]
+}
