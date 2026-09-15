@@ -1,5 +1,14 @@
 # NAVITAS — DEVİR PROTOKOLÜ
 
+## 16 Eylül 2026 00:40 — Jetson/Pixhawk/YKS tezgâh kapanışı (Claude, mimar)
+
+Sistem kullanıcı isteğiyle **düzgün kapatıldı**: Jetson süreçleri (model → köprü → MAVProxy) durduruldu, Jetson `poweroff` (00:35), PC YKS kapatıldı. Pixhawk PC USB'sinden güç almaya devam ediyor (pil yok).
+
+- **Tam rapor:** `JETSON_DEVIR_20260915.md` **§10** — üç cihazın durumu, bağlantı topolojisi, Jetson depo/paket güncelliği, açıklar, sabah başlangıç komutları. Kayıt: `REVIEW_LOG.md` **D-491**.
+- **Çalışan:** Pixhawk ─TELEM2 (mor 6 · mavi 8 · yeşil 10, `/dev/ttyTHS1` 57600)→ Jetson MAVProxy (3/3, açılışta ~42 s parametre indirmesi beklenmeli) → IMX477 + 6 mm → model v36 (`--fov 63` BEYAN) → PC YKS (`iha=TAZE`).
+- **Açık (öncelik):** 🔴 canlı kamerada her kare `MASKE_YOK` (TEST EDİLMELİ) · FOV ölçümü (16 Eylül) · `SERIAL2_BAUD` 921600 kararı / `--kapi` `sleep 3` · Jetson klon dalı `jetson/tek-yol-20260912` master'a girmemiş + D-480…484 numara çakışması · systemd kurulum, iniş yayıncısı, komut alıcısı, İKA hiç koşmadı · PC IP DHCP ile değişiyor.
+- 🔴 **Push edilmeyen:** `simulation/scripts/world_generator.py` + `simulation/plugins/navitas_anim.cc` (D-488/D-490) commitlenmemiş değişiklikleri `test_sim_mujoco_zincir` (36,98 → 38,81) düşürdüğü için yerelde bırakıldı — sahibi oturum birleştirmeli (D-491 §7a).
+
 ## 15 Eylül 2026 — yazılım raporu ve senkronizasyon incelemesi (Codex)
 
 Kullanıcının doğrudan isteğiyle birleşik Word raporunun yazılım öncelikli düzeltmesi

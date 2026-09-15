@@ -1,0 +1,919 @@
+WARNING: You should uninstall ModemManager as it conflicts with APM and Pixhawk
+Connect /dev/ttyTHS1 source_system=255
+Log Directory: /tmp/navitas-mavproxy-telem2/
+Telemetry log: /tmp/navitas-mavproxy-telem2/mav.tlog
+Waiting for heartbeat from /dev/ttyTHS1
+AP: GCS Failsafe Cleared
+Detected vehicle 1:1 on link 0
+online system 1
+STABILIZE> Mode STABILIZE
+fence present
+fence enabled
+AP: ArduCopter V4.5.7 (2a3dc4b7)
+AP: ChibiOS: 6a85082c
+AP: Pixhawk6C 00440022 35335114 38323631
+AP: IOMCU: 410 2003 411FC231
+AP: RCOut: PWM:1-16
+AP: IMU0: fast sampling enabled 2.0kHz
+AP: Frame: QUAD/X
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+Received 1025 parameters
+Saved 1025 parameters to /tmp/navitas-mavproxy-telem2/mav.parm
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Got COMMAND_ACK: SET_MESSAGE_INTERVAL: ACCEPTED
+Got COMMAND_ACK: SET_MESSAGE_INTERVAL: ACCEPTED
+Got COMMAND_ACK: SET_MESSAGE_INTERVAL: ACCEPTED
+Got COMMAND_ACK: SET_MESSAGE_INTERVAL: ACCEPTED
+Got COMMAND_ACK: SET_MESSAGE_INTERVAL: ACCEPTED
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Vcc 4.3
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position
+Flight battery 60 percent
+AP: PreArm: RC not found
+AP: PreArm: Hardware safety switch
+AP: PreArm: GPS 1: Bad fix
+AP: PreArm: Battery 1 below minimum arming voltage
+AP: PreArm: Fence requires position

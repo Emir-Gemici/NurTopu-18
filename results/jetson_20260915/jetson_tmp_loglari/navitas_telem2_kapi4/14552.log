@@ -1,0 +1,10 @@
+PIXHAWK ON-UCUS DOGRULAMASI  (udpin:127.0.0.1:14552, beklenen sysid 1)
+HEARTBEAT: sysid=1 compid=1 autopilot=3 (MAV_AUTOPILOT_ARDUPILOTMEGA) type=2 (MAV_TYPE_QUADROTOR)  bekleme=0.28 s
+ISTEK: GLOBAL_POSITION_INT  @8.0 Hz (125000 us) -> ACK 0 (MAV_RESULT_ACCEPTED)
+ISTEK: EXTENDED_SYS_STATE   @2.0 Hz (500000 us) -> ACK 0 (MAV_RESULT_ACCEPTED)
+OLCUM: 10.00 s (istenen 10 s), yalniz sysid 1; yabanci kaynak mesaj: 0
+  akis                  sayi  olculen Hz  esik Hz   sonuc
+  HEARTBEAT               10        1.00     0.50   GECTI
+  GLOBAL_POSITION_INT     77        7.70     4.00   GECTI
+  EXTENDED_SYS_STATE      21        2.10     1.00   GECTI
+VERDIKT: GECTI

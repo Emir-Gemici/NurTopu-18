@@ -1,0 +1,73 @@
+{
+  "meta": {
+    "proje_adi": "ÖRNEK — NAVITAS (fixture, gerçek sunum DEĞİL)",
+    "konu_basligi": "ÖRNEK fixture",
+    "takim_adi": "ÖRNEK",
+    "takim_id": "[İNSAN DOLDURACAK]",
+    "basvuru_id": "[İNSAN DOLDURACAK]",
+    "tarih": "2026-09-13",
+    "sure_dk": 15,
+    "aciklama": "tests/test_sunum_kanit.py kapılarını sınamak için kurgu fixture. Gerçek sunum icerik.json'dadır."
+  },
+  "slaytlar": [
+    {
+      "no": 1,
+      "tip": "kapak",
+      "baslik": "KAPAK",
+      "maddeler": [],
+      "not": "Fixture kapak."
+    },
+    {
+      "no": 2,
+      "tip": "takim",
+      "baslik": "TAKIM YAPISI",
+      "maddeler": [
+        {"metin": "Danışman — [İNSAN DOLDURACAK]", "etiket": null, "kaynak": null},
+        {"metin": "Kaptan — [İNSAN DOLDURACAK]", "etiket": null, "kaynak": null}
+      ],
+      "not": "İsimler insan tarafından doldurulur."
+    },
+    {
+      "no": 3,
+      "tip": "icerik",
+      "baslik": "ÖRNEK — ÖLÇÜLEN ÇEKİRDEK",
+      "maddeler": [
+        {
+          "metin": "Jetson Orin Nano 4 GB, imgsz 512: .pt p50 1,35 FPS, eşik 0,61",
+          "etiket": "OLCULDU",
+          "kaynak": "FDR/ACIK_KALEMLER.md:39"
+        },
+        {
+          "metin": "Pixhawk TELEM2 → Jetson UART, MAVLink2 57600",
+          "etiket": "BEYAN",
+          "kaynak": "FDR/BOLUM_3_SISTEM_SPESIFIKASYONLARI.md:280"
+        },
+        {
+          "metin": "Uçuş kontrolcüsü sürümü ArduCopter V4.5.7",
+          "etiket": "OLCULDU",
+          "kaynak": "FDR/BOLUM_4_TEST_FAALIYETLERI.md:367"
+        },
+        {
+          "metin": "Gerçek arena karesi yok; saha başarımı iddia edilmiyor",
+          "etiket": "OLCULEMEDI",
+          "kaynak": null
+        }
+      ],
+      "tablo": {
+        "basliklar": ["ölçüm", "değer", "durum"],
+        "satirlar": [
+          [".pt p50", "1,35 FPS", "GEÇTİ"],
+          ["eşik", "0,61 FPS", "—"]
+        ]
+      },
+      "not": "Fixture içerik slaydı: kapı 2 ve 3 gerçek FDR dosyalarına bakar."
+    },
+    {
+      "no": 99,
+      "tip": "tesekkur",
+      "baslik": "TEŞEKKÜRLER",
+      "maddeler": [],
+      "not": ""
+    }
+  ]
+}

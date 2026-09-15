@@ -1,0 +1,65 @@
+# Jetson durum kaydi - kapanis oncesi - 2026-09-16T00:33:44+03:00
+## sistem
+navitas-jetson
+6.8.12-1021-tegra
+# R39 (release), REVISION: 2.1, GCID: 46758480, BOARD: generic, EABI: aarch64, DATE: Fri Aug  7 05:54:22 AM UTC 2026
+Ubuntu 24.04.4 LTS
+up 1 hour, 24 minutes
+NV Power Mode: 10W
+## boot / kamera overlay
+2:DEFAULT JetsonIO
+34:	FDT /boot/dtb/kernel_tegra234-p3768-0000+p3767-0004-nv.dtb
+37:	OVERLAYS /boot/tegra234-p3767-camera-p3768-imx477-dual.dtbo
+extlinux.conf
+extlinux.conf.before-cam0-20260913
+extlinux.conf.before-imx219-cam0-20260913
+extlinux.conf.before-imx477-20260913
+extlinux.conf.before-imx477-dual-20260915
+extlinux.conf.jetson-io-backup
+## kamera
+crw-rw----+ 1 root video 81, 0 Sep 15 23:09 /dev/video0
+vi-output, imx477 9-001a
+9-001a
+## seri / izin
+crw-rw---- 1 root dialout 236, 1 Sep 16 00:33 /dev/ttyTHS1
+n4vitas adm dialout cdrom sudo audio dip video plugdev users i2c gdm weston-launch gpio render
+console=ttyTCU0,115200
+## calisan navitas surecleri
+   4284    4990 /home/n4vitas/venv312/bin/python /home/n4vitas/venv312/bin/mavproxy.py --master=/dev/ttyTHS1 --baudrate 57600 --streamrate -1 --out udp:127.0.0.1:14550 --out udp:127.0.0.1:14551 --out 
+   4784    4939 /usr/bin/python3 scripts/kamera_koprusu.py --kaynak nvargus --host 0.0.0.0 --port 8080 --genislik 1920 --yukseklik 1080
+   4940    4935 /home/n4vitas/venv312/bin/python -u codes/rpi_inference.py --camera --kaynak http://127.0.0.1:8080/video --mavlink udp:127.0.0.1:14550 --mav-sysid 1 --fov 63 --yks-hedef 10.21.8.156:50
+## kopru durum
+{"kaynak": "nvargus", "kaynak_turu": "nvargus", "kaynak_acik": true, "kare_sayaci": 49354, "dusen_kare": 0, "kodlama_hatasi": 0, "donuk_kare": 0, "donuk_kare_ardisik": 0, "fps": 9.998110336459579, "fps_tavani": 10.0, "kalite": 80, "boyut": [1920, 1080], "son_kare_yasi_s": 0.027, "son_hata": null, "acma_denemesi": 1, "acma_sayisi": 1, "istemci_sayisi": 1, "calisma_s": 4938.929, "arka_uc": "auto", "
+
+## ortam
+torch 2.11.0+cu130 cuda True | ultralytics 8.4.142 | cv2 4.11.0 | pymavlink 2.4.49 | MAVProxy 1.8.74
+## paket (~/navitas)
+/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas
+etkin profil competition models/navitas_seg_v36_best.pt 512 1d1caca6f6da19ea
+bb9bd8685a98a919 models/navitas_seg_v36_best_512_fp16.engine
+f4c9f5fe08883d1a models/navitas_seg_v36_best.onnx
+1d1caca6f6da19ea models/navitas_seg_v36_best.pt
+13db2094d2a3fdd4 models/navitas_seg_v37_best.onnx
+6aeca0c125a2943d models/navitas_seg_v37_best.pt
+## depo klonu
+origin	https://github.com/yazilim-takimi/navitas.git (fetch) [blob:none]
+jetson/tek-yol-20260912
+abea98cb D-484 + T261: ELE ALINMASI GEREKEN PROBLEM - tek yol senaryosu modeli degil, cozulememis ARENA SINIRI problemini zorluyor
+b41ceca9 D-483 ON KAYIT: tek yollu arenada rotayi dusurebilecek W/3 kurali bulundu, kabul zarfi turetildi; kuyruktaki sarkan atif duzeltildi
+f681f90f JETSON-20260912 KAPANDI: denetim KABUL (D-480), K2 olculdu (D-482), tek yol yarisi master'da IPTAL
+## jetson/tek-yol-20260912...origin/jetson/tek-yol-20260912
+degisik dosya: 3
+## paket <-> klon anahtar dosyalar
+codes/rpi_inference.py paket=8bf29b64312e klon=8bf29b64312e
+codes/karar_sozlesmesi.py paket=825f3f24010a klon=825f3f24010a
+codes/costmap_path_finder.py paket=5309dbdb1f4d klon=5309dbdb1f4d
+config/model_registry.json paket=8f2900be9ede klon=8f2900be9ede
+jetson_paket/jetson_baslat.sh paket=cb555f3fa4de klon=cb555f3fa4de
+scripts/kamera_koprusu.py paket=fe4ae3fe202c klon=fe4ae3fe202c
+scripts/mavlink_dogrula.py paket=3481b882c390 klon=3481b882c390
+## cokme kayitlari
+total 18692
+-rw-r----- 1 n4vitas root    23949 Sep 13 16:15 _opt_nvidia_jetson-io_config-by-hardware.py.1000.crash
+-rw-r----- 1 n4vitas root 19114627 Sep 15 22:57 _usr_bin_python3.12.1000.crash
+## sicaklik
+09-16-2026 00:33:54 RAM 2725/3459MB (lfb 3x2MB) SWAP 1411/8192MB (cached 44MB) CPU [35%@1510,44%@1510,100%@1510,28%@1510,74%@1510,38%@1510] GR3D_FREQ 6% cpu@57.343C/57.343C soc2@55.593C/55.593C soc0@54.093C/54.093C gpu@55.593C/55.593C tj@57.343C/57.343C soc1@55.625C/55.625C VDD_IN 9317mW/9317mW/9317mW VDD_CPU_GPU_CV 1860mW/1860mW/1860mW VDD_SOC 3761mW/3761mW/3761mW

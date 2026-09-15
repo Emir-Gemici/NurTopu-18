@@ -1,0 +1,12 @@
+telsiz halkasi: yks=10.21.8.156:5005 ika=None seri=None · heartbeat 1 s
+UYARI: --ub-referans verilmedi ya da canli telemetri yok — HEARTBEAT'e x,y EKLENMEZ; YKS ALAN IHLALI denetimi YAPILAMAZ (sartname SS6.2/SS6.4).
+model: navitas_seg_v36_best.pt · kayit dogrulamasi: eslesti
+EKRANSIZ kip: pencere yok, karar yayini surer (durdurma: SIGINT/SIGTERM)
+/home/n4vitas/venv312/lib/python3.12/site-packages/torch/cuda/__init__.py:371: UserWarning: Found GPU0 Orin which is of compute capability (CC) 8.7.
+The following list shows the CCs this version of PyTorch was built for and the hardware CCs it supports:
+- 8.0 which supports hardware CC >=8.0,<9.0 except {8.7}
+- 9.0 which supports hardware CC >=9.0,<10.0
+- 10.0 which supports hardware CC >=10.0,<11.0 except {10.1}
+- 11.0 which supports hardware CC >=11.0,<12.0
+- 12.0 which supports hardware CC >=12.0,<13.0
+  _warn_unsupported_code(d, device_cc, code_ccs)
