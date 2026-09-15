@@ -1,0 +1,1417 @@
+{
+ "results/ucus_20260913/2026-09-13 09-42-26.bin": {
+  "etiket": "A",
+  "boot": 120.0,
+  "MOT_THST_HOVER": 0.4645102024078369,
+  "BATT_VOLT_MULT": 17.94152069091797,
+  "ucuslar": [
+   {
+    "no": 1,
+    "tur": "ucus",
+    "motorlu_s": 33.1,
+    "kip_arm": "LOIT",
+    "aski_n": 171,
+    "ThH_bas": 0.4726,
+    "ThH_son": 0.4726,
+    "vibe_IMU0_motorlu": {
+     "X": {
+      "n": 331,
+      "ort": 6.6,
+      "p50": 6.7,
+      "p95": 8.6,
+      "maks": 9.9,
+      "min": 2.3
+     },
+     "Y": {
+      "n": 331,
+      "ort": 6.0,
+      "p50": 6.0,
+      "p95": 7.8,
+      "maks": 10.1,
+      "min": 1.8
+     },
+     "Z": {
+      "n": 331,
+      "ort": 12.1,
+      "p50": 12.2,
+      "p95": 15.8,
+      "maks": 19.1,
+      "min": 2.9
+     }
+    },
+    "clip_artisi_IMU0": 6,
+    "clip_artisi_IMU1": 10,
+    "rate_havada": {
+     "n": 19,
+     "roll_rate_rms_hata_dps": 11.0,
+     "pitch_rate_rms_hata_dps": 49.7,
+     "yaw_rate_rms_hata_dps": 25.2,
+     "R_maks_abs_dps": 16.0,
+     "P_maks_abs_dps": 98.6,
+     "ROut_maks_abs": 0.154,
+     "POut_maks_abs": 0.309
+    },
+    "att_havada": {
+     "n": 19,
+     "roll_rms_hata_deg": 1.71,
+     "pitch_rms_hata_deg": 5.79,
+     "roll_maks_abs_deg": 2.6,
+     "pitch_maks_abs_deg": 8.9,
+     "desroll_maks_abs_deg": 4.1,
+     "despitch_maks_abs_deg": 8.3,
+     "ErrRP_maks": 0.15
+    },
+    "bat": {
+     "V_bas": 11.85,
+     "V_min": 9.93,
+     "V_min_t": 88.4,
+     "V_son": 11.32,
+     "V_bas_duz": 11.85,
+     "V_min_duz": 9.93,
+     "volt_mult_katsayi": 1.0,
+     "sarkma_V": 1.91,
+     "sarkma_V_hucre": 0.478,
+     "hucre_min_V": 2.484,
+     "hucre_min_V_duz": 2.484,
+     "I_motorlu": {
+      "n": 331,
+      "ort": 28.2,
+      "p50": 28.7,
+      "p95": 30.8,
+      "maks": 34.2,
+      "min": 5.9
+     },
+     "I_havada": {
+      "n": 19,
+      "ort": 16.0,
+      "p50": 14.9,
+      "p95": 32.5,
+      "maks": 33.0,
+      "min": 3.0
+     },
+     "P_havada_W": {
+      "n": 19,
+      "ort": 174.0,
+      "p50": 169.0,
+      "p95": 344.0,
+      "maks": 348.0,
+      "min": 34.0
+     },
+     "P_motorlu_W": {
+      "n": 331,
+      "ort": 289.0,
+      "p50": 294.0,
+      "p95": 317.0,
+      "maks": 357.0,
+      "min": 65.0
+     },
+     "mAh": 266.2,
+     "Res_log_ohm": {
+      "n": 331,
+      "ort": 0.0457,
+      "p50": 0.0459,
+      "p95": 0.0463,
+      "maks": 0.0534,
+      "min": 0.0445
+     },
+     "R_uyum_ohm": 0.0536,
+     "R_uyum_V0": 11.8,
+     "R_uyum_n": 387
+    },
+    "kalkis_5s": {
+     "t": [
+      54.1,
+      59.1
+     ],
+     "ThO": {
+      "n": 50,
+      "ort": 0.088,
+      "p50": 0.0,
+      "p95": 0.406,
+      "maks": 0.437,
+      "min": 0.0
+     },
+     "I": {
+      "n": 50,
+      "ort": 8.3,
+      "p50": 4.0,
+      "p95": 28.5,
+      "maks": 33.0,
+      "min": 0.4
+     },
+     "VibeX": {
+      "n": 50,
+      "ort": 3.6,
+      "p50": 1.2,
+      "p95": 10.9,
+      "maks": 24.8,
+      "min": 0.3
+     },
+     "VibeY": {
+      "n": 50,
+      "ort": 3.0,
+      "p50": 1.7,
+      "p95": 8.3,
+      "maks": 15.8,
+      "min": 0.2
+     },
+     "VibeZ": {
+      "n": 50,
+      "ort": 5.9,
+      "p50": 1.5,
+      "p95": 21.3,
+      "maks": 40.0,
+      "min": 0.4
+     },
+     "roll_rate_rms_hata_dps": 8.6,
+     "pitch_rate_rms_hata_dps": 33.6,
+     "R_maks_abs_dps": 16.0,
+     "ROut_maks_abs": 0.154,
+     "GyrX_fft": {
+      "fs_hz": 24.99,
+      "nyquist_hz": 12.49,
+      "n": 125,
+      "sure_s": 4.96,
+      "tepeler": [
+       {
+        "f_hz": 3.8,
+        "genlik": 0.034
+       },
+       {
+        "f_hz": 3.6,
+        "genlik": 0.033
+       },
+       {
+        "f_hz": 4.0,
+        "genlik": 0.031
+       },
+       {
+        "f_hz": 4.2,
+        "genlik": 0.031
+       },
+       {
+        "f_hz": 3.4,
+        "genlik": 0.031
+       }
+      ],
+      "rms": 0.12
+     },
+     "AccZ_fft": {
+      "fs_hz": 24.99,
+      "nyquist_hz": 12.49,
+      "n": 125,
+      "sure_s": 4.96,
+      "tepeler": [
+       {
+        "f_hz": 5.6,
+        "genlik": 0.789
+       },
+       {
+        "f_hz": 5.4,
+        "genlik": 0.786
+       },
+       {
+        "f_hz": 5.2,
+        "genlik": 0.78
+       },
+       {
+        "f_hz": 5.8,
+        "genlik": 0.778
+       },
+       {
+        "f_hz": 5.0,
+        "genlik": 0.765
+       }
+      ],
+      "rms": 3.052
+     }
+    },
+    "aski_dilim": {
+     "t": [
+      69.0,
+      83.4
+     ],
+     "s": 14.4,
+     "aski_n_toplam": 171,
+     "ThO": {
+      "n": 171,
+      "ort": 0.43,
+      "p50": 0.431,
+      "p95": 0.445,
+      "maks": 0.457,
+      "min": 0.37
+     },
+     "I": {
+      "n": 144,
+      "ort": 28.6,
+      "p50": 28.7,
+      "p95": 30.2,
+      "maks": 31.7,
+      "min": 24.0
+     },
+     "V": {
+      "n": 144,
+      "ort": 10.19,
+      "p50": 10.2,
+      "p95": 10.3,
+      "maks": 10.33,
+      "min": 10.05
+     },
+     "VibeX": {
+      "n": 144,
+      "ort": 6.7,
+      "p50": 6.7,
+      "p95": 8.4,
+      "maks": 9.8,
+      "min": 4.3
+     },
+     "VibeY": {
+      "n": 144,
+      "ort": 6.2,
+      "p50": 6.2,
+      "p95": 7.5,
+      "maks": 9.4,
+      "min": 3.6
+     },
+     "VibeZ": {
+      "n": 144,
+      "ort": 12.3,
+      "p50": 12.3,
+      "p95": 15.6,
+      "maks": 18.3,
+      "min": 7.5
+     },
+     "RCOU_ort": [
+      1651,
+      1641,
+      1625,
+      1621
+     ],
+     "roll_rate_rms_hata_dps": 5.5,
+     "pitch_rate_rms_hata_dps": 3.4,
+     "R_maks_abs_dps": 8.6,
+     "ROut_maks_abs": 0.054,
+     "GyrX_fft": {
+      "fs_hz": 25.01,
+      "nyquist_hz": 12.5,
+      "n": 360,
+      "sure_s": 14.36,
+      "tepeler": [
+       {
+        "f_hz": 0.56,
+        "genlik": 0.032
+       },
+       {
+        "f_hz": 0.49,
+        "genlik": 0.032
+       },
+       {
+        "f_hz": 0.69,
+        "genlik": 0.025
+       },
+       {
+        "f_hz": 0.76,
+        "genlik": 0.023
+       },
+       {
+        "f_hz": 1.39,
+        "genlik": 0.021
+       }
+      ],
+      "rms": 0.052
+     },
+     "AccZ_fft": {
+      "fs_hz": 25.01,
+      "nyquist_hz": 12.5,
+      "n": 360,
+      "sure_s": 14.36,
+      "tepeler": [
+       {
+        "f_hz": 2.08,
+        "genlik": 0.144
+       },
+       {
+        "f_hz": 3.26,
+        "genlik": 0.142
+       },
+       {
+        "f_hz": 3.2,
+        "genlik": 0.127
+       },
+       {
+        "f_hz": 2.01,
+        "genlik": 0.125
+       },
+       {
+        "f_hz": 3.33,
+        "genlik": 0.12
+       }
+      ],
+      "rms": 0.378
+     }
+    }
+   },
+   {
+    "no": 2,
+    "tur": "ucus",
+    "motorlu_s": 26.0,
+    "kip_arm": "GUID",
+    "aski_n": 180,
+    "ThH_bas": 0.4726,
+    "ThH_son": 0.4662,
+    "vibe_IMU0_motorlu": {
+     "X": {
+      "n": 260,
+      "ort": 6.8,
+      "p50": 6.9,
+      "p95": 8.4,
+      "maks": 12.5,
+      "min": 2.5
+     },
+     "Y": {
+      "n": 260,
+      "ort": 6.7,
+      "p50": 6.7,
+      "p95": 8.1,
+      "maks": 9.0,
+      "min": 1.9
+     },
+     "Z": {
+      "n": 260,
+      "ort": 12.8,
+      "p50": 12.7,
+      "p95": 17.3,
+      "maks": 22.1,
+      "min": 3.5
+     }
+    },
+    "clip_artisi_IMU0": 0,
+    "clip_artisi_IMU1": 0,
+    "rate_havada": {
+     "n": 268,
+     "roll_rate_rms_hata_dps": 7.3,
+     "pitch_rate_rms_hata_dps": 6.6,
+     "yaw_rate_rms_hata_dps": 19.7,
+     "R_maks_abs_dps": 37.2,
+     "P_maks_abs_dps": 34.1,
+     "ROut_maks_abs": 0.28,
+     "POut_maks_abs": 0.176
+    },
+    "att_havada": {
+     "n": 268,
+     "roll_rms_hata_deg": 0.88,
+     "pitch_rms_hata_deg": 0.86,
+     "roll_maks_abs_deg": 2.0,
+     "pitch_maks_abs_deg": 2.9,
+     "desroll_maks_abs_deg": 2.8,
+     "despitch_maks_abs_deg": 2.8,
+     "ErrRP_maks": 0.1
+    },
+    "bat": {
+     "V_bas": 11.63,
+     "V_min": 9.87,
+     "V_min_t": 207.5,
+     "V_son": 11.16,
+     "V_bas_duz": 11.63,
+     "V_min_duz": 9.87,
+     "volt_mult_katsayi": 1.0,
+     "sarkma_V": 1.76,
+     "sarkma_V_hucre": 0.441,
+     "hucre_min_V": 2.467,
+     "hucre_min_V_duz": 2.467,
+     "I_motorlu": {
+      "n": 260,
+      "ort": 28.4,
+      "p50": 28.8,
+      "p95": 30.7,
+      "maks": 40.5,
+      "min": 4.8
+     },
+     "I_havada": {
+      "n": 268,
+      "ort": 27.9,
+      "p50": 28.6,
+      "p95": 30.7,
+      "maks": 40.5,
+      "min": 2.0
+     },
+     "P_havada_W": {
+      "n": 268,
+      "ort": 284.0,
+      "p50": 290.0,
+      "p95": 308.0,
+      "maks": 412.0,
+      "min": 22.0
+     },
+     "P_motorlu_W": {
+      "n": 260,
+      "ort": 290.0,
+      "p50": 292.0,
+      "p95": 308.0,
+      "maks": 412.0,
+      "min": 52.0
+     },
+     "mAh": 209.4,
+     "Res_log_ohm": {
+      "n": 260,
+      "ort": 0.0423,
+      "p50": 0.0422,
+      "p95": 0.0441,
+      "maks": 0.0466,
+      "min": 0.0415
+     },
+     "R_uyum_ohm": 0.0388,
+     "R_uyum_V0": 11.3,
+     "R_uyum_n": 281
+    },
+    "kalkis_5s": {
+     "t": [
+      183.0,
+      188.0
+     ],
+     "ThO": {
+      "n": 50,
+      "ort": 0.393,
+      "p50": 0.388,
+      "p95": 0.537,
+      "maks": 0.551,
+      "min": 0.098
+     },
+     "I": {
+      "n": 50,
+      "ort": 27.7,
+      "p50": 26.8,
+      "p95": 39.3,
+      "maks": 40.5,
+      "min": 9.6
+     },
+     "VibeX": {
+      "n": 50,
+      "ort": 7.1,
+      "p50": 6.9,
+      "p95": 10.5,
+      "maks": 12.5,
+      "min": 1.2
+     },
+     "VibeY": {
+      "n": 50,
+      "ort": 6.3,
+      "p50": 6.6,
+      "p95": 8.2,
+      "maks": 8.4,
+      "min": 1.7
+     },
+     "VibeZ": {
+      "n": 50,
+      "ort": 11.2,
+      "p50": 10.9,
+      "p95": 19.7,
+      "maks": 22.1,
+      "min": 2.1
+     },
+     "roll_rate_rms_hata_dps": 5.2,
+     "pitch_rate_rms_hata_dps": 6.3,
+     "R_maks_abs_dps": 19.9,
+     "ROut_maks_abs": 0.051,
+     "GyrX_fft": {
+      "fs_hz": 25.0,
+      "nyquist_hz": 12.5,
+      "n": 125,
+      "sure_s": 4.96,
+      "tepeler": [
+       {
+        "f_hz": 1.2,
+        "genlik": 0.049
+       },
+       {
+        "f_hz": 1.0,
+        "genlik": 0.041
+       },
+       {
+        "f_hz": 2.0,
+        "genlik": 0.025
+       },
+       {
+        "f_hz": 2.2,
+        "genlik": 0.022
+       },
+       {
+        "f_hz": 1.4,
+        "genlik": 0.022
+       }
+      ],
+      "rms": 0.074
+     },
+     "AccZ_fft": {
+      "fs_hz": 25.0,
+      "nyquist_hz": 12.5,
+      "n": 125,
+      "sure_s": 4.96,
+      "tepeler": [
+       {
+        "f_hz": 0.4,
+        "genlik": 0.893
+       },
+       {
+        "f_hz": 0.6,
+        "genlik": 0.573
+       },
+       {
+        "f_hz": 1.0,
+        "genlik": 0.223
+       },
+       {
+        "f_hz": 1.2,
+        "genlik": 0.214
+       },
+       {
+        "f_hz": 3.0,
+        "genlik": 0.119
+       }
+      ],
+      "rms": 1.007
+     }
+    },
+    "aski_dilim": {
+     "t": [
+      186.5,
+      202.7
+     ],
+     "s": 16.2,
+     "aski_n_toplam": 180,
+     "ThO": {
+      "n": 180,
+      "ort": 0.425,
+      "p50": 0.427,
+      "p95": 0.449,
+      "maks": 0.454,
+      "min": 0.363
+     },
+     "I": {
+      "n": 162,
+      "ort": 28.4,
+      "p50": 28.8,
+      "p95": 29.9,
+      "maks": 30.7,
+      "min": 22.7
+     },
+     "V": {
+      "n": 162,
+      "ort": 10.21,
+      "p50": 10.21,
+      "p95": 10.41,
+      "maks": 10.6,
+      "min": 9.95
+     },
+     "VibeX": {
+      "n": 162,
+      "ort": 6.8,
+      "p50": 6.9,
+      "p95": 8.2,
+      "maks": 8.4,
+      "min": 3.6
+     },
+     "VibeY": {
+      "n": 162,
+      "ort": 6.6,
+      "p50": 6.7,
+      "p95": 8.1,
+      "maks": 8.9,
+      "min": 4.6
+     },
+     "VibeZ": {
+      "n": 162,
+      "ort": 13.1,
+      "p50": 12.9,
+      "p95": 16.7,
+      "maks": 20.1,
+      "min": 8.6
+     },
+     "RCOU_ort": [
+      1611,
+      1631,
+      1626,
+      1651
+     ],
+     "roll_rate_rms_hata_dps": 4.3,
+     "pitch_rate_rms_hata_dps": 4.4,
+     "R_maks_abs_dps": 8.6,
+     "ROut_maks_abs": 0.048,
+     "GyrX_fft": {
+      "fs_hz": 24.99,
+      "nyquist_hz": 12.49,
+      "n": 405,
+      "sure_s": 16.16,
+      "tepeler": [
+       {
+        "f_hz": 0.8,
+        "genlik": 0.021
+       },
+       {
+        "f_hz": 0.86,
+        "genlik": 0.017
+       },
+       {
+        "f_hz": 0.49,
+        "genlik": 0.015
+       },
+       {
+        "f_hz": 1.36,
+        "genlik": 0.015
+       },
+       {
+        "f_hz": 0.74,
+        "genlik": 0.015
+       }
+      ],
+      "rms": 0.047
+     },
+     "AccZ_fft": {
+      "fs_hz": 24.99,
+      "nyquist_hz": 12.49,
+      "n": 405,
+      "sure_s": 16.16,
+      "tepeler": [
+       {
+        "f_hz": 0.62,
+        "genlik": 0.133
+       },
+       {
+        "f_hz": 1.36,
+        "genlik": 0.118
+       },
+       {
+        "f_hz": 1.73,
+        "genlik": 0.104
+       },
+       {
+        "f_hz": 1.67,
+        "genlik": 0.101
+       },
+       {
+        "f_hz": 1.3,
+        "genlik": 0.097
+       }
+      ],
+      "rms": 0.43
+     }
+    }
+   },
+   {
+    "no": 3,
+    "tur": "ucus",
+    "motorlu_s": 39.3,
+    "kip_arm": "GUID",
+    "aski_n": 286,
+    "ThH_bas": 0.4662,
+    "ThH_son": 0.4645,
+    "vibe_IMU0_motorlu": {
+     "X": {
+      "n": 393,
+      "ort": 7.0,
+      "p50": 7.0,
+      "p95": 8.9,
+      "maks": 12.0,
+      "min": 2.1
+     },
+     "Y": {
+      "n": 393,
+      "ort": 6.1,
+      "p50": 6.0,
+      "p95": 7.8,
+      "maks": 10.6,
+      "min": 2.8
+     },
+     "Z": {
+      "n": 393,
+      "ort": 12.8,
+      "p50": 12.5,
+      "p95": 18.5,
+      "maks": 23.1,
+      "min": 3.7
+     }
+    },
+    "clip_artisi_IMU0": 0,
+    "clip_artisi_IMU1": 0,
+    "rate_havada": {
+     "n": 395,
+     "roll_rate_rms_hata_dps": 7.5,
+     "pitch_rate_rms_hata_dps": 8.3,
+     "yaw_rate_rms_hata_dps": 19.4,
+     "R_maks_abs_dps": 32.1,
+     "P_maks_abs_dps": 66.4,
+     "ROut_maks_abs": 0.118,
+     "POut_maks_abs": 0.314
+    },
+    "att_havada": {
+     "n": 395,
+     "roll_rms_hata_deg": 1.22,
+     "pitch_rms_hata_deg": 1.15,
+     "roll_maks_abs_deg": 4.2,
+     "pitch_maks_abs_deg": 5.1,
+     "desroll_maks_abs_deg": 5.0,
+     "despitch_maks_abs_deg": 5.4,
+     "ErrRP_maks": 0.12
+    },
+    "bat": {
+     "V_bas": 11.51,
+     "V_min": 9.75,
+     "V_min_t": 299.9,
+     "V_son": 10.83,
+     "V_bas_duz": 11.51,
+     "V_min_duz": 9.75,
+     "volt_mult_katsayi": 1.0,
+     "sarkma_V": 1.76,
+     "sarkma_V_hucre": 0.44,
+     "hucre_min_V": 2.437,
+     "hucre_min_V_duz": 2.437,
+     "I_motorlu": {
+      "n": 393,
+      "ort": 29.4,
+      "p50": 29.6,
+      "p95": 31.7,
+      "maks": 39.6,
+      "min": 9.2
+     },
+     "I_havada": {
+      "n": 395,
+      "ort": 29.2,
+      "p50": 29.6,
+      "p95": 31.7,
+      "maks": 39.6,
+      "min": 1.5
+     },
+     "P_havada_W": {
+      "n": 395,
+      "ort": 291.0,
+      "p50": 293.0,
+      "p95": 318.0,
+      "maks": 396.0,
+      "min": 16.0
+     },
+     "P_motorlu_W": {
+      "n": 393,
+      "ort": 293.0,
+      "p50": 293.0,
+      "p95": 318.0,
+      "maks": 396.0,
+      "min": 96.0
+     },
+     "mAh": 323.3,
+     "Res_log_ohm": {
+      "n": 393,
+      "ort": 0.0417,
+      "p50": 0.0416,
+      "p95": 0.0426,
+      "maks": 0.0444,
+      "min": 0.0402
+     },
+     "R_uyum_ohm": 0.0393,
+     "R_uyum_V0": 11.13,
+     "R_uyum_n": 412
+    },
+    "kalkis_5s": {
+     "t": [
+      264.2,
+      269.2
+     ],
+     "ThO": {
+      "n": 50,
+      "ort": 0.438,
+      "p50": 0.411,
+      "p95": 0.543,
+      "maks": 0.549,
+      "min": 0.301
+     },
+     "I": {
+      "n": 50,
+      "ort": 30.3,
+      "p50": 28.5,
+      "p95": 38.6,
+      "maks": 39.6,
+      "min": 21.9
+     },
+     "VibeX": {
+      "n": 50,
+      "ort": 7.5,
+      "p50": 7.3,
+      "p95": 11.2,
+      "maks": 11.9,
+      "min": 4.3
+     },
+     "VibeY": {
+      "n": 50,
+      "ort": 6.6,
+      "p50": 6.5,
+      "p95": 8.4,
+      "maks": 8.8,
+      "min": 3.8
+     },
+     "VibeZ": {
+      "n": 50,
+      "ort": 13.1,
+      "p50": 12.1,
+      "p95": 21.3,
+      "maks": 23.1,
+      "min": 5.9
+     },
+     "roll_rate_rms_hata_dps": 6.6,
+     "pitch_rate_rms_hata_dps": 10.1,
+     "R_maks_abs_dps": 15.3,
+     "ROut_maks_abs": 0.04,
+     "GyrX_fft": {
+      "fs_hz": 24.99,
+      "nyquist_hz": 12.49,
+      "n": 125,
+      "sure_s": 4.96,
+      "tepeler": [
+       {
+        "f_hz": 0.8,
+        "genlik": 0.077
+       },
+       {
+        "f_hz": 1.2,
+        "genlik": 0.073
+       },
+       {
+        "f_hz": 1.0,
+        "genlik": 0.064
+       },
+       {
+        "f_hz": 1.6,
+        "genlik": 0.042
+       },
+       {
+        "f_hz": 0.6,
+        "genlik": 0.033
+       }
+      ],
+      "rms": 0.099
+     },
+     "AccZ_fft": {
+      "fs_hz": 24.99,
+      "nyquist_hz": 12.49,
+      "n": 125,
+      "sure_s": 4.96,
+      "tepeler": [
+       {
+        "f_hz": 0.4,
+        "genlik": 0.971
+       },
+       {
+        "f_hz": 0.6,
+        "genlik": 0.479
+       },
+       {
+        "f_hz": 0.8,
+        "genlik": 0.236
+       },
+       {
+        "f_hz": 1.2,
+        "genlik": 0.178
+       },
+       {
+        "f_hz": 1.4,
+        "genlik": 0.174
+       }
+      ],
+      "rms": 0.93
+     }
+    },
+    "aski_dilim": {
+     "t": [
+      268.6,
+      293.1
+     ],
+     "s": 24.5,
+     "aski_n_toplam": 286,
+     "ThO": {
+      "n": 286,
+      "ort": 0.449,
+      "p50": 0.451,
+      "p95": 0.468,
+      "maks": 0.477,
+      "min": 0.384
+     },
+     "I": {
+      "n": 245,
+      "ort": 29.6,
+      "p50": 29.8,
+      "p95": 31.4,
+      "maks": 32.5,
+      "min": 23.0
+     },
+     "V": {
+      "n": 245,
+      "ort": 9.96,
+      "p50": 9.93,
+      "p95": 10.18,
+      "maks": 10.36,
+      "min": 9.79
+     },
+     "VibeX": {
+      "n": 245,
+      "ort": 6.6,
+      "p50": 6.8,
+      "p95": 8.0,
+      "maks": 8.8,
+      "min": 4.1
+     },
+     "VibeY": {
+      "n": 245,
+      "ort": 6.0,
+      "p50": 5.9,
+      "p95": 7.6,
+      "maks": 8.1,
+      "min": 3.5
+     },
+     "VibeZ": {
+      "n": 245,
+      "ort": 11.9,
+      "p50": 11.9,
+      "p95": 15.0,
+      "maks": 17.5,
+      "min": 7.1
+     },
+     "RCOU_ort": [
+      1657,
+      1656,
+      1636,
+      1649
+     ],
+     "roll_rate_rms_hata_dps": 5.6,
+     "pitch_rate_rms_hata_dps": 5.2,
+     "R_maks_abs_dps": 12.2,
+     "ROut_maks_abs": 0.068,
+     "GyrX_fft": {
+      "fs_hz": 24.99,
+      "nyquist_hz": 12.5,
+      "n": 612,
+      "sure_s": 24.44,
+      "tepeler": [
+       {
+        "f_hz": 0.49,
+        "genlik": 0.034
+       },
+       {
+        "f_hz": 0.45,
+        "genlik": 0.025
+       },
+       {
+        "f_hz": 0.98,
+        "genlik": 0.025
+       },
+       {
+        "f_hz": 0.86,
+        "genlik": 0.023
+       },
+       {
+        "f_hz": 0.69,
+        "genlik": 0.02
+       }
+      ],
+      "rms": 0.059
+     },
+     "AccZ_fft": {
+      "fs_hz": 24.99,
+      "nyquist_hz": 12.5,
+      "n": 612,
+      "sure_s": 24.44,
+      "tepeler": [
+       {
+        "f_hz": 3.68,
+        "genlik": 0.095
+       },
+       {
+        "f_hz": 1.31,
+        "genlik": 0.09
+       },
+       {
+        "f_hz": 1.43,
+        "genlik": 0.086
+       },
+       {
+        "f_hz": 1.27,
+        "genlik": 0.084
+       },
+       {
+        "f_hz": 2.25,
+        "genlik": 0.082
+       }
+      ],
+      "rms": 0.344
+     }
+    }
+   }
+  ]
+ },
+ "results/ucus_diger/1980-01-06 08-07-20.bin": {
+  "etiket": "A",
+  "boot": 118.0,
+  "MOT_THST_HOVER": 0.47259318828582764,
+  "BATT_VOLT_MULT": 18.7266902923584,
+  "ucuslar": [
+   {
+    "no": 1,
+    "tur": "arm_yalniz",
+    "motorlu_s": 0.0,
+    "kip_arm": "LOIT",
+    "aski_n": null,
+    "ThH_bas": null,
+    "ThH_son": null,
+    "vibe_IMU0_motorlu": null,
+    "clip_artisi_IMU0": null,
+    "clip_artisi_IMU1": null,
+    "rate_havada": null,
+    "att_havada": null,
+    "bat": null
+   },
+   {
+    "no": 2,
+    "tur": "ucus",
+    "motorlu_s": 36.6,
+    "kip_arm": "LOIT",
+    "aski_n": 216,
+    "ThH_bas": 0.4479,
+    "ThH_son": 0.4726,
+    "vibe_IMU0_motorlu": {
+     "X": {
+      "n": 366,
+      "ort": 7.3,
+      "p50": 7.1,
+      "p95": 9.7,
+      "maks": 13.1,
+      "min": 2.6
+     },
+     "Y": {
+      "n": 366,
+      "ort": 6.3,
+      "p50": 6.2,
+      "p95": 8.1,
+      "maks": 11.0,
+      "min": 2.7
+     },
+     "Z": {
+      "n": 366,
+      "ort": 14.0,
+      "p50": 13.2,
+      "p95": 22.3,
+      "maks": 32.7,
+      "min": 3.5
+     }
+    },
+    "clip_artisi_IMU0": 0,
+    "clip_artisi_IMU1": 0,
+    "rate_havada": {
+     "n": 366,
+     "roll_rate_rms_hata_dps": 9.6,
+     "pitch_rate_rms_hata_dps": 10.5,
+     "yaw_rate_rms_hata_dps": 38.0,
+     "R_maks_abs_dps": 23.0,
+     "P_maks_abs_dps": 33.5,
+     "ROut_maks_abs": 0.168,
+     "POut_maks_abs": 0.153
+    },
+    "att_havada": {
+     "n": 366,
+     "roll_rms_hata_deg": 1.94,
+     "pitch_rms_hata_deg": 1.83,
+     "roll_maks_abs_deg": 7.2,
+     "pitch_maks_abs_deg": 10.1,
+     "desroll_maks_abs_deg": 10.7,
+     "despitch_maks_abs_deg": 7.7,
+     "ErrRP_maks": 0.09
+    },
+    "bat": {
+     "V_bas": 12.02,
+     "V_min": 9.58,
+     "V_min_t": 332.0,
+     "V_son": 11.06,
+     "V_bas_duz": 12.02,
+     "V_min_duz": 9.58,
+     "volt_mult_katsayi": 1.0,
+     "sarkma_V": 2.43,
+     "sarkma_V_hucre": 0.608,
+     "hucre_min_V": 2.396,
+     "hucre_min_V_duz": 2.396,
+     "I_motorlu": {
+      "n": 366,
+      "ort": 32.0,
+      "p50": 32.4,
+      "p95": 34.8,
+      "maks": 36.3,
+      "min": 13.0
+     },
+     "I_havada": {
+      "n": 366,
+      "ort": 31.8,
+      "p50": 32.4,
+      "p95": 34.8,
+      "maks": 36.3,
+      "min": 1.9
+     },
+     "P_havada_W": {
+      "n": 366,
+      "ort": 314.0,
+      "p50": 318.0,
+      "p95": 347.0,
+      "maks": 365.0,
+      "min": 21.0
+     },
+     "P_motorlu_W": {
+      "n": 366,
+      "ort": 316.0,
+      "p50": 318.0,
+      "p95": 347.0,
+      "maks": 365.0,
+      "min": 136.0
+     },
+     "mAh": 328.3,
+     "Res_log_ohm": {
+      "n": 366,
+      "ort": 0.0649,
+      "p50": 0.0636,
+      "p95": 0.0704,
+      "maks": 0.106,
+      "min": 0.0598
+     },
+     "R_uyum_ohm": 0.0538,
+     "R_uyum_V0": 11.63,
+     "R_uyum_n": 384
+    },
+    "kalkis_5s": {
+     "t": [
+      304.0,
+      309.0
+     ],
+     "ThO": {
+      "n": 50,
+      "ort": 0.474,
+      "p50": 0.475,
+      "p95": 0.522,
+      "maks": 0.524,
+      "min": 0.424
+     },
+     "I": {
+      "n": 50,
+      "ort": 32.7,
+      "p50": 32.8,
+      "p95": 36.2,
+      "maks": 36.3,
+      "min": 29.2
+     },
+     "VibeX": {
+      "n": 50,
+      "ort": 8.0,
+      "p50": 8.2,
+      "p95": 10.2,
+      "maks": 10.8,
+      "min": 5.3
+     },
+     "VibeY": {
+      "n": 50,
+      "ort": 7.4,
+      "p50": 7.3,
+      "p95": 8.9,
+      "maks": 8.9,
+      "min": 6.3
+     },
+     "VibeZ": {
+      "n": 50,
+      "ort": 16.5,
+      "p50": 16.3,
+      "p95": 21.1,
+      "maks": 23.3,
+      "min": 11.0
+     },
+     "roll_rate_rms_hata_dps": 7.9,
+     "pitch_rate_rms_hata_dps": 13.1,
+     "R_maks_abs_dps": 15.1,
+     "ROut_maks_abs": 0.066,
+     "GyrX_fft": {
+      "fs_hz": 24.97,
+      "nyquist_hz": 12.49,
+      "n": 125,
+      "sure_s": 4.96,
+      "tepeler": [
+       {
+        "f_hz": 1.2,
+        "genlik": 0.074
+       },
+       {
+        "f_hz": 1.4,
+        "genlik": 0.062
+       },
+       {
+        "f_hz": 1.6,
+        "genlik": 0.048
+       },
+       {
+        "f_hz": 1.8,
+        "genlik": 0.046
+       },
+       {
+        "f_hz": 0.6,
+        "genlik": 0.045
+       }
+      ],
+      "rms": 0.103
+     },
+     "AccZ_fft": {
+      "fs_hz": 24.97,
+      "nyquist_hz": 12.49,
+      "n": 125,
+      "sure_s": 4.96,
+      "tepeler": [
+       {
+        "f_hz": 0.4,
+        "genlik": 0.418
+       },
+       {
+        "f_hz": 0.6,
+        "genlik": 0.255
+       },
+       {
+        "f_hz": 9.99,
+        "genlik": 0.253
+       },
+       {
+        "f_hz": 10.19,
+        "genlik": 0.239
+       },
+       {
+        "f_hz": 9.79,
+        "genlik": 0.2
+       }
+      ],
+      "rms": 0.557
+     }
+    },
+    "aski_dilim": {
+     "t": [
+      314.9,
+      330.4
+     ],
+     "s": 15.5,
+     "aski_n_toplam": 215,
+     "ThO": {
+      "n": 215,
+      "ort": 0.495,
+      "p50": 0.499,
+      "p95": 0.521,
+      "maks": 0.528,
+      "min": 0.413
+     },
+     "I": {
+      "n": 155,
+      "ort": 32.2,
+      "p50": 32.5,
+      "p95": 34.1,
+      "maks": 34.8,
+      "min": 25.9
+     },
+     "V": {
+      "n": 155,
+      "ort": 9.84,
+      "p50": 9.84,
+      "p95": 10.0,
+      "maks": 10.09,
+      "min": 9.67
+     },
+     "VibeX": {
+      "n": 155,
+      "ort": 6.9,
+      "p50": 6.9,
+      "p95": 8.5,
+      "maks": 11.1,
+      "min": 4.9
+     },
+     "VibeY": {
+      "n": 155,
+      "ort": 6.0,
+      "p50": 5.9,
+      "p95": 7.4,
+      "maks": 8.5,
+      "min": 4.3
+     },
+     "VibeZ": {
+      "n": 155,
+      "ort": 13.3,
+      "p50": 12.6,
+      "p95": 19.2,
+      "maks": 29.9,
+      "min": 9.2
+     },
+     "RCOU_ort": [
+      1673,
+      1722,
+      1653,
+      1702
+     ],
+     "roll_rate_rms_hata_dps": 5.3,
+     "pitch_rate_rms_hata_dps": 5.3,
+     "R_maks_abs_dps": 8.9,
+     "ROut_maks_abs": 0.05,
+     "GyrX_fft": {
+      "fs_hz": 24.98,
+      "nyquist_hz": 12.49,
+      "n": 388,
+      "sure_s": 15.48,
+      "tepeler": [
+       {
+        "f_hz": 0.97,
+        "genlik": 0.04
+       },
+       {
+        "f_hz": 0.9,
+        "genlik": 0.031
+       },
+       {
+        "f_hz": 1.29,
+        "genlik": 0.023
+       },
+       {
+        "f_hz": 1.03,
+        "genlik": 0.023
+       },
+       {
+        "f_hz": 1.35,
+        "genlik": 0.021
+       }
+      ],
+      "rms": 0.05
+     },
+     "AccZ_fft": {
+      "fs_hz": 24.98,
+      "nyquist_hz": 12.49,
+      "n": 388,
+      "sure_s": 15.48,
+      "tepeler": [
+       {
+        "f_hz": 0.39,
+        "genlik": 0.131
+       },
+       {
+        "f_hz": 4.44,
+        "genlik": 0.122
+       },
+       {
+        "f_hz": 0.45,
+        "genlik": 0.112
+       },
+       {
+        "f_hz": 8.63,
+        "genlik": 0.102
+       },
+       {
+        "f_hz": 4.38,
+        "genlik": 0.096
+       }
+      ],
+      "rms": 0.414
+     }
+    }
+   }
+  ]
+ }
+}
