@@ -1,0 +1,2142 @@
+[
+ {
+  "dosya": "results/ucus_diger\\1980-01-06 07-59-23.bin",
+  "sha": "9faa236ea7db",
+  "MB": 2.9,
+  "hucre": 3,
+  "V_ilk": 11.05,
+  "parm": {
+   "ARMING_CHECK": 1.0,
+   "INS_GYRO_FILTER": 20.0,
+   "INS_ACCEL_FILTER": 20.0,
+   "INS_HNTCH_ENABLE": 0.0,
+   "ATC_RAT_RLL_P": 0.135,
+   "ATC_RAT_PIT_P": 0.135,
+   "BATT_CAPACITY": 6000.0,
+   "BATT_LOW_VOLT": 9.0,
+   "BATT_CRT_VOLT": 9.0,
+   "MOT_THST_EXPO": 0.65,
+   "MOT_PWM_MIN": 1000.0,
+   "MOT_PWM_MAX": 2000.0,
+   "MOT_SPIN_MIN": 0.15,
+   "MOT_THST_HOVER": 0.448
+  },
+  "ucus_n": 0,
+  "ucuslar": []
+ },
+ {
+  "dosya": "results/ucus_diger\\1980-01-06 08-07-20.bin",
+  "sha": "ffe16cbba51c",
+  "MB": 3.5,
+  "hucre": 3,
+  "V_ilk": 10.99,
+  "parm": {
+   "ARMING_CHECK": 1.0,
+   "INS_GYRO_FILTER": 20.0,
+   "INS_ACCEL_FILTER": 20.0,
+   "INS_HNTCH_ENABLE": 0.0,
+   "ATC_RAT_RLL_P": 0.135,
+   "ATC_RAT_PIT_P": 0.135,
+   "BATT_CAPACITY": 6000.0,
+   "BATT_LOW_VOLT": 9.0,
+   "BATT_CRT_VOLT": 9.0,
+   "MOT_THST_EXPO": 0.65,
+   "MOT_PWM_MIN": 1000.0,
+   "MOT_PWM_MAX": 2000.0,
+   "MOT_SPIN_MIN": 0.15,
+   "MOT_THST_HOVER": 0.473
+  },
+  "ucus_n": 1,
+  "ucuslar": [
+   {
+    "arm": 297.4,
+    "disarm": 340.9,
+    "ucus_s": 36.5,
+    "alt_maks": 5.41,
+    "ThO_ort": 0.484,
+    "ThO_havada": 0.492,
+    "ThH": 0.473,
+    "V_bas": 12.02,
+    "V_min": 9.58,
+    "A_ort": 27.2,
+    "A_maks": 36.3,
+    "mAh": 328,
+    "vibeX": 14.2,
+    "vibeY": 12.5,
+    "vibeZ": 33.7,
+    "vibeZ_ort": 12.5,
+    "clip": 0,
+    "olay": [
+     [
+      297.4,
+      "MOD",
+      "LOIT<RC"
+     ],
+     [
+      310.2,
+      "MSG",
+      "EKF3 IMU0 MAG0 in-flight yaw alignment c"
+     ],
+     [
+      310.3,
+      "MSG",
+      "EKF3 IMU1 MAG0 in-flight yaw alignment c"
+     ],
+     [
+      319.7,
+      "ERR",
+      "8=1"
+     ],
+     [
+      319.7,
+      "MSG",
+      "GCS Failsafe - Continuing Pilot Control"
+     ],
+     [
+      320.7,
+      "MSG",
+      "GCS Failsafe Cleared"
+     ],
+     [
+      320.7,
+      "ERR",
+      "8=0"
+     ],
+     [
+      325.6,
+      "ERR",
+      "6=1"
+     ],
+     [
+      325.6,
+      "MSG",
+      "Battery Failsafe"
+     ],
+     [
+      325.6,
+      "MOD",
+      "LAND<PIL_FS"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "dosya": "results/ucus_diger\\1980-01-12 15-45-52.bin",
+  "sha": "5f49e89205a3",
+  "MB": 0.7,
+  "hucre": 3,
+  "V_ilk": 12.11,
+  "parm": {
+   "ARMING_CHECK": 1.0,
+   "INS_GYRO_FILTER": 20.0,
+   "INS_ACCEL_FILTER": 20.0,
+   "INS_HNTCH_ENABLE": 0.0,
+   "ATC_RAT_RLL_P": 0.135,
+   "ATC_RAT_PIT_P": 0.135,
+   "BATT_CAPACITY": 3300.0,
+   "BATT_LOW_VOLT": 14.4,
+   "BATT_CRT_VOLT": 14.0,
+   "MOT_THST_EXPO": 0.65,
+   "MOT_PWM_MIN": 1000.0,
+   "MOT_PWM_MAX": 2000.0,
+   "MOT_SPIN_MIN": 0.15,
+   "MOT_THST_HOVER": 0.35
+  },
+  "ucus_n": 0,
+  "ucuslar": []
+ },
+ {
+  "dosya": "results/ucus_diger\\1980-01-12 20-17-44.bin",
+  "sha": "356c69de68cf",
+  "MB": 3.5,
+  "hucre": 3,
+  "V_ilk": 11.36,
+  "parm": {
+   "ARMING_CHECK": 1.0,
+   "INS_GYRO_FILTER": 20.0,
+   "INS_ACCEL_FILTER": 20.0,
+   "INS_HNTCH_ENABLE": 0.0,
+   "ATC_RAT_RLL_P": 0.135,
+   "ATC_RAT_PIT_P": 0.135,
+   "BATT_CAPACITY": 3300.0,
+   "BATT_LOW_VOLT": 0.0,
+   "BATT_CRT_VOLT": 0.0,
+   "MOT_THST_EXPO": 0.65,
+   "MOT_PWM_MIN": 1000.0,
+   "MOT_PWM_MAX": 2000.0,
+   "MOT_SPIN_MIN": 0.15,
+   "MOT_THST_HOVER": 0.35
+  },
+  "ucus_n": 2,
+  "ucuslar": [
+   {
+    "arm": 443.2,
+    "disarm": 466.9,
+    "ucus_s": 19.0,
+    "alt_maks": 1.13,
+    "ThO_ort": 0.435,
+    "ThO_havada": 0.41,
+    "ThH": 0.35,
+    "V_bas": 11.23,
+    "V_min": 8.78,
+    "A_ort": 21.0,
+    "A_maks": 29.1,
+    "mAh": 138,
+    "vibeX": 11.7,
+    "vibeY": 12.2,
+    "vibeZ": 22.7,
+    "vibeZ_ort": 11.0,
+    "clip": 0,
+    "olay": [
+     [
+      443.2,
+      "MOD",
+      "GUID<GCS"
+     ],
+     [
+      463.3,
+      "MOD",
+      "LAND<GCS"
+     ]
+    ]
+   },
+   {
+    "arm": 483.7,
+    "disarm": 515.0,
+    "ucus_s": 26.6,
+    "alt_maks": 3.93,
+    "ThO_ort": 0.446,
+    "ThO_havada": 0.453,
+    "ThH": 0.35,
+    "V_bas": 10.99,
+    "V_min": 9.02,
+    "A_ort": 23.0,
+    "A_maks": 35.3,
+    "mAh": 200,
+    "vibeX": 12.2,
+    "vibeY": 12.2,
+    "vibeZ": 25.4,
+    "vibeZ_ort": 12.6,
+    "clip": 0,
+    "olay": [
+     [
+      483.0,
+      "MOD",
+      "GUID<GCS"
+     ],
+     [
+      483.7,
+      "MOD",
+      "GUID<GCS"
+     ],
+     [
+      489.5,
+      "MSG",
+      "EKF3 IMU0 MAG0 in-flight yaw alignment c"
+     ],
+     [
+      489.6,
+      "MSG",
+      "EKF3 IMU1 MAG0 in-flight yaw alignment c"
+     ],
+     [
+      505.9,
+      "MOD",
+      "LAND<GCS"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "dosya": "results/ucus_diger\\58 13.09.2026 08-57-10.bin",
+  "sha": "b543ac5a8c78",
+  "MB": 4.6,
+  "hucre": 3,
+  "V_ilk": 12.09,
+  "parm": {
+   "ARMING_CHECK": 1.0,
+   "INS_GYRO_FILTER": 20.0,
+   "INS_ACCEL_FILTER": 20.0,
+   "INS_HNTCH_ENABLE": 0.0,
+   "ATC_RAT_RLL_P": 0.135,
+   "ATC_RAT_PIT_P": 0.135,
+   "BATT_CAPACITY": 6000.0,
+   "BATT_LOW_VOLT": 9.0,
+   "BATT_CRT_VOLT": 9.0,
+   "MOT_THST_EXPO": 0.65,
+   "MOT_PWM_MIN": 1000.0,
+   "MOT_PWM_MAX": 2000.0,
+   "MOT_SPIN_MIN": 0.15,
+   "MOT_THST_HOVER": 0.448
+  },
+  "ucus_n": 1,
+  "ucuslar": [
+   {
+    "arm": 165.9,
+    "disarm": 207.2,
+    "ucus_s": 32.7,
+    "alt_maks": 3.16,
+    "ThO_ort": 0.462,
+    "ThO_havada": 0.464,
+    "ThH": 0.448,
+    "V_bas": 12.06,
+    "V_min": 9.66,
+    "A_ort": 25.0,
+    "A_maks": 34.4,
+    "mAh": 287,
+    "vibeX": 11.6,
+    "vibeY": 10.4,
+    "vibeZ": 30.7,
+    "vibeZ_ort": 11.0,
+    "clip": 0,
+    "olay": [
+     [
+      165.9,
+      "MOD",
+      "LOIT<RC"
+     ],
+     [
+      195.7,
+      "ERR",
+      "6=1"
+     ],
+     [
+      195.7,
+      "MSG",
+      "Battery Failsafe"
+     ],
+     [
+      195.7,
+      "MOD",
+      "LAND<PIL_FS"
+     ],
+     [
+      209.2,
+      "MSG",
+      "PreArm: Battery failsafe"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "dosya": "results/ucus_diger\\59 13.09.2026 08-59-04.bin",
+  "sha": "c4f5af54f7b7",
+  "MB": 1.5,
+  "hucre": 3,
+  "V_ilk": 11.07,
+  "parm": {
+   "ARMING_CHECK": 1.0,
+   "INS_GYRO_FILTER": 20.0,
+   "INS_ACCEL_FILTER": 20.0,
+   "INS_HNTCH_ENABLE": 0.0,
+   "ATC_RAT_RLL_P": 0.135,
+   "ATC_RAT_PIT_P": 0.135,
+   "BATT_CAPACITY": 6000.0,
+   "BATT_LOW_VOLT": 9.0,
+   "BATT_CRT_VOLT": 9.0,
+   "MOT_THST_EXPO": 0.65,
+   "MOT_PWM_MIN": 1000.0,
+   "MOT_PWM_MAX": 2000.0,
+   "MOT_SPIN_MIN": 0.15,
+   "MOT_THST_HOVER": 0.448
+  },
+  "ucus_n": 0,
+  "ucuslar": []
+ },
+ {
+  "dosya": "results/ucus_diger\\60 13.09.2026 09-06-12.bin",
+  "KOPYA_OF": "results/ucus_diger\\1980-01-06 07-59-23.bin"
+ },
+ {
+  "dosya": "results/ucus_diger\\61 13.09.2026 09-14-22.bin",
+  "KOPYA_OF": "results/ucus_diger\\1980-01-06 08-07-20.bin"
+ },
+ {
+  "dosya": "results/ucus_diger\\62 13.09.2026 09-38-02.bin",
+  "sha": "8f218464c95d",
+  "MB": 5.0,
+  "hucre": 4,
+  "V_ilk": 16.69,
+  "parm": {
+   "ARMING_CHECK": 1.0,
+   "INS_GYRO_FILTER": 20.0,
+   "INS_ACCEL_FILTER": 20.0,
+   "INS_HNTCH_ENABLE": 0.0,
+   "ATC_RAT_RLL_P": 0.135,
+   "ATC_RAT_PIT_P": 0.135,
+   "BATT_CAPACITY": 6000.0,
+   "BATT_LOW_VOLT": 10.0,
+   "BATT_CRT_VOLT": 9.0,
+   "MOT_THST_EXPO": 0.65,
+   "MOT_PWM_MIN": 1000.0,
+   "MOT_PWM_MAX": 2000.0,
+   "MOT_SPIN_MIN": 0.15,
+   "MOT_THST_HOVER": 0.473
+  },
+  "ucus_n": 4,
+  "ucuslar": [
+   {
+    "arm": 234.3,
+    "disarm": 243.9,
+    "ucus_s": 2.8,
+    "alt_maks": 2.52,
+    "ThO_ort": 0.224,
+    "ThO_havada": 0.224,
+    "ThH": 0.473,
+    "V_bas": 16.63,
+    "V_min": 15.33,
+    "A_ort": 14.0,
+    "A_maks": 47.9,
+    "mAh": 37,
+    "vibeX": 25.2,
+    "vibeY": 20.2,
+    "vibeZ": 56.6,
+    "vibeZ_ort": 13.3,
+    "clip": 0,
+    "olay": [
+     [
+      234.3,
+      "MOD",
+      "LOIT<RC"
+     ],
+     [
+      241.0,
+      "MOD",
+      "LAND<RC"
+     ]
+    ]
+   },
+   {
+    "arm": 352.4,
+    "disarm": 362.6,
+    "ucus_s": 2.0,
+    "alt_maks": 2.14,
+    "ThO_ort": 0.236,
+    "ThO_havada": 0.236,
+    "ThH": 0.473,
+    "V_bas": 16.63,
+    "V_min": 15.52,
+    "A_ort": 8.3,
+    "A_maks": 41.0,
+    "mAh": 24,
+    "vibeX": 19.8,
+    "vibeY": 14.5,
+    "vibeZ": 52.1,
+    "vibeZ_ort": 7.2,
+    "clip": 0,
+    "olay": [
+     [
+      351.8,
+      "MOD",
+      "LOIT<RC"
+     ],
+     [
+      352.4,
+      "MOD",
+      "LOIT<RC"
+     ],
+     [
+      361.6,
+      "MOD",
+      "LAND<RC"
+     ]
+    ]
+   },
+   {
+    "arm": 403.7,
+    "disarm": 412.2,
+    "ucus_s": 3.1,
+    "alt_maks": 2.68,
+    "ThO_ort": 0.247,
+    "ThO_havada": 0.247,
+    "ThH": 0.473,
+    "V_bas": 15.93,
+    "V_min": 14.66,
+    "A_ort": 17.4,
+    "A_maks": 43.6,
+    "mAh": 41,
+    "vibeX": 24.1,
+    "vibeY": 18.1,
+    "vibeZ": 63.6,
+    "vibeZ_ort": 18.7,
+    "clip": 0,
+    "olay": [
+     [
+      401.8,
+      "MOD",
+      "LOIT<RC"
+     ],
+     [
+      403.7,
+      "MOD",
+      "LOIT<RC"
+     ],
+     [
+      405.5,
+      "ERR",
+      "10=0"
+     ],
+     [
+      409.0,
+      "MOD",
+      "LAND<RC"
+     ]
+    ]
+   },
+   {
+    "arm": 549.5,
+    "disarm": 561.1,
+    "ucus_s": 2.7,
+    "alt_maks": 1.78,
+    "ThO_ort": 0.229,
+    "ThO_havada": 0.229,
+    "ThH": 0.473,
+    "V_bas": 15.9,
+    "V_min": 14.98,
+    "A_ort": 7.8,
+    "A_maks": 32.8,
+    "mAh": 25,
+    "vibeX": 13.6,
+    "vibeY": 11.8,
+    "vibeZ": 44.4,
+    "vibeZ_ort": 5.4,
+    "clip": 0,
+    "olay": [
+     [
+      549.5,
+      "MOD",
+      "STAB<RC"
+     ],
+     [
+      555.8,
+      "MOD",
+      "LOIT<RC"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "dosya": "results/ucus_diger\\63 13.09.2026 09-53-04.bin",
+  "sha": "36caaf8e8f7f",
+  "MB": 4.1,
+  "hucre": 3,
+  "V_ilk": 11.99,
+  "parm": {
+   "ARMING_CHECK": 1.0,
+   "INS_GYRO_FILTER": 20.0,
+   "INS_ACCEL_FILTER": 20.0,
+   "INS_HNTCH_ENABLE": 0.0,
+   "ATC_RAT_RLL_P": 0.135,
+   "ATC_RAT_PIT_P": 0.135,
+   "BATT_CAPACITY": 6000.0,
+   "BATT_LOW_VOLT": 10.0,
+   "BATT_CRT_VOLT": 9.0,
+   "MOT_THST_EXPO": 0.65,
+   "MOT_PWM_MIN": 1000.0,
+   "MOT_PWM_MAX": 2000.0,
+   "MOT_SPIN_MIN": 0.15,
+   "MOT_THST_HOVER": 0.465
+  },
+  "ucus_n": 2,
+  "ucuslar": [
+   {
+    "arm": 180.4,
+    "disarm": 211.2,
+    "ucus_s": 26.1,
+    "alt_maks": 4.64,
+    "ThO_ort": 0.424,
+    "ThO_havada": 0.424,
+    "ThH": 0.466,
+    "V_bas": 11.63,
+    "V_min": 9.87,
+    "A_ort": 24.5,
+    "A_maks": 40.5,
+    "mAh": 209,
+    "vibeX": 12.9,
+    "vibeY": 10.7,
+    "vibeZ": 23.9,
+    "vibeZ_ort": 11.6,
+    "clip": 0,
+    "olay": [
+     [
+      179.0,
+      "MSG",
+      "GCS Failsafe Cleared"
+     ],
+     [
+      179.0,
+      "ERR",
+      "8=0"
+     ],
+     [
+      179.9,
+      "MOD",
+      "GUID<GCS"
+     ],
+     [
+      180.4,
+      "MOD",
+      "GUID<GCS"
+     ],
+     [
+      186.0,
+      "MSG",
+      "EKF3 IMU0 MAG0 in-flight yaw alignment c"
+     ],
+     [
+      186.1,
+      "MSG",
+      "EKF3 IMU1 MAG0 in-flight yaw alignment c"
+     ],
+     [
+      198.0,
+      "ERR",
+      "8=1"
+     ],
+     [
+      198.0,
+      "MSG",
+      "GCS Failsafe"
+     ],
+     [
+      198.0,
+      "MOD",
+      "LAND<GCS_FS"
+     ],
+     [
+      201.0,
+      "MSG",
+      "GCS Failsafe Cleared"
+     ]
+    ]
+   },
+   {
+    "arm": 259.4,
+    "disarm": 305.0,
+    "ucus_s": 39.2,
+    "alt_maks": 6.65,
+    "ThO_ort": 0.445,
+    "ThO_havada": 0.445,
+    "ThH": 0.465,
+    "V_bas": 11.51,
+    "V_min": 9.75,
+    "A_ort": 25.5,
+    "A_maks": 39.6,
+    "mAh": 323,
+    "vibeX": 13.1,
+    "vibeY": 11.8,
+    "vibeZ": 24.7,
+    "vibeZ_ort": 11.6,
+    "clip": 0,
+    "olay": [
+     [
+      259.4,
+      "MOD",
+      "GUID<GCS"
+     ],
+     [
+      266.7,
+      "MSG",
+      "EKF3 IMU0 MAG0 in-flight yaw alignment c"
+     ],
+     [
+      266.7,
+      "MSG",
+      "EKF3 IMU1 MAG0 in-flight yaw alignment c"
+     ],
+     [
+      288.4,
+      "ERR",
+      "6=1"
+     ],
+     [
+      288.4,
+      "MSG",
+      "Battery Failsafe"
+     ],
+     [
+      288.4,
+      "MOD",
+      "LAND<PIL_FS"
+     ],
+     [
+      306.5,
+      "MSG",
+      "PreArm: Battery failsafe"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "dosya": "results/ucus_diger\\64 13.09.2026 09-56-14.bin",
+  "sha": "69b618380236",
+  "MB": 1.8,
+  "hucre": 3,
+  "V_ilk": 11.3,
+  "parm": {
+   "ARMING_CHECK": 1.0,
+   "INS_GYRO_FILTER": 20.0,
+   "INS_ACCEL_FILTER": 20.0,
+   "INS_HNTCH_ENABLE": 0.0,
+   "ATC_RAT_RLL_P": 0.135,
+   "ATC_RAT_PIT_P": 0.135,
+   "BATT_CAPACITY": 6000.0,
+   "BATT_LOW_VOLT": 10.0,
+   "BATT_CRT_VOLT": 9.0,
+   "MOT_THST_EXPO": 0.65,
+   "MOT_PWM_MIN": 1000.0,
+   "MOT_PWM_MAX": 2000.0,
+   "MOT_SPIN_MIN": 0.15,
+   "MOT_THST_HOVER": 0.46
+  },
+  "ucus_n": 1,
+  "ucuslar": [
+   {
+    "arm": 86.5,
+    "disarm": 123.7,
+    "ucus_s": 28.0,
+    "alt_maks": 4.83,
+    "ThO_ort": 0.436,
+    "ThO_havada": 0.44,
+    "ThH": 0.46,
+    "V_bas": 11.32,
+    "V_min": 9.62,
+    "A_ort": 22.2,
+    "A_maks": 36.2,
+    "mAh": 230,
+    "vibeX": 15.7,
+    "vibeY": 17.1,
+    "vibeZ": 46.3,
+    "vibeZ_ort": 18.0,
+    "clip": 0,
+    "olay": [
+     [
+      86.5,
+      "MOD",
+      "LOIT<RC"
+     ],
+     [
+      101.3,
+      "MSG",
+      "EKF3 IMU0 MAG0 in-flight yaw alignment c"
+     ],
+     [
+      101.9,
+      "MSG",
+      "EKF3 IMU1 MAG0 in-flight yaw alignment c"
+     ],
+     [
+      108.9,
+      "ERR",
+      "6=1"
+     ],
+     [
+      108.9,
+      "MSG",
+      "Battery Failsafe"
+     ],
+     [
+      108.9,
+      "MOD",
+      "LAND<PIL_FS"
+     ],
+     [
+      124.9,
+      "MSG",
+      "PreArm: Battery failsafe"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "dosya": "results/ucus_diger\\65 13.09.2026 10-19-20.bin",
+  "sha": "492b41a9d47e",
+  "MB": 7.9,
+  "hucre": 3,
+  "V_ilk": 11.55,
+  "parm": {
+   "ARMING_CHECK": 1.0,
+   "INS_GYRO_FILTER": 20.0,
+   "INS_ACCEL_FILTER": 20.0,
+   "INS_HNTCH_ENABLE": 0.0,
+   "ATC_RAT_RLL_P": 0.135,
+   "ATC_RAT_PIT_P": 0.135,
+   "BATT_CAPACITY": 6000.0,
+   "BATT_LOW_VOLT": 10.0,
+   "BATT_CRT_VOLT": 9.0,
+   "MOT_THST_EXPO": 0.65,
+   "MOT_PWM_MIN": 1000.0,
+   "MOT_PWM_MAX": 2000.0,
+   "MOT_SPIN_MIN": 0.15,
+   "MOT_THST_HOVER": 0.533
+  },
+  "ucus_n": 5,
+  "ucuslar": [
+   {
+    "arm": 240.5,
+    "disarm": 297.7,
+    "ucus_s": 52.5,
+    "alt_maks": 9.44,
+    "ThO_ort": 0.461,
+    "ThO_havada": 0.461,
+    "ThH": 0.46,
+    "V_bas": 11.47,
+    "V_min": 10.13,
+    "A_ort": 30.5,
+    "A_maks": 46.3,
+    "mAh": 485,
+    "vibeX": 21.0,
+    "vibeY": 16.3,
+    "vibeZ": 62.2,
+    "vibeZ_ort": 19.4,
+    "clip": 0,
+    "olay": [
+     [
+      239.9,
+      "MOD",
+      "GUID<GCS"
+     ],
+     [
+      240.5,
+      "MOD",
+      "GUID<GCS"
+     ],
+     [
+      246.0,
+      "MSG",
+      "EKF3 IMU1 MAG0 in-flight yaw alignment c"
+     ],
+     [
+      246.0,
+      "MSG",
+      "EKF3 IMU0 MAG0 in-flight yaw alignment c"
+     ],
+     [
+      280.0,
+      "MOD",
+      "LAND<GCS"
+     ]
+    ]
+   },
+   {
+    "arm": 371.2,
+    "disarm": 411.2,
+    "ucus_s": 35.3,
+    "alt_maks": 2.66,
+    "ThO_ort": 0.469,
+    "ThO_havada": 0.469,
+    "ThH": 0.46,
+    "V_bas": 11.21,
+    "V_min": 10.06,
+    "A_ort": 29.2,
+    "A_maks": 41.5,
+    "mAh": 325,
+    "vibeX": 15.2,
+    "vibeY": 13.6,
+    "vibeZ": 35.5,
+    "vibeZ_ort": 18.0,
+    "clip": 0,
+    "olay": [
+     [
+      369.2,
+      "MSG",
+      "GCS Failsafe Cleared"
+     ],
+     [
+      369.2,
+      "ERR",
+      "8=0"
+     ],
+     [
+      371.0,
+      "MOD",
+      "GUID<GCS"
+     ],
+     [
+      371.2,
+      "MOD",
+      "GUID<GCS"
+     ],
+     [
+      406.4,
+      "MOD",
+      "LAND<GCS"
+     ]
+    ]
+   },
+   {
+    "arm": 705.7,
+    "disarm": 756.0,
+    "ucus_s": 42.5,
+    "alt_maks": 4.73,
+    "ThO_ort": 0.51,
+    "ThO_havada": 0.51,
+    "ThH": 0.532,
+    "V_bas": 11.28,
+    "V_min": 9.92,
+    "A_ort": 31.1,
+    "A_maks": 49.4,
+    "mAh": 435,
+    "vibeX": 20.5,
+    "vibeY": 16.2,
+    "vibeZ": 61.6,
+    "vibeZ_ort": 22.8,
+    "clip": 0,
+    "olay": [
+     [
+      705.7,
+      "MOD",
+      "STAB<RC"
+     ],
+     [
+      712.3,
+      "MOD",
+      "LOIT<RC"
+     ],
+     [
+      722.9,
+      "MSG",
+      "EKF3 IMU0 MAG0 in-flight yaw alignment c"
+     ],
+     [
+      725.5,
+      "MSG",
+      "EKF3 IMU1 MAG0 in-flight yaw alignment c"
+     ],
+     [
+      750.6,
+      "MOD",
+      "LAND<RC"
+     ]
+    ]
+   },
+   {
+    "arm": 825.8,
+    "disarm": 872.1,
+    "ucus_s": 43.4,
+    "alt_maks": 4.97,
+    "ThO_ort": 0.513,
+    "ThO_havada": 0.511,
+    "ThH": 0.533,
+    "V_bas": 11.13,
+    "V_min": 7.51,
+    "A_ort": 34.2,
+    "A_maks": 119.1,
+    "mAh": 440,
+    "vibeX": 34.4,
+    "vibeY": 35.5,
+    "vibeZ": 62.2,
+    "vibeZ_ort": 17.7,
+    "clip": 0,
+    "olay": [
+     [
+      823.9,
+      "MOD",
+      "LOIT<RC"
+     ],
+     [
+      825.8,
+      "MOD",
+      "LOIT<RC"
+     ],
+     [
+      839.3,
+      "MSG",
+      "EKF3 IMU0 MAG0 in-flight yaw alignment c"
+     ],
+     [
+      840.1,
+      "MSG",
+      "EKF3 IMU1 MAG0 in-flight yaw alignment c"
+     ],
+     [
+      869.0,
+      "MSG",
+      "EKF3 lane switch 1"
+     ],
+     [
+      869.0,
+      "ERR",
+      "24=1"
+     ],
+     [
+      869.0,
+      "MSG",
+      "EKF primary changed:1"
+     ],
+     [
+      870.4,
+      "MOD",
+      "LAND<RC"
+     ],
+     [
+      872.1,
+      "ERR",
+      "24=0"
+     ],
+     [
+      872.1,
+      "MSG",
+      "EKF primary changed:0"
+     ]
+    ]
+   },
+   {
+    "arm": 978.5,
+    "disarm": 1007.6,
+    "ucus_s": 21.4,
+    "alt_maks": 6.3,
+    "ThO_ort": 0.499,
+    "ThO_havada": 0.499,
+    "ThH": 0.533,
+    "V_bas": 11.09,
+    "V_min": 9.9,
+    "A_ort": 26.9,
+    "A_maks": 46.4,
+    "mAh": 218,
+    "vibeX": 20.2,
+    "vibeY": 14.5,
+    "vibeZ": 54.2,
+    "vibeZ_ort": 21.5,
+    "clip": 0,
+    "olay": [
+     [
+      978.5,
+      "MOD",
+      "LOIT<RC"
+     ],
+     [
+      991.4,
+      "MSG",
+      "EKF3 IMU0 MAG0 in-flight yaw alignment c"
+     ],
+     [
+      991.9,
+      "MSG",
+      "EKF3 IMU1 MAG0 in-flight yaw alignment c"
+     ],
+     [
+      997.5,
+      "MOD",
+      "LAND<RC"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "dosya": "results/ucus_diger\\68 14.09.2026 19-45-46.bin",
+  "sha": "11a3547947b4",
+  "MB": 2.5,
+  "hucre": 3,
+  "V_ilk": 12.44,
+  "parm": {
+   "ARMING_CHECK": 1.0,
+   "INS_GYRO_FILTER": 20.0,
+   "INS_ACCEL_FILTER": 20.0,
+   "INS_HNTCH_ENABLE": 0.0,
+   "ATC_RAT_RLL_P": 0.135,
+   "ATC_RAT_PIT_P": 0.135,
+   "BATT_CAPACITY": 8000.0,
+   "BATT_LOW_VOLT": 10.0,
+   "BATT_CRT_VOLT": 9.0,
+   "MOT_THST_EXPO": 0.65,
+   "MOT_PWM_MIN": 1000.0,
+   "MOT_PWM_MAX": 2000.0,
+   "MOT_SPIN_MIN": 0.15,
+   "MOT_THST_HOVER": 0.498
+  },
+  "ucus_n": 1,
+  "ucuslar": [
+   {
+    "arm": 148.3,
+    "disarm": 185.3,
+    "ucus_s": 29.4,
+    "alt_maks": 2.72,
+    "ThO_ort": 0.453,
+    "ThO_havada": 0.464,
+    "ThH": 0.498,
+    "V_bas": 12.17,
+    "V_min": 10.78,
+    "A_ort": 28.3,
+    "A_maks": 42.3,
+    "mAh": 290,
+    "vibeX": 22.1,
+    "vibeY": 15.6,
+    "vibeZ": 33.7,
+    "vibeZ_ort": 17.5,
+    "clip": 0,
+    "olay": [
+     [
+      148.3,
+      "MOD",
+      "LOIT<RC"
+     ],
+     [
+      159.0,
+      "MSG",
+      "EKF3 IMU0 MAG0 in-flight yaw alignment c"
+     ],
+     [
+      159.5,
+      "MSG",
+      "EKF3 IMU1 MAG0 in-flight yaw alignment c"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "dosya": "results/ucus_diger\\69 14.09.2026 21-13-14.bin",
+  "sha": "45801a1e217f",
+  "MB": 1.9,
+  "hucre": 3,
+  "V_ilk": 12.09,
+  "parm": {
+   "ARMING_CHECK": 1.0,
+   "INS_GYRO_FILTER": 20.0,
+   "INS_ACCEL_FILTER": 20.0,
+   "INS_HNTCH_ENABLE": 0.0,
+   "ATC_RAT_RLL_P": 0.135,
+   "ATC_RAT_PIT_P": 0.135,
+   "BATT_CAPACITY": 8000.0,
+   "BATT_LOW_VOLT": 10.0,
+   "BATT_CRT_VOLT": 9.0,
+   "MOT_THST_EXPO": 0.65,
+   "MOT_PWM_MIN": 1000.0,
+   "MOT_PWM_MAX": 2000.0,
+   "MOT_SPIN_MIN": 0.15,
+   "MOT_THST_HOVER": 0.506
+  },
+  "ucus_n": 1,
+  "ucuslar": [
+   {
+    "arm": 115.8,
+    "disarm": 151.9,
+    "ucus_s": 30.0,
+    "alt_maks": 3.74,
+    "ThO_ort": 0.51,
+    "ThO_havada": 0.516,
+    "ThH": 0.506,
+    "V_bas": 12.12,
+    "V_min": 10.51,
+    "A_ort": 33.3,
+    "A_maks": 48.8,
+    "mAh": 334,
+    "vibeX": 7.7,
+    "vibeY": 6.7,
+    "vibeZ": 18.6,
+    "vibeZ_ort": 8.7,
+    "clip": 0,
+    "olay": [
+     [
+      115.8,
+      "MOD",
+      "LOIT<RC"
+     ],
+     [
+      125.9,
+      "MSG",
+      "EKF3 IMU1 MAG0 in-flight yaw alignment c"
+     ],
+     [
+      125.9,
+      "MSG",
+      "EKF3 IMU0 MAG0 in-flight yaw alignment c"
+     ],
+     [
+      142.4,
+      "MOD",
+      "LAND<RC"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "dosya": "results\\ucus_20260912\\2026-09-12 16-45-10.bin",
+  "sha": "5b33f4552041",
+  "MB": 0.6,
+  "hucre": 3,
+  "V_ilk": 12.11,
+  "parm": {
+   "ARMING_CHECK": 1.0,
+   "INS_GYRO_FILTER": 20.0,
+   "INS_ACCEL_FILTER": 20.0,
+   "INS_HNTCH_ENABLE": 0.0,
+   "ATC_RAT_RLL_P": 0.135,
+   "ATC_RAT_PIT_P": 0.135,
+   "BATT_CAPACITY": 3300.0,
+   "BATT_LOW_VOLT": 14.4,
+   "BATT_CRT_VOLT": 14.0,
+   "MOT_THST_EXPO": 0.65,
+   "MOT_PWM_MIN": 1000.0,
+   "MOT_PWM_MAX": 2000.0,
+   "MOT_SPIN_MIN": 0.15,
+   "MOT_THST_HOVER": 0.35
+  },
+  "ucus_n": 0,
+  "ucuslar": []
+ },
+ {
+  "dosya": "results\\ucus_20260912\\2026-09-12 16-50-10.bin",
+  "sha": "6b13291e5cfa",
+  "MB": 3.5,
+  "hucre": 3,
+  "V_ilk": 11.95,
+  "parm": {
+   "ARMING_CHECK": 1.0,
+   "INS_GYRO_FILTER": 20.0,
+   "INS_ACCEL_FILTER": 20.0,
+   "INS_HNTCH_ENABLE": 0.0,
+   "ATC_RAT_RLL_P": 0.135,
+   "ATC_RAT_PIT_P": 0.135,
+   "BATT_CAPACITY": 3300.0,
+   "BATT_LOW_VOLT": 14.5,
+   "BATT_CRT_VOLT": 14.0,
+   "MOT_THST_EXPO": 0.65,
+   "MOT_PWM_MIN": 1000.0,
+   "MOT_PWM_MAX": 2000.0,
+   "MOT_SPIN_MIN": 0.15,
+   "MOT_THST_HOVER": 0.35
+  },
+  "ucus_n": 1,
+  "ucuslar": [
+   {
+    "arm": 345.5,
+    "disarm": 383.3,
+    "ucus_s": 33.4,
+    "alt_maks": 2.31,
+    "ThO_ort": 0.451,
+    "ThO_havada": 0.415,
+    "ThH": 0.35,
+    "V_bas": 11.78,
+    "V_min": 6.64,
+    "A_ort": 23.4,
+    "A_maks": 103.7,
+    "mAh": 246,
+    "vibeX": 56.7,
+    "vibeY": 70.4,
+    "vibeZ": 84.8,
+    "vibeZ_ort": 10.9,
+    "clip": 0,
+    "olay": [
+     [
+      345.5,
+      "MOD",
+      "LOIT<RC"
+     ],
+     [
+      366.5,
+      "MSG",
+      "EKF3 IMU0 MAG0 in-flight yaw alignment c"
+     ],
+     [
+      366.6,
+      "MSG",
+      "EKF3 IMU1 MAG0 in-flight yaw alignment c"
+     ],
+     [
+      381.6,
+      "MSG",
+      "EKF3 lane switch 1"
+     ],
+     [
+      381.6,
+      "ERR",
+      "24=1"
+     ],
+     [
+      381.6,
+      "MSG",
+      "EKF primary changed:1"
+     ],
+     [
+      382.1,
+      "MOD",
+      "LAND<RC"
+     ],
+     [
+      383.2,
+      "ERR",
+      "25=1"
+     ],
+     [
+      383.2,
+      "MSG",
+      "Potential Thrust Loss (3)"
+     ],
+     [
+      383.3,
+      "ERR",
+      "24=0"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "dosya": "results\\ucus_20260912\\2026-09-12 17-15-12.bin",
+  "sha": "05e4d98b7da8",
+  "MB": 1.9,
+  "hucre": 3,
+  "V_ilk": 11.27,
+  "parm": {
+   "ARMING_CHECK": 1.0,
+   "INS_GYRO_FILTER": 20.0,
+   "INS_ACCEL_FILTER": 20.0,
+   "INS_HNTCH_ENABLE": 0.0,
+   "ATC_RAT_RLL_P": 0.135,
+   "ATC_RAT_PIT_P": 0.135,
+   "BATT_CAPACITY": 3300.0,
+   "BATT_LOW_VOLT": 0.0,
+   "BATT_CRT_VOLT": 0.0,
+   "MOT_THST_EXPO": 0.65,
+   "MOT_PWM_MIN": 1000.0,
+   "MOT_PWM_MAX": 2000.0,
+   "MOT_SPIN_MIN": 0.15,
+   "MOT_THST_HOVER": 0.35
+  },
+  "ucus_n": 2,
+  "ucuslar": [
+   {
+    "arm": 288.1,
+    "disarm": 294.7,
+    "ucus_s": 1.4,
+    "alt_maks": -1.34,
+    "ThO_ort": 0.482,
+    "ThO_havada": null,
+    "ThH": 0.35,
+    "V_bas": 11.25,
+    "V_min": 8.89,
+    "A_ort": 7.5,
+    "A_maks": 59.1,
+    "mAh": 14,
+    "vibeX": 7.7,
+    "vibeY": 9.3,
+    "vibeZ": 18.8,
+    "vibeZ_ort": 3.4,
+    "clip": 0,
+    "olay": [
+     [
+      288.1,
+      "MOD",
+      "LOIT<RC"
+     ]
+    ]
+   },
+   {
+    "arm": 342.1,
+    "disarm": 348.3,
+    "ucus_s": 3.4,
+    "alt_maks": -0.62,
+    "ThO_ort": 0.536,
+    "ThO_havada": null,
+    "ThH": 0.35,
+    "V_bas": 11.11,
+    "V_min": 7.66,
+    "A_ort": 12.6,
+    "A_maks": 91.8,
+    "mAh": 22,
+    "vibeX": 23.7,
+    "vibeY": 21.7,
+    "vibeZ": 47.2,
+    "vibeZ_ort": 6.9,
+    "clip": 0,
+    "olay": [
+     [
+      342.1,
+      "MOD",
+      "LOIT<RC"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "dosya": "results\\ucus_20260912\\2026-09-12 17-31-18.bin",
+  "sha": "98ecd570591a",
+  "MB": 1.2,
+  "hucre": 3,
+  "V_ilk": 11.17,
+  "parm": {
+   "ARMING_CHECK": 1.0,
+   "INS_GYRO_FILTER": 20.0,
+   "INS_ACCEL_FILTER": 20.0,
+   "INS_HNTCH_ENABLE": 0.0,
+   "ATC_RAT_RLL_P": 0.135,
+   "ATC_RAT_PIT_P": 0.135,
+   "BATT_CAPACITY": 3300.0,
+   "BATT_LOW_VOLT": 0.0,
+   "BATT_CRT_VOLT": 0.0,
+   "MOT_THST_EXPO": 0.65,
+   "MOT_PWM_MIN": 1000.0,
+   "MOT_PWM_MAX": 2000.0,
+   "MOT_SPIN_MIN": 0.15,
+   "MOT_THST_HOVER": 0.35
+  },
+  "ucus_n": 0,
+  "ucuslar": []
+ },
+ {
+  "dosya": "results\\ucus_20260912\\2026-09-12 17-35-39.bin",
+  "sha": "2555f120840c",
+  "MB": 1.8,
+  "hucre": 3,
+  "V_ilk": 11.07,
+  "parm": {
+   "ARMING_CHECK": 1.0,
+   "INS_GYRO_FILTER": 20.0,
+   "INS_ACCEL_FILTER": 20.0,
+   "INS_HNTCH_ENABLE": 0.0,
+   "ATC_RAT_RLL_P": 0.135,
+   "ATC_RAT_PIT_P": 0.135,
+   "BATT_CAPACITY": 3300.0,
+   "BATT_LOW_VOLT": 0.0,
+   "BATT_CRT_VOLT": 0.0,
+   "MOT_THST_EXPO": 0.65,
+   "MOT_PWM_MIN": 1000.0,
+   "MOT_PWM_MAX": 2000.0,
+   "MOT_SPIN_MIN": 0.15,
+   "MOT_THST_HOVER": 0.35
+  },
+  "ucus_n": 1,
+  "ucuslar": [
+   {
+    "arm": 49.7,
+    "disarm": 58.6,
+    "ucus_s": 1.3,
+    "alt_maks": 0.71,
+    "ThO_ort": 0.467,
+    "ThO_havada": null,
+    "ThH": 0.35,
+    "V_bas": 11.06,
+    "V_min": 8.09,
+    "A_ort": 5.8,
+    "A_maks": 69.0,
+    "mAh": 14,
+    "vibeX": 11.2,
+    "vibeY": 12.4,
+    "vibeZ": 23.4,
+    "vibeZ_ort": 2.5,
+    "clip": 0,
+    "olay": [
+     [
+      49.7,
+      "MOD",
+      "LOIT<RC"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "dosya": "results\\ucus_20260912\\2026-09-12 17-42-38.bin",
+  "sha": "91c94f15e473",
+  "MB": 1.2,
+  "hucre": 3,
+  "V_ilk": 11.05,
+  "parm": {
+   "ARMING_CHECK": 1.0,
+   "INS_GYRO_FILTER": 20.0,
+   "INS_ACCEL_FILTER": 20.0,
+   "INS_HNTCH_ENABLE": 0.0,
+   "ATC_RAT_RLL_P": 0.135,
+   "ATC_RAT_PIT_P": 0.135,
+   "BATT_CAPACITY": 3300.0,
+   "BATT_LOW_VOLT": 0.0,
+   "BATT_CRT_VOLT": 0.0,
+   "MOT_THST_EXPO": 0.65,
+   "MOT_PWM_MIN": 1000.0,
+   "MOT_PWM_MAX": 2000.0,
+   "MOT_SPIN_MIN": 0.15,
+   "MOT_THST_HOVER": 0.35
+  },
+  "ucus_n": 1,
+  "ucuslar": [
+   {
+    "arm": 48.7,
+    "disarm": 65.4,
+    "ucus_s": 4.3,
+    "alt_maks": 0.66,
+    "ThO_ort": 0.504,
+    "ThO_havada": null,
+    "ThH": 0.35,
+    "V_bas": 11.01,
+    "V_min": 5.9,
+    "A_ort": 12.9,
+    "A_maks": 116.9,
+    "mAh": 60,
+    "vibeX": 28.9,
+    "vibeY": 30.3,
+    "vibeZ": 49.9,
+    "vibeZ_ort": 5.6,
+    "clip": 0,
+    "olay": [
+     [
+      48.7,
+      "MOD",
+      "STAB<RC"
+     ],
+     [
+      53.3,
+      "MOD",
+      "LOIT<RC"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "dosya": "results\\ucus_20260912\\2026-09-12 17-47-06.bin",
+  "sha": "b5e61585a57b",
+  "MB": 0.8,
+  "hucre": 3,
+  "V_ilk": 10.96,
+  "parm": {
+   "ARMING_CHECK": 1.0,
+   "INS_GYRO_FILTER": 20.0,
+   "INS_ACCEL_FILTER": 20.0,
+   "INS_HNTCH_ENABLE": 0.0,
+   "ATC_RAT_RLL_P": 0.135,
+   "ATC_RAT_PIT_P": 0.135,
+   "BATT_CAPACITY": 3300.0,
+   "BATT_LOW_VOLT": 0.0,
+   "BATT_CRT_VOLT": 0.0,
+   "MOT_THST_EXPO": 0.65,
+   "MOT_PWM_MIN": 1000.0,
+   "MOT_PWM_MAX": 2000.0,
+   "MOT_SPIN_MIN": 0.15,
+   "MOT_THST_HOVER": 0.35
+  },
+  "ucus_n": 0,
+  "ucuslar": []
+ },
+ {
+  "dosya": "results\\ucus_20260912\\2026-09-12 18-48-07.bin",
+  "sha": "8556b5202983",
+  "MB": 1.0,
+  "hucre": 4,
+  "V_ilk": 16.3,
+  "parm": {
+   "ARMING_CHECK": 1.0,
+   "INS_GYRO_FILTER": 20.0,
+   "INS_ACCEL_FILTER": 20.0,
+   "INS_HNTCH_ENABLE": 0.0,
+   "ATC_RAT_RLL_P": 0.135,
+   "ATC_RAT_PIT_P": 0.135,
+   "BATT_CAPACITY": 3300.0,
+   "BATT_LOW_VOLT": 0.0,
+   "BATT_CRT_VOLT": 0.0,
+   "MOT_THST_EXPO": 0.65,
+   "MOT_PWM_MIN": 1000.0,
+   "MOT_PWM_MAX": 2000.0,
+   "MOT_SPIN_MIN": 0.15,
+   "MOT_THST_HOVER": 0.35
+  },
+  "ucus_n": 0,
+  "ucuslar": []
+ },
+ {
+  "dosya": "results\\ucus_20260912\\2026-09-12 18-59-08.bin",
+  "sha": "e7d91bdfe9e1",
+  "MB": 0.9,
+  "hucre": 3,
+  "V_ilk": 10.92,
+  "parm": {
+   "ARMING_CHECK": 1.0,
+   "INS_GYRO_FILTER": 20.0,
+   "INS_ACCEL_FILTER": 20.0,
+   "INS_HNTCH_ENABLE": 0.0,
+   "ATC_RAT_RLL_P": 0.135,
+   "ATC_RAT_PIT_P": 0.135,
+   "BATT_CAPACITY": 3300.0,
+   "BATT_LOW_VOLT": 0.0,
+   "BATT_CRT_VOLT": 0.0,
+   "MOT_THST_EXPO": 0.65,
+   "MOT_PWM_MIN": 1000.0,
+   "MOT_PWM_MAX": 2000.0,
+   "MOT_SPIN_MIN": 0.15,
+   "MOT_THST_HOVER": 0.35
+  },
+  "ucus_n": 1,
+  "ucuslar": [
+   {
+    "arm": 47.3,
+    "disarm": 61.0,
+    "ucus_s": 3.0,
+    "alt_maks": 0.86,
+    "ThO_ort": 0.63,
+    "ThO_havada": null,
+    "ThH": 0.35,
+    "V_bas": 10.88,
+    "V_min": 7.02,
+    "A_ort": 12.5,
+    "A_maks": 76.4,
+    "mAh": 48,
+    "vibeX": 10.2,
+    "vibeY": 10.8,
+    "vibeZ": 40.7,
+    "vibeZ_ort": 3.8,
+    "clip": 0,
+    "olay": [
+     [
+      47.3,
+      "MOD",
+      "STAB<RC"
+     ],
+     [
+      53.8,
+      "MOD",
+      "LOIT<RC"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "dosya": "results\\ucus_20260912\\2026-09-12 19-13-58.bin",
+  "sha": "eb69e1553983",
+  "MB": 1.7,
+  "hucre": 3,
+  "V_ilk": 10.76,
+  "parm": {
+   "ARMING_CHECK": 1.0,
+   "INS_GYRO_FILTER": 20.0,
+   "INS_ACCEL_FILTER": 20.0,
+   "INS_HNTCH_ENABLE": 0.0,
+   "ATC_RAT_RLL_P": 0.135,
+   "ATC_RAT_PIT_P": 0.135,
+   "BATT_CAPACITY": 3300.0,
+   "BATT_LOW_VOLT": 0.0,
+   "BATT_CRT_VOLT": 0.0,
+   "MOT_THST_EXPO": 0.65,
+   "MOT_PWM_MIN": 1000.0,
+   "MOT_PWM_MAX": 2000.0,
+   "MOT_SPIN_MIN": 0.15,
+   "MOT_THST_HOVER": 0.35
+  },
+  "ucus_n": 0,
+  "ucuslar": []
+ },
+ {
+  "dosya": "results\\ucus_20260912\\2026-09-12 19-41-52.bin",
+  "sha": "87059de11ee9",
+  "MB": 5.3,
+  "hucre": 3,
+  "V_ilk": 11.08,
+  "parm": {
+   "ARMING_CHECK": 1.0,
+   "INS_GYRO_FILTER": 20.0,
+   "INS_ACCEL_FILTER": 20.0,
+   "INS_HNTCH_ENABLE": 0.0,
+   "ATC_RAT_RLL_P": 0.135,
+   "ATC_RAT_PIT_P": 0.135,
+   "BATT_CAPACITY": 3300.0,
+   "BATT_LOW_VOLT": 0.0,
+   "BATT_CRT_VOLT": 0.0,
+   "MOT_THST_EXPO": 0.65,
+   "MOT_PWM_MIN": 1000.0,
+   "MOT_PWM_MAX": 2000.0,
+   "MOT_SPIN_MIN": 0.15,
+   "MOT_THST_HOVER": 0.35
+  },
+  "ucus_n": 1,
+  "ucuslar": [
+   {
+    "arm": 96.2,
+    "disarm": 103.9,
+    "ucus_s": 0.9,
+    "alt_maks": 1.07,
+    "ThO_ort": 0.403,
+    "ThO_havada": 0.403,
+    "ThH": 0.35,
+    "V_bas": 11.0,
+    "V_min": 8.39,
+    "A_ort": 4.2,
+    "A_maks": 60.4,
+    "mAh": 9,
+    "vibeX": 11.7,
+    "vibeY": 10.1,
+    "vibeZ": 23.3,
+    "vibeZ_ort": 2.3,
+    "clip": 0,
+    "olay": [
+     [
+      96.2,
+      "MOD",
+      "LOIT<RC"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "dosya": "results\\ucus_20260912\\2026-09-12 20-51-26.bin",
+  "sha": "ea101c7782c4",
+  "MB": 3.0,
+  "hucre": 3,
+  "V_ilk": 12.0,
+  "parm": {
+   "ARMING_CHECK": 1.0,
+   "INS_GYRO_FILTER": 20.0,
+   "INS_ACCEL_FILTER": 20.0,
+   "INS_HNTCH_ENABLE": 0.0,
+   "ATC_RAT_RLL_P": 0.135,
+   "ATC_RAT_PIT_P": 0.135,
+   "BATT_CAPACITY": 3300.0,
+   "BATT_LOW_VOLT": 0.0,
+   "BATT_CRT_VOLT": 0.0,
+   "MOT_THST_EXPO": 0.65,
+   "MOT_PWM_MIN": 1000.0,
+   "MOT_PWM_MAX": 2000.0,
+   "MOT_SPIN_MIN": 0.15,
+   "MOT_THST_HOVER": 0.35
+  },
+  "ucus_n": 2,
+  "ucuslar": [
+   {
+    "arm": 190.6,
+    "disarm": 213.4,
+    "ucus_s": 12.8,
+    "alt_maks": 1.89,
+    "ThO_ort": 0.328,
+    "ThO_havada": 0.335,
+    "ThH": 0.35,
+    "V_bas": 12.17,
+    "V_min": 10.23,
+    "A_ort": 13.5,
+    "A_maks": 26.4,
+    "mAh": 86,
+    "vibeX": 11.2,
+    "vibeY": 11.7,
+    "vibeZ": 25.4,
+    "vibeZ_ort": 9.2,
+    "clip": 0,
+    "olay": [
+     [
+      190.6,
+      "MOD",
+      "STAB<RC"
+     ],
+     [
+      196.5,
+      "MOD",
+      "LOIT<RC"
+     ],
+     [
+      208.6,
+      "MOD",
+      "LAND<RC"
+     ]
+    ]
+   },
+   {
+    "arm": 1299.9,
+    "disarm": 1320.3,
+    "ucus_s": 9.1,
+    "alt_maks": 0.65,
+    "ThO_ort": 0.373,
+    "ThO_havada": null,
+    "ThH": 0.35,
+    "V_bas": 11.57,
+    "V_min": 9.5,
+    "A_ort": 11.6,
+    "A_maks": 29.2,
+    "mAh": 66,
+    "vibeX": 12.6,
+    "vibeY": 11.1,
+    "vibeZ": 27.2,
+    "vibeZ_ort": 8.4,
+    "clip": 0,
+    "olay": [
+     [
+      1298.1,
+      "MOD",
+      "STAB<RC"
+     ],
+     [
+      1299.9,
+      "MOD",
+      "STAB<RC"
+     ],
+     [
+      1305.3,
+      "MOD",
+      "LOIT<RC"
+     ],
+     [
+      1316.4,
+      "MOD",
+      "LAND<RC"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "dosya": "results\\ucus_20260912\\2026-09-12 23-47-27.bin",
+  "sha": "d44355f3003c",
+  "MB": 7.0,
+  "hucre": 4,
+  "V_ilk": 16.29,
+  "parm": {
+   "ARMING_CHECK": 1.0,
+   "INS_GYRO_FILTER": 20.0,
+   "INS_ACCEL_FILTER": 20.0,
+   "INS_HNTCH_ENABLE": 0.0,
+   "ATC_RAT_RLL_P": 0.135,
+   "ATC_RAT_PIT_P": 0.135,
+   "BATT_CAPACITY": 3300.0,
+   "BATT_LOW_VOLT": 10.0,
+   "BATT_CRT_VOLT": 9.0,
+   "MOT_THST_EXPO": 0.65,
+   "MOT_PWM_MIN": 1000.0,
+   "MOT_PWM_MAX": 2000.0,
+   "MOT_SPIN_MIN": 0.15,
+   "MOT_THST_HOVER": 0.381
+  },
+  "ucus_n": 2,
+  "ucuslar": [
+   {
+    "arm": 1123.7,
+    "disarm": 1138.8,
+    "ucus_s": 3.6,
+    "alt_maks": 1.13,
+    "ThO_ort": 0.262,
+    "ThO_havada": 0.262,
+    "ThH": 0.349,
+    "V_bas": 16.18,
+    "V_min": 16.02,
+    "A_ort": 2.2,
+    "A_maks": 3.9,
+    "mAh": 9,
+    "vibeX": 1.0,
+    "vibeY": 1.2,
+    "vibeZ": 2.3,
+    "vibeZ_ort": 0.6,
+    "clip": 0,
+    "olay": [
+     [
+      1123.7,
+      "MOD",
+      "STAB<RC"
+     ],
+     [
+      1132.1,
+      "ERR",
+      "2=2"
+     ],
+     [
+      1132.1,
+      "ERR",
+      "5=1"
+     ],
+     [
+      1132.1,
+      "MSG",
+      "Radio Failsafe"
+     ],
+     [
+      1132.1,
+      "MOD",
+      "LAND<RADYO_FS"
+     ],
+     [
+      1140.0,
+      "ERR",
+      "11=2"
+     ],
+     [
+      1140.2,
+      "MSG",
+      "PreArm: Radio failsafe on"
+     ]
+    ]
+   },
+   {
+    "arm": 1223.0,
+    "disarm": 1245.8,
+    "ucus_s": 14.0,
+    "alt_maks": 1.02,
+    "ThO_ort": 0.542,
+    "ThO_havada": 0.46,
+    "ThH": 0.381,
+    "V_bas": 16.23,
+    "V_min": 15.84,
+    "A_ort": 3.2,
+    "A_maks": 9.2,
+    "mAh": 21,
+    "vibeX": 3.3,
+    "vibeY": 5.6,
+    "vibeZ": 5.5,
+    "vibeZ_ort": 1.7,
+    "clip": 0,
+    "olay": [
+     [
+      1221.2,
+      "MOD",
+      "LOIT<RC"
+     ],
+     [
+      1221.5,
+      "MOD",
+      "STAB<RC"
+     ],
+     [
+      1223.0,
+      "MOD",
+      "STAB<RC"
+     ],
+     [
+      1236.8,
+      "ERR",
+      "11=2"
+     ],
+     [
+      1238.7,
+      "ERR",
+      "2=2"
+     ],
+     [
+      1238.7,
+      "ERR",
+      "5=1"
+     ],
+     [
+      1238.7,
+      "MSG",
+      "Radio Failsafe"
+     ],
+     [
+      1238.7,
+      "MOD",
+      "LAND<RADYO_FS"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "dosya": "results\\ucus_20260913\\2026-09-13 08-34-30.bin",
+  "KOPYA_OF": "results/ucus_diger\\58 13.09.2026 08-57-10.bin"
+ },
+ {
+  "dosya": "results\\ucus_20260913\\2026-09-13 08-57-45.bin",
+  "KOPYA_OF": "results/ucus_diger\\59 13.09.2026 08-59-04.bin"
+ },
+ {
+  "dosya": "results\\ucus_20260913\\2026-09-13 09-26-58.bin",
+  "KOPYA_OF": "results/ucus_diger\\62 13.09.2026 09-38-02.bin"
+ },
+ {
+  "dosya": "results\\ucus_20260913\\2026-09-13 09-42-26.bin",
+  "KOPYA_OF": "results/ucus_diger\\63 13.09.2026 09-53-04.bin"
+ },
+ {
+  "dosya": "results\\ucus_20260913\\2026-09-13 09-53-45.bin",
+  "KOPYA_OF": "results/ucus_diger\\64 13.09.2026 09-56-14.bin"
+ },
+ {
+  "dosya": "results\\ucus_20260913\\2026-09-13 09-59-30.bin",
+  "KOPYA_OF": "results/ucus_diger\\65 13.09.2026 10-19-20.bin"
+ },
+ {
+  "dosya": "results\\ucus_20260914\\2026-09-14 19-43-06.bin",
+  "KOPYA_OF": "results/ucus_diger\\68 14.09.2026 19-45-46.bin"
+ },
+ {
+  "dosya": "results\\ucus_20260914\\2026-09-14 21-10-34.bin",
+  "KOPYA_OF": "results/ucus_diger\\69 14.09.2026 21-13-14.bin"
+ },
+ {
+  "dosya": "results\\ucus_20260915\\2026-09-15 11-14-33.bin",
+  "sha": "99c2f6ab115f",
+  "MB": 3.5,
+  "hucre": 4,
+  "V_ilk": 16.29,
+  "parm": {
+   "ARMING_CHECK": 1.0,
+   "INS_GYRO_FILTER": 20.0,
+   "INS_ACCEL_FILTER": 20.0,
+   "INS_HNTCH_ENABLE": 0.0,
+   "ATC_RAT_RLL_P": 0.135,
+   "ATC_RAT_PIT_P": 0.135,
+   "BATT_CAPACITY": 8000.0,
+   "BATT_LOW_VOLT": 10.0,
+   "BATT_CRT_VOLT": 9.0,
+   "MOT_THST_EXPO": 0.65,
+   "MOT_PWM_MIN": 1000.0,
+   "MOT_PWM_MAX": 2000.0,
+   "MOT_SPIN_MIN": 0.15,
+   "MOT_THST_HOVER": 0.506
+  },
+  "ucus_n": 0,
+  "ucuslar": []
+ },
+ {
+  "dosya": "results\\ucus_20260915\\2026-09-15 11-18-16.bin",
+  "sha": "516f7ed85d9e",
+  "MB": 3.6,
+  "hucre": 4,
+  "V_ilk": 16.12,
+  "parm": {
+   "ARMING_CHECK": 1.0,
+   "INS_GYRO_FILTER": 20.0,
+   "INS_ACCEL_FILTER": 20.0,
+   "INS_HNTCH_ENABLE": 0.0,
+   "ATC_RAT_RLL_P": 0.135,
+   "ATC_RAT_PIT_P": 0.135,
+   "BATT_CAPACITY": 8000.0,
+   "BATT_LOW_VOLT": 10.0,
+   "BATT_CRT_VOLT": 9.0,
+   "MOT_THST_EXPO": 0.65,
+   "MOT_PWM_MIN": 1000.0,
+   "MOT_PWM_MAX": 2000.0,
+   "MOT_SPIN_MIN": 0.15,
+   "MOT_THST_HOVER": 0.502
+  },
+  "ucus_n": 3,
+  "ucuslar": [
+   {
+    "arm": 64.1,
+    "disarm": 97.1,
+    "ucus_s": 27.1,
+    "alt_maks": 4.07,
+    "ThO_ort": 0.325,
+    "ThO_havada": 0.326,
+    "ThH": 0.506,
+    "V_bas": 16.09,
+    "V_min": 14.54,
+    "A_ort": 30.3,
+    "A_maks": 48.9,
+    "mAh": 277,
+    "vibeX": 9.6,
+    "vibeY": 7.6,
+    "vibeZ": 21.7,
+    "vibeZ_ort": 10.5,
+    "clip": 0,
+    "olay": [
+     [
+      63.7,
+      "ERR",
+      "8=1"
+     ],
+     [
+      63.7,
+      "MSG",
+      "GCS Failsafe"
+     ],
+     [
+      64.1,
+      "MSG",
+      "GCS Failsafe Cleared"
+     ],
+     [
+      64.1,
+      "ERR",
+      "8=0"
+     ],
+     [
+      64.1,
+      "MOD",
+      "LOIT<RC"
+     ],
+     [
+      71.0,
+      "MSG",
+      "EKF3 IMU1 MAG0 in-flight yaw alignment c"
+     ],
+     [
+      71.0,
+      "MSG",
+      "EKF3 IMU0 MAG0 in-flight yaw alignment c"
+     ],
+     [
+      86.7,
+      "MOD",
+      "LAND<RC"
+     ]
+    ]
+   },
+   {
+    "arm": 121.7,
+    "disarm": 130.0,
+    "ucus_s": 3.2,
+    "alt_maks": -0.12,
+    "ThO_ort": 0.266,
+    "ThO_havada": null,
+    "ThH": 0.506,
+    "V_bas": 15.88,
+    "V_min": 14.35,
+    "A_ort": 13.4,
+    "A_maks": 51.4,
+    "mAh": 31,
+    "vibeX": 16.3,
+    "vibeY": 16.5,
+    "vibeZ": 55.8,
+    "vibeZ_ort": 6.0,
+    "clip": 0,
+    "olay": [
+     [
+      121.7,
+      "MOD",
+      "STAB<RC"
+     ]
+    ]
+   },
+   {
+    "arm": 138.9,
+    "disarm": 177.9,
+    "ucus_s": 30.0,
+    "alt_maks": 3.81,
+    "ThO_ort": 0.33,
+    "ThO_havada": 0.331,
+    "ThH": 0.502,
+    "V_bas": 15.89,
+    "V_min": 14.24,
+    "A_ort": 27.3,
+    "A_maks": 44.2,
+    "mAh": 296,
+    "vibeX": 8.1,
+    "vibeY": 6.8,
+    "vibeZ": 14.4,
+    "vibeZ_ort": 6.9,
+    "clip": 0,
+    "olay": [
+     [
+      138.2,
+      "MOD",
+      "LOIT<RC"
+     ],
+     [
+      138.9,
+      "MOD",
+      "LOIT<RC"
+     ],
+     [
+      149.2,
+      "MSG",
+      "EKF3 IMU0 MAG0 in-flight yaw alignment c"
+     ],
+     [
+      149.5,
+      "MSG",
+      "EKF3 IMU1 MAG0 in-flight yaw alignment c"
+     ],
+     [
+      167.5,
+      "MOD",
+      "LAND<RC"
+     ]
+    ]
+   }
+  ]
+ }
+]
