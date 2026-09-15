@@ -1,0 +1,16 @@
+# Soluk kurtarma paraşütü ripstop naylonu; düşük parlaklık, yüksek matlık.
+newmtl ripstop_orange
+Ka 0.30 0.14 0.07
+Kd 0.76 0.34 0.15
+Ks 0.045 0.045 0.040
+Ns 7.0
+d 0.97
+illum 2
+
+newmtl ripstop_ivory
+Ka 0.32 0.31 0.27
+Kd 0.84 0.82 0.72
+Ks 0.040 0.040 0.035
+Ns 6.0
+d 0.97
+illum 2

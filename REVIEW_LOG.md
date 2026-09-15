@@ -31394,3 +31394,207 @@ dk/seviye gerçek hıza göre çok kısa) — T262/T239 gibi ayrı bir görev a�
 FDR'yi bloklamıyor, şimdilik açılmadı.
 
 **Genel kapı:** dokunulmadı.
+
+---
+
+### D-487 — İKA "bilinen rota" DEMO render'ı eklendi (gerçek algı değil, açıkça etiketli) — kullanıcı talebi, sunum/FDR için
+
+**Yazan:** Claude (mimar, kod ameleliği: bu tek dosya, kullanıcı doğrudan istedi) ·
+**Kanıt:** `simulation/recordings/demo_bilinen_rota_kolay_20260914_232208/` (world.world,
+ground_truth_route.txt, frames/, gzserver.log, ETIKET_OKU.md) + ham manuel doğrulama
+`/tmp/navitas_simtime` çıktısı: `ika_kolay x=-93.0051 y=-21.8523 v=1.09947 wp=2
+rota=model` (IKA_SPEED=1.1 m/s ile birebir eşleşiyor).
+
+**Bağlam:** D-486 zaten kanıtladı — gerçek üretim zinciri (record.sh + iha_haritala.py,
+dürüst zincir) Gazebo'nun algı boşluğu yüzünden 3 seviyede de rota bulamıyor. Kullanıcı
+bu akşam (14 Eylül) sunum/FDR için "İKA zaten bildiği rotadan yürüsün" gösterimi istedi
+— 3 seviyenin (kolay/orta/zor) her birinde doğru rota koordinatları zaten
+`world_generator.py --record` çıktısında (`ROUTE_XY`) var.
+
+**Bulgu — `navitas_anim.cc` bunu KASITLI OLARAK engelliyordu:** İKA'nın SDF'e gömülü
+ground-truth waypoint'leri (`make_anim_plugin`'in `wp_world`'den ürettiği) hiçbir zaman
+doğrudan sürülmüyor — plugin yalnız `/tmp/navitas_route` (gerçek model çıkışı) varsa
+sürer, yoksa 45s sonra "ROTA_YOK" ile güvenli durur (`SDF ground-truth rota asla
+sürülmez` — kod yorumu, satır 222-234). Bu, dürüst zincir ilkesinin C++ seviyesinde
+zaten uygulanmış hali.
+
+**Yapılan:** Yeni script `simulation/docker/demo_render_ika_bilinen_rota.sh` —
+`record.sh`'ye DOKUNMADAN, ayrı bir yol: `world_generator.py --record` ile world+
+ROUTE_XY üretir, ROUTE_XY'yi `/tmp/navitas_route` biçimine (satır başı "x y") çevirip
+konteynerin İÇİNE `gzserver` başlamadan ELLE yazar. Çıktı klasörüne otomatik
+`ETIKET_OKU.md` düşer: "⚠ BİLİNEN ROTA DEMO — GERÇEK ALGI DEĞİL / hakem-model kanıtı
+DEĞİLDİR". Kullanım: `./demo_render_ika_bilinen_rota.sh {kolay|orta|zor} [--seed N]
+[--map N] [--profile ID] [--terrain ...] [--layout ...] [--duration SN]`.
+
+**Doğrulama (gerçek podman/gzserver11, `navitas-gazebo:11`):**
+1. Ham manuel test (1 kamera, hafif `--layout clean`, 560s duvar-saati): İKA
+   `rota=bekliyor` → İHA inişinden sonra `rota=model`'e geçti, KB'den 2. waypoint'e
+   doğru gerçek hızla (v≈1.1 m/s) ilerledi — log + `navitas_arena_rec_cam_link_cam
+   (6)-0461.jpg` (İKA'nın küçük kare olarak rotada ilerlediği görülüyor).
+2. Script'in kendisi uçtan uca (tüm 6 kamera, kolay, seed 260822, map 1, profil
+   cx_teknofest_official, 120s): exit code 0, `world.world` + `ground_truth_route.txt`
+   + 40 kare + `ETIKET_OKU.md` üretildi, hata yok.
+3. **Genel kapı (madde 14):** `codes/test_rota_sentetik.py` → **15/15** (kol1 15/15 ·
+   kol2 şerit 15/15) — bu değişiklik `codes/` dizinine dokunmadı, beklenen sonuç.
+
+**Dürüstlük notu (bkz [[koordinat-yedegi-durustluk-riski]]):** Bu DEMO, üretim/hakem
+zincirine hiçbir şekilde karışmaz — `record.sh`/`iha_haritala.py` değişmedi, İKA'nın
+gerçek görevde rota bulamama durumu (D-486) DÜZELMEDİ, sadece görsel sunum için ayrı
+ve açıkça etiketli bir yol açıldı.
+
+**Genel kapı:** GEÇTİ (15/15, yukarıda).
+
+---
+
+### D-488 — Hız düzeltmesi (D-438f üç-kopya kusuru kapatıldı) + her modelin 1 Hz eklemeli logu + kolay seviye TAM koşu doğrulandı (BAŞTAN SONA, gerçek fizik)
+
+**Yazan:** Claude (mimar) · **Kanıt:**
+`simulation/recordings/demo_bilinen_rota_kolay_20260915_114300/` (world.world,
+model_log.csv, ika_kolay_tam_kayit.mp4 [623 kare], gzserver.log).
+
+**Kullanıcı isteği (14/15 Eylül gece):** (1) paraşüt inişi 2-4 m/s bandına
+çekilsin (önceden 5,5 m/s), (2) "İKA yavaş değil mi" sorusu, (3) her model log
+tutsun, (4) İKA belirlenen koordinatlarla baştan sona hareket etsin.
+
+**Yapılan:**
+1. `simulation/scripts/world_generator.py`: `IKA_SPEED` artık **TEK KAYNAK**
+   `codes/karar_sozlesmesi.IKA_AZAMI_HIZ_MS` (1,3 m/s — DDR: 4×KGX38 24V 200rpm
+   × Ø0,125m teker) import ediyor; önceden 1,1 sabitiydi. `PHASE_SPEED["parasut"]`
+   5,5 → 3,0 m/s (2-4 bandı).
+2. `simulation/plugins/navitas_anim.cc`: `IKA_SPEED` (fiziği SÜREN gerçek C++
+   sabiti — world_generator'daki değer sadece log/zamanlama hesaplar, hareketi
+   BU dosya üretir) 1,1 → 1,3 m/s. **D-438f'nin "üç kopya" bulgusu (2,0/1,1/0,30)
+   artık ikisi (`ika_nav` zaten D-438'de düzeltilmişti, `navitas_anim.cc` şimdi)
+   aynı değerde (1,3).** Podman imajı yeniden derlendi (`podman build`, plugin
+   CMake ile temiz derlendi, hata yok).
+3. `navitas_anim.cc` `OnUpdate()`'e yeni eklemeli (append) log:
+   `/tmp/navitas_model_log.csv` — `traj` içindeki **HER model** (iha,
+   parachute_packed/partial/full, ika_*) için 1 Hz'de `t,model,x,y,z,yaw,v,wp,
+   rota,durum` satırı. Var olan `/tmp/navitas_simtime` (record_in_container.sh'nin
+   ayrıştırdığı tek-satır anlık durum) DOKUNULMADI — ayrı, ek dosya.
+   `demo_render_ika_bilinen_rota.sh` bu dosyayı çalışma sonunda `$OUTDIR/
+   model_log.csv`'ye kopyalıyor.
+
+**Doğrulama — kolay seviye TAM koşu (bekleme kesilmeden, gerçek podman/gzserver11,
+104 sim-sn, ~29 dk duvar-saati):**
+- `model_log.csv`: 5 model, hepsi t=0,001'den t=104,003'e **105 satır, boşluksuz**
+  (iha, ika_kolay, parachute_full/packed/partial).
+- `ika_kolay` durum geçişleri: `bekliyor`(t=0) → `model`(t=39,0, İHA inişi+1,5s'ye
+  denk) → `BITTI`(t=83,0). Sürüş süresi 44s (hesaplanan `IKA_DRIVE_T=44,7` ile
+  örtüşüyor).
+- Sürüş sırasında hız: ort=1,26 m/s, maks=1,30 m/s — **yeni 1,3 m/s tavanla
+  birebir**.
+- Varış konumu `x=-101,341 y=20,773`, hedef `HB_XY=-101,15,21,00` — **0,3 m
+  fark, tolerans (`FINAL_WP_RADIUS=0,3`) içinde.**
+- Görsel kanıt: `ika_kolay_tam_kayit.mp4` (üstten kamera, tam sekans: İHA uçuş →
+  paraşüt iniş → İKA'nın bilinen 21 waypoint'i baştan sona yürümesi → HB'de duruş).
+
+**Genel kapı (madde 14):** GEÇTİ — 15/15 (kol1+kol2), değişiklik `codes/`
+dizinine dokunmadı.
+
+**Dürüstlük notu:** Bu koşu da D-487'deki gibi `/tmp/navitas_route`'a ELLE
+yazılan ground-truth ROUTE_XY ile sürüldü — `record.sh`/gerçek model zinciri
+DEĞİL. Kullanıcı bu videonun kullanım amacını (dahili gösterim + "örnek olarak"
+sunum) açıkça belirtti; `ETIKET_OKU.md` yine de klasörde duruyor (bkz D-487,
+[[koordinat-yedegi-durustluk-riski]]).
+
+**Kapsam dışı bırakılan (kullanıcı kararı):** orta/zor seviyeler için tam render
+KOŞULMADI — kullanıcı "kolay olursa diğerlerinin de olduğunu varsayarız" dedi.
+Ucuz bir ön-kontrol yapıldı: `world_generator.py --record --focus {orta,zor}`
+her ikisi için de geçerli `ROUTE_XY` üretti (orta: 58,2m/44,7s; zor: 83,2m/64,0s)
+— aynı kod yolu, render'sız doğrulama. Tam render istenirse aynı script
+(`demo_render_ika_bilinen_rota.sh {orta|zor}`) hazır.
+
+
+## Codex kaynak yeniden denetimi — 15 Eylül 2026
+
+Kanıt: `results/yazilim_rapor_senkron_20260915/ikinci_kontrol/IKINCI_INCELEME.md` E01–E08. Komut: `python results/yazilim_rapor_senkron_20260915/ikinci_kontrol/dogrula.py`; çıkış 0. Gerçek watch fonksiyonunda taklit saat/YOLO ile 3 zaman aşımı, 0 çıkarım, normal None dönüşü üretildi. Gerçek veri parmak izi fonksiyonunda aynı boyutta AAAA→BBBB değişikliği yakalanmadı. 29 kare matrisi ve 105 sonuç JSON’u tekrar sayıldı. Üretim kusurları onarılmadı; bağımsız inceleme bekler. Mevcut kayıtlar değiştirilmedi.
+
+---
+
+### D-489 — Bilinen-rota demo kaynağı doğrulandı + `demo_render_ika_bilinen_rota.sh` 3 hata düzeltildi + kolay seviye yeniden kaydedildi
+
+**Yazan:** Claude (mimar, kullanıcı doğrudan istedi) · **Kanıt:**
+`simulation/recordings/demo_bilinen_rota_kolay_20260915_221557/` (meta.txt, model_log.csv,
+ika_kolay.mp4, frames/ 939 kare, gzserver.log).
+
+**Kaynak doğrulaması (D-488 koşusu `..._20260915_114300/` üzerinde ölçüm, world.world
+collision kutuları + model_log.csv):** 717 engel collision kutusu (deb/blk/chic/bar_kolay);
+ROUTE_XY'nin engel kenarına en yakın mesafesi **1,339 m** (chic_kolay_1); gerçek İKA izinin
+rotadan maks sapması **0,114 m**, engele min mesafesi **1,432 m**; İKA gövdesi 0,66×0,50 m
+(yarı köşegen ~0,41 m) → temas yok. gzserver.log'daki tek `[Err]` Gazebo 11'in bilinen
+`SetParam(gravity) bad any_cast` mesajı.
+
+**Hatalar (düzeltildi):**
+1. `sleep $DURATION` DUVAR saatiydi (vars. 200 s ≈ 12 sim-sn → İKA yürümeden kesilirdi).
+   → `/tmp/navitas_simtime` sorgusu: `durum=BITTI` + 5 sim-sn; `ROTA_YOK`/gzserver ölümü/
+   duvar sınırı ayrı SON_DURUM; `meta.txt` yazılıyor; `--duration` = duvar sınırı (vars. 3600).
+2. Eski mp4 sabit 15 fps (623 kare/104 sim-sn → 41,5 s video = **2,5× hızlı**).
+   → konteyner içinde fps = kare/sim-sn tam oranıyla `ika_<seviye>.mp4`.
+3. İlk düzeltme denemesi `set -e` altında `ST=$(head …)` (dosya henüz yok) ile 5. saniyede
+   çöktü (0 kare) → `|| true`. Boş klasör silindi.
+
+**Kolay koşu sonucu (podman navitas-gazebo:11):** `SON_DURUM=BITTI SIM_T=88 WALL_SECONDS=2560`,
+EXIT=0. İKA: `bekliyor`(0) → `model`(39,0) → `BITTI`(83,0); varış (-101,334, 20,768) vs
+HB (-101,15, 21,00) = **0,30 m**; sürüş hızı ort 1,28 / maks 1,30 m/s. Video: script'in
+yuvarlanmış 11 fps'i 85,4 s verdi (%3 hızlı) → host'ta `-framerate 939/88` ile yeniden
+kodlandı → **88,0 s**; script de tam oranı kullanacak şekilde düzeltildi (bu son satır
+tam koşuyla YENİDEN TEST EDİLMEDİ, aynı ffmpeg biçimi host'ta doğrulandı).
+Video karelerinde metin/overlay yok (son kare: İKA H pedinde).
+
+**Açık not:** Demo `/tmp/navitas_route`'u ground-truth ile doldurduğu için plugin log'u
+(`gzserver.log` "İHA MODEL haritası yüklendi", `model_log.csv` `rota=model`) bu koşuda
+kaynağı yanlış adlandırıyor — plugin'e dokunulmadı. Gerçek algı zinciri hâlâ rota bulamıyor
+(D-486). `ETIKET_OKU.md` klasörde duruyor.
+
+**Genel kapı (madde 14):** GEÇTİ — `test_rota_sentetik.py` 15/15 (kol1+kol2), bu oturumda
+koşuldu; değişiklik `codes/`'a dokunmadı.
+
+---
+
+### D-490 — world_generator: chicane/tıkama/dağınık moloz AÇIK ROTANIN İÇİNE taşıyordu (orta ve zor İKA'yı fiziksel olarak kilitliyordu) — düzeltildi
+
+**Yazan:** Claude (mimar, kullanıcı "hata varsa gider" dedi) · **Kanıt:** scratchpad ölçüm
+betiği (`olc.py`: 2B segment↔döndürülmüş kutu mesafesi, ROUTE_XY vs `deb/blk/chic/bar`
+collision kutuları) + `simulation/scripts/dogrula_gereksinimler.py` öncesi/sonrası +
+durdurulan render `simulation/recordings/demo_bilinen_rota_orta_20260915_231631/`
+(bozuk dünya; İKA başlamadan durduruldu, `podman stop`).
+
+**Bulgu (seed 260822, map 1, cx_teknofest_official, plain/clean):** rota çizgisine en
+yakın collision kutusu —
+- orta: `chic_orta_3/col_4` rotanın **0,645 m İÇİNDE** (kutu 4,34×1,35×0,57 m, static);
+  `chic_orta_0/col_3` 0,058 m → İKA (yarı genişlik 0,25) sürtünür/takılır.
+- zor: `blk_zor_2_3_3` (KAPALI yol 2'nin tıkama kümesi, yolların HB'ye yakınsadığı
+  y≈16 bölgesi) açık rota çizgisini **kesiyor** (0,0 m).
+- kolay: en yakın 1,34 m (D-489 koşusu bu yüzden geçti).
+- `dogrula_gereksinimler.py` öncesi: kolay 12/12, **orta 10/12 (REQ-NAV-001/002 FAIL)**,
+  zor 12/12 (BFS çevresinden dolaşıyor ama bilinen rota çizgisi kümeyi kesiyor).
+
+**Kök neden:** `make_zone_debris` yalnız küme MERKEZİNİ açık yola göre kontrol ediyordu
+(chicane: segment normali boyunca `clear + 0.4..1.1` m; tıkama: hiç kontrol yok). `_rubble`
+plain/big kümesinde parça ≤~5 m uzunluk + ≤2,1 m yayılım → merkezi dışarıda olan küme
+şeride/rotaya taşıyor; kıvrımda komşu segment ayrıca yaklaşıyor.
+
+**Düzeltme (`simulation/scripts/world_generator.py`):** `_seg_box_dist` + `_cluster_route_gap`
+(üretilen küme XML'inin TÜM collision kutuları — plain `<box>` ve realism mesh-kutu biçimi
+— açık rota polyline'ına tam 2B mesafe). Eşik `corridor = lane_w/2` (hiçbir moloz kutusu
+açık şeride giremez):
+- chicane: ihlalde 6 denemeye kadar +0,8 m daha dışarı, olmazsa atla (ilk deneme rng
+  akışını eskisiyle aynı tüketir);
+- dağınık moloz: ihlalde yerleştirme reddedilir (mevcut `tries` döngüsü);
+- tıkama (`blk_`): açık şeride taşan küme atlanır (rng akışı değişmez).
+Bariyerler (`bar_`) değişmedi: 0,81–0,88 m (şerit içinde ama İKA yarı köşegeni 0,41 m <
+mesafe, geçilebilir) — AÇIK not.
+
+**Sonrası (aynı parametreler):** `olc.py` rota çizgisi → en yakın kutu: kolay chic 2,91 /
+deb 3,03; orta chic 2,52 / blk 2,85 / deb 2,77; zor chic 2,50 / blk 2,13 / deb 2,19;
+textured orta/zor ≥2,39 m. (kolay chic 2,91 < 3,0: ROUTE_XY ile `H["paths"]` polyline farkı,
+fiziksel önemsiz.) `dogrula_gereksinimler.py`: kolay/orta/zor plain + orta textured →
+**hepsi 12/12**, REQ-ROUTE-003 kapalı yollar hâlâ engelli (zor orta-yol 9/22→8/22 wp),
+REQ-SIM-003 byte-eş determinizm PASS.
+
+**Yan etki:** ihlal olan seed'lerde dünya değişir (reddedilen moloz sonrası rng akışı
+kayar). D-489 kolay videosu ESKİ dünyayla çekildi (klasördeki world.world geçerli kopyası).
+
+**Genel kapı (madde 14):** GEÇTİ — `test_rota_sentetik.py` kol1 15/15 · kol2 şerit 15/15
+(world_generator'ı import ediyor, düzeltme sonrası koşuldu).

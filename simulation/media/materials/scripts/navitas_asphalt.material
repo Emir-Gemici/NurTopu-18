@@ -1,0 +1,20 @@
+material Navitas/RealArenaAsphalt
+{
+  technique
+  {
+    pass
+    {
+      ambient 0.8675 0.6631 0.7601 1.0
+      diffuse 0.8675 0.6631 0.7601 1.0
+      specular 0.04 0.04 0.04 1.0 8
+
+      texture_unit
+      {
+        texture asphalt_arena.png
+        filtering anisotropic
+        max_anisotropy 8
+        scale 25.0 25.0
+      }
+    }
+  }
+}

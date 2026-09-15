@@ -1,0 +1,488 @@
+{
+ "meshes": [
+  {
+   "name": "slab_0",
+   "type": "slab",
+   "verts": 14,
+   "tris": 24,
+   "bbox": [
+    2.7953,
+    1.6346,
+    0.2643
+   ]
+  },
+  {
+   "name": "slab_1",
+   "type": "slab",
+   "verts": 16,
+   "tris": 28,
+   "bbox": [
+    1.6972,
+    2.146,
+    0.1082
+   ]
+  },
+  {
+   "name": "slab_2",
+   "type": "slab",
+   "verts": 14,
+   "tris": 24,
+   "bbox": [
+    2.0978,
+    1.9816,
+    0.1274
+   ]
+  },
+  {
+   "name": "slab_3",
+   "type": "slab",
+   "verts": 20,
+   "tris": 36,
+   "bbox": [
+    1.5307,
+    1.3842,
+    0.2946
+   ]
+  },
+  {
+   "name": "slab_4",
+   "type": "slab",
+   "verts": 14,
+   "tris": 24,
+   "bbox": [
+    2.3673,
+    1.1073,
+    0.1391
+   ]
+  },
+  {
+   "name": "slab_5",
+   "type": "slab",
+   "verts": 14,
+   "tris": 24,
+   "bbox": [
+    1.342,
+    1.1477,
+    0.1558
+   ]
+  },
+  {
+   "name": "block_0",
+   "type": "block",
+   "verts": 8,
+   "tris": 12,
+   "bbox": [
+    0.7258,
+    0.439,
+    0.3411
+   ]
+  },
+  {
+   "name": "block_1",
+   "type": "block",
+   "verts": 8,
+   "tris": 12,
+   "bbox": [
+    0.7072,
+    0.9473,
+    0.2675
+   ]
+  },
+  {
+   "name": "block_2",
+   "type": "block",
+   "verts": 8,
+   "tris": 12,
+   "bbox": [
+    0.9368,
+    0.9565,
+    0.214
+   ]
+  },
+  {
+   "name": "block_3",
+   "type": "block",
+   "verts": 8,
+   "tris": 12,
+   "bbox": [
+    0.6235,
+    0.8929,
+    0.4525
+   ]
+  },
+  {
+   "name": "block_4",
+   "type": "block",
+   "verts": 8,
+   "tris": 12,
+   "bbox": [
+    0.4899,
+    0.9705,
+    0.1993
+   ]
+  },
+  {
+   "name": "block_5",
+   "type": "block",
+   "verts": 8,
+   "tris": 12,
+   "bbox": [
+    0.6875,
+    0.8467,
+    0.3196
+   ]
+  },
+  {
+   "name": "column_0",
+   "type": "column",
+   "verts": 8,
+   "tris": 12,
+   "bbox": [
+    1.7508,
+    0.4033,
+    0.1684
+   ]
+  },
+  {
+   "name": "column_1",
+   "type": "column",
+   "verts": 8,
+   "tris": 12,
+   "bbox": [
+    2.0914,
+    0.4014,
+    0.1615
+   ]
+  },
+  {
+   "name": "column_2",
+   "type": "column",
+   "verts": 8,
+   "tris": 12,
+   "bbox": [
+    3.0949,
+    0.497,
+    0.2028
+   ]
+  },
+  {
+   "name": "column_3",
+   "type": "column",
+   "verts": 8,
+   "tris": 12,
+   "bbox": [
+    2.5789,
+    0.4004,
+    0.1929
+   ]
+  },
+  {
+   "name": "wall_0",
+   "type": "wall",
+   "verts": 64,
+   "tris": 96,
+   "bbox": [
+    1.5692,
+    0.2071,
+    0.85
+   ]
+  },
+  {
+   "name": "wall_1",
+   "type": "wall",
+   "verts": 56,
+   "tris": 84,
+   "bbox": [
+    1.9292,
+    0.1949,
+    0.9619
+   ]
+  },
+  {
+   "name": "wall_2",
+   "type": "wall",
+   "verts": 72,
+   "tris": 108,
+   "bbox": [
+    1.1279,
+    0.1498,
+    1.2486
+   ]
+  },
+  {
+   "name": "wall_3",
+   "type": "wall",
+   "verts": 56,
+   "tris": 84,
+   "bbox": [
+    1.3828,
+    0.2039,
+    0.5458
+   ]
+  },
+  {
+   "name": "wall_4",
+   "type": "wall",
+   "verts": 56,
+   "tris": 84,
+   "bbox": [
+    2.5986,
+    0.2474,
+    0.6583
+   ]
+  },
+  {
+   "name": "brick_0",
+   "type": "brick",
+   "verts": 32,
+   "tris": 48,
+   "bbox": [
+    1.0067,
+    0.6703,
+    0.1737
+   ]
+  },
+  {
+   "name": "brick_1",
+   "type": "brick",
+   "verts": 32,
+   "tris": 48,
+   "bbox": [
+    0.6433,
+    0.6435,
+    0.1532
+   ]
+  },
+  {
+   "name": "brick_2",
+   "type": "brick",
+   "verts": 48,
+   "tris": 72,
+   "bbox": [
+    0.7305,
+    0.6021,
+    0.2418
+   ]
+  },
+  {
+   "name": "brick_3",
+   "type": "brick",
+   "verts": 24,
+   "tris": 36,
+   "bbox": [
+    0.5401,
+    0.3782,
+    0.1479
+   ]
+  },
+  {
+   "name": "brick_4",
+   "type": "brick",
+   "verts": 24,
+   "tris": 36,
+   "bbox": [
+    0.5147,
+    0.3605,
+    0.2099
+   ]
+  },
+  {
+   "name": "pile_0",
+   "type": "pile",
+   "verts": 128,
+   "tris": 192,
+   "bbox": [
+    2.66,
+    2.9286,
+    0.4918
+   ]
+  },
+  {
+   "name": "pile_1",
+   "type": "pile",
+   "verts": 120,
+   "tris": 180,
+   "bbox": [
+    3.6376,
+    3.319,
+    0.4674
+   ]
+  },
+  {
+   "name": "pile_2",
+   "type": "pile",
+   "verts": 128,
+   "tris": 192,
+   "bbox": [
+    3.4499,
+    3.5435,
+    0.4788
+   ]
+  },
+  {
+   "name": "pile_3",
+   "type": "pile",
+   "verts": 136,
+   "tris": 204,
+   "bbox": [
+    3.2273,
+    3.0435,
+    0.4796
+   ]
+  },
+  {
+   "name": "pile_4",
+   "type": "pile",
+   "verts": 96,
+   "tris": 144,
+   "bbox": [
+    1.9839,
+    3.0768,
+    0.5894
+   ]
+  },
+  {
+   "name": "pile_5",
+   "type": "pile",
+   "verts": 152,
+   "tris": 228,
+   "bbox": [
+    3.6576,
+    3.2621,
+    0.6925
+   ]
+  },
+  {
+   "name": "pile_6",
+   "type": "pile",
+   "verts": 112,
+   "tris": 168,
+   "bbox": [
+    2.767,
+    2.3245,
+    0.3404
+   ]
+  },
+  {
+   "name": "crumble_0",
+   "type": "crumble",
+   "verts": 48,
+   "tris": 72,
+   "bbox": [
+    1.1675,
+    1.046,
+    0.1482
+   ]
+  },
+  {
+   "name": "crumble_1",
+   "type": "crumble",
+   "verts": 64,
+   "tris": 96,
+   "bbox": [
+    1.0486,
+    1.4028,
+    0.2015
+   ]
+  },
+  {
+   "name": "crumble_2",
+   "type": "crumble",
+   "verts": 64,
+   "tris": 96,
+   "bbox": [
+    1.3815,
+    1.1089,
+    0.1434
+   ]
+  },
+  {
+   "name": "crumble_3",
+   "type": "crumble",
+   "verts": 64,
+   "tris": 96,
+   "bbox": [
+    0.5703,
+    0.9507,
+    0.1925
+   ]
+  },
+  {
+   "name": "crumble_4",
+   "type": "crumble",
+   "verts": 64,
+   "tris": 96,
+   "bbox": [
+    0.8049,
+    0.9276,
+    0.2077
+   ]
+  },
+  {
+   "name": "crumble_5",
+   "type": "crumble",
+   "verts": 40,
+   "tris": 60,
+   "bbox": [
+    1.2051,
+    0.9382,
+    0.1383
+   ]
+  },
+  {
+   "name": "beam_0",
+   "type": "beam",
+   "verts": 8,
+   "tris": 12,
+   "bbox": [
+    3.7317,
+    0.1132,
+    0.1116
+   ]
+  },
+  {
+   "name": "beam_1",
+   "type": "beam",
+   "verts": 8,
+   "tris": 12,
+   "bbox": [
+    1.8776,
+    0.2097,
+    0.049
+   ]
+  },
+  {
+   "name": "beam_2",
+   "type": "beam",
+   "verts": 8,
+   "tris": 12,
+   "bbox": [
+    2.4514,
+    0.1192,
+    0.1153
+   ]
+  },
+  {
+   "name": "beam_3",
+   "type": "beam",
+   "verts": 8,
+   "tris": 12,
+   "bbox": [
+    1.4178,
+    0.1198,
+    0.0774
+   ]
+  },
+  {
+   "name": "beam_4",
+   "type": "beam",
+   "verts": 8,
+   "tris": 12,
+   "bbox": [
+    2.6656,
+    0.1313,
+    0.0839
+   ]
+  }
+ ]
+}

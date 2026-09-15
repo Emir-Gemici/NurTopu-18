@@ -1,0 +1,242 @@
+{
+  "inspection_time": "2026-09-15T18:33:37.021805+00:00",
+  "local_head": "ab906f3a1c6c3aea26807275602e4a1570a7a159",
+  "remote_tracking_head": "0a0431078d18990b2c6839899aeff9ca1dc6c0f0",
+  "live_remote_observation": {
+    "command": "timeout 20s git ls-remote origin refs/heads/master",
+    "exit_code": 0,
+    "sha": "0a0431078d18990b2c6839899aeff9ca1dc6c0f0",
+    "note": "Separate read-only command succeeded during this session; push times below are local reflog observations."
+  },
+  "files": [
+    {
+      "path": "NAVITAS_FDR_3_3_FINAL.docx",
+      "exists": true,
+      "sha256": "f3120da5eff126ddb97eb6860ccf16f9ac1792d2d18d104951c94cfca16c6b9c",
+      "mtime": "2026-09-14T13:18:01.689389+03:00",
+      "bytes": 14027221,
+      "tracked": false,
+      "software_passages": [
+        "Görüntüden rota üretimi için ön kayıtlı doğru etiket eşiği en az 12/15'tir. Model-mozaik doğru etiket sonuçları tohum 42/43/44 için 6/15, 1/15 ve 3/15; ACK'li geçerli rota sayıları 5/15, 1/15 ve 3/15'tir. Üretim kare tabanlı kerteriz beslemesi 1/15, ham besleme tanısal koşusu 0/15'tir. Bu koşular eşik altında kalmıştır.",
+        "Üretim modeli navitas-seg-v36-512, YOLOv8m-seg tabanlıdır. Girdi boyutu 512 px, sınıflar zemin ve engeldir; hedef H işareti ayrı görüntü/geometri denetiminden geçer. Model dosyasının SHA-256 özeti 1d1caca6f6da19ea35e69186a048da960ca5188be6ee6d49d6106457cac46911 olup dosya ve model kayıt defteriyle eşleştirilmiştir. [K8]",
+        "Işık/gölge duyarlılığı. Mevcut sentetik render varyantları üretim modeli değiştirilmeden değerlendirilmiştir. [K10]",
+        "Taban/v1 güneş yüksekliği yaklaşık 64,5°, v2/v3 yaklaşık 39,9°'dir. V3'te ek olarak moloz geometrisi değişir. Bu ölçümler önceki arena yerleşimine aittir. Birden fazla etken değiştiği için başarı farkının yalnız gölgeden kaynaklandığı sonucuna varılmamıştır."
+      ]
+    },
+    {
+      "path": "NAVITAS_FDR_3_3_FINAL_REV2.docx",
+      "exists": true,
+      "sha256": "f4b16f21582bf87c3feccd6dd50206c14f8aab14cdc9af723a1bfc31b3f44007",
+      "mtime": "2026-09-14T14:17:56.347736+03:00",
+      "bytes": 14557953,
+      "tracked": false,
+      "software_passages": [
+        "Görüntüden rota üretimi için ön kayıtlı doğru etiket eşiği en az 12/15'tir. Model-mozaik doğru etiket sonuçları tohum 42/43/44 için 6/15, 1/15 ve 3/15; ACK'li geçerli rota sayıları 5/15, 1/15 ve 3/15'tir. Üretim kare tabanlı kerteriz beslemesi 1/15, ham besleme tanısal koşusu 0/15'tir. Bu koşular eşik altında kalmıştır.",
+        "Üretim modeli navitas-seg-v36-512, YOLOv8m-seg tabanlıdır. Girdi boyutu 512 px, sınıflar zemin ve engeldir; hedef H işareti ayrı görüntü/geometri denetiminden geçer. Model dosyasının SHA-256 özeti 1d1caca6f6da19ea35e69186a048da960ca5188be6ee6d49d6106457cac46911 olup dosya ve model kayıt defteriyle eşleştirilmiştir. [K8]",
+        "Işık/gölge duyarlılığı. Mevcut sentetik render varyantları üretim modeli değiştirilmeden değerlendirilmiştir. [K10]",
+        "Taban/v1 güneş yüksekliği yaklaşık 64,5°, v2/v3 yaklaşık 39,9°'dir. V3'te ek olarak moloz geometrisi değişir. Bu ölçümler önceki arena yerleşimine aittir. Birden fazla etken değiştiği için başarı farkının yalnız gölgeden kaynaklandığı sonucuna varılmamıştır."
+      ]
+    },
+    {
+      "path": "NAVITAS_FDR_3_3_FINAL_REV3.docx",
+      "exists": true,
+      "sha256": "64c210d3825cafcd5adeef8bb15af0afb945e7cfa550c9e03a7213bf9078662a",
+      "mtime": "2026-09-14T14:59:19.762462+03:00",
+      "bytes": 15877382,
+      "tracked": false,
+      "software_passages": [
+        "Görüntüden rota üretiminin ön kayıtlı doğru etiket eşiği en az 12/15’tir. Model–mozaik sonuçları tohum 42/43/44 için 6/15, 1/15 ve 3/15; ACK’li geçerli rota sayıları 5/15, 1/15 ve 3/15’tir. Üretim kare tabanlı kerteriz beslemesi 1/15, tanısal ham besleme 0/15’tir. Bu deneyler kabul eşiğini karşılamamıştır. [K6]",
+        "Işık/gölge duyarlılığı. Mevcut sentetik render varyantları üretim modeli değiştirilmeden değerlendirilmiştir. [K10]",
+        "Taban/v1 güneş yüksekliği yaklaşık 64,5°, v2/v3 yaklaşık 39,9°'dir. V3'te ek olarak moloz geometrisi değişir. Bu ölçümler önceki arena yerleşimine aittir. Birden fazla etken değiştiği için başarı farkının yalnız gölgeden kaynaklandığı sonucuna varılmamıştır."
+      ]
+    },
+    {
+      "path": "NAVITAS_FDR_3_3_FINAL_REV4.docx",
+      "exists": true,
+      "sha256": "48ff35d4bc8d09f2111896932d0933f7f8fa44e48ef9f1db5ec7a47c6e0eeedb",
+      "mtime": "2026-09-14T16:34:42.850191+03:00",
+      "bytes": 16224765,
+      "tracked": false,
+      "software_passages": [
+        "Görüntüden rota üretiminin ön kayıtlı doğru etiket eşiği en az 12/15’tir. Model–mozaik sonuçları tohum 42/43/44 için 6/15, 1/15 ve 3/15; ACK’li geçerli rota sayıları 5/15, 1/15 ve 3/15’tir. Üretim kare tabanlı kerteriz beslemesi 1/15, tanısal ham besleme 0/15’tir. Bu deneyler kabul eşiğini karşılamamıştır. [K6]",
+        "Işık/gölge duyarlılığı. Mevcut sentetik render varyantları üretim modeli değiştirilmeden değerlendirilmiştir. [K10]",
+        "Taban/v1 güneş yüksekliği yaklaşık 64,5°, v2/v3 yaklaşık 39,9°'dir. V3'te ek olarak moloz geometrisi değişir. Bu ölçümler önceki arena yerleşimine aittir. Birden fazla etken değiştiği için başarı farkının yalnız gölgeden kaynaklandığı sonucuna varılmamıştır."
+      ]
+    },
+    {
+      "path": "NAVITAS_FDR_3_3_FINAL_REV6.docx",
+      "exists": true,
+      "sha256": "de99b82e5be57b5c4ddfd8bad8638b1ce7a3387c5310a16462ea264ac3489bab",
+      "mtime": "2026-09-14T22:03:45.224354+03:00",
+      "bytes": 12190937,
+      "tracked": false,
+      "software_passages": [
+        "Görüntüden rota üretimi için ön kayıtlı doğru etiket eşiği en az 12/15'tir. Model-mozaik doğru etiket sonuçları tohum 42/43/44 için 6/15, 1/15 ve 3/15; ACK'li geçerli rota sayıları 5/15, 1/15 ve 3/15'tir. Üretim kare tabanlı kerteriz beslemesi 1/15, ham besleme tanısal koşusu 0/15'tir. Bu koşular eşik altında kalmıştır.",
+        "Üretim modeli navitas-seg-v36-512, YOLOv8m-seg tabanlıdır. Girdi boyutu 512 px, sınıflar zemin ve engeldir; hedef H işareti ayrı görüntü/geometri denetiminden geçer. Model dosyasının SHA-256 özeti 1d1caca6f6da19ea35e69186a048da960ca5188be6ee6d49d6106457cac46911 olup dosya ve model kayıt defteriyle eşleştirilmiştir. [K8]",
+        "Işık/gölge duyarlılığı. Mevcut sentetik render varyantları üretim modeli değiştirilmeden değerlendirilmiştir. [K10]",
+        "Taban/v1 güneş yüksekliği yaklaşık 64,5°, v2/v3 yaklaşık 39,9°'dir. V3'te ek olarak moloz geometrisi değişir. Bu ölçümler önceki arena yerleşimine aittir. Birden fazla etken değiştiği için başarı farkının yalnız gölgeden kaynaklandığı sonucuna varılmamıştır."
+      ]
+    },
+    {
+      "path": "NAVITAS_FDR_3_3_FINAL_REV7.docx",
+      "exists": true,
+      "sha256": "eb9fbf4ac1e78674737c2157dea56c92acf0224d03c159a81f8f9ca8113c06e8",
+      "mtime": "2026-09-14T22:31:32.852956+03:00",
+      "bytes": 12214085,
+      "tracked": false,
+      "software_passages": [
+        "Görüntüden rota üretimi için ön kayıtlı doğru etiket eşiği en az 12/15'tir. Model-mozaik doğru etiket sonuçları tohum 42/43/44 için 6/15, 1/15 ve 3/15; ACK'li geçerli rota sayıları 5/15, 1/15 ve 3/15'tir. Üretim kare tabanlı kerteriz beslemesi 1/15, ham besleme tanısal koşusu 0/15'tir. Bu koşular eşik altında kalmıştır.",
+        "Üretim modeli navitas-seg-v36-512, YOLOv8m-seg tabanlıdır. Girdi boyutu 512 px, sınıflar zemin ve engeldir; hedef H işareti ayrı görüntü/geometri denetiminden geçer. Model dosyasının SHA-256 özeti 1d1caca6f6da19ea35e69186a048da960ca5188be6ee6d49d6106457cac46911 olup dosya ve model kayıt defteriyle eşleştirilmiştir. [K8]",
+        "Işık/gölge duyarlılığı. Mevcut sentetik render varyantları üretim modeli değiştirilmeden değerlendirilmiştir. [K10]",
+        "Taban/v1 güneş yüksekliği yaklaşık 64,5°, v2/v3 yaklaşık 39,9°'dir. V3'te ek olarak moloz geometrisi değişir. Bu ölçümler önceki arena yerleşimine aittir. Birden fazla etken değiştiği için başarı farkının yalnız gölgeden kaynaklandığı sonucuna varılmamıştır."
+      ]
+    },
+    {
+      "path": "NAVITAS_FDR_BIRLESIK.docx",
+      "exists": true,
+      "sha256": "0154cd5a54711417b00e7c3e3e89bf9c89108f6217cab95a3716ebcc857824c1",
+      "mtime": "2026-09-15T17:27:56.116907+03:00",
+      "bytes": 25288319,
+      "tracked": false,
+      "software_passages": [
+        "Görüntüden rota üretimi için ön kayıtlı doğru etiket eşiği en az 12/15'tir. Model-mozaik doğru etiket sonuçları tohum 42/43/44 için 6/15, 1/15 ve 3/15; ACK'li geçerli rota sayıları 5/15, 1/15 ve 3/15'tir. Üretim kare tabanlı kerteriz beslemesi 1/15, ham besleme tanısal koşusu 0/15'tir. Bu koşular eşik altında kalmıştır.",
+        "Üretim modeli navitas-seg-v36-512, YOLOv8m-seg tabanlıdır. Girdi boyutu 512 px, sınıflar zemin ve engeldir; hedef H işareti ayrı görüntü/geometri denetiminden geçer. Model dosyasının SHA-256 özeti 1d1caca6f6da19ea35e69186a048da960ca5188be6ee6d49d6106457cac46911 olup dosya ve model kayıt defteriyle eşleştirilmiştir. [K8]",
+        "Işık/gölge duyarlılığı. Mevcut sentetik render varyantları üretim modeli değiştirilmeden değerlendirilmiştir. [K10]",
+        "Taban/v1 güneş yüksekliği yaklaşık 64,5°, v2/v3 yaklaşık 39,9°'dir. V3'te ek olarak moloz geometrisi değişir. Bu ölçümler önceki arena yerleşimine aittir. Birden fazla etken değiştiği için başarı farkının yalnız gölgeden kaynaklandığı sonucuna varılmamıştır."
+      ]
+    },
+    {
+      "path": "config/model_registry.json",
+      "exists": true,
+      "sha256": "dd3ceb5fc05f03756b4df94d73d0a430c5318281485432a2aa563b638375efa4",
+      "mtime": "2026-09-12T14:24:13.315013+03:00",
+      "bytes": 29731,
+      "tracked": true
+    },
+    {
+      "path": "models/navitas_seg_v36_best.pt",
+      "exists": true,
+      "sha256": "1d1caca6f6da19ea35e69186a048da960ca5188be6ee6d49d6106457cac46911",
+      "mtime": "2026-09-14T08:42:32.686110+03:00",
+      "bytes": 54788636,
+      "tracked": false
+    },
+    {
+      "path": "models/navitas_seg_v37_best.pt",
+      "exists": true,
+      "sha256": "6aeca0c125a2943dbc47b38233cedb7b9cb2ad52706bff3f94fa07b2359a20e5",
+      "mtime": "2026-09-14T08:42:33.633110+03:00",
+      "bytes": 54839756,
+      "tracked": false
+    },
+    {
+      "path": "simulation/scripts/world_generator.py",
+      "exists": true,
+      "sha256": "03c9035d58f3e9c3529fb2c802d80814ae90bb754226c550f6aa475bcdab8a8f",
+      "mtime": "2026-09-14T23:36:03.241222+03:00",
+      "bytes": 70197,
+      "tracked": true
+    },
+    {
+      "path": "simulation/plugins/navitas_anim.cc",
+      "exists": true,
+      "sha256": "d2e26e67a89cfa46d8adc0c7816dc66e8f91d1dca62cf256ada5e22f32f6be22",
+      "mtime": "2026-09-15T11:41:57.191947+03:00",
+      "bytes": 18463,
+      "tracked": true
+    },
+    {
+      "path": "simulation/recordings/rv41/detections.json",
+      "exists": true,
+      "sha256": "25aa9e342be6ed799757c79cdacd1a3cab9ac2171a967c7f886e654c3536cc71",
+      "mtime": "2026-09-14T10:00:13.450437+03:00",
+      "bytes": 577,
+      "tracked": false
+    },
+    {
+      "path": "simulation/recordings/rv41/iha_haritala.log",
+      "exists": true,
+      "sha256": "bb2f983729e0db6f1901cc5ea2f0459d43508bbb9551d29a757273b226a0aa4e",
+      "mtime": "2026-09-14T11:00:13.826013+03:00",
+      "bytes": 873,
+      "tracked": false
+    },
+    {
+      "path": "simulation/recordings/demo_bilinen_rota_kolay_20260915_114300/ETIKET_OKU.md",
+      "exists": true,
+      "sha256": "732c9ababb18f1be23e0c18e88ca4cd195d7ba5c0617973d232a60cb82c42933",
+      "mtime": "2026-09-15T11:43:00.760751+03:00",
+      "bytes": 771,
+      "tracked": false
+    },
+    {
+      "path": "results/fdr_sprint_20260910/H1/k3b/v1_15harita_yerlesim_d441.json",
+      "exists": true,
+      "sha256": "7d7a5818b933a193fdaaf10adc1ae512362b2eadcd9341bf219e5583909c132d",
+      "mtime": "2026-09-12T14:23:25.227563+03:00",
+      "bytes": 33534,
+      "tracked": true
+    }
+  ],
+  "model_sha_matches_registry": true,
+  "commands": [
+    {
+      "command": [
+        "git",
+        "status",
+        "--short",
+        "--branch"
+      ],
+      "exit_code": 0,
+      "stdout": "## master...origin/master [behind 7]\n M REVIEW_LOG.md\n M simulation/plugins/navitas_anim.cc\n M simulation/scripts/world_generator.py\n?? .~lock.NAVITAS_FDR_BIRLESIK.docx#\n?? 1.png\n?? 2.png\n?? 3.3.5_BIRLESIK_345_20260715_1552.docx\n?? 3.3.5_BIRLESIK_345_FINAL2_20260715_1645.docx\n?? 3.3.5_BIRLESIK_345_FINAL_20260715_1619.docx\n?? 3.3.5_BIRLESIK_345_FINAL_20260715_1621.docx\n?? 3.3.5_EMIR_ONCE_birlestirme_20260715_1549.docx\n?? 3.3.5_ONCE_finalQA_20260715_1618.docx\n?? 3.3.5_ONCE_sonduzen_20260715_1640.docx\n?? 3.3.5_ONCE_v4fetch_yedek_20260715_1126.docx\n?? 3.3.5_ORIJINAL_yedek_20260715_0138.docx\n?? 3.3.5_Yazilim_Mimarisi_MERGED.docx\n?? 3.3.5_Yazilim_Mimarisi_MERGED_DUZELTILMIS.docx\n?? 3.3.5_Yazilim_Mimarisi_MERGED_duzeltmeler.docx\n?? 3.3.5_yedek_20260715_1120.docx\n?? 3.3.5_yedek_ONCE_atif_20260715_1218.docx\n?? 3.3.5_yedek_ONCE_format_20260715_1250.docx\n?? 3.3.5_yedek_ONCE_v4duzen_20260715_1133.docx\n?? 3.3.5_yedek_ONCE_v4vitrin_20260715_1159.docx\n?? 3.3.5_yedek_ONCE_v4vitrin_20260715_1200.docx\n?? 3.3.5_yedek_ONCE_v5satiri_20260715_1208.docx\n?? 4_Test_Faaliyetleri_ve_5_Gereksinim_Izlenebilirligi.docx\n?? AGENT_REPORTS/CLAUDE1_KOORDINATOR_RAPORU_20260822.md\n?? AGENT_REPORTS/CLAUDE_GENERAL_FOLLOWUP.md\n?? AGENT_REPORTS/CLAUDE_GENERAL_PROMPT.md\n?? AGENT_REPORTS/CLAUDE_GENERAL_REPORT.md\n?? AGENT_REPORTS/CLAUDE_OPUS_DEVIR_NOTU_20260822.md\n?? AGENT_REPORTS/CLAUDE_OPUS_YARISMA_GUNU_PROMPT_20260822.md\n?? AGENT_REPORTS/CLAUDE_SIMULATION_FOLLOWUP.md\n?? AGENT_REPORTS/CODEX_A_KAYIT_ADLANDIRMA.md\n?? AGENT_REPORTS/CODEX_B_KAYIT_SURESI_VE_HAKEM_DURUSTLUGU.md\n?? AGENT_REPORTS/CODEX_C_ZEMIN_VE_MODEL.md\n?? AGENT_REPORTS/CODEX_DEVAM_RAPORU_20260822_ORTOMOZAIK.md\n?? AGENT_REPORTS/CODEX_D_PARASUT_GERCEKCILIK.md\n?? AGENT_REPORTS/CODEX_E_KAYNAK_YOLU.md\n?? AGENT_REPORTS/CODEX_F_KAYNAK_KOKU.md\n?? AGENT_REPORTS/CODEX_GAZEBO_FOLLOWUP.md\n?? AGENT_REPORTS/CODEX_GAZEBO_PROMPT.md\n?? AGENT_REPORTS/CODEX_GAZEBO_REPORT.md\n?? AGENT_REPORTS/CODEX_G_MODEL_ROTASI.md\n?? AGENT_REPORTS/CODEX_H_ZEMIN_KALIBRASYON.md\n?? AGENT_REPORTS/CODEX_T137_ROTA_TANI_GORUNURLUGU.md\n?? AGENT_REPORTS/CODEX_T144_MODEL_SAYISI_GERILEMESI.md\n?? AGENT_REPORTS/CODEX_T146_MATERYAL_YOLU.md\n?? AGENT_REPORTS/CODEX_T148_MATERYAL_RENGI.md\n?? AGENT_REPORTS/CODEX_T149_SDF_RENK_EZME.md\n?? AGENT_REPORTS/CODEX_T150_DOKU_GERI_DONUS.md\n?? AGENT_REPORTS/CODEX_T151_ZEMIN_PARLAKLIGI.md\n?? AGENT_REPORTS/CODEX_T152_ZEMIN_GERI_ALMA.md\n?? AGENT_REPORTS/CODEX_T153_KB_ISARETI.md\n?? AGENT_REPORTS/CODEX_T1_MOLOZ_GERCEKCILIK.md\n?? AGENT_REPORTS/CODEX_T4B_GERCEK_DOKU.md\n?? AGENT_REPORTS/CODEX_T4_ZEMIN_DOMAIN_GAP.md\n?? AGENT_REPORTS/COORDINATION.md\n?? AGENT_REPORTS/COORDINATOR_FINAL_REPORT.md\n?? AGENT_REPORTS/FABLE_DEVIR_RAPORU_20260822.md\n?? AGENT_REPORTS/GAZEBO_GERCEKCILIK_ARASTIRMASI_20260902.md\n?? AGENT_REPORTS/GAZEBO_YAPILABILECEKLER_20260902.md\n?? AGENT_REPORTS/MOLOZ_GERCEKCILIK_UYGULAMA_20260902.md\n?? AGENT_REPORTS/MOLOZ_GUCLENDIRME_20260902.md\n?? AGENT_REPORTS/SIMULATION_IKA_CAMERA_PARACHUTE_V22_REPORT.md\n?? AGENT_REPORTS/SIMULATION_RECORDING_V18_REPORT.md\n?? AGENT_REPORTS/SIMULATION_RECORDING_V19_REPORT.md\n?? AGENT_REPORTS/YARISMA_GUNU_OPERASYON_BETIMI_20260822.md\n?? FDR_Aviyonik_3_3_1_3_3_2.docx\n?? FDR_INCELEME_NOTLARI.md\n?? FDR_YAZILIM_KOLU_20260907.pdf\n?? JETSON_DEVIR_20260915.md\n?? JETSON_SAHA_KILAVUZU_v2.md\n?? MERGE_MANIFEST.md\n?? NAVITAS_FDR_3_3_FINAL.docx\n?? NAVITAS_FDR_3_3_FINAL_REV2.docx\n?? NAVITAS_FDR_3_3_FINAL_REV3.docx\n?? NAVITAS_FDR_3_3_FINAL_REV4.docx\n?? NAVITAS_FDR_3_3_FINAL_REV6.docx\n?? NAVITAS_FDR_3_3_FINAL_REV7.docx\n?? NAVITAS_FDR_BIRLESIK.docx\n?? NAVITAS_FDR_BIRLESIK_DUZELTILMIS_20260915.docx\n?? cc-cx/\n?? local_assets/\n?? \"manc\\304\\261n\\304\\261k montaj.zip\"\n?? \"manc\\304\\261n\\304\\261k montaj/\"\n?? results/fdr_docx_20260914/\n?? results/fdr_docx_rev2_20260914/\n?? results/fdr_rev3_aktarim_20260914/\n?? results/fdr_rev4_20260914/\n?? results/fdr_rev4_mavi_20260914/\n?? results/gazebo_inceleme_20260907/\n?? results/gazebo_realism_20260910/\n?? results/iha_algi_kanit/\n?? results/navitas_bigdata_karsilastirma_20260816.md\n?? results/prova/20260912_152454_23232/\n?? results/prova/20260913_065030_3418040/\n?? results/prova/20260915_180942_3750158/\n?? results/prova/20260915_185110_3752497/\n?? results/sunum_20260913/\n?? results/v4_test_20260715/v4_val_grafikler/\n?? scripts/b1_dogrulama.py\n?? scripts/b1_yollar.json\n?? scripts/sunum_uret.py\n?? sekil_3.3.5.2_ika_gorev_fsm_65cm.png\n?? selfi/\n?? simulation/.gazebo-image-build.stamp\n?? simulation/REALISM.md\n?? simulation/SENARYO_PAKETI.md\n?? simulation/docker/canli_izle.sh\n?? simulation/docker/demo_render_ika_bilinen_rota.sh\n?? simulation/docker/realism_capture.sh\n?? simulation/docker/realism_contact_probe.sh\n?? simulation/docker/realism_open.sh\n?? simulation/docker/sim_baslat.sh\n?? simulation/harita_gecmisi/\n?? simulation/harita_onizleme/terrain_modlari/\n?? simulation/harita_studyo.py\n?? simulation/harita_studyo_ac.sh\n?? simulation/media/\n?? simulation/realism_runs/\n?? simulation/scenarios/\n?? simulation/scripts/dogrula_gereksinimler.py\n?? simulation/scripts/generate_parachute_meshes.py\n?? simulation/scripts/generate_rubble_meshes.py\n?? simulation/scripts/generate_scenario_suite.py\n?? simulation/scripts/generate_terrain_heightmap.py\n?? simulation/scripts/harita_render.py\n?? simulation/scripts/realism_assets.py\n?? simulation/scripts/realism_capture.py\n?? simulation/scripts/realism_contact_probe.py\n?? simulation/scripts/realism_geometry_check.py\n?? simulation/scripts/realism_scene.py\n?? simulation/scripts/realism_support.py\n?? simulation/scripts/scenario_profiles.py\n?? simulation/tests/\n?? simulation/worlds/canli_cc_narrow_sensor.world\n?? simulation/worlds/canli_cc_night_fog.world\n?? simulation/worlds/canli_cc_wind_dust.world\n?? simulation/worlds/canli_cx_aftershock_dynamic.world\n?? simulation/worlds/canli_cx_comms_latency.world\n?? simulation/worlds/canli_cx_glare_perspective.world\n?? simulation/worlds/canli_kolay.world\n?? simulation/worlds/cx_teknofest_official.world\n?? simulation/worlds/manual.world\n?? teknofest_gazebo_gercekci_moloz_prompt.txt\n?? tests/test_sunum_kanit.py\n?? \"\\304\\260KA_Yazilim_Mimarisi_3227 (1).docx\"\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "log",
+        "--format=%h %aI %cI %an %s",
+        "HEAD..origin/master"
+      ],
+      "exit_code": 0,
+      "stdout": "0a043107 2026-09-14T13:16:44+03:00 2026-09-14T13:16:44+03:00 Navitas Takimi Use fixed 18.65 m/s Gazebo runner from launch.sh\n1eb299b8 2026-09-14T13:16:13+03:00 2026-09-14T13:16:13+03:00 Navitas Takimi Add Gazebo runner enforcing 18.65 m/s UAV speed\n3d53526e 2026-09-14T13:15:57+03:00 2026-09-14T13:15:57+03:00 Navitas Takimi Use single UAV speed source in helper flight script\n3c6fa688 2026-09-14T13:14:50+03:00 2026-09-14T13:14:50+03:00 Navitas Takimi Enforce 18.65 m/s UAV speed in Gazebo world generation\nf0569746 2026-09-14T13:14:38+03:00 2026-09-14T13:14:38+03:00 Navitas Takimi Add single UAV speed source at 18.65 m/s\n7dfdf81d 2026-09-14T13:13:00+03:00 2026-09-14T13:13:00+03:00 Navitas Takimi Standardize Gazebo UAV helper speed to 18.65 m/s\n10ec71bf 2026-09-14T13:02:54+03:00 2026-09-14T13:02:54+03:00 Navitas Takimi noop\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--stat",
+        "HEAD..origin/master"
+      ],
+      "exit_code": 0,
+      "stdout": " __noop__                                   |  0\n simulation/launch.sh                       | 13 ++---\n simulation/scripts/iha_flight.py           | 47 +++++------------\n simulation/scripts/iha_speed.py            |  6 +++\n simulation/scripts/run_gazebo_1865.py      | 31 +++++++++++\n simulation/scripts/world_generator_1865.py | 84 ++++++++++++++++++++++++++++++\n 6 files changed, 137 insertions(+), 44 deletions(-)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "reflog",
+        "show",
+        "--date=iso",
+        "refs/remotes/origin/master"
+      ],
+      "exit_code": 0,
+      "stdout": "0a043107 refs/remotes/origin/master@{2026-09-14 13:22:11 +0300}: fetch --no-tags --filter=blob:none origin master: fast-forward\n3c6fa688 refs/remotes/origin/master@{2026-09-14 13:14:57 +0300}: fetch --no-tags --filter=blob:none origin master: fast-forward\nab906f3a refs/remotes/origin/master@{2026-09-14 12:29:48 +0300}: update by push\n397f46be refs/remotes/origin/master@{2026-09-14 09:54:00 +0300}: update by push\na2473025 refs/remotes/origin/master@{2026-09-14 03:06:41 +0300}: update by push\ndb405856 refs/remotes/origin/master@{2026-09-14 02:58:14 +0300}: update by push\ncea0e473 refs/remotes/origin/master@{2026-09-14 02:51:56 +0300}: update by push\nf4a51392 refs/remotes/origin/master@{2026-09-14 02:50:25 +0300}: update by push\n8bb7b45d refs/remotes/origin/master@{2026-09-14 02:13:53 +0300}: update by push\n22999b40 refs/remotes/origin/master@{2026-09-13 22:19:23 +0300}: update by push\na9d7c6ae refs/remotes/origin/master@{2026-09-13 22:11:15 +0300}: update by push\n760362ad refs/remotes/origin/master@{2026-09-13 21:39:17 +0300}: update by push\nb48f2834 refs/remotes/origin/master@{2026-09-13 21:33:32 +0300}: update by push\ne4ef4f2f refs/remotes/origin/master@{2026-09-13 21:18:13 +0300}: update by push\n4be50e43 refs/remotes/origin/master@{2026-09-13 20:49:12 +0300}: fetch origin: fast-forward\nefc05876 refs/remotes/origin/master@{2026-09-12 19:53:44 +0300}: update by push\n5b320949 refs/remotes/origin/master@{2026-09-12 19:30:18 +0300}: update by push\n1a7f86d3 refs/remotes/origin/master@{2026-09-12 19:06:29 +0300}: update by push\n5a7aa08a refs/remotes/origin/master@{2026-09-12 17:59:49 +0300}: update by push\n18e7aa24 refs/remotes/origin/master@{2026-09-12 17:55:33 +0300}: update by push\na92dd345 refs/remotes/origin/master@{2026-09-12 17:54:35 +0300}: update by push\nf7c75821 refs/remotes/origin/master@{2026-09-12 17:53:18 +0300}: update by push\nd39a9005 refs/remotes/origin/master@{2026-09-12 17:52:00 +0300}: update by push\n32024a5b refs/remotes/origin/master@{2026-09-12 17:49:20 +0300}: update by push\n7579e45f refs/remotes/origin/master@{2026-09-12 17:27:01 +0300}: update by push\n25cf8b1a refs/remotes/origin/master@{2026-09-12 17:19:21 +0300}: update by push\n3ff9ada8 refs/remotes/origin/master@{2026-09-12 17:17:20 +0300}: update by push\n4e2fe579 refs/remotes/origin/master@{2026-09-12 17:08:51 +0300}: update by push\n41c2dc7e refs/remotes/origin/master@{2026-09-12 16:32:43 +0300}: update by push\nb7f6b44c refs/remotes/origin/master@{2026-09-12 16:27:51 +0300}: update by push\nb55088f2 refs/remotes/origin/master@{2026-09-12 15:30:13 +0300}: update by push\n67ee95e7 refs/remotes/origin/master@{2026-09-12 15:21:21 +0300}: update by push\ne4ee6741 refs/remotes/origin/master@{2026-09-12 15:17:57 +0300}: update by push\nc206ac18 refs/remotes/origin/master@{2026-09-12 15:03:40 +0300}: update by push\nd768b043 refs/remotes/origin/master@{2026-09-12 15:00:05 +0300}: update by push\n27828d2d refs/remotes/origin/master@{2026-09-12 14:50:48 +0300}: update by push\nbdda2e3b refs/remotes/origin/master@{2026-09-12 14:20:09 +0300}: fetch origin +refs/heads/*:refs/remotes/origin/* --prune: fast-forward\n95b0dc05 refs/remotes/origin/master@{2026-09-11 19:13:45 +0300}: fetch origin: fast-forward\n98a34546 refs/remotes/origin/master@{2026-09-10 18:17:32 +0300}: fetch origin: fast-forward\n181c3107 refs/remotes/origin/master@{2026-09-07 14:46:45 +0300}: fetch --no-tags --filter=blob:none origin master: fast-forward\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--numstat",
+        "--",
+        "simulation/scripts/world_generator.py",
+        "simulation/plugins/navitas_anim.cc"
+      ],
+      "exit_code": 0,
+      "stdout": "43\t1\tsimulation/plugins/navitas_anim.cc\n10\t3\tsimulation/scripts/world_generator.py\n",
+      "stderr": ""
+    }
+  ]
+}

@@ -1,0 +1,139 @@
+{
+  "onceki_dosya_butunlugu": {
+    "NAVITAS_FDR_3_3_FINAL.docx": true,
+    "NAVITAS_FDR_3_3_FINAL_REV2.docx": true,
+    "NAVITAS_FDR_3_3_FINAL_REV3.docx": true,
+    "NAVITAS_FDR_3_3_FINAL_REV4.docx": true,
+    "NAVITAS_FDR_3_3_FINAL_REV6.docx": true,
+    "NAVITAS_FDR_3_3_FINAL_REV7.docx": true,
+    "NAVITAS_FDR_BIRLESIK.docx": true,
+    "config/model_registry.json": true,
+    "models/navitas_seg_v36_best.pt": true,
+    "models/navitas_seg_v37_best.pt": true,
+    "simulation/scripts/world_generator.py": true,
+    "simulation/plugins/navitas_anim.cc": true,
+    "simulation/recordings/rv41/detections.json": true,
+    "simulation/recordings/rv41/iha_haritala.log": true,
+    "simulation/recordings/demo_bilinen_rota_kolay_20260915_114300/ETIKET_OKU.md": true,
+    "results/fdr_sprint_20260910/H1/k3b/v1_15harita_yerlesim_d441.json": true
+  },
+  "d441": {
+    "kaynak": "results/fdr_sprint_20260910/H1/k3b/v1_15harita_yerlesim_d441.json",
+    "sha256": "7d7a5818b933a193fdaaf10adc1ae512362b2eadcd9341bf219e5583909c132d",
+    "n": 15,
+    "rota": 7,
+    "dogru": 7,
+    "teshis_512_dogru": 6,
+    "conf": 0.15
+  },
+  "piksel": {
+    "kaynak": "results/gece_20260907/karisiklik/piksel_karisiklik_test29.json",
+    "sha256": "8a9a2d8aaae7e7f6816ce0fee18e5c780a62725d4edd0863e63292c27c320268",
+    "matris_karelerden_toplandi": true,
+    "kare_n": 29,
+    "matris": [
+      [
+        12004796,
+        790630,
+        3445818
+      ],
+      [
+        3080875,
+        92405877,
+        11819510
+      ],
+      [
+        8515024,
+        28602498,
+        79872572
+      ]
+    ],
+    "etiketsiz_orani": 0.3955219475042571,
+    "dogruluk_etiketli": 0.7180941432478885,
+    "siniflar": {
+      "zemin": {
+        "precision_etiketli": 0.9382099509621641,
+        "recall": 0.5086628169212813,
+        "etiketsiz_tahmin_payi": 0.21216465930811704
+      },
+      "engel": {
+        "precision_etiketli": 0.967735052921268,
+        "recall": 0.7586751386023227,
+        "etiketsiz_tahmin_payi": 0.11014743948493891
+      }
+    }
+  },
+  "parmak_izi_mutasyon": {
+    "kaynak": "scripts/olcum/176_piksel_karisiklik_matrisi.py",
+    "sha256": "e815e424e15fb820818de2a2875cda45c33503cf8c656921e9f295d2039a227f",
+    "ayni_boyut_icerik_degisti": true,
+    "parmak_izi_degismedi": true
+  },
+  "watch_timeout": {
+    "kaynak": "simulation/scripts/iha_haritala.py",
+    "sha256": "01ccd9fd30679b536d4b42f8c3fbfb2def0fdca8f74079e7ecceade52e05ca81",
+    "donus": null,
+    "cikarim_cagri_sayisi": 0,
+    "stdout": "[İHA-HARİTA] izleme: /tmp/navitas-watch-1g4dsdgz  seviyeler: kolay orta zor\n[İHA-HARİTA] kolay: tarama bekleniyor (/tmp/navitas-watch-1g4dsdgz/iha_scan_kolay/SCAN_DONE)...\n[İHA-HARİTA] orta: tarama bekleniyor (/tmp/navitas-watch-1g4dsdgz/iha_scan_orta/SCAN_DONE)...\n[İHA-HARİTA] zor: tarama bekleniyor (/tmp/navitas-watch-1g4dsdgz/iha_scan_zor/SCAN_DONE)...\n[İHA-HARİTA] izleme bitti.\n",
+    "stderr": "[İHA-HARİTA] kolay: 1800s doldu, atlanıyor\n[İHA-HARİTA] orta: 1800s doldu, atlanıyor\n[İHA-HARİTA] zor: 1800s doldu, atlanıyor\n",
+    "kapsam": "Gercek watch fonksiyonu; YOLO ve saat taklit; gercek model/simulasyon degil."
+  },
+  "docx": {
+    "source_sha256": "0154cd5a54711417b00e7c3e3e89bf9c89108f6217cab95a3716ebcc857824c1",
+    "output_sha256": "d244e0cef04f0038a4c0d8b071a9b52e0215e8ae60802de34dbe74a9d5bfe574",
+    "degisen_zip_parcalari": [
+      "word/document.xml"
+    ],
+    "medya_sayisi": 124,
+    "zip_test": null
+  },
+  "git": {
+    "head": {
+      "output": "ab906f3a1c6c3aea26807275602e4a1570a7a159",
+      "exit": 0
+    },
+    "origin_master": {
+      "output": "0a0431078d18990b2c6839899aeff9ca1dc6c0f0",
+      "exit": 0
+    },
+    "fark": {
+      "output": "0\t7",
+      "exit": 0
+    }
+  },
+  "t214a": {
+    "gt": {
+      "n": 45,
+      "basari": 45,
+      "rota_ack": 45,
+      "harita_senaryo": 15,
+      "tohumlar": [
+        42,
+        43,
+        44
+      ]
+    },
+    "model": {
+      "n": 45,
+      "basari": 9,
+      "rota_ack": 45,
+      "harita_senaryo": 15,
+      "tohumlar": [
+        42,
+        43,
+        44
+      ]
+    },
+    "uretim": {
+      "n": 15,
+      "basari": 0,
+      "rota_ack": 15,
+      "harita_senaryo": 5,
+      "tohumlar": [
+        42,
+        43,
+        44
+      ]
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "id": "cx_comms_latency",
+  "author": "Codex",
+  "title_tr": "Gecikmeli Haberleşme ve Manuel Görev Tetikleme",
+  "description_tr": "İHA havadayken rota aktarımı, deterministik gecikme, paket kaybı ve iniş sonrası YKS tetikleme sırasını sınar.",
+  "seed": 2202,
+  "active_zone": "zor",
+  "map_ids": {"kolay": 211, "orta": 212, "zor": 213},
+  "environment": {"ambient": [0.48, 0.50, 0.52, 1.0], "background": [0.62, 0.70, 0.78, 1.0], "sun_diffuse": [0.82, 0.80, 0.74, 1.0], "sun_direction": [-0.5, 0.25, -0.82], "wind": [2.0, -1.0, 0.0], "ground_friction": 0.82, "ground_color": [0.28, 0.27, 0.25]},
+  "terrain": {"layout": "field", "lane_width_multiplier": 1.0, "debris_multiplier": 1.15, "rubble_height_multiplier": 1.0, "chicane_count": 7},
+  "flight": {"scan_altitude_m": 30.0, "scan_tilt_deg": 4.0, "lateral_jitter_m": 0.45},
+  "mission": {"require_manual_trigger": true, "route_delivery_delay_s": 2.0, "packet_loss_percent": 20, "dynamic_obstacle": "none"},
+  "acceptance": ["Rota İHA yere inmeden önce teslim edilir", "İKA iniş ve manuel tetik öncesi hareket etmez", "Kayıp paketler sıra numarasıyla tekrar denenir"]
+}

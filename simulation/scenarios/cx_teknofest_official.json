@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "id": "cx_teknofest_official",
+  "author": "Codex",
+  "title_tr": "TEKNOFEST Resmi Saha Geometrisi",
+  "description_tr": "300x300 İHA-UB içinde üç ayrık 50x50 HTAB; odak HTAB'da bir açık rota, iki fiziksel tıkalı rota, 1x1 İKA-KB, 2x2 kırmızı H hedefi, İHA fırlatma/iniş alanları ve mancınık.",
+  "seed": 260822,
+  "active_zone": "orta",
+  "map_ids": {"kolay": 301, "orta": 302, "zor": 303},
+  "environment": {
+    "ambient": [0.56, 0.55, 0.52, 1.0],
+    "background": [0.70, 0.76, 0.82, 1.0],
+    "sun_diffuse": [0.90, 0.88, 0.80, 1.0],
+    "sun_direction": [-0.35, 0.18, -0.92],
+    "wind": [1.5, 0.0, 0.0],
+    "ground_friction": 0.80,
+    "ground_color": [0.51, 0.56, 0.62]
+  },
+  "terrain": {
+    "layout": "field",
+    "lane_width_multiplier": 1.0,
+    "debris_multiplier": 1.0,
+    "rubble_height_multiplier": 1.0,
+    "chicane_count": 5
+  },
+  "flight": {"scan_altitude_m": 30.0, "scan_tilt_deg": 0.0, "lateral_jitter_m": 0.0},
+  "mission": {
+    "require_manual_trigger": true,
+    "route_delivery_delay_s": 0.5,
+    "packet_loss_percent": 0,
+    "dynamic_obstacle": "none"
+  },
+  "acceptance": [
+    "İHA-UB 300x300 m sınır modeliyle işaretlenir ve tüm HTAB merkezleri bu sınır içindedir",
+    "Her HTAB 50x50 m, üç rota içerir; ground-truth sadece bir rotayı açık bırakır, diğer iki rota collision'lı moloz/bariyer modelleriyle kapatılır",
+    "İKA-KB 1x1 m, HB 2x2 m ve kırmızı H görseliyle üretilir; İHA-İB 30x30 m ve mancınık modeli odak HTAB yanında yer alır",
+    "Aynı seed/map ile üretilen world XML'i deterministiktir ve XML parser'dan geçer"
+  ]
+}

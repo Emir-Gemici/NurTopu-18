@@ -1,0 +1,56 @@
+{
+  "source_docx": {
+    "path": "/home/trs/projects/navitas-unified-20260822/NAVITAS_FDR_BIRLESIK.docx",
+    "sha256": "0154cd5a54711417b00e7c3e3e89bf9c89108f6217cab95a3716ebcc857824c1"
+  },
+  "output_docx": {
+    "path": "/home/trs/projects/navitas-unified-20260822/NAVITAS_FDR_BIRLESIK_DUZELTILMIS_20260915.docx",
+    "sha256": "d244e0cef04f0038a4c0d8b071a9b52e0215e8ae60802de34dbe74a9d5bfe574"
+  },
+  "validation": {
+    "source_unchanged": true,
+    "zip_valid": true,
+    "all_other_parts_unchanged": true,
+    "drive_relationship_unchanged": true,
+    "software_model_scene_distinction": true,
+    "rv41_timeouts_distinguished": true,
+    "historical_7_of_15_added": true,
+    "no_12_of_15_success_claim": true,
+    "demo_label": true,
+    "new_source_k33": true
+  },
+  "media_parts_preserved": 124,
+  "general_gate": {
+    "command": "/home/trs/projects/navitas-unified-20260822/.venv/bin/python codes/test_rota_sentetik.py",
+    "exit_code": 0,
+    "actual_output": "GENEL KAPI (madde 14): GECTI — kol1 15/15 · kol2 serit 15/15",
+    "scope": "kusursuz maskeli kod kapısı; yeni model veya fizik deneyi değil"
+  },
+  "new_inference_or_mission_run": false,
+  "git_mutations": "No commit, push, pull or merge; existing production code preserved.",
+  "rendered_pages": 179,
+  "qa": "All pages surveyed via contact sheets; changed software and added tables inspected individually; final render differs from reviewed render3 only on listed pages.",
+  "final_render_changed_pages": [
+    98,
+    99
+  ],
+  "toc_page_numbers": [
+    3,
+    6,
+    11,
+    11,
+    26,
+    26,
+    54,
+    82,
+    98,
+    98,
+    117,
+    142,
+    151,
+    170,
+    173,
+    175,
+    177
+  ]
+}

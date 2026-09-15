@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "id": "cc_night_fog",
+  "author": "Claude Code",
+  "title_tr": "Gece Sisi ve Çökmüş Bina Enkazı",
+  "description_tr": "Düşük gece ışığı, yoğun sis ve çökmüş bina enkazı altında algının dürüst raporlamasını ve güvenli seyir davranışını sınar.",
+  "seed": 2301,
+  "active_zone": "zor",
+  "map_ids": {"kolay": 101, "orta": 102, "zor": 103},
+  "environment": {"ambient": [0.12, 0.12, 0.14, 1.0], "background": [0.05, 0.06, 0.10, 1.0], "sun_diffuse": [0.15, 0.15, 0.18, 1.0], "sun_direction": [-0.3, 0.1, -0.95], "fog": {"enabled": true, "type": "exp2", "color": [0.5, 0.5, 0.55, 1.0], "start": 5.0, "end": 40.0, "density": 0.035}, "wind": [0.5, 0.2, 0.0], "ground_friction": 0.75, "ground_color": [0.15, 0.14, 0.13]},
+  "terrain": {"layout": "field", "lane_width_multiplier": 0.85, "debris_multiplier": 1.5, "rubble_height_multiplier": 1.6, "chicane_count": 9},
+  "flight": {"scan_altitude_m": 25.0, "scan_tilt_deg": 5.0, "lateral_jitter_m": 0.5},
+  "mission": {"require_manual_trigger": true, "route_delivery_delay_s": 1.2, "packet_loss_percent": 10, "dynamic_obstacle": "none"},
+  "acceptance": ["Gece/sis ortamı ambient/fog parametreleriyle temsil edilir (fog density 0.035, start=5m/end=40m) ve seed=2301 ile deterministik üretilir (iki çalıştırma birebir aynı XML)", "Algı katmanı her taramada bir açık yol kararı + güven skoru raporlar, düşük ışıkta sessiz kalmaz (hakem_log her tarama için ALGI/MODEL satırı üretir)", "İKA rubble_height_multiplier=1.6 enkazında moloz fiziğiyle (collision, ground_friction=0.75) ya HB'ye ulaşır ya da TIKANDI olarak loglanır; sis ötesi sahte-tespit oranı için ölçüm altyapısı yok — kanıtlanmadı, sayısal hedef verilmiyor", "Gazebo NaN üretmeden çalışır, real_time_factor/telemetri loglanır"]
+}

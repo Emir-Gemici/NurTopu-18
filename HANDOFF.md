@@ -1,5 +1,34 @@
 # NAVITAS — DEVİR PROTOKOLÜ
 
+## 15 Eylül 2026 — yazılım raporu ve senkronizasyon incelemesi (Codex)
+
+Kullanıcının doğrudan isteğiyle birleşik Word raporunun yazılım öncelikli düzeltmesi
+ve Git/dosya zaman çizelgesi incelemesi yapıldı. Bulgular ve kanıt:
+`results/yazilim_rapor_senkron_20260915/INCELEME.md` ve `kanit.json`.
+Yeni belge: `NAVITAS_FDR_BIRLESIK_DUZELTILMIS_20260915.docx`; asıl DOCX korundu.
+Bu belge düzenlemesi üretim kodu terfisi veya bağımsız görev kabulü değildir.
+
+- **Güncel model:** kayıt defterinde v36; diskteki `.pt` SHA'sı bu oturumda
+  `1d1caca6f6da19ea35e69186a048da960ca5188be6ee6d49d6106457cac46911` ile eşleşti.
+  Aşağıdaki 14 Eylül gece notlarının “model dosyası yok” durumu tarihsel kalmıştır;
+  D-485/397f46be kurtarma kaydı geçerlidir.
+- **Deney ayrımı:** v36 modeldir; v1/v2/v3 sahne varyantları; rv41 kayıt numarası.
+  Yerleşim düzeltmesi 7/15 ayrı deneydir. Yeni toplu 12/15 model başarısı bulunmadı.
+- **rv41:** kolayda gerçek çıkarım rota bulamadı; orta/zorda izleyici 1800 s dolunca
+  atladı. Üç seviyeyi “model üçünde de değerlendirildi ve başarısız” diye yazmayın.
+  15 Eylül bilinen rota demosu modeli çalıştırmaz; model kabul kanıtı değildir.
+- **Senkron:** yerel HEAD `ab906f3a`; canlı GitHub master ve yerel origin/master
+  `0a043107` (7 commit ileride). Uzak fark hız/başlatıcı değişiklikleri; yeni model
+  testi yok. `world_generator.py` ve `navitas_anim.cc` mevcut yerel değişiklikleri
+  korunmuştur. Otomatik pull/merge/commit/push yapılmadı.
+- **Belge/varlıklar:** Word ve model/video dosyaları aynı Git tesliminin parçası
+  değildir. Ortak incelemede commit SHA yanında dosya SHA ve aktarım konumu gerekir.
+- **Gerçek kapı:** `.venv/bin/python codes/test_rota_sentetik.py`, çıkış 0:
+  `GENEL KAPI (madde 14): GECTI — kol1 15/15 · kol2 serit 15/15`.
+  Bu kusursuz maskeli kod kapısıdır; yeni model/Gazebo/MuJoCo başarı ölçümü değildir.
+
+---
+
 ## Devir 2026-09-14 (gece/sabah) · FDR_YZLM_003H teslim edildi + durum netleştirmesi (Claude)
 
 **Bugün tamamlanan (özet, ayrıntı D-477…D-484):**

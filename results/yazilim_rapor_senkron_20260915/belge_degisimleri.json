@@ -1,0 +1,370 @@
+[
+  {
+    "old": "Üretim modeli navitas-seg-v36-512, YOLOv8m-seg tabanlıdır. Girdi boyutu 512 px, sınıflar zemin ve engeldir; hedef H işareti ayrı görüntü/geometri denetiminden geçer. Model dosyasının SHA-256 özeti 1d1caca6f6da19ea35e69186a048da960ca5188be6ee6d49d6106457cac46911 olup dosya ve model kayıt defteriyle eşleştirilmiştir. [K8]",
+    "new": "Üretim modeli navitas-seg-v36-512, YOLOv8m-seg tabanlıdır. Girdi boyutu 512 px, sınıflar zemin ve engeldir; hedef H işareti ayrı görüntü/geometri denetiminden geçer. Model dosyasının SHA-256 özeti 1d1caca6f6da19ea35e69186a048da960ca5188be6ee6d49d6106457cac46911 olup dosya ve model kayıt defteriyle eşleştirilmiştir. [K8] v36 model sürümüdür; YOLOv8m-seg mimariyi, 512 girdi boyutunu belirtir. Işık/gölge tablosundaki v1/v2/v3 adları model sürümü değildir."
+  },
+  {
+    "old": "Işık/gölge duyarlılığı. Mevcut sentetik render varyantları üretim modeli değiştirilmeden değerlendirilmiştir. [K10]",
+    "new": "Işık/gölge duyarlılığı. Aynı v36 üretim modeli, farklı sentetik sahne varyantlarında değerlendirilmiştir. Taban/v1/v2/v3 sahne adlarıdır; model eğitim sürümleri veya eski–en güncel model karşılaştırması değildir. [K10]"
+  },
+  {
+    "old": "Tablo 3.3.4.6. Sentetik ışık/gölge koşuları, her satır 15 harita.",
+    "new": "Tablo 3.3.4.6. Aynı v36 modeliyle sentetik sahne varyantları; her satır 15 harita, 12/15 kabul eşiğidir."
+  },
+  {
+    "old": "Taban/v1 güneş yüksekliği yaklaşık 64,5°, v2/v3 yaklaşık 39,9°'dir. V3'te ek olarak moloz geometrisi değişir. Bu ölçümler önceki arena yerleşimine aittir. Birden fazla etken değiştiği için başarı farkının yalnız gölgeden kaynaklandığı sonucuna varılmamıştır.",
+    "new": "Taban/v1 güneş yüksekliği yaklaşık 64,5°, v2/v3 yaklaşık 39,9°'dir. V3'te ek olarak moloz geometrisi değişir. Bu ölçümler önceki arena yerleşimine aittir. Birden fazla etken değiştiği için başarı farkının yalnız gölgeden kaynaklandığı sonucuna varılmamıştır. Taban ile v1 arasındaki diğer sahne farkları kaynak deney kaydından izlenir. Bu tablo, farklı tarihlerdeki tek başarılı CAD videosuyla eş koşullu bir karşılaştırma değildir."
+  },
+  {
+    "added": "Yerleşim düzeltmesi sonrası ayrı deney. Açık yol koridoruna engel yerleşmesini önleyen düzeltmeyle aynı v36 modeli ve v1 sahnesi 15 haritada 7 doğru rota üretmiştir (7/15; önceki yerleşimde 3/15). Bu koşu da 12/15 eşiğini karşılamaz; tabloya ve 105 koşuluk görev serisine eklenmez. Kaynak: results/fdr_sprint_20260910/H1/k3b/RAPOR_K3B.md §7. [K10]"
+  },
+  {
+    "old": "Üretim model–mozaik kolunda 10 rota adayı bulunmuş, bunlardan biri güven kapısında reddedilmiş ve 9 OPEN_ROUTE yayımlanmıştır; diğer 36 koşum NO_ROUTE ile sonuçlanmıştır. Kare tabanlı üretim kolunda 12/15 rota ACK almış, ancak 0/15 görev başarılı olmuştur; 12 koşum temas ve süre aşımıyla bitmiştir. Bu nedenle mesajın alınması, rotanın doğruluğu ve hedefe güvenli varış ayrı ölçütlerdir.",
+    "new": "Üretim model–mozaik kolunda 10 rota adayı bulunmuş, bunlardan biri güven kapısında reddedilmiş ve 9 OPEN_ROUTE yayımlanmıştır; diğer 36 koşum NO_ROUTE ile sonuçlanmıştır. Kare tabanlı üretim kolunda 12/15 rota ACK almış, ancak 0/15 görev başarılı olmuştur; 12 koşum temas ve süre aşımıyla bitmiştir. Bu nedenle mesajın alınması, rotanın doğruluğu ve hedefe güvenli varış ayrı ölçütlerdir. ACK yalnız mesajın alındığını doğrular; 12/15 ACK, 12/15 doğru rota veya başarılı görev anlamına gelmez."
+  },
+  {
+    "old": "Görüntüden rota üretimi için ön kayıtlı doğru etiket eşiği en az 12/15'tir. Model-mozaik doğru etiket sonuçları tohum 42/43/44 için 6/15, 1/15 ve 3/15; ACK'li geçerli rota sayıları 5/15, 1/15 ve 3/15'tir. Üretim kare tabanlı kerteriz beslemesi 1/15, ham besleme tanısal koşusu 0/15'tir. Bu koşular eşik altında kalmıştır.",
+    "new": "Görüntüden rota üretimi için ön kayıtlı doğru etiket eşiği en az 12/15'tir. Model-mozaik doğru etiket sonuçları tohum 42/43/44 için 6/15, 1/15 ve 3/15; ACK'li geçerli rota sayıları 5/15, 1/15 ve 3/15'tir. Üretim kare tabanlı kerteriz beslemesi 1/15, ham besleme tanısal koşusu 0/15'tir. Bu koşular eşik altında kalmıştır. Buradaki 12/15 ölçülmüş model başarısı değil, deney öncesinde belirlenmiş kabul sınırıdır."
+  },
+  {
+    "old": "Video: 1920×1080, 25 FPS, 4.205 kare, 168,20 s. Kayıtlı model rotasının MuJoCo tekrar oynatımında açık güzergâh, numaralı noktalar ve İKA sürüşü birlikte gösterilir. İHA sunumu 0,75×, İKA sürüşü 1× hızdadır; yakın plan aktüatör gösterimi nedeniyle video süresi görev süresinden farklıdır. Dosya kimliği ve kare kontrolü K20’dedir.",
+    "new": "Video: 1920×1080, 25 FPS, 4.205 kare, 168,20 s. Kayıtlı model rotasının MuJoCo tekrar oynatımında açık güzergâh, numaralı noktalar ve İKA sürüşü birlikte gösterilir. İHA sunumu 0,75×, İKA sürüşü 1× hızdadır; yakın plan aktüatör gösterimi nedeniyle video süresi görev süresinden farklıdır. Dosya kimliği ve kare kontrolü K20’dedir. Bu video tek bir simülasyon koşusunun kanıtıdır; fiziksel bütünleşik görev/HIL kabulü veya 15 haritalık model başarımı yerine kullanılmaz."
+  },
+  {
+    "added": "Etiketli sınıflar için precision ve recall"
+  },
+  {
+    "table": [
+      [
+        "Sınıf / ölçü",
+        "Precision",
+        "Recall"
+      ],
+      [
+        "Zemin",
+        "%93,82",
+        "%50,87"
+      ],
+      [
+        "Engel",
+        "%96,77",
+        "%75,87"
+      ]
+    ]
+  },
+  {
+    "added": "Precision = TP / (TP + diğer etiketli sınıftan FP); recall = TP / tüm gerçek sınıf pikselleri. Etiketsiz sütun bu precision hesabının dışındadır; tahmin-yok pikselleri recall paydasına dahildir. Gerçek engel piksellerinin %75,87’si engel, %0,65’i zemin, %23,48’i tahmin yoktur. %0,65, zemin tahminlerinin hata oranı değildir; etiketli zemin tahminleri içindeki gerçek engel payı %6,18’dir. Bu piksel ölçüleri görev başarısı olarak yorumlanmaz. [K9]"
+  },
+  {
+    "old": "T-MOTOR V3115 900KV / 13×7×3",
+    "new": "Yerli 3115 / 11×7×3 (ekip beyanı; §6.2)"
+  },
+  {
+    "old": "1.42",
+    "new": "1,42 (önceki varsayım; doğrulanmadı)"
+  },
+  {
+    "old": "1.42",
+    "new": "1,42 (önceki varsayım; doğrulanmadı)"
+  },
+  {
+    "old": "Uçağın güncel CAD kütlesi 7.05949 kg'dır. Çift T-MOTOR V3115 900KV konfigürasyonunun tam gaz toplam itkisi yaklaşık 10 kg-f (98.1 N) olup, güncel ağırlığa göre azami T/W = 98.1/(7.05949·9.81) ≈ 1.42 elde edilmektedir. Bu değer, kısıt diyagramındaki minimum gereksinimin üzerinde belirgin bir itki rezervi oluşturmaktadır.",
+    "new": "Uçağın CAD kütlesi 7,05949 kg’dır; bu değer tartım sonucu değildir. Önceki T-MOTOR V3115 / 13×7×3 varsayımıyla verilen yaklaşık 10 kg-f (98,1 N) itki ve T/W≈1,42, 15 Eylül’de bildirilen yerli 3115 / 11×7×3 tahrik takımına aktarılamaz. Gerçek motor–pervane itki verisi doğrulandıktan sonra oran yeniden hesaplanmalıdır. [K32]"
+  },
+  {
+    "old": "W/S ≈ 209.86 N/m² tasarım noktasında yüklenen güncel kısıt diyagramından okunan minimum gerekli itki-ağırlık oranı yaklaşık T/W = 0.39'dur. Bu noktada belirleyici eğri, 45 m kalkış-mesafesi boyutlandırma kontrolüdür; tırmanma kısıtı yaklaşık T/W = 0.30 seviyesinde kalmaktadır. Siyah yıldızla gösterilen mevcut itki kapasitesi T/W = 1.42, minimum gereksinimin yaklaşık 3.6 katıdır.",
+    "new": "W/S≈209,86 N/m² için mevcut kısıt diyagramının minimum T/W gereksinimi yaklaşık 0,39’dur; 45 m kalkış-mesafesi boyutlandırma kontrolü belirleyicidir, tırmanma kısıtı yaklaşık 0,30’dur. Grafikteki T/W=1,42 işareti önceki tahrik varsayımını gösterir; güncel motorun ölçülmüş kapasitesi veya doğrulanmış tasarım marjı değildir."
+  },
+  {
+    "old": "Minimum gerekli T/W ≈ 0.39 ile mevcut T/W ≈ 1.42 arasında kalan bölge, tırmanma, hızlanma, rüzgâr bozuntusu telafisi ve acil manevralar için kullanılabilir itki marjını göstermektedir. Bu marj, normal operasyonun mancınıkla başlatıldığı dikkate alınarak bir güvenlik ve kontrol otoritesi rezervi olarak değerlendirilmiştir; mekanik zorlanmanın ayrıca Bölüm 3.2 yapısal yük ve FEA doğrulamalarıyla sınırlandırılması esastır.",
+    "new": "İtki marjı, doğrulanmış tahrik kapasitesi ile minimum gerekli T/W≈0,39 karşılaştırılarak belirlenir. Önceki 1,42 varsayımından yeni motor için emniyet veya kontrol rezervi sonucu çıkarılmaz; yapısal yük sınırları ayrıca değerlendirilir."
+  },
+  {
+    "old": "Sonuç olarak FDR tasarım noktası; 7.05949 kg güncel CAD kütlesi, 0.33 m² kanat alanı, W/S ≈ 209.86 N/m² kanat yüklemesi ve T/W ≈ 1.42 mevcut itki kapasitesiyle güncel kısıt diyagramındaki minimum T/W ≈ 0.39 gereksinimini sağlamaktadır. Diyagramdaki V = 20 m/s seyir eğrisi boyutlandırma referansıdır; detaylı XFLR5 trim analizi için kullanılan nihai seyir çalışma noktası 17.93 m/s ve yaklaşık 4° AoA'dır.",
+    "new": "Mevcut geometrik hesap girdileri CAD kütlesi 7,05949 kg, kanat alanı 0,33 m² ve kanat yüklemesi yaklaşık 209,86 N/m²’dir. Tahrik kapasitesinin minimum T/W≈0,39 gereksinimini karşıladığı yeni konfigürasyonla doğrulanmalıdır. Diyagramdaki 20 m/s seyir eğrisi boyutlandırma referansıdır; XFLR5 trim çalışma noktası 17,93 m/s ve yaklaşık 4° AoA’dır."
+  },
+  {
+    "old": "Tahrik sisteminde yapılan iyileştirmeler kapsamında, T-MOTOR AT3520 KV850 yerine T-MOTOR V3115 900KV motorları ve 13×7×3 üç palli pervaneler entegre edilmiştir. Bu değişikliğin uçuş performans parametrelerine etkileri, teknik dayanaklarıyla birlikte aşağıda açıklanmış ve güncellenen nihai performans değerleri Tablo 3.1.6.1'de özetlenmiştir.",
+    "new": "15 Eylül ekip bildiriminde sabit kanat İHA için yerli 3115 motor, 11×7×3 pervane ve 4S 16 Ah batarya belirtilmiştir. Önceki T-MOTOR motor kimliği ve 13×7×3 pervane tanımı bu bildirimle uyuşmamaktadır. Tablo 3.1.6.1’deki tahrike bağlı eski hesaplar doğrulama bekleyen varsayımlardır; motor üretici verisi ve yeni takımın ölçümü henüz bu rapora bağlanmamıştır. [K32]"
+  },
+  {
+    "old": "Çift motorlu konfigürasyon, tam gazda ≈10.0 kg-f (98.1 N) itki",
+    "new": "Önceki yaklaşık 10 kg-f itki varsayımı; yeni motor için doğrulanmadı"
+  },
+  {
+    "old": "≥ 45 dakika (asgari görev rezervi)",
+    "new": "Doğrulama bekliyor; önceki ≥45 dk varsayımı"
+  },
+  {
+    "old": "15 dk yarışma görev süresinin üzerinde; muhafazakâr alt sınır",
+    "new": "Ölçülmüş tüketim ve kullanılabilir kapasiteyle yeniden hesaplanacak"
+  },
+  {
+    "old": "Çift motorlu konfigürasyon tam gazda yaklaşık 98.1 N itki üretmektedir. 7.05949 kg güncel CAD kütlesinde maksimum itki-ağırlık oranı T/W ≈ 1.42 olup, kısıt diyagramındaki yaklaşık 0.39 minimum gereksinimin üzerinde yeterli kontrol ve hızlanma rezervi sağlamaktadır.",
+    "new": "Önceki hesapta 98,1 N itki ve 7,05949 kg CAD kütlesinden T/W≈1,42 elde edilmiştir. Bu aritmetik ilişki, bildirilen yerli motorun 98,1 N ürettiğini kanıtlamaz. Minimum T/W≈0,39 gereksinimine uygunluk, gerçek tahrik verisiyle yeniden değerlendirilmelidir."
+  },
+  {
+    "old": "14.8 V nominal 4S 16.000 mAh bataryanın sağladığı ≈236.8 Wh enerji ile enerji kapasitesi yarışma görev süresinin üzerinde geniş bir rezerv sunmaktadır. Raporlama için, tırmanma/manevra ve sistem rezervlerini de kapsayan muhafazakâr operasyonel alt sınır ≥45 dakika olarak korunmuştur.",
+    "new": "4S 16 Ah batarya için 14,8 V nominal gerilim kabulüyle enerji 236,8 Wh’tir. Uçuş süresi; kullanılabilir kapasite, toplam elektriksel tüketim, görev profili ve rezerv politikasına bağlıdır. Önceki ≥45 dakika iddiası bu girdiler ölçülmeden doğrulanmış alt sınır olarak kullanılmaz."
+  },
+  {
+    "old": "Motor değişikliğiyle elde edilen yüksek T/W rezervi (1.42), Bölüm 3.1.2.3 Kısıt Diyagramı'nda sunulan uygun tasarım bölgesinin (Feasible Design Area) üst sınırını oluşturmakta; düşük güç tüketimi ve yüksek enerji kapasitesi ise görev süresi gereksinimini geniş bir emniyet marjıyla karşılamaktadır.",
+    "new": "Motor–pervane takımının itki, akım ve görev süresi uygunluğu açık doğrulama kalemidir. Aerodinamik güç hesabı, bataryadan çekilecek elektriksel gücün veya gerçek uçuş süresinin doğrudan ölçümü değildir."
+  },
+  {
+    "old": "Mevcut T/W ≈ 1.42 itki rezervi, hız ve enerji yönetimi için önemli marj sağlar; ancak motor gücü tek başına anlık olarak 3G aerodinamik taşıma oluşturmaz. Otopilot, manevra komutlarını V-n zarfı ve V_A ≈ 24.59 m/s sınırıyla birlikte yöneterek limit aşımını önleyecek şekilde yapılandırılacaktır.",
+    "new": "Önceki T/W≈1,42 varsayımı yeni motor için doğrulanmamıştır. Motor gücü tek başına anlık 3G aerodinamik taşıma oluşturmaz. Otopilot manevra komutları V-n zarfı ve V_A≈24,59 m/s sınırıyla birlikte yönetilmelidir."
+  },
+  {
+    "old": "T-MOTOR V3115 900KV Fırçasız DC Motor",
+    "new": "Yerli 3115 motor; KV ve üretici kimliği doğrulama bekliyor [K32]"
+  },
+  {
+    "old": "13×7×3 Üç Palli Karbon Takviyeli Kompozit Pervane",
+    "new": "11×7×3 üç palli pervane; malzeme/ürün kodu doğrulama bekliyor [K32]"
+  },
+  {
+    "old": "T-Motor Distribütörü",
+    "new": "Tedarikçi doğrulama bekliyor [K32]"
+  },
+  {
+    "old": "Dronmarket / Yetkili Satıcı",
+    "new": "Doğrulama bekliyor"
+  },
+  {
+    "old": "3 İş Günü",
+    "new": "Doğrulama bekliyor"
+  },
+  {
+    "old": "FPV Pazarı / İthal",
+    "new": "Doğrulama bekliyor"
+  },
+  {
+    "old": "Stokta",
+    "new": "Doğrulama bekliyor"
+  },
+  {
+    "old": "Tedarikçi doğrulama bekliyor [K32]",
+    "new": "Doğrulama bekliyor"
+  },
+  {
+    "old": "Stokta",
+    "new": "Doğrulama bekliyor"
+  },
+  {
+    "old": "60A 4-6S BLHeli_32 Telemetrili ESC",
+    "new": "60 A ESC; tam model/protokol doğrulama bekliyor [K32]"
+  },
+  {
+    "old": "Uçağın operasyonel seyrinde motor devrinden V3115 motorların seyir devri 6.500 - 7.200 RPM ",
+    "new": "Önceki modal değerlendirmede 6.500–7.200 RPM (yaklaşık 108–120 Hz) uyarım aralığı varsayılmıştır; bu aralık bildirilen yerli 3115 motor için doğrulanmamıştır."
+  },
+  {
+    "old": "108 - 120 Hz) ve kontrol yüzeyi hareketlerinden kaynaklanabilecek rezonans riskini değerlendirmek üzere kanat modal analizi gerçekleştirilmiştir. İlk 5 doğal frekans ve kütle katılım oranları Tablo 3.2.1.8'de verilmiştir.",
+    "new": "Kanat doğal frekansları ve kütle katılım oranları Tablo 3.2.1.8’de korunmuştur. Motorun gerçek devir/uyarım aralığıyla rezonans karşılaştırması ve kontrol yüzeyi etkileri ayrıca doğrulanmalıdır."
+  },
+  {
+    "old": "ı3.1.6.2 Uçuş Zarfı (V-n Diyagramı)",
+    "new": "3.1.6.2 Uçuş Zarfı (V-n Diyagramı)"
+  },
+  {
+    "old": "İHA tahrik konfigürasyonu 2× SunnySky X2220 V3 980KV, 2× Hobbywing Skywalker 60A ESC V2, APC 9×6 pervane ve 4S 13 Ah 25C ana bataryadır. Bir ESC saha yedeği olarak ayrılmıştır. [K28]",
+    "new": "Önceki aviyonik kaynak konfigürasyonu 2× SunnySky X2220 V3 980KV, 2× Hobbywing Skywalker 60A ESC V2, APC 9×6 pervane ve 4S 13 Ah bataryadır; bir ESC saha yedeği olarak listelenmiştir. Bu kaynak BOM’u 15 Eylül’de bildirilen sabit kanat İHA konfigürasyonuyla uyuşmaz ve güncel tahrik seçimi olarak kullanılmaz. Kaynaktaki parçaların FDA drone’u/İHA eşleştirmesi ekip doğrulaması beklemektedir. [K28, K32]"
+  },
+  {
+    "old": "Hesap girdileri: m=9 kg, L/D=10, seyir 25 m/s, tahrik verimi 0,65 ve DC/DC verimi 0,90. Bu tasarım kabulleriyle seyir eşdeğeri 25,46 A, %20 rezervli süre 24,5 dakika hesaplanır. X2220/APC9060 için 14,8 V üretici statik test referansı motor başına 1.536 gf, 28,6 A ve 11.702 RPM’dir. Motorun 38 A sınırı 30 saniyelik koşula aittir. [K26]",
+    "new": "Önceki aviyonik kaynak hesabı (güncel tahrik kabulü değildir). Hesap girdileri: m=9 kg, L/D=10, seyir 25 m/s, tahrik verimi 0,65 ve DC/DC verimi 0,90. Bu tasarım kabulleriyle seyir eşdeğeri 25,46 A, %20 rezervli süre 24,5 dakika hesaplanır. X2220/APC9060 için 14,8 V üretici statik test referansı motor başına 1.536 gf, 28,6 A ve 11.702 RPM’dir. Motorun 38 A sınırı 30 saniyelik koşula aittir. [K26] Bu 24,5 dakikalık tahmin ve üretici statik verileri yerli 3115 / 11×7×3 / 4S 16 Ah takımına aktarılamaz; ortak CAD kütlesi ve doğrulanmış tahrik verisiyle hesap yenilenmelidir."
+  },
+  {
+    "old": "Kaynak bölümler korunurken sistem düzeyindeki üç arayüz kararı birlikte yönetilir. Birincisi, uçuş bilimleri raporundaki T-MOTOR V3115 / 13×7×3 / 4S 16 Ah ile aviyonik bölümündeki SunnySky X2220 / APC 9×6 / 4S 13 Ah tanımları aynı tahrik takımı değildir. Motor, pervane, batarya ve bunlara bağlı itki/enerji hesapları tek bir onaylı konfigürasyona bağlanmalıdır. Bu rapor bu iki alternatifin aynı anda kurulu olduğunu ileri sürmez.",
+    "new": "Konfigürasyon esası. 15 Eylül 2026 ekip bildirimindeki tahrik seçimi aşağıda, önceki kaynak varsayımları ise tarihsel hesap girdileri olarak gösterilmiştir. Ekip bildirimi ürün veri sayfası, tartım veya kabul ölçümü yerine geçmez. Sabit kanat İHA ile FDA multirotoru ayrı platformlardır; birinin bileşen/test sonucu diğerine aktarılmaz. [K32]"
+  },
+  {
+    "added": "Tablo 6.2.1. Sabit kanat İHA tahrik konfigürasyonu ve doğrulama durumu."
+  },
+  {
+    "table": [
+      [
+        "Kalem",
+        "15 Eylül ekip bildirimi",
+        "Açık doğrulama"
+      ],
+      [
+        "Motor",
+        "Yerli 3115; marka belirtilmemiş",
+        "Üretici, KV, adet, kütle ve itki/akım eğrisi"
+      ],
+      [
+        "Pervane",
+        "11×7×3",
+        "Ürün kodu, malzeme ve motorla ölçüm"
+      ],
+      [
+        "Batarya",
+        "4S 16 Ah",
+        "Ürün kimliği, kullanılabilir kapasite ve yük testi"
+      ],
+      [
+        "ESC",
+        "60 A; önceki hedef 80 A",
+        "Tam model, sürekli/tepe akım ve termal uygunluk"
+      ],
+      [
+        "Kablo / sigorta",
+        "10 AWG; sigorta yok beyanı",
+        "Hat bazlı kablolama ve koruma tasarımı"
+      ],
+      [
+        "Kütle / ağırlık merkezi",
+        "Yeni fiziksel ölçüm bildirilmedi",
+        "CAD 7,05949 kg ile uçuş donanımlı tartımın eşleştirilmesi"
+      ],
+      [
+        "Önceki uçuş hesabı",
+        "T-MOTOR / 13×7×3 / 4S 16 Ah",
+        "Yeni motor için geçerli performans kanıtı değil"
+      ],
+      [
+        "Önceki aviyonik BOM",
+        "SunnySky / APC 9×6 / 4S 13 Ah",
+        "Platform eşleştirmesi ve BOM revizyonu"
+      ]
+    ]
+  },
+  {
+    "added": "Tablo 6.2.2. Regülasyon tanımlarındaki açık uyuşmazlıklar."
+  },
+  {
+    "table": [
+      [
+        "Platform / kol",
+        "Mevcut tanımlar",
+        "Kapanış kanıtı"
+      ],
+      [
+        "İKA U45",
+        "AMS1117-5.0 parça adı / 3,3 V çıkış etiketi",
+        "Hedef gerilim, doğru parça, şema/PCB/BOM revizyonu ve ölçüm"
+      ],
+      [
+        "İKA U43",
+        "R23=10 kΩ, R24=3,3 kΩ; hesap 5,038 V / hedef 5,1 V",
+        "Geri besleme seçimi ve boşta/yükte ölçüm"
+      ],
+      [
+        "İHA Pixhawk kolu",
+        "R23=10 kΩ, R24=3,3 kΩ; hesap 5,038 V / etiket 5,3 V",
+        "Hedef tolerans, geri besleme ve boşta/yükte ölçüm"
+      ]
+    ]
+  },
+  {
+    "added": "Kartlar için ERC/DRC raporu, revizyon kimliği ve ilgili 3,3/5/5,3/6/12 V hatlarının boşta/yükte ölçümleri kendi platformuyla kaydedilmelidir. Bu tabloda hedef gerilim veya parça seçimi değiştirilmemiştir. [K18, K21, K23]"
+  },
+  {
+    "old": "DataFlash içindeki güç/GNSS kaybı ve LAND olayları, uçuş durumu ve zaman penceresiyle birlikte incelenir; kendiliğinden oluşan olay bir planlı arıza-emniyet deneyi olarak sınıflandırılmaz. Saha kabul planında bağlantı kaybı, geçersiz rota, güvenli duruş, motor kesme ve uçuş emniyet davranışları ayrı senaryolardır. FDA görev provası kalkış–tespit–YKİ aktarımı–iniş zincirini en fazla 10 dakikada tamamlayacak şekilde planlanır; bu süre simülasyon videosunun uzunluğu için bir alt sınır değildir.",
+    "new": "DataFlash içindeki güç/GNSS kaybı ve LAND olayları, uçuş durumu ve zaman penceresiyle birlikte incelenir; kendiliğinden oluşan olay bir planlı arıza-emniyet deneyi olarak sınıflandırılmaz. Saha kabul planında bağlantı kaybı, geçersiz rota, güvenli duruş, motor kesme ve uçuş emniyet davranışları ayrı senaryolardır. FDA görev provası kalkış–tespit–YKİ aktarımı–iniş zincirini en fazla 10 dakikada tamamlayacak şekilde planlanır; bu süre simülasyon videosunun uzunluğu için bir alt sınır değildir. Haberleşme kabulünde ürünün katalog menzili ile takımın anten, kurulum ve saha koşullarında ölçülen menzili ayrıdır. Kalibrasyon kaydı araç/sensör kimliği, tarih, ayar ve sonucu; güç/failsafe kaydı senaryo, beklenen davranış, gözlenen sonuç ve log bağlantısını içermelidir."
+  },
+  {
+    "old": "İKA elektronik/tahrik BOM bütçesi 3,784 kg; sayısal referans maliyet toplamı 55.119,06 TL’dir. Sayısal adetli yedeklerle toplam 60.689,93 TL olur. İlave öneri yedekler ve gövde/mekanik parçalar ayrı bütçelenir.",
+    "new": "İKA elektronik/tahrik BOM bütçesi 3,784 kg; sayısal referans maliyet toplamı 55.119,06 TL’dir. Sayısal adetli yedeklerle toplam 60.689,93 TL olur. İlave öneri yedekler ve gövde/mekanik parçalar ayrı bütçelenir. Bu kaynak toplamı, Bölüm 7’de seçilen 60.689,21 TL birleşik satır toplamından 0,72 TL farklıdır; nihai ödeme tutarı değildir ve ortak bütçeye ikinci kez eklenmez."
+  },
+  {
+    "old": "İHA aviyonik referans alt toplamı",
+    "new": "İHA aviyonik önceki BOM referans alt toplamı"
+  },
+  {
+    "old": "Bölüm 3.3 BOM'undaki sayısal fiyatlı hücreler; tam İHA maliyeti değildir",
+    "new": "Önceki kaynak BOM’unun fiyatlı hücreleri; yeni tahrik ve gerçek ödeme toplamı değildir"
+  },
+  {
+    "old": "K31",
+    "new": "K32"
+  },
+  {
+    "old": "Hakem sunumu / ölçüm yöntemi",
+    "new": "15 Eylül ekip konfigürasyon bildirimi"
+  },
+  {
+    "old": "scripts/fdr_33_veri_topla.py, scripts/jetson_fps.py, scripts/sik_rf_olc.py; sunum_rev6/rev6_kunye.json ve PDF kontrol kaydı.",
+    "new": "Navitas biz bize sohbet kaydı, 15.09.2026 20.29–20.36: yerli 3115, 11×7×3, 4S 16 Ah, 60 A ESC, 10 AWG ve sigorta yok beyanları; üretici/ölçüm doğrulaması beklenir."
+  },
+  {
+    "added": "Tablo 3.3.3.5. Ayrı deneylerin tarihi, kapsamı ve sonucu."
+  },
+  {
+    "table": [
+      [
+        "Tarih / kayıt",
+        "Kapsam",
+        "Sonuç ve sınır"
+      ],
+      [
+        "10 Eylül / eski sahne varyantları",
+        "Aynı v36 modeli; taban/v1/v2/v3",
+        "Doğru rota 0/15, 3/15, 0/15, 0/15; tarihsel ışık/gölge tablosu"
+      ],
+      [
+        "10 Eylül / yerleşim düzeltmesi",
+        "v36 + v1; açık koridor yerleşimi düzeltilmiş",
+        "7/15 doğru rota; 12/15 eşiği karşılanmadı [K33]"
+      ],
+      [
+        "10 Eylül / toplu MuJoCo",
+        "Mozaik model ve kare tabanlı üretim ayrı",
+        "Doğru etiket 6/15 (tohum 42) ve 1/15; görev 9/45 ve 0/15 [K6]"
+      ],
+      [
+        "14 Eylül / CAD video",
+        "Kayıtlı model rotasıyla ayrı fizik koşusu",
+        "Rapordaki kayıt: 42 nokta, 99,88 s, 0 temas. Toplu başarı oranının yerine geçmez [K20]"
+      ],
+      [
+        "14 Eylül / Gazebo rv41",
+        "Kolay: gerçek v36 çıkarımı",
+        "Rota yok, 0 waypoint; geçerli kapı bulunamadı [K33]"
+      ],
+      [
+        "14 Eylül / Gazebo rv41",
+        "Orta ve zor: izleyici zaman aşımı",
+        "1800 s sonunda atlandı; model değerlendirmesi tamamlanmadı. Model başarısızlığı paydasına eklenmez [K33]"
+      ],
+      [
+        "15 Eylül / bilinen rota demosu",
+        "Gazebo; önceden bilinen ROUTE_XY",
+        "Görüntü işleme modeli çalışmadı; yalnız rota takip gösterimi. Model başarısı değildir [K33]"
+      ]
+    ]
+  },
+  {
+    "added": "Sürüm adları. v36 üretim modelidir; taban/v1/v2/v3 sentetik sahne varyantlarıdır; rv41 ise Gazebo kayıt klasörünün sıra numarasıdır. rv41, model v41 anlamına gelmez. 23 Ağustos kayıt adlandırma notu, bu ayrımı korumak için v<N> klasörlerini rv<N> biçimine çevirmiştir. [K33]"
+  },
+  {
+    "added": "Başarısızlığın kapsamı. MuJoCo kare tabanlı zincirin eski sonuçlarında görüntüden algılama, kareye göre şerit etiketleme, rota başlangıcının KB’ye göre kayması ve KB/HB görünürlüğü birlikte etkili olmuştur. T235 analizinde 12 temaslı koşunun geometrik kayması da gösterilmiştir; bütün başarısızlıklar yalnız segmentasyon modeline yüklenemez. Karşı-olgu hesapları yeni uçtan uca deney sonucu değildir. Gazebo rv41 orta/zor kayıtlarındaki zaman aşımı da ayrı bir kayıt/işleme kusurudur. [K33]"
+  },
+  {
+    "added": "Model dosyası durumu. Model kayıt defteri v36’yı seçmektedir. 14 Eylül’de v36 ağırlıkları yedekten geri getirilmiş ve kayıtlı SHA-256 ile eşleştirilmiştir; daha eski devir notlarındaki “model dosyası yok” durumu bu tarihten sonraki kayıtlar için geçerli değildir. v37 dosyasının bulunması, onun üretime seçildiği veya bu deneylerde kullanıldığı anlamına gelmez. [K8, K33]"
+  },
+  {
+    "old": "K31",
+    "new": "K33"
+  },
+  {
+    "old": "Hakem sunumu / ölçüm yöntemi",
+    "new": "Yazılım deney tarihçesi / 15 Eylül kontrolü"
+  },
+  {
+    "old": "scripts/fdr_33_veri_topla.py, scripts/jetson_fps.py, scripts/sik_rf_olc.py; sunum_rev6/rev6_kunye.json ve PDF kontrol kaydı.",
+    "new": "results/fdr_sprint_20260910/H1/k3b/v1_15harita_yerlesim_d441.json (7/15); H1/t235/analiz/analiz_c.md; simulation/recordings/rv41/detections.json ve iha_haritala.log; demo_bilinen_rota_kolay_20260915_114300/ETIKET_OKU.md; REVIEW_LOG D-485/486; simulation/recordings/ADLANDIRMA.md."
+  },
+  {
+    "removed_duplicate_heading": "Bölüm 3.2.1 İnsansız Hava Aracı (İHA):"
+  },
+  {
+    "removed_duplicate_heading": "Bölüm 3.3.1 Nihai Donanım ve Sistem Mimarisi"
+  },
+  {
+    "old": "Şekil 3.2.3.1Şekil 3.2.3.1. Mancınık genel montaj görünümü (Rev B tabanlı ön CAD modeli) — A-kafes taşıyıcı, sigma profil ray, kızak ve çıkrık istasyonu. Not: İlk tasarım aşamasında 2 kordon modellenmiş olup, Bölüm 3.2.3.8.1'de detaylandırılan aerodinamik stall güvenlik marjı analizleri neticesinde sistem 3 kordonlu konfigürasyona yükseltilmiştir. Kızağa ilave delik açılmadan entegrasyonu sağlayan MNC-802 köprü plaka arayüzü imalata yansıtılmış; tüm yapısal analizler, kütle dökümü ve BOM 3 kordonlu nihai gereksinime göre doğrulanmıştır. ",
+    "new": "Şekil 3.2.3.1. Mancınık genel montaj görünümü (Rev B tabanlı ön CAD modeli) — A-kafes taşıyıcı, sigma profil ray, kızak ve çıkrık istasyonu. Not: İlk tasarım aşamasında 2 kordon modellenmiş olup, Bölüm 3.2.3.8.1'de detaylandırılan aerodinamik stall güvenlik marjı analizleri neticesinde sistem 3 kordonlu konfigürasyona yükseltilmiştir. Kızağa ilave delik açılmadan entegrasyonu sağlayan MNC-802 köprü plaka arayüzü imalata yansıtılmış; tüm yapısal analizler, kütle dökümü ve BOM 3 kordonlu nihai gereksinime göre doğrulanmıştır. "
+  }
+]

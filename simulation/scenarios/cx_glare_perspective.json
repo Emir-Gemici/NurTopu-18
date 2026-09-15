@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "id": "cx_glare_perspective",
+  "author": "Codex",
+  "title_tr": "Beyaz Beton, Parlama ve Eğik Tarama",
+  "description_tr": "Yüksek güneş, açık renk zemin ve 17 derece eğik tarama ile aşırı pozlama ve perspektif dayanımını sınar.",
+  "seed": 2201,
+  "active_zone": "orta",
+  "map_ids": {"kolay": 201, "orta": 202, "zor": 203},
+  "environment": {
+    "ambient": [0.82, 0.82, 0.78, 1.0],
+    "background": [0.93, 0.95, 1.0, 1.0],
+    "sun_diffuse": [1.0, 0.98, 0.88, 1.0],
+    "sun_direction": [-0.08, 0.05, -1.0],
+    "ground_friction": 0.72,
+    "ground_color": [0.72, 0.70, 0.65]
+  },
+  "terrain": {"layout": "field", "lane_width_multiplier": 0.92, "debris_multiplier": 1.05, "rubble_height_multiplier": 0.85, "chicane_count": 6},
+  "flight": {"scan_altitude_m": 32.0, "scan_tilt_deg": 17.0, "lateral_jitter_m": 0.25},
+  "mission": {"require_manual_trigger": true, "route_delivery_delay_s": 0.8, "packet_loss_percent": 0, "dynamic_obstacle": "none"},
+  "acceptance": ["Tüm hava aracı pozları 300x300 sınırında kalır", "Üç HTAB da 50x50 ve birbirinden ayrıdır", "Parlama altında algı sonucu dürüstçe raporlanır"]
+}
