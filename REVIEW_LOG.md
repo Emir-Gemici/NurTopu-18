@@ -31601,6 +31601,8 @@ kayar). D-489 kolay videosu ESKİ dünyayla çekildi (klasördeki world.world ge
 
 ### D-491 — Jetson ↔ Pixhawk ↔ YKS tezgâhı: kablolu MAVLink (TELEM2) + IMX477 + model v36 → YKS zinciri İLK KEZ uçtan uca çalıştı; açılışta 42 s parametre indirmesi ve canlı kamerada sürekli MASKE_YOK şüphesi bulundu
 
+> ⬆ **SONRADAN DÜZELTİLDİ — D-492 (16 Eylül, push çıktısı):** §6'daki "PC ve Jetson iki farklı uzak depoya bakıyor" yargısı **yanlıştı**; GitHub `navitas26/navitas` adresini `yazilim-takimi/navitas`'a yönlendiriyor, aynı depo. Dal düzeyindeki çakışma (Jetson `jetson/tek-yol-20260912` master'a girmemiş) geçerli.
+
 **Yazan:** Claude (mimar, PC oturumu; Jetson'a SSH) · **Tarih:** 15 Eylül 2026 16:50 → 16 Eylül 00:40 · **Tam rapor ve ham çıktılar:** `JETSON_DEVIR_20260915.md` §9 (zaman sıralı ölçümler) ve **§10 (kapanış raporu)** · kanıt dizini `results/jetson_20260915/`.
 
 **1. Donanım kimliği (fotoğraf + sürücü, KESİN).** Görev bilgisayarı Jetson Orin Nano 4 GB, taşıyıcı **Seeed reComputer J401** (NVIDIA devkit değil; DC 9–19 V). Gün içinde Jetson'a takılı kamera **Arducam UC-350 Rev.D = IMX219** (ödünç, I2C 0x10) çıktı; ekip kararıyla (Emir: *"477'yi kullan, 6 mm lens tak"*) **Raspberry Pi HQ Camera V1.0 = IMX477 + 6 mm CS lens** takıldı, boot overlay `imx219-dual → imx477-dual` (`fdtoverlay` doğrulaması + yedek `extlinux.conf.before-imx477-dual-20260915`). J401 datasheet: 40-pin J10 pin 8/10 = UART1 (`/dev/ttyTHS1`); tek sıra **J15 pin 3/4 = UART2 DEBUG** (Pixhawk'a bağlanmaz).
@@ -31620,3 +31622,11 @@ kayar). D-489 kolay videosu ESKİ dünyayla çekildi (klasördeki world.world ge
 **7a. 🔴 Push EDİLMEYEN (bilinçli).** `simulation/scripts/world_generator.py` ve `simulation/plugins/navitas_anim.cc` commitlenmemiş değişiklikleri (D-488 hız sözleşmesi, D-490 moloz yerleşimi) yukarıdaki testi düşürdüğü için **yerelde bırakıldı** (anayasa §5). D-487…D-490 kayıtları ve bağımlı varlıklar push edildi; bu iki dosyanın kodu **depoda değildir**. Sahibi oturum: test beklentisini ön kayıtla güncelle → bağımsız denetim → birleştir. Ayrıca depoya alınmayanlar: `simulation/.gazebo-image-build.stamp`, `simulation/harita_gecmisi/`, `simulation/realism_runs/<koşum>/`, kullanıcıya ait kök dizin `.docx/.png` dosyaları.
 
 **8. Bu kayıtla depoya girenler.** `JETSON_DEVIR_20260915.md` · `results/jetson_20260915/` (Jetson durum kaydı, `/tmp` günlükleri, kanıt kareleri) · `results/prova/20260915_*` (YKS hakem kayıtları) · `scripts/tezgah/` (tezgâh araçları — **üretim kodu değil**, bağımsız denetimden geçmedi) · `scripts/sunum_uret.py` + `tests/test_sunum_kanit.py` + `results/sunum_20260913/` (13 Eylül T259 hazırlığı; alt ajan yazdı, **bağımsız denetimi yapılmadı**). Kimlik bilgisi içeren kampüs portal betiği depoya **alınmadı**.
+
+### D-492 — D-491 düzeltmesi: PC ve Jetson "iki farklı uzak depo" DEĞİL — GitHub yönlendirmesiyle aynı depo; D-491 push'u doğrulandı
+
+**Yazan:** Claude (mimar) · **Tarih:** 16 Eylül 2026 01:05 · **Kanıt:** `git push origin master` çıktısı `remote: https://github.com/yazilim-takimi/navitas.git` ve `0a043107..ca75e358  master -> master`; push sonrası `git rev-parse` yerel = uzak = `ca75e358`.
+
+~~D-491 §6 ve `JETSON_DEVIR_20260915.md` §10.4: "PC `navitas26/navitas`, Jetson `yazilim-takimi/navitas` — **iki farklı uzak**"~~ → **YANLIŞ.** GitHub `navitas26/navitas` adresini `yazilim-takimi/navitas`'a yönlendiriyor (depo taşınmış/yeniden adlandırılmış): PC ve Jetson klonu **aynı depoya** bakıyor. Geçerli kalan: Jetson klonu `jetson/tek-yol-20260912` dalında (`abea98cb`) ve bu dal **master'a birleşmemiş**; D-480…D-484 numara çakışması dal düzeyinde sürüyor. PC'nin `origin` adresi eski ada işaret ediyor (çalışıyor, yönlendirme ile) — değiştirilmedi.
+
+**Push özeti (16 Eyl gece):** `ee5f04b3` (başka oturumların güvenli commitlenmemiş işi, 114 dosya) + `ca75e358` (D-491, 35 dosya) → `origin/master`. Commitlenmeden yerelde kalan: `simulation/scripts/world_generator.py`, `simulation/plugins/navitas_anim.cc` (D-491 §7a).

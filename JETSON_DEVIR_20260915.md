@@ -499,7 +499,7 @@ Hedef (henüz koşmadı):
 |---|---|
 | Paket `~/navitas` → `~/proje/NAVITAS_JETSON_20260906/navitas` | **git deposu değil**; 12 Eylül 13:54'te güncellenmiş dosyalar içerir |
 | Klon `~/proje/github/navitas_github` | dal **`jetson/tek-yol-20260912`** @ `abea98cb` (13 Eyl), uzak **`yazilim-takimi/navitas`** |
-| PC deposu | `master` @ `ab906f3a` (14 Eyl), uzak **`navitas26/navitas`** — **iki farklı uzak** |
+| PC deposu | `master` @ `ab906f3a` (14 Eyl), uzak `navitas26/navitas` — ~~**iki farklı uzak**~~ → **DÜZELTME (16 Eyl 01:05, push çıktısı):** GitHub `navitas26/navitas` adresini `yazilim-takimi/navitas`'a yönlendiriyor → Jetson klonuyla **aynı depo**; çakışma dal düzeyindedir (`jetson/tek-yol-20260912` master'a girmemiş) |
 | paket ↔ klon | 7 anahtar dosya bayt-eş |
 | paket ↔ PC master | `codes/rpi_inference.py` **farklı** (Jetson'da T233 = ekransız kipte FPS ortalama/p95 raporu yok; karar yolu aynı) · `config/model_registry.json` farklı (etkin `competition` v36 sha **aynı**) · diğer 5 anahtar dosya eş |
 | 🔴 D-numara çakışması | Jetson dalındaki **D-480…D-484** (Codex Jetson denetimi, telsiz bandı, K2 engine≡pt, W/3 ön kayıt, tek yol) ile PC master'daki **D-480…D-490** (İKA kütlesi, FDR dizgi, Gazebo) **aynı numara, farklı içerik** → birleştirmede yeniden numaralandırma gerekir |
