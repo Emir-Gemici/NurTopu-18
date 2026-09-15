@@ -1,0 +1,32 @@
+{
+ "harita": 5,
+ "senaryo": "orta",
+ "seed": 42,
+ "res": 1280,
+ "fizik": true,
+ "yol_dokusu": "stabilize",
+ "varyant": "v3",
+ "zemin_dokusu": "zemin_surulmus",
+ "kare_n": 39,
+ "kabul_edilen_kare": 15,
+ "htab_kapsama_orani": 1.0,
+ "sim_sure_s": 38.98,
+ "t_tarama0": 10.62,
+ "t_tarama_son": 31.98,
+ "t_parasut": 33.88,
+ "t_inis": 36.98,
+ "render_ms_kare_ort": 14.5,
+ "render_ms_kare_maks": 22.6,
+ "duvar_saati_s": 1.37,
+ "mjcf_yukleme_ms": 162.7,
+ "poses_sha256": "cad13fce0741c9986973e728d12f9866e204b94ee3864fcbca49297804f7622f",
+ "mjcf_kanonik_sha256": "0fbd92e107748614b835213e6ef8bc8983200837c2dfba71e4783d4dd77f38ea",
+ "acik_yol_pay_m": 1.45,
+ "onizleme": {
+  "baslangic_ucuncu_sahis": "onizleme_baslangic_ucuncu_sahis.jpg",
+  "tarama_ucuncu_sahis": "onizleme_tarama_ucuncu_sahis.jpg",
+  "tarama_nadir": "onizleme_tarama_nadir.jpg",
+  "inis_ucuncu_sahis": "onizleme_inis_ucuncu_sahis.jpg"
+ },
+ "sinir": "İHA uçuşu KİNEMATİK (mocap); aerodinamik yok. Kamera renderi gerçek (MuJoCo)."
+}

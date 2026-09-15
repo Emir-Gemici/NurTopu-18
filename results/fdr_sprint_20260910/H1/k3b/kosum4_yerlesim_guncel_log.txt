@@ -1,0 +1,74 @@
+=== KOSUM 4 — 15 Eyl, guncel yerlesim (D-441 + D-472 iz + D-483 arena), v36, 4 varyant 20:57:43
+=== taban 20:57:43
+[K3] model navitas-seg-v36-512 O:\navitas\models\navitas_seg_v36_best.pt sha eşleşti=True
+[K3] harita 1 kolay [taban/son_yazar/hb0]: gerçek=sol model=yok rota=KAPALI_DAR doğru=False trav=0.2936 engel=0.0555 açıkyol_trav=0.2816 | imgsz512: rota=KAPALI_DAR yol=None doğru=False trav=0.2936
+[K3] harita 1 orta [taban/son_yazar/hb0]: gerçek=orta model=yok rota=BELIRSIZ_TEK_KAPI doğru=False trav=0.448 engel=0.6935 açıkyol_trav=0.9901 | imgsz512: rota=BELIRSIZ_TEK_KAPI yol=None doğru=False trav=0.448
+[K3] harita 1 zor [taban/son_yazar/hb0]: gerçek=sag model=yok rota=BELIRSIZ_TEK_KAPI doğru=False trav=0.0493 engel=0.722 açıkyol_trav=0.0 | imgsz512: rota=BELIRSIZ_TEK_KAPI yol=None doğru=False trav=0.0493
+[K3] harita 2 kolay [taban/son_yazar/hb0]: gerçek=sol model=yok rota=KAPALI_DAR doğru=False trav=0.5736 engel=0.77 açıkyol_trav=0.9883 | imgsz512: rota=BELIRSIZ_TEK_KAPI yol=None doğru=False trav=0.5736
+[K3] harita 2 orta [taban/son_yazar/hb0]: gerçek=sol model=yok rota=ZEMIN_MASKESI_SUPHELI doğru=False trav=0.292 engel=0.5791 açıkyol_trav=0.8051 | imgsz512: rota=BELIRSIZ_TEK_KAPI yol=None doğru=False trav=0.292
+[K3] harita 2 zor [taban/son_yazar/hb0]: gerçek=sag model=yok rota=KAPALI_DAR doğru=False trav=0.2345 engel=0.2492 açıkyol_trav=0.7271 | imgsz512: rota=BELIRSIZ_TEK_KAPI yol=None doğru=False trav=0.2345
+[K3] harita 3 kolay [taban/son_yazar/hb0]: gerçek=sag model=yok rota=BELIRSIZ_TEK_KAPI doğru=False trav=0.122 engel=0.709 açıkyol_trav=0.0 | imgsz512: rota=BELIRSIZ_TEK_KAPI yol=None doğru=False trav=0.122
+[K3] harita 3 orta [taban/son_yazar/hb0]: gerçek=orta model=yok rota=KAPI_YOK doğru=False trav=0.0346 engel=0.7864 açıkyol_trav=0.029 | imgsz512: rota=KAPI_YOK yol=None doğru=False trav=0.0346
+[K3] harita 3 zor [taban/son_yazar/hb0]: gerçek=sol model=yok rota=KAPI_YOK doğru=False trav=0.0023 engel=0.7333 açıkyol_trav=0.0 | imgsz512: rota=BELIRSIZ_TEK_KAPI yol=None doğru=False trav=0.0023
+[K3] harita 4 kolay [taban/son_yazar/hb0]: gerçek=sag model=yok rota=BELIRSIZ_TEK_KAPI doğru=False trav=0.6734 engel=0.543 açıkyol_trav=0.99 | imgsz512: rota=BELIRSIZ_TEK_KAPI yol=None doğru=False trav=0.6734
+[K3] harita 4 orta [taban/son_yazar/hb0]: gerçek=sag model=yok rota=BELIRSIZ_TEK_KAPI doğru=False trav=0.0642 engel=0.8561 açıkyol_trav=0.0 | imgsz512: rota=BELIRSIZ_TEK_KAPI yol=None doğru=False trav=0.0642
+[K3] harita 4 zor [taban/son_yazar/hb0]: gerçek=sol model=yok rota=KAPALI_DAR doğru=False trav=0.1954 engel=0.8699 açıkyol_trav=0.0 | imgsz512: rota=KAPI_YOK yol=None doğru=False trav=0.1954
+[K3] harita 5 kolay [taban/son_yazar/hb0]: gerçek=sag model=yok rota=BELIRSIZ_TEK_KAPI doğru=False trav=0.1081 engel=0.6488 açıkyol_trav=0.0 | imgsz512: rota=BELIRSIZ_TEK_KAPI yol=None doğru=False trav=0.1081
+[K3] harita 5 orta [taban/son_yazar/hb0]: gerçek=sag model=yok rota=BELIRSIZ_TEK_KAPI doğru=False trav=0.0812 engel=0.7587 açıkyol_trav=0.0 | imgsz512: rota=BELIRSIZ_TEK_KAPI yol=None doğru=False trav=0.0812
+[K3] harita 5 zor [taban/son_yazar/hb0]: gerçek=orta model=yok rota=BELIRSIZ_TEK_KAPI doğru=False trav=0.2229 engel=0.8907 açıkyol_trav=0.1306 | imgsz512: rota=BELIRSIZ_TEK_KAPI yol=None doğru=False trav=0.2229
+[K3] ÖZET [taban]: rota bulunan 0/15, doğru etiket 0/15 | TEŞHİS imgsz512: rota 0, doğru 0 → results/fdr_sprint_20260910/H1/k3b/taban_15harita_yerlesim_guncel.json
+=== v1 20:58:36
+[K3] model navitas-seg-v36-512 O:\navitas\models\navitas_seg_v36_best.pt sha eşleşti=True
+[K3] harita 1 kolay [v1/son_yazar/hb0]: gerçek=sol model=yok rota=KAPALI_DAR doğru=False trav=0.3566 engel=0.1373 açıkyol_trav=0.9999 | imgsz512: rota=ACIK yol=1 doğru=True trav=0.3566
+[K3] harita 1 orta [v1/son_yazar/hb0]: gerçek=orta model=yok rota=KAPALI_DAR doğru=False trav=0.3604 engel=0.279 açıkyol_trav=0.9943 | imgsz512: rota=KAPALI_DAR yol=None doğru=False trav=0.3604
+[K3] harita 1 zor [v1/son_yazar/hb0]: gerçek=sag model=yok rota=BELIRSIZ_COKLU doğru=False trav=0.3226 engel=0.1807 açıkyol_trav=0.998 | imgsz512: rota=ACIK yol=3 doğru=True trav=0.3226
+[K3] harita 2 kolay [v1/son_yazar/hb0]: gerçek=sol model=sol rota=ACIK doğru=True trav=0.3734 engel=0.1448 açıkyol_trav=1.0 | imgsz512: rota=ACIK yol=1 doğru=True trav=0.3734
+[K3] harita 2 orta [v1/son_yazar/hb0]: gerçek=sol model=yok rota=KAPALI_DAR doğru=False trav=0.3345 engel=0.1236 açıkyol_trav=0.9924 | imgsz512: rota=KAPALI_DAR yol=None doğru=False trav=0.3345
+[K3] harita 2 zor [v1/son_yazar/hb0]: gerçek=sag model=sag rota=ACIK doğru=True trav=0.2959 engel=0.1816 açıkyol_trav=0.9968 | imgsz512: rota=BELIRSIZ_COKLU yol=None doğru=False trav=0.2959
+[K3] harita 3 kolay [v1/son_yazar/hb0]: gerçek=sag model=yok rota=KAPALI_DAR doğru=False trav=0.3332 engel=0.1171 açıkyol_trav=1.0 | imgsz512: rota=KAPALI_DAR yol=None doğru=False trav=0.3332
+[K3] harita 3 orta [v1/son_yazar/hb0]: gerçek=orta model=orta rota=ACIK doğru=True trav=0.3508 engel=0.0859 açıkyol_trav=0.9962 | imgsz512: rota=ACIK yol=2 doğru=True trav=0.3508
+[K3] harita 3 zor [v1/son_yazar/hb0]: gerçek=sol model=sol rota=ACIK doğru=True trav=0.3504 engel=0.2117 açıkyol_trav=0.9946 | imgsz512: rota=KAPALI_DAR yol=None doğru=False trav=0.3504
+[K3] harita 4 kolay [v1/son_yazar/hb0]: gerçek=sag model=yok rota=BELIRSIZ_TEK_KAPI doğru=False trav=0.3147 engel=0.2129 açıkyol_trav=0.9726 | imgsz512: rota=KAPALI_DAR yol=None doğru=False trav=0.3147
+[K3] harita 4 orta [v1/son_yazar/hb0]: gerçek=sag model=yok rota=KAPALI_DAR doğru=False trav=0.3563 engel=0.1341 açıkyol_trav=0.9941 | imgsz512: rota=KAPALI_DAR yol=None doğru=False trav=0.3563
+[K3] harita 4 zor [v1/son_yazar/hb0]: gerçek=sol model=yok rota=BELIRSIZ_TEK_KAPI doğru=False trav=0.3031 engel=0.124 açıkyol_trav=0.9846 | imgsz512: rota=KAPALI_DAR yol=None doğru=False trav=0.3031
+[K3] harita 5 kolay [v1/son_yazar/hb0]: gerçek=sag model=sag rota=ACIK doğru=True trav=0.3173 engel=0.146 açıkyol_trav=0.9986 | imgsz512: rota=KAPALI_DAR yol=None doğru=False trav=0.3173
+[K3] harita 5 orta [v1/son_yazar/hb0]: gerçek=sag model=sag rota=ACIK doğru=True trav=0.3017 engel=0.0633 açıkyol_trav=1.0 | imgsz512: rota=ACIK yol=3 doğru=True trav=0.3017
+[K3] harita 5 zor [v1/son_yazar/hb0]: gerçek=orta model=orta rota=ACIK doğru=True trav=0.3546 engel=0.1965 açıkyol_trav=1.0 | imgsz512: rota=ACIK yol=2 doğru=True trav=0.3546
+[K3] ÖZET [v1]: rota bulunan 7/15, doğru etiket 7/15 | TEŞHİS imgsz512: rota 6, doğru 6 → results/fdr_sprint_20260910/H1/k3b/v1_15harita_yerlesim_guncel.json
+=== v2 20:59:35
+[K3] model navitas-seg-v36-512 O:\navitas\models\navitas_seg_v36_best.pt sha eşleşti=True
+[K3] harita 1 kolay [v2/son_yazar/hb0]: gerçek=sol model=yok rota=KAPALI_DAR doğru=False trav=0.3615 engel=0.1365 açıkyol_trav=0.9665 | imgsz512: rota=KAPALI_DAR yol=None doğru=False trav=0.3615
+[K3] harita 1 orta [v2/son_yazar/hb0]: gerçek=orta model=yok rota=KAPALI_DAR doğru=False trav=0.3474 engel=0.4374 açıkyol_trav=0.9974 | imgsz512: rota=KAPALI_DAR yol=None doğru=False trav=0.3474
+[K3] harita 1 zor [v2/son_yazar/hb0]: gerçek=sag model=yok rota=BELIRSIZ_COKLU doğru=False trav=0.3165 engel=0.3143 açıkyol_trav=0.998 | imgsz512: rota=BELIRSIZ_COKLU yol=None doğru=False trav=0.3165
+[K3] harita 2 kolay [v2/son_yazar/hb0]: gerçek=sol model=yok rota=KAPALI_DAR doğru=False trav=0.3335 engel=0.2244 açıkyol_trav=0.963 | imgsz512: rota=KAPALI_DAR yol=None doğru=False trav=0.3335
+[K3] harita 2 orta [v2/son_yazar/hb0]: gerçek=sol model=yok rota=KAPALI_DAR doğru=False trav=0.3305 engel=0.3677 açıkyol_trav=0.9828 | imgsz512: rota=KAPALI_DAR yol=None doğru=False trav=0.3305
+[K3] harita 2 zor [v2/son_yazar/hb0]: gerçek=sag model=yok rota=KAPALI_DAR doğru=False trav=0.3394 engel=0.323 açıkyol_trav=0.9836 | imgsz512: rota=KAPALI_DAR yol=None doğru=False trav=0.3394
+[K3] harita 3 kolay [v2/son_yazar/hb0]: gerçek=sag model=yok rota=KAPALI_DAR doğru=False trav=0.377 engel=0.2332 açıkyol_trav=1.0 | imgsz512: rota=ACIK yol=3 doğru=True trav=0.377
+[K3] harita 3 orta [v2/son_yazar/hb0]: gerçek=orta model=yok rota=KAPALI_DAR doğru=False trav=0.3569 engel=0.4747 açıkyol_trav=0.994 | imgsz512: rota=KAPALI_DAR yol=None doğru=False trav=0.3569
+[K3] harita 3 zor [v2/son_yazar/hb0]: gerçek=sol model=yok rota=KAPALI_DAR doğru=False trav=0.3392 engel=0.3903 açıkyol_trav=0.9871 | imgsz512: rota=KAPALI_DAR yol=None doğru=False trav=0.3392
+[K3] harita 4 kolay [v2/son_yazar/hb0]: gerçek=sag model=yok rota=KAPALI_DAR doğru=False trav=0.3389 engel=0.2573 açıkyol_trav=0.9933 | imgsz512: rota=KAPALI_DAR yol=None doğru=False trav=0.3389
+[K3] harita 4 orta [v2/son_yazar/hb0]: gerçek=sag model=yok rota=KAPALI_DAR doğru=False trav=0.3659 engel=0.1406 açıkyol_trav=0.9988 | imgsz512: rota=KAPALI_DAR yol=None doğru=False trav=0.3659
+[K3] harita 4 zor [v2/son_yazar/hb0]: gerçek=sol model=yok rota=BELIRSIZ_TEK_KAPI doğru=False trav=0.3475 engel=0.3979 açıkyol_trav=0.9987 | imgsz512: rota=ACIK yol=1 doğru=True trav=0.3475
+[K3] harita 5 kolay [v2/son_yazar/hb0]: gerçek=sag model=yok rota=KAPALI_DAR doğru=False trav=0.3211 engel=0.3131 açıkyol_trav=0.9963 | imgsz512: rota=ACIK yol=3 doğru=True trav=0.3211
+[K3] harita 5 orta [v2/son_yazar/hb0]: gerçek=sag model=sag rota=ACIK doğru=True trav=0.3177 engel=0.2995 açıkyol_trav=1.0 | imgsz512: rota=KAPALI_DAR yol=None doğru=False trav=0.3177
+[K3] harita 5 zor [v2/son_yazar/hb0]: gerçek=orta model=yok rota=KAPALI_DAR doğru=False trav=0.3205 engel=0.3559 açıkyol_trav=0.9996 | imgsz512: rota=BELIRSIZ_COKLU yol=None doğru=False trav=0.3205
+[K3] ÖZET [v2]: rota bulunan 1/15, doğru etiket 1/15 | TEŞHİS imgsz512: rota 3, doğru 3 → results/fdr_sprint_20260910/H1/k3b/v2_15harita_yerlesim_guncel.json
+=== v3 21:00:35
+[K3] model navitas-seg-v36-512 O:\navitas\models\navitas_seg_v36_best.pt sha eşleşti=True
+[K3] harita 1 kolay [v3/son_yazar/hb0]: gerçek=sol model=yok rota=KAPALI_DAR doğru=False trav=0.3806 engel=0.099 açıkyol_trav=0.9678 | imgsz512: rota=KAPALI_DAR yol=None doğru=False trav=0.3806
+[K3] harita 1 orta [v3/son_yazar/hb0]: gerçek=orta model=yok rota=KAPALI_DAR doğru=False trav=0.3728 engel=0.1539 açıkyol_trav=0.9908 | imgsz512: rota=KAPALI_DAR yol=None doğru=False trav=0.3728
+[K3] harita 1 zor [v3/son_yazar/hb0]: gerçek=sag model=sag rota=ACIK doğru=True trav=0.3861 engel=0.2003 açıkyol_trav=0.9988 | imgsz512: rota=ACIK yol=3 doğru=True trav=0.3861
+[K3] harita 2 kolay [v3/son_yazar/hb0]: gerçek=sol model=yok rota=KAPALI_DAR doğru=False trav=0.3741 engel=0.0944 açıkyol_trav=0.9878 | imgsz512: rota=KAPALI_DAR yol=None doğru=False trav=0.3741
+[K3] harita 2 orta [v3/son_yazar/hb0]: gerçek=sol model=yok rota=KAPALI_DAR doğru=False trav=0.3896 engel=0.1144 açıkyol_trav=0.9892 | imgsz512: rota=KAPALI_DAR yol=None doğru=False trav=0.3896
+[K3] harita 2 zor [v3/son_yazar/hb0]: gerçek=sag model=sag rota=ACIK doğru=True trav=0.3952 engel=0.0975 açıkyol_trav=0.9987 | imgsz512: rota=ACIK yol=3 doğru=True trav=0.3952
+[K3] harita 3 kolay [v3/son_yazar/hb0]: gerçek=sag model=yok rota=KAPALI_DAR doğru=False trav=0.3831 engel=0.1216 açıkyol_trav=1.0 | imgsz512: rota=ACIK yol=3 doğru=True trav=0.3831
+[K3] harita 3 orta [v3/son_yazar/hb0]: gerçek=orta model=yok rota=KAPALI_DAR doğru=False trav=0.3654 engel=0.1541 açıkyol_trav=0.9962 | imgsz512: rota=ACIK yol=2 doğru=True trav=0.3654
+[K3] harita 3 zor [v3/son_yazar/hb0]: gerçek=sol model=sol rota=ACIK doğru=True trav=0.4001 engel=0.2371 açıkyol_trav=0.9994 | imgsz512: rota=ACIK yol=1 doğru=True trav=0.4001
+[K3] harita 4 kolay [v3/son_yazar/hb0]: gerçek=sag model=yok rota=KAPALI_DAR doğru=False trav=0.3654 engel=0.1338 açıkyol_trav=0.9838 | imgsz512: rota=KAPALI_DAR yol=None doğru=False trav=0.3654
+[K3] harita 4 orta [v3/son_yazar/hb0]: gerçek=sag model=yok rota=KAPALI_DAR doğru=False trav=0.4029 engel=0.1153 açıkyol_trav=0.9988 | imgsz512: rota=ACIK yol=3 doğru=True trav=0.4029
+[K3] harita 4 zor [v3/son_yazar/hb0]: gerçek=sol model=yok rota=BELIRSIZ_TEK_KAPI doğru=False trav=0.4101 engel=0.2289 açıkyol_trav=1.0 | imgsz512: rota=ACIK yol=1 doğru=True trav=0.4101
+[K3] harita 5 kolay [v3/son_yazar/hb0]: gerçek=sag model=sag rota=ACIK doğru=True trav=0.3409 engel=0.0612 açıkyol_trav=0.9995 | imgsz512: rota=ACIK yol=3 doğru=True trav=0.3409
+[K3] harita 5 orta [v3/son_yazar/hb0]: gerçek=sag model=yok rota=KAPALI_DAR doğru=False trav=0.3456 engel=0.1821 açıkyol_trav=1.0 | imgsz512: rota=KAPALI_DAR yol=None doğru=False trav=0.3456
+[K3] harita 5 zor [v3/son_yazar/hb0]: gerçek=orta model=yok rota=KAPALI_DAR doğru=False trav=0.4155 engel=0.1541 açıkyol_trav=1.0 | imgsz512: rota=ACIK yol=2 doğru=True trav=0.4155
+[K3] ÖZET [v3]: rota bulunan 4/15, doğru etiket 4/15 | TEŞHİS imgsz512: rota 9, doğru 9 → results/fdr_sprint_20260910/H1/k3b/v3_15harita_yerlesim_guncel.json
+=== BITTI 21:01:32
