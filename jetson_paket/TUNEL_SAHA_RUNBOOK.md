@@ -31,6 +31,12 @@ Sonuç dosyaları: `results/tunel_<YYYYMMDD>/` (PC'de; Jetson çıktıları `scp
 - `SYSID_THISMAV=1`, `SYSID_MYGCS=255`
 - `SR2_POSITION ≥ 8`, `SR2_EXTRA3` (kayıt) — tünel kipinde akış otoritesi SR2'dir
 - `SR1_*` değerlerinin hepsi (TELEM1 bant bütçesi için kayıt; HESAP ≈ %75 doluluk)
+- `FS_GCS_ENABLE`, `FS_GCS_TIMEOUT` (kayıt; 14.09 dökümünde `5` / `5`) — **RFD kopması FS_GCS'i
+  TETİKLEMEZ:** Jetson MAVProxy'si (255/230) TELEM2'den 1 Hz GCS HEARTBEAT basar; `SYSID_MYGCS=255`
+  bunu GCS sayar. Tetikleyen yalnız Jetson (MAVProxy) **ve** RFD'nin **birlikte** kaybıdır. MP'den
+  acil LAND/RTL bu yüzden **elle** verilir; RFD koptuğunda otomatik iniş beklenmez.
+  (`config/pixhawk/README.md` §5'teki "`FS_GCS_ENABLE=1` KALIR" metni 14.09 dökümüyle
+  çelişiyor — değer `5`; hüküm mimarın D-kaydındadır, burada yalnız okunur.)
 
 ## 2. Jetson — UART düğümü doğrulaması (kurulumdan ÖNCE)
 
@@ -51,11 +57,16 @@ bu ölçüm önce gelir. Düğüm farklıysa `PIXHAWK_SERI=<düğüm>` ile ez.
 
 ## 3. Jetson — kurulum (KIP=tunel)
 
+Bloğun **tamamı** tek kabukta, çalışma dizini **USB'deki paketin üst dizini** (`<USB>`, içinde
+`jetson_paket/` olan dizin) iken yapıştırılır; kopya satırları bu yüzden `jetson_paket/kod/` yolunu
+tam yazar (JETSON_KILAVUZ §2 aynı kopyayı `jetson_paket/` içinden `kod/...` diye yapar):
+
 ```bash
-cp kod/mavlink_tunel.py ~/navitas/comms/ && cp kod/sik_rf_olc.py ~/navitas/scripts/   # JETSON_KILAVUZ §2
+cd <USB>                                                               # icinde jetson_paket/ olan dizin
+cp jetson_paket/kod/mavlink_tunel.py ~/navitas/comms/ && cp jetson_paket/kod/sik_rf_olc.py ~/navitas/scripts/   # JETSON_KILAVUZ §2
 KIP=tunel FOV=<derece> bash jetson_paket/jetson_baslat.sh --kuru       # [DOGRULA] listesini oku
 sudo -E KIP=tunel FOV=<derece> bash jetson_paket/jetson_baslat.sh --kapi
-ps -ef | grep [m]avproxy    # komutta '--out udp:127.0.0.1:14553 --streamrate -1' SONDA olmalı
+ps -ef | grep '[m]avproxy'  # komutta '--out udp:127.0.0.1:14553 --streamrate -1' SONDA olmalı
 ```
 
 Env: `KIP=tunel`, `PIXHAWK_SERI=/dev/ttyTHS1`, `PIXHAWK_BAUD=57600` (başka baud REDDEDİLİR),
@@ -82,12 +93,19 @@ satırları kayıp/tavan/akran değişimini gösterir.
 
 ## 5. Pixhawk reboot sonrası yordam (pil değişimi)
 
-1. MAVProxy'ye ve hub'a **dokunma** (systemd birimleri açık kalır).
+1. MAVProxy'ye ve hub'a **kendiliğinden dokunma** (systemd birimleri açık kalır; reboot tek başına
+   onları yeniden başlatmayı gerektirmez). Yeniden başlatan tek adım 5. adımdaki `--kapi`dır.
 2. MP yeniden bağlanır; İHA HEARTBEAT ≤ 5 s.
-3. Hub'ın tünel akranı ≤ 1 s içinde araç HEARTBEAT'iyle doğrulanır (`journalctl -u navitas-seri-hub -n 20`:
-   `akran DEGISTI` yalnız MAVProxy yeniden başladıysa beklenir).
+3. Hub'ın tünel akranı ≤ 1 s içinde araç HEARTBEAT'iyle doğrulanır (`journalctl -u navitas-seri-hub -n 20`).
+   Bu adımda (5'ten önce) `akran DEGISTI` **beklenmez**.
 4. `iha_inis_yayinci` akış isteğini ≤ 10 s içinde yeniler; SR2 reboot'ta parametreden yüklenir.
 5. `sudo -E KIP=tunel FOV=<derece> bash jetson_paket/jetson_baslat.sh --kapi` yeniden koş (3/3).
+   ⚠ `--kapi` `navitas-cogullayici`'yı **ve** (`KIP=tunel`/`sik`) `navitas-seri-hub`'ı **yeniden başlatır**
+   (`jetson_baslat.sh` `kapi()` → `etkinlestir_ve_yeniden_baslat`). Sonrasında **beklenen** günlük:
+   hub'da yeni süreç (`akran ogrenildi`; hub süreci yaşıyorsa `akran DEGISTI` — MAVProxy yeni efemer
+   port), yer `yks_gui`'de `kimlik_sicramasi` (hub'ın yeni rastgele başlangıç kimliği). MAVProxy
+   açılışta parametre indirir (HESAP ≈ 6–7 s); **tünel gecikmesi/RTT ölçümü `--kapi`'den en az 60 s
+   sonra** yapılır.
 6. Reboot boyunca düşen çerçeveler hub sayaç satırında (`tunel sayac … kimlik_boslugu=`) görünür.
 
 ---
@@ -96,17 +114,31 @@ satırları kayıp/tavan/akran değişimini gösterir.
 
 Herhangi biri düşerse **B seçeneği (MP aynası) RED** edilir ve yedek plana (§9) geçilir.
 
-**(i) MP aynasının datagram sınırı** — `yks_gui` KAPALI; 60 s koş, sonra Ctrl+C:
+**(i) MP aynasının datagram sınırı** — `yks_gui` KAPALI; **iki** kayıt, her biri 60 s, sonra Ctrl+C:
 
 ```powershell
-& $PY -B scripts\sik_rf_olc.py --rol yanki --tasiyici tunel --tunel-bind 127.0.0.1:14570 --tunel-kimlik yer --json --cikti results\tunel_<tarih>\K8_0_i_ayna.json
+& $PY -B scripts\sik_rf_olc.py --rol yanki --tasiyici tunel --tunel-bind 127.0.0.1:14570 --tunel-kimlik yer --tunel-ayristirma akis --json --cikti results\tunel_<tarih>\K8_0_i_ayna_akis.json
+& $PY -B scripts\sik_rf_olc.py --rol yanki --tasiyici tunel --tunel-bind 127.0.0.1:14570 --tunel-kimlik yer --tunel-ayristirma datagram --json --cikti results\tunel_<tarih>\K8_0_i_ayna_datagram.json
 ```
 
-JSON `tunel_sayac`: `mavlink_paket / alinan_datagram ≈ 1` ve `cozum_hatasi = 0` ise sınır paket
-başınadır → yer ayrıştırma kipi `datagram`'a geçişi D-kaydıyla önerilir (kod değişikliği ayrı iş).
+Sınır **paket başınadır** ancak ŞUNLARIN HEPSİ sağlanırsa (düzeltme turu 1; eşik yok, ölçüt
+sıkılaştırıldı — ön kayda D-kaydıyla mimar girer):
 
-**(ii) Yer→hava ilk sınama** — kısa K8a (§7 düzeneği) `--n 20`; hava JSON'unda
-`tunel_sayac.bozuk_parca = 0` ve `tutarsiz_parca = 0`.
+- iki JSON'da da `datagram_siniri.hizasiz = 0` ve `datagram_siniri.hizali ≥ 1` (her datagramın ilk
+  baytı `0xFD` **ve** datagram tek başına, artıksız, en az bir geçerli MAVLink paketine çözülür);
+- iki JSON'da da `tunel_sayac.cozum_hatasi = 0`;
+- `datagram` kaydında `tunel_sayac.mavlink_paket / alinan_datagram` oranı `akis` kaydındakine eşit
+  (±%5; iki kayıt ayrı 60 s olduğu için mutlak sayı değil oran karşılaştırılır).
+
+Sağlanırsa yer ayrıştırma kipinin `datagram`'a geçişi D-kaydıyla önerilir (kod değişikliği ayrı iş).
+⚠ Eski ölçüt (`mavlink_paket / alinan_datagram ≈ 1` ve `cozum_hatasi = 0`, yalnız `akis` kaydı)
+**kullanılmaz**: paket ORTASINDAN başlayan, paket boyundaki datagramlarda da geçer (çürütücü ölçümü:
+201 datagram / 200 paket / `cozum_hatasi` 0), oysa o akışta `datagram` kipi paketlerin %100'ünü
+kaybeder (kilit: `tests/test_sik_rf_olc_tunel.py` `test_datagram_siniri_hizasiz_akisi_ayirt_eder_K8_0_i`).
+
+**(ii) Yer→hava ilk sınama** — kısa K8a (§7 düzeneği) `--n 20`; hava yankı JSON'unda
+(`~/K8a_hava_yanki.json`, §7 komutu Ctrl+C ile kapanınca yazılır) `tunel_sayac.bozuk_parca = 0` ve
+`tutarsiz_parca = 0`.
 
 **(iii) 10 dk ıslatma** — üretim trafiği açık (§3 kurulu, `yks_gui` açık); başta ve sonda:
 yer `yks_gui` günlüğü, hava `journalctl -u navitas-seri-hub | grep "tunel sayac" | tail -n 1`
@@ -126,8 +158,11 @@ Jetson (hub durdurulur; cogullayıcı açık):
 
 ```bash
 sudo systemctl stop navitas-seri-hub
-python3 ~/navitas/scripts/sik_rf_olc.py --rol yanki --tasiyici tunel --tunel-bind 127.0.0.1:14553 --tunel-kimlik hava
+python3 ~/navitas/scripts/sik_rf_olc.py --rol yanki --tasiyici tunel --tunel-bind 127.0.0.1:14553 --tunel-kimlik hava --json --cikti ~/K8a_hava_yanki.json
 ```
+
+Ctrl+C ile kapanınca JSON yazılır (`cevaplanan`, `veri_hizi`, `tunel_sayac`, `datagram_siniri`);
+`scp` ile `results/tunel_<tarih>/`'e alınır.
 
 PC:
 
@@ -162,9 +197,46 @@ Aynı düzenekte **çok parçalı kayıt** (kapı DIŞI ama ZORUNLU; JSON `kapi_
 & $PY -B scripts\sik_rf_olc.py --rol olc --tasiyici tunel --tunel-bind 127.0.0.1:14570 --tunel-kimlik yer --n 100 --aralik 0.25 --prob-dolgu 473 --json --cikti results\tunel_<tarih>\K8_cok_parca_473.json
 ```
 
-K8b sırasında `journalctl -u navitas-rpi-inference` içinde `OLCEK_YOK` **olmamalı**
-(`--streamrate -1` ile SR2 akışının kanıtı) ve `--kapi` 3/3. Bitince manuel hub Ctrl+C,
-`sudo systemctl start navitas-seri-hub`.
+**Havadan yere çok parçalı kayıt** (kapı DIŞI ama ZORUNLU; en riskli yol: üretimde 473 B OPEN_ROUTE
+havadan yere, 4 parça, TELEM1 TX). Prob dolgusu yalnız yerden havayı büyütür; burada **ACK**
+dolgulanır. Jetson'da K8b yankısı durdurulur ve dolgulu yankı açılır:
+
+```bash
+python3 ~/navitas/scripts/sik_rf_olc.py --rol yanki --tasiyici udp --bind 127.0.0.1:5190 --ack-dolgu 473 --json --cikti ~/K8_hava_yer_ack_473.json
+```
+
+```powershell
+& $PY -B scripts\sik_rf_olc.py --rol olc --tasiyici tunel --tunel-bind 127.0.0.1:14570 --tunel-kimlik yer --n 100 --aralik 0.25 --json --cikti results\tunel_<tarih>\K8_hava_yer_ack_473.json
+```
+
+Olc JSON'unda `ack_dolgulu > 0` ve `kapi_disi: true` olmalı (değilse yankı dolgusuz koşmuştur).
+
+**K8b sayaç okuması (her K8b ve çok parçalı koşu için kaydedilir):** olc JSON `tunel_sayac` içinde
+`zaman_asimi_dusen`, `kimlik_boslugu`, `kimlik_sicramasi`, `teslim_cerceve` — bu yer ucu **üretim**
+çerçevelerini de (HEARTBEAT, OPEN_ROUTE; havadan yere çok parçalı) sayar; hava tarafında aynı anda
+manuel hub'ın `tunel sayac` satırı.
+
+**SR2 akışının kanıtı** (`--streamrate -1`): `--kapi` KOŞMUYORKEN (mavlink_dogrula akış isteği
+göndermez), `rpi_inference` 10 s durdurulup 14550'de ayrı bir pymavlink dinleyicisiyle sayılır:
+
+```bash
+sudo systemctl stop navitas-rpi-inference
+python3 - <<'PY'
+import time
+from pymavlink import mavutil
+m = mavutil.mavlink_connection('udpin:127.0.0.1:14550')
+n, t0 = 0, time.monotonic()
+while time.monotonic() - t0 < 10:
+    if m.recv_match(type='GLOBAL_POSITION_INT', blocking=True, timeout=1) is not None:
+        n += 1
+print('GLOBAL_POSITION_INT Hz', n / 10.0)
+PY
+sudo systemctl start navitas-rpi-inference
+```
+
+Kaydedilen Hz `SR2_POSITION`'a yakın ve ≥ `MAVLINK_KONUM_ASGARI_HZ` (4) olmalı. `rpi_inference`
+günlüğünde `OLCEK_YOK` olmaması **yalnız yardımcı gözlemdir** (ölçek araç maskesinden de gelebilir;
+boş sahnede kanıt taşımaz). Bitince manuel hub Ctrl+C, `sudo systemctl start navitas-seri-hub`.
 
 **K8 GEÇTİ = K8a p95 < 0,20 s VE K8b p95 < 0,20 s** (ON_KAYIT eşiğinin sıkılaştırılması).
 Ölçülmeyen her satır `ÖLÇÜLEMEDİ — neden: … · saat: … · kim: …` yazılır:
@@ -173,6 +245,8 @@ K8b sırasında `journalctl -u navitas-rpi-inference` içinde `OLCEK_YOK` **olma
 - `[ ] K8a p95 = …… ms` — ÖLÇÜLEMEDİ — neden: ……
 - `[ ] K8b p95 = …… ms` — ÖLÇÜLEMEDİ — neden: ……
 - `[ ] çok parçalı 165 B p95 = …… ms · 473 B p95 = …… ms` — ÖLÇÜLEMEDİ — neden: ……
+- `[ ] havadan yere ACK 473 B p95 = …… ms · kayıp = …… %` — ÖLÇÜLEMEDİ — neden: ……
+- `[ ] SR2 GLOBAL_POSITION_INT = …… Hz` — ÖLÇÜLEMEDİ — neden: ……
 
 ## 9. K8 DÜŞTÜ sırası (ön kayıtlı; eşik değişmez, her adım yeni ölçüm + yeni D-kaydı)
 

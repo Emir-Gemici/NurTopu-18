@@ -447,3 +447,4 @@ fırlatıcısı (`SIM_Plane.cpp`: `-catapult`/`-bungee` çerçevelerinde 7. çı
 | `SYSID_MYGCS` | 255 | MP ve Jetson MAVProxy GCS kimliği |
 | `SR2_POSITION` | ≥ 8 (= 2 × `MAVLINK_KONUM_ASGARI_HZ`) | tünel kipinde MAVProxy `--streamrate -1` istek göndermez; akış otoritesi SR2'dir |
 | `SR1_*` (hepsi) | kayıt | TELEM1 bütçesi: SR1 1943 B/s (06 Eyl tlog ölçümü) + tünel ≈ 2,4 KB/s ≈ 57600 hattın %75'i (HESAP) — en dar boğaz; azaltma kullanıcı kararıdır |
+| `FS_GCS_ENABLE`, `FS_GCS_TIMEOUT` | kayıt (14.09 dökümünde `5` / `5`) | **RFD kopması FS_GCS'i TETİKLEMEZ**: Jetson MAVProxy'si (255/230) TELEM2'den 1 Hz GCS HEARTBEAT basar, `SYSID_MYGCS=255` onu GCS sayar; tetikleyen yalnız Jetson **ve** RFD'nin birlikte kaybıdır. MP'den acil LAND/RTL elle verilir. ⚠ §5'teki "D-406 C: `FS_GCS_ENABLE=1` KALIR" metni 14.09 dökümüyle (`5` = Land) çelişir — mimar D-kaydıyla karara bağlar; bu tablo yalnız okur |

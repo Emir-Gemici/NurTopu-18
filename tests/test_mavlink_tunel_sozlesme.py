@@ -123,6 +123,13 @@ class SozlesmeTablosu(unittest.TestCase):
             "--prob-dolgu 165", "--prob-dolgu 473",
             "K8a_tunel_rtt.json", "K8b_uretim_rtt.json",
             f"--out udp:{hava} --streamrate -1",
+            # duzeltme turu 1: K8-0 (i) iki kip + datagram siniri; hava JSON'u;
+            # havadan yere cok parcali ACK; SR2 kaniti ayri dinleyici
+            "--tunel-ayristirma akis", "--tunel-ayristirma datagram",
+            "datagram_siniri.hizasiz = 0",
+            f"--tunel-kimlik {mt.KIMLIK_HAVA} --json --cikti ~/K8a_hava_yanki.json",
+            f"--rol yanki --tasiyici udp --bind {yanki} --ack-dolgu 473",
+            "udpin:127.0.0.1:14550", "FS_GCS_ENABLE",
         )
         for parca in beklenen:
             with self.subTest(parca=parca):

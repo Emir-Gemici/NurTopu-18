@@ -23,12 +23,30 @@ sinirli (None = sinirsiz); RX kuyrugu karsi ucun UART'idir (sinirsiz, yalniz
 hiz). Arka plan akis ureticisi SR benzeri kucuk mesajlarla TX kovasini
 doldurur. Kuyruk gecikmesi GERCEK zamanla uygulanir.
 
-Kayip karari (belirlenimci): yalniz TUNNEL mesajlarina uygulanir ve
-`blake2b(tohum || kaynak_kanal || hedef_kanal || TUNNEL.payload[:5])` ozetine
-baglidir — RNG cekilis sirasina degil. Ozet NAVITAS basligini (surum, kimlik,
-indis, toplam) kapsar; JSON yuku `t` zaman damgasi tasidigi icin ozete
-GIRMEZ (girseydi kosudan kosuya ayni sonuc cikmazdi). Enjekte baslangic
-kimligi ve ayni gonderim sirasiyla koşudan kosuya ayni karar cikar.
+Kayip karari (belirlenimci; DUZELTME TURU 1): yalniz TUNNEL mesajlarina
+uygulanir ve `blake2b(tohum || kaynak_kanal || hedef_kanal || ileti_no ||
+kopya_no || indis || toplam)` ozetine baglidir — RNG cekilis sirasina da,
+cerceve KIMLIGINE de degil.
+  * `ileti_no`: bu kaynak kanalda gorulen FARKLI NAVITAS cercevelerinin sira
+    numarasi. Cerceve icerigi `t` zaman damgasi normallestirilerek
+    karsilastirilir (seq/ref ve diger alanlar korunur).
+  * `kopya_no`: ayni icerigin kacinci kopyasi (her kopya yeni kimlik tasir).
+NEDEN (curutucu olcumu): ilk surum ozeti 5 B NAVITAS basligina (kimlik dahil)
+bagliyordu. Kimlik her GONDERILEN kopyada artar; IhaSender ACK gelince
+tekrari keser, yani kopya sayisi ACK'in 0,25 s pencereye yetisip
+yetismedigine (gercek zaman) baglidir. Bir denemenin fazladan kopyasi
+sonraki tum denemelerin kimliklerini, dolayisiyla kayip kararlarini kaydirdi:
+ayni tohumla `kayip_dusen` 12/12/11/6 ve K4 1024 B alt vakasi 4 kosuda 3 kez
+DUSTU, 1 kez GECTI. Yeni anahtar "N. denemenin k. kopyasinin i. parcasi"
+kimligidir; kopya var oldugu surece kaderi kosudan kosuya aynidir.
+Kayip, TX kuyrugundan HATTA CIKISTA uygulanir (radyoda kayip: paket UART
+tamponunu gercekten isgal etmistir). Parcalar alim aninda (soketten
+okunurken) kaydedilir; karar anina dek tum parcalar gelmemisse (ornegin
+gonderici bir parcayi hic yollamadiysa) eski baslik ozetine dusulur ve
+`kayip_anahtari_eksik` sayilir — sessiz degil.
+Belirlenimci OLMAYAN bilesen (ON KAYIT'ta yazili): hat/kuyruk zamanlamasi
+gercek saatle isler; `txspace_dusen` ve son kopyanin ACK'inin 0,25 s
+pencereye yetismesi CPU yukune baglidir.
 
 `MavproxyTaklit`: master (Pixhawk kanali) ile `--out` uclari arasinda aktarici.
 Master'dan gelen her mesaj her cikisa AYRI datagramla yazilir (mavudp kalibi);
@@ -39,6 +57,7 @@ master'a yollar (MAVProxy 255/230; Mission Planner aynasi taklidinde 255/190).
 from __future__ import annotations
 
 import hashlib
+import re
 import select
 import socket
 import struct
@@ -52,7 +71,8 @@ KOK = Path(__file__).resolve().parents[1]
 if str(KOK / "comms") not in sys.path:
     sys.path.insert(0, str(KOK / "comms"))
 
-from mavlink_tunel import (TUNEL_BASLIK_B, TUNEL_MAVLINK_MSG_ID,  # noqa: E402
+from mavlink_tunel import (TUNEL_BASLIK_B, TUNEL_BASLIK_BICIMI,  # noqa: E402
+                           TUNEL_MAVLINK_MSG_ID, TUNEL_PAYLOAD_TYPE,
                            UDP_DATAGRAM_TAVANI_B)
 
 YEREL = "127.0.0.1"
@@ -66,6 +86,11 @@ MAVPROXY_GCS_KIMLIGI = (255, 230)
 #: Mission Planner GCS kimligi (MP varsayilani 255/190).
 MP_GCS_KIMLIGI = (255, 190)
 _BAD_DATA = "BAD_DATA"
+#: NAVITAS JSON'undaki `t` zaman damgasi (protocol.encode: ayiricisiz JSON).
+_ZAMAN_DAMGASI = re.compile(rb'"t":-?[0-9]+(?:\.[0-9]+)?(?:[eE][-+]?[0-9]+)?')
+_ZAMAN_DAMGASI_YERINE = b'"t":_'
+#: Kaydedilen kimlik tavani (bellek; eski kayitlar FIFO ile atilir).
+PARCA_KAYDI_TAVANI = 4096
 
 
 def _mav():
@@ -109,7 +134,7 @@ class Kova:
     def txspace(self, simdi):
         return None if self.tampon_b is None else self.tampon_b - self.bekleyen(simdi)
 
-    def ekle(self, simdi, paket):
+    def ekle(self, simdi, paket, ek=None):
         n = len(paket)
         if self.tampon_b is not None and self.bekleyen(simdi) + n > self.tampon_b + 1e-9:
             return False
@@ -118,17 +143,21 @@ class Kova:
         else:
             cikis = max(simdi, self._bosta_t) + n / self.bps_b
             self._bosta_t = cikis
-        self.kuyruk.append((cikis, paket))
+        self.kuyruk.append((cikis, paket, ek))
         self.bekleyen_b += n
         return True
 
-    def hazirlar(self, simdi):
+    def hazirlar_ek(self, simdi):
+        """Hatta dokulen paketler, `ekle`deki `ek` bilgisiyle: [(paket, ek)]."""
         cikan = []
         while self.kuyruk and self.kuyruk[0][0] <= simdi:
-            _, paket = self.kuyruk.popleft()
+            _, paket, ek = self.kuyruk.popleft()
             self.bekleyen_b -= len(paket)
-            cikan.append(paket)
+            cikan.append((paket, ek))
         return cikan
+
+    def hazirlar(self, simdi):
+        return [paket for paket, _ in self.hazirlar_ek(simdi)]
 
     def sonraki_t(self):
         return self.kuyruk[0][0] if self.kuyruk else None
@@ -139,13 +168,34 @@ class Kova:
         self._bosta_t = 0.0
 
 
+def _ozet_orani(anahtar):
+    ozet = hashlib.blake2b(anahtar, digest_size=8).digest()
+    return int.from_bytes(ozet, "big") / float(1 << 64)
+
+
 def kayip_ozeti(tohum, kaynak_kanal, hedef_kanal, tunnel_yuku):
-    """[0, 1) araliginda belirlenimci deger (tohum + kanallar + NAVITAS basligi)."""
+    """YEDEK anahtar: [0, 1) deger (tohum + kanallar + 5 B NAVITAS basligi).
+
+    Kimligi icerdigi icin gonderim sirasina baglidir; yalniz kopya anahtari
+    kurulamadiginda kullanilir (`kayip_anahtari_eksik`)."""
     anahtar = (struct.pack(">QBB", int(tohum) & 0xFFFFFFFFFFFFFFFF,
                            int(kaynak_kanal), int(hedef_kanal))
                + bytes(tunnel_yuku)[:TUNEL_BASLIK_B])
-    ozet = hashlib.blake2b(anahtar, digest_size=8).digest()
-    return int.from_bytes(ozet, "big") / float(1 << 64)
+    return _ozet_orani(anahtar)
+
+
+def kopya_kayip_ozeti(tohum, kaynak_kanal, hedef_kanal, ileti_no, kopya_no, indis, toplam):
+    """[0, 1) deger: 'kaynak kanaldaki ileti_no. farkli cercevenin kopya_no.
+    kopyasinin indis/toplam parcasi' — kimlikten ve zaman damgasindan bagimsiz."""
+    anahtar = struct.pack(">QBBIIBB", int(tohum) & 0xFFFFFFFFFFFFFFFF,
+                          int(kaynak_kanal), int(hedef_kanal), int(ileti_no),
+                          int(kopya_no), int(indis), int(toplam))
+    return _ozet_orani(anahtar)
+
+
+def cerceve_icerik_anahtari(cerceve):
+    """NAVITAS cercevesi -> `t` zaman damgasi normallestirilmis icerik."""
+    return _ZAMAN_DAMGASI.sub(_ZAMAN_DAMGASI_YERINE, bytes(cerceve))
 
 
 class ArdupilotYonlendiriciTaklit:
@@ -177,7 +227,12 @@ class ArdupilotYonlendiriciTaklit:
         self.sayac = {"alinan_paket": 0, "iletilen": 0, "txspace_dusen": 0,
                       "kayip_dusen": 0, "yerel": 0, "hedefsiz": 0, "bozuk": 0,
                       "arka_plan_b": 0, "arka_plan_atlanan": 0, "heartbeat": 0,
-                      "sifirlama": 0, "kesintide_atilan": 0}
+                      "sifirlama": 0, "kesintide_atilan": 0,
+                      "kayip_anahtari_eksik": 0}
+        # Kopya anahtari (belirlenimci kayip; modul dokstringi):
+        self._kayit_ayr = [_ayristirici(self._m) for _ in range(self.kanal_sayisi)]
+        self._parca_kaydi = [dict() for _ in range(self.kanal_sayisi)]    # kimlik -> kayit
+        self._ileti_defteri = [dict() for _ in range(self.kanal_sayisi)]  # icerik -> [no, kopya]
         self._kilit = threading.RLock()
         self._dur = threading.Event()
         self._iplik = None
@@ -195,10 +250,68 @@ class ArdupilotYonlendiriciTaklit:
             self.akranlar[kanal] = (str(adr[0]), int(adr[1]))
 
     def kayip_mi(self, kaynak_kanal, hedef_kanal, tunnel_yuku):
+        """Kayip karari. Kopya anahtari kurulmussa onunla (belirlenimci), yoksa
+        yedek baslik ozetiyle (`kayip_anahtari_eksik` sayilir)."""
         if self.kayip <= 0.0:
             return False
-        return kayip_ozeti(self.tohum, kaynak_kanal, hedef_kanal,
-                           tunnel_yuku) < self.kayip
+        yuk = bytes(tunnel_yuku)
+        anahtar = self._kopya_anahtari(kaynak_kanal, yuk)
+        if anahtar is None:
+            self.sayac["kayip_anahtari_eksik"] += 1
+            return kayip_ozeti(self.tohum, kaynak_kanal, hedef_kanal, yuk) < self.kayip
+        ileti_no, kopya_no, indis, toplam = anahtar
+        return kopya_kayip_ozeti(self.tohum, kaynak_kanal, hedef_kanal, ileti_no,
+                                 kopya_no, indis, toplam) < self.kayip
+
+    # ── kopya anahtari: alim aninda parca kaydi ─────────────────────────
+    def parca_kaydet(self, kanal, tunnel_yuku):
+        """Bir TUNNEL yukunu kaynak kanalin parca kaydina isle (alim ani).
+
+        Kimligin tum parcalari geldiginde icerik (t normallestirilmis) ileti
+        defterine yazilir: yeni icerik yeni `ileti_no`, bilinen icerik
+        `kopya_no`+1. Kimlik tekrar kullanilirsa (farkli icerikli parca) kayit
+        sifirlanir."""
+        yuk = bytes(tunnel_yuku)
+        if len(yuk) <= TUNEL_BASLIK_B:
+            return
+        _surum, kimlik, indis, toplam = struct.unpack_from(TUNEL_BASLIK_BICIMI, yuk)
+        if toplam == 0 or indis >= toplam:
+            return
+        kayitlar = self._parca_kaydi[kanal]
+        kayit = kayitlar.get(kimlik)
+        parca = yuk[TUNEL_BASLIK_B:]
+        if kayit is not None and (kayit["toplam"] != toplam
+                                  or kayit["parcalar"].get(indis, parca) != parca):
+            del kayitlar[kimlik]
+            kayit = None
+        if kayit is None:
+            if len(kayitlar) >= PARCA_KAYDI_TAVANI:
+                del kayitlar[next(iter(kayitlar))]
+            kayit = {"toplam": toplam, "parcalar": {}, "anahtar": None}
+            kayitlar[kimlik] = kayit
+        kayit["parcalar"][indis] = parca
+        if kayit["anahtar"] is None and len(kayit["parcalar"]) == toplam:
+            icerik = cerceve_icerik_anahtari(
+                b"".join(kayit["parcalar"][i] for i in range(toplam)))
+            defter = self._ileti_defteri[kanal].setdefault(
+                icerik, [len(self._ileti_defteri[kanal]), 0])
+            defter[1] += 1
+            kayit["anahtar"] = (defter[0], defter[1])
+
+    def _kopya_anahtari(self, kanal, yuk):
+        if len(yuk) <= TUNEL_BASLIK_B:
+            return None
+        _surum, kimlik, indis, toplam = struct.unpack_from(TUNEL_BASLIK_BICIMI, yuk)
+        kayit = self._parca_kaydi[kanal].get(kimlik)
+        if kayit is None or kayit["anahtar"] is None or kayit["toplam"] != toplam:
+            return None
+        return kayit["anahtar"] + (indis, toplam)
+
+    def _kaydet_datagram(self, kanal, veri):
+        for msg in self._kayit_ayr[kanal].parse_buffer(veri) or []:
+            if (msg.get_type() != _BAD_DATA and msg.get_msgId() == TUNEL_MAVLINK_MSG_ID
+                    and msg.payload_type == TUNEL_PAYLOAD_TYPE):
+                self.parca_kaydet(kanal, bytes(msg.payload[:int(msg.payload_length)]))
 
     def sifirla(self, kesinti_s=0.0):
         """Reboot benzetimi: rotalar silinir, kuyruklar bosalir; `kesinti_s`
@@ -208,6 +321,9 @@ class ArdupilotYonlendiriciTaklit:
             for k in self.tx + self.rx:
                 k.temizle()
             self._ayr = [_ayristirici(self._m) for _ in range(self.kanal_sayisi)]
+            self._kayit_ayr = [_ayristirici(self._m) for _ in range(self.kanal_sayisi)]
+            for kayitlar in self._parca_kaydi:
+                kayitlar.clear()
             self._kesinti_bitis = time.monotonic() + float(kesinti_s)
             self._son_hb_t = None
             self.sayac["sifirlama"] += 1
@@ -243,11 +359,11 @@ class ArdupilotYonlendiriciTaklit:
                     self.sayac["hedefsiz"] += 1
             ham = bytes(msg.get_msgbuf())
             tunel = msg.get_msgId() == TUNEL_MAVLINK_MSG_ID
+            ek = (gelen, bytes(msg.payload)) if tunel else None
             for h in hedefler:
-                if tunel and self.kayip_mi(gelen, h, bytes(msg.payload)):
-                    self.sayac["kayip_dusen"] += 1
-                    continue
-                if not self.tx[h].ekle(simdi, ham):
+                # Kayip burada DEGIL, hatta cikista (radyo) uygulanir: paket TX
+                # tamponunu gercekten isgal eder (kopya anahtari icin dokstring).
+                if not self.tx[h].ekle(simdi, ham, ek):
                     self.sayac["txspace_dusen"] += 1
                     continue
                 self.sayac["iletilen"] += 1
@@ -290,7 +406,10 @@ class ArdupilotYonlendiriciTaklit:
             for k in range(self.kanal_sayisi):
                 for veri in self.rx[k].hazirlar(simdi):
                     self._yonlendir(k, veri, simdi)
-                for paket in self.tx[k].hazirlar(simdi):
+                for paket, ek in self.tx[k].hazirlar_ek(simdi):
+                    if ek is not None and self.kayip_mi(ek[0], k, ek[1]):
+                        self.sayac["kayip_dusen"] += 1
+                        continue
                     if self.akranlar[k] is not None:
                         try:
                             self.socks[k].sendto(paket, self.akranlar[k])
@@ -317,6 +436,7 @@ class ArdupilotYonlendiriciTaklit:
                     self.sayac["kesintide_atilan"] += 1
                     continue
                 self.akranlar[k] = (str(adr[0]), int(adr[1]))
+                self._kaydet_datagram(k, veri)
                 self.rx[k].ekle(simdi, veri)
 
     def baslat(self):

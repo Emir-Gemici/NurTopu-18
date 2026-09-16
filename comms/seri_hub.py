@@ -94,9 +94,14 @@ if str(_BU_DIZIN) not in sys.path:
     sys.path.insert(0, str(_BU_DIZIN))
 
 from link import SerialLink, UDPLink  # noqa: E402
-from mavlink_tunel import (KIMLIK_HAVA, KIMLIK_YER, TunelLink,  # noqa: E402
-                           uc_coz)
 from protocol import FrameReader, decode, encode  # noqa: E402
+# NEDEN mavlink_tunel burada import EDILMEZ (duzeltme turu 1, gerileme bulgusu):
+# modul duzeyinde import, yalniz seri_hub.py'si guncellenmis bir Jetson'da
+# KIP=sik hub'ini ModuleNotFoundError ile Restart=always cokme dongusune
+# sokuyordu; jetson_baslat.sh mavlink_tunel.py'yi yalniz KIP=tunel'de denetler.
+# Tunel bagimliligi yalniz --tunel dalinda (`_tunel_modulu`) yuklenir; sik/udp
+# kipi eski bagimlilik kumesiyle (link + protocol) calisir
+# (kilit: tests/test_seri_hub_tunel.py T8).
 
 for _akim in (sys.stdout, sys.stderr):
     try:
@@ -550,6 +555,12 @@ def _sigterm_geri_al(eski):
         pass
 
 
+def _tunel_modulu():
+    """`mavlink_tunel`i YALNIZ tunel kipinde yukle (sik/udp bagimlilik kumesi degismez)."""
+    import mavlink_tunel
+    return mavlink_tunel
+
+
 def _arg_parser():
     ap = argparse.ArgumentParser(
         description="SiK seri hub: portu tek basina acar, NAVITAS cercevelerini "
@@ -561,9 +572,12 @@ def _arg_parser():
     tasiyici.add_argument("--tunel", metavar="HOST:PORT",
                           help="MAVLink TUNNEL ucu (CONTRACTS §7.6; MAVProxy "
                                "--out udp:HOST:PORT buraya yazar)")
-    ap.add_argument("--tunel-kimlik", choices=(KIMLIK_HAVA, KIMLIK_YER),
-                    default=KIMLIK_HAVA,
-                    help="tunel ucunun kimligi (varsayilan %(default)s)")
+    # Secenekler mavlink_tunel.KIMLIK_HAVA / KIMLIK_YER'dir; tembel import
+    # yuzunden argparse choices yerine main() tunel dalinda denetlenir
+    # (verilmezse KIMLIK_HAVA).
+    ap.add_argument("--tunel-kimlik", default=None,
+                    help="tunel ucunun kimligi (CONTRACTS §7.6 kimlikleri; "
+                         "varsayilan hava ucu)")
     ap.add_argument("--baud", type=int, default=None,
                     help=f"SiK seri baud (yalniz --port; varsayilan {VARSAYILAN_BAUD})")
     ap.add_argument("--bind", default=VARSAYILAN_BIND,
@@ -582,15 +596,25 @@ def main(argv=None):
     parser = _arg_parser()
     args = parser.parse_args(argv)
     tunel_uc = None
+    tunel = None
     if args.tunel is not None:
         if args.baud is not None:
             parser.error("--baud yalniz seri kipte (--port) anlamlidir; --tunel "
                          "ile verilemez")
+        tunel = _tunel_modulu()
+        kimlikler = (tunel.KIMLIK_HAVA, tunel.KIMLIK_YER)
+        if args.tunel_kimlik is None:
+            args.tunel_kimlik = tunel.KIMLIK_HAVA
+        if args.tunel_kimlik not in kimlikler:
+            parser.error(f"--tunel-kimlik {args.tunel_kimlik!r} gecersiz; "
+                         f"secenekler: {', '.join(kimlikler)}")
         try:
-            tunel_uc = uc_coz(args.tunel)
+            tunel_uc = tunel.uc_coz(args.tunel)
         except ValueError as exc:
             parser.error(str(exc))
     else:
+        if args.tunel_kimlik is not None:
+            parser.error("--tunel-kimlik yalniz --tunel ile anlamlidir")
         if args.baud is None:
             args.baud = VARSAYILAN_BAUD
         if args.baud <= 0:
@@ -608,8 +632,8 @@ def main(argv=None):
         uc_metni = f"tunel {args.tunel} kimlik={args.tunel_kimlik}"
 
         def seri_ac():
-            return TunelLink(tunel_uc, args.tunel_kimlik,
-                             timeout=SERI_OKUMA_ZAMAN_ASIMI_S)
+            return tunel.TunelLink(tunel_uc, args.tunel_kimlik,
+                                   timeout=SERI_OKUMA_ZAMAN_ASIMI_S)
     else:
         uc_metni = f"seri {args.port} @ {args.baud}"
 

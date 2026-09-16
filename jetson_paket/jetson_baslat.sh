@@ -37,7 +37,7 @@
 #     Pixhawk ham NAVITAS baytlarini yonlendirmez: navitas-seri-hub seri port yerine
 #     `--tunel 127.0.0.1:14553` (MAVLink TUNNEL) acar, MAVProxy ek `--out` ile ona yazar.
 #     TELEM2 57600'da `--streamrate 8` hatti doyururdu (HESAP ~6,9 KB/s > 5,76 KB/s): tunelde
-#     sona `--streamrate -1` eklenir (MAVProxy 1.8.74 mavproxy.py:1046 `rate != -1` degilse
+#     sona `--streamrate -1` eklenir (MAVProxy 1.8.74 mavproxy.py:1045 `rate != -1` degilse
 #     REQUEST_DATA_STREAM GONDERMEZ; optparse SON degeri alir). Akis otoritesi SR2_POSITION ve
 #     iha_inis_yayinci SET_MESSAGE_INTERVAL'dir. udp/sik ciktisi BIREBIR aynidir.
 #
@@ -145,7 +145,7 @@ SERI_HUB_TUKETICI="127.0.0.1:${KOMUT_PORT}"     # hub seri hattan geleni buraya 
 # ── KIP=tunel sabitleri — comms/mavlink_tunel.py ikizleri (tests/test_mavlink_tunel_sozlesme.py kilitler)
 TUNEL_HAVA_UC="127.0.0.1:14553"          # mavlink_tunel.TUNEL_HAVA_UC: MAVProxy --out = hub --tunel
 TUNEL_TELEM2_BAUD=57600                  # Pixhawk SERIAL2_BAUD=57 (TELEM2 <-> Jetson UART)
-TUNEL_STREAMRATE=-1                      # MAVProxy: -1 = REQUEST_DATA_STREAM YOK (mavproxy.py:1046)
+TUNEL_STREAMRATE=-1                      # MAVProxy: -1 = REQUEST_DATA_STREAM YOK (mavproxy.py:1045)
 TUNEL_OLCUM_YANKI_UC="127.0.0.1:5190"    # mavlink_tunel.TUNEL_OLCUM_YANKI_UC: K8b hub ek --tuketici
 TUNEL_HUB_KIMLIGI="hava"                 # mavlink_tunel.KIMLIK_HAVA
 TUNEL_SR2_POSITION_ASGARI=8              # 2 x karar_sozlesmesi.MAVLINK_KONUM_ASGARI_HZ (test kilitler)
@@ -568,7 +568,7 @@ tunel_dogrula_listesi() {
   echo "[DOGRULA] BRD_SER2_RTSCTS=0 (3 tel); SYSID_THISMAV=$SYSID; SYSID_MYGCS=255"
   echo "[DOGRULA] SR2_POSITION >= $TUNEL_SR2_POSITION_ASGARI (= 2 x MAVLINK_KONUM_ASGARI_HZ; --streamrate $TUNEL_STREAMRATE ile akis otoritesi SR2'dir)"
   echo "[DOGRULA] PIXHAWK_SERI=$PIXHAWK_SERI DOGRULANMADI: ls -l /dev/ttyTHS* /dev/ttyTCU*; pin 8/10 geri dongu; seri konsol bu portta KAPALI"
-  echo "[DOGRULA] MAVProxy kurulu surum: mavproxy.py set_stream_rates icinde rate != -1 kosulu var (1.8.74: mavproxy.py:1046)"
+  echo "[DOGRULA] MAVProxy kurulu surum: mavproxy.py set_stream_rates icinde rate != -1 kosulu var (1.8.74: mavproxy.py:1045)"
   echo "[DOGRULA] mavfwd=1: ~/.mavinit.scr ve $LOG_DIZIN/mavproxy/mavinit.scr icinde 'set mavfwd 0' YOK (hava->yer tek gecit)"
   echo "[DOGRULA] Jetson TELEM2 3 tel (TX<->RX capraz, GND ortak)"
   echo "[DOGRULA] K8 olcum yanki ucu $TUNEL_OLCUM_YANKI_UC bos (K8b: hub ek --tuketici; runbook)"

@@ -569,3 +569,15 @@ HUKUM K7: GECTI (yks vakalari yalniz ek yolla; tam suitte YAPILAMADI-atlama)
 
 ========================================================================================
 K5 (mutasyon, curutucu) ve K8 (gercek donanim, INSAN) bu gorevin kapsami disinda: K8 OLCULEMEDI.
+
+========================================================================================
+DUZELTME NOTU (duzeltme turu 1, 16 Eylul — yukaridaki ham satirlar DEGISTIRILMEDI)
+----------------------------------------------------------------------------------------
+* Yukaridaki "1024 B alt vakasi son kosuda 40/40 GECTI" ve "tek basina iki kosuda 40/40" ifadeleri
+  tampon_1024'un GECTIGI kaniti DEGILDIR. Curutucu olcumu (degismemis kod, tek basina, yuksuz):
+  4 kosuda 3 DUSTU / 1 GECTI ("kayip=0.05 tampon=1024: 12wp 20/20 · 30wp 19/20"), router
+  kayip_dusen 12/12/11/6. Duzeltmeden ONCEKI kod icin dogru hukum: tampon_1024 alt vakasi da
+  DUSTU (belirlenimci degil); iki tampon varsayiminin hicbirinde gecis kaniti yoktu.
+* "Kayip karari blake2b ile belirlenimci" iddiasi YANLISTI: ozet kimlik iceriyordu, kimlik dizisi
+  ACK zamanlamasina bagliydi.
+* Duzeltme ve yeniden kosulan kapilar: results/tunel_20260916/duzeltme_t1.txt.

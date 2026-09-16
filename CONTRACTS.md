@@ -1259,7 +1259,7 @@ Write access) ⇄ `yks_gui --tunel 127.0.0.1:14570` (`TunelLink` yer, `akis` ayr
 | `TUNEL_HAVA_AYRISTIRMA` | `datagram` | MAVProxy mavudp her mesajı ayrı datagram yazar |
 | `TUNEL_YER_AYRISTIRMA` | `akis` | MP aynasının datagram sınırı bilinmiyor (K8-0 i ölçer) |
 | `TUNEL_TELEM2_BAUD` | `57600` | kabuk: `SERIAL2_BAUD=57`; `KIP=tunel` başka baud'u REDDEDER |
-| `TUNEL_STREAMRATE` | `-1` | kabuk: MAVProxy 1.8.74 `mavproxy.py:1046` `rate != -1` değilse istek YOK; SON `--streamrate` bu |
+| `TUNEL_STREAMRATE` | `-1` | kabuk: MAVProxy 1.8.74 `mavproxy.py:1045` `rate != -1` değilse istek YOK; SON `--streamrate` bu |
 
 **Başlık:** `TUNNEL.payload[0:5] = >BHBB (surum, cerceve_kimligi, indis, toplam)`, ardından 1..123 B
 yük; `payload_length = 5 + len(yük)`; tel boyu = 17 + payload_length (pymavlink 2.4.49 ölçümü);

@@ -93,12 +93,34 @@ class SeriHubTunelTests(unittest.TestCase):
                 modul.main(argv)
             self.assertEqual(2, cm.exception.code)
 
+    def _durdurulan_hub_yamasi(self):
+        """Gercek SeriHub'i kurar ama 0,2 s sonra durdurur: arguman reddi
+        kirilirsa (mutant M35) test ASILI KALMAZ, FAIL olarak gorunur."""
+        orijinal = modul.SeriHub
+
+        def yakala(*a, **kw):
+            hub = orijinal(*a, **kw)
+            threading.Timer(0.2, hub.durdur).start()
+            return hub
+        return mock.patch.object(modul, "SeriHub", side_effect=yakala)
+
     def test_T2b_tunel_ile_baud_verilirse_SystemExit_2(self):
         hata = io.StringIO()
-        with self.assertRaises(SystemExit) as cm, contextlib.redirect_stderr(hata):
-            modul.main(["--tunel", f"{YEREL}:0", "--baud", "57600"])
+        with self.assertRaises(SystemExit) as cm, contextlib.redirect_stderr(hata),                 contextlib.redirect_stdout(io.StringIO()), self._durdurulan_hub_yamasi():
+            modul.main(["--tunel", f"{YEREL}:0", "--baud", "57600", "--bind", f"{YEREL}:0",
+                        "--log-aralik", "0"])
         self.assertEqual(2, cm.exception.code)
         self.assertIn("--baud", hata.getvalue())
+
+    def test_T2c_tunel_kimlik_denetimi_tunel_dalinda(self):
+        for argv, parca in (
+                (["--tunel", f"{YEREL}:0", "--tunel-kimlik", "iha"], "--tunel-kimlik"),
+                (["--port", "loop://", "--tunel-kimlik", mt.KIMLIK_HAVA], "--tunel-kimlik")):
+            hata = io.StringIO()
+            with self.subTest(argv=argv), self.assertRaises(SystemExit) as cm,                     contextlib.redirect_stderr(hata), contextlib.redirect_stdout(io.StringIO()),                     self._durdurulan_hub_yamasi():
+                modul.main(argv + ["--bind", f"{YEREL}:0", "--log-aralik", "0"])
+            self.assertEqual(2, cm.exception.code)
+            self.assertIn(parca, hata.getvalue())
 
     def test_T3_tunel_ucu_doluysa_cikis_4_ileti_uc_ve_kimlik_None_yok(self):
         dolu = self._link()
@@ -260,6 +282,57 @@ class SeriHubTunelTests(unittest.TestCase):
         s = yer.sayac
         self.assertEqual(0, s["yinelenen_parca"])
         self.assertGreaterEqual(s["kimlik_geri"] + s["kimlik_sicramasi"] + s["kimlik_boslugu"], 1)
+
+
+class SeriHubIzoleImportTests(unittest.TestCase):
+    """T8 (duzeltme turu 1, gerileme bulgusu): KIP=sik hub'i mavlink_tunel.py
+    OLMADAN calismali. Once seri_hub modul duzeyinde mavlink_tunel'i import
+    ediyordu; yalniz seri_hub.py'si guncellenmis bir Jetson'da (jetson_baslat
+    mavlink_tunel.py'yi yalniz KIP=tunel'de denetler) sik hub'i
+    ModuleNotFoundError ile Restart=always cokme dongusune girerdi."""
+
+    def _izole_dizin(self):
+        import shutil
+        import tempfile
+        dizin = Path(tempfile.mkdtemp(prefix="seri_hub_izole_"))
+        self.addCleanup(shutil.rmtree, dizin, True)
+        for ad in ("seri_hub.py", "link.py", "protocol.py"):
+            shutil.copy2(KOK / "comms" / ad, dizin / ad)
+        return dizin
+
+    def _kos(self, dizin, *arg):
+        import subprocess
+        return subprocess.run([sys.executable, "-B", *arg], cwd=str(dizin),
+                              capture_output=True, text=True, timeout=60)
+
+    def test_T8_sik_kipi_mavlink_tunel_olmadan_import_ve_yardim(self):
+        dizin = self._izole_dizin()
+        self.assertFalse((dizin / "mavlink_tunel.py").exists())
+        r = self._kos(dizin, "seri_hub.py", "--port", "loop://", "--help")
+        self.assertEqual(0, r.returncode, r.stderr)
+        self.assertIn("--port", r.stdout)
+        self.assertNotIn("ModuleNotFoundError", r.stderr)
+        kod = ("import sys; import seri_hub; "
+               "assert 'mavlink_tunel' not in sys.modules, 'tunel modulu yuklendi'; "
+               "assert 'iha_komut_alici' not in sys.modules; print('OK')")
+        r = self._kos(dizin, "-c", kod)
+        self.assertEqual(0, r.returncode, r.stderr)
+        self.assertIn("OK", r.stdout)
+
+    @unittest.skipIf(serial is None, "pyserial kurulu degil")
+    def test_T8b_sik_kipi_izole_dizinde_hub_kurulur_ve_durur(self):
+        dizin = self._izole_dizin()
+        kod = ("import sys, threading; import seri_hub as m; o = m.SeriHub\n"
+               "def y(*a, **k):\n"
+               "    h = o(*a, **k); threading.Timer(0.3, h.durdur).start(); return h\n"
+               "m.SeriHub = y\n"
+               "r = m.main(['--port', 'loop://', '--bind', '127.0.0.1:0', '--log-aralik', '0'])\n"
+               "assert 'mavlink_tunel' not in sys.modules\n"
+               "print('CIKIS', r)")
+        r = self._kos(dizin, "-c", kod)
+        self.assertEqual(0, r.returncode, r.stderr)
+        self.assertIn("CIKIS 0", r.stdout)
+        self.assertIn("[SERI_HUB] seri loop:// @ 57600", r.stdout)
 
 
 if __name__ == "__main__":

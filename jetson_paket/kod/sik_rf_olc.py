@@ -67,6 +67,22 @@ PROB DOLGUSU (`--prob-dolgu B`, varsayilan 0): prob CMD'sine sabit uzunlukta
 parcasi, 473 B = 4 parca) — cok parcali RTT KAYDI icindir. Yalniz dolgu=0
 kosusu KAPIDIR; dolgu>0 kosusunun JSON'unda `kapi_disi: true` yazar ve verdikti
 kapi SAYILMAZ (elestiri 1 bulgu 2).
+
+ACK DOLGUSU (`--ack-dolgu B`, yalniz yanki; duzeltme turu 1): prob dolgusu
+yalniz YER->HAVA yonunu buyutur; ACK tek parcali kalirdi. Uretimde 473 B
+OPEN_ROUTE HAVA->YER gider (TELEM1 TX, K4'te dusen yol). Yanki ACK'i TAM B
+bayta dolgular; olc ucu dolgulu ACK gorurse raporda `ack_dolgulu` sayilir ve
+`kapi_disi: true` yazar. Yalniz KAYITTIR.
+
+TUNEL AYRISTIRMA + DATAGRAM SINIRI (duzeltme turu 1; K8-0 i): `--tunel-ayristirma
+datagram|akis` TunelLink kipini ezer (kayit icin). Tunel kipinde her alinan
+datagram AYRICA yeni bir ayristiriciyla sinanir: ilk bayt MAVLink2 magic VE
+datagram tek basina, artiksiz, en az bir gecerli pakete cozuluyorsa `hizali`,
+degilse `hizasiz` sayilir (`datagram_siniri`). NEDEN: 'akis' kipinde
+`mavlink_paket / alinan_datagram ~ 1` olcutu paket ORTASINDAN baslayan
+datagramlarda da geciyordu (curutucu olcumu: 201 datagram, 200 paket,
+cozum_hatasi 0) — 'datagram' kipine gecis onerisi paketlerin %100'unu
+kaybettirirdi.
 """
 
 from __future__ import annotations
@@ -87,7 +103,8 @@ for _yol in (KOK / "codes", KOK / "comms"):
 from karar_sozlesmesi import (IKA_GO_TEKRAR_ARALIGI_S,  # noqa: E402
                               PARASUT_TEKRAR_ARALIGI_S)
 from link import SerialLink, UDPLink  # noqa: E402
-from mavlink_tunel import (KIMLIK_HAVA, KIMLIK_YER,  # noqa: E402
+from mavlink_tunel import (AYRISTIRMA_AKIS, AYRISTIRMA_DATAGRAM,  # noqa: E402
+                           KIMLIK_HAVA, KIMLIK_YER,
                            TASIYICI_TUNEL as _MT_TASIYICI_TUNEL,
                            TUNEL_HAVA_UC, TUNEL_PARCA_YUK_B, TUNEL_YER_UC,
                            TunelLink, uc_coz)
@@ -122,6 +139,10 @@ VARSAYILAN_TUNEL_KIMLIGI = {"yanki": KIMLIK_HAVA, "olc": KIMLIK_YER}
 PROB_DOLGU_ALANI = "dolgu"
 KAPI_DISI_NOTU = ("--prob-dolgu > 0: cok parcali KAYIT kosusu; verdikt kapi "
                   "SAYILMAZ (yalniz dolgu=0 kosusu kapidir)")
+ACK_DOLGU_NOTU = ("dolgulu ACK (yanki --ack-dolgu > 0): hava->yer cok parcali KAYIT "
+                  "kosusu; verdikt kapi SAYILMAZ")
+#: MAVLink2 baslangic bayti (datagram siniri denetimi).
+MAVLINK2_MAGIC = 0xFD
 VARSAYILAN_UDP_BIND = "127.0.0.1:0"
 
 CIKIS_UYUMLU, CIKIS_UYARI, CIKIS_OLCULEMEDI = 0, 1, 2
@@ -181,8 +202,19 @@ class TunelUc:
     yazilir.
     """
 
-    def __init__(self, bind, kimlik, timeout=YANKI_OKUMA_ZAMAN_ASIMI_S):
-        self.link = TunelLink(bind, kimlik, timeout=timeout)
+    def __init__(self, bind, kimlik, timeout=YANKI_OKUMA_ZAMAN_ASIMI_S,
+                 ayristirma=None):
+        self.link = TunelLink(bind, kimlik, timeout=timeout, ayristirma=ayristirma)
+        self.datagram_siniri = {"hizali": 0, "hizasiz": 0}
+        asil = self.link._datagram_isle
+
+        def sinir_kaydi(veri, adr):
+            # KAYIT: link davranisi DEGISMEZ; datagram once bagimsiz sinanir.
+            anahtar = ("hizali" if datagram_siniri_hizali_mi(veri, self.link._m)
+                       else "hizasiz")
+            self.datagram_siniri[anahtar] += 1
+            return asil(veri, adr)
+        self.link._datagram_isle = sinir_kaydi
 
     @property
     def port(self):
@@ -202,23 +234,48 @@ class TunelUc:
         self.link.close()
 
 
-def prob_cercevesi(seq, dolgu_b=0):
-    """Prob CMD cercevesi. `dolgu_b` > 0 ise cerceve TAM `dolgu_b` bayt olur.
+def datagram_siniri_hizali_mi(veri, mav_modul):
+    """Datagram paket sinirinda mi: ilk bayt MAVLink2 magic VE yeni bir
+    ayristiriciyla tek basina, artiksiz, >= 1 gecerli pakete cozulur."""
+    veri = bytes(veri)
+    if not veri or veri[0] != MAVLINK2_MAGIC:
+        return False
+    ayr = mav_modul.MAVLink(None, srcSystem=0, srcComponent=0)
+    ayr.robust_parsing = True
+    try:
+        mesajlar = ayr.parse_buffer(veri) or []
+    except Exception:                       # ayristirici istisnasi = hizasiz
+        return False
+    if not mesajlar or any(m.get_type() == "BAD_DATA" for m in mesajlar):
+        return False
+    return sum(len(m.get_msgbuf()) for m in mesajlar) == len(veri)
 
-    Ulasilamayacak kadar kucuk dolgu (dolgu alanli en kisa cerceveden kisa)
-    ValueError verir.
-    """
-    mesaj = command(PROB_KOMUTU, PROB_HEDEF, seq=seq)
+
+def _dolgula(mesaj, dolgu_b, secenek):
     dolgu_b = int(dolgu_b)
     if dolgu_b <= 0:
         return encode(mesaj)
     mesaj[PROB_DOLGU_ALANI] = ""
     eksik = dolgu_b - len(encode(mesaj))
     if eksik < 0:
-        raise ValueError(f"--prob-dolgu {dolgu_b} B cok kucuk (en az "
+        raise ValueError(f"{secenek} {dolgu_b} B cok kucuk (en az "
                          f"{dolgu_b - eksik} B)")
     mesaj[PROB_DOLGU_ALANI] = "x" * eksik
     return encode(mesaj)
+
+
+def ack_cercevesi(seq, dolgu_b=0):
+    """Yanki ACK cercevesi; `dolgu_b` > 0 ise TAM `dolgu_b` bayt (KAYIT)."""
+    return _dolgula(ack(seq, YANKI_DUGUMU, ref_tip=ACK_REF_TIPI), dolgu_b, "--ack-dolgu")
+
+
+def prob_cercevesi(seq, dolgu_b=0):
+    """Prob CMD cercevesi. `dolgu_b` > 0 ise cerceve TAM `dolgu_b` bayt olur.
+
+    Ulasilamayacak kadar kucuk dolgu (dolgu alanli en kisa cerceveden kisa)
+    ValueError verir.
+    """
+    return _dolgula(command(PROB_KOMUTU, PROB_HEDEF, seq=seq), dolgu_b, "--prob-dolgu")
 
 
 def tunel_parca_sayisi(cerceve_b):
@@ -316,42 +373,51 @@ def _prob_mu(mesaj):
             and not isinstance(mesaj.get("seq"), bool))
 
 
-def yanki_kos(link, dur=None, ilerleme=None, sayac=None, saat=time.monotonic):
+def yanki_kos(link, dur=None, ilerleme=None, sayac=None, saat=time.monotonic,
+              ack_dolgu_b=0):
     """Gelen her CMD(RF_PROBE) icin ack(seq, "ika", "CMD") yaz.
 
     `dur` (threading.Event) verilirse o kurulunca doner; verilmezse
     KeyboardInterrupt ya da hat kopana kadar surer. Cevaplanan sayiyi dondurur.
     `sayac` (dict) verilirse bayt/paket sayaclari ve sure ona yazilir
     (ilk gelen bayttan son ACK yazimina kadar); donus tipi DEGISMEZ.
+    KeyboardInterrupt (Ctrl+C, sahadaki olagan cikis) dongunun olagan sonudur:
+    sayac yine yazilir ve cevaplanan sayi dondurulur (duzeltme turu 1: once
+    Ctrl+C'de `veri_hizi` bos, `cevaplanan` 0 kaliyordu).
+    `ack_dolgu_b` > 0: ACK TAM o boya dolgulanir (hava->yer cok parcali KAYIT).
     """
     okuyucu = FrameReader()
     cevaplanan = 0
     hata = _seri_hatasi()
     alinan_bayt = gonderilen_bayt = alinan_paket = 0
     t_ilk = t_son = None
-    while dur is None or not dur.is_set():
-        try:
-            veri = _hizli_oku(link)
-        except (hata, OSError) as exc:
-            if ilerleme:
-                ilerleme(f"yanki: hat koptu ({exc})")
-            break
-        if not veri:
-            continue
-        if t_ilk is None:
-            t_ilk = saat()
-        alinan_bayt += len(veri)
-        for mesaj in okuyucu.feed(veri):
-            alinan_paket += 1
-            if not _prob_mu(mesaj):
-                continue                   # baska trafik: yok say
-            cerceve = encode(ack(mesaj["seq"], YANKI_DUGUMU, ref_tip=ACK_REF_TIPI))
-            link.send(cerceve)
-            gonderilen_bayt += len(cerceve)
-            cevaplanan += 1
-            t_son = saat()
-            if ilerleme:
-                ilerleme(f"yanki: seq={mesaj['seq']} -> ACK ({cevaplanan})")
+    try:
+        while dur is None or not dur.is_set():
+            try:
+                veri = _hizli_oku(link)
+            except (hata, OSError) as exc:
+                if ilerleme:
+                    ilerleme(f"yanki: hat koptu ({exc})")
+                break
+            if not veri:
+                continue
+            if t_ilk is None:
+                t_ilk = saat()
+            alinan_bayt += len(veri)
+            for mesaj in okuyucu.feed(veri):
+                alinan_paket += 1
+                if not _prob_mu(mesaj):
+                    continue                   # baska trafik: yok say
+                cerceve = ack_cercevesi(mesaj["seq"], ack_dolgu_b)
+                link.send(cerceve)
+                gonderilen_bayt += len(cerceve)
+                cevaplanan += 1
+                t_son = saat()
+                if ilerleme:
+                    ilerleme(f"yanki: seq={mesaj['seq']} -> ACK ({cevaplanan})")
+    except KeyboardInterrupt:
+        if ilerleme:
+            ilerleme("yanki: Ctrl+C — sayaclar yaziliyor")
     if sayac is not None:
         sure = (t_son - t_ilk) if (t_ilk is not None and t_son is not None) else 0.0
         sayac.update(veri_hizi_hesapla(sure, gonderilen_bayt, alinan_bayt,
@@ -403,6 +469,7 @@ def olc_kos(link, n, aralik, zaman_asimi=None, ilerleme=None,
     gec_ack = 0
     hat_koptu = None
     gonderilen_bayt = alinan_bayt = alinan_paket = 0
+    ack_dolgulu = 0
     t_ilk = None
 
     for seq in range(1, n + 1):
@@ -430,6 +497,8 @@ def olc_kos(link, n, aralik, zaman_asimi=None, ilerleme=None,
                 alinan_paket += 1
                 if _ack_eslesir(mesaj, seq):
                     rtt = (saat() - t0) * 1000.0
+                    if PROB_DOLGU_ALANI in mesaj:
+                        ack_dolgulu += 1
                     break
                 if isinstance(mesaj, dict) and mesaj.get("type") == MESAJ_ACK:
                     gec_ack += 1
@@ -481,10 +550,12 @@ def olc_kos(link, n, aralik, zaman_asimi=None, ilerleme=None,
         "not": ("RTT yuzdelikleri yalniz ACK alinan problar uzerindendir; "
                 "kayip icin esik yok, birlikte okunur."),
         "prob_dolgu_b": int(prob_dolgu_b),
-        "kapi_disi": int(prob_dolgu_b) > 0,
+        "ack_dolgulu": ack_dolgulu,
+        "kapi_disi": int(prob_dolgu_b) > 0 or ack_dolgulu > 0,
     }
     if rapor["kapi_disi"]:
-        rapor["kapi_disi_notu"] = KAPI_DISI_NOTU
+        rapor["kapi_disi_notu"] = (KAPI_DISI_NOTU if int(prob_dolgu_b) > 0
+                                   else ACK_DOLGU_NOTU)
     if hat_koptu:
         rapor["hat_koptu"] = hat_koptu
         # Hat koparsa olcum tamamlanmamistir: UYUMLU denemez.
@@ -548,9 +619,11 @@ def _uc_ac_cli(a, ap, timeout):
         kunye = {"tasiyici": TASIYICI_TUNEL, "tunel_bind": a.tunel_bind,
                  "tunel_kimlik": a.tunel_kimlik}
         try:
-            uc = TunelUc(uc_coz(a.tunel_bind), a.tunel_kimlik, timeout=timeout)
+            uc = TunelUc(uc_coz(a.tunel_bind), a.tunel_kimlik, timeout=timeout,
+                         ayristirma=a.tunel_ayristirma)
         except (ImportError, OSError, ValueError) as exc:
             return None, kunye, f"tunel ucu acilamadi ({a.tunel_bind}): {exc}"
+        kunye["tunel_ayristirma"] = uc.link.ayristirma
         return uc, kunye, None
     if a.tasiyici == TASIYICI_UDP:
         kunye = {"tasiyici": TASIYICI_UDP, "bind": a.bind, "peer": a.peer}
@@ -584,6 +657,12 @@ def main(argv=None):
     ap.add_argument("--prob-dolgu", type=int, default=0, metavar="B",
                     help="prob cercevesini TAM B bayt yap (0 = dolgu yok; >0 kosu "
                          "KAPI DISI kayittir)")
+    ap.add_argument("--ack-dolgu", type=int, default=0, metavar="B",
+                    help="yanki: ACK cercevesini TAM B bayt yap (hava->yer cok "
+                         "parcali KAYIT; olc raporu kapi_disi yazar)")
+    ap.add_argument("--tunel-ayristirma", choices=(AYRISTIRMA_DATAGRAM, AYRISTIRMA_AKIS),
+                    default=None,
+                    help="tunel: ayristirma kipini ez (KAYIT; varsayilan kimlige gore)")
     ap.add_argument("--port", default=None,
                     help="seri: serial_for_url uyumlu: COM7, /dev/ttyUSB0, socket://, loop://")
     ap.add_argument("--baud", type=int, default=VARSAYILAN_BAUD)
@@ -603,8 +682,15 @@ def main(argv=None):
 
     if a.prob_dolgu < 0:
         ap.error("--prob-dolgu negatif olamaz")
+    if a.ack_dolgu < 0:
+        ap.error("--ack-dolgu negatif olamaz")
+    if a.ack_dolgu > 0 and a.rol != "yanki":
+        ap.error("--ack-dolgu yalniz --rol yanki ile anlamlidir")
+    if a.tunel_ayristirma is not None and a.tasiyici != TASIYICI_TUNEL:
+        ap.error("--tunel-ayristirma yalniz --tasiyici tunel ile anlamlidir")
     try:
         prob_cercevesi(1, a.prob_dolgu)
+        ack_cercevesi(1, a.ack_dolgu)
     except ValueError as exc:
         ap.error(str(exc))
     if a.tasiyici == TASIYICI_TUNEL:
@@ -655,6 +741,7 @@ def main(argv=None):
         rapor.update(kunye)
         if a.tasiyici == TASIYICI_TUNEL:
             rapor["tunel_sayac"] = link.sayac
+            rapor["datagram_siniri"] = dict(link.datagram_siniri)
             rapor["prob_tunel_parca"] = tunel_parca_sayisi(
                 len(prob_cercevesi(1, a.prob_dolgu)))
         if a.cikti:
@@ -685,15 +772,22 @@ def main(argv=None):
     cevaplanan = 0
     sayac = {}
     try:
-        cevaplanan = yanki_kos(link, ilerleme=ilerleme, sayac=sayac)
+        cevaplanan = yanki_kos(link, ilerleme=ilerleme, sayac=sayac,
+                               ack_dolgu_b=a.ack_dolgu)
     except KeyboardInterrupt:
         pass
     finally:
         link.close()
     sonuc = {"rol": "yanki", "cevaplanan": cevaplanan}
     sonuc.update(kunye)
+    if a.ack_dolgu > 0:
+        sonuc["ack_dolgu_b"] = a.ack_dolgu
+        sonuc["ack_tunel_parca"] = tunel_parca_sayisi(len(ack_cercevesi(1, a.ack_dolgu)))
+        sonuc["kapi_disi"] = True
+        sonuc["kapi_disi_notu"] = ACK_DOLGU_NOTU
     if a.tasiyici == TASIYICI_TUNEL:
         sonuc["tunel_sayac"] = link.sayac
+        sonuc["datagram_siniri"] = dict(link.datagram_siniri)
     if sayac:
         sonuc["veri_hizi"] = sayac
     if a.cikti:

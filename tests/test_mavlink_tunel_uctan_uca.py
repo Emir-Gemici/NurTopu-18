@@ -49,7 +49,8 @@ if M is not None:
     import ardupilot_yonlendirici_taklit as taklit  # noqa: E402
     from ardupilot_yonlendirici_taklit import (ArdupilotYonlendiriciTaklit,  # noqa: E402
                                                Kova, MavproxyTaklit, MP_GCS_KIMLIGI,
-                                               MAVPROXY_GCS_KIMLIGI, kayip_ozeti)
+                                               MAVPROXY_GCS_KIMLIGI, cerceve_icerik_anahtari,
+                                               kayip_ozeti, kopya_kayip_ozeti)
 
 YEREL = "127.0.0.1"
 HAT_BPS = 57600
@@ -391,22 +392,83 @@ class K4_01_YonlendiriciKurallari(unittest.TestCase):
                       time.monotonic())
         self.assertEqual(1, r2.sayac["txspace_dusen"])
 
-    def test_K4_01d_kayip_karari_icerik_ozetiyle_belirlenimci(self):
+    def test_K4_01d_kayip_ozetleri_saf_belirlenimci(self):
         basliklar = [mt.parcalara_bol(k, b"x" * 300)[i] for k in range(400) for i in range(3)]
         r1 = ArdupilotYonlendiriciTaklit(2, kayip=0.05, tohum=TOHUM)
         r2 = ArdupilotYonlendiriciTaklit(2, kayip=0.05, tohum=TOHUM)
         r3 = ArdupilotYonlendiriciTaklit(2, kayip=0.05, tohum=TOHUM + 1)
         for r in (r1, r2, r3):
             self.addCleanup(r.durdur)
+        # Kayitsiz parca -> YEDEK baslik ozeti; gorunur sayilir.
         k1 = [r1.kayip_mi(0, 1, b) for b in basliklar]
+        self.assertEqual(len(basliklar), r1.sayac["kayip_anahtari_eksik"])
         self.assertEqual(k1, [r2.kayip_mi(0, 1, b) for b in basliklar], "ayni payload ayni karar")
         self.assertNotEqual(k1, [r3.kayip_mi(0, 1, b) for b in basliklar])
         self.assertNotEqual(k1, [r1.kayip_mi(1, 0, b) for b in basliklar], "yon ozete girer")
         oran = sum(k1) / len(k1)
         self.assertLess(abs(oran - 0.05), 0.02, oran)
-        # JSON yukundeki zaman damgasi karara GIRMEZ (yalniz 5 B baslik)
         self.assertEqual(kayip_ozeti(1, 0, 1, basliklar[0][:5] + b"a"),
                          kayip_ozeti(1, 0, 1, basliklar[0][:5] + b"b"))
+        # Kopya ozeti: her anahtar alani karara girer, oran ~kayip.
+        taban = kopya_kayip_ozeti(TOHUM, 0, 1, 3, 1, 0, 4)
+        for degisik in ((TOHUM + 1, 0, 1, 3, 1, 0, 4), (TOHUM, 1, 0, 3, 1, 0, 4),
+                        (TOHUM, 0, 1, 4, 1, 0, 4), (TOHUM, 0, 1, 3, 2, 0, 4),
+                        (TOHUM, 0, 1, 3, 1, 1, 4)):
+            self.assertNotEqual(taban, kopya_kayip_ozeti(*degisik), degisik)
+        degerler = [kopya_kayip_ozeti(TOHUM, 0, 1, n, c, i, 4)
+                    for n in range(100) for c in range(1, 5) for i in range(4)]
+        self.assertLess(abs(sum(d < 0.05 for d in degerler) / len(degerler) - 0.05), 0.02)
+        # zaman damgasi normallestirilir; seq/ref KORUNUR
+        a = encode(open_route(2, 0.9, ROTA_12, REF_XY, seq=7))
+        b = a.replace(b'"t":', b'"t":1', 1)
+        self.assertNotEqual(a, b)
+        self.assertEqual(cerceve_icerik_anahtari(a), cerceve_icerik_anahtari(b))
+        self.assertNotEqual(cerceve_icerik_anahtari(a),
+                            cerceve_icerik_anahtari(encode(open_route(2, 0.9, ROTA_12, REF_XY, seq=8))))
+
+    def test_K4_01e_kayip_karari_kimlikten_ve_kopya_sayisindan_BAGIMSIZ(self):
+        """DUZELTME TURU 1 (curutucu olcumu: 1024 B alt vakasi 4 kosuda 3 DUSTU).
+        Iki 'kosu': farkli baslangic kimligi, farkli seq tabani, farkli `t` ve
+        denemeler arasinda FARKLI kopya sayisi (ACK zamanlamasi). Var olan her
+        (deneme, kopya, parca) icin kayip karari AYNI olmali. Eski baslik ozeti
+        (kimlik dahil) bu kosulda farkli karar verir (pozitif kontrol)."""
+        kayip = 0.3
+
+        def kosu(ilk_kimlik, seq_tabani, t_eki, kopya_sayisi):
+            r = ArdupilotYonlendiriciTaklit(2, kayip=kayip, tohum=TOHUM)
+            self.addCleanup(r.durdur)
+            kimlik = ilk_kimlik
+            kararlar, eski_kararlar = {}, {}
+            for deneme in range(12):
+                cerceve = encode(open_route(2, 0.9, ROTA_30, REF_XY, seq=seq_tabani + deneme))
+                cerceve = cerceve.replace(b'"t":', b'"t":' + t_eki, 1)
+                for kopya in range(1, kopya_sayisi(deneme) + 1):
+                    parcalar = [p + bytes(mt.TUNEL_MAVLINK_YUK_B - len(p))
+                                for p in mt.parcalara_bol(kimlik, cerceve)]
+                    kimlik += 1
+                    for p in parcalar:
+                        r.parca_kaydet(0, p)
+                    for indis, p in enumerate(parcalar):
+                        kararlar[(deneme, kopya, indis)] = r.kayip_mi(0, 1, p)
+                        eski_kararlar[(deneme, kopya, indis)] = (
+                            kayip_ozeti(TOHUM, 0, 1, p) < kayip)
+            self.assertEqual(0, r.sayac["kayip_anahtari_eksik"])
+            return kararlar, eski_kararlar
+        k1, e1 = kosu(HAVA_ILK_KIMLIK, 100, b"1", lambda d: 1 + d % 4)
+        k2, e2 = kosu(51234, 9000, b"7", lambda d: 4)
+        ortak = sorted(set(k1) & set(k2))
+        self.assertGreater(len(ortak), 60)
+        self.assertEqual({a: k1[a] for a in ortak}, {a: k2[a] for a in ortak})
+        self.assertGreater(sum(k1.values()), 0, "kayip hic yok: test ayirt edemez")
+        self.assertNotEqual({a: e1[a] for a in ortak}, {a: e2[a] for a in ortak},
+                            "pozitif kontrol: kimlige bagli eski ozet farkli karar vermeli")
+        # eksik parca -> yedek ozet, GORUNUR sayac
+        r = ArdupilotYonlendiriciTaklit(2, kayip=kayip, tohum=TOHUM)
+        self.addCleanup(r.durdur)
+        parcalar = mt.parcalara_bol(5, encode(open_route(2, 0.9, ROTA_30, REF_XY, seq=1)))
+        r.parca_kaydet(0, parcalar[0])
+        r.kayip_mi(0, 1, parcalar[0])
+        self.assertEqual(1, r.sayac["kayip_anahtari_eksik"])
 
 
 @unittest.skipIf(M is None, "pymavlink kurulu degil")
@@ -471,7 +533,24 @@ class K4UctanUca(unittest.TestCase):
             gercek olasilik biraz daha dusuktur;
           * DUSERSE: DUSTU yazilir; tohum ve deneme sayisi DEGISTIRILMEZ.
         (Iki alt vaka ayri test yontemlerine bolundu — hangi tamponun dustugu
-        adiyla gorunsun; kapi ve parametreler AYNI.)"""
+        adiyla gorunsun; kapi ve parametreler AYNI.)
+
+        SAPMA — DUZELTME TURU 1 (16 Eylul; yukaridaki metin DEGISTIRILMEDI):
+          * curutucu olcumu: "kayip karari icerik ozetiyle (5 B baslik) —
+            belirlenimci" iddiasi YANLISTI. Baslik kimligi icerir; kimlik her
+            gonderilen kopyada artar ve kopya sayisi ACK zamanlamasina baglidir.
+            Degismemis kodda 1024 B alt vakasi 4 kosuda 3 DUSTU, 1 GECTI
+            (kayip_dusen 12/12/11/6).
+          * duzeltme: kayip anahtari (ileti_no, kopya_no, indis, toplam); kayip
+            TX'ten hatta cikista uygulanir (scripts/ardupilot_yonlendirici_taklit.py
+            dokstringi). Kilit: K4_01e.
+          * DEGISMEYEN: kapi 40/40, tohum 20260916, 20+20 deneme, uretim butcesi
+            (repeat=4, interval=0,25 s), hat modeli, iki tampon alt vakasi.
+          * belirlenimci OLMAYAN kalan bilesen: hat/kuyruk gercek saatle isler
+            (txspace_dusen, son kopyanin ACK penceresi). Bu yuzden alt vaka N kez
+            kosulur ve dagilim raporlanir (results/tunel_20260916/duzeltme_t1.txt).
+          * analitik %92,6 olasiligi artik tek kosunun degil, TOHUMUN kaderidir:
+            ayni tohumla sonuc (zamanlama disinda) sabittir."""
 
     def test_K4_05_yuzde_20_kayip_RAPOR(self):
         d = Duzenek(self, kayip=0.20, tx_tampon_b=1024)

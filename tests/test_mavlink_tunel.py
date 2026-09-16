@@ -10,6 +10,7 @@ mutant (K5, M1..M20) en az bir vakayi dusurmelidir.
 """
 from __future__ import annotations
 
+import contextlib
 import inspect
 import socket
 import struct
@@ -40,6 +41,11 @@ SINIRLAR = [0, 1, 122, 123, 124, 245, 246, 247, 248, 256, 473, 4096, 7872]
 #: Windows zamanlayici tanecigi ~15,6 ms (D-405 olc_granul): son tarih payi.
 TANECIK_PAYI_S = 0.035
 BEKLEME_TAVANI_S = 3.0
+#: K3_12 bosluksuz sel: recv'den once yigilan datagram, alim tamponu, uretici.
+SEL_ON_YIGIN = 20000
+SEL_ALIM_TAMPONU_B = 8 * 1024 * 1024
+SEL_OBEK = 64
+SEL_TAVAN_S = 6.0
 
 
 class _Saat:
@@ -308,8 +314,18 @@ class K3Suzgecler(_Temel):
             struct.pack(mt.TUNEL_BASLIK_BICIMI, 2, 11, 0, 3) + b"x",  # surum
             struct.pack(mt.TUNEL_BASLIK_BICIMI, 1, 11, 0, 0) + b"x",  # toplam 0
             struct.pack(mt.TUNEL_BASLIK_BICIMI, 1, 11, 0, 65) + b"x",  # toplam > 64
+            # Tavan kurali TEK BASINA (M26): son parca (boy kurali gecer) ve tam
+            # 123 B'lik ilk parca; yalniz 'toplam <= 64' reddeder.
+            struct.pack(mt.TUNEL_BASLIK_BICIMI, 1, 11, mt.TUNEL_AZAMI_PARCA,
+                        mt.TUNEL_AZAMI_PARCA + 1) + b"x",
+            struct.pack(mt.TUNEL_BASLIK_BICIMI, 1, 11, 0,
+                        mt.TUNEL_AZAMI_PARCA + 1) + b"x" * mt.TUNEL_PARCA_YUK_B,
             struct.pack(mt.TUNEL_BASLIK_BICIMI, 1, 11, 3, 3) + b"x",  # indis >= toplam
             struct.pack(mt.TUNEL_BASLIK_BICIMI, 1, 11, 0, 3) + b"x" * 122,  # son olmayan kisa
+            # 'son olmayan parca tam 123 B' SONDAN BIR ONCEKI parcada ve 2
+            # parcali cercevede de gecerli (M05: indis < toplam - 2).
+            struct.pack(mt.TUNEL_BASLIK_BICIMI, 1, 11, 1, 3) + b"x" * 122,
+            struct.pack(mt.TUNEL_BASLIK_BICIMI, 1, 11, 0, 2) + b"x" * 122,
             struct.pack(mt.TUNEL_BASLIK_BICIMI, 1, 11, 2, 3),          # bos yuk
         ]
         for p in bozuklar:
@@ -368,34 +384,75 @@ class K3Suzgecler(_Temel):
 
 class K3ZamanlamaVeAriza(_Temel):
     def test_K3_12_recv_son_tarihi_cagri_basina_yabanci_sel_altinda(self):
+        """Son tarih cagri basinadir (M8, M24). Sel BOSLUKSUZDUR: recv'den once
+        sokete binlerce datagram yigilir ve bekleme YAPMAYAN bir uretici surer.
+        Onceki surum time.sleep(0.001) ile gonderiyordu; Windows'ta bu ~15 ms
+        taneciktir, select(0) bosluk bulup donuyor ve 'datagram isledikten sonra
+        son tarih' satiri (M24) hic sinanmiyordu (duzeltme turu 1)."""
         varsayilan = inspect.signature(mt.TunelLink.__init__).parameters["timeout"].default
         seri_varsayilan = inspect.signature(SerialLink.__init__).parameters["timeout"].default
         self.assertLessEqual(varsayilan, seri_varsayilan)
         yer = self.link(timeout=0.05)
+        with contextlib.suppress(OSError):
+            yer.sock.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, SEL_ALIM_TAMPONU_B)
         dur = threading.Event()
         kod = _kodlayici(VARSAYILAN_HEDEF_SYSID, 1)
         att = kod.attitude_encode(1, 0.1, 0.2, 0.3, 0, 0, 0).pack(kod)
         s = self.soket()
+        hedef = (YEREL, yer.port)
+        for _ in range(SEL_ON_YIGIN):
+            s.sendto(att, hedef)
 
         def sel():
-            bitis = time.monotonic() + 4.0
+            bitis = time.monotonic() + SEL_TAVAN_S
             while not dur.is_set() and time.monotonic() < bitis:
-                s.sendto(att, (YEREL, yer.port))
-                time.sleep(0.001)
+                for _ in range(SEL_OBEK):
+                    s.sendto(att, hedef)
         t = threading.Thread(target=sel, daemon=True)
         t.start()
-        self.addCleanup(t.join, 5.0)
+        self.addCleanup(t.join, SEL_TAVAN_S + 1.0)
         self.addCleanup(dur.set)
-        time.sleep(0.05)
         sureler = []
         for _ in range(20):
             t0 = time.monotonic()
             self.assertEqual((None, None), yer.recv())
             sureler.append(time.monotonic() - t0)
         dur.set()
-        self.assertGreater(yer.sayac["yabanci_mesaj"], 20, "sel gercekten geldi mi")
+        self.assertGreater(yer.sayac["yabanci_mesaj"], 20 * 20, "sel gercekten geldi mi")
         self.assertLessEqual(max(sureler), 0.05 + TANECIK_PAYI_S,
                              f"son tarih cagri basina olmali: {sureler}")
+
+    @unittest.skipUnless(hasattr(socket, "SO_EXCLUSIVEADDRUSE"),
+                         "yalniz Windows (SO_EXCLUSIVEADDRUSE)")
+    def test_K3_13b_tek_sahiplik_reuseaddr_ile_ikinci_bind_REDDEDILIR(self):
+        """D-405 tek sahiplik (M38): Windows'ta SO_REUSEADDR ile acan ikinci
+        surec portu PAYLASABILIR; TunelLink SO_EXCLUSIVEADDRUSE ile bunu engeller.
+        Pozitif kontrol: reuse=True ile acilan uc paylasilir (test gercekten
+        paylasimi ayirt ediyor).
+
+        OLCULDU (bu makine, duzeltme turu 1): iki soket de AYNI belirli adrese
+        (127.0.0.1) bind ederse Windows ikinciyi secenekten bagimsiz reddeder
+        (10013/10048). Fark joker adreste gorunur: ilk uc 0.0.0.0'da iken ikinci
+        surec 127.0.0.1:port'a SO_REUSEADDR'li ya da yalin bind ile portu ELE
+        GECIRIR; yalniz SO_EXCLUSIVEADDRUSE bunu 10013 ile engeller. Bu yuzden
+        ilk uc joker adrese acilir (yks_gui --bind 0.0.0.0 saha kalibi)."""
+        joker = "0.0.0.0"
+        for ikinci_secenek in ((), (socket.SO_REUSEADDR,)):
+            with self.subTest(ikinci_secenek=ikinci_secenek):
+                ln = mt.TunelLink((joker, 0), mt.KIMLIK_YER, log=_Log())
+                self.addCleanup(ln.close)
+                ikinci = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+                self.addCleanup(ikinci.close)
+                for secenek in ikinci_secenek:
+                    ikinci.setsockopt(socket.SOL_SOCKET, secenek, 1)
+                with self.assertRaises(OSError):
+                    ikinci.bind((YEREL, ln.port))
+        paylasimli = mt.TunelLink((joker, 0), mt.KIMLIK_YER, reuse=True, log=_Log())
+        self.addCleanup(paylasimli.close)
+        ucuncu = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.addCleanup(ucuncu.close)
+        ucuncu.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        ucuncu.bind((YEREL, paylasimli.port))
 
     def test_K3_13_close_idempotent_sonra_OSError(self):
         ln = mt.TunelLink((YEREL, 0), mt.KIMLIK_HAVA, log=_Log())
@@ -452,6 +509,18 @@ class K3ZamanlamaVeAriza(_Temel):
         self.assertEqual(2, ln.sayac["akran_sessizken_gonderilen"])
         saat.t += mt.TUNEL_AKRAN_SESSIZLIK_S + 0.5
         ln.send(b"e\n")
+        self.assertEqual(2, sum("SESSIZ" in m for m in ln.log.kirmizi()))
+        self.assertEqual(3, ln.sayac["akran_sessizken_gonderilen"])
+        # Akrandan HEARTBEAT DISI datagram (1 Hz heartbeat kesik, tunel trafigi
+        # suruyor) de sessizlik saatini tazeler (M30): sonraki gonderim sessiz
+        # SAYILMAZ, yanlis 'akran SESSIZ' KIRMIZI'si uretilmez.
+        (tunel,) = _parca_paketleri(60, b"akrandan tunel\n", compid=mt.TUNEL_YER_COMPID)
+        s.sendto(tunel, (YEREL, ln.port))
+        self.assertEqual(b"akrandan tunel\n", self.bekle_cerceve(ln))
+        self.assertEqual(0, ln.sayac["akrandisi_datagram"])
+        ln.send(b"f\n")
+        self.assertEqual(3, ln.sayac["akran_sessizken_gonderilen"],
+                         "akrandan gelen tunel datagrami sessizligi bitirmeli")
         self.assertEqual(2, sum("SESSIZ" in m for m in ln.log.kirmizi()))
 
     def test_K3_18_bufsize_cerceveyi_bolmez(self):
@@ -571,6 +640,27 @@ class K3Ayristirma(_Temel):
         self.assertGreaterEqual(yer_d.sayac["cozum_hatasi"], 1)
         self.assertLess(yer_d.sayac["teslim_cerceve"], 2)
 
+    def test_K3_21d_akis_kipi_ayristirici_istisnasi_sonrasi_sifirlanir(self):
+        """'akis' kipinde parse_buffer istisnasindan sonra kalici ayristirici
+        YENILENIR (M36): eski ayristiricidaki yarim paket sonraki gecerli
+        TUNNEL'i zehirlemez; istisna cozum_hatasi'nda gorunur."""
+        yer = self.link(mt.KIMLIK_YER)
+        self.assertEqual(mt.AYRISTIRMA_AKIS, yer.ayristirma)
+        s = self.soket()
+        (yarim,) = _parca_paketleri(70, _veri(100), compid=mt.TUNEL_HAVA_COMPID)
+        s.sendto(yarim[:10], (YEREL, yer.port))          # akista tamponda kalir
+        self.assertEqual((None, None), yer.recv())
+        self.assertEqual(1, yer.sayac["alinan_datagram"])
+        eski = yer._kalici
+        with mock.patch.object(eski, "parse_buffer", side_effect=RuntimeError("ayristirici")):
+            s.sendto(b"\x00" * 8, (YEREL, yer.port))
+            self.assertEqual((None, None), yer.recv())
+        self.assertEqual(1, yer.sayac["cozum_hatasi"])
+        self.assertIsNot(eski, yer._kalici, "istisnadan sonra yeni ayristirici")
+        (gecerli,) = _parca_paketleri(71, b"istisna sonrasi\n", compid=mt.TUNEL_HAVA_COMPID)
+        s.sendto(gecerli, (YEREL, yer.port))
+        self.assertEqual(b"istisna sonrasi\n", self.bekle_cerceve(yer, tavan_s=1.0))
+
     def test_K3_21c_gecersiz_kip_ve_kimlik_ValueError(self):
         with self.assertRaises(ValueError):
             mt.TunelLink((YEREL, 0), mt.KIMLIK_HAVA, ayristirma="satir")
@@ -606,6 +696,27 @@ class K3KimlikBoslugu(_Temel):
         z.ekle(mt.parcalara_bol(22, b"y\n")[0])
         self.assertEqual(1, z.sayac["zaman_asimi_dusen"])
         self.assertEqual(0, z.sayac["kimlik_boslugu"], "zaman asimi bosluga CIFT sayilmaz")
+
+    def test_K3_22b_pencere_sinirlari_bosluk_geri_sicrama(self):
+        """Sartname: 1 <= d <= pencere bosluk; MOD - pencere <= d geri; digeri
+        sicrama. Sinir degerleri (M18 'd < pencere', M19 'd > MOD - pencere')."""
+        mod, pencere = mt.TUNEL_KIMLIK_MODU, mt.TUNEL_KIMLIK_ILERI_PENCERE
+        taban = 14
+
+        def izle(k):
+            b = mt.Birlestirici(saat=_Saat(), log=_Log())
+            b.ekle(mt.parcalara_bol(taban, b"x\n")[0])
+            b.ekle(mt.parcalara_bol(k % mod, b"x\n")[0])
+            c = b.sayac
+            return (c["kimlik_boslugu"], c["kimlik_geri"], c["kimlik_sicramasi"]), b._en_yuksek
+        self.assertEqual(((pencere - 1, 0, 0), taban + pencere), izle(taban + pencere),
+                         "d == pencere bosluktur")
+        self.assertEqual(((0, 0, 1), taban + pencere + 1), izle(taban + pencere + 1),
+                         "d == pencere + 1 sicramadir")
+        self.assertEqual(((0, 1, 0), taban), izle(taban - pencere),
+                         "d == MOD - pencere geridir; en_yuksek DEGISMEZ")
+        self.assertEqual(((0, 0, 1), (taban - pencere - 1) % mod), izle(taban - pencere - 1),
+                         "d == MOD - pencere - 1 sicramadir")
 
     def test_K3_23_soket_ortanca_tek_parcali_dusurulur_bosluk_1(self):
         hava = self.link(mt.KIMLIK_HAVA, ilk_kimlik=100)

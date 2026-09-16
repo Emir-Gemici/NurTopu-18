@@ -127,7 +127,9 @@ class JetsonCommsPaketiTests(unittest.TestCase):
             "assert pathlib.Path(m.__file__).resolve().parent == p; "
             "assert pathlib.Path(h.__file__).resolve().parent == p; "
             "assert pathlib.Path(s.__file__).resolve().parent == p; "
-            "assert callable(m.TunelLink) and h.TunelLink is m.TunelLink; "
+            # duzeltme turu 1: seri_hub tunel modulunu TEMBEL yukler (KIP=sik
+            # mavlink_tunel.py'siz calisir; kilit test_seri_hub_tunel T8).
+            "assert callable(m.TunelLink) and h._tunel_modulu() is m; "
             "yuklu=[x for x in sys.modules if x.startswith('pymavlink')]; "
             "assert not yuklu, yuklu; "
             "print('JETSON_TUNEL_IMPORT=OK')"
