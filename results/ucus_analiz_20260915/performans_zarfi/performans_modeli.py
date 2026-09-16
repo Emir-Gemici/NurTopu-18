@@ -76,7 +76,8 @@ KONFIGLER = [
     dict(
         kimlik="4S_13Ah_9x5x3",
         ad="4S 13 Ah + 9x5x3",
-        kutle_kg=4.0,             # KULLANICI BEYANI 15 Eyl: 'drone şu an 4 kg civarı' (4S 13 Ah takılı varsayıldı)
+        kutle_kg=3.277,           # TARTI (kullanıcı beyanı 16 Eyl: 'drone 3.277kg'); 4S 13 Ah + 9x5x3 takılı varsayıldı. 15 Eyl beyanı '4 kg civarı' idi
+        kutle_kaynak="TARTI — kullanıcı beyanı 16 Eyl; pil/pervane takılı VARSAYILDI",
         kapasite_Ah=13.0,
         hucre=4,
         R_paket_ohm=0.0304,       # ÖLÇÜM: F logu kalkış geçişi polyfit, r² 0,995 (F ozet.json "ic_direnc.a_kalkis_gecisi")
@@ -98,7 +99,8 @@ KONFIGLER = [
     dict(
         kimlik="3S_8Ah_1045",
         ad="3S 8 Ah + 1045",
-        kutle_kg=3.5,             # VARSAYIM: 4 kg (4S 13 Ah) − ~0,5 kg paket farkı; 3S ile tartılmadı
+        kutle_kg=2.777,           # VARSAYIM: 3,277 kg tartı (4S 13 Ah) − ~0,5 kg paket farkı; 3S ile tartılmadı
+        kutle_kaynak="VARSAYIM — 4S tartısı − ~0,5 kg paket farkı; ölçülmedi",
         kapasite_Ah=8.0,
         hucre=3,
         R_paket_ohm=0.041,        # ÖLÇÜM: A ozet.json "R_uydurma_ohm_paket.ort" 0,0409 (n=18 uçuş)
@@ -642,7 +644,7 @@ def rapor_yaz(sonuc: dict) -> str:
         L.append("")
         L.append("| büyüklük | değer | kaynak |")
         L.append("|---|---|---|")
-        L.append("| kütle (VARSAYIM) | %s kg → W = %s N | kullanıcı parametresi; ölçülmedi |" % (f(kf["kutle_kg"], 2), f(kal["W_N"], 2)))
+        L.append("| kütle | %s kg → W = %s N | %s |" % (f(kf["kutle_kg"], 3), f(kal["W_N"], 2), kf["kutle_kaynak"]))
         L.append("| askı ankrajı | ThO %s, V_yük %s V, I %s A, P %s W (%s s) | %s |" % (
             f(kf["aski"]["ThO"], 3), f(kf["aski"]["V_yuk"], 2), f(kf["aski"]["I_A"], 1), f(kal["P_aski_W"], 0), kf["aski"]["sure_s"], kf["aski"]["kaynak"]))
         L.append("| u_eff(askı), PWM | %s → %s µs (expo'lu); ölçülen ort. PWM %s | model / F ozet.json `rcou.ort_pwm_orani` |" % (
@@ -685,10 +687,10 @@ def rapor_yaz(sonuc: dict) -> str:
         L.append("")
         L.append(tablo_md(k["satirlar"]))
         L.append("")
-        L.append("**Parametreler (%s):** kütle %s kg (VARSAYIM), W = %s N, CdA(θ) = %s·(1 + %s·sinθ) m², ρ = %s kg/m³, R_paket = %s mΩ, "
+        L.append("**Parametreler (%s):** kütle %s kg (%s), W = %s N, CdA(θ) = %s·(1 + %s·sinθ) m², ρ = %s kg/m³, R_paket = %s mΩ, "
                  "pervane %s (pitch %s m), KV %s rpm/V, SPIN_MIN/MAX %s/%s, EXPO %s, kapasite %s Ah (%s kullanılabilir), "
                  "kalibrasyon: askı (ThO %s, %s V, %s A) → k_T %.3e N/rpm², k_P %.3e W/rpm³; s_TG %s (%s)." % (
-                     k["ad"], f(kf["kutle_kg"], 2), f(sonuc["kalibrasyon"][k["kimlik"]]["W_N"], 2), f(CDA0, 2), f(CDA_EGIM_K, 1), f(RHO, 2),
+                     k["ad"], f(kf["kutle_kg"], 3), kf["kutle_kaynak"].split(" — ")[0], f(sonuc["kalibrasyon"][k["kimlik"]]["W_N"], 2), f(CDA0, 2), f(CDA_EGIM_K, 1), f(RHO, 2),
                      f(1000 * kf["R_paket_ohm"], 1), kf["pervane"], f(kf["pitch_m"], 4), f(KV_RPM_PER_V, 0), f(MOT_SPIN_MIN, 2), f(MOT_SPIN_MAX, 2),
                      f(MOT_THST_EXPO, 2), f(kf["kapasite_Ah"], 0), "%80",
                      f(kf["aski"]["ThO"], 3), f(kf["aski"]["V_yuk"], 2), f(kf["aski"]["I_A"], 1),
@@ -762,7 +764,7 @@ def main() -> dict:
                                  satirlar=satirlar, theta_max=theta_max))
 
     uyarilar = [
-        "Kütle ÖLÇÜLMEDİ: 4S 3,0 kg ve 3S 2,5 kg VARSAYIM. T/W ölçümü kütleden bağımsızdır; Newton cinsinden itki, ivme (a0 = g·(T/W−1) hariç), v_üst (√W ile) ve enerji kütleyle ölçeklenir.",
+        "Kütle: 4S 3,277 kg TARTI (kullanıcı beyanı 16 Eyl; pil/pervane takılı VARSAYILDI, uçuş logları anındaki kütleyle aynılığı DOĞRULANMADI), 3S 2,777 kg VARSAYIM. T/W ölçümü kütleden bağımsızdır; Newton cinsinden itki, ivme (a0 = g·(T/W−1) hariç), v_üst (√W ile) ve enerji kütleyle ölçeklenir.",
         "4S T/W = 1,91 hava direnci ihmal edilmiş ALT SINIRDIR (E_1240_ivme/ozet.json: ivme tepesi t0+%s s'de hız ≈ %s m/s → sürükleme ½ρ·CdA(0)·v² = %s N = W'nin %%%s'i; tepe hız %s m/s'de %s N = %%%s). "
         "Tablolar bu alt sınıra kalibre olduğundan itki türevli sayılar (T_max/W, θ_max, a0) da alt sınırdır." % (
             f(E_IVME_TEPE_IVME_T_S, 1), f(E_IVME_HIZ_TEPE_IVME_ANINDA_MS, 1),

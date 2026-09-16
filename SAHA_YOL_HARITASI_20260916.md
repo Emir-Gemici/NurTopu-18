@@ -980,6 +980,9 @@ mod anahtarından Land.
 
 **Olmazsa:** hiçbir sonraki uçuş yapılmaz. Analiz JSON'unu bana gönder. Tek motor ≥ 1900 µs ya da
 yayılım > 40 µs → önce M4 mekanik kontrolü (T279).
+Yalnız askı gazı 0,40'ı aşıyor, diğer ölçütler geçiyorsa neden büyük olasılıkla kütle artışıdır: 15 Eylül
+uçuşlarından bu yana ~0,35 kg eklendiyse askı gazı ~0,40'a çıkar (HESAP, `performans_modeli.py` motor modeli).
+Bu durumda uçma kararı için analiz JSON'unu bana gönder; bandı kendin gevşetme.
 
 ### U2 — Kısa AUTO + havada YKİ komutu
 

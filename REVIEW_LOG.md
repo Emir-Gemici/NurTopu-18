@@ -31633,3 +31633,11 @@ değişmedi. commit/push yok.
 
 **Yol haritası kapsamı:** Faz 0 (masada Jetson/kamera, FOV A9 ve canlı FPS A10) → 1 mekanik → 2 Pixhawk 4S parametre/kalibrasyon/motor/failsafe → 3 TELEM2 çift yön → 4 `KIP=tunel` kurulum → 5 YKİ → 6 K8 → 7 yerde zincir → 8 uçuş U1–U4 (kabul eşikleri D-484 RAPOR §5.3) → 9 görev günü; acil durum sırası; 8 arıza tablosu. Eşik gevşetilmedi; ölçülmeyen hiçbir değer GEÇTİ yazılmadı.
 **Yazan:** mimar · push yok (T278).
+
+### D-489 (mimar, 16 Eyl) — Drone kütlesi 3,277 kg (tartı, kullanıcı beyanı) → performans zarfı yeniden üretildi
+
+**Girdi:** kullanıcı "drone 3.277kg" (16 Eyl). Yapılandırma belirtilmedi; **4S 13 Ah + 9x5x3 takılı VARSAYILDI** (yol haritası Faz 1.13 tartıyı pil+pervane takılı ister; 15 Eyl beyanı "4 kg civarı" idi). Teyit bekliyor (T280).
+**Değişiklik:** `results/ucus_analiz_20260915/performans_zarfi/performans_modeli.py` 4S `kutle_kg` 4,0 → 3,277 (kaynak etiketi TARTI), 3S 3,5 → 2,777 (VARSAYIM, −0,5 kg paket farkı); tablo etiketleri kaynağı taşır; yanlış kalmış uyarı metni ("4S 3,0 kg ve 3S 2,5 kg VARSAYIM") düzeltildi. Betik yeniden koşuldu; RAPOR.md, tablolar.json, 2 PNG yeniden üretildi.
+**Sonuç (4S, dolu pil 16,8 V; betik çıktısı):** motor başına askı itkisi 8,03 N (819 gf); tam gaz toplam T_max 83,3 → **68,2 N**; T/W **2,12 değişmedi**; akımlar ve %80 pil süreleri **değişmedi**; v_üst √W ile düştü (30°: 19,8 → 18,0 m/s; 45°: 25,1 → 22,7 m/s). `grafik_akim_theta.png` bayt-eş kaldı — beklenen, akım modeli askı gücüne kalibre ve kütleden bağımsız (tutarlılık kontrolü).
+⚠ **Sınır:** T/W 1,91 (E logu) ve askı gazı 0,360 (F logu) **15 Eylül uçuşlarındaki kütleye** aittir. Drone o günden sonra ağırlaştıysa gerçek T/W = 1,91·m_15Eyl/3,277 olur ve askı gazı yükselir: HESAP, +0,35 kg → askı gazı ≈ 0,40 (U1 kabul bandının üst sınırı; motor modeli u_eff ∝ √T, EXPO 0,65). Yol haritası U1'e not düşüldü; bant gevşetilmez.
+**Yazan:** mimar.
