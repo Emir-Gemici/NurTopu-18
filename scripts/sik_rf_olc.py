@@ -53,6 +53,20 @@ Port `serial_for_url` uyumludur: `COM7`, `/dev/ttyUSB0`, `socket://h:p`,
 UDP (loopback / LAN):
     ... --rol yanki --tasiyici udp --bind 127.0.0.1:0        (portu stderr'e yazar)
     ... --rol olc --tasiyici udp --peer 127.0.0.1:<port> --n 200 --json --cikti ...
+
+TUNEL (bu bolum dokstringin SONUNA eklendi: satir atiflari — ATOLYE_TEST_GUNU_20260912.md
+`sik_rf_olc.py:39/43` — kaymasin):
+`--tasiyici tunel` (CONTRACTS §7.6 · results/tunel_20260916/ON_KAYIT.md K8):
+ayni yordam MAVLink TUNNEL ucu (`comms/mavlink_tunel.TunelLink`) uzerinden
+kosar — yer ucu MP aynasina (`--tunel-bind 127.0.0.1:14570 --tunel-kimlik yer`),
+hava ucu MAVProxy cikisina (`--tunel-bind 127.0.0.1:14553 --tunel-kimlik hava`)
+baglanir. Esikler ve verdikt mantigi AYNIDIR; kunyeye tunel sayaclari eklenir.
+
+PROB DOLGUSU (`--prob-dolgu B`, varsayilan 0): prob CMD'sine sabit uzunlukta
+`dolgu` alani eklenir, prob cercevesi TAM B bayt olur (ornek 165 B = 2 tunel
+parcasi, 473 B = 4 parca) — cok parcali RTT KAYDI icindir. Yalniz dolgu=0
+kosusu KAPIDIR; dolgu>0 kosusunun JSON'unda `kapi_disi: true` yazar ve verdikti
+kapi SAYILMAZ (elestiri 1 bulgu 2).
 """
 
 from __future__ import annotations
@@ -73,6 +87,10 @@ for _yol in (KOK / "codes", KOK / "comms"):
 from karar_sozlesmesi import (IKA_GO_TEKRAR_ARALIGI_S,  # noqa: E402
                               PARASUT_TEKRAR_ARALIGI_S)
 from link import SerialLink, UDPLink  # noqa: E402
+from mavlink_tunel import (KIMLIK_HAVA, KIMLIK_YER,  # noqa: E402
+                           TASIYICI_TUNEL as _MT_TASIYICI_TUNEL,
+                           TUNEL_HAVA_UC, TUNEL_PARCA_YUK_B, TUNEL_YER_UC,
+                           TunelLink, uc_coz)
 from protocol import (FrameReader, ack, command, encode,  # noqa: E402
                       MESAJ_ACK, MESAJ_CMD)
 
@@ -98,6 +116,12 @@ YANKI_DUGUMU = "ika"           # ack(node=...)
 ACK_REF_TIPI = MESAJ_CMD       # ack(ref_tip=...) — CONTRACTS §6.6
 
 TASIYICI_SERI, TASIYICI_UDP = "seri", "udp"
+TASIYICI_TUNEL = _MT_TASIYICI_TUNEL        # "tunel" (CONTRACTS §7.6)
+#: Rol basina varsayilan tunel kimligi: yanki hava ucunda, olc yer ucunda (K8a).
+VARSAYILAN_TUNEL_KIMLIGI = {"yanki": KIMLIK_HAVA, "olc": KIMLIK_YER}
+PROB_DOLGU_ALANI = "dolgu"
+KAPI_DISI_NOTU = ("--prob-dolgu > 0: cok parcali KAYIT kosusu; verdikt kapi "
+                  "SAYILMAZ (yalniz dolgu=0 kosusu kapidir)")
 VARSAYILAN_UDP_BIND = "127.0.0.1:0"
 
 CIKIS_UYUMLU, CIKIS_UYARI, CIKIS_OLCULEMEDI = 0, 1, 2
@@ -147,6 +171,59 @@ class UdpUc:
 
     def close(self):
         self.link.close()
+
+
+class TunelUc:
+    """MAVLink TUNNEL tasiyici ucu — `UdpUc` ile ayni yuzey (oku/send/close).
+
+    `TunelLink.recv` tam cerceve teslim eder; `oku()` onu bayt olarak verir.
+    Akran arac HEARTBEAT'inden ogrenilir (TunelLink kurali); `sayac` kunyeye
+    yazilir.
+    """
+
+    def __init__(self, bind, kimlik, timeout=YANKI_OKUMA_ZAMAN_ASIMI_S):
+        self.link = TunelLink(bind, kimlik, timeout=timeout)
+
+    @property
+    def port(self):
+        return self.link.port
+
+    @property
+    def sayac(self):
+        return self.link.sayac
+
+    def oku(self):
+        return self.link.recv()[0] or b""
+
+    def send(self, data, peer=None):
+        self.link.send(data)
+
+    def close(self):
+        self.link.close()
+
+
+def prob_cercevesi(seq, dolgu_b=0):
+    """Prob CMD cercevesi. `dolgu_b` > 0 ise cerceve TAM `dolgu_b` bayt olur.
+
+    Ulasilamayacak kadar kucuk dolgu (dolgu alanli en kisa cerceveden kisa)
+    ValueError verir.
+    """
+    mesaj = command(PROB_KOMUTU, PROB_HEDEF, seq=seq)
+    dolgu_b = int(dolgu_b)
+    if dolgu_b <= 0:
+        return encode(mesaj)
+    mesaj[PROB_DOLGU_ALANI] = ""
+    eksik = dolgu_b - len(encode(mesaj))
+    if eksik < 0:
+        raise ValueError(f"--prob-dolgu {dolgu_b} B cok kucuk (en az "
+                         f"{dolgu_b - eksik} B)")
+    mesaj[PROB_DOLGU_ALANI] = "x" * eksik
+    return encode(mesaj)
+
+
+def tunel_parca_sayisi(cerceve_b):
+    """Bir cercevenin tunelde kac TUNNEL parcasina bolundugu (kayit icin)."""
+    return -(-int(cerceve_b) // TUNEL_PARCA_YUK_B)
 
 
 def _adres(metin):
@@ -303,7 +380,7 @@ def yuzdelik(degerler, p):
 
 
 def olc_kos(link, n, aralik, zaman_asimi=None, ilerleme=None,
-            saat=time.monotonic):
+            saat=time.monotonic, prob_dolgu_b=0):
     """n prob gonder, her biri icin ACK RTT olc; rapor sozlugu dondur.
 
     Prob i icin seq=i (1..n) — ACK `ref` ile eslenir. Zaman asimi icinde
@@ -329,7 +406,7 @@ def olc_kos(link, n, aralik, zaman_asimi=None, ilerleme=None,
     t_ilk = None
 
     for seq in range(1, n + 1):
-        cerceve = encode(command(PROB_KOMUTU, PROB_HEDEF, seq=seq))
+        cerceve = prob_cercevesi(seq, prob_dolgu_b)
         t0 = saat()
         if t_ilk is None:
             t_ilk = t0
@@ -403,7 +480,11 @@ def olc_kos(link, n, aralik, zaman_asimi=None, ilerleme=None,
         "cikis_kodu": cikis,
         "not": ("RTT yuzdelikleri yalniz ACK alinan problar uzerindendir; "
                 "kayip icin esik yok, birlikte okunur."),
+        "prob_dolgu_b": int(prob_dolgu_b),
+        "kapi_disi": int(prob_dolgu_b) > 0,
     }
+    if rapor["kapi_disi"]:
+        rapor["kapi_disi_notu"] = KAPI_DISI_NOTU
     if hat_koptu:
         rapor["hat_koptu"] = hat_koptu
         # Hat koparsa olcum tamamlanmamistir: UYUMLU denemez.
@@ -450,6 +531,8 @@ def rapor_metni(rapor):
     ]
     if rapor.get("hat_koptu"):
         satirlar.append(f"HAT KOPTU  : {rapor['hat_koptu']}")
+    if rapor.get("kapi_disi"):
+        satirlar.append(f"KAPI DISI  : {rapor.get('kapi_disi_notu', KAPI_DISI_NOTU)}")
     return "\n".join(satirlar)
 
 
@@ -461,6 +544,14 @@ def _ilerleme_yaz(satir):
 
 def _uc_ac_cli(a, ap, timeout):
     """Argumanlara gore ucu ac; (uc, kunye) dondurur. Acilamazsa None, kunye."""
+    if a.tasiyici == TASIYICI_TUNEL:
+        kunye = {"tasiyici": TASIYICI_TUNEL, "tunel_bind": a.tunel_bind,
+                 "tunel_kimlik": a.tunel_kimlik}
+        try:
+            uc = TunelUc(uc_coz(a.tunel_bind), a.tunel_kimlik, timeout=timeout)
+        except (ImportError, OSError, ValueError) as exc:
+            return None, kunye, f"tunel ucu acilamadi ({a.tunel_bind}): {exc}"
+        return uc, kunye, None
     if a.tasiyici == TASIYICI_UDP:
         kunye = {"tasiyici": TASIYICI_UDP, "bind": a.bind, "peer": a.peer}
         try:
@@ -481,9 +572,18 @@ def _uc_ac_cli(a, ap, timeout):
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--rol", choices=("yanki", "olc"), required=True)
-    ap.add_argument("--tasiyici", choices=(TASIYICI_SERI, TASIYICI_UDP),
+    ap.add_argument("--tasiyici", choices=(TASIYICI_SERI, TASIYICI_UDP, TASIYICI_TUNEL),
                     default=TASIYICI_SERI,
-                    help="seri (SiK, varsayilan) ya da udp (loopback/LAN)")
+                    help="seri (SiK, varsayilan), udp (loopback/LAN) ya da tunel "
+                         "(MAVLink TUNNEL, CONTRACTS §7.6)")
+    ap.add_argument("--tunel-bind", default=None, metavar="HOST:PORT",
+                    help=f"tunel: dinlenen uc (yer: MP aynasi {TUNEL_YER_UC}; "
+                         f"hava: MAVProxy cikisi {TUNEL_HAVA_UC})")
+    ap.add_argument("--tunel-kimlik", choices=(KIMLIK_HAVA, KIMLIK_YER), default=None,
+                    help="tunel ucunun kimligi (varsayilan: yanki=hava, olc=yer)")
+    ap.add_argument("--prob-dolgu", type=int, default=0, metavar="B",
+                    help="prob cercevesini TAM B bayt yap (0 = dolgu yok; >0 kosu "
+                         "KAPI DISI kayittir)")
     ap.add_argument("--port", default=None,
                     help="seri: serial_for_url uyumlu: COM7, /dev/ttyUSB0, socket://, loop://")
     ap.add_argument("--baud", type=int, default=VARSAYILAN_BAUD)
@@ -501,7 +601,22 @@ def main(argv=None):
     ap.add_argument("--sessiz", action="store_true", help="prob ilerlemesini basma")
     a = ap.parse_args(argv)
 
-    if a.tasiyici == TASIYICI_SERI:
+    if a.prob_dolgu < 0:
+        ap.error("--prob-dolgu negatif olamaz")
+    try:
+        prob_cercevesi(1, a.prob_dolgu)
+    except ValueError as exc:
+        ap.error(str(exc))
+    if a.tasiyici == TASIYICI_TUNEL:
+        if a.tunel_kimlik is None:
+            a.tunel_kimlik = VARSAYILAN_TUNEL_KIMLIGI[a.rol]
+        if not a.tunel_bind:
+            ap.error("--tasiyici tunel icin --tunel-bind HOST:PORT gerekli")
+        try:
+            uc_coz(a.tunel_bind)
+        except ValueError as exc:
+            ap.error(str(exc))
+    elif a.tasiyici == TASIYICI_SERI:
         if not a.port:
             ap.error("--tasiyici seri icin --port gerekli")
         try:
@@ -533,10 +648,15 @@ def main(argv=None):
             print(f"OLCULEMEDI: {hata_metni}", file=sys.stderr)
             return CIKIS_OLCULEMEDI
         try:
-            rapor = olc_kos(link, a.n, a.aralik, a.zaman_asimi, ilerleme=ilerleme)
+            rapor = olc_kos(link, a.n, a.aralik, a.zaman_asimi, ilerleme=ilerleme,
+                            prob_dolgu_b=a.prob_dolgu)
         finally:
             link.close()
         rapor.update(kunye)
+        if a.tasiyici == TASIYICI_TUNEL:
+            rapor["tunel_sayac"] = link.sayac
+            rapor["prob_tunel_parca"] = tunel_parca_sayisi(
+                len(prob_cercevesi(1, a.prob_dolgu)))
         if a.cikti:
             yol = Path(a.cikti)
             yol.parent.mkdir(parents=True, exist_ok=True)
@@ -553,8 +673,12 @@ def main(argv=None):
     if link is None:
         print(f"yanki: {hata_metni}", file=sys.stderr)
         return CIKIS_OLCULEMEDI
-    uc_adi = (kunye["bind"] if a.tasiyici == TASIYICI_UDP
-              else f"{a.port} @ {a.baud}")
+    if a.tasiyici == TASIYICI_UDP:
+        uc_adi = kunye["bind"]
+    elif a.tasiyici == TASIYICI_TUNEL:
+        uc_adi = f"{a.tunel_bind} kimlik={a.tunel_kimlik}"
+    else:
+        uc_adi = f"{a.port} @ {a.baud}"
     # Bu satir --sessiz'de de yazilir: UDP'de ephemeral port yalniz buradan ogrenilir.
     _ilerleme_yaz(f"yanki: dinliyor {a.tasiyici}://{uc_adi} — CMD({PROB_KOMUTU}) "
                   "bekleniyor (Ctrl+C ile cik)")
@@ -568,6 +692,8 @@ def main(argv=None):
         link.close()
     sonuc = {"rol": "yanki", "cevaplanan": cevaplanan}
     sonuc.update(kunye)
+    if a.tasiyici == TASIYICI_TUNEL:
+        sonuc["tunel_sayac"] = link.sayac
     if sayac:
         sonuc["veri_hizi"] = sayac
     if a.cikti:
