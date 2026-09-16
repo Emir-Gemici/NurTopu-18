@@ -1,0 +1,77 @@
+# DUZELTME TURU 2 — MAVLink TUNNEL · 16 Eylul 2026 (amele, worktree wf_f34ad2a6-63e-5, HEAD 60cd52e5)
+# Gorev emri: BULGULAR (orta/yuksek) = [] · BULGULAR (dusuk) = [] — giderilecek bulgu VERILMEDI; kod DEGISMEDI.
+# Bu tur yalniz kapilari yeniden kosar. On kayit esikleri/tohum/deneme sayilari DEGISMEDI.
+# Yorumlayici O:\navitas-local-train\venv\Scripts\python.exe; PYTHONPATH=worktree koku. Sayilar asagidaki gercek ciktilardan kopyalandi.
+
+========================================================================================
+K1 — GENEL KAPI (codes/test_rota_sentetik.py, cwd worktree koku) — 18:55:19 -> 18:55:22
+----------------------------------------------------------------------------------------
+     5    kolay       3       3  0.742    8             None         2  OK
+     5     orta       3       3  0.833   10             None         3  OK
+     5      zor       2       2  0.685    9             None         1  OK
+------------------------------------------------------------------------------
+URETIM YOLU: rota uretimi 15/15 · yayinlanan serit 15/15 (esik >= 14/15, ON_KAYIT SS18-B)
+[OK] URETIM YOLU KOLU GECTI
+------------------------------------------------------------------------------
+GENEL KAPI (madde 14): GECTI — kol1 15/15 · kol2 serit 15/15
+EXIT 0
+HUKUM K1: GECTI
+
+========================================================================================
+K2 — TAM SUIT (python -m unittest discover -s tests -q) — tabanla fark
+----------------------------------------------------------------------------------------
+baslangic 18:55:30
+EXIT 1
+bitis 19:06:50
+Ran 2598 tests in 677.255s
+FAILED (failures=18, errors=56, skipped=33)
+# FAIL/ERROR test kimligi (alt test parantezi disi): sonra 70 - taban 69 (taban_suit.txt)
+## YENI DUSEN (sonra - taban):
+  FAIL: test_K4_03_K4_04_tampon_256_ZORUNLU (test_mavlink_tunel_uctan_uca.K4UctanUca.test_K4_03_K4_04_tampon_256_ZORUNLU)
+## TABANDA DUSUP ARTIK DUSMEYEN (taban - sonra):
+## tunel testlerinin tam suitteki alt vaka basliklari:
+  FAIL: test_K4_03_K4_04_tampon_256_ZORUNLU (test_mavlink_tunel_uctan_uca.K4UctanUca.test_K4_03_K4_04_tampon_256_ZORUNLU) (kayip=0.0, tampon=256)
+  FAIL: test_K4_03_K4_04_tampon_256_ZORUNLU (test_mavlink_tunel_uctan_uca.K4UctanUca.test_K4_03_K4_04_tampon_256_ZORUNLU) (kayip=0.05, tampon=256)
+## tam suit K4 rapor satirlari (ham):
+[K4_02] ACK 150 ms · router={'alinan_paket': 4, 'iletilen': 4, 'txspace_dusen': 0, 'kayip_dusen': 0, 'yerel': 0, 'hedefsiz': 0, 'bozuk': 0, 'arka_plan_b': 560, 'arka_plan_atlanan': 0, 'heartbeat': 2, 'sifirlama': 0, 'kesintide_atilan': 0, 'kayip_anahtari_eksik': 0}
+[K4_03/04] kayip=0.0 tampon=1024: 12wp 20/20 · 30wp 20/20 · router={'alinan_paket': 244, 'iletilen': 244, 'txspace_dusen': 0, 'kayip_dusen': 0, 'yerel': 0, 'hedefsiz': 0, 'bozuk': 0, 'arka_plan_b': 35640, 'arka_plan_atlanan': 0, 'heartbeat': 22, 'sifirlama': 0, 'kesintide_atilan': 0, 'kayip_anahtari_eksik': 0} yer={zaman_asimi_dusen: 0, kimlik_boslugu: 0} hava={kimlik_boslugu: 0, zaman_asimi_dusen: 0}
+[K4_03/04] kayip=0.05 tampon=1024: 12wp 20/20 · 30wp 20/20 · router={'alinan_paket': 270, 'iletilen': 270, 'txspace_dusen': 0, 'kayip_dusen': 12, 'yerel': 0, 'hedefsiz': 0, 'bozuk': 0, 'arka_plan_b': 44800, 'arka_plan_atlanan': 0, 'heartbeat': 26, 'sifirlama': 0, 'kesintide_atilan': 0, 'kayip_anahtari_eksik': 0} yer={zaman_asimi_dusen: 9, kimlik_boslugu: 0} hava={kimlik_boslugu: 1, zaman_asimi_dusen: 0}
+[K4_03/04] kayip=0.0 tampon=256: 12wp 20/20 · 30wp 1/20 · router={'alinan_paket': 474, 'iletilen': 390, 'txspace_dusen': 84, 'kayip_dusen': 0, 'yerel': 0, 'hedefsiz': 0, 'bozuk': 0, 'arka_plan_b': 99640, 'arka_plan_atlanan': 0, 'heartbeat': 58, 'sifirlama': 0, 'kesintide_atilan': 0, 'kayip_anahtari_eksik': 0} yer={zaman_asimi_dusen: 82, kimlik_boslugu: 0} hava={kimlik_boslugu: 0, zaman_asimi_dusen: 0}
+[K4_03/04] kayip=0.05 tampon=256: 12wp 19/20 · 30wp 3/20 · router={'alinan_paket': 479, 'iletilen': 400, 'txspace_dusen': 79, 'kayip_dusen': 22, 'yerel': 0, 'hedefsiz': 0, 'bozuk': 0, 'arka_plan_b': 102840, 'arka_plan_atlanan': 0, 'heartbeat': 60, 'sifirlama': 0, 'kesintide_atilan': 0, 'kayip_anahtari_eksik': 0} yer={zaman_asimi_dusen: 81, kimlik_boslugu: 0} hava={kimlik_boslugu: 1, zaman_asimi_dusen: 0}
+[K4_05 RAPOR] %20 kayip: 12wp 8/10 · 30wp 6/10 · txspace_dusen=0 kayip_dusen=52 yer_kimlik_boslugu=0 yer_zaman_asimi=35 hava_kimlik_boslugu=1 hava_zaman_asimi=0
+[K4_06] hava->yer p50=93 p95=94 ms · yer->hava p50=62 p95=64 ms · HESAP 2x18 ms UART + arka plan · kapi 200 ms
+[K4_07] ACK 1160 ms · yer kimlik_boslugu=14 zaman_asimi_dusen=0 · router={'alinan_paket': 37, 'iletilen': 26, 'txspace_dusen': 0, 'kayip_dusen': 0, 'yerel': 0, 'hedefsiz': 11, 'bozuk': 0, 'arka_plan_b': 17160, 'arka_plan_atlanan': 0, 'heartbeat': 12, 'sifirlama': 2, 'kesintide_atilan': 9, 'kayip_anahtari_eksik': 0}
+[K4_08] ACK 1158 ms · hava={'gonderilen_cerceve': 5, 'gonderilen_parca': 5, 'tavan_ustu': 0, 'akran_yok': 0, 'gonderim_hatasi': 0, 'akran_sessizken_gonderilen': 0, 'alinan_datagram': 52, 'mavlink_paket': 52, 'cozum_hatasi': 0, 'yabanci_mesaj': 43, 'yabanci_payload_type': 0, 'kendi_yanki': 0, 'yabanci_kaynak': 0, 'teslim_cerceve': 5, 'udp_red': 4, 'akrandisi_datagram': 42, 'akran_degisti': 1, 'alinan_parca': 5, 'bozuk_parca': 0, 'tutarsiz_parca': 0, 'yinelenen_parca': 0, 'zaman_asimi_dusen': 0, 'eszamanli_tavan_dusen': 0, 'tamamlanan_cerceve': 5, 'kimlik_boslugu': 0, 'kimlik_geri': 0, 'kimlik_sicramasi': 0}
+[K4_10 RAPOR] ACK 0/20 · hava gonderilen=101 yer teslim=7 dusen=94 · yer zaman_asimi_dusen=94 kimlik_boslugu=0 eszamanli_tavan=0 · txspace_dusen=271 · yer->hava hava.kimlik_boslugu=0
+HUKUM K2: DUSTU (turu 1 ile AYNI) — tek yeni dusen test_K4_03_K4_04_tampon_256_ZORUNLU (256 B TX tamponunda
+  30 wp 1/20 ve 3/20); diger tum dusenler tabanla ayni (ortam: rota_inceleme.py / model agirliklari yok).
+  tampon_1024 alt vakasi tam suit yuku altinda 40/40.
+
+========================================================================================
+K6/K7 — ILGILI TESTLER (tek tek, cwd tests/)
+----------------------------------------------------------------------------------------
+test_mavlink_tunel: Ran 33 tests in 6.834s OK
+test_seri_hub_tunel: Ran 12 tests in 2.562s OK
+test_mavlink_tunel_sozlesme: Ran 7 tests in 0.224s OK
+test_sik_rf_olc_tunel: Ran 9 tests in 7.987s OK
+test_jetson_baslat_tunel: Ran 13 tests in 22.396s OK
+test_jetson_comms_paketi: Ran 8 tests in 4.443s OK
+test_mavlink_tunel_uctan_uca: Ran 15 tests in 150.253s FAILED (failures=2)
+FAIL: test_K4_03_K4_04_tampon_256_ZORUNLU (test_mavlink_tunel_uctan_uca.K4UctanUca.test_K4_03_K4_04_tampon_256_ZORUNLU) (kayip=0.0, tampon=256)
+FAIL: test_K4_03_K4_04_tampon_256_ZORUNLU (test_mavlink_tunel_uctan_uca.K4UctanUca.test_K4_03_K4_04_tampon_256_ZORUNLU) (kayip=0.05, tampon=256)
+test_faz_b_seri_hub: Ran 31 tests in 35.633s OK
+test_p2_seri_hat: Ran 11 tests in 4.855s OK
+test_faz_b_sik_rf_olc: Ran 13 tests in 14.215s OK
+test_faz_b_jetson_baslat: Ran 42 tests in 70.921s OK (skipped=1)
+test_t202_jetson_paket_butunlugu: Ran 7 tests in 4.169s FAILED (failures=1)
+FAIL: test_KULLANILAN_HER_YOL_KURULUYOR (test_t202_jetson_paket_butunlugu.KurulumBlogu.test_KULLANILAN_HER_YOL_KURULUYOR)
+test_kilavuz_kurulum_yordami: Ran 6 tests in 0.006s OK
+## test_mavlink_tunel_uctan_uca tek dosya K4_03/04 satirlari (ham):
+[K4_03/04] kayip=0.0 tampon=1024: 12wp 20/20 · 30wp 20/20 · router={'alinan_paket': 254, 'iletilen': 254, 'txspace_dusen': 0, 'kayip_dusen': 0, 'yerel': 0, 'hedefsiz': 0, 'bozuk': 0, 'arka_plan_b': 36120, 'arka_plan_atlanan': 0, 'heartbeat': 22, 'sifirlama': 0, 'kesintide_atilan': 0, 'kayip_anahtari_eksik': 0} yer={zaman_asimi_dusen: 0, kimlik_boslugu: 0} hava={kimlik_boslugu: 0, zaman_asimi_dusen: 0}
+[K4_03/04] kayip=0.05 tampon=1024: 12wp 20/20 · 30wp 20/20 · router={'alinan_paket': 299, 'iletilen': 299, 'txspace_dusen': 0, 'kayip_dusen': 14, 'yerel': 0, 'hedefsiz': 0, 'bozuk': 0, 'arka_plan_b': 46200, 'arka_plan_atlanan': 0, 'heartbeat': 28, 'sifirlama': 0, 'kesintide_atilan': 0, 'kayip_anahtari_eksik': 0} yer={zaman_asimi_dusen: 11, kimlik_boslugu: 0} hava={kimlik_boslugu: 1, zaman_asimi_dusen: 0}
+[K4_03/04] kayip=0.0 tampon=256: 12wp 20/20 · 30wp 1/20 · router={'alinan_paket': 477, 'iletilen': 391, 'txspace_dusen': 86, 'kayip_dusen': 0, 'yerel': 0, 'hedefsiz': 0, 'bozuk': 0, 'arka_plan_b': 98360, 'arka_plan_atlanan': 0, 'heartbeat': 58, 'sifirlama': 0, 'kesintide_atilan': 0, 'kayip_anahtari_eksik': 0} yer={zaman_asimi_dusen: 84, kimlik_boslugu: 0} hava={kimlik_boslugu: 0, zaman_asimi_dusen: 0}
+[K4_03/04] kayip=0.05 tampon=256: 12wp 19/20 · 30wp 0/20 · router={'alinan_paket': 521, 'iletilen': 430, 'txspace_dusen': 91, 'kayip_dusen': 25, 'yerel': 0, 'hedefsiz': 0, 'bozuk': 0, 'arka_plan_b': 114400, 'arka_plan_atlanan': 0, 'heartbeat': 66, 'sifirlama': 0, 'kesintide_atilan': 0, 'kayip_anahtari_eksik': 0} yer={zaman_asimi_dusen: 95, kimlik_boslugu: 0} hava={kimlik_boslugu: 1, zaman_asimi_dusen: 0}
+Olgu: test_t202 KULLANILAN_HER_YOL TABANDA da dusuyor (taban_suit.txt).
+
+HUKUM K4: DUSTU (DEGISMEDI) — tampon 256 B'de 30 wp OPEN_ROUTE ACK'i %0 kayipta bile 40/40'in cok altinda.
+  Kapi gevsetilmedi. TX tampon boyu ArduPilot'ta DOGRULANMADI; gercek hat hukmu K8: OLCULEMEDI.
