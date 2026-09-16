@@ -31641,3 +31641,12 @@ değişmedi. commit/push yok.
 **Sonuç (4S, dolu pil 16,8 V; betik çıktısı):** motor başına askı itkisi 8,03 N (819 gf); tam gaz toplam T_max 83,3 → **68,2 N**; T/W **2,12 değişmedi**; akımlar ve %80 pil süreleri **değişmedi**; v_üst √W ile düştü (30°: 19,8 → 18,0 m/s; 45°: 25,1 → 22,7 m/s). `grafik_akim_theta.png` bayt-eş kaldı — beklenen, akım modeli askı gücüne kalibre ve kütleden bağımsız (tutarlılık kontrolü).
 ⚠ **Sınır:** T/W 1,91 (E logu) ve askı gazı 0,360 (F logu) **15 Eylül uçuşlarındaki kütleye** aittir. Drone o günden sonra ağırlaştıysa gerçek T/W = 1,91·m_15Eyl/3,277 olur ve askı gazı yükselir: HESAP, +0,35 kg → askı gazı ≈ 0,40 (U1 kabul bandının üst sınırı; motor modeli u_eff ∝ √T, EXPO 0,65). Yol haritası U1'e not düşüldü; bant gevşetilmez.
 **Yazan:** mimar.
+
+### D-490 (mimar, 17 Eyl) — 17 Eyl 00:20:30 düşüşü: teknik arıza izi YOK, dış cisme çarpma; değerlendirme pilot/operasyon ~%80–85
+
+**Log:** `results/ucus_20260917/1980-01-09 23-09-53.bin` (MP'nin indirdiği; GPS zamanı: 2026-09-16 21:20:30 UTC). Ham çıkarımlar ve rapor aynı klasörde (`DUSUS_ANALIZI.md`).
+**Ölçüm:** uçuş 3 (arm 617,2 s). Loiter ~1,5 m; 643–647,7 s tam çubuk pitch (4,0 m/s, kalkıştan 9,5 m) ve iki yöne tam yaw (~180 °/s); 647,93 LAND (RC). 648,20'de roll 2,4°, hız 1,3 m/s, kontrol normal. **648,276:** yaw hızı 154 → 4 °/s (40 ms), yanal ivme −15,8 m/s², roll hızı 132 °/s; 648,316 yaw −99 °/s (sekme); EKF yatay hızı 0,1 s'de 1,22 → 0,33 m/s. FC düzeltmesi doğru yönde (ROut −0,56, M1 1949 / M2 1150). 648,6'da 92° roll → ters; 648,84'te 6,9 g yer çarpması; 649,4 CH6 disarm.
+**Çarpma öncesi temiz:** ERR/failsafe yok (GCS FS ve EKF şerit değişimi 649,16'da, çarpma sonrası); 19–21 uydu, HDop ≤ 0,76; XKF4 ≤ 0,07; VibeZ 3–9, clip 0; pil 14,4–14,8 V; motor ≤ ~1880 µs.
+**Araç payı (katkı, neden değil):** çubuklar ortadayken motor yayılımı 44 µs ve CCW−CW −61 µs (D-484 kabul sınırları 40 / 60'ın biraz üstü); tam yaw sırasında roll izleme hatası maks. 10,5° (ortada 3,4°); `LOIT_BRK_DELAY` 1 s varsayılanı; LAND geçişinde MOTB ThrAvMx 0,42 → 0,30.
+**Hüküm:** doğrudan neden dış cisme temas (motor/pervane kaybı 40 ms'de yaw durdurma ve 1,6 g yatay kuvvet üretemez). Yüzde dağılımı **değerlendirmedir, ölçüm değil**: pilot/operasyon ~%80–85, Loiter frenleme ayarı ~%10, yaw dengesizliği + LAND gaz karışımı ~%5–10, teknik arıza %0. Cisim hareketliyse pilot payı düşer (logda yok). ÇIKARIM: temas sağ taraftan (−Y ivme, +X roll) → muayene önce M1/M4.
+**Yazan:** mimar.

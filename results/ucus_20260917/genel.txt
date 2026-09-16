@@ -1,0 +1,194 @@
+sure 5.828622 655.695805 649.867183
+mesaj sayilari: {'IMU': 13300, 'FILE': 7560, 'XKF4': 5323, 'XKF1': 5323, 'XKF2': 5323, 'XKF3': 5322, 'XKFS': 5322, 'XKQ': 5322, 'VIBE': 5318, 'MAG': 5316, 'XKY0': 4237, 'XKY1': 4237, 'RCIN': 2695, 'RCI2': 2695, 'BARO': 2662, 'CTUN': 2662, 'ATT': 2662, 'RATE': 2662, 'XKF5': 2661, 'AHR2': 2661, 'MOTB': 2660, 'RCOU': 2659, 'RCO2': 2659, 'CTRL': 2659, 'DCM': 2659, 'EAHR': 2659, 'POWR': 2658, 'MCU': 2658, 'BAT': 2658, 'STAK': 2639, 'PSCN': 2629, 'PSCE': 2629, 'PSCD': 2629, 'POS': 2608, 'GPS': 1303, 'GPA': 1303, 'PARM': 1055, 'XKV1': 532, 'XKV2': 532, 'MAV': 532, 'HEAT': 267, 'DSF': 265, 'DU32': 264, 'TERR': 259, 'IOMC': 254, 'FMT': 173, 'FMTU': 173, 'MSG': 111, 'XKT': 104, 'UBX2': 50, 'EV': 44, 'MAVC': 37, 'UNIT': 36, 'AUXF': 35, 'PM': 26, 'TSYN': 21, 'SRTL': 21, 'MODE': 16, 'MULT': 15, 'ORGN': 12}
+     5.909 MSG   {'Message': 'ArduCopter V4.5.7 (2a3dc4b7)'}
+     5.909 MSG   {'Message': 'ChibiOS: 6a85082c'}
+     5.909 MSG   {'Message': 'Pixhawk6C 00440022 35335114 38323631'}
+     5.909 MSG   {'Message': 'Param space used: 907/5376'}
+     5.909 MSG   {'Message': 'RC Protocol: IBUS'}
+     5.909 MSG   {'Message': 'RCOut: PWM:1-16'}
+     5.909 MSG   {'Message': 'New mission'}
+     5.909 MSG   {'Message': 'New rally'}
+     5.909 MSG   {'Message': 'New fence'}
+     5.909 MSG   {'Message': 'Frame: QUAD/X'}
+     5.909 MODE  {'Mode': 5, 'ModeNum': 5, 'Rsn': 1}
+     6.796 MSG   {'Message': 'Arm: Need Alt Estimate'}
+     6.796 MSG   {'Message': 'Arm: Accels inconsistent'}
+     6.796 MSG   {'Message': 'Arm: EKF attitude is bad'}
+     6.796 MSG   {'Message': 'Arm: AHRS: waiting for home'}
+     6.796 MSG   {'Message': 'Arm: IOMCU is unhealthy'}
+     6.796 MSG   {'Message': 'Arm: Fence requires position'}
+     7.148 MSG   {'Message': 'EKF3 IMU0 tilt alignment complete'}
+     7.151 MSG   {'Message': 'EKF3 IMU1 tilt alignment complete'}
+     7.236 MSG   {'Message': 'EKF3 IMU1 MAG0 initial yaw alignment complete'}
+     7.246 MSG   {'Message': 'EKF3 IMU0 MAG0 initial yaw alignment complete'}
+     7.246 EV    {'Id': 62}
+    11.136 MSG   {'Message': 'GPS 1: detected as u-blox at 230400 baud'}
+    14.436 ERR   {'Subsys': 8, 'ECode': 1}
+    14.436 MSG   {'Message': 'GCS Failsafe'}
+    17.096 MSG   {'Message': 'GCS Failsafe Cleared'}
+    17.096 ERR   {'Subsys': 8, 'ECode': 0}
+    18.156 MSG   {'Message': 'GCS:Mission Planner 1.3.83'}
+    18.168 MSG   {'Message': 'GCS:Mission Planner 1.3.83'}
+    18.168 MSG   {'Message': 'GCS:Mission Planner 1.3.83'}
+    18.496 MSG   {'Message': 'Arm: Gyros inconsistent'}
+    18.496 MSG   {'Message': 'Arm: AHRS: waiting for home'}
+    18.496 MSG   {'Message': 'Arm: Fence requires position'}
+    19.306 MSG   {'Message': 'ArduCopter V4.5.7 (2a3dc4b7)'}
+    19.306 MSG   {'Message': 'ChibiOS: 6a85082c'}
+    19.306 MSG   {'Message': 'Pixhawk6C 00440022 35335114 38323631'}
+    19.306 MSG   {'Message': 'IOMCU: 410 2003 411FC231'}
+    19.306 MSG   {'Message': 'RCOut: PWM:1-16'}
+    19.306 MSG   {'Message': 'IMU0: fast sampling enabled 2.0kHz'}
+    19.306 MSG   {'Message': 'Frame: QUAD/X'}
+    19.711 MSG   {'Message': 'ArduCopter V4.5.7 (2a3dc4b7)'}
+    19.711 MSG   {'Message': 'ChibiOS: 6a85082c'}
+    19.711 MSG   {'Message': 'Pixhawk6C 00440022 35335114 38323631'}
+    19.711 MSG   {'Message': 'IOMCU: 410 2003 411FC231'}
+    19.711 MSG   {'Message': 'RCOut: PWM:1-16'}
+    19.711 MSG   {'Message': 'IMU0: fast sampling enabled 2.0kHz'}
+    19.711 MSG   {'Message': 'Frame: QUAD/X'}
+    19.905 MSG   {'Message': 'ArduCopter V4.5.7 (2a3dc4b7)'}
+    19.905 MSG   {'Message': 'ChibiOS: 6a85082c'}
+    19.905 MSG   {'Message': 'Pixhawk6C 00440022 35335114 38323631'}
+    19.905 MSG   {'Message': 'IOMCU: 410 2003 411FC231'}
+    19.905 MSG   {'Message': 'RCOut: PWM:1-16'}
+    19.905 MSG   {'Message': 'IMU0: fast sampling enabled 2.0kHz'}
+    19.905 MSG   {'Message': 'Frame: QUAD/X'}
+    22.296 MSG   {'Message': 'Arm: Gyros inconsistent'}
+    22.296 MSG   {'Message': 'Arm: AHRS: waiting for home'}
+    22.296 MSG   {'Message': 'Arm: Fence requires position'}
+    24.496 MSG   {'Message': 'Arm: Gyros inconsistent'}
+    24.496 MSG   {'Message': 'Arm: AHRS: waiting for home'}
+    24.496 MSG   {'Message': 'Arm: Fence requires position'}
+    25.581 MSG   {'Message': 'EKF3 IMU1 origin set'}
+    25.581 EV    {'Id': 25}
+    25.588 MSG   {'Message': 'EKF3 IMU0 origin set'}
+    25.596 MSG   {'Message': 'Field Elevation Set: 89m'}
+    25.916 MSG   {'Message': 'u-blox 1 HW: 000A0000 SW: ROM SPG 5.10 (7b202e)'}
+    30.797 MSG   {'Message': 'PreArm: GPS 1 still configuring this GPS'}
+    30.797 MSG   {'Message': 'GPS 1: u-blox solution rate configuration 0x208'}
+    42.966 MSG   {'Message': 'EKF3 IMU1 is using GPS'}
+    43.163 MSG   {'Message': 'EKF3 IMU0 is using GPS'}
+    46.196 ARM   {'ArmState': 1, 'ArmChecks': 1, 'Forced': 0, 'Method': 2}
+    46.196 EV    {'Id': 10}
+    46.196 MODE  {'Mode': 5, 'ModeNum': 5, 'Rsn': 1}
+    48.198 EV    {'Id': 57}
+    48.636 EV    {'Id': 15}
+    94.308 EV    {'Id': 28}
+    99.098 EV    {'Id': 17}
+   110.251 EV    {'Id': 17}
+   111.053 EV    {'Id': 18}
+   115.143 EV    {'Id': 28}
+   116.893 EV    {'Id': 17}
+   117.696 EV    {'Id': 18}
+   120.883 EV    {'Id': 28}
+   122.881 EV    {'Id': 17}
+   123.683 EV    {'Id': 18}
+   131.758 EV    {'Id': 28}
+   132.921 EV    {'Id': 17}
+   133.723 EV    {'Id': 18}
+   138.396 ARM   {'ArmState': 0, 'ArmChecks': 0, 'Forced': 0, 'Method': 2}
+   138.396 EV    {'Id': 11}
+   138.398 EV    {'Id': 56}
+   228.796 MSG   {'Message': 'PreArm: Check mag field (xy diff:112>100)'}
+   233.796 MSG   {'Message': 'PreArm: Check mag field (xy diff:105>100)'}
+   238.796 MSG   {'Message': 'PreArm: Check mag field (xy diff:100>100)'}
+   292.796 MSG   {'Message': 'PreArm: High GPS HDOP'}
+   375.521 MODE  {'Mode': 0, 'ModeNum': 0, 'Rsn': 1}
+   376.556 MODE  {'Mode': 5, 'ModeNum': 5, 'Rsn': 1}
+   417.093 ERR   {'Subsys': 8, 'ECode': 1}
+   417.093 MSG   {'Message': 'GCS Failsafe'}
+   417.426 MSG   {'Message': 'GCS Failsafe Cleared'}
+   417.426 ERR   {'Subsys': 8, 'ECode': 0}
+   425.896 ARM   {'ArmState': 1, 'ArmChecks': 1, 'Forced': 0, 'Method': 2}
+   425.896 EV    {'Id': 10}
+   425.896 MODE  {'Mode': 5, 'ModeNum': 5, 'Rsn': 1}
+   427.898 EV    {'Id': 57}
+   429.576 EV    {'Id': 15}
+   432.738 MODE  {'Mode': 9, 'ModeNum': 9, 'Rsn': 1}
+   433.246 ARM   {'ArmState': 0, 'ArmChecks': 0, 'Forced': 0, 'Method': 13}
+   433.246 EV    {'Id': 11}
+   433.248 EV    {'Id': 56}
+   433.996 MODE  {'Mode': 5, 'ModeNum': 5, 'Rsn': 1}
+   437.896 ARM   {'ArmState': 1, 'ArmChecks': 1, 'Forced': 0, 'Method': 2}
+   437.896 EV    {'Id': 10}
+   437.896 MODE  {'Mode': 5, 'ModeNum': 5, 'Rsn': 1}
+   437.916 EV    {'Id': 15}
+   439.898 EV    {'Id': 57}
+   445.096 ARM   {'ArmState': 0, 'ArmChecks': 0, 'Forced': 0, 'Method': 2}
+   445.096 EV    {'Id': 11}
+   445.098 EV    {'Id': 56}
+   477.276 ERR   {'Subsys': 8, 'ECode': 1}
+   477.276 MSG   {'Message': 'GCS Failsafe'}
+   507.796 MSG   {'Message': 'PreArm: GCS failsafe on'}
+   531.196 MSG   {'Message': 'Arm: GCS failsafe on'}
+   535.696 MSG   {'Message': 'Arm: GCS failsafe on'}
+   538.796 MSG   {'Message': 'PreArm: GCS failsafe on'}
+   540.096 MSG   {'Message': 'Arm: GCS failsafe on'}
+   542.558 MODE  {'Mode': 0, 'ModeNum': 0, 'Rsn': 1}
+   543.696 MSG   {'Message': 'Arm: GCS failsafe on'}
+   545.193 MODE  {'Mode': 5, 'ModeNum': 5, 'Rsn': 1}
+   569.796 MSG   {'Message': 'PreArm: GCS failsafe on'}
+   591.988 MSG   {'Message': 'GCS Failsafe Cleared'}
+   591.988 ERR   {'Subsys': 8, 'ECode': 0}
+   593.103 MSG   {'Message': 'GCS:Mission Planner 1.3.83'}
+   593.113 MSG   {'Message': 'GCS:Mission Planner 1.3.83'}
+   593.113 MSG   {'Message': 'GCS:Mission Planner 1.3.83'}
+   594.378 MSG   {'Message': 'ArduCopter V4.5.7 (2a3dc4b7)'}
+   594.378 MSG   {'Message': 'ChibiOS: 6a85082c'}
+   594.378 MSG   {'Message': 'Pixhawk6C 00440022 35335114 38323631'}
+   594.378 MSG   {'Message': 'IOMCU: 410 2003 411FC231'}
+   594.378 MSG   {'Message': 'RCOut: PWM:1-16'}
+   594.378 MSG   {'Message': 'IMU0: fast sampling enabled 2.0kHz'}
+   594.378 MSG   {'Message': 'Frame: QUAD/X'}
+   594.781 MSG   {'Message': 'ArduCopter V4.5.7 (2a3dc4b7)'}
+   594.781 MSG   {'Message': 'ChibiOS: 6a85082c'}
+   594.781 MSG   {'Message': 'Pixhawk6C 00440022 35335114 38323631'}
+   594.781 MSG   {'Message': 'IOMCU: 410 2003 411FC231'}
+   594.781 MSG   {'Message': 'RCOut: PWM:1-16'}
+   594.781 MSG   {'Message': 'IMU0: fast sampling enabled 2.0kHz'}
+   594.781 MSG   {'Message': 'Frame: QUAD/X'}
+   594.979 MSG   {'Message': 'ArduCopter V4.5.7 (2a3dc4b7)'}
+   594.980 MSG   {'Message': 'ChibiOS: 6a85082c'}
+   594.980 MSG   {'Message': 'Pixhawk6C 00440022 35335114 38323631'}
+   594.980 MSG   {'Message': 'IOMCU: 410 2003 411FC231'}
+   594.980 MSG   {'Message': 'RCOut: PWM:1-16'}
+   594.980 MSG   {'Message': 'IMU0: fast sampling enabled 2.0kHz'}
+   594.980 MSG   {'Message': 'Frame: QUAD/X'}
+   595.996 ARM   {'ArmState': 1, 'ArmChecks': 1, 'Forced': 0, 'Method': 2}
+   595.996 EV    {'Id': 10}
+   595.996 MODE  {'Mode': 5, 'ModeNum': 5, 'Rsn': 1}
+   597.998 EV    {'Id': 57}
+   600.696 EV    {'Id': 15}
+   605.356 MODE  {'Mode': 9, 'ModeNum': 9, 'Rsn': 1}
+   605.863 ARM   {'ArmState': 0, 'ArmChecks': 0, 'Forced': 0, 'Method': 13}
+   605.863 EV    {'Id': 11}
+   605.865 EV    {'Id': 56}
+   606.638 MODE  {'Mode': 0, 'ModeNum': 0, 'Rsn': 1}
+   607.088 MODE  {'Mode': 5, 'ModeNum': 5, 'Rsn': 1}
+   608.096 MSG   {'Message': 'Arm: Throttle too high'}
+   610.496 MSG   {'Message': 'Arm: Throttle too high'}
+   612.096 MSG   {'Message': 'Arm: Throttle too high'}
+   617.196 ARM   {'ArmState': 1, 'ArmChecks': 1, 'Forced': 0, 'Method': 2}
+   617.196 EV    {'Id': 10}
+   617.196 MODE  {'Mode': 5, 'ModeNum': 5, 'Rsn': 1}
+   619.198 EV    {'Id': 57}
+   619.816 EV    {'Id': 15}
+   621.791 EV    {'Id': 28}
+   647.928 MODE  {'Mode': 9, 'ModeNum': 9, 'Rsn': 1}
+   649.158 MSG   {'Message': 'EKF3 lane switch 1'}
+   649.158 EV    {'Id': 62}
+   649.158 ERR   {'Subsys': 24, 'ECode': 1}
+   649.158 MSG   {'Message': 'EKF primary changed:1'}
+   649.178 ERR   {'Subsys': 8, 'ECode': 1}
+   649.178 MSG   {'Message': 'GCS Failsafe'}
+   649.596 ARM   {'ArmState': 0, 'ArmChecks': 0, 'Forced': 0, 'Method': 2}
+   649.596 EV    {'Id': 11}
+   649.596 EV    {'Id': 18}
+   649.596 EV    {'Id': 17}
+   649.598 EV    {'Id': 56}
+   649.598 ERR   {'Subsys': 24, 'ECode': 0}
+   649.598 MSG   {'Message': 'EKF primary changed:0'}
+   654.166 MSG   {'Message': 'GCS Failsafe Cleared'}
+   654.166 ERR   {'Subsys': 8, 'ECode': 0}
+{'FRAME_CLASS': 1.0, 'FRAME_TYPE': 1.0, 'MOT_THST_HOVER': 0.38374897837638855, 'MOT_SPIN_MIN': 0.15000000596046448, 'MOT_SPIN_ARM': 0.10000000149011612, 'MOT_SLEW_UP_TIME': 0.0, 'RC_SPEED': 490.0, 'BATT_CAPACITY': 13000.0, 'BATT_LOW_VOLT': 13.199999809265137, 'BATT_CRT_VOLT': 12.800000190734863, 'BATT_FS_VOLTSRC': 0.0, 'BATT_ARM_VOLT': 9.0, 'FS_THR_ENABLE': 3.0, 'FS_GCS_ENABLE': 5.0, 'FLTMODE1': 0.0, 'FLTMODE2': 0.0, 'FLTMODE3': 0.0, 'FLTMODE4': 5.0, 'FLTMODE5': 0.0, 'FLTMODE6': 9.0, 'FLTMODE_CH': 5.0, 'RC6_OPTION': 153.0, 'ANGLE_MAX': 3000.0, 'PILOT_SPEED_UP': 250.0, 'ATC_RAT_RLL_P': 0.13500000536441803, 'ATC_RAT_PIT_P': 0.13500000536441803, 'ATC_RAT_YAW_P': 0.18000000715255737, 'ATC_ANG_RLL_P': 4.5, 'INS_LOG_BAT_MASK': 0.0, 'LOG_BITMASK': 176126.0, 'AUTO_OPTIONS': 0.0, 'SERVO9_FUNCTION': 36.0, 'SERVO10_FUNCTION': 34.0, 'SERVO11_FUNCTION': 33.0, 'SERVO12_FUNCTION': 35.0, 'AHRS_ORIENTATION': 0.0, 'COMPASS_ORIENT': 6.0, 'FS_CRASH_CHECK': 1.0, 'DISARM_DELAY': 10.0, 'MOT_BAT_VOLT_MAX': 0.0, 'MOT_BAT_VOLT_MIN': 0.0, 'INS_HNTCH_ENABLE': 0.0, 'STAT_BOOTCNT': 163.0, 'STAT_FLTTIME': 1140.0, 'RC3_MIN': 1000.0, 'RC3_MAX': 2000.0, 'RC3_TRIM': 1001.0, 'RC1_TRIM': 1500.0, 'RC2_TRIM': 1502.0, 'RC4_TRIM': 1500.0, 'PILOT_THR_BHV': 0.0, 'THR_DZ': 100.0, 'LOG_DISARMED': 0.0, 'BATT_VOLT_MULT': 18.55093002319336, 'BATT_AMP_PERVLT': 36.36000061035156}

@@ -1,0 +1,66 @@
+baslangic PN,PE (11.358274459838867, 5.059944152832031)
+ 619.5 dN= -0.01 dE= -0.01 uzaklik= 0.02 m  hiz=0.01 m/s
+ 620.0 dN= -0.03 dE= -0.02 uzaklik= 0.04 m  hiz=0.01 m/s
+ 620.5 dN= -0.05 dE= -0.04 uzaklik= 0.06 m  hiz=0.01 m/s
+ 621.0 dN= -0.06 dE= -0.05 uzaklik= 0.08 m  hiz=0.01 m/s
+ 621.5 dN= -0.08 dE= -0.05 uzaklik= 0.09 m  hiz=0.01 m/s
+ 622.0 dN= -0.09 dE= -0.06 uzaklik= 0.11 m  hiz=0.05 m/s
+ 622.5 dN= -0.14 dE= -0.07 uzaklik= 0.16 m  hiz=0.09 m/s
+ 623.0 dN= -0.19 dE= -0.06 uzaklik= 0.20 m  hiz=0.07 m/s
+ 623.5 dN= -0.20 dE= -0.05 uzaklik= 0.20 m  hiz=0.06 m/s
+ 624.0 dN= -0.15 dE= -0.04 uzaklik= 0.16 m  hiz=0.10 m/s
+ 624.5 dN= -0.10 dE= -0.04 uzaklik= 0.11 m  hiz=0.10 m/s
+ 625.0 dN= -0.07 dE= -0.01 uzaklik= 0.07 m  hiz=0.11 m/s
+ 625.5 dN= -0.06 dE=  0.02 uzaklik= 0.06 m  hiz=0.06 m/s
+ 626.0 dN= -0.06 dE=  0.03 uzaklik= 0.07 m  hiz=0.03 m/s
+ 626.5 dN= -0.07 dE=  0.02 uzaklik= 0.07 m  hiz=0.05 m/s
+ 627.0 dN= -0.07 dE= -0.01 uzaklik= 0.07 m  hiz=0.07 m/s
+ 627.5 dN= -0.06 dE= -0.02 uzaklik= 0.07 m  hiz=0.03 m/s
+ 628.0 dN= -0.05 dE= -0.01 uzaklik= 0.05 m  hiz=0.03 m/s
+ 628.5 dN= -0.03 dE= -0.01 uzaklik= 0.03 m  hiz=0.03 m/s
+ 629.0 dN= -0.00 dE= -0.01 uzaklik= 0.01 m  hiz=0.04 m/s
+ 629.5 dN=  0.13 dE= -0.13 uzaklik= 0.18 m  hiz=0.89 m/s
+ 630.0 dN=  0.76 dE= -0.73 uzaklik= 1.05 m  hiz=2.37 m/s
+ 630.5 dN=  1.80 dE= -1.78 uzaklik= 2.53 m  hiz=3.08 m/s
+ 631.0 dN=  2.62 dE= -2.61 uzaklik= 3.70 m  hiz=1.41 m/s
+ 631.5 dN=  2.76 dE= -2.73 uzaklik= 3.88 m  hiz=0.35 m/s
+ 632.0 dN=  2.36 dE= -2.33 uzaklik= 3.32 m  hiz=1.78 m/s
+ 632.5 dN=  1.69 dE= -1.69 uzaklik= 2.39 m  hiz=1.55 m/s
+ 633.0 dN=  1.27 dE= -1.31 uzaklik= 1.82 m  hiz=0.90 m/s
+ 633.5 dN=  1.06 dE= -1.08 uzaklik= 1.51 m  hiz=0.54 m/s
+ 634.0 dN=  0.93 dE= -0.94 uzaklik= 1.32 m  hiz=0.37 m/s
+ 634.5 dN=  0.82 dE= -0.85 uzaklik= 1.18 m  hiz=0.29 m/s
+ 635.0 dN=  0.80 dE= -0.78 uzaklik= 1.12 m  hiz=0.35 m/s
+ 635.5 dN=  0.80 dE= -0.24 uzaklik= 0.84 m  hiz=1.50 m/s
+ 636.0 dN=  0.49 dE=  0.46 uzaklik= 0.67 m  hiz=1.38 m/s
+ 636.5 dN=  0.21 dE=  0.99 uzaklik= 1.01 m  hiz=0.78 m/s
+ 637.0 dN=  0.17 dE=  1.20 uzaklik= 1.21 m  hiz=0.13 m/s
+ 637.5 dN=  0.25 dE=  1.16 uzaklik= 1.19 m  hiz=0.32 m/s
+ 638.0 dN=  0.33 dE=  1.16 uzaklik= 1.20 m  hiz=0.19 m/s
+ 638.5 dN=  0.43 dE=  1.20 uzaklik= 1.27 m  hiz=0.16 m/s
+ 639.0 dN=  0.48 dE=  1.21 uzaklik= 1.30 m  hiz=0.17 m/s
+ 639.5 dN=  0.46 dE=  1.19 uzaklik= 1.28 m  hiz=0.26 m/s
+ 640.0 dN=  0.42 dE=  1.16 uzaklik= 1.23 m  hiz=0.24 m/s
+ 640.5 dN=  0.42 dE=  1.08 uzaklik= 1.16 m  hiz=0.21 m/s
+ 641.0 dN=  0.46 dE=  0.98 uzaklik= 1.09 m  hiz=0.16 m/s
+ 641.5 dN=  0.50 dE=  0.90 uzaklik= 1.03 m  hiz=0.08 m/s
+ 642.0 dN=  0.53 dE=  0.85 uzaklik= 1.00 m  hiz=0.02 m/s
+ 642.5 dN=  0.54 dE=  0.83 uzaklik= 0.99 m  hiz=0.06 m/s
+ 643.0 dN=  0.65 dE=  0.78 uzaklik= 1.02 m  hiz=0.63 m/s
+ 643.5 dN=  1.36 dE=  0.43 uzaklik= 1.43 m  hiz=2.15 m/s
+ 644.0 dN=  2.69 dE= -0.17 uzaklik= 2.70 m  hiz=3.40 m/s
+ 644.5 dN=  4.49 dE= -1.02 uzaklik= 4.61 m  hiz=3.96 m/s
+ 645.0 dN=  6.18 dE= -1.86 uzaklik= 6.46 m  hiz=3.46 m/s
+ 645.5 dN=  7.63 dE= -2.59 uzaklik= 8.05 m  hiz=3.04 m/s
+ 646.0 dN=  8.63 dE= -3.19 uzaklik= 9.20 m  hiz=1.56 m/s
+ 646.5 dN=  8.82 dE= -3.50 uzaklik= 9.49 m  hiz=0.24 m/s
+ 647.0 dN=  8.78 dE= -3.24 uzaklik= 9.36 m  hiz=1.09 m/s
+ 647.5 dN=  8.87 dE= -2.65 uzaklik= 9.25 m  hiz=1.29 m/s
+ 648.0 dN=  9.07 dE= -2.09 uzaklik= 9.31 m  hiz=1.41 m/s
+ 648.5 dN=  9.20 dE= -1.76 uzaklik= 9.36 m  hiz=0.25 m/s
+ 649.0 dN=  9.05 dE= -1.78 uzaklik= 9.22 m  hiz=0.88 m/s
+azami uzaklik 9.49
+ucus suresi ornek 261
+tam sapma orani (<=1050 ya da >=1950): roll 0.00 pitch 0.15 yaw 0.07
+buyuk sapma (>=|300| us): roll 0.00 pitch 0.22 yaw 0.10
+toplam yaw donusu (derece, isaretli): -93
