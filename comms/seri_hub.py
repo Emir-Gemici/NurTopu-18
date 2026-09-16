@@ -67,9 +67,19 @@ SIGTERM (systemd stop): isleyici `durdur()` bayragini kurar; dongu temiz
 cikar, son sayac logu ve kapat() kosar (D-405; Python varsayilani surec
 aninda olur, finally kosmazdi).
 
+TUNEL KIPI (CONTRACTS §7.6 · results/tunel_20260916/ON_KAYIT.md): tek
+RFD900A Pixhawk TELEM1'de; Jetson TELEM2'de. Seri port yerine `--tunel
+HOST:PORT` ile `mavlink_tunel.TunelLink` (kimlik hava, 'datagram' ayristirma)
+acilir; MAVProxy `--out udp:127.0.0.1:14553` ile ona yazar. Hub'in UDP
+tarafi, fan-out'u ve ariza semantigi AYNIDIR (kapat -> 1 s -> yeniden ac);
+TunelLink tam cerceve teslim ettigi icin `bozuk` hesabi korunur. `--baud`
+tunelde anlamsizdir, verilirse REDDEDILIR.
+
 Kullanim:
   python3 seri_hub.py --port /dev/ttyUSB0 --bind 127.0.0.1:5100 \\
                       --tuketici 127.0.0.1:5007
+  python3 seri_hub.py --tunel 127.0.0.1:14553 --tunel-kimlik hava \\
+                      --bind 127.0.0.1:5100 --tuketici 127.0.0.1:5007
 """
 import argparse
 import signal
@@ -84,6 +94,8 @@ if str(_BU_DIZIN) not in sys.path:
     sys.path.insert(0, str(_BU_DIZIN))
 
 from link import SerialLink, UDPLink  # noqa: E402
+from mavlink_tunel import (KIMLIK_HAVA, KIMLIK_YER, TunelLink,  # noqa: E402
+                           uc_coz)
 from protocol import FrameReader, decode, encode  # noqa: E402
 
 for _akim in (sys.stdout, sys.stderr):
@@ -245,6 +257,12 @@ class SeriHub:
                     f"seri={'acik' if self.seri_link is not None else 'KAPALI'} "
                     f"statik={len(self.tuketiciler)} ogrenilen={len(self.ogrenilen)}",
                     kirmizi=self.seri_link is None)
+        link_sayac = getattr(self.seri_link, "sayac", None)
+        if isinstance(link_sayac, dict):
+            # §7.6: hub'in `seri_yazilan`i tunel dusurmesini GOREMEZ; link
+            # sayaclari (kimlik_boslugu, zaman_asimi_dusen ...) yan yana basilir.
+            self._logla("tunel sayac " + " ".join(
+                f"{k}={v}" for k, v in link_sayac.items()))
 
     # ── seri hat yasam dongusu ───────────────────────────────────────────
     def _seri_bagla(self, link, ilk=False):
@@ -254,6 +272,13 @@ class SeriHub:
                 # Hub'in sahip oldugu port: tur gecikmesi tavani (dokstring).
                 ser.timeout = SERI_OKUMA_ZAMAN_ASIMI_S
             except (AttributeError, ValueError, OSError):
+                pass
+        elif hasattr(link, "timeout"):
+            # Tunel (TunelLink): `timeout` recv'in TOPLAM son tarihidir; ayni
+            # tur gecikmesi tavani (D-403 dersi) yeniden baglamada da cekilir.
+            try:
+                link.timeout = SERI_OKUMA_ZAMAN_ASIMI_S
+            except (AttributeError, ValueError, OSError, TypeError):
                 pass
         self.seri_link = link
         self.okuyucu = FrameReader()     # yeni akis: eski yarim cerceve atilir
@@ -529,11 +554,18 @@ def _arg_parser():
     ap = argparse.ArgumentParser(
         description="SiK seri hub: portu tek basina acar, NAVITAS cercevelerini "
                     "UDP loopback uzerinden cogullar (CONTRACTS §7.4 ikizi)")
-    ap.add_argument("--port", required=True,
-                    help="SiK seri portu (serial_for_url uyumlu: /dev/ttyUSB0, "
-                         "COM7, socket://host:port, loop://)")
-    ap.add_argument("--baud", type=int, default=VARSAYILAN_BAUD,
-                    help="SiK seri baud (varsayilan %(default)s)")
+    tasiyici = ap.add_mutually_exclusive_group(required=True)
+    tasiyici.add_argument("--port",
+                          help="SiK seri portu (serial_for_url uyumlu: /dev/ttyUSB0, "
+                               "COM7, socket://host:port, loop://)")
+    tasiyici.add_argument("--tunel", metavar="HOST:PORT",
+                          help="MAVLink TUNNEL ucu (CONTRACTS §7.6; MAVProxy "
+                               "--out udp:HOST:PORT buraya yazar)")
+    ap.add_argument("--tunel-kimlik", choices=(KIMLIK_HAVA, KIMLIK_YER),
+                    default=KIMLIK_HAVA,
+                    help="tunel ucunun kimligi (varsayilan %(default)s)")
+    ap.add_argument("--baud", type=int, default=None,
+                    help=f"SiK seri baud (yalniz --port; varsayilan {VARSAYILAN_BAUD})")
     ap.add_argument("--bind", default=VARSAYILAN_BIND,
                     help="hub UDP ucu HOST:PORT; tuketiciler buraya yollar "
                          "(varsayilan %(default)s)")
@@ -549,8 +581,20 @@ def _arg_parser():
 def main(argv=None):
     parser = _arg_parser()
     args = parser.parse_args(argv)
-    if args.baud <= 0:
-        parser.error("--baud pozitif olmali")
+    tunel_uc = None
+    if args.tunel is not None:
+        if args.baud is not None:
+            parser.error("--baud yalniz seri kipte (--port) anlamlidir; --tunel "
+                         "ile verilemez")
+        try:
+            tunel_uc = uc_coz(args.tunel)
+        except ValueError as exc:
+            parser.error(str(exc))
+    else:
+        if args.baud is None:
+            args.baud = VARSAYILAN_BAUD
+        if args.baud <= 0:
+            parser.error("--baud pozitif olmali")
     if args.log_aralik < 0:
         parser.error("--log-aralik negatif olamaz")
     try:
@@ -559,8 +603,18 @@ def main(argv=None):
     except ValueError as exc:
         parser.error(str(exc))
 
-    def seri_ac():
-        return SerialLink(args.port, args.baud, timeout=SERI_OKUMA_ZAMAN_ASIMI_S)
+    if args.tunel is not None:
+        # Iletiler tasiyiciya gore (elestiri 2 bulgu 12): 'None @ 57600' degil.
+        uc_metni = f"tunel {args.tunel} kimlik={args.tunel_kimlik}"
+
+        def seri_ac():
+            return TunelLink(tunel_uc, args.tunel_kimlik,
+                             timeout=SERI_OKUMA_ZAMAN_ASIMI_S)
+    else:
+        uc_metni = f"seri {args.port} @ {args.baud}"
+
+        def seri_ac():
+            return SerialLink(args.port, args.baud, timeout=SERI_OKUMA_ZAMAN_ASIMI_S)
 
     udp = None
     hub = None
@@ -583,13 +637,17 @@ def main(argv=None):
             # Acilista port yoksa SESSIZCE beklemek yerine gorunur cikis:
             # operator yanlis --port'u hemen gorsun. Ucus icinde kopma ayri
             # (hub calisirken ariza -> yeniden acma dongusu).
-            print(f"{LOG_ONEKI} KIRMIZI HATA: seri port acilamadi {args.port!r}: "
-                  f"{exc}", file=sys.stderr, flush=True)
+            if args.tunel is not None:
+                print(f"{LOG_ONEKI} KIRMIZI HATA: tunel ucu acilamadi {uc_metni}: "
+                      f"{exc}", file=sys.stderr, flush=True)
+            else:
+                print(f"{LOG_ONEKI} KIRMIZI HATA: seri port acilamadi {args.port!r}: "
+                      f"{exc}", file=sys.stderr, flush=True)
             return 4
         hub = SeriHub(seri, udp, tuketiciler, seri_ac=seri_ac,
                       log_aralik_s=args.log_aralik)
         sigterm_eski = _sigterm_kur(hub)           # D-405: systemd stop temiz
-        print(f"{LOG_ONEKI} seri {args.port} @ {args.baud} <-> udp "
+        print(f"{LOG_ONEKI} {uc_metni} <-> udp "
               f"{bind[0]}:{bind[1]} statik={len(tuketiciler)}", flush=True)
         hub.calistir()
         return 0
