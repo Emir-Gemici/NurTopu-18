@@ -64,11 +64,17 @@ class JetsonCommsPaketiTests(unittest.TestCase):
         #     DP->HDMI->SIYI donusturucuye (x11/drm) ya da yedek RTSP'ye verir;
         #     kamera_koprusu'nu import eder (ikisi de ~/navitas/scripts/). Pakette
         #     yoksa GOSTERICI_KIP=x11 autostart'i `No such file` ile olurdu.
-        self.assertEqual(22, len(KOPYALAR),
-                         "paket kopya sozlesmesi 22 dosya olmali "
-                         "(17 .py + karisim_arena.yaml + config/model_registry.json + "
+        # Tunel on kaydinda 22 -> 24 (16 Eylul 2026, CONTRACTS §7.6):
+        #   · comms/mavlink_tunel.py -> KIP=tunel'de navitas-seri-hub `--tunel` onu
+        #     IMPORT eder; pakette yoksa hub ImportError + Restart=always dongusu
+        #   · scripts/sik_rf_olc.py  -> K8a/K8b gercek donanim olcumunun hava yanki
+        #     ucu (~/navitas/scripts/); pakette yoksa K8 sahada KOSULAMAZ
+        # Kapi yine GEVSETILMEDI, gerekceyle GUNCELLENDI.
+        self.assertEqual(24, len(KOPYALAR),
+                         "paket kopya sozlesmesi 24 dosya olmali "
+                         "(19 .py + karisim_arena.yaml + config/model_registry.json + "
                          "Orin Nano belgesi + 2 kurulum betigi · "
-                         "T103/T83/T202/D-403/D-404/Gorev K/D-431/T228)")
+                         "T103/T83/T202/D-403/D-404/Gorev K/D-431/T228/§7.6)")
         for kaynak, hedef in KOPYALAR.items():
             with self.subTest(hedef=hedef.name):
                 self.assertTrue(hedef.is_file(), f"paket dosyasi yok: {hedef}")
@@ -108,6 +114,30 @@ class JetsonCommsPaketiTests(unittest.TestCase):
         self.assertEqual(0, sonuc.returncode,
                          f"stdout={sonuc.stdout}\nstderr={sonuc.stderr}")
         self.assertIn("JETSON_COMMS_IMPORT=OK", sonuc.stdout)
+
+    def test_mavlink_tunel_pymavlink_yuklenmeden_izole_import_edilir(self):
+        """§7.6: paket dizininden TEK BASINA `import mavlink_tunel` (ve onu import
+        eden seri_hub / sik_rf_olc) pymavlink'i YUKLEMEZ — tembel import
+        TunelLink kurucusundadir; KIP=sik/udp hub'i pymavlink'e baglanmaz."""
+        kod = (
+            "import pathlib,sys; "
+            f"p=pathlib.Path({str(PAKET)!r}).resolve(); "
+            "sys.path[:]=[str(p)]+[x for x in sys.path if x not in ('',str(p))]; "
+            "import mavlink_tunel as m, seri_hub as h, sik_rf_olc as s; "
+            "assert pathlib.Path(m.__file__).resolve().parent == p; "
+            "assert pathlib.Path(h.__file__).resolve().parent == p; "
+            "assert pathlib.Path(s.__file__).resolve().parent == p; "
+            "assert callable(m.TunelLink) and h.TunelLink is m.TunelLink; "
+            "yuklu=[x for x in sys.modules if x.startswith('pymavlink')]; "
+            "assert not yuklu, yuklu; "
+            "print('JETSON_TUNEL_IMPORT=OK')"
+        )
+        sonuc = subprocess.run(
+            [sys.executable, "-B", "-c", kod], cwd=PAKET,
+            capture_output=True, text=True, timeout=30)
+        self.assertEqual(0, sonuc.returncode,
+                         f"stdout={sonuc.stdout}\nstderr={sonuc.stderr}")
+        self.assertIn("JETSON_TUNEL_IMPORT=OK", sonuc.stdout)
 
     def test_rpi_canli_olcek_pymavlink_olmadan_izole_import_edilir(self):
         """T70: duz Jetson yerlesimi ortak irtifa okuyucusunu bulabilmeli."""

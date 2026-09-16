@@ -70,6 +70,13 @@ KOPYALAR = {
     # .desktop, DRM birimi, xorg sablonu, kurulum belgesi) jetson_paket/gosterici/ altinda
     # KANONIKTIR (systemd/ gibi) — KOPYALAR'a girmez.
     KOK / "scripts" / "isaretli_gosterici.py": PAKET_KOD / "isaretli_gosterici.py",
+    # CONTRACTS §7.6 (results/tunel_20260916/ON_KAYIT.md, 16 Eylul): KIP=tunel'de
+    # navitas-seri-hub `--tunel` ile `mavlink_tunel.TunelLink`'i IMPORT eder; pakette
+    # yoksa hub ImportError ile Restart=always cokme dongusune girer (Jetson'dan yere
+    # tek NAVITAS cercevesi gitmez). `sik_rf_olc.py` K8a/K8b gercek donanim olcumunun
+    # hava YANKI ucudur (~/navitas/scripts/). Kanonikler comms/ ve scripts/, kod/ AYNADIR.
+    KOK / "comms" / "mavlink_tunel.py": PAKET_KOD / "mavlink_tunel.py",
+    KOK / "scripts" / "sik_rf_olc.py": PAKET_KOD / "sik_rf_olc.py",
     # D-431 (7 Eylul 2026): kart Jetson NANO degil ORIN NANO 4GB (JetPack 7.2.1,
     # Ubuntu 24.04, Py 3.12, NVMe) cikti — `JETSON_NANO_KURULUM.md`, cp38 `wheels/`
     # ve venv38 plani bu kartta gecersiz. 6 Eylul'de kartta OLCULEREK yazilan

@@ -7,6 +7,9 @@
 #   --tuketici (tests/test_faz_b_seri_hub.py; kod/ aynasi tests/test_faz_b_jetson_baslat.py K3).
 #   Hub, gonderen tuketicileri OGRENIR (ACK'ler rpi_inference/iha_inis_yayinci'ye doner);
 #   yalniz dinleyen iha_komut_alici bu yuzden --tuketici ile STATIK verilir.
+# $HUB_TASIYICI_ARGS (CONTRACTS §7.6): KIP=sik -> `--port <SIK_SERI> --baud <SIK_BAUD>`
+#   (eski metinle BIREBIR); KIP=tunel -> `--tunel 127.0.0.1:14553 --tunel-kimlik hava`
+#   (MAVLink TUNNEL, tek RFD900A Pixhawk TELEM1'de). Tirnaksiz, suslu parantezsiz: bolunur.
 [Unit]
 Description=NAVITAS seri hub - SiK seri portun tek sahibi, UDP loopback dagitici (D-403 4b, KIP=sik)
 After=network.target
@@ -19,7 +22,7 @@ User=navitas
 SupplementaryGroups=dialout
 WorkingDirectory=/home/navitas/navitas
 Environment=PYTHONUNBUFFERED=1
-ExecStart=/usr/bin/python3 /home/navitas/navitas/comms/seri_hub.py --port ${SIK_SERI} --baud ${SIK_BAUD} --bind 127.0.0.1:5100 --tuketici 127.0.0.1:5007
+ExecStart=/usr/bin/python3 /home/navitas/navitas/comms/seri_hub.py $HUB_TASIYICI_ARGS --bind 127.0.0.1:5100 --tuketici 127.0.0.1:5007
 Restart=always
 RestartSec=2
 TimeoutStopSec=5

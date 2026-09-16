@@ -31,6 +31,15 @@
 #     kareyi MJPEG HTTP olarak sunar; rpi_inference --kaynak http://127.0.0.1:8080/video
 #     ile okur (DroidCam kalibi). Loopback http disinda KAMERA (indeks, /dev/videoN,
 #     DroidCam WiFi URL'si) kopruyu KALDIRMAZ.
+#   * KIP=tunel (CONTRACTS §7.6 · results/tunel_20260916/ON_KAYIT.md, kullanici karari 16 Eylul):
+#     tek RFD900A Pixhawk TELEM1'de; Jetson Pixhawk TELEM2'ye 3 telli UART ile bagli
+#     (PIXHAWK_SERI varsayilani /dev/ttyTHS1 — DOGRULANMADI, runbook ls/geri dongu ile olcer).
+#     Pixhawk ham NAVITAS baytlarini yonlendirmez: navitas-seri-hub seri port yerine
+#     `--tunel 127.0.0.1:14553` (MAVLink TUNNEL) acar, MAVProxy ek `--out` ile ona yazar.
+#     TELEM2 57600'da `--streamrate 8` hatti doyururdu (HESAP ~6,9 KB/s > 5,76 KB/s): tunelde
+#     sona `--streamrate -1` eklenir (MAVProxy 1.8.74 mavproxy.py:1046 `rate != -1` degilse
+#     REQUEST_DATA_STREAM GONDERMEZ; optparse SON degeri alir). Akis otoritesi SR2_POSITION ve
+#     iha_inis_yayinci SET_MESSAGE_INTERVAL'dir. udp/sik ciktisi BIREBIR aynidir.
 #
 # KULLANIM
 #   bash jetson_baslat.sh --kuru        HICBIR SEY baslatmaz; kosacagi komutlari basar
@@ -41,6 +50,7 @@
 #   sudo bash jetson_baslat.sh --durdur birimleri durdurur (disable --now), nohup pid'lerini oldurur
 #   bash jetson_baslat.sh --durum       birim durumu + yeniden-baslatma sayisi (cokme dongusu GORUNUR)
 #   Degiskenler ortamdan ezilir:   KIP=sik FOV=78 bash jetson_baslat.sh --kuru
+#   MAVLink TUNNEL (tek RFD900A):  KIP=tunel FOV=78 bash jetson_baslat.sh --kuru   (JETSON_BASLAT.md "KIP=tunel")
 #   CSI kamera (kopru):            KAMERA=http://127.0.0.1:8080/video FOV=78 ... --kuru
 #   YKI canli kamera (ayri LAN):   KAMERA_KOPRU_BIND=0.0.0.0 ... --kuru
 #     Video SiK'e GIRMEZ. 0.0.0.0 yalniz acik beyanla; TCP 8080 YKI IP'sine
@@ -78,14 +88,18 @@ BETIK_YOLU="$PAKET_DIZIN/jetson_baslat.sh"   # hata iletilerinde $0 DEGIL (CR ko
 # --kuru ile --kur AYNI kullaniciyi hesaplar. Yanlis kullanici birimleri
 # 217/USER ile sonsuz restart dongusune sokar; dosya_denetle `id -u` ile durur.
 SERVIS_KULLANICI="${SERVIS_KULLANICI:-${SUDO_USER:-${USER:-navitas}}}"
-PIXHAWK_SERI="${PIXHAWK_SERI:-/dev/ttyACM0}"   # Pixhawk USB/telem — YALNIZ cogullayici acar
+KIP="${KIP:-udp}"            # udp | sik | tunel
+# Pixhawk seri varsayilani KIP'e gore: tunel -> TELEM2 UART (/dev/ttyTHS1, DOGRULANMADI:
+# depodaki tek eslesme Nano baglamindadir; runbook `ls -l /dev/ttyTHS* /dev/ttyTCU*` ile olcer),
+# digerleri USB (/dev/ttyACM0 — udp/sik ciktisi DEGISMEZ).
+if [ "$KIP" = tunel ]; then PIXHAWK_SERI_VARSAYILAN="/dev/ttyTHS1"; else PIXHAWK_SERI_VARSAYILAN="/dev/ttyACM0"; fi
+PIXHAWK_SERI="${PIXHAWK_SERI:-$PIXHAWK_SERI_VARSAYILAN}"   # Pixhawk USB/telem — YALNIZ cogullayici acar
 PIXHAWK_BAUD="${PIXHAWK_BAUD:-57600}"
 # Pixhawk SYSID_THISMAV. comms/iha_komut_alici.VARSAYILAN_HEDEF_SYSID ile AYNI (test
 # kilitler). D-389: pin BEYANA dayanir — arac farkli sysid'deyse buradan ez.
 SYSID="${SYSID:-1}"
 YKS_IP="${YKS_IP:-}"         # KIP=udp'de ZORUNLU: hakem ekrani (karar + IHA_LANDED buraya)
 IKA_IP="${IKA_IP:-}"         # KIP=udp'de ZORUNLU: IKA (rota + IHA_LANDED; sartname §2.2.5 kilidi)
-KIP="${KIP:-udp}"            # udp | sik
 SIK_SERI="${SIK_SERI:-/dev/ttyUSB0}"   # KIP=sik: YALNIZ navitas-seri-hub acar
 SIK_BAUD="${SIK_BAUD:-57600}"
 FOV="${FOV:-}"               # kamera YATAY gorus acisi (derece) — BEYAN edilir, tahmin edilmez
@@ -128,6 +142,13 @@ IKA_PORT=5006
 KOMUT_PORT=5007
 SERI_HUB_DINLE="127.0.0.1:5100"                 # KIP=sik: surecler buraya yazar
 SERI_HUB_TUKETICI="127.0.0.1:${KOMUT_PORT}"     # hub seri hattan geleni buraya verir
+# ── KIP=tunel sabitleri — comms/mavlink_tunel.py ikizleri (tests/test_mavlink_tunel_sozlesme.py kilitler)
+TUNEL_HAVA_UC="127.0.0.1:14553"          # mavlink_tunel.TUNEL_HAVA_UC: MAVProxy --out = hub --tunel
+TUNEL_TELEM2_BAUD=57600                  # Pixhawk SERIAL2_BAUD=57 (TELEM2 <-> Jetson UART)
+TUNEL_STREAMRATE=-1                      # MAVProxy: -1 = REQUEST_DATA_STREAM YOK (mavproxy.py:1046)
+TUNEL_OLCUM_YANKI_UC="127.0.0.1:5190"    # mavlink_tunel.TUNEL_OLCUM_YANKI_UC: K8b hub ek --tuketici
+TUNEL_HUB_KIMLIGI="hava"                 # mavlink_tunel.KIMLIK_HAVA
+TUNEL_SR2_POSITION_ASGARI=8              # 2 x karar_sozlesmesi.MAVLINK_KONUM_ASGARI_HZ (test kilitler)
 
 hata() { echo "HATA: $*" >&2; exit 1; }
 
@@ -227,6 +248,10 @@ if [ -n "$UB_REFERANS" ]; then RPI_EK_ARGS="$RPI_EK_ARGS --ub-referans $UB_REFER
 # T228: gosterici acikken isaretli yayin (T227) acilir; kapaliyken bayrak VERILMEZ (mevcut davranis)
 if [ "$GOSTERICI_KIP" != kapali ]; then RPI_EK_ARGS="$RPI_EK_ARGS --isaretli-yayin $ISARETLI_YAYIN"; fi
 RPI_EK_ARGS="${RPI_EK_ARGS# }"
+# KIP=tunel ek anahtarlari (birimlerde TIRNAKSIZ, suslu parantezsiz $VAR: systemd bosluktan boler).
+# udp/sik'te BOS -> cogullayici/hub komutu eskisiyle BIREBIR (bosluk farki disinda).
+COGULLAYICI_EK_ARGS=""
+HUB_TASIYICI_ARGS=""
 case "$KIP" in
   udp)
     RPI_TELSIZ_ARGS="--yks-hedef ${YKS_IP}:${YKS_PORT} --ika-hedef ${IKA_IP}:${IKA_PORT}"
@@ -243,16 +268,33 @@ case "$KIP" in
     INIS_TELSIZ_ARGS="--yks ${SERI_HUB_DINLE}"
     # Seri-hub, SiK'ten çözdüğü çerçeveyi kendi sabit 5100 UDP ucundan yollar.
     KOMUT_TELSIZ_ARGS="--bind ${SERI_HUB_TUKETICI} --izinli-kaynak ${SERI_HUB_DINLE}"
+    HUB_TASIYICI_ARGS="--port ${SIK_SERI} --baud ${SIK_BAUD}"
     ;;
-  *) hata "KIP='$KIP' taninmiyor (udp | sik)" ;;
+  tunel)
+    # Tuketiciler sik ile AYNI: hub'a (5100) yazar, hub TUNNEL ile Pixhawk'a tasir.
+    RPI_TELSIZ_ARGS="--yks-hedef ${SERI_HUB_DINLE}"
+    INIS_TELSIZ_ARGS="--yks ${SERI_HUB_DINLE}"
+    KOMUT_TELSIZ_ARGS="--bind ${SERI_HUB_TUKETICI} --izinli-kaynak ${SERI_HUB_DINLE}"
+    COGULLAYICI_EK_ARGS="--out udp:$TUNEL_HAVA_UC --streamrate $TUNEL_STREAMRATE"
+    HUB_TASIYICI_ARGS="--tunel $TUNEL_HAVA_UC --tunel-kimlik $TUNEL_HUB_KIMLIGI"
+    ;;
+  *) hata "KIP='$KIP' taninmiyor (udp | sik | tunel)" ;;
 esac
+if [ "$KIP" = tunel ]; then   # fail-closed: yanlis port / baud ile hub kalkmaz
+  case "$PIXHAWK_SERI" in
+    /dev/ttyACM*) hata "KIP=tunel: PIXHAWK_SERI='$PIXHAWK_SERI' USB (ACM) — tunel TELEM2 UART ister (/dev/ttyTHS*; runbook ile dogrula)" ;;
+  esac
+  [ "$PIXHAWK_BAUD" = "$TUNEL_TELEM2_BAUD" ] \
+    || hata "KIP=tunel: PIXHAWK_BAUD='$PIXHAWK_BAUD' != $TUNEL_TELEM2_BAUD (Pixhawk SERIAL2_BAUD=57; baud yukseltme ayri karar)"
+fi
 
 # /etc/navitas.env'e yazilan ve ExecStart'ta yerine konan anahtarlar
 ENV_ANAHTARLAR=(NAVITAS_KOK PYTHON3 LOG_DIZIN KIP PIXHAWK_SERI PIXHAWK_BAUD SYSID
                 SIK_SERI SIK_BAUD KANIT_TIMEOUT RPI_EK_ARGS RPI_TELSIZ_ARGS
                 INIS_TELSIZ_ARGS KOMUT_TELSIZ_ARGS
                 KAMERA_PYTHON KAMERA_KOPRU_BIND KAMERA_KOPRU_PORT KAMERA_KOPRU_ARGS
-                GOSTERICI_KIP ISARETLI_YAYIN)   # T228: DRM gosterici birimi ${ISARETLI_YAYIN} okur
+                GOSTERICI_KIP ISARETLI_YAYIN   # T228: DRM gosterici birimi ${ISARETLI_YAYIN} okur
+                COGULLAYICI_EK_ARGS HUB_TASIYICI_ARGS)   # KIP=tunel (§7.6); udp/sik'te bos
 # Tek deger tasiyan beyanlar: bosluk/glob/kacis icerirse systemd ($VAR) ve bash (nohup $k)
 # ikisi de BOLER/GENISLETIR — --kuru [UYARI] basar (D-405, curutucu --dogrudan glob bulgusu).
 TEK_DEGER_ANAHTARLAR=(FOV ODAK SENARYO KAMERA UB_REFERANS YKS_IP IKA_IP SYSID KANIT_TIMEOUT
@@ -284,7 +326,7 @@ yerine_koy() {  # $1: metin -> ${ANAHTAR} ve $ANAHTAR yerine deger (systemd ile 
 # ── Birimler ──────────────────────────────────────────────────────────────────
 birimler() {  # KIP/KAMERA'ya gore, BASLATMA sirasinda
   echo navitas-cogullayici
-  if [ "$KIP" = sik ]; then echo navitas-seri-hub; fi
+  if hub_kipi; then echo navitas-seri-hub; fi
   if [ "$KAMERA_KOPRU" = 1 ]; then echo navitas-kamera-koprusu; fi   # rpi_inference'tan ONCE
   echo navitas-rpi-inference
   echo navitas-iha-inis-yayinci
@@ -293,6 +335,8 @@ birimler() {  # KIP/KAMERA'ya gore, BASLATMA sirasinda
 TUKETICILER="navitas-rpi-inference navitas-iha-inis-yayinci navitas-iha-komut-alici"
 # DURDURMA sirasi: once tuketiciler, sonra kopru ve hub, en son cogullayici
 TUM_BIRIMLER="$TUKETICILER navitas-kamera-koprusu navitas-seri-hub navitas-cogullayici"
+
+hub_kipi() { [ "$KIP" = sik ] || [ "$KIP" = tunel ]; }   # navitas-seri-hub kalkar mi?
 
 birim_dosyasi() { echo "$BIRIM_DIZIN/$1.service"; }
 
@@ -305,6 +349,23 @@ exec_start_ham() {  # $1 birim -> ExecStart= satiri (degiskenli, CR'siz)
   printf '%s\n' "$s"
 }
 exec_start() { yerine_koy "$(exec_start_ham "$1")"; }
+
+son_arg_degeri() {  # $1 komut satiri, $2 bayrak -> SON gorulen degeri (optparse son degeri alir)
+  local t onceki="" deger=""
+  set -f   # hep $(...) icinde cagrilir
+  for t in $1; do
+    if [ "$onceki" = "$2" ]; then deger="$t"; fi
+    onceki="$t"
+  done
+  printf '%s\n' "$deger"
+}
+
+arg_sayisi() {  # $1 komut satiri, $2 bayrak -> bayragin kac kez gectigi
+  local t n=0
+  set -f
+  for t in $1; do [ "$t" != "$2" ] || n=$((n + 1)); done
+  printf '%s\n' "$n"
+}
 
 py_yolu() {  # $1 komut satiri -> ilk NAVITAS .py dosyasinin tam yolu (yoksa bos)
   local t
@@ -332,12 +393,27 @@ sozlesme_denetle() {  # birim dosyalari CONTRACTS §7.4'ten sapmis mi? (elle boz
     case " $k " in *" --out $uc "*) ;; *) hata "navitas-cogullayici: '--out $uc' yok (CONTRACTS §7.4)" ;; esac
   done
   case " $k " in *" --master=$PIXHAWK_SERI "*) ;; *) hata "navitas-cogullayici: --master=$PIXHAWK_SERI yok" ;; esac
+  if [ "$KIP" = tunel ]; then
+    case " $k " in *" --out udp:$TUNEL_HAVA_UC "*) ;; *) hata "navitas-cogullayici: KIP=tunel '--out udp:$TUNEL_HAVA_UC' yok (CONTRACTS §7.6)" ;; esac
+    [ "$(son_arg_degeri "$k" --streamrate)" = "$TUNEL_STREAMRATE" ] \
+      || hata "navitas-cogullayici: KIP=tunel etkin (SON) --streamrate $TUNEL_STREAMRATE degil — TELEM2 doyar (§7.6): $k"
+  else
+    case "$k" in *"$TUNEL_HAVA_UC"*) hata "navitas-cogullayici: KIP=$KIP ama tunel ucu $TUNEL_HAVA_UC var" ;; esac
+    [ "$(arg_sayisi "$k" --streamrate)" = 1 ] \
+      || hata "navitas-cogullayici: KIP=$KIP tek --streamrate olmali (D-406 B): $k"
+  fi
   tuketici_denetle navitas-rpi-inference "$MAV_UC_RPI" "--mav-sysid $SYSID"
   tuketici_denetle navitas-iha-inis-yayinci "$MAV_UC_INIS" "--sysid $SYSID"
   tuketici_denetle navitas-iha-komut-alici "$MAV_UC_KOMUT" "--sysid $SYSID"
-  if [ "$KIP" = sik ]; then
+  if hub_kipi; then
     k="$(exec_start navitas-seri-hub)"
-    case " $k " in *" --port $SIK_SERI "*) ;; *) hata "navitas-seri-hub: '--port $SIK_SERI' yok" ;; esac
+    if [ "$KIP" = tunel ]; then
+      case " $k " in *" --tunel $TUNEL_HAVA_UC "*) ;; *) hata "navitas-seri-hub: KIP=tunel '--tunel $TUNEL_HAVA_UC' yok" ;; esac
+      case " $k " in *" --port "*|*"/dev/tty"*) hata "navitas-seri-hub: KIP=tunel ama seri port veriliyor: $k" ;; esac
+    else
+      case " $k " in *" --port $SIK_SERI "*) ;; *) hata "navitas-seri-hub: '--port $SIK_SERI' yok" ;; esac
+      case " $k " in *" --tunel "*) hata "navitas-seri-hub: KIP=sik ama --tunel var: $k" ;; esac
+    fi
     case " $k " in *" --bind $SERI_HUB_DINLE "*) ;; *) hata "navitas-seri-hub: '--bind $SERI_HUB_DINLE' yok" ;; esac
     case " $k " in *" --tuketici $SERI_HUB_TUKETICI "*) ;; *) hata "navitas-seri-hub: '--tuketici $SERI_HUB_TUKETICI' yok" ;; esac
   fi
@@ -455,6 +531,14 @@ dosya_denetle() {  # kurulu kopyada kullanici, dosyalar ve cihazlar var mi? (kur
   [ -x "$PYTHON3" ] || hata "yorumlayici yok: $PYTHON3"
   [ -e "$PIXHAWK_SERI" ] || hata "Pixhawk seri cihazi yok: $PIXHAWK_SERI (PIXHAWK_SERI ile ez)"
   if [ "$KIP" = sik ]; then [ -e "$SIK_SERI" ] || hata "SiK seri cihazi yok: $SIK_SERI (SIK_SERI ile ez)"; fi
+  if [ "$KIP" = tunel ]; then
+    # hub mavlink_tunel'i import eder: yoksa Restart=always cokme dongusu -> fail-closed.
+    if [ -f "$NAVITAS_KOK/comms/mavlink_tunel.py" ]; then echo "[VAR] kurulu $NAVITAS_KOK/comms/mavlink_tunel.py"
+    else echo "[YOK] kurulu $NAVITAS_KOK/comms/mavlink_tunel.py"; hata "KIP=tunel: $NAVITAS_KOK/comms/mavlink_tunel.py yok (JETSON_KILAVUZ §2: cp kod/mavlink_tunel.py ~/navitas/comms/)"; fi
+    # K8 olcum araci: eksikse kurulum surer ama gorunur uyari (hub'in calismasi icin sart degil).
+    if [ -f "$NAVITAS_KOK/scripts/sik_rf_olc.py" ]; then echo "[VAR] kurulu $NAVITAS_KOK/scripts/sik_rf_olc.py"
+    else echo "[YOK] kurulu $NAVITAS_KOK/scripts/sik_rf_olc.py <- K8 olcumu yapilamaz (cp kod/sik_rf_olc.py ~/navitas/scripts/)"; fi
+  fi
   if [ "$KAMERA_KOPRU" = 1 ]; then
     [ -x "$KAMERA_PYTHON" ] \
       || hata "kopru yorumlayicisi yok: $KAMERA_PYTHON (SISTEM Python; KAMERA_PYTHON ile ez)"
@@ -473,6 +557,21 @@ dosya_denetle() {  # kurulu kopyada kullanici, dosyalar ve cihazlar var mi? (kur
     isaretli_destek_var "$y" \
       || hata "GOSTERICI_KIP=$GOSTERICI_KIP: kurulu ${y:-rpi_inference.py} --isaretli-yayin TANIMIYOR (T227 yok) — argparse cikis 2 + Restart dongusu olurdu; GOSTERICI_KIP=kapali ya da T227'li paket"
   fi
+}
+
+# ── KIP=tunel elle dogrulama listesi (--kuru; [VAR]/[YOK] SAYIMINA GIRMEZ) ──────
+# NEDEN: bunlar Pixhawk parametresi / kablo / MAVProxy surumu gercegidir; betik olcemez.
+# Her satir [DOGRULA] ile baslar; runbook (TUNEL_SAHA_RUNBOOK.md) nasil olculecegini yazar.
+tunel_dogrula_listesi() {
+  echo "## tunel dogrulama listesi (KIP=tunel · CONTRACTS §7.6 · elle; [VAR]/[YOK] sayimina girmez)"
+  echo "[DOGRULA] SERIAL1_PROTOCOL=2 ve SERIAL2_PROTOCOL=2 (MAVLink2); SERIAL1_BAUD=57, SERIAL2_BAUD=57; SERIAL1_OPTIONS ve SERIAL2_OPTIONS bit10=0 (MAVLink yonlendirme acik)"
+  echo "[DOGRULA] BRD_SER2_RTSCTS=0 (3 tel); SYSID_THISMAV=$SYSID; SYSID_MYGCS=255"
+  echo "[DOGRULA] SR2_POSITION >= $TUNEL_SR2_POSITION_ASGARI (= 2 x MAVLINK_KONUM_ASGARI_HZ; --streamrate $TUNEL_STREAMRATE ile akis otoritesi SR2'dir)"
+  echo "[DOGRULA] PIXHAWK_SERI=$PIXHAWK_SERI DOGRULANMADI: ls -l /dev/ttyTHS* /dev/ttyTCU*; pin 8/10 geri dongu; seri konsol bu portta KAPALI"
+  echo "[DOGRULA] MAVProxy kurulu surum: mavproxy.py set_stream_rates icinde rate != -1 kosulu var (1.8.74: mavproxy.py:1046)"
+  echo "[DOGRULA] mavfwd=1: ~/.mavinit.scr ve $LOG_DIZIN/mavproxy/mavinit.scr icinde 'set mavfwd 0' YOK (hava->yer tek gecit)"
+  echo "[DOGRULA] Jetson TELEM2 3 tel (TX<->RX capraz, GND ortak)"
+  echo "[DOGRULA] K8 olcum yanki ucu $TUNEL_OLCUM_YANKI_UC bos (K8b: hub ek --tuketici; runbook)"
 }
 
 # ── --kuru ────────────────────────────────────────────────────────────────────
@@ -498,6 +597,12 @@ kuru() {
     if [ -f "$PAKET_DIZIN/kod/$y" ]; then echo "[VAR] $y"
     else echo "[YOK] $y <- UYARI: paket tasimiyor (scripts/jetson_paket_hazirla.py KOPYALAR)"; yok=$((yok + 1)); fi
   done
+  if [ "$KIP" = tunel ]; then   # hub'in import ettigi tasiyici + K8 olcum araci
+    for y in mavlink_tunel.py sik_rf_olc.py; do
+      if [ -f "$PAKET_DIZIN/kod/$y" ]; then echo "[VAR] $y"
+      else echo "[YOK] $y <- UYARI: paket tasimiyor (scripts/jetson_paket_hazirla.py KOPYALAR)"; yok=$((yok + 1)); fi
+    done
+  fi
   # NEDEN (D-405, curutucu "--kuru [YOK] iken tamam" bulgusu): --kur dosya_denetle'de
   # duracaksa --kuru bunu SIMDI soyler — salt okunur, ucuz; kuru rapor yalan soylemez.
   echo "## ana makine denetimi (gercek kosumun dosya_denetle'de duracagi yerler; salt okunur)"
@@ -515,6 +620,12 @@ kuru() {
     if [ -e "$SIK_SERI" ]; then echo "[VAR] SiK seri $SIK_SERI"
     else echo "[YOK] SiK seri $SIK_SERI <- SIK_SERI ile ez"; yok=$((yok + 1)); fi
   fi
+  if [ "$KIP" = tunel ]; then
+    for y in "comms/mavlink_tunel.py" "scripts/sik_rf_olc.py"; do
+      if [ -f "$NAVITAS_KOK/$y" ]; then echo "[VAR] kurulu $NAVITAS_KOK/$y"
+      else echo "[YOK] kurulu $NAVITAS_KOK/$y <- JETSON_KILAVUZ §2 (cp kod/${y##*/} ~/navitas/${y%%/*}/)"; yok=$((yok + 1)); fi
+    done
+  fi
   liste="$(kurulu_py_dosyalari)"
   while read -r b y; do
     if [ -f "$y" ]; then echo "[VAR] kurulu $y"
@@ -524,6 +635,7 @@ kuru() {
   # GOSTERICI_KIP acik ama T227 yoksa --kur dosya_denetle'de duracaktir — kuru bunu SIMDI soyler.
   g="$(gosterici_denetimi)"
   printf '%s\n' "$g"
+  if [ "$KIP" = tunel ]; then tunel_dogrula_listesi; fi
   yok=$((yok + $(printf '%s\n' "$g" | grep -c '^\[YOK\]' || true)))
   echo "## beyan denetimi"
   u="$(deger_uyarilari)"
@@ -570,7 +682,7 @@ birimleri_kur() {  # env dosyasi + birim dosyalari + daemon-reload (baslatmaz)
     echo "[KURULDU] $SYSTEMD_DIZIN/$b.service"
   done
   systemctl daemon-reload
-  if [ "$KIP" != sik ]; then systemctl disable --now navitas-seri-hub.service >/dev/null 2>&1 || true; fi
+  if ! hub_kipi; then systemctl disable --now navitas-seri-hub.service >/dev/null 2>&1 || true; fi
   if [ "$KAMERA_KOPRU" != 1 ]; then systemctl disable --now navitas-kamera-koprusu.service >/dev/null 2>&1 || true; fi
 }
 
@@ -603,7 +715,7 @@ kapi() {  # FAZ_B_GUN_PLANI §1: cogullayici tek basina + 3 ucta AYNI ANDA mavli
   for b in $TUKETICILER; do systemctl stop "$b.service" >/dev/null 2>&1 || true; done
   # restart: PIXHAWK_SERI/BAUD degismis olabilir (D-405)
   etkinlestir_ve_yeniden_baslat navitas-cogullayici.service
-  if [ "$KIP" = sik ]; then etkinlestir_ve_yeniden_baslat navitas-seri-hub.service; fi
+  if hub_kipi; then etkinlestir_ve_yeniden_baslat navitas-seri-hub.service; fi
   if [ "$KAMERA_KOPRU" = 1 ]; then
     etkinlestir_ve_yeniden_baslat navitas-kamera-koprusu.service
   fi
