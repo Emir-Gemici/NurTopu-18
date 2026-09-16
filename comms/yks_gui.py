@@ -38,7 +38,9 @@ from pathlib import Path
 from tkinter import font as tkfont
 from rota_inceleme import RotaInceleme, rota_plani, harita_ciz as rota_detay_haritasi
 
-from link import UDPLink, SerialLink
+from link import UDPLink, SerialLink, saha_tasiyicisi_mi, tasiyici_adi
+from mavlink_tunel import (KIMLIK_YER, TASIYICI_TUNEL, TUNEL_YER_UC, TunelLink,
+                           uc_coz)
 from ika_receiver import IkaReceiver
 from hakem_kaydi import HakemKaydi, varsayilan_hakem_log_yolu
 from komut_tekrar import AckliTekrar, BOS, ONAYLANDI, VAZGECILDI
@@ -498,6 +500,13 @@ def _udp_adres(deger):
     return host, port
 
 
+#: CONTRACTS §7.6: tunel sayac artislari en cok bu aralikla gunluge yazilir.
+TUNEL_SAYAC_LOG_ARALIGI_S = 1.0
+#: Artisi KIRMIZI loglanan tunel sayaclari (kayip / tavan / akran degisimi).
+TUNEL_KIRMIZI_SAYACLAR = ("zaman_asimi_dusen", "kimlik_boslugu", "tavan_ustu",
+                          "akran_degisti")
+
+
 def yks_udp_linki_ac(bind):
     """YKİ dinleme portunu tek sahipli aç; ikinci süreç sessizce bayt çalamaz."""
     return UDPLink(bind=bind, reuse=False)
@@ -800,7 +809,7 @@ class YksArayuz:
         self.demo = demo
         self.protokol_kilidi = not demo
         self.kaynak_kilidi = bool(
-            not demo and not isinstance(link, SerialLink)
+            not demo and not saha_tasiyicisi_mi(link)
             and iha_peer is not None and ika_peer is not None)
         self._son_heartbeat_seq = {}
         self.kaynak_ret_sayaci = 0
@@ -953,7 +962,7 @@ class YksArayuz:
         hazir_kaydi = {
             "demo": bool(demo),
             "kamera_yapilandirildi": bool(kamera_url),
-            "tasiyici": "serial" if isinstance(link, SerialLink) else "udp",
+            "tasiyici": tasiyici_adi(link),
             "komut_oturumu": self.komut_oturumu,
         }
         if oturum_kunyesi:
@@ -1262,8 +1271,12 @@ class YksArayuz:
         # Alt durum çubuğu
         alt = tk.Frame(self.kok, bg=PANEL)
         alt.pack(fill="x", side="bottom")
-        tasiyici = "RFD900A 915–928 MHz (seri)" if isinstance(self.link, SerialLink) \
-            else f"UDP :{self.link.port}"
+        if tasiyici_adi(self.link) == TASIYICI_TUNEL:
+            tasiyici = "MAVLink TUNNEL (Pixhawk TELEM1 → RFD900A)"
+        elif saha_tasiyicisi_mi(self.link):
+            tasiyici = "RFD900A 915–928 MHz (seri)"
+        else:
+            tasiyici = f"UDP :{self.link.port}"
         tk.Label(alt, text=f"  Taşıyıcı: {tasiyici}   ·   Protokol: newline-JSON v1"
                            f"   ·   Çerçeve: OPEN_ROUTE / IHA_LANDED / "
                            f"HEARTBEAT / ACK / CMD",
@@ -1885,9 +1898,40 @@ class YksArayuz:
                 self._logla(paket[1], "sari")
             else:
                 self._logla(paket[1], "mavi")
+        try:
+            self._tunel_sayac_izle()
+        except Exception as exc:              # izleme hakem ekranini DONDURMAZ
+            self._logla(f"⚠ tünel sayaç izleme hatası — {type(exc).__name__}: {exc}",
+                        "sari")
         self._kamera_tazele()
         self._durum_tazele()
         self.kok.after(120, self._tik)
+
+    def _tunel_sayac_izle(self, simdi=None):
+        """CONTRACTS §7.6: tunel sayac artislarini en cok 1 Hz ile KIRMIZI yaz.
+
+        `zaman_asimi_dusen`, `kimlik_boslugu`, `tavan_ustu`, `akran_degisti`
+        artislari hakem gunlugunde gorunur; seri/UDP kipinde hicbir sey yapmaz.
+        """
+        if tasiyici_adi(self.link) != TASIYICI_TUNEL:
+            return None
+        sayac = getattr(self.link, "sayac", None)
+        if not isinstance(sayac, dict):
+            return None
+        simdi = time.monotonic() if simdi is None else float(simdi)
+        son_t = getattr(self, "_tunel_sayac_t", None)
+        if son_t is not None and simdi - son_t < TUNEL_SAYAC_LOG_ARALIGI_S:
+            return None
+        self._tunel_sayac_t = simdi
+        onceki = getattr(self, "_tunel_sayac_onceki", None) or {}
+        artis = {k: int(sayac.get(k, 0)) - int(onceki.get(k, 0))
+                 for k in TUNEL_KIRMIZI_SAYACLAR
+                 if int(sayac.get(k, 0)) > int(onceki.get(k, 0))}
+        self._tunel_sayac_onceki = dict(sayac)
+        if artis:
+            self._logla("TÜNEL SAYAÇ ARTIŞI: " + " ".join(
+                f"{k}+{v}" for k, v in artis.items()), "kirmizi")
+        return artis
 
     def _heartbeat_sirasi_gecerli(self, dugum, seq, simdi=None):
         """Aynı canlı oturumda geri/tekrar heartbeat'in durumu ezmesini önle."""
@@ -2042,7 +2086,7 @@ class YksArayuz:
             # çakışan başka tipteki bekleyen bu ACK'i sahiplenemez (§6.6).
             if adr is not None:
                 self.link.send(encode(ack(m["seq"], "yks", tip)), adr)
-            elif isinstance(self.link, SerialLink):
+            elif saha_tasiyicisi_mi(self.link):
                 self.link.send(encode(ack(m["seq"], "yks", tip)))
             self.sayac["ACK_TX"] += 1
             if yeni:
@@ -2081,7 +2125,7 @@ class YksArayuz:
             # seq'iyle çakışırsa bu ACK yanlış bekleyene bağlanamaz (§6.6).
             if adr is not None:
                 self.link.send(encode(ack(seq, "yks", tip)), adr)
-            elif isinstance(self.link, SerialLink):
+            elif saha_tasiyicisi_mi(self.link):
                 self.link.send(encode(ack(seq, "yks", tip)))
             self.sayac["ACK_TX"] += 1
             if seq != self.iha_landed_seq:
@@ -3744,7 +3788,7 @@ class YksArayuz:
         cmd = komut_mesaji["cmd"]
         mesaj = encode(komut_mesaji)
         try:
-            if isinstance(self.link, SerialLink):
+            if saha_tasiyicisi_mi(self.link):
                 self.link.send(mesaj)
             elif adr is not None and adr[1]:
                 self.link.send(mesaj, adr)
@@ -5007,6 +5051,13 @@ def main():
                          "heartbeat kaynağı kullanılır ve komut alıcıya "
                          "ULAŞMAZ, D-403)")
     ap.add_argument("--serial", help="SiK telsiz seri portu (örn. COM5)")
+    # CONTRACTS §7.6 (results/tunel_20260916/ON_KAYIT.md): tek RFD900A Pixhawk
+    # TELEM1'de; COM'un tek sahibi Mission Planner'dır. NAVITAS çerçeveleri MP
+    # aynasından (UDP Client 127.0.0.1:14570) MAVLink TUNNEL ile alınır.
+    ap.add_argument("--tunel", metavar="HOST:PORT",
+                    help=f"MAVLink TUNNEL yer ucu (Mission Planner aynası, örn. "
+                         f"{TUNEL_YER_UC}); --serial/--demo/--ika/--iha ile "
+                         f"birlikte kullanılamaz")
     ap.add_argument("--baud", type=int, default=57600)
     ap.add_argument(
         "--kamera-url", default=os.environ.get("NAVITAS_KAMERA_URL"),
@@ -5066,6 +5117,15 @@ def main():
         args.kamera_etiket = kamera_etiketi_dogrula(args.kamera_etiket)
     except ValueError as exc:
         ap.error(f"--kamera-etiket: {exc}")
+    if args.tunel and args.serial:
+        ap.error("--tunel ile --serial birlikte kullanılamaz")
+    if args.tunel and args.demo:
+        ap.error("--demo yalnız UDP kipinde kullanılabilir (--tunel ile olmaz)")
+    if args.tunel and args.ika:
+        ap.error("--tunel ile --ika birlikte kullanılamaz")
+    if args.tunel and args.iha:
+        ap.error("--tunel ile --iha birlikte kullanılamaz; tünel kipinde İHA "
+                 "aynı MAVLink hattındadır ve UDP hedefi uygulanmaz")
     if args.serial and args.demo:
         ap.error("--demo yalnız UDP kipinde kullanılabilir")
     if args.serial and args.ika:
@@ -5073,9 +5133,9 @@ def main():
     if args.serial and args.iha:
         ap.error("--serial ile --iha birlikte kullanılamaz; seri kipte İHA "
                  "aynı SiK hattındadır ve UDP hedefi uygulanmaz")
-    if not args.serial and not args.demo and not args.ika:
+    if not args.serial and not args.demo and not args.ika and not args.tunel:
         ap.error("UDP kipinde --ika HOST:PORT zorunlu")
-    if not args.serial and not args.demo and not args.iha:
+    if not args.serial and not args.demo and not args.iha and not args.tunel:
         ap.error("UDP kipinde --iha HOST:PORT zorunlu: ARM/DISARM/RTL/LAND "
                  "efemer heartbeat portuna gönderilemez")
 
@@ -5091,6 +5151,16 @@ def main():
         link = SerialLink(args.serial, args.baud)
         ika_peer = None
         iha_peer = None
+    elif args.tunel:
+        try:
+            link = TunelLink(uc_coz(args.tunel), KIMLIK_YER)
+        except (OSError, ValueError) as exc:
+            ap.error(
+                f"YKİ tünel ucu açılamadı ({args.tunel}): {exc}. Mission Planner "
+                "aynası (UDP Client) bu porta yazmalı; başka bir YKİ aynı portu "
+                "kullanıyor olabilir.")
+        ika_peer = None
+        iha_peer = None
     else:
         h, p = args.bind.split(":")
         try:
@@ -5103,9 +5173,11 @@ def main():
         ika_peer = args.ika
         iha_peer = args.iha
 
+    # Elestiri 2 bulgu 2: `f'tunel://{None}'` bos olmayan dizgedir; kosullu ifade.
+    dinleme = args.serial or (f"tunel://{args.tunel}" if args.tunel else args.bind)
     oturum_kunyesi = yki_oturum_kunyesi(
         fda_kipi=args.fda,
-        dinleme=args.serial or args.bind,
+        dinleme=dinleme,
         iha_hedef=iha_peer,
         ika_hedef=ika_peer,
         seri_port=args.serial,
@@ -5132,7 +5204,7 @@ def main():
         kok.destroy()
         raise
     app._logla(f"YKS hazır — dinleniyor: "
-               f"{args.serial or args.bind}", "mavi")
+               f"{dinleme}", "mavi")
     app._logla(f"KALICI HAKEM KAYDI: {hakem_log_yolu}", "mavi")
     app._logla(
         (f"RAW kamera LAN kaynağı: {args.kamera_url}" if args.kamera_url else
