@@ -1214,6 +1214,138 @@ gelir, hub öğrenilen/statik tüketicilere yayınlar; her tüketici yalnız ken
 YKS/İKA adresine konuşur. Kilit: `tests/test_faz_b_seri_hub.py` (uçtan uca:
 YKS-seri → hub → gerçek `IhaKomutAlici` → ACK → seri).
 
+### 7.6 MAVLink TUNNEL taşıyıcı — tek RFD900A, telsiz Pixhawk'ta (16 Eylül 2026 · ön kayıt `results/tunel_20260916/ON_KAYIT.md`)
+
+**Olgu / karar (kullanıcı, 16 Eylül):** tek RFD900A çifti Pixhawk **TELEM1**'de kalır; Jetson
+Pixhawk **TELEM2**'ye 3 telli UART ile bağlıdır (`/dev/ttyTHS1` — **DOĞRULANMADI**, 57600);
+Mission Planner uçuşta kullanılabilir kalır (acil LAND/RTL). Pixhawk yalnız MAVLink yönlendirir,
+ham NAVITAS baytlarını (§7.5) TELEM2'den TELEM1'e **geçirmez**. NAVITAS çerçeveleri MAVLink2
+`TUNNEL` (id 385, yük ≤ 128 B) parçalarına bölünür. Tüketici kodu **değişmez** (§7.5 ilkesi).
+
+**Zincir:** HAVA: tüketiciler → UDP `127.0.0.1:5100` → `seri_hub --tunel 127.0.0.1:14553`
+(`TunelLink` hava, `datagram` ayrıştırma) ⇄ MAVProxy (`--out udp:127.0.0.1:14553`, sonda
+`--streamrate -1`) ⇄ UART 57600 ⇄ TELEM2 ⇄ yönlendirme ⇄ TELEM1 ⇄ RFD900A.
+YER: RFD900A ⇄ COM (tek sahibi **Mission Planner**) ⇄ MP aynası (UDP Client `127.0.0.1:14570`,
+Write access) ⇄ `yks_gui --tunel 127.0.0.1:14570` (`TunelLink` yer, `akis` ayrıştırma).
+
+**Sabitler — tek kaynak `comms/mavlink_tunel.py`; kabuk ikizleri `jetson_paket/jetson_baslat.sh`
+(kilit: `tests/test_mavlink_tunel_sozlesme.py`, çıplak sayı taraması dahil):**
+
+| sabit | değer | gerekçe / kilit |
+|---|---|---|
+| `TUNEL_MAVLINK_MSG_ID` | `385` | `ardupilotmega.MAVLINK_MSG_ID_TUNNEL` |
+| `TUNEL_PAYLOAD_TYPE` | `0xCE56` | > 32767 yerel deney aralığı (common.xml); enum'da yok |
+| `TUNEL_MAVLINK_YUK_B` | `128` | TUNNEL.payload dizi boyu |
+| `TUNEL_SURUM` | `1` | başlık sürümü |
+| `TUNEL_BASLIK_BICIMI` | `>BHBB` | surum · cerceve_kimligi · indis · toplam (big-endian) |
+| `TUNEL_BASLIK_B` | `5` | `struct.calcsize` |
+| `TUNEL_PARCA_YUK_B` | `123` | türetilir (128 − 5) |
+| `TUNEL_AZAMI_PARCA` | `64` | korundu: protocol.py "< 4 KiB" beyanı; en büyük meşru çerçeve 1172 B |
+| `TUNEL_AZAMI_CERCEVE_B` | `7872` | türetilir; ≥ 4096 |
+| `TUNEL_KIMLIK_MODU` | `65536` | uint16 kimlik alanı (başlıktaki `H`) |
+| `TUNEL_SYSID` | `247` | ≠ 0, 1, 255, 51 |
+| `TUNEL_HAVA_COMPID` | `25` | MAV_COMP_ID_USER1 |
+| `TUNEL_YER_COMPID` | `26` | MAV_COMP_ID_USER2 |
+| `TUNEL_HEDEF_SYSID` | `0` | yayın (reboot sonrası hedefli rota silinir — M9) |
+| `TUNEL_HEDEF_COMPID` | `0` | yayın |
+| `TUNEL_HAVA_UC` | `127.0.0.1:14553` | MAVProxy `--out` = hub `--tunel` (§7.4 uçlarıyla çakışmaz) |
+| `TUNEL_YER_UC` | `127.0.0.1:14570` | MP aynası = `yks_gui --tunel` |
+| `TUNEL_OLCUM_YANKI_UC` | `127.0.0.1:5190` | K8b: hub ek `--tuketici` = `sik_rf_olc` yankı `--bind` |
+| `TUNEL_BIRLESTIRME_ZAMAN_ASIMI_S` | `0.5` | hareketsizlik ≈ 4 × A6 RTT p95; < hafıza |
+| `TUNEL_TAMAMLANAN_HAFIZA_S` | `0.8` | **kesin** < `seri_hub.SERI_YENIDEN_ACMA_ARALIGI_S` (1,0) ve < RestartSec 2 |
+| `TUNEL_ESZAMANLI_KISMI_TAVANI` | `16` | bellek |
+| `TUNEL_AKRAN_SESSIZLIK_S` | `3.0` | 1 Hz araç heartbeat × 3 |
+| `TUNEL_KIMLIK_ILERI_PENCERE` | `256` | ≈5 çerçeve/s ile ≈51 s'ye kadar kayıp "boşluk", ötesi "sıçrama"; sahte boşluk olasılığı 256/65536 ≈ %0,4 (HESAP) |
+| `TUNEL_HAVA_AYRISTIRMA` | `datagram` | MAVProxy mavudp her mesajı ayrı datagram yazar |
+| `TUNEL_YER_AYRISTIRMA` | `akis` | MP aynasının datagram sınırı bilinmiyor (K8-0 i ölçer) |
+| `TUNEL_TELEM2_BAUD` | `57600` | kabuk: `SERIAL2_BAUD=57`; `KIP=tunel` başka baud'u REDDEDER |
+| `TUNEL_STREAMRATE` | `-1` | kabuk: MAVProxy 1.8.74 `mavproxy.py:1046` `rate != -1` değilse istek YOK; SON `--streamrate` bu |
+
+**Başlık:** `TUNNEL.payload[0:5] = >BHBB (surum, cerceve_kimligi, indis, toplam)`, ardından 1..123 B
+yük; `payload_length = 5 + len(yük)`; tel boyu = 17 + payload_length (pymavlink 2.4.49 ölçümü);
+`target_system = target_component = 0`. Kimlik başlangıcı `SystemRandom`; **yalnız gerçekten
+gönderilen** çerçevede +1 mod 65536 (tavan üstü / akran yok kimlik tüketmez). Alıcı: geçerlilik
+(sürüm, 1 ≤ toplam ≤ 64, indis < toplam, son olmayan parça tam 123 B); tutarsız parça (aynı kimlik
+farklı toplam ya da aynı indis farklı içerik) kısmi çerçeveyi **tamamen** atar; yinelenen parça yok
+sayılır; sıra dışı parça kabul; hareketsizlik zaman aşımı; eşzamanlı kısmi tavanı (en eski düşer).
+`recv` **tam çerçeve** teslim eder (bufsize bölmez), adres her zaman `None`; `timeout` çağrı başına
+TOPLAM son tarihtir (hub bunu `SERI_OKUMA_ZAMAN_ASIMI_S`'ye çeker). Süzgeç sırası: msgid →
+payload_type → kendi yankı → beklenen karşı uç (247/25↔26) → başlık → birleştirici.
+
+**Kimlik boşluğu:** birleştirici en yüksek kimliği izler; `d = (k − en_yüksek) mod 65536`:
+0 → yok; 1..256 → `kimlik_boslugu += d−1`; ≥ 65536−256 → `kimlik_geri`; diğer → `kimlik_sicramasi`
+(ilk seferde KIRMIZI). Parçası gelip tamamlanmayan çerçeve `zaman_asimi_dusen`'dir, boşluğa girmez.
+
+**Akran öğrenme:** UDP akranı YALNIZ araç HEARTBEAT'i (kaynak sysid = `iha_komut_alici.VARSAYILAN_HEDEF_SYSID`,
+tip ≠ GCS) taşıyan datagramın kaynağından öğrenilir; değişim `akran_degisti` + KIRMIZI. Başka
+datagram akranı değiştirmez (`akrandisi_datagram`), TUNNEL parçası yine işlenir. Kalan risk: yerel
+süreç **sahte araç heartbeat'i** üretirse akranı alabilir.
+
+**Ayrıştırma kipleri (bu oturumda pymavlink 2.4.49 ile ölçüldü):** `datagram` — her datagram yeni
+ayrıştırıcı; `00 fd 80`+5×00 çöpünden sonra kalıcı ayrıştırıcı iki geçerli TUNNEL'ı yuttu, yeni
+ayrıştırıcı ilkini çözdü. `akis` — kalıcı ayrıştırıcı; 100. bayttan bölünmüş iki paketi çözer
+(aynı öbek `datagram` kipinde ilk paketi kaybeder, `cozum_hatasi` sayılır — ölçüldü).
+
+**Adresleme / kimlik:** sysid 247, compid 25/26; yayın 0/0; **HEARTBEAT gönderilmez** (FS_GCS, MP
+araç seçimi etkilenmez). Yönlendirme kuralları (Copter-4.5 MAVLink_routing.cpp, depoda
+**DOĞRULANMADI**): rota her mesajdan öğrenilir; HEARTBEAT gelen kanal dışına; hedef 0 rotası olan
+kanallara; hedefli yalnız o sysid'in kanalına; TX alanı yetmezse **sessiz düşme**. MAVProxy
+`mavfwd` (varsayılan açık) **çıkıştan gelenin master'a yazılmasıdır — hava→yer yönüdür** (hub
+MAVProxy'nin `--out` ucundadır; taklitte ölçüldü, K4_11); yer→hava master→çıkış yolu mavfwd'den
+bağımsızdır.
+
+**TELEM2 bant bütçesi (HESAP, ölçüm değil; K8b doğrular):**
+
+| yön / kalem | B/s |
+|---|---|
+| SR2_POSITION 8 Hz × (GLOBAL_POSITION_INT ≈40 B + LOCAL_POSITION_NED ≈40 B) | ≈ 640 |
+| SR2_EXTRA3 2 Hz × ≈6 mesaj × ≈35 B | ≈ 420 |
+| HEARTBEAT, EXTENDED_SYS_STATE, SET_MESSAGE_INTERVAL akışları, iletilen MP heartbeat, RADIO_STATUS | ≈ 150–300 |
+| yer→hava TUNNEL (CMD / ACK / OPEN_ROUTE ACK) | ≈ 100–300 |
+| **toplam** (5760 B/s'nin ≈%25–30'u) | **≈ 1300–1700** |
+| karşılaştırma: `--streamrate 8` (06 Eyl tlog 1943 B/s ölçümü SR1 oranlarıyla, 8 Hz'e ölçekli) | ≈ 6858 > 5760 |
+
+Açılışta MAVProxy parametre indirmesi ≈1000 × ≈37 B ≈ 37 KB ≈ 6–7 s (HESAP) — K8b ısınmadan sonra.
+**TELEM1 TX** (Pixhawk→RFD): SR1 1943 B/s (ölçüm) + hava→yer tünel ≈ 2,4 KB/s (HESAP) ≈ 4,3 KB/s ≈
+**%75** — **en dar boğaz**; tünel değiştiremez, SR1 azaltma kullanıcı kararıdır. Taklitte (K4, bu
+modelin kanıtı) TX tamponu 256 B varsayımında 4 parçalı çerçeve **düştü**, 1024 B'da geçti; ArduPilot
+tampon boyu depoda doğrulanamadı.
+
+**Gecikme bütçesi (HESAP; UART sekmesi = tel B / 5760 B/s; A6 ham RTT p95 126,5 ms iki yönün RFD
+sekmelerini içerir, D-478):**
+
+| çerçeve | ham B | parça | tel B | UART sekmesi |
+|---|---|---|---|---|
+| RF_PROBE / ACK | 84 / 82 | 1 | 106 / 104 | 18 ms |
+| CMD 64 kr. oturum | 165 | 2 | 209 | 36 ms |
+| HEARTBEAT tam | 250–335 | 3 | 316–401 | 55–70 ms |
+| OPEN_ROUTE 30 wp | 473 | 4 | 561 | 97 ms |
+
+RF_PROBE RTT ≈ 126,5 + 2 × (18 + 8 + ≈10) ≈ 199 ms — **eşik bölgesinde**. OPEN_ROUTE 30 wp → ACK ≈
+0,40–0,45 s > interval 0,25 s; `KararYayinci` repeat=4 ile tıkanma sınırlıdır.
+
+**Arıza semantiği:** kuyruk YOK. Olağan dış arıza sayaç + KIRMIZI (ConnectionReset/Refused yutulur:
+`udp_red`, `gonderim_hatasi`); yerel soket arızası `OSError` yükseltir → hub kapat → 1 s → yeniden aç
+(§7.5), arızada UDP çerçeveleri düşürülür. MAVProxy yeniden başlarsa yeni port ilk araç HEARTBEAT'iyle
+(≤ 1 s) öğrenilir, arada gönderimler `akran_sessizken_gonderilen`'e düşer. Pixhawk reboot'unda düşen
+tek parçalı çerçeveler `kimlik_boslugu` ile görünür. Hub içi yeniden açmada yeni `TunelLink` yeni
+rastgele kimlik alır; hafıza 0,8 s < 1,0 s olduğundan yeni çerçeve eski hafızada yutulamaz.
+
+**K8 (İNSAN görevi, gerçek donanım — ölçülene dek ÖLÇÜLEMEDİ; benzetim GEÇTİ sayılmaz):**
+K8-0 ön kontrolleri (MP aynası datagram sınırı, ilk yer→hava sınaması, 10 dk ıslatma, yks_gui
+kapanınca MP bağlı kalır, MP yeniden başlayınca ayna ayarı) → **K8a** ham tünel (Jetson hub durur,
+`sik_rf_olc --rol yanki --tasiyici tunel --tunel-bind 127.0.0.1:14553 --tunel-kimlik hava`) →
+**K8b** üretim yolu (manuel hub + ek `--tuketici 127.0.0.1:5190`, `sik_rf_olc --rol yanki --tasiyici
+udp --bind 127.0.0.1:5190`, üretim süreçleri açık). **GEÇTİ = K8a p95 < 0,20 s VE K8b p95 < 0,20 s**
+(n = 200, aralık 0,25). Çok parçalı `--prob-dolgu 165/473` koşuları kapı dışı ama zorunlu kayıttır
+(JSON `kapi_disi: true`). Adımlar: `jetson_paket/TUNEL_SAHA_RUNBOOK.md`.
+
+**Kilit dosyaları:** `tests/test_mavlink_tunel.py` (K3) · `tests/test_seri_hub_tunel.py` ·
+`tests/test_mavlink_tunel_uctan_uca.py` (K4, taklit: `scripts/ardupilot_yonlendirici_taklit.py` —
+GERÇEK ARDUPILOT DEĞİLDİR) · `tests/test_jetson_baslat_tunel.py` (K6) ·
+`tests/test_mavlink_tunel_sozlesme.py` + `tests/test_yks_gui_tunel.py` +
+`tests/test_sik_rf_olc_tunel.py` + `tests/test_jetson_comms_paketi.py` (K7).
+
 ---
 
 ## 8. Çözünürlük sözleşmesi

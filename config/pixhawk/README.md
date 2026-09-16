@@ -428,3 +428,22 @@ fırlatıcısı (`SIM_Plane.cpp`: `-catapult`/`-bungee` çerçevelerinde 7. çı
    `iha_inis_yayinci`/`inis_kaniti`'nın paraşütle inişte `ON_GROUND`'u ne zaman göreceği bilinmiyor.
 7. **`scripts/pixhawk_firmware_indir.py` yalnız Copter indirir:** Plane 4.5.7 `.apj`'nin saha belleğine
    çevrimdışı konması için aynı `board_id` 56 kapısıyla bir `--arac plane` seçeneği önerilir.
+
+## 7. TELEM1/TELEM2 tünel doğrulama listesi — yalnız OKUMA (CONTRACTS §7.6 · 16 Eylül 2026)
+
+> **NEDEN:** kullanıcı kararı (16 Eylül): tek RFD900A Pixhawk **TELEM1**'de, Jetson **TELEM2**'de
+> (3 tel UART); NAVITAS çerçeveleri MAVLink2 `TUNNEL` ile Pixhawk yönlendirmesinden geçer
+> (`results/tunel_20260916/ON_KAYIT.md`). **Bu bölüm PARAMETRE DEĞİŞTİRMEZ** — yalnız okunacak
+> değerleri ve nedenlerini listeler; saha adımları `jetson_paket/TUNEL_SAHA_RUNBOOK.md` §1.
+
+| parametre | beklenen | neden |
+|---|---|---|
+| `SERIAL1_PROTOCOL`, `SERIAL2_PROTOCOL` | 2 | MAVLink2 (TUNNEL yalnız MAVLink2'de) |
+| `SERIAL1_BAUD`, `SERIAL2_BAUD` | 57 | RFD900A ve Jetson UART 57600; `jetson_baslat.sh KIP=tunel` başka baud'u reddeder |
+| `SERIAL1_OPTIONS`, `SERIAL2_OPTIONS` | bit10 = 0 | MAVLink yönlendirmesi kapatılmamış olmalı |
+| `BRD_SER2_RTSCTS` | 0 | Jetson UART 3 tel (akış denetimi yok) |
+| `BRD_SER1_RTSCTS` | kayıt (14.09 dökümünde 2) | RFD900A TELEM1 akış denetimi; TX tampon davranışı için kayıt |
+| `SYSID_THISMAV` | `iha_komut_alici.VARSAYILAN_HEDEF_SYSID` (1) | tünel akranı yalnız bu sysid'in araç HEARTBEAT'inden öğrenilir |
+| `SYSID_MYGCS` | 255 | MP ve Jetson MAVProxy GCS kimliği |
+| `SR2_POSITION` | ≥ 8 (= 2 × `MAVLINK_KONUM_ASGARI_HZ`) | tünel kipinde MAVProxy `--streamrate -1` istek göndermez; akış otoritesi SR2'dir |
+| `SR1_*` (hepsi) | kayıt | TELEM1 bütçesi: SR1 1943 B/s (06 Eyl tlog ölçümü) + tünel ≈ 2,4 KB/s ≈ 57600 hattın %75'i (HESAP) — en dar boğaz; azaltma kullanıcı kararıdır |
