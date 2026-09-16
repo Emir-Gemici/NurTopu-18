@@ -9780,3 +9780,5 @@ _(henüz yok)_
 - [ ] **T275 → yeniden tanımlandı:** 3S 8 Ah paketler yüksek iç dirençli (33–44 mΩ), 4 pil failsafe 22–30 s'de; **21 Eyl'de 3S paket kullanılmayacak**; 4S'e geçişte BATT_* parametreleri (D-484) şart — İNSAN.
 - [ ] **T279 — M4 (arka-sağ) kol/motor yer kontrolü** (burulma, eksen dikliği, pervane eşliği, CG) + test uçuşunda `INS_LOG_BAT_MASK=1` — İNSAN, 21 Eyl öncesi.
 - [ ] **T280 — kütle ölçümü** (4S 13 Ah takılı / 3S 8 Ah takılı) → performans zarfı yeniden koşum — İNSAN.
+- [ ] **T281 — K8 tünel tezgâh ölçümü (İNSAN, atölye 16–17 Eyl)** — `jetson_paket/TUNEL_SAHA_RUNBOOK.md` §1→§2→§3→§4→§6→§7→§8; eşik RTT p95 < 0,20 s (K8a ve K8b); çok parçalı 473 B hava→yer kaydı zorunlu (kapı dışı); sonuçlar `results/tunel_<tarih>/`. Ölçülene dek ÖLÇÜLEMEDİ (D-487).
+- [ ] **T282 — tünel tur 3 bulguları** (D-487: M07/M19/M29/M31/M32/M34 test vakumu, sik_rf_olc akran/zaman aşımı sayımı, SR2 kanıtı, K7 n/aralık kilidi, çok parçalı hava→yer saha kapısı önerisi) — amele + çürütücü; tezgâh ölçümüyle AYNI ANDA koşturulmaz (PC yükü RTT'yi bozar).
