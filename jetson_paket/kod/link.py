@@ -77,6 +77,12 @@ class SerialLink:
     diğer uçtan çıkar. Varsayılan SiK air-rate ile 57600 baud yaygındır.
     """
 
+    # CONTRACTS §7.6 (tünel ön kaydı): saha taşıyıcısı işareti. Üst katman
+    # (yks_gui) "adres yok, ortam yayını" davranışını sınıf adına değil bu
+    # işarete bağlar; MAVLink TUNNEL taşıyıcısı da aynı işareti taşır.
+    SAHA_TASIYICI = True
+    TASIYICI_ADI = "serial"
+
     def __init__(self, port="/dev/ttyUSB0", baud=57600, timeout=0.3,
                  exclusive=True):
         import serial  # tembel import (dev makinesinde pyserial olmayabilir)
@@ -121,6 +127,27 @@ class SerialLink:
 
     def close(self):
         self.ser.close()
+
+
+#: Saha taşıyıcısı işareti olmayan linklerin (UDPLink) adı.
+TASIYICI_UDP = "udp"
+
+
+def saha_tasiyicisi_mi(link):
+    """Adres katmanı olmayan saha taşıyıcısı mı (SerialLink, TunelLink)?
+
+    Sınıf düzeyindeki `SAHA_TASIYICI` işaretine bakar; `is True` şartı
+    `mock.Mock` gibi her özniteliği uyduran nesneleri saha taşıyıcısı SAYMAZ.
+    """
+    return getattr(type(link), "SAHA_TASIYICI", False) is True
+
+
+def tasiyici_adi(link):
+    """Künye/kanıt için taşıyıcı adı: 'serial' | 'tunel' | 'udp'."""
+    if not saha_tasiyicisi_mi(link):
+        return TASIYICI_UDP
+    ad = getattr(type(link), "TASIYICI_ADI", None)
+    return ad if isinstance(ad, str) else TASIYICI_UDP
 
 
 def make_link(kind="udp", **kw):
