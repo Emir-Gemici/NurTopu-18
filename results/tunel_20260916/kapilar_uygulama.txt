@@ -1,0 +1,571 @@
+# KAPILAR — UYGULAMA (amele, worktree) · MAVLink TUNNEL · 16 Eylul 2026
+# On kayit: results/tunel_20260916/ON_KAYIT.md · nihai sartname (mimar) · taban: taban_suit.txt
+# Tum ciktilar GERCEK kosumlardan kopyalandi; bu dosyadaki hicbir sayi elle yazilmadi
+# (uretici: amele scratchpad kapilar_yaz.py; ham dosyalar amele scratchpad'inde).
+# Son tam suit: Start-Process ile, cwd worktree koku, PYTHONPATH=worktree koku,
+#   python -m unittest discover -s tests -v  (stdout/stderr ayri dosya, satir kirilmasi yok)
+
+========================================================================================
+K1 — GENEL KAPI (codes/test_rota_sentetik.py, cwd worktree koku) — degisiklikten SONRA
+----------------------------------------------------------------------------------------
+     5     orta       3       3  0.833   10             None         3  OK
+     5      zor       2       2  0.685    9             None         1  OK
+------------------------------------------------------------------------------
+URETIM YOLU: rota uretimi 15/15 · yayinlanan serit 15/15 (esik >= 14/15, ON_KAYIT SS18-B)
+[OK] URETIM YOLU KOLU GECTI
+------------------------------------------------------------------------------
+GENEL KAPI (madde 14): GECTI — kol1 15/15 · kol2 serit 15/15
+EXIT 0 sure 00:00:03.7465116
+HUKUM K1: GECTI (taban da GECTI, taban_suit.txt)
+
+========================================================================================
+K2 — TAM SUIT, tabanla fark (yeni dusen olmamali)
+----------------------------------------------------------------------------------------
+Ran 2586 tests in 723.344s
+FAILED (failures=18, errors=56, skipped=34)
+# sonra tekil: 74 � taban tekil: 72
+## YENI DUSEN (sonra - taban, alt test parantezi disi kimlikle):
+  FAIL: test_K4_03_K4_04_tampon_256_ZORUNLU (test_mavlink_tunel_uctan_uca.K4UctanUca.test_K4_03_K4_04_tampon_256_ZORUNLU
+## TABANDA DUSUP ARTIK DUSMEYEN (taban - sonra):
+## SONRA TAM LISTE:
+  ERROR: test_GEVSETME_ACIKCA_istenmeli (test_saha_parametrik.FailClosedTests.test_GEVSETME_ACIKCA_istenmeli)
+  ERROR: test_MUTASYON_A_uretim_surumu_donguye_girerse_DUSER (test_t158_kilavuz_kapisi_dongu.Mutasyonlar.test_MUTASYON_A_uretim_surumu_donguye_girerse_DUSER)
+  ERROR: test_MUTASYON_B_defterde_olmayan_surum_DUSER (test_t158_kilavuz_kapisi_dongu.Mutasyonlar.test_MUTASYON_B_defterde_olmayan_surum_DUSER)
+  ERROR: test_MUTASYON_C_imgsz_512_yapilirsa_DUSER (test_t158_kilavuz_kapisi_dongu.Mutasyonlar.test_MUTASYON_C_imgsz_512_yapilirsa_DUSER)
+  ERROR: test_MUTASYON_kunyedeki_sha_bozulursa_UYUSMAZ_der (test_t123_gecis_provasi.G2KosulabilirTests.test_MUTASYON_kunyedeki_sha_bozulursa_UYUSMAZ_der)
+  ERROR: test_TABAN_bugunku_kilavuz_temiz (test_t158_kilavuz_kapisi_dongu.Mutasyonlar.test_TABAN_bugunku_kilavuz_temiz)
+  ERROR: test_UC_UC_ayni_agirligi_gosteriyor (test_saha_parametrik.KayitDefteriDurumuTests.test_UC_UC_ayni_agirligi_gosteriyor)
+  ERROR: test_UYUM_varsa_yuklenir (test_saha_parametrik.FailClosedTests.test_UYUM_varsa_yuklenir)
+  ERROR: test_a1_hakem_ekrani_ankoru (unittest.loader._FailedTest.test_a1_hakem_ekrani_ankoru)
+  ERROR: test_a2_karar_yasi (unittest.loader._FailedTest.test_a2_karar_yasi)
+  ERROR: test_dalga2_k1_k5_k8_kusurlari (unittest.loader._FailedTest.test_dalga2_k1_k5_k8_kusurlari)
+  ERROR: test_default_is_verified_v36_competition_model (test_model_registry.ModelRegistryTests.test_default_is_verified_v36_competition_model)
+  ERROR: test_defter_okunamazsa_ekran_ad_UYDURMAZ (test_saha_parametrik.KayitDefteriDurumuTests.test_defter_okunamazsa_ekran_ad_UYDURMAZ)
+  ERROR: test_dongu_gorunur (test_t158_kilavuz_kapisi_dongu.DonguTaramasi.test_dongu_gorunur)
+  ERROR: test_faz_b_ack_ref_tip (unittest.loader._FailedTest.test_faz_b_ack_ref_tip)
+  ERROR: test_faz_b_yks_fda_kipi (unittest.loader._FailedTest.test_faz_b_yks_fda_kipi)
+  ERROR: test_g2_KOSUYOR_ve_PATLAMIYOR (test_t123_gecis_provasi.G2KosulabilirTests.test_g2_KOSUYOR_ve_PATLAMIYOR)
+  ERROR: test_g2_YEDEGI_OK_diye_dogruluyor (test_t123_gecis_provasi.G2KosulabilirTests.test_g2_YEDEGI_OK_diye_dogruluyor)
+  ERROR: test_hakem_kunye_algi_hizasi (unittest.loader._FailedTest.test_hakem_kunye_algi_hizasi)
+  ERROR: test_iha_landed_gate (unittest.loader._FailedTest.test_iha_landed_gate)
+  ERROR: test_ika_go_ackli_tekrar (unittest.loader._FailedTest.test_ika_go_ackli_tekrar)
+  ERROR: test_ika_go_gate (unittest.loader._FailedTest.test_ika_go_gate)
+  ERROR: test_k1_tazelik_damgasi (unittest.loader._FailedTest.test_k1_tazelik_damgasi)
+  ERROR: test_kayit_defteri_YOKSA_uyum_SAYILMAZ (test_saha_parametrik.FailClosedTests.test_kayit_defteri_YOKSA_uyum_SAYILMAZ)
+  ERROR: test_manifest_ile_kayit_defteri_ESLESIYOR (test_saha_parametrik.KayitDefteriDurumuTests.test_manifest_ile_kayit_defteri_ESLESIYOR)
+  ERROR: test_model_adinda_kullanilmayan_dongu_SAYILMAZ (test_t158_kilavuz_kapisi_dongu.DonguTaramasi.test_model_adinda_kullanilmayan_dongu_SAYILMAZ)
+  ERROR: test_p9abc_yks (unittest.loader._FailedTest.test_p9abc_yks)
+  ERROR: test_rota_guven_esigi (unittest.loader._FailedTest.test_rota_guven_esigi)
+  ERROR: test_rota_ret_nedenleri (unittest.loader._FailedTest.test_rota_ret_nedenleri)
+  ERROR: test_t169_tespit_tazeligi (unittest.loader._FailedTest.test_t169_tespit_tazeligi)
+  ERROR: test_t170_fda_sure_butcesi (unittest.loader._FailedTest.test_t170_fda_sure_butcesi)
+  ERROR: test_t171_asgari_irtifa (unittest.loader._FailedTest.test_t171_asgari_irtifa)
+  ERROR: test_t177_senaryo_tatbikati (unittest.loader._FailedTest.test_t177_senaryo_tatbikati)
+  ERROR: test_uretim_defteri_ile_INFER_SIZE_UYUSUYOR (test_imgsz_tek_kaynak.ImgszTekKaynak.test_uretim_defteri_ile_INFER_SIZE_UYUSUYOR)
+  ERROR: test_uretim_modeli_hizasi (unittest.loader._FailedTest.test_uretim_modeli_hizasi)
+  ERROR: test_varsayilan_MANIFESTTEN_gelir (test_saha_parametrik.ModelVarsayilaniTests.test_varsayilan_MANIFESTTEN_gelir)
+  ERROR: test_yks_erken_ika_ack_tamponu (unittest.loader._FailedTest.test_yks_erken_ika_ack_tamponu)
+  ERROR: test_yks_gui_aktarim_zamani (unittest.loader._FailedTest.test_yks_gui_aktarim_zamani)
+  ERROR: test_yks_gui_arm_gps_canli (unittest.loader._FailedTest.test_yks_gui_arm_gps_canli)
+  ERROR: test_yks_gui_demo_kaynak (unittest.loader._FailedTest.test_yks_gui_demo_kaynak)
+  ERROR: test_yks_gui_kabul_kumesi_koku_mutlak_ve_mevcut (test_t220_jetson_istekleri.K2KabulKumeleriDepoda.test_yks_gui_kabul_kumesi_koku_mutlak_ve_mevcut)
+  ERROR: test_yks_gui_komut_durustlugu (unittest.loader._FailedTest.test_yks_gui_komut_durustlugu)
+  ERROR: test_yks_gui_rota_engel (unittest.loader._FailedTest.test_yks_gui_rota_engel)
+  ERROR: test_yks_gui_uretim_hizasi (unittest.loader._FailedTest.test_yks_gui_uretim_hizasi)
+  ERROR: test_yks_hakem_kanit_olaylari (unittest.loader._FailedTest.test_yks_hakem_kanit_olaylari)
+  ERROR: test_yks_hakem_kanit_yolu (unittest.loader._FailedTest.test_yks_hakem_kanit_yolu)
+  ERROR: test_yks_hakem_kaydi (unittest.loader._FailedTest.test_yks_hakem_kaydi)
+  ERROR: test_yks_harita_yerlesimi (unittest.loader._FailedTest.test_yks_harita_yerlesimi)
+  ERROR: test_yks_kapanis_guvenligi (unittest.loader._FailedTest.test_yks_kapanis_guvenligi)
+  ERROR: test_yks_kaynak_sira_guvenligi (unittest.loader._FailedTest.test_yks_kaynak_sira_guvenligi)
+  ERROR: test_yks_mk15_hakem_ekrani (unittest.loader._FailedTest.test_yks_mk15_hakem_ekrani)
+  ERROR: test_yks_model_soyu (unittest.loader._FailedTest.test_yks_model_soyu)
+  ERROR: test_yks_monotonik_kronometre (unittest.loader._FailedTest.test_yks_monotonik_kronometre)
+  ERROR: test_yks_operator_guvenligi (unittest.loader._FailedTest.test_yks_operator_guvenligi)
+  ERROR: test_yks_oturum_kunyesi (unittest.loader._FailedTest.test_yks_oturum_kunyesi)
+  ERROR: test_yks_udp_tek_sahip (unittest.loader._FailedTest.test_yks_udp_tek_sahip)
+  FAIL: test_BIRINCIL_ve_YEDEK_ikisi_de_pakette (test_t123_gecis_provasi.YedekPaketteTests.test_BIRINCIL_ve_YEDEK_ikisi_de_pakette)
+  FAIL: test_K4_03_K4_04_tampon_256_ZORUNLU (test_mavlink_tunel_uctan_uca.K4UctanUca.test_K4_03_K4_04_tampon_256_ZORUNLU) (kayip=0.0, tampon=256)
+  FAIL: test_K4_03_K4_04_tampon_256_ZORUNLU (test_mavlink_tunel_uctan_uca.K4UctanUca.test_K4_03_K4_04_tampon_256_ZORUNLU) (kayip=0.05, tampon=256)
+  FAIL: test_KULLANILAN_HER_YOL_KURULUYOR (test_t202_jetson_paket_butunlugu.KurulumBlogu.test_KULLANILAN_HER_YOL_KURULUYOR)
+  FAIL: test_T7b_iki_yardim_kod_satiriyla (test_fdr_t244_ic_celiski.T7_Durustluk.test_T7b_iki_yardim_kod_satiriyla)
+  FAIL: test_UYUSMAZLIKTA_yukselir (test_saha_parametrik.FailClosedTests.test_UYUSMAZLIKTA_yukselir)
+  FAIL: test_cagrilan_betikler_help_sifir (test_atolye_test_gunu.K4_Komutlar.test_cagrilan_betikler_help_sifir) (betik='comms/yks_gui.py')
+  FAIL: test_dugum_tablosu_mmd_ile_birebir (test_gece_akis_diyagramlari.TabloBayatDegil.test_dugum_tablosu_mmd_ile_birebir)
+  FAIL: test_her_dugum_dosya_satir_tasir_ve_kodda_durur (test_gece_akis_diyagramlari.DugumlerKodaTutar.test_her_dugum_dosya_satir_tasir_ve_kodda_durur)
+  FAIL: test_kareler_ve_sha_tutuyor (test_t38_kuru_kosu_fiksturu.FiksturSozlesmesi.test_kareler_ve_sha_tutuyor) (kare='images/sa_000000.jpg')
+  FAIL: test_kareler_ve_sha_tutuyor (test_t38_kuru_kosu_fiksturu.FiksturSozlesmesi.test_kareler_ve_sha_tutuyor) (kare='images/sa_000001.jpg')
+  FAIL: test_kareler_ve_sha_tutuyor (test_t38_kuru_kosu_fiksturu.FiksturSozlesmesi.test_kareler_ve_sha_tutuyor) (kare='images/sa_000002.jpg')
+  FAIL: test_kod_atiflari_satirda_birebir (test_atolye_test_gunu.K5_Kaynaklar.test_kod_atiflari_satirda_birebir) (atif='comms/yks_gui.py:4387')
+  FAIL: test_kod_atiflari_satirda_birebir (test_atolye_test_gunu.K5_Kaynaklar.test_kod_atiflari_satirda_birebir) (atif='comms/yks_gui.py:4428')
+  FAIL: test_load_model_hata_mesaji_IMGSZ_degerlerini_yaziyor (test_imgsz_tek_kaynak.ImgszTekKaynak.test_load_model_hata_mesaji_IMGSZ_degerlerini_yaziyor)
+  FAIL: test_okuyucu_dortlu_donuyor (test_t38_kuru_kosu_fiksturu.FiksturSozlesmesi.test_okuyucu_dortlu_donuyor)
+  FAIL: test_t20_sonrasi_kalan_kopukluklar_isim_isim_yakalaniyor (test_saha_kuru_kosu.PozitifKontrolTests.test_t20_sonrasi_kalan_kopukluklar_isim_isim_yakalaniyor) (halka='motor')
+  FAIL: test_varsayilan_fiksturden_gelir (test_t38_kuru_kosu_fiksturu.VarsayilanKare.test_varsayilan_fiksturden_gelir)
+
+Yorum (olgu): yeni dusen TEK test `test_K4_03_K4_04_tampon_256_ZORUNLU`dir — K4 kapisinin
+KENDISI (asagida). Tabanda dusen 72 testin hepsi yine dusuyor (ortam: rota_inceleme.py ve
+model agirliklari depoda yok); artik dusmeyen yok. yks_gui import edilemedigi icin
+test_yks_gui_tunel tam suitte GORUNUR bicimde ATLANDI (7 skip) — ayrica ek yol ile kosuldu (K7).
+HUKUM K2: DUSTU (tek neden K4 256 B alt vakasi; udp/sik ve mevcut hicbir test gerilemedi).
+
+Onceki tam suit kosusu (kilavuz/sik_rf_olc dokstring duzeltmelerinden ONCE) — kayit icin:
+Ran 2586 tests in 715.986s
+FAILED (failures=22, errors=56, skipped=34)
+# sonra tekil: 78 � taban tekil: 72
+## YENI DUSEN (sonra - taban, alt test parantezi disi kimlikle):
+  FAIL: test_K4_03_K4_04_tampon_1024_ZORUNLU (test_mavlink_tunel_uctan_uca.K4UctanUca.test_K4_03_K4_04_tampon_1024_ZORUNLU
+  FAIL: test_K4_03_K4_04_tampon_256_ZORUNLU (test_mavlink_tunel_uctan_uca.K4UctanUca.test_K4_03_K4_04_tampon_256_ZORUNLU
+  FAIL: test_PAKETIN_TASIDIGI_her_dosya_kilavuzda_KOPYALANIYOR (test_kilavuz_kurulum_yordami.KilavuzKurulumYordami.test_PAKETIN_TASIDIGI_her_dosya_kilavuzda_KOPYALANIYOR
+  FAIL: test_kaynak_nobetcisi (test_atolye_test_gunu.K5_Kaynaklar.test_kaynak_nobetcisi
+## TABANDA DUSUP ARTIK DUSMEYEN (taban - sonra):
+## SONRA TAM LISTE:
+  ERROR: test_GEVSETME_ACIKCA_istenmeli (test_saha_parametrik.FailClosedTests.test_GEVSETME_ACIKCA_istenmeli)
+  ERROR: test_MUTASYON_A_uretim_surumu_donguye_girerse_DUSER (test_t158_kilavuz_kapisi_dongu.Mutasyonlar.test_MUTASYON_A_uretim_surumu_donguye_girerse_DUSER)
+  ERROR: test_MUTASYON_B_defterde_olmayan_surum_DUSER (test_t158_kilavuz_kapisi_dongu.Mutasyonlar.test_MUTASYON_B_defterde_olmayan_surum_DUSER)
+  ERROR: test_MUTASYON_C_imgsz_512_yapilirsa_DUSER (test_t158_kilavuz_kapisi_dongu.Mutasyonlar.test_MUTASYON_C_imgsz_512_yapilirsa_DUSER)
+  ERROR: test_MUTASYON_kunyedeki_sha_bozulursa_UYUSMAZ_der (test_t123_gecis_provasi.G2KosulabilirTests.test_MUTASYON_kunyedeki_sha_bozulursa_UYUSMAZ_der)
+  ERROR: test_TABAN_bugunku_kilavuz_temiz (test_t158_kilavuz_kapisi_dongu.Mutasyonlar.test_TABAN_bugunku_kilavuz_temiz)
+  ERROR: test_UC_UC_ayni_agirligi_gosteriyor (test_saha_parametrik.KayitDefteriDurumuTests.test_UC_UC_ayni_agirligi_gosteriyor)
+  ERROR: test_UYUM_varsa_yuklenir (test_saha_parametrik.FailClosedTests.test_UYUM_varsa_yuklenir)
+  ERROR: test_a1_hakem_ekrani_ankoru (unittest.loader._FailedTest.test_a1_hakem_ekrani_ankoru)
+  ERROR: test_a2_karar_yasi (unittest.loader._FailedTest.test_a2_karar_yasi)
+  ERROR: test_dalga2_k1_k5_k8_kusurlari (unittest.loader._FailedTest.test_dalga2_k1_k5_k8_kusurlari)
+  ERROR: test_default_is_verified_v36_competition_model (test_model_registry.ModelRegistryTests.test_default_is_verified_v36_competition_model)
+  ERROR: test_defter_okunamazsa_ekran_ad_UYDURMAZ (test_saha_parametrik.KayitDefteriDurumuTests.test_defter_okunamazsa_ekran_ad_UYDURMAZ)
+  ERROR: test_dongu_gorunur (test_t158_kilavuz_kapisi_dongu.DonguTaramasi.test_dongu_gorunur)
+  ERROR: test_faz_b_ack_ref_tip (unittest.loader._FailedTest.test_faz_b_ack_ref_tip)
+  ERROR: test_faz_b_yks_fda_kipi (unittest.loader._FailedTest.test_faz_b_yks_fda_kipi)
+  ERROR: test_g2_KOSUYOR_ve_PATLAMIYOR (test_t123_gecis_provasi.G2KosulabilirTests.test_g2_KOSUYOR_ve_PATLAMIYOR)
+  ERROR: test_g2_YEDEGI_OK_diye_dogruluyor (test_t123_gecis_provasi.G2KosulabilirTests.test_g2_YEDEGI_OK_diye_dogruluyor)
+  ERROR: test_hakem_kunye_algi_hizasi (unittest.loader._FailedTest.test_hakem_kunye_algi_hizasi)
+  ERROR: test_iha_landed_gate (unittest.loader._FailedTest.test_iha_landed_gate)
+  ERROR: test_ika_go_ackli_tekrar (unittest.loader._FailedTest.test_ika_go_ackli_tekrar)
+  ERROR: test_ika_go_gate (unittest.loader._FailedTest.test_ika_go_gate)
+  ERROR: test_k1_tazelik_damgasi (unittest.loader._FailedTest.test_k1_tazelik_damgasi)
+  ERROR: test_kayit_defteri_YOKSA_uyum_SAYILMAZ (test_saha_parametrik.FailClosedTests.test_kayit_defteri_YOKSA_uyum_SAYILMAZ)
+  ERROR: test_manifest_ile_kayit_defteri_ESLESIYOR (test_saha_parametrik.KayitDefteriDurumuTests.test_manifest_ile_kayit_defteri_ESLESIYOR)
+  ERROR: test_model_adinda_kullanilmayan_dongu_SAYILMAZ (test_t158_kilavuz_kapisi_dongu.DonguTaramasi.test_model_adinda_kullanilmayan_dongu_SAYILMAZ)
+  ERROR: test_p9abc_yks (unittest.loader._FailedTest.test_p9abc_yks)
+  ERROR: test_rota_guven_esigi (unittest.loader._FailedTest.test_rota_guven_esigi)
+  ERROR: test_rota_ret_nedenleri (unittest.loader._FailedTest.test_rota_ret_nedenleri)
+  ERROR: test_t169_tespit_tazeligi (unittest.loader._FailedTest.test_t169_tespit_tazeligi)
+  ERROR: test_t170_fda_sure_butcesi (unittest.loader._FailedTest.test_t170_fda_sure_butcesi)
+  ERROR: test_t171_asgari_irtifa (unittest.loader._FailedTest.test_t171_asgari_irtifa)
+  ERROR: test_t177_senaryo_tatbikati (unittest.loader._FailedTest.test_t177_senaryo_tatbikati)
+  ERROR: test_uretim_defteri_ile_INFER_SIZE_UYUSUYOR (test_imgsz_tek_kaynak.ImgszTekKaynak.test_uretim_defteri_ile_INFER_SIZE_UYUSUYOR)
+  ERROR: test_uretim_modeli_hizasi (unittest.loader._FailedTest.test_uretim_modeli_hizasi)
+  ERROR: test_varsayilan_MANIFESTTEN_gelir (test_saha_parametrik.ModelVarsayilaniTests.test_varsayilan_MANIFESTTEN_gelir)
+  ERROR: test_yks_erken_ika_ack_tamponu (unittest.loader._FailedTest.test_yks_erken_ika_ack_tamponu)
+  ERROR: test_yks_gui_aktarim_zamani (unittest.loader._FailedTest.test_yks_gui_aktarim_zamani)
+  ERROR: test_yks_gui_arm_gps_canli (unittest.loader._FailedTest.test_yks_gui_arm_gps_canli)
+  ERROR: test_yks_gui_demo_kaynak (unittest.loader._FailedTest.test_yks_gui_demo_kaynak)
+  ERROR: test_yks_gui_kabul_kumesi_koku_mutlak_ve_mevcut (test_t220_jetson_istekleri.K2KabulKumeleriDepoda.test_yks_gui_kabul_kumesi_koku_mutlak_ve_mevcut)
+  ERROR: test_yks_gui_komut_durustlugu (unittest.loader._FailedTest.test_yks_gui_komut_durustlugu)
+  ERROR: test_yks_gui_rota_engel (unittest.loader._FailedTest.test_yks_gui_rota_engel)
+  ERROR: test_yks_gui_uretim_hizasi (unittest.loader._FailedTest.test_yks_gui_uretim_hizasi)
+  ERROR: test_yks_hakem_kanit_olaylari (unittest.loader._FailedTest.test_yks_hakem_kanit_olaylari)
+  ERROR: test_yks_hakem_kanit_yolu (unittest.loader._FailedTest.test_yks_hakem_kanit_yolu)
+  ERROR: test_yks_hakem_kaydi (unittest.loader._FailedTest.test_yks_hakem_kaydi)
+  ERROR: test_yks_harita_yerlesimi (unittest.loader._FailedTest.test_yks_harita_yerlesimi)
+  ERROR: test_yks_kapanis_guvenligi (unittest.loader._FailedTest.test_yks_kapanis_guvenligi)
+  ERROR: test_yks_kaynak_sira_guvenligi (unittest.loader._FailedTest.test_yks_kaynak_sira_guvenligi)
+  ERROR: test_yks_mk15_hakem_ekrani (unittest.loader._FailedTest.test_yks_mk15_hakem_ekrani)
+  ERROR: test_yks_model_soyu (unittest.loader._FailedTest.test_yks_model_soyu)
+  ERROR: test_yks_monotonik_kronometre (unittest.loader._FailedTest.test_yks_monotonik_kronometre)
+  ERROR: test_yks_operator_guvenligi (unittest.loader._FailedTest.test_yks_operator_guvenligi)
+  ERROR: test_yks_oturum_kunyesi (unittest.loader._FailedTest.test_yks_oturum_kunyesi)
+  ERROR: test_yks_udp_tek_sahip (unittest.loader._FailedTest.test_yks_udp_tek_sahip)
+  FAIL: test_BIRINCIL_ve_YEDEK_ikisi_de_pakette (test_t123_gecis_provasi.YedekPaketteTests.test_BIRINCIL_ve_YEDEK_ikisi_de_pakette)
+  FAIL: test_K4_03_K4_04_tampon_1024_ZORUNLU (test_mavlink_tunel_uctan_uca.K4UctanUca.test_K4_03_K4_04_tampon_1024_ZORUNLU) (kayip=0.05, tampon=1024)
+  FAIL: test_K4_03_K4_04_tampon_256_ZORUNLU (test_mavlink_tunel_uctan_uca.K4UctanUca.test_K4_03_K4_04_tampon_256_ZORUNLU) (kayip=0.0, tampon=256)
+  FAIL: test_K4_03_K4_04_tampon_256_ZORUNLU (test_mavlink_tunel_uctan_uca.K4UctanUca.test_K4_03_K4_04_tampon_256_ZORUNLU) (kayip=0.05, tampon=256)
+  FAIL: test_KULLANILAN_HER_YOL_KURULUYOR (test_t202_jetson_paket_butunlugu.KurulumBlogu.test_KULLANILAN_HER_YOL_KURULUYOR)
+  FAIL: test_PAKETIN_TASIDIGI_her_dosya_kilavuzda_KOPYALANIYOR (test_kilavuz_kurulum_yordami.KilavuzKurulumYordami.test_PAKETIN_TASIDIGI_her_dosya_kilavuzda_KOPYALANIYOR) (kilavuz='wf_f34ad2a6-63e-5')
+  FAIL: test_T7b_iki_yardim_kod_satiriyla (test_fdr_t244_ic_celiski.T7_Durustluk.test_T7b_iki_yardim_kod_satiriyla)
+  FAIL: test_UYUSMAZLIKTA_yukselir (test_saha_parametrik.FailClosedTests.test_UYUSMAZLIKTA_yukselir)
+  FAIL: test_cagrilan_betikler_help_sifir (test_atolye_test_gunu.K4_Komutlar.test_cagrilan_betikler_help_sifir) (betik='comms/yks_gui.py')
+  FAIL: test_dugum_tablosu_mmd_ile_birebir (test_gece_akis_diyagramlari.TabloBayatDegil.test_dugum_tablosu_mmd_ile_birebir)
+  FAIL: test_her_dugum_dosya_satir_tasir_ve_kodda_durur (test_gece_akis_diyagramlari.DugumlerKodaTutar.test_her_dugum_dosya_satir_tasir_ve_kodda_durur)
+  FAIL: test_kareler_ve_sha_tutuyor (test_t38_kuru_kosu_fiksturu.FiksturSozlesmesi.test_kareler_ve_sha_tutuyor) (kare='images/sa_000000.jpg')
+  FAIL: test_kareler_ve_sha_tutuyor (test_t38_kuru_kosu_fiksturu.FiksturSozlesmesi.test_kareler_ve_sha_tutuyor) (kare='images/sa_000001.jpg')
+  FAIL: test_kareler_ve_sha_tutuyor (test_t38_kuru_kosu_fiksturu.FiksturSozlesmesi.test_kareler_ve_sha_tutuyor) (kare='images/sa_000002.jpg')
+  FAIL: test_kaynak_nobetcisi (test_atolye_test_gunu.K5_Kaynaklar.test_kaynak_nobetcisi) (kaynak='scripts/sik_rf_olc.py:39')
+  FAIL: test_kaynak_nobetcisi (test_atolye_test_gunu.K5_Kaynaklar.test_kaynak_nobetcisi) (kaynak='scripts/sik_rf_olc.py:43')
+  FAIL: test_kod_atiflari_satirda_birebir (test_atolye_test_gunu.K5_Kaynaklar.test_kod_atiflari_satirda_birebir) (atif='comms/yks_gui.py:4387')
+  FAIL: test_kod_atiflari_satirda_birebir (test_atolye_test_gunu.K5_Kaynaklar.test_kod_atiflari_satirda_birebir) (atif='comms/yks_gui.py:4428')
+  FAIL: test_load_model_hata_mesaji_IMGSZ_degerlerini_yaziyor (test_imgsz_tek_kaynak.ImgszTekKaynak.test_load_model_hata_mesaji_IMGSZ_degerlerini_yaziyor)
+  FAIL: test_okuyucu_dortlu_donuyor (test_t38_kuru_kosu_fiksturu.FiksturSozlesmesi.test_okuyucu_dortlu_donuyor)
+  FAIL: test_t20_sonrasi_kalan_kopukluklar_isim_isim_yakalaniyor (test_saha_kuru_kosu.PozitifKontrolTests.test_t20_sonrasi_kalan_kopukluklar_isim_isim_yakalaniyor) (halka='motor')
+  FAIL: test_varsayilan_fiksturden_gelir (test_t38_kuru_kosu_fiksturu.VarsayilanKare.test_varsayilan_fiksturden_gelir)
+
+O kosuda ek olarak dusenler ve ele alinisi:
+  * test_kilavuz_kurulum_yordami (kok JETSON_KILAVUZ.md cp satirlari eksikti) -> kok kilavuza da eklendi;
+  * test_atolye_test_gunu kaynak_nobetcisi sik_rf_olc.py:39/43 (dokstring eklemesi satir kaydirdi)
+    -> tunel paragraflari dokstringin SONUNA tasindi;
+  * test_K4_03_K4_04_tampon_1024 (kayip=0.05): 30wp 19/20 -> DUSTU (tam suit yuku altinda; tek
+    basina iki kosuda 40/40). Kapi, tohum, deneme sayisi DEGISTIRILMEDI. Son tam suitte 40/40 GECTI.
+    YANI 1024 B alt vakasi BELIRLENIMCI DEGIL: zamanlamaya bagli (tekrar sayisi kimlik dizisini kaydirir).
+
+========================================================================================
+K3 — BIRIM (tests/test_mavlink_tunel.py, tests/test_seri_hub_tunel.py)
+----------------------------------------------------------------------------------------
+  test_mavlink_tunel: ok=30
+  test_seri_hub_tunel: ok=9
+  [test_mavlink_tunel]
+    test_K3_16a_arac_heartbeat_akrani_degistirir_KIRMIZI ... ok
+    test_K3_16b_heartbeat_olmayan_ya_da_yanlis_heartbeat_akrani_DEGISTIRMEZ ... ok
+    test_K3_16c_akran_yokken_gcs_heartbeati_akran_kurmaz ... ok
+    test_K3_21a_hava_datagram_kipi_coptan_sonra_ILK_gecerli_teslim ... ok
+    test_K3_21b_yer_akis_kipi_bolunmus_obek_ikisi_de_teslim ... ok
+    test_K3_21c_gecersiz_kip_ve_kimlik_ValueError ... ok
+    test_K3_22_bosluk_geri_sarma_sicrama_zaman_asimi_cift_sayilmaz ... ok
+    test_K3_23_soket_ortanca_tek_parcali_dusurulur_bosluk_1 ... ok
+    test_K3_01_parca_sinirlari_saf_ve_soket_birebir ... ok
+    test_K3_02_parca_sayisi_baslik_tel_boyu_hedef_magic ... ok
+    test_K3_03_tavan_ustu_ve_akran_yok_gorunur_ret_kimlik_TUKETILMEZ ... ok
+    test_K3_24_zaman_asimi_hafiza_yeniden_acma_sirasi ... ok
+    test_modul_pymavlinki_import_aninda_yuklemez ... ok
+    test_K3_04_yabanci_payload_type_yok_sayilir ... ok
+    test_K3_05_yabanci_mesaj_tipi_yok_sayilir ... ok
+    test_K3_06_kendi_yankisi_yok_sayilir ... ok
+    test_K3_06b_yabanci_kaynak_yok_sayilir ... ok
+    test_K3_07_hareketsizlik_zaman_asimi_eksik_cerceve_duser_sayilir ... ok
+    test_K3_07b_hareket_suruyorsa_toplam_sure_asilsa_da_teslim ... ok
+    test_K3_08_bozuk_baslik_ve_tutarsiz_parca ... ok
+    test_K3_09_yinelenen_parca_tek_teslim_hafiza_sonrasi_yeni_cerceve ... ok
+    test_K3_10_sira_disi_parca_kabul ... ok
+    test_K3_11_araya_giren_iki_cerceve ... ok
+    test_K3_12_recv_son_tarihi_cagri_basina_yabanci_sel_altinda ... ok
+    test_K3_13_close_idempotent_sonra_OSError ... ok
+    test_K3_14_akran_yok_surec_olmez ... ok
+    test_K3_15_olu_akran_ve_yerel_soket_hatasi ... ok
+    test_K3_17_akran_sessizligi_bolum_basina_tek_KIRMIZI ... ok
+    test_K3_18_bufsize_cerceveyi_bolmez ... ok
+    test_K3_19_eszamanli_kismi_tavani ... ok
+  [test_seri_hub_tunel]
+    test_T1_hub_tunel_zaman_asimini_sabitine_ceker_yeniden_baglamada_da ... ok
+    test_T2_port_ve_tunel_birbirini_dislar_biri_zorunlu ... ok
+    test_T2b_tunel_ile_baud_verilirse_SystemExit_2 ... ok
+    test_T3_tunel_ucu_doluysa_cikis_4_ileti_uc_ve_kimlik_None_yok ... ok
+    test_T3b_seri_kip_iletileri_birebir_eski_metin ... ok
+    test_T3c_tunel_kipi_cli_hub_kurulur_ileti_tunel_ucu ... ok
+    test_T4_T5_oserror_kapat_dusur_yeniden_ac ... ok
+    test_T6_sayac_logu_tunel_sayaclarini_basar_seride_basmaz ... ok
+    test_T7_yeniden_acilan_uc_ayni_kimlikle_bile_YUTULMAZ ... ok
+
+Amele oz-yoklamasi (K5 DEGIL — K5 curutucunundur; mutant -> ilgili test):
+M15_hava_kalici_ayristirici: cikis=1 OLDURULDU ['Ran 3 tests in 6.157s', 'FAILED (failures=3)']
+M18_akran_her_datagramdan: cikis=1 OLDURULDU ['Ran 3 tests in 1.640s', 'FAILED (failures=2)']
+M8_son_tarih_datagram_basina: cikis=1 OLDURULDU ['Ran 1 test in 5.257s', 'FAILED (failures=1)']
+M20_tavan_ustu_kimlik_tuketir: cikis=1 OLDURULDU ['Ran 1 test in 0.103s', 'FAILED (failures=1)']
+M16_kimlik_boslugu_sayilmaz: cikis=1 OLDURULDU ['Ran 2 tests in 0.002s', 'FAILED (failures=2)']
+M6b_tamamlanan_hafizasi_yok: cikis=1 OLDURULDU ['Ran 1 test in 0.001s', 'FAILED (failures=1)']
+geri yuklendi: True
+
+HUKUM K3: GECTI
+
+========================================================================================
+K4 — UCTAN UCA BENZETIM (tests/test_mavlink_tunel_uctan_uca.py) — YALNIZ TAKLIT MODELINI KANITLAR
+----------------------------------------------------------------------------------------
+  test_mavlink_tunel_uctan_uca: FAIL=2, ok=13
+  [test_mavlink_tunel_uctan_uca]
+    test_K4_02_parachute_ack_zinciri_hat_ve_arka_plan_acik ... ok
+    test_K4_03_K4_04_tampon_1024_ZORUNLU ... ok
+    test_K4_03_K4_04_tampon_256_ZORUNLU ... FAIL
+    test_K4_03_K4_04_tampon_256_ZORUNLU ... FAIL
+    test_K4_05_yuzde_20_kayip_RAPOR ... ok
+    test_K4_06_gecikme_p95_iki_yonde_hat_modeli_acik ... ok
+    test_K4_07_pixhawk_reboot_rota_silinir_toparlanir_kayip_gorunur ... ok
+    test_K4_08_mavproxy_yeniden_baslar_akran_yalniz_arac_heartbeatiyle ... ok
+    test_K4_09_mp_heartbeati_yokken_yayin_ulasmaz_rota_ogrenilince_ulasir ... ok
+    test_K4_10_PATLAMA_rapor_ve_zorunlu_asgari ... ok
+    test_K4_11_mavfwd_kapaliysa_hava_yer_kesilir_yer_hava_suruyor ... ok
+    test_K4_01a_kurallar_heartbeat_yayin_hedefli_yerel ... ok
+    test_K4_01b_kova_hiz_ve_tampon_saf ... ok
+    test_K4_01c_hat_ve_arka_plan_hizi_gercek_zamanda_yuzde_10 ... ok
+    test_K4_01d_kayip_karari_icerik_ozetiyle_belirlenimci ... ok
+
+Rapor satirlari (son tam suit):
+[K4_02] ACK 151 ms · router={'alinan_paket': 4, 'iletilen': 4, 'txspace_dusen': 0, 'kayip_dusen': 0, 'yerel': 0, 'hedefsiz': 0, 'bozuk': 0, 'arka_plan_b': 560, 'arka_plan_atlanan': 0, 'heartbeat': 2, 'sifirlama': 0, 'kesintide_atilan': 0}
+[K4_03/04] kayip=0.0 tampon=1024: 12wp 20/20 · 30wp 20/20 · router={'alinan_paket': 289, 'iletilen': 289, 'txspace_dusen': 0, 'kayip_dusen': 0, 'yerel': 0, 'hedefsiz': 0, 'bozuk': 0, 'arka_plan_b': 36800, 'arka_plan_atlanan': 0, 'heartbeat': 22, 'sifirlama': 0, 'kesintide_atilan': 0} yer={zaman_asimi_dusen: 0, kimlik_boslugu: 0} hava={kimlik_boslugu: 0, zaman_asimi_dusen: 0}
+[K4_03/04] kayip=0.05 tampon=1024: 12wp 20/20 · 30wp 20/20 · router={'alinan_paket': 327, 'iletilen': 314, 'txspace_dusen': 0, 'kayip_dusen': 13, 'yerel': 0, 'hedefsiz': 0, 'bozuk': 0, 'arka_plan_b': 44440, 'arka_plan_atlanan': 0, 'heartbeat': 26, 'sifirlama': 0, 'kesintide_atilan': 0} yer={zaman_asimi_dusen: 10, kimlik_boslugu: 0} hava={kimlik_boslugu: 2, zaman_asimi_dusen: 0}
+[K4_03/04] kayip=0.0 tampon=256: 12wp 20/20 · 30wp 0/20 · router={'alinan_paket': 467, 'iletilen': 382, 'txspace_dusen': 85, 'kayip_dusen': 0, 'yerel': 0, 'hedefsiz': 0, 'bozuk': 0, 'arka_plan_b': 89000, 'arka_plan_atlanan': 0, 'heartbeat': 52, 'sifirlama': 0, 'kesintide_atilan': 0} yer={zaman_asimi_dusen: 83, kimlik_boslugu: 0} hava={kimlik_boslugu: 0, zaman_asimi_dusen: 0}
+[K4_03/04] kayip=0.05 tampon=256: 12wp 19/20 · 30wp 0/20 · router={'alinan_paket': 492, 'iletilen': 390, 'txspace_dusen': 77, 'kayip_dusen': 25, 'yerel': 0, 'hedefsiz': 0, 'bozuk': 0, 'arka_plan_b': 94600, 'arka_plan_atlanan': 0, 'heartbeat': 56, 'sifirlama': 0, 'kesintide_atilan': 0} yer={zaman_asimi_dusen: 90, kimlik_boslugu: 0} hava={kimlik_boslugu: 1, zaman_asimi_dusen: 0}
+[K4_05 RAPOR] %20 kayip: 12wp 8/10 · 30wp 8/10 · txspace_dusen=0 kayip_dusen=33 yer_kimlik_boslugu=0 yer_zaman_asimi=21 hava_kimlik_boslugu=1 hava_zaman_asimi=0
+[K4_06] hava->yer p50=94 p95=95 ms · yer->hava p50=63 p95=64 ms · HESAP 2x18 ms UART + arka plan · kapi 200 ms
+[K4_07] ACK 1178 ms · yer kimlik_boslugu=13 zaman_asimi_dusen=0 · router={'alinan_paket': 37, 'iletilen': 27, 'txspace_dusen': 0, 'kayip_dusen': 0, 'yerel': 0, 'hedefsiz': 10, 'bozuk': 0, 'arka_plan_b': 17120, 'arka_plan_atlanan': 1, 'heartbeat': 12, 'sifirlama': 2, 'kesintide_atilan': 9}
+[K4_08] ACK 1161 ms · hava={'gonderilen_cerceve': 5, 'gonderilen_parca': 5, 'tavan_ustu': 0, 'akran_yok': 0, 'gonderim_hatasi': 0, 'akran_sessizken_gonderilen': 0, 'alinan_datagram': 52, 'mavlink_paket': 52, 'cozum_hatasi': 0, 'yabanci_mesaj': 43, 'yabanci_payload_type': 0, 'kendi_yanki': 0, 'yabanci_kaynak': 0, 'teslim_cerceve': 5, 'udp_red': 4, 'akrandisi_datagram': 42, 'akran_degisti': 1, 'alinan_parca': 5, 'bozuk_parca': 0, 'tutarsiz_parca': 0, 'yinelenen_parca': 0, 'zaman_asimi_dusen': 0, 'eszamanli_tavan_dusen': 0, 'tamamlanan_cerceve': 5, 'kimlik_boslugu': 0, 'kimlik_geri': 0, 'kimlik_sicramasi': 0}
+[K4_10 RAPOR] ACK 0/20 · hava gonderilen=101 yer teslim=8 dusen=93 · yer zaman_asimi_dusen=93 kimlik_boslugu=0 eszamanli_tavan=0 · txspace_dusen=284 · yer->hava hava.kimlik_boslugu=0
+
+Dusen alt vakalar (son tam suit, ham):
+FAIL: test_K4_03_K4_04_tampon_256_ZORUNLU (test_mavlink_tunel_uctan_uca.K4UctanUca.test_K4_03_K4_04_tampon_256_ZORUNLU) (kayip=0.0, tampon=256)
+On kayit: `_K4_03_K4_04_ON_KAYIT` dokstringi (alt vaka: TX tampon 256 B).
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_f34ad2a6-63e-5\tests\test_mavlink_tunel_uctan_uca.py", line 447, in _k4_03_04
+    self.assertEqual(40, sum(sonuc), f"K4 DUSTU: {ozet}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 40 != 20 : K4 DUSTU: kayip=0.0 tampon=256: 12wp 20/20 · 30wp 0/20 · router={'alinan_paket': 467, 'iletilen': 382, 'txspace_dusen': 85, 'kayip_dusen': 0, 'yerel': 0, 'hedefsiz': 0, 'bozuk': 0, 'arka_plan_b': 89000, 'arka_plan_atlanan': 0, 'heartbeat': 52, 'sifirlama': 0, 'kesintide_atilan': 0} yer={zaman_asimi_dusen: 83, kimlik_boslugu: 0} hava={kimlik_boslugu: 0, zaman_asimi_dusen: 0}
+
+======================================================================
+FAIL: test_K4_03_K4_04_tampon_256_ZORUNLU (test_mavlink_tunel_uctan_uca.K4UctanUca.test_K4_03_K4_04_tampon_256_ZORUNLU) (kayip=0.05, tampon=256)
+On kayit: `_K4_03_K4_04_ON_KAYIT` dokstringi (alt vaka: TX tampon 256 B).
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_f34ad2a6-63e-5\tests\test_mavlink_tunel_uctan_uca.py", line 447, in _k4_03_04
+    self.assertEqual(40, sum(sonuc), f"K4 DUSTU: {ozet}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 40 != 19 : K4 DUSTU: kayip=0.05 tampon=256: 12wp 19/20 · 30wp 0/20 · router={'alinan_paket': 492, 'iletilen': 390, 'txspace_dusen': 77, 'kayip_dusen': 25, 'yerel': 0, 'hedefsiz': 0, 'bozuk': 0, 'arka_plan_b': 94600, 'arka_plan_atlanan': 0, 'heartbeat': 56, 'sifirlama': 0, 'kesintide_atilan': 0} yer={zaman_asimi_dusen: 90, kimlik_boslugu: 0} hava={kimlik_boslugu: 1, zaman_asimi_dusen: 0}
+
+======================================================================
+FAIL: test_t20_sonrasi_kalan_kopukluklar_isim_isim_yakalaniyor (test_saha_kuru_kosu.PozitifKontrolTests.test_t20_sonrasi_kalan_kopukluklar_isim_isim_yakalaniyor) (halka='motor')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_f34ad2a6-63e-5\tests\test_saha_kuru_kosu.py", line 147, in test_t20_sonrasi_kalan_kopukluklar_isim_isim_yakalaniyor
+    self.assertEqual(
+    ~~~~~~~~~~~~~~~~^
+        beklenen, self.durumlar[halka]["durum"],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        f"{halka} ({aciklama}) beklenen {beklenen} degil")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'SAHIPSIZ' != 'GECTI'
+- SAHIPSIZ
++ GECTI
+ : motor (gercek motor surucusu yok) beklenen SAHIPSIZ degil
+
+======================================================================
+FAIL: test_UYUSMAZLIKTA_yukselir (test_saha_parametrik.FailClosedTests.test_UYUSMAZLIKTA_yukselir)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_f34ad2a6-63e-5\tests\test_saha_parametrik.py", line 139, in test_UYUSMAZLIKTA_yukselir
+    self.assertIn("fail-closed", str(ctx.exception))
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'fail-closed' not found in 'Manifest `navitas_seg_v36_best.pt` diyor ama agirlik diskte YOK (bakilan: O:\\navitas\\.claude\\worktrees\\wf_f34ad2a6-63e-5\\jetson_paket\\models, O:\\navitas\\.claude\\worktrees\\wf_f34ad2a6-63e-5\\models).'
+
+======================================================================
+FAIL: test_BIRINCIL_ve_YEDEK_ikisi_de_pakette (test_t123_gecis_provasi.YedekPaketteTests.test_BIRINCIL_ve_YEDEK_ikisi_de_pakette)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_f34ad2a6-63e-5\tests\test_t123_gecis_provasi.py", line 145, in test_BIRINCIL_ve_YEDEK_ikisi_de_pakette
+    self.assertTrue((PAKET / "models" / birincil).exists())
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_KULLANILAN_HER_YOL_KURULUYOR (test_t202_jetson_paket_butunlugu.KurulumBlogu.test_KULLANILAN_HER_YOL_KURULUYOR)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_f34ad2a6-63e-5\tests\test_t202_jetson_paket_butunlugu.py", line 113, in test_KULLANILAN_HER_YOL_KURULUYOR
+    self.assertEqual(
+    ~~~~~~~~~~~~~~~~^
+        [], eksik,
+        ^^^^^^^^^^
+    ...<4 lines>...
+          "Dosya pakette de yoksa ONCE pakete alinmali "
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+          "(scripts/jetson_paket_hazirla.py KOPYALAR).")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['models/navitas_seg_v17_best.pt', 'models[190 chars]nnx']
+
+Second list contains 6 additional elements.
+First extra element 0:
+'models/navitas_seg_v17_best.pt'
+
+- []
++ ['models/navitas_seg_v17_best.pt',
++  'models/navitas_seg_v17_best_640_fp16.onnx',
++  'models/navitas_seg_v35_best.pt',
++  'models/navitas_seg_v35_best_512_fp16.onnx',
++  'models/navitas_seg_v36_best.pt',
++  'models/navitas_seg_v36_best_512_fp16.onnx'] : Kilavuz, KURULUM BLOGUNUN TASIMADIGI dosyalari kullaniyor — saha gunu bu komutlar `No such file` ile coker (D-352). Eksik:
+  models/navitas_seg_v17_best.pt
+  models/navitas_seg_v17_best_640_fp16.onnx
+  models/navitas_seg_v35_best.pt
+  models/navitas_seg_v35_best_512_fp16.onnx
+  models/navitas_seg_v36_best.pt
+  models/navitas_seg_v36_best_512_fp16.onnx
+
+Care: ya kurulum blogunа eklensin, ya komut degistirilsin. Dosya pakette de yoksa ONCE pakete alinmali (scripts/jetson_paket_hazirla.py KOPYALAR).
+
+======================================================================
+FAIL: test_kareler_ve_sha_tutuyor (test_t38_kuru_kosu_fiksturu.FiksturSozlesmesi.test_kareler_ve_sha_tutuyor) (kare='images/sa_000000.jpg')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_f34ad2a6-63e-5\tests\test_t38_kuru_kosu_fiksturu.py", line 58, in test_kareler_ve_sha_tutuyor
+    self.assertTrue(yol.is_file(), yol)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : O:\navitas\.claude\worktrees\wf_f34ad2a6-63e-5\data\kuru_kosu_fikstur\images\sa_000000.jpg
+
+======================================================================
+FAIL: test_kareler_ve_sha_tutuyor (test_t38_kuru_kosu_fiksturu.FiksturSozlesmesi.test_kareler_ve_sha_tutuyor) (kare='images/sa_000001.jpg')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_f34ad2a6-63e-5\tests\test_t38_kuru_kosu_fiksturu.py", line 58, in test_kareler_ve_sha_tutuyor
+    self.assertTrue(yol.is_file(), yol)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : O:\navitas\.claude\worktrees\wf_f34ad2a6-63e-5\data\kuru_kosu_fikstur\images\sa_000001.jpg
+
+======================================================================
+FAIL: test_kareler_ve_sha_tutuyor (test_t38_kuru_kosu_fiksturu.FiksturSozlesmesi.test_kareler_ve_sha_tutuyor) (kare='images/sa_000002.jpg')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_f34ad2a6-63e-5\tests\test_t38_kuru_kosu_fiksturu.py", line 58, in test_kareler_ve_sha_tutuyor
+    self.assertTrue(yol.is_file(), yol)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : O:\navitas\.claude\worktrees\wf_f34ad2a6-63e-5\data\kuru_kosu_fikstur\images\sa_000002.jpg
+
+======================================================================
+FAIL: test_okuyucu_dortlu_donuyor (test_t38_kuru_kosu_fiksturu.FiksturSozlesmesi.test_okuyucu_dortlu_donuyor)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_f34ad2a6-63e-5\tests\test_t38_kuru_kosu_fiksturu.py", line 75, in test_okuyucu_dortlu_donuyor
+    self.assertIsNotNone(fk, "fikstur okunamadi")
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: unexpectedly None : fikstur okunamadi
+
+======================================================================
+FAIL: test_varsayilan_fiksturden_gelir (test_t38_kuru_kosu_fiksturu.VarsayilanKare.test_varsayilan_fiksturden_gelir)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_f34ad2a6-63e-5\tests\test_t38_kuru_kosu_fiksturu.py", line 161, in test_varsayilan_fiksturden_gelir
+    self.assertTrue(satir["detay"]["fikstur_kullanildi"],
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                    "varsayilan kare hâlâ data/raw_frames'ten geliyor (T38)")
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : varsayilan kare hâlâ data/raw_frames'ten geliyor (T38)
+
+----------------------------------------------------------------------
+Ran 2586 tests in 723.344s
+
+FAILED (failures=18, errors=56, skipped=34)
+
+GECMIS (seffaflik; kapi/tohum/deneme sayisi hic degismedi):
+ 1) Ilk kosu — TX kovasi PAKET duzeyinde doluluk sayiyordu (dokulmekte olan paket cikis anina dek
+    TAMAMEN tamponda sayiliyordu). ArduPilot txspace BAYT sayar; model hatasi olarak duzeltildi
+    (Kova.bekleyen bayt duzeyi). Ilk kosunun satirlari:
+[K4_02] ACK 171 ms · router={'alinan_paket': 4, 'iletilen': 4, 'txspace_dusen': 0, 'kayip_dusen': 0, 'yerel': 0, 'hedefsiz': 0, 'bozuk': 0, 'arka_plan_b': 640, 'arka_plan_atlanan': 0, 'heartbeat': 2, 'sifirlama': 0, 'kesintide_atilan': 0}
+[K4_03/04] kayip=0.0 tampon=256: 12wp 5/20 · 30wp 0/20 · router={'alinan_paket': 608, 'iletilen': 382, 'txspace_dusen': 226, 'kayip_dusen': 0, 'yerel': 0, 'hedefsiz': 0, 'bozuk': 0, 'arka_plan_b': 127920, 'arka_plan_atlanan': 78, 'heartbeat': 76, 'sifirlama': 0, 'kesintide_atilan': 0} yer={zaman_asimi_dusen: 142, kimlik_boslugu: 0} hava={kimlik_boslugu: 0, zaman_asimi_dusen: 0}
+[K4_03/04] kayip=0.0 tampon=1024: 12wp 20/20 · 30wp 20/20 · router={'alinan_paket': 299, 'iletilen': 299, 'txspace_dusen': 0, 'kayip_dusen': 0, 'yerel': 0, 'hedefsiz': 0, 'bozuk': 0, 'arka_plan_b': 37400, 'arka_plan_atlanan': 0, 'heartbeat': 22, 'sifirlama': 0, 'kesintide_atilan': 0} yer={zaman_asimi_dusen: 0, kimlik_boslugu: 0} hava={kimlik_boslugu: 0, zaman_asimi_dusen: 0}
+[K4_03/04] kayip=0.05 tampon=256: 12wp 3/20 · 30wp 0/20 · router={'alinan_paket': 626, 'iletilen': 387, 'txspace_dusen': 203, 'kayip_dusen': 36, 'yerel': 0, 'hedefsiz': 0, 'bozuk': 0, 'arka_plan_b': 132280, 'arka_plan_atlanan': 83, 'heartbeat': 80, 'sifirlama': 0, 'kesintide_atilan': 0} yer={zaman_asimi_dusen: 148, kimlik_boslugu: 0} hava={kimlik_boslugu: 1, zaman_asimi_dusen: 0}
+[K4_03/04] kayip=0.05 tampon=1024: 12wp 20/20 · 30wp 20/20 · router={'alinan_paket': 326, 'iletilen': 313, 'txspace_dusen': 0, 'kayip_dusen': 13, 'yerel': 0, 'hedefsiz': 0, 'bozuk': 0, 'arka_plan_b': 44840, 'arka_plan_atlanan': 0, 'heartbeat': 26, 'sifirlama': 0, 'kesintide_atilan': 0} yer={zaman_asimi_dusen: 10, kimlik_boslugu: 0} hava={kimlik_boslugu: 2, zaman_asimi_dusen: 0}
+[K4_05 RAPOR] %20 kayip: 12wp 8/10 · 30wp 9/10 · txspace_dusen=0 kayip_dusen=28 yer_kimlik_boslugu=0 yer_zaman_asimi=19 hava_kimlik_boslugu=1 hava_zaman_asimi=0
+[K4_06] hava->yer p50=94 p95=95 ms · yer->hava p50=63 p95=64 ms · HESAP 2x18 ms UART + arka plan · kapi 200 ms
+[K4_07] ACK 1170 ms · yer kimlik_boslugu=13 zaman_asimi_dusen=0 · router={'alinan_paket': 37, 'iletilen': 27, 'txspace_dusen': 0, 'kayip_dusen': 0, 'yerel': 0, 'hedefsiz': 10, 'bozuk': 0, 'arka_plan_b': 17120, 'arka_plan_atlanan': 1, 'heartbeat': 12, 'sifirlama': 2, 'kesintide_atilan': 9}
+[K4_08] ACK 1163 ms · hava={'gonderilen_cerceve': 5, 'gonderilen_parca': 5, 'tavan_ustu': 0, 'akran_yok': 0, 'gonderim_hatasi': 0, 'akran_sessizken_gonderilen': 0, 'alinan_datagram': 52, 'mavlink_paket': 52, 'cozum_hatasi': 0, 'yabanci_mesaj': 43, 'yabanci_payload_type': 0, 'kendi_yanki': 0, 'yabanci_kaynak': 0, 'teslim_cerceve': 5, 'udp_red': 4, 'akrandisi_datagram': 42, 'akran_degisti': 1, 'alinan_parca': 5, 'bozuk_parca': 0, 'tutarsiz_parca': 0, 'yinelenen_parca': 0, 'zaman_asimi_dusen': 0, 'eszamanli_tavan_dusen': 0, 'tamamlanan_cerceve': 5, 'kimlik_boslugu': 0, 'kimlik_geri': 0, 'kimlik_sicramasi': 0}
+[K4_10 RAPOR] ACK 0/20 · hava gonderilen=101 yer teslim=1 dusen=100 · yer zaman_asimi_dusen=100 kimlik_boslugu=0 eszamanli_tavan=0 · txspace_dusen=360 · yer->hava hava.kimlik_boslugu=0
+    Ayni kosuda K4_11 sartname yonuyle yazilmisti ve DUSTU (alici cmd=6): hub MAVProxy'nin --out
+    ucunda oldugu icin mavfwd HAVA->YER yonunu yonetir; vaka olculen yone gore duzeltildi (SAPMA).
+    K4_01c arka plan hizi 1146 B/s olculdu: uyku sirasinda biriken soket backlog'u sayiliyordu
+    (test hatasi); olcum oncesi bosaltma eklendi.
+ 2) Bayt duzeyi modelle tek basina kosu:
+[K4_02] ACK 146 ms · router={'alinan_paket': 4, 'iletilen': 4, 'txspace_dusen': 0, 'kayip_dusen': 0, 'yerel': 0, 'hedefsiz': 0, 'bozuk': 0, 'arka_plan_b': 560, 'arka_plan_atlanan': 0, 'heartbeat': 2, 'sifirlama': 0, 'kesintide_atilan': 0}
+[K4_03/04] kayip=0.0 tampon=256: 12wp 20/20 · 30wp 0/20 · router={'alinan_paket': 464, 'iletilen': 380, 'txspace_dusen': 84, 'kayip_dusen': 0, 'yerel': 0, 'hedefsiz': 0, 'bozuk': 0, 'arka_plan_b': 87760, 'arka_plan_atlanan': 0, 'heartbeat': 52, 'sifirlama': 0, 'kesintide_atilan': 0} yer={zaman_asimi_dusen: 82, kimlik_boslugu: 0} hava={kimlik_boslugu: 0, zaman_asimi_dusen: 0}
+[K4_03/04] kayip=0.0 tampon=1024: 12wp 20/20 · 30wp 20/20 · router={'alinan_paket': 292, 'iletilen': 292, 'txspace_dusen': 0, 'kayip_dusen': 0, 'yerel': 0, 'hedefsiz': 0, 'bozuk': 0, 'arka_plan_b': 37040, 'arka_plan_atlanan': 0, 'heartbeat': 22, 'sifirlama': 0, 'kesintide_atilan': 0} yer={zaman_asimi_dusen: 0, kimlik_boslugu: 0} hava={kimlik_boslugu: 0, zaman_asimi_dusen: 0}
+[K4_03/04] kayip=0.05 tampon=256: 12wp 20/20 · 30wp 0/20 · router={'alinan_paket': 482, 'iletilen': 384, 'txspace_dusen': 73, 'kayip_dusen': 25, 'yerel': 0, 'hedefsiz': 0, 'bozuk': 0, 'arka_plan_b': 91960, 'arka_plan_atlanan': 0, 'heartbeat': 54, 'sifirlama': 0, 'kesintide_atilan': 0} yer={zaman_asimi_dusen: 86, kimlik_boslugu: 0} hava={kimlik_boslugu: 1, zaman_asimi_dusen: 0}
+[K4_03/04] kayip=0.05 tampon=1024: 12wp 20/20 · 30wp 20/20 · router={'alinan_paket': 326, 'iletilen': 313, 'txspace_dusen': 0, 'kayip_dusen': 13, 'yerel': 0, 'hedefsiz': 0, 'bozuk': 0, 'arka_plan_b': 44880, 'arka_plan_atlanan': 0, 'heartbeat': 26, 'sifirlama': 0, 'kesintide_atilan': 0} yer={zaman_asimi_dusen: 10, kimlik_boslugu: 0} hava={kimlik_boslugu: 2, zaman_asimi_dusen: 0}
+[K4_05 RAPOR] %20 kayip: 12wp 8/10 · 30wp 8/10 · txspace_dusen=0 kayip_dusen=33 yer_kimlik_boslugu=0 yer_zaman_asimi=21 hava_kimlik_boslugu=1 hava_zaman_asimi=0
+[K4_06] hava->yer p50=94 p95=95 ms · yer->hava p50=63 p95=64 ms · HESAP 2x18 ms UART + arka plan · kapi 200 ms
+[K4_07] ACK 1180 ms · yer kimlik_boslugu=13 zaman_asimi_dusen=0 · router={'alinan_paket': 37, 'iletilen': 27, 'txspace_dusen': 0, 'kayip_dusen': 0, 'yerel': 0, 'hedefsiz': 10, 'bozuk': 0, 'arka_plan_b': 17200, 'arka_plan_atlanan': 0, 'heartbeat': 12, 'sifirlama': 2, 'kesintide_atilan': 9}
+[K4_08] ACK 1163 ms · hava={'gonderilen_cerceve': 5, 'gonderilen_parca': 5, 'tavan_ustu': 0, 'akran_yok': 0, 'gonderim_hatasi': 0, 'akran_sessizken_gonderilen': 0, 'alinan_datagram': 52, 'mavlink_paket': 52, 'cozum_hatasi': 0, 'yabanci_mesaj': 43, 'yabanci_payload_type': 0, 'kendi_yanki': 0, 'yabanci_kaynak': 0, 'teslim_cerceve': 5, 'udp_red': 4, 'akrandisi_datagram': 42, 'akran_degisti': 1, 'alinan_parca': 5, 'bozuk_parca': 0, 'tutarsiz_parca': 0, 'yinelenen_parca': 0, 'zaman_asimi_dusen': 0, 'eszamanli_tavan_dusen': 0, 'tamamlanan_cerceve': 5, 'kimlik_boslugu': 0, 'kimlik_geri': 0, 'kimlik_sicramasi': 0}
+[K4_10 RAPOR] ACK 0/20 · hava gonderilen=101 yer teslim=6 dusen=95 · yer zaman_asimi_dusen=95 kimlik_boslugu=0 eszamanli_tavan=0 · txspace_dusen=287 · yer->hava hava.kimlik_boslugu=0
+
+HUKUM K4: DUSTU — tampon 256 B alt vakasinda 30 wp (4 parca) OPEN_ROUTE ACK'i %0 kayipta bile
+alinamiyor (TELEM1 arka plan 1943 B/s + 5760 B/s hat + 256 B TX tamponu -> txspace_dusen). 1024 B
+alt vakasi son kosuda 40/40 GECTI ama onceki tam suitte 39/40 DUSTU (zamanlamaya bagli).
+PARACHUTE->ACK (K4_02), gecikme (K4_06 p95 hava->yer / yer->hava kapi altinda), reboot (K4_07),
+MAVProxy yeniden baslama (K4_08), rota ogrenme (K4_09), patlama asgari kosullari (K4_10),
+mavfwd (K4_11, duzeltilmis yon) GECTI. Gercek hat hukmu K8'dedir: OLCULEMEDI.
+
+========================================================================================
+K6 — udp/sik kip testleri DEGISMEDEN gecer + KIP=tunel shim testleri
+----------------------------------------------------------------------------------------
+  test_faz_b_jetson_baslat: ok=41, skipped=1
+  test_faz_b_seri_hub: ok=31
+  test_p2_seri_hat: ok=11
+  test_faz_b_sik_rf_olc: ok=13
+  test_faz_b_kamera_lan: ok=7
+  test_isaretli_gosterici: ok=62, skipped=1
+  test_jetson_baslat_tunel: ok=13
+
+--kuru ciktisi HEAD betigi vs yeni betik (udp/sik; 3 beyan varyanti; env'e eklenen iki bos anahtar
+ve paket yolu satiri disinda karsilastirma; `cat -A` ile satir sonu gorunur):
+FARK kip=udp ek=''
+23c23
+< navitas-cogullayici.service: /usr/bin/env mavproxy.py --master=/dev/ttyACM0 --baudrate 57600 --streamrate 8 --out udp:127.0.0.1:14550 --out udp:127.0.0.1:14551 --out udp:127.0.0.1:14552 --daemon --non-interactive --state-basedir /home/navitas/navitas/results/jetson_log/mavproxy
+---
+> navitas-cogullayici.service: /usr/bin/env mavproxy.py --master=/dev/ttyACM0 --baudrate 57600 --streamrate 8 --out udp:127.0.0.1:14550 --out udp:127.0.0.1:14551 --out udp:127.0.0.1:14552 --daemon --non-interactive --state-basedir /home/navitas/navitas/results/jetson_log/mavproxy 
+FARK kip=udp ek='KAMERA=http://127.0.0.1:8080/video'
+23c23
+< navitas-cogullayici.service: /usr/bin/env mavproxy.py --master=/dev/ttyACM0 --baudrate 57600 --streamrate 8 --out udp:127.0.0.1:14550 --out udp:127.0.0.1:14551 --out udp:127.0.0.1:14552 --daemon --non-interactive --state-basedir /home/navitas/navitas/results/jetson_log/mavproxy
+---
+> navitas-cogullayici.service: /usr/bin/env mavproxy.py --master=/dev/ttyACM0 --baudrate 57600 --streamrate 8 --out udp:127.0.0.1:14550 --out udp:127.0.0.1:14551 --out udp:127.0.0.1:14552 --daemon --non-interactive --state-basedir /home/navitas/navitas/results/jetson_log/mavproxy 
+FARK kip=udp ek='PIXHAWK_SERI=/dev/ttyS9 SIK_SERI=/dev/ttyUSB3'
+23c23
+< navitas-cogullayici.service: /usr/bin/env mavproxy.py --master=/dev/ttyS9 --baudrate 57600 --streamrate 8 --out udp:127.0.0.1:14550 --out udp:127.0.0.1:14551 --out udp:127.0.0.1:14552 --daemon --non-interactive --state-basedir /home/navitas/navitas/results/jetson_log/mavproxy
+---
+> navitas-cogullayici.service: /usr/bin/env mavproxy.py --master=/dev/ttyS9 --baudrate 57600 --streamrate 8 --out udp:127.0.0.1:14550 --out udp:127.0.0.1:14551 --out udp:127.0.0.1:14552 --daemon --non-interactive --state-basedir /home/navitas/navitas/results/jetson_log/mavproxy 
+FARK kip=sik ek=''
+23c23
+< navitas-cogullayici.service: /usr/bin/env mavproxy.py --master=/dev/ttyACM0 --baudrate 57600 --streamrate 8 --out udp:127.0.0.1:14550 --out udp:127.0.0.1:14551 --out udp:127.0.0.1:14552 --daemon --non-interactive --state-basedir /home/navitas/navitas/results/jetson_log/mavproxy
+---
+> navitas-cogullayici.service: /usr/bin/env mavproxy.py --master=/dev/ttyACM0 --baudrate 57600 --streamrate 8 --out udp:127.0.0.1:14550 --out udp:127.0.0.1:14551 --out udp:127.0.0.1:14552 --daemon --non-interactive --state-basedir /home/navitas/navitas/results/jetson_log/mavproxy 
+FARK kip=sik ek='KAMERA=http://127.0.0.1:8080/video'
+23c23
+< navitas-cogullayici.service: /usr/bin/env mavproxy.py --master=/dev/ttyACM0 --baudrate 57600 --streamrate 8 --out udp:127.0.0.1:14550 --out udp:127.0.0.1:14551 --out udp:127.0.0.1:14552 --daemon --non-interactive --state-basedir /home/navitas/navitas/results/jetson_log/mavproxy
+---
+> navitas-cogullayici.service: /usr/bin/env mavproxy.py --master=/dev/ttyACM0 --baudrate 57600 --streamrate 8 --out udp:127.0.0.1:14550 --out udp:127.0.0.1:14551 --out udp:127.0.0.1:14552 --daemon --non-interactive --state-basedir /home/navitas/navitas/results/jetson_log/mavproxy 
+FARK kip=sik ek='PIXHAWK_SERI=/dev/ttyS9 SIK_SERI=/dev/ttyUSB3'
+23c23
+< navitas-cogullayici.service: /usr/bin/env mavproxy.py --master=/dev/ttyS9 --baudrate 57600 --streamrate 8 --out udp:127.0.0.1:14550 --out udp:127.0.0.1:14551 --out udp:127.0.0.1:14552 --daemon --non-interactive --state-basedir /home/navitas/navitas/results/jetson_log/mavproxy
+---
+> navitas-cogullayici.service: /usr/bin/env mavproxy.py --master=/dev/ttyS9 --baudrate 57600 --streamrate 8 --out udp:127.0.0.1:14550 --out udp:127.0.0.1:14551 --out udp:127.0.0.1:14552 --daemon --non-interactive --state-basedir /home/navitas/navitas/results/jetson_log/mavproxy 
+
+Olgu: tek fark cogullayici satirinin SONUNDAKI bosluktur (bos $COGULLAYICI_EK_ARGS); kamera koprusu
+satirindaki bos $KAMERA_KOPRU_ARGS ile ayni desen. Testler (K5 yerine-koyma) bosluk-normalize eder.
+HUKUM K6: GECTI
+
+========================================================================================
+K7 — SOZLESME / YKS / OLCUM ARACI / PAKET
+----------------------------------------------------------------------------------------
+  test_mavlink_tunel_sozlesme: ok=7
+  test_yks_gui_tunel: skipped=7
+  test_sik_rf_olc_tunel: ok=4
+  test_jetson_comms_paketi: ok=8
+  test_kilavuz_kurulum_yordami: ok=6
+  test_t202_jetson_paket_butunlugu: FAIL=1, ok=6
+  test_atolye_test_gunu: FAIL=3, ok=37
+(test_t202 ve test_atolye_test_gunu'ndaki dusenler TABANDA da vardir — K2 farkinda yok.)
+
+test_yks_gui_tunel + yks_gui main kilitleri — EK YOL ile (scratchpad'e kopyalanan, ana calisma
+agacindaki izlenmeyen comms/rota_inceleme.py PYTHONPATH sonuna eklendi; depoya EKLENMEDI):
+test_Y4_ham_gonder_tunelde_adressiz_gonderir (test_yks_gui_tunel.YksGuiTunelDallariTests.test_Y4_ham_gonder_tunelde_adressiz_gonderir) ... ok
+test_Y5_tasiyici_adi_ve_kaynak_kilidi (test_yks_gui_tunel.YksGuiTunelDallariTests.test_Y5_tasiyici_adi_ve_kaynak_kilidi) ... ok
+test_Y5b_tunel_sayac_artisi_1_Hz_KIRMIZI_seride_sessiz (test_yks_gui_tunel.YksGuiTunelDallariTests.test_Y5b_tunel_sayac_artisi_1_Hz_KIRMIZI_seride_sessiz) ... ok
+test_Y0_tunel_tek_basina_argparse_gecer_ve_tunel_linki_kurulur (test_yks_gui_tunel.YksGuiTunelMainTests.test_Y0_tunel_tek_basina_argparse_gecer_ve_tunel_linki_kurulur) ... ok
+test_Y1_Y2_tunel_ile_serial_demo_ika_iha_REDDEDILIR_link_acilmadan (test_yks_gui_tunel.YksGuiTunelMainTests.test_Y1_Y2_tunel_ile_serial_demo_ika_iha_REDDEDILIR_link_acilmadan) ... ok
+test_Y1b_udp_kipinde_ika_iha_zorunlulugu_DEGISMEDI (test_yks_gui_tunel.YksGuiTunelMainTests.test_Y1b_udp_kipinde_ika_iha_zorunlulugu_DEGISMEDI) ... ok
+test_Y3_kunye_dinleme_ve_baslangic_logu_uc_kipte_BIREBIR (test_yks_gui_tunel.YksGuiTunelMainTests.test_Y3_kunye_dinleme_ve_baslangic_logu_uc_kipte_BIREBIR) ... ok
+Ran 27 tests in 1.235s
+OK
+
+yks_gui'yi import eden 52 test modulu, ayni ek yolla (gerileme taramasi):
+ERROR: test_GEVSETME_ACIKCA_istenmeli (test_saha_parametrik.FailClosedTests.test_GEVSETME_ACIKCA_istenmeli)
+ERROR: test_UYUM_varsa_yuklenir (test_saha_parametrik.FailClosedTests.test_UYUM_varsa_yuklenir)
+ERROR: test_kayit_defteri_YOKSA_uyum_SAYILMAZ (test_saha_parametrik.FailClosedTests.test_kayit_defteri_YOKSA_uyum_SAYILMAZ)
+ERROR: test_UC_UC_ayni_agirligi_gosteriyor (test_saha_parametrik.KayitDefteriDurumuTests.test_UC_UC_ayni_agirligi_gosteriyor)
+ERROR: test_manifest_ile_kayit_defteri_ESLESIYOR (test_saha_parametrik.KayitDefteriDurumuTests.test_manifest_ile_kayit_defteri_ESLESIYOR)
+ERROR: test_varsayilan_MANIFESTTEN_gelir (test_saha_parametrik.ModelVarsayilaniTests.test_varsayilan_MANIFESTTEN_gelir)
+FAIL: test_UYUSMAZLIKTA_yukselir (test_saha_parametrik.FailClosedTests.test_UYUSMAZLIKTA_yukselir)
+FAIL: test_KULLANILAN_HER_YOL_KURULUYOR (test_t202_jetson_paket_butunlugu.KurulumBlogu.test_KULLANILAN_HER_YOL_KURULUYOR)
+FAIL: test_gorunum_eslemesi_URETIMIN_IC_ADLARIYLA_AYNI (test_yks_gui_uretim_hizasi.AcilisArgumanlariTests.test_gorunum_eslemesi_URETIMIN_IC_ADLARIYLA_AYNI)
+FAIL: test_kompozit_dizini_listeleniyor (test_yks_gui_uretim_hizasi.KompozitKaynakTests.test_kompozit_dizini_listeleniyor)
+Ran 688 tests in 128.925s
+FAILED (failures=4, errors=6, skipped=8)
+Olgu: dusenler test_saha_parametrik (model agirligi yok; tabanda da), test_t202 (tabanda da) ve
+test_yks_gui_uretim_hizasi'nin iki vakasi (GORUNUM 'rota' secenegi HEAD'de zaten var; kompozit veri
+dizini bos) — tunel degisikligiyle ilgisiz.
+HUKUM K7: GECTI (yks vakalari yalniz ek yolla; tam suitte YAPILAMADI-atlama)
+
+========================================================================================
+K5 (mutasyon, curutucu) ve K8 (gercek donanim, INSAN) bu gorevin kapsami disinda: K8 OLCULEMEDI.

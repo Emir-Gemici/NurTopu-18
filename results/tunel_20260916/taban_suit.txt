@@ -1,0 +1,98 @@
+# TABAN TAM SUIT — degisiklikten ONCE (worktree, HEAD b5595cc9, calisma agaci TEMIZ)
+# Tarih: 2026-09-16 12:40:39 -> 12:49:37 (yerel saat)
+# Komut (cwd worktree koku, PowerShell):
+#   $env:PYTHONPATH = '<worktree koku>'
+#   O:\navitas-local-train\venv\Scripts\python.exe -m unittest discover -s tests -q
+# NOT 1: gorev emri tabani d8783c59 der; worktree b5595cc9'a (ON_KAYIT commit'i: yalniz
+#   results/tunel_20260916/ON_KAYIT.md ekler, kod degismez) `git reset --keep` ile alindi.
+# NOT 2: ilk taban kosusu (≈12:29-12:39) degisiklikler worktree'ye YAZILIRKEN kostu (kirli olabilir).
+#   Worktree HEAD'e geri alinip (dosyalar scratchpad'e yedeklendi) bu kosu TEKRARLANDI.
+#   Iki kosunun ozet satiri ve FAIL/ERROR listesi AYNI cikti (72/72).
+# NOT 3 (ORTAM): HEAD'de comms/rota_inceleme.py depoda YOK (ana calisma agacinda izlenmeyen dosya):
+#   yks_gui import edilemez -> yks test modullerinin cogu ImportError. Model agirliklari (*.pt) da
+#   depoda yok (test_saha_parametrik, test_model_registry, test_t158 ...). Bunlar tunel isinden BAGIMSIZ.
+
+## Ozet satirlari (ham cikti)
+Ran 2501 tests in 534.095s
+FAILED (failures=16, errors=56, skipped=27)
+EXIT 1 BASLA 09/16/2026 12:40:39 BITIS 09/16/2026 12:49:37
+
+## GENEL KAPI (K1) tabani — degisiklikten ONCE (cwd worktree koku; codes/test_rota_sentetik.py son satirlari)
+URETIM YOLU: rota uretimi 15/15 · yayinlanan serit 15/15 (esik >= 14/15, ON_KAYIT SS18-B)
+[OK] URETIM YOLU KOLU GECTI
+GENEL KAPI (madde 14): GECTI — kol1 15/15 · kol2 serit 15/15
+
+## Tabanda dusen testler — ADIYLA (FAIL/ERROR basliklari; alt test parantezi dahil)
+ERROR: test_GEVSETME_ACIKCA_istenmeli (test_saha_parametrik.FailClosedTests.test_GEVSETME_ACIKCA_istenmeli)
+ERROR: test_MUTASYON_A_uretim_surumu_donguye_girerse_DUSER (test_t158_kilavuz_kapisi_dongu.Mutasyonlar.test_MUTASYON_A_uretim_surumu_donguye_girerse_DUSER)
+ERROR: test_MUTASYON_B_defterde_olmayan_surum_DUSER (test_t158_kilavuz_kapisi_dongu.Mutasyonlar.test_MUTASYON_B_defterde_olmayan_surum_DUSER)
+ERROR: test_MUTASYON_C_imgsz_512_yapilirsa_DUSER (test_t158_kilavuz_kapisi_dongu.Mutasyonlar.test_MUTASYON_C_imgsz_512_yapilirsa_DUSER)
+ERROR: test_MUTASYON_kunyedeki_sha_bozulursa_UYUSMAZ_der (test_t123_gecis_provasi.G2KosulabilirTests.test_MUTASYON_kunyedeki_sha_bozulursa_UYUSMAZ_der)
+ERROR: test_TABAN_bugunku_kilavuz_temiz (test_t158_kilavuz_kapisi_dongu.Mutasyonlar.test_TABAN_bugunku_kilavuz_temiz)
+ERROR: test_UC_UC_ayni_agirligi_gosteriyor (test_saha_parametrik.KayitDefteriDurumuTests.test_UC_UC_ayni_agirligi_gosteriyor)
+ERROR: test_UYUM_varsa_yuklenir (test_saha_parametrik.FailClosedTests.test_UYUM_varsa_yuklenir)
+ERROR: test_a1_hakem_ekrani_ankoru (unittest.loader._FailedTest.test_a1_hakem_ekrani_ankoru)
+ERROR: test_a2_karar_yasi (unittest.loader._FailedTest.test_a2_karar_yasi)
+ERROR: test_dalga2_k1_k5_k8_kusurlari (unittest.loader._FailedTest.test_dalga2_k1_k5_k8_kusurlari)
+ERROR: test_default_is_verified_v36_competition_model (test_model_registry.ModelRegistryTests.test_default_is_verified_v36_competition_model)
+ERROR: test_defter_okunamazsa_ekran_ad_UYDURMAZ (test_saha_parametrik.KayitDefteriDurumuTests.test_defter_okunamazsa_ekran_ad_UYDURMAZ)
+ERROR: test_dongu_gorunur (test_t158_kilavuz_kapisi_dongu.DonguTaramasi.test_dongu_gorunur)
+ERROR: test_faz_b_ack_ref_tip (unittest.loader._FailedTest.test_faz_b_ack_ref_tip)
+ERROR: test_faz_b_yks_fda_kipi (unittest.loader._FailedTest.test_faz_b_yks_fda_kipi)
+ERROR: test_g2_KOSUYOR_ve_PATLAMIYOR (test_t123_gecis_provasi.G2KosulabilirTests.test_g2_KOSUYOR_ve_PATLAMIYOR)
+ERROR: test_g2_YEDEGI_OK_diye_dogruluyor (test_t123_gecis_provasi.G2KosulabilirTests.test_g2_YEDEGI_OK_diye_dogruluyor)
+ERROR: test_hakem_kunye_algi_hizasi (unittest.loader._FailedTest.test_hakem_kunye_algi_hizasi)
+ERROR: test_iha_landed_gate (unittest.loader._FailedTest.test_iha_landed_gate)
+ERROR: test_ika_go_ackli_tekrar (unittest.loader._FailedTest.test_ika_go_ackli_tekrar)
+ERROR: test_ika_go_gate (unittest.loader._FailedTest.test_ika_go_gate)
+ERROR: test_k1_tazelik_damgasi (unittest.loader._FailedTest.test_k1_tazelik_damgasi)
+ERROR: test_kayit_defteri_YOKSA_uyum_SAYILMAZ (test_saha_parametrik.FailClosedTests.test_kayit_defteri_YOKSA_uyum_SAYILMAZ)
+ERROR: test_manifest_ile_kayit_defteri_ESLESIYOR (test_saha_parametrik.KayitDefteriDurumuTests.test_manifest_ile_kayit_defteri_ESLESIYOR)
+ERROR: test_model_adinda_kullanilmayan_dongu_SAYILMAZ (test_t158_kilavuz_kapisi_dongu.DonguTaramasi.test_model_adinda_kullanilmayan_dongu_SAYILMAZ)
+ERROR: test_p9abc_yks (unittest.loader._FailedTest.test_p9abc_yks)
+ERROR: test_rota_guven_esigi (unittest.loader._FailedTest.test_rota_guven_esigi)
+ERROR: test_rota_ret_nedenleri (unittest.loader._FailedTest.test_rota_ret_nedenleri)
+ERROR: test_t169_tespit_tazeligi (unittest.loader._FailedTest.test_t169_tespit_tazeligi)
+ERROR: test_t170_fda_sure_butcesi (unittest.loader._FailedTest.test_t170_fda_sure_butcesi)
+ERROR: test_t171_asgari_irtifa (unittest.loader._FailedTest.test_t171_asgari_irtifa)
+ERROR: test_t177_senaryo_tatbikati (unittest.loader._FailedTest.test_t177_senaryo_tatbikati)
+ERROR: test_uretim_defteri_ile_INFER_SIZE_UYUSUYOR (test_imgsz_tek_kaynak.ImgszTekKaynak.test_uretim_defteri_ile_INFER_SIZE_UYUSUYOR)
+ERROR: test_uretim_modeli_hizasi (unittest.loader._FailedTest.test_uretim_modeli_hizasi)
+ERROR: test_varsayilan_MANIFESTTEN_gelir (test_saha_parametrik.ModelVarsayilaniTests.test_varsayilan_MANIFESTTEN_gelir)
+ERROR: test_yks_erken_ika_ack_tamponu (unittest.loader._FailedTest.test_yks_erken_ika_ack_tamponu)
+ERROR: test_yks_gui_aktarim_zamani (unittest.loader._FailedTest.test_yks_gui_aktarim_zamani)
+ERROR: test_yks_gui_arm_gps_canli (unittest.loader._FailedTest.test_yks_gui_arm_gps_canli)
+ERROR: test_yks_gui_demo_kaynak (unittest.loader._FailedTest.test_yks_gui_demo_kaynak)
+ERROR: test_yks_gui_kabul_kumesi_koku_mutlak_ve_mevcut (test_t220_jetson_istekleri.K2KabulKumeleriDepoda.test_yks_gui_kabul_kumesi_koku_mutlak_ve_mevcut)
+ERROR: test_yks_gui_komut_durustlugu (unittest.loader._FailedTest.test_yks_gui_komut_durustlugu)
+ERROR: test_yks_gui_rota_engel (unittest.loader._FailedTest.test_yks_gui_rota_engel)
+ERROR: test_yks_gui_uretim_hizasi (unittest.loader._FailedTest.test_yks_gui_uretim_hizasi)
+ERROR: test_yks_hakem_kanit_olaylari (unittest.loader._FailedTest.test_yks_hakem_kanit_olaylari)
+ERROR: test_yks_hakem_kanit_yolu (unittest.loader._FailedTest.test_yks_hakem_kanit_yolu)
+ERROR: test_yks_hakem_kaydi (unittest.loader._FailedTest.test_yks_hakem_kaydi)
+ERROR: test_yks_harita_yerlesimi (unittest.loader._FailedTest.test_yks_harita_yerlesimi)
+ERROR: test_yks_kapanis_guvenligi (unittest.loader._FailedTest.test_yks_kapanis_guvenligi)
+ERROR: test_yks_kaynak_sira_guvenligi (unittest.loader._FailedTest.test_yks_kaynak_sira_guvenligi)
+ERROR: test_yks_mk15_hakem_ekrani (unittest.loader._FailedTest.test_yks_mk15_hakem_ekrani)
+ERROR: test_yks_model_soyu (unittest.loader._FailedTest.test_yks_model_soyu)
+ERROR: test_yks_monotonik_kronometre (unittest.loader._FailedTest.test_yks_monotonik_kronometre)
+ERROR: test_yks_operator_guvenligi (unittest.loader._FailedTest.test_yks_operator_guvenligi)
+ERROR: test_yks_oturum_kunyesi (unittest.loader._FailedTest.test_yks_oturum_kunyesi)
+ERROR: test_yks_udp_tek_sahip (unittest.loader._FailedTest.test_yks_udp_tek_sahip)
+FAIL: test_BIRINCIL_ve_YEDEK_ikisi_de_pakette (test_t123_gecis_provasi.YedekPaketteTests.test_BIRINCIL_ve_YEDEK_ikisi_de_pakette)
+FAIL: test_KULLANILAN_HER_YOL_KURULUYOR (test_t202_jetson_paket_butunlugu.KurulumBlogu.test_KULLANILAN_HER_YOL_KURULUYOR)
+FAIL: test_T7b_iki_yardim_kod_satiriyla (test_fdr_t244_ic_celiski.T7_Durustluk.test_T7b_iki_yardim_kod_satiriyla)
+FAIL: test_UYUSMAZLIKTA_yukselir (test_saha_parametrik.FailClosedTests.test_UYUSMAZLIKTA_yukselir)
+FAIL: test_cagrilan_betikler_help_sifir (test_atolye_test_gunu.K4_Komutlar.test_cagrilan_betikler_help_sifir) (betik='comms/yks_gui.py')
+FAIL: test_dugum_tablosu_mmd_ile_birebir (test_gece_akis_diyagramlari.TabloBayatDegil.test_dugum_tablosu_mmd_ile_birebir)
+FAIL: test_her_dugum_dosya_satir_tasir_ve_kodda_durur (test_gece_akis_diyagramlari.DugumlerKodaTutar.test_her_dugum_dosya_satir_tasir_ve_kodda_durur)
+FAIL: test_kareler_ve_sha_tutuyor (test_t38_kuru_kosu_fiksturu.FiksturSozlesmesi.test_kareler_ve_sha_tutuyor) (kare='images/sa_000000.jpg')
+FAIL: test_kareler_ve_sha_tutuyor (test_t38_kuru_kosu_fiksturu.FiksturSozlesmesi.test_kareler_ve_sha_tutuyor) (kare='images/sa_000001.jpg')
+FAIL: test_kareler_ve_sha_tutuyor (test_t38_kuru_kosu_fiksturu.FiksturSozlesmesi.test_kareler_ve_sha_tutuyor) (kare='images/sa_000002.jpg')
+FAIL: test_kod_atiflari_satirda_birebir (test_atolye_test_gunu.K5_Kaynaklar.test_kod_atiflari_satirda_birebir) (atif='comms/yks_gui.py:4387')
+FAIL: test_kod_atiflari_satirda_birebir (test_atolye_test_gunu.K5_Kaynaklar.test_kod_atiflari_satirda_birebir) (atif='comms/yks_gui.py:4428')
+FAIL: test_load_model_hata_mesaji_IMGSZ_degerlerini_yaziyor (test_imgsz_tek_kaynak.ImgszTekKaynak.test_load_model_hata_mesaji_IMGSZ_degerlerini_yaziyor)
+FAIL: test_okuyucu_dortlu_donuyor (test_t38_kuru_kosu_fiksturu.FiksturSozlesmesi.test_okuyucu_dortlu_donuyor)
+FAIL: test_t20_sonrasi_kalan_kopukluklar_isim_isim_yakalaniyor (test_saha_kuru_kosu.PozitifKontrolTests.test_t20_sonrasi_kalan_kopukluklar_isim_isim_yakalaniyor) (halka='motor')
+FAIL: test_varsayilan_fiksturden_gelir (test_t38_kuru_kosu_fiksturu.VarsayilanKare.test_varsayilan_fiksturden_gelir)
+# toplam tekil: 72 (ham baslik sayisi 72)
