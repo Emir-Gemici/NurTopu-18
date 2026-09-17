@@ -36,6 +36,10 @@ Ortalama kapalı 5,67 · açık 5,60 → **−%1,3** (koşular arası oynama ±%
 Canlı uç: `/durum` → `kare_sayaci 41 · boyut [1280, 720] · son_kare_yasi 0,033 s · kodlama_hatasi 0`; `isaretli_kare.jpg` (ROTA YOK – HEDEF_YOK, maske bindirmeli).
 ⚠ İlk betikteki `acik1.jpg` 503 JSON'du (curl kare yokken kaydetmiş) — ürün değil ölçüm betiği hatası; ayrı koşuyla gerçek kare alındı.
 
+## Geniş karşılaştırma (commit öncesi ↔ sonrası, temiz worktree, 87 test dosyası)
+Düzelen (kırmızı → yeşil): `test_jetson_comms_paketi`, `test_jetson_paket_defteri`, `test_k0_iki_olcum_hatti`, `test_t135_kamera_dogrula_icerik`, `test_t143_turev_ve_kamera`, `test_t220_jetson_istekleri` (paket kopyalarının tazelenmesiyle).
+Yeni kırmızı 1: `test_kilavuz_kurulum_yordami` — kılavuzun `cp kod/...` satırı yeni iki modülü kopyalamıyordu → `JETSON_KILAVUZ.md` ve `jetson_paket/JETSON_KILAVUZ.md` satırına `kod/isaretli_yayin.py kod/kare_keskinligi.py` eklendi → **OK**. Genel kapı 15/15 · 15/15.
+
 ## Kalan
 - Canlı CSI kamerayla ve `GOSTERICI_KIP=x11` gösterici ile uçtan uca koşu (kamera ölçümü bekleyen maddelerle birlikte).
 - Ağdan erişim: varsayılan 127.0.0.1; YKS'ye göndermek için `--isaretli-yayin 0.0.0.0:8081` ya da gösterici/RTSP (ONARIM-09 kapsamında karar).
