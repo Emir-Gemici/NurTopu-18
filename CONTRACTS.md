@@ -534,6 +534,7 @@ ms), `monotonic_s`, `oturum`, `olay`. Aşağıdaki alanlar bunlara **eklenir**.
 | `IHA_INIS_KANITI` | yeni `IHA_LANDED` `seq`'i, ACK gönderildikten SONRA | `seq`, `ika_rota_ack_var` |
 | `KAMERA_KANIT` | kamera kanıt durumu **DEĞİŞTİĞİNDE**; değişmezse tekrar aralığında bir (`_kamera_tazele`) | `durum`, `degisim`, `kare_yasi_s`, `kare_sira`, `kaynak`, `hata`, `calisiyor` |
 | `TELEMETRI_KANIT` | düğüm tazelik özeti **DEĞİŞTİĞİNDE**; değişmezse tekrar aralığında bir (`_durum_tazele`) | `durum`, `degisim`, `bayat`, `yas_s`, `dugumler` |
+| `HAT_DURUMU` | ONARIM-09 çoklu taşıyıcıda (`--coklu`) bir hattın (LAN/SiK) durumu **DEĞİŞTİĞİNDE** — `TAZE` (son alım < 3 s) · `KOPUK` · `YOK` (`_hatlari_tazele`) | `hat`, `onceki`, `durum` |
 | `ACIL_SENARYO` | demo arıza tatbikatı tetiklendiğinde (`senaryo`) | `kod`, `senaryo_no` |
 | `KRONOMETRE_BASLADI` | fırlatma/kalkış · `IKA_GO` · alan girişi · müdahale sonrası devam. `kron` ∈ {iha, ika, hazirlik}; `devam=true` yalnız müdahale sonrası (kronometre sıfırlanmaz, kaldığı yerden sürer) | `kron`, `limit_s`, `devam` |
 | `KRONOMETRE_BITTI` | İHA indi · HB temas · takım hazır | `kron`, `sure_s`, `limit_s`, `asim` |

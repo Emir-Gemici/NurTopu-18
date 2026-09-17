@@ -296,6 +296,14 @@ def _tam_akis(g):
     g.son_hb["iha"] = time.monotonic()
     g.tel["iha"] = {"alt": 31.0, "lat": 37.7, "lon": 38.2, "gps_fix": 3}
     g._durum_tazele()
+    # 14) ONARIM-09: coklu tasiyicida LAN hattinin TAZE -> KOPUK gecisi -> HAT_DURUMU
+    yaslar = iter([{"lan": 0.4, "sik": None}, {"lan": 9.0, "sik": None}])
+    g.link = mock.Mock()
+    g.link.hat_yaslari.side_effect = lambda: next(yaslar)
+    g.lbl_hatlar = _SahteWidget()
+    g._hat_durum_onceki = {}
+    g._hatlari_tazele()
+    g._hatlari_tazele()
 
 
 class UctanUcaDiskeYazar(unittest.TestCase):

@@ -37,7 +37,7 @@ import uuid
 from pathlib import Path
 from tkinter import font as tkfont
 
-from link import UDPLink, SerialLink
+from link import UDPLink, SerialLink, CokluLink
 from ika_receiver import IkaReceiver
 from hakem_kaydi import HakemKaydi, varsayilan_hakem_log_yolu
 from komut_tekrar import AckliTekrar, BOS, ONAYLANDI, VAZGECILDI
@@ -178,6 +178,7 @@ KANIT_OLAYLARI = (
     "IHA_INIS_KANITI",
     "KAMERA_KANIT",
     "TELEMETRI_KANIT",
+    "HAT_DURUMU",
     "ACIL_SENARYO",
     "KRONOMETRE_BASLADI",
     "KRONOMETRE_BITTI",
@@ -736,6 +737,15 @@ def _udp_adresi_gecerli(adr):
         and 1 <= adr[1] <= 65535)
 
 
+#: ONARIM-09: bir hattan bu sureden uzun veri gelmezse KOPUK (ika_receiver failsafe esigiyle ayni 3 s).
+HAT_TAZELIK_S = 3.0
+
+
+def _seri_hat_var(link):
+    """ONARIM-09: SiK hattı olan taşıyıcı (yalnız seri ya da LAN+SiK çoklu)."""
+    return isinstance(link, (SerialLink, CokluLink))
+
+
 def mesaj_kaynagi_dogrula(mesaj, adr, iha_peer, ika_peer):
     """UDP çerçevesini beklenen fiziksel uçla eşleştir.
 
@@ -951,7 +961,8 @@ class YksArayuz:
         hazir_kaydi = {
             "demo": bool(demo),
             "kamera_yapilandirildi": bool(kamera_url),
-            "tasiyici": "serial" if isinstance(link, SerialLink) else "udp",
+            "tasiyici": ("coklu" if isinstance(link, CokluLink) else
+                         "serial" if isinstance(link, SerialLink) else "udp"),
             "komut_oturumu": self.komut_oturumu,
         }
         if oturum_kunyesi:
@@ -1239,13 +1250,22 @@ class YksArayuz:
         # Alt durum çubuğu
         alt = tk.Frame(self.kok, bg=PANEL)
         alt.pack(fill="x", side="bottom")
-        tasiyici = "SiK 433 MHz (seri)" if isinstance(self.link, SerialLink) \
-            else f"UDP :{self.link.port}"
+        tasiyici = ("SiK 433 MHz (seri)" if isinstance(self.link, SerialLink)
+                    else f"LAN UDP :{self.link.port} + SiK 433 MHz (çoklu)"
+                    if isinstance(self.link, CokluLink)
+                    else f"UDP :{self.link.port}")
         tk.Label(alt, text=f"  Taşıyıcı: {tasiyici}   ·   Protokol: newline-JSON v1"
                            f"   ·   Çerçeve: OPEN_ROUTE / IHA_LANDED / "
                            f"HEARTBEAT / ACK / CMD",
                  font=self.f_kucuk, fg=SOLUK, bg=PANEL, wraplength=S(1150),
                  justify="left").pack(side="left", pady=3)
+        # ONARIM-09: coklu tasiyicida hat basina tazelik (LAN / SiK)
+        self.lbl_hatlar = None
+        self._hat_durum_onceki = {}
+        if isinstance(self.link, CokluLink):
+            self.lbl_hatlar = tk.Label(alt, text="HATLAR: —", font=self.f_kucuk,
+                                       fg=SARI, bg=PANEL)
+            self.lbl_hatlar.pack(side="right", padx=8, pady=3)
 
         # Görev kontrol & kronometre şeridi — 2 satır:
         # 1) hazırlık akışı (§6.2 hands-off), 2) uçuş/intikal akışı + paraşüt
@@ -1998,7 +2018,7 @@ class YksArayuz:
             # çakışan başka tipteki bekleyen bu ACK'i sahiplenemez (§6.6).
             if adr is not None:
                 self.link.send(encode(ack(m["seq"], "yks", tip)), adr)
-            elif isinstance(self.link, SerialLink):
+            elif _seri_hat_var(self.link):
                 self.link.send(encode(ack(m["seq"], "yks", tip)))
             self.sayac["ACK_TX"] += 1
             if yeni:
@@ -2037,7 +2057,7 @@ class YksArayuz:
             # seq'iyle çakışırsa bu ACK yanlış bekleyene bağlanamaz (§6.6).
             if adr is not None:
                 self.link.send(encode(ack(seq, "yks", tip)), adr)
-            elif isinstance(self.link, SerialLink):
+            elif _seri_hat_var(self.link):
                 self.link.send(encode(ack(seq, "yks", tip)))
             self.sayac["ACK_TX"] += 1
             if seq != self.iha_landed_seq:
@@ -3553,7 +3573,10 @@ class YksArayuz:
         cmd = komut_mesaji["cmd"]
         mesaj = encode(komut_mesaji)
         try:
-            if isinstance(self.link, SerialLink):
+            if isinstance(self.link, CokluLink):
+                # ONARIM-09: komut iki hattan; LAN yalniz adres biliniyorsa.
+                self.link.send_hepsi(mesaj, adr if adr is not None and adr[1] else None)
+            elif isinstance(self.link, SerialLink):
                 self.link.send(mesaj)
             elif adr is not None and adr[1]:
                 self.link.send(mesaj, adr)
@@ -4368,8 +4391,32 @@ class YksArayuz:
                 "(§6.2 gerçek zamanlı aktarım)", "sari")
         return bayat
 
+    def _hatlari_tazele(self):
+        """ONARIM-09: LAN/SiK son alim yasi; durum degisimi gunluk + hakem kaydina."""
+        if getattr(self, "lbl_hatlar", None) is None:
+            return
+        yaslar = self.link.hat_yaslari()
+        parcalar, durumlar = [], {}
+        for hat, ad in (("lan", "LAN"), ("sik", "SiK")):
+            yas = yaslar.get(hat)
+            durum = ("YOK" if yas is None else "TAZE" if yas < HAT_TAZELIK_S else "KOPUK")
+            durumlar[hat] = durum
+            parcalar.append(f"{ad} {'—' if yas is None else f'{yas:.1f} sn'}"
+                            + ("" if durum == "TAZE" else f" {durum}"))
+        taze = sum(1 for d in durumlar.values() if d == "TAZE")
+        self.lbl_hatlar.config(text="HATLAR: " + " · ".join(parcalar),
+                               fg=YESIL if taze == 2 else SARI if taze == 1 else KIRMIZI)
+        onceki = getattr(self, "_hat_durum_onceki", {})
+        for hat, durum in durumlar.items():
+            if onceki.get(hat) not in (None, durum):
+                self._logla(f"HAT {hat.upper()}: {onceki[hat]} → {durum}",
+                            "yesil" if durum == "TAZE" else "sari")
+                self._kanit_yaz("HAT_DURUMU", hat=hat, onceki=onceki[hat], durum=durum)
+        self._hat_durum_onceki = durumlar
+
     def _durum_tazele(self):
         self.lbl_saat.config(text=time.strftime("%H:%M:%S"))
+        self._hatlari_tazele()
         simdi = time.time()
         self._tespiti_yaslandir(simdi)
         _mono = time.monotonic()               # D-384: damgalar monotonik
@@ -4813,6 +4860,10 @@ def main():
                          "heartbeat kaynağı kullanılır ve komut alıcıya "
                          "ULAŞMAZ, D-403)")
     ap.add_argument("--serial", help="SiK telsiz seri portu (örn. COM5)")
+    ap.add_argument(
+        "--coklu", action="store_true",
+        help=("ONARIM-09: --serial ile --bind/--iha/--ika'yı BİRLİKTE kullan — LAN "
+              "ve SiK aynı anda dinlenir, komut iki hattan gider (Jetson KIP=ikili)"))
     ap.add_argument("--baud", type=int, default=57600)
     ap.add_argument(
         "--kamera-url", default=os.environ.get("NAVITAS_KAMERA_URL"),
@@ -4872,11 +4923,17 @@ def main():
         ap.error(f"--kamera-etiket: {exc}")
     if args.serial and args.demo:
         ap.error("--demo yalnız UDP kipinde kullanılabilir")
-    if args.serial and args.ika:
+    if args.coklu and not args.serial:
+        ap.error("--coklu için --serial (SiK portu) zorunlu")
+    if args.coklu and args.demo:
+        ap.error("--coklu ile --demo birlikte kullanılamaz")
+    if args.serial and args.ika and not args.coklu:
         ap.error("--serial ile --ika birlikte kullanılamaz")
-    if args.serial and args.iha:
+    if args.serial and args.iha and not args.coklu:
         ap.error("--serial ile --iha birlikte kullanılamaz; seri kipte İHA "
                  "aynı SiK hattındadır ve UDP hedefi uygulanmaz")
+    if args.coklu and not (args.iha and args.ika):
+        ap.error("--coklu kipinde --iha ve --ika HOST:PORT zorunlu (LAN hattı)")
     if not args.serial and not args.demo and not args.ika:
         ap.error("UDP kipinde --ika HOST:PORT zorunlu")
     if not args.serial and not args.demo and not args.iha:
@@ -4891,7 +4948,21 @@ def main():
     except Exception:
         pass
 
-    if args.serial:
+    if args.coklu:
+        h, p = args.bind.split(":")
+        try:
+            udp = yks_udp_linki_ac((h, int(p)))
+        except OSError as exc:
+            ap.error(f"YKİ UDP dinleme ucu açılamadı ({args.bind}): {exc}")
+        try:
+            seri = SerialLink(args.serial, args.baud)
+        except Exception:
+            udp.close()
+            raise
+        link = CokluLink(udp, seri)
+        ika_peer = args.ika
+        iha_peer = args.iha
+    elif args.serial:
         link = SerialLink(args.serial, args.baud)
         ika_peer = None
         iha_peer = None
@@ -4909,7 +4980,7 @@ def main():
 
     oturum_kunyesi = yki_oturum_kunyesi(
         fda_kipi=args.fda,
-        dinleme=args.serial or args.bind,
+        dinleme=(f"{args.bind} + {args.serial}" if args.coklu else args.serial or args.bind),
         iha_hedef=iha_peer,
         ika_hedef=ika_peer,
         seri_port=args.serial,

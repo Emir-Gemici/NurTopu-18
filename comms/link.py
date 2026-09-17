@@ -123,6 +123,121 @@ class SerialLink:
         self.ser.close()
 
 
+class CokluLink:
+    """ONARIM-09 (2026-09-17): YKS'de LAN (UDP) ve SiK (seri) AYNI ANDA.
+
+    NEDEN: tek taşıyıcı seçilince o hat koptuğunda (Wi-Fi/DHCP değişimi, telsiz
+    menzili) hakem ekranı sağırlaşıyor ve komut İHA'ya ulaşmıyordu. İki hat
+    birlikte dinlenir, komut ikisinden de gider. Tekrar güvenli: alıcı
+    (iha_komut_alici) ``(oturum, seq, cmd)`` ile eylemi bir kez uygular; YKS
+    aynı seq'li heartbeat'i düşürür, OPEN_ROUTE tekrarını zaten tekrar gönderim
+    gibi işler.
+
+    Arayüz ``UDPLink``/``SerialLink`` ile aynı: ``recv() -> (data, adr)``;
+    ``adr is None`` = SiK hattından geldi (seri tamponu korunur).
+      send(data, peer)   : peer verilirse YALNIZ UDP (ACK geldiği hatta döner),
+                           peer None ise YALNIZ seri.
+      send_hepsi(data, peer): komut — iki hat (UDP yalnız peer biliniyorsa).
+      hat_yaslari()      : {"lan": s|None, "sik": s|None} son alımdan beri geçen.
+    """
+
+    HATLAR = ("lan", "sik")
+
+    def __init__(self, udp, seri, *, saat=None, kuyruk_tavani=4096):
+        import queue
+        import threading
+        import time
+        self.udp = udp
+        self.seri = seri
+        self._saat = saat or time.monotonic
+        self._kuyruk = queue.Queue(maxsize=kuyruk_tavani)
+        self._kilit = threading.Lock()
+        self._son_rx = {"lan": None, "sik": None}
+        self.dusen = 0
+        self._dur = threading.Event()
+        self._okuyucular = [
+            threading.Thread(target=self._oku, args=(udp, "lan"), daemon=True,
+                             name="coklu-lan"),
+            threading.Thread(target=self._oku, args=(seri, "sik"), daemon=True,
+                             name="coklu-sik"),
+        ]
+        for t in self._okuyucular:
+            t.start()
+
+    @property
+    def port(self):
+        return self.udp.port
+
+    @property
+    def sock(self):
+        return self.udp.sock
+
+    def _oku(self, link, hat):
+        import queue
+        while not self._dur.is_set():
+            try:
+                veri, adr = link.recv()
+            except Exception:
+                if self._dur.is_set():
+                    return
+                continue
+            if not veri:
+                continue
+            with self._kilit:
+                self._son_rx[hat] = self._saat()
+            try:
+                self._kuyruk.put_nowait((veri, adr if hat == "lan" else None))
+            except queue.Full:
+                self.dusen += 1
+
+    def recv(self, bufsize=4096):
+        import queue
+        try:
+            return self._kuyruk.get(timeout=0.3)
+        except queue.Empty:
+            if self._dur.is_set():
+                raise OSError("CokluLink kapali")
+            return None, None
+
+    def send(self, data: bytes, peer=None):
+        if peer is not None:
+            self.udp.send(data, peer)
+        else:
+            self.seri.send(data)
+
+    def send_hepsi(self, data: bytes, peer=None):
+        """İki hatta da gönder; en az biri başarılıysa gönderilen hat listesi.
+        Hiçbiri gönderemediyse son hatayı yükseltir."""
+        giden, son_hata = [], None
+        if peer is not None:
+            try:
+                self.udp.send(data, peer)
+                giden.append("lan")
+            except OSError as exc:
+                son_hata = exc
+        try:
+            self.seri.send(data)
+            giden.append("sik")
+        except OSError as exc:
+            son_hata = exc
+        if not giden:
+            raise son_hata if son_hata is not None else OSError("hat yok")
+        return giden
+
+    def hat_yaslari(self):
+        simdi = self._saat()
+        with self._kilit:
+            return {h: (None if t is None else simdi - t) for h, t in self._son_rx.items()}
+
+    def close(self):
+        self._dur.set()
+        for link in (self.udp, self.seri):
+            try:
+                link.close()
+            except Exception:
+                pass
+
+
 def make_link(kind="udp", **kw):
     """Fabrika: kind='udp' | 'serial'."""
     if kind == "udp":

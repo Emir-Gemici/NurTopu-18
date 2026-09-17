@@ -19,7 +19,7 @@ User=navitas
 SupplementaryGroups=dialout
 WorkingDirectory=/home/navitas/navitas
 Environment=PYTHONUNBUFFERED=1
-ExecStart=/usr/bin/python3 /home/navitas/navitas/comms/seri_hub.py --port ${SIK_SERI} --baud ${SIK_BAUD} --bind 127.0.0.1:5100 --tuketici 127.0.0.1:5007
+ExecStart=/usr/bin/python3 /home/navitas/navitas/comms/seri_hub.py --port ${SIK_SERI} --baud ${SIK_BAUD} --bind 127.0.0.1:5100 --tuketici 127.0.0.1:5007 $HUB_LAN_ARGS
 Restart=always
 RestartSec=2
 TimeoutStopSec=5

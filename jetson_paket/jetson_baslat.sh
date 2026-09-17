@@ -128,6 +128,8 @@ IKA_PORT=5006
 KOMUT_PORT=5007
 SERI_HUB_DINLE="127.0.0.1:5100"                 # KIP=sik: surecler buraya yazar
 SERI_HUB_TUKETICI="127.0.0.1:${KOMUT_PORT}"     # hub seri hattan geleni buraya verir
+HUB_LAN_PORT="${HUB_LAN_PORT:-5009}"             # ONARIM-09 KIP=ikili: YKS --iha <jetson>:5009
+hub_kipi() { [ "$KIP" = sik ] || [ "$KIP" = ikili ]; }
 
 hata() { echo "HATA: $*" >&2; exit 1; }
 
@@ -256,14 +258,26 @@ case "$KIP" in
     INIS_TELSIZ_ARGS="--yks ${SERI_HUB_DINLE}"
     # Seri-hub, SiK'ten çözdüğü çerçeveyi kendi sabit 5100 UDP ucundan yollar.
     KOMUT_TELSIZ_ARGS="--bind ${SERI_HUB_TUKETICI} --izinli-kaynak ${SERI_HUB_DINLE}"
+    HUB_LAN_ARGS=""
     ;;
-  *) hata "KIP='$KIP' taninmiyor (udp | sik)" ;;
+  ikili)
+    # ONARIM-09 (17 Eyl 2026): SiK + LAN AYNI ANDA. Surecler sik kipindeki gibi YALNIZ
+    # hub'a yazar (kodlari degismez); hub her cerceveyi seriye VE LAN'daki YKS'ye verir,
+    # iki hattan gelen CMD/ACK'i ayni tuketici ucuna dusurur. Komut alici tekrari
+    # (oturum, seq, cmd) ile bir kez uygular. Seri yoksa LAN yolu yine calisir.
+    RPI_TELSIZ_ARGS="--yks-hedef ${SERI_HUB_DINLE}"
+    INIS_TELSIZ_ARGS="--yks ${SERI_HUB_DINLE}"
+    KOMUT_TELSIZ_ARGS="--bind ${SERI_HUB_TUKETICI} --izinli-kaynak ${SERI_HUB_DINLE}"
+    HUB_LAN_ARGS="--lan-bind 0.0.0.0:${HUB_LAN_PORT} --lan-yks ${YKS_IP}:${YKS_PORT}"
+    ;;
+  *) hata "KIP='$KIP' taninmiyor (udp | sik | ikili)" ;;
 esac
+HUB_LAN_ARGS="${HUB_LAN_ARGS:-}"
 
 # /etc/navitas.env'e yazilan ve ExecStart'ta yerine konan anahtarlar
 ENV_ANAHTARLAR=(NAVITAS_KOK PYTHON3 LOG_DIZIN KIP PIXHAWK_SERI PIXHAWK_BAUD SYSID
                 SIK_SERI SIK_BAUD KANIT_TIMEOUT RPI_EK_ARGS RPI_TELSIZ_ARGS
-                INIS_TELSIZ_ARGS KOMUT_TELSIZ_ARGS
+                INIS_TELSIZ_ARGS KOMUT_TELSIZ_ARGS HUB_LAN_ARGS
                 KAMERA_PYTHON KAMERA_KOPRU_BIND KAMERA_KOPRU_PORT KAMERA_KOPRU_ARGS
                 GOSTERICI_KIP ISARETLI_YAYIN)   # T228: DRM gosterici birimi ${ISARETLI_YAYIN} okur
 # Tek deger tasiyan beyanlar: bosluk/glob/kacis icerirse systemd ($VAR) ve bash (nohup $k)
@@ -297,7 +311,7 @@ yerine_koy() {  # $1: metin -> ${ANAHTAR} ve $ANAHTAR yerine deger (systemd ile 
 # ── Birimler ──────────────────────────────────────────────────────────────────
 birimler() {  # KIP/KAMERA'ya gore, BASLATMA sirasinda
   echo navitas-cogullayici
-  if [ "$KIP" = sik ]; then echo navitas-seri-hub; fi
+  if hub_kipi; then echo navitas-seri-hub; fi
   if [ "$KAMERA_KOPRU" = 1 ]; then echo navitas-kamera-koprusu; fi   # rpi_inference'tan ONCE
   echo navitas-rpi-inference
   echo navitas-iha-inis-yayinci
@@ -348,11 +362,14 @@ sozlesme_denetle() {  # birim dosyalari CONTRACTS §7.4'ten sapmis mi? (elle boz
   tuketici_denetle navitas-rpi-inference "$MAV_UC_RPI" "--mav-sysid $SYSID"
   tuketici_denetle navitas-iha-inis-yayinci "$MAV_UC_INIS" "--sysid $SYSID"
   tuketici_denetle navitas-iha-komut-alici "$MAV_UC_KOMUT" "--sysid $SYSID"
-  if [ "$KIP" = sik ]; then
+  if hub_kipi; then
     k="$(exec_start navitas-seri-hub)"
     case " $k " in *" --port $SIK_SERI "*) ;; *) hata "navitas-seri-hub: '--port $SIK_SERI' yok" ;; esac
     case " $k " in *" --bind $SERI_HUB_DINLE "*) ;; *) hata "navitas-seri-hub: '--bind $SERI_HUB_DINLE' yok" ;; esac
     case " $k " in *" --tuketici $SERI_HUB_TUKETICI "*) ;; *) hata "navitas-seri-hub: '--tuketici $SERI_HUB_TUKETICI' yok" ;; esac
+    if [ "$KIP" = ikili ]; then
+      case " $k " in *" --lan-yks $YKS_IP:$YKS_PORT "*) ;; *) hata "navitas-seri-hub: KIP=ikili '--lan-yks $YKS_IP:$YKS_PORT' yok" ;; esac
+    fi
   fi
   if [ "$KAMERA_KOPRU" = 1 ]; then   # Gorev K: kopru sistem Python'la, dogru portta; tuketici ayni URL'yi okur
     k="$(exec_start navitas-kamera-koprusu)"
@@ -375,6 +392,9 @@ beyan_eksikleri() {  # stdout: her satir bir eksik
   fi
   if [ -n "$FOV" ] && [ -n "$ODAK" ]; then
     echo "FOV ve ODAK birlikte verilmez (rpi_inference: karsilikli dislar)"
+  fi
+  if [ "$KIP" = ikili ] && [ -z "$YKS_IP" ]; then
+    echo "YKS_IP (KIP=ikili: LAN aynasinin YKS'si, port $YKS_PORT)"
   fi
   if [ "$KIP" = udp ]; then
     if [ -z "$YKS_IP" ]; then echo "YKS_IP (KIP=udp: hakem ekrani hedefi, port $YKS_PORT)"; fi
@@ -470,6 +490,9 @@ dosya_denetle() {  # kurulu kopyada kullanici, dosyalar ve cihazlar var mi? (kur
     || hata "$PYTHON3 '$PYTHON3_MODULLERI' import EDEMIYOR — servis cokme dongusune girerdi; PYTHON3 ile venv yorumlayicisini ver (ONARIM-10)"
   [ -e "$PIXHAWK_SERI" ] || hata "Pixhawk seri cihazi yok: $PIXHAWK_SERI (PIXHAWK_SERI ile ez)"
   if [ "$KIP" = sik ]; then [ -e "$SIK_SERI" ] || hata "SiK seri cihazi yok: $SIK_SERI (SIK_SERI ile ez)"; fi
+  if [ "$KIP" = ikili ] && [ ! -e "$SIK_SERI" ]; then
+    echo "UYARI: KIP=ikili ama SiK seri yok ($SIK_SERI) — hub LAN yoluyla kalkar, seriyi arka planda dener"
+  fi
   if [ "$KAMERA_KOPRU" = 1 ]; then
     [ -x "$KAMERA_PYTHON" ] \
       || hata "kopru yorumlayicisi yok: $KAMERA_PYTHON (SISTEM Python; KAMERA_PYTHON ile ez)"
@@ -533,6 +556,8 @@ kuru() {
   if [ "$KIP" = sik ]; then
     if [ -e "$SIK_SERI" ]; then echo "[VAR] SiK seri $SIK_SERI"
     else echo "[YOK] SiK seri $SIK_SERI <- SIK_SERI ile ez"; yok=$((yok + 1)); fi
+  elif [ "$KIP" = ikili ] && [ ! -e "$SIK_SERI" ]; then
+    echo "UYARI: KIP=ikili SiK seri yok ($SIK_SERI) — yalniz LAN yolu calisir"
   fi
   liste="$(kurulu_py_dosyalari)"
   while read -r b y; do
@@ -589,7 +614,7 @@ birimleri_kur() {  # env dosyasi + birim dosyalari + daemon-reload (baslatmaz)
     echo "[KURULDU] $SYSTEMD_DIZIN/$b.service"
   done
   systemctl daemon-reload
-  if [ "$KIP" != sik ]; then systemctl disable --now navitas-seri-hub.service >/dev/null 2>&1 || true; fi
+  if ! hub_kipi; then systemctl disable --now navitas-seri-hub.service >/dev/null 2>&1 || true; fi
   if [ "$KAMERA_KOPRU" != 1 ]; then systemctl disable --now navitas-kamera-koprusu.service >/dev/null 2>&1 || true; fi
 }
 
@@ -643,7 +668,7 @@ kapi() {  # FAZ_B_GUN_PLANI §1: cogullayici tek basina + 3 ucta AYNI ANDA mavli
   # restart: PIXHAWK_SERI/BAUD degismis olabilir (D-405)
   bas="$(date +%s)"
   etkinlestir_ve_yeniden_baslat navitas-cogullayici.service
-  if [ "$KIP" = sik ]; then etkinlestir_ve_yeniden_baslat navitas-seri-hub.service; fi
+  if hub_kipi; then etkinlestir_ve_yeniden_baslat navitas-seri-hub.service; fi
   if [ "$KAMERA_KOPRU" = 1 ]; then
     etkinlestir_ve_yeniden_baslat navitas-kamera-koprusu.service
   fi

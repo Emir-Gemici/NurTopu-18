@@ -185,7 +185,8 @@ class SeriHub:
 
     def __init__(self, seri_link, udp_link, tuketiciler=(), *, seri_ac=None,
                  yeniden_acma_araligi_s=SERI_YENIDEN_ACMA_ARALIGI_S,
-                 log_aralik_s=VARSAYILAN_LOG_ARALIGI_S, saat=time.monotonic):
+                 log_aralik_s=VARSAYILAN_LOG_ARALIGI_S, saat=time.monotonic,
+                 lan_link=None, lan_yks=None):
         if not callable(saat):
             raise TypeError("saat cagrilabilir olmali")
         if seri_ac is not None and not callable(seri_ac):
@@ -194,6 +195,14 @@ class SeriHub:
             raise ValueError("yeniden acma araligi negatif olamaz")
         self.saat = saat
         self.udp_link = udp_link
+        # ONARIM-09 (KIP=ikili): LAN aynasi. Tuketiciden gelen her cerceve seriye
+        # YAZILIRKEN ayrica LAN'daki YKS'ye (lan_yks) gider; LAN'dan YALNIZ lan_yks
+        # IP'sinden gelen cerceveler tuketicilere fan-out edilir (seri cercevesi gibi).
+        # Seri hat kapaliyken LAN yolu YASAR (tek hat kopmasi iki yolu birden kesmez).
+        if (lan_link is None) != (lan_yks is None):
+            raise ValueError("lan_link ve lan_yks birlikte verilmeli")
+        self.lan_link = lan_link
+        self.lan_yks = None if lan_yks is None else (str(lan_yks[0]), int(lan_yks[1]))
         self.tuketiciler = []
         for adr in tuketiciler:
             host, port = adr
@@ -210,7 +219,10 @@ class SeriHub:
                       "bozuk": 0, "dusurulen": 0, "seri_ariza": 0,
                       "yeniden_acma": 0, "yeniden_acma_hatasi": 0,
                       # D-405: UDP okuma hatasi (hub olmez) / eksik newline
-                      "udp_hata": 0, "newline_eklenen": 0}
+                      "udp_hata": 0, "newline_eklenen": 0,
+                      # ONARIM-09 LAN aynasi
+                      "lan_gonderilen": 0, "lan_hata": 0, "lan_alinan": 0,
+                      "lan_cerceve": 0, "lan_yabanci": 0}
         self._dur = threading.Event()
         self._ariza_t = None             # seri kapaliyken: son ariza/deneme ani
         self._seri_yok_loglandi = False
@@ -222,6 +234,9 @@ class SeriHub:
         sock = getattr(udp_link, "sock", None)
         if sock is not None:
             sock.settimeout(UDP_OKUMA_ZAMAN_ASIMI_S)
+        lan_sock = getattr(lan_link, "sock", None)
+        if lan_sock is not None:
+            lan_sock.settimeout(0.0)        # LAN turu bloklamaz; bekleme UDP/seri turunda
         if seri_link is not None:
             self._seri_bagla(seri_link, ilk=True)
         else:
@@ -347,6 +362,7 @@ class SeriHub:
                 return
             self.sayac["udp_alinan"] += 1
             self._ogren(adr)
+            self._lan_gonder(veri)
             if self.seri_link is None:
                 self.sayac["dusurulen"] += 1        # kuyruk YOK: bayat rota olmasin
                 continue
@@ -371,6 +387,50 @@ class SeriHub:
                 self._seri_arizasi("yazma", exc)
                 continue
             self.sayac["seri_yazilan"] += 1
+
+    # ── ONARIM-09: LAN aynasi ────────────────────────────────────────────
+    def _lan_gonder(self, veri):
+        if self.lan_link is None:
+            return
+        if not veri.endswith(CERCEVE_SONU):
+            veri += CERCEVE_SONU
+        try:
+            self.lan_link.send(veri, self.lan_yks)
+        except OSError as exc:
+            self.sayac["lan_hata"] += 1
+            if self.sayac["lan_hata"] in (1, 100, 10000):
+                self._logla(f"LAN aynasi {self.lan_yks[0]}:{self.lan_yks[1]} yazilamadi "
+                            f"({type(exc).__name__}: {exc}); seri yol etkilenmez",
+                            kirmizi=True)
+        else:
+            self.sayac["lan_gonderilen"] += 1
+
+    def _lan_turu(self):
+        if self.lan_link is None:
+            return
+        for _ in range(UDP_TUR_TAVANI):
+            try:
+                veri, adr = self.lan_link.recv(UDP_DATAGRAM_TAVANI_B)
+            except OSError:
+                return
+            if not veri:
+                return
+            self.sayac["lan_alinan"] += 1
+            if adr is None or str(adr[0]) != self.lan_yks[0]:
+                self.sayac["lan_yabanci"] += 1      # yalniz pinli YKS IP'si kabul
+                if self.sayac["lan_yabanci"] in (1, 100, 10000):
+                    self._logla(f"LAN yabanci kaynak DUSURULDU: {adr!r} (beklenen "
+                                f"{self.lan_yks[0]})", kirmizi=True)
+                continue
+            once = self.sayac["seri_cerceve"]
+            okuyucu, self.okuyucu = self.okuyucu, FrameReader()   # datagram = tam cerceve
+            try:
+                self._cerceveleri_isle(veri if veri.endswith(CERCEVE_SONU) else veri + CERCEVE_SONU)
+            finally:
+                self.okuyucu = okuyucu
+            yeni = self.sayac["seri_cerceve"] - once
+            self.sayac["seri_cerceve"] = once           # seri sayacini LAN'la karistirma
+            self.sayac["lan_cerceve"] += yeni
 
     # ── seri -> UDP (fan-out) ────────────────────────────────────────────
     def hedefler(self):
@@ -449,6 +509,7 @@ class SeriHub:
         """Bir tur: gerekirse seriyi yeniden ac; UDP -> seri; seri -> fan-out."""
         self._seri_yeniden_ac_gerekirse()
         self._udp_turu()
+        self._lan_turu()
         self._seri_turu()
         if self.log_aralik_s > 0:
             simdi = self.saat()
@@ -476,7 +537,7 @@ class SeriHub:
 
     def kapat(self):
         self.durdur()
-        for nesne in (self.seri_link, self.udp_link):
+        for nesne in (self.seri_link, self.udp_link, self.lan_link):
             kapat = getattr(nesne, "close", None)
             if callable(kapat):
                 try:
@@ -540,6 +601,11 @@ def _arg_parser():
     ap.add_argument("--tuketici", action="append", default=[], metavar="HOST:PORT",
                     help="statik dinleyici (tekrarlanabilir; orn. iha_komut_alici "
                          "127.0.0.1:5007) — gondermeden de cerceve alir")
+    ap.add_argument("--lan-bind", default=None, metavar="HOST:PORT",
+                    help="ONARIM-09 KIP=ikili: LAN ucu (orn. 0.0.0.0:5009); YKS --iha buraya yollar")
+    ap.add_argument("--lan-yks", default=None, metavar="HOST:PORT",
+                    help="ONARIM-09 KIP=ikili: LAN'daki YKS (orn. 10.21.8.156:5005); "
+                         "yalniz bu IP'den gelen cerceve kabul edilir")
     ap.add_argument("--log-aralik", type=float, default=VARSAYILAN_LOG_ARALIGI_S,
                     help="periyodik sayac logu (sn; 0 = kapali; varsayilan "
                          "%(default)s)")
@@ -553,9 +619,13 @@ def main(argv=None):
         parser.error("--baud pozitif olmali")
     if args.log_aralik < 0:
         parser.error("--log-aralik negatif olamaz")
+    if (args.lan_bind is None) != (args.lan_yks is None):
+        parser.error("--lan-bind ve --lan-yks birlikte verilmeli (KIP=ikili)")
     try:
         bind = _adres(args.bind, efemer_serbest=True)
         tuketiciler = [_adres(t) for t in args.tuketici]
+        lan_bind = None if args.lan_bind is None else _adres(args.lan_bind)
+        lan_yks = None if args.lan_yks is None else _adres(args.lan_yks)
     except ValueError as exc:
         parser.error(str(exc))
 
@@ -577,17 +647,31 @@ def main(argv=None):
                   f"{exc} (baska bir hub mu calisiyor? once `systemctl stop "
                   f"navitas-seri-hub`)", file=sys.stderr, flush=True)
             return 3
+        lan = None
+        if lan_bind is not None:
+            try:
+                lan = UDPLink(bind=lan_bind, timeout=0.0, reuse=False)
+            except OSError as exc:
+                print(f"{LOG_ONEKI} KIRMIZI HATA: LAN ucu acilamadi {args.lan_bind}: {exc}",
+                      file=sys.stderr, flush=True)
+                return 3
         try:
             seri = seri_ac()
         except (ImportError, OSError, ValueError) as exc:
-            # Acilista port yoksa SESSIZCE beklemek yerine gorunur cikis:
-            # operator yanlis --port'u hemen gorsun. Ucus icinde kopma ayri
-            # (hub calisirken ariza -> yeniden acma dongusu).
-            print(f"{LOG_ONEKI} KIRMIZI HATA: seri port acilamadi {args.port!r}: "
-                  f"{exc}", file=sys.stderr, flush=True)
-            return 4
+            if lan is not None:
+                # KIP=ikili: SiK yoksa LAN yolu yine kalkar; seri arka planda denenir.
+                print(f"{LOG_ONEKI} KIRMIZI: seri port acilamadi {args.port!r}: {exc} — "
+                      f"LAN yolu ile basliyor, seri yeniden denenecek", flush=True)
+                seri = None
+            else:
+                # Acilista port yoksa SESSIZCE beklemek yerine gorunur cikis:
+                # operator yanlis --port'u hemen gorsun. Ucus icinde kopma ayri
+                # (hub calisirken ariza -> yeniden acma dongusu).
+                print(f"{LOG_ONEKI} KIRMIZI HATA: seri port acilamadi {args.port!r}: "
+                      f"{exc}", file=sys.stderr, flush=True)
+                return 4
         hub = SeriHub(seri, udp, tuketiciler, seri_ac=seri_ac,
-                      log_aralik_s=args.log_aralik)
+                      log_aralik_s=args.log_aralik, lan_link=lan, lan_yks=lan_yks)
         sigterm_eski = _sigterm_kur(hub)           # D-405: systemd stop temiz
         print(f"{LOG_ONEKI} seri {args.port} @ {args.baud} <-> udp "
               f"{bind[0]}:{bind[1]} statik={len(tuketiciler)}", flush=True)
@@ -597,8 +681,10 @@ def main(argv=None):
         _sigterm_geri_al(sigterm_eski)
         if hub is not None:
             hub.kapat()
-        elif udp is not None:
-            udp.close()
+        else:
+            for _l in (udp, locals().get("lan")):
+                if _l is not None:
+                    _l.close()
 
 
 if __name__ == "__main__":
