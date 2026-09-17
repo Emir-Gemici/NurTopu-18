@@ -26,3 +26,7 @@ Pusula dışındakiler bu tezgâh düzeninde **beklenen**dir.
 2. Gövde yeniden yapılınca, manyetik kaynaklardan uzakta, **dışarıda pusula kalibrasyonu** (Mission Planner → Compass → Onboard Mag Calibration) + GPS fix kontrolü.
 3. Kalibrasyon sonrası bu betikle tekrar okuma: vektör açısı küçük olmalı, PreArm'da "Compasses inconsistent" kalmamalı.
 4. İlk kısa hover sonrası `scripts/hover_kapisi.py <log.bin>` (ONARIM-01) — motor farkı tanımı Emir'den gelince hüküm geçerli.
+
+## Güncelleme (17 Eylül ~13:10)
+- Kullanıcı modülü yeniden yerleştirdi; yeniden ölçüm: harici [321, 192, 227] mG · dahili [93, 97, 646] mG → açı **47,4°**, PreArm "Compasses inconsistent" **sürüyor**.
+- Kalibrasyon aracı hazır: `scripts/tezgah/pusula_kalibrasyonu.py` (MAV_CMD_DO_START_MAG_CAL, tüm pusulalar, autosave, reboot yok, 300 s tavan → iptal, JSONL kayıt). **Koşulmadı:** drone henüz toplanmadı (kullanıcı). Koşul: modül + Pixhawk gövdeye sabit, manyetik kaynaklardan uzak, pervanesiz.
