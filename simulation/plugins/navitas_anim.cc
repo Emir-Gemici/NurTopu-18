@@ -60,7 +60,10 @@ namespace gazebo
     // İLERİ: SINIRLI KUVVET (AddForce) → katı engeli aşamaz, içinden geçemez (gerçek fizik).
     // DÖNÜŞ: SetAngularVel (doğrudan) → skid-steer 4 sabit teker yüksek sürtünmede tork ile
     //        dönemeyeceği için yaw doğrudan atanır (çarpışma bütünlüğü ileri eksende korunur).
-    private: const double IKA_SPEED    = 1.1;   // m/s — gerçekçi rover seyir hızı
+    private: const double IKA_SPEED    = 1.3;   // m/s — DDR fiziksel tavan (4×KGX38 24V
+                                                 // 200rpm × Ø0,125m teker; karar_sozlesmesi.
+                                                 // IKA_AZAMI_HIZ_MS ile eş; D-438f üç-kopya
+                                                 // tutarsızlığını (2,0/1,1/0,30) kapatır)
     private: const double WP_RADIUS    = 0.5;   // m — costmap takip payını aşmaz
     private: const double FINAL_WP_RADIUS = 0.3; // m — HB son yaklaşım toleransı
     private: const double YAW_GAIN     = 2.5;   // hedef yaw hatasından açısal hıza kazanç
@@ -140,6 +143,12 @@ namespace gazebo
     }
 
     private: double lastSimWrite = -1e9;
+    private: bool modelLogHeaderWritten = false;
+    // Her modelin (İHA + paraşüt aşamaları + İKA) 1 Hz konum/hız kaydı —
+    // /tmp/navitas_simtime (üstteki tek-satır anlık durum, record_in_container.sh
+    // BURAYI ayrıştırıyor, dokunma) İLE KARIŞTIRILMAZ; bu EKLEMELİ (append) tam geçmiş
+    // kaydıdır, kullanıcı isteği (2026-09-15): "ika log tutsun her model log tutacak".
+    private: const char *MODEL_LOG_FILE = "/tmp/navitas_model_log.csv";
 
     private: void SetFlatView(const std::string &name, double x, double y,
                               double z, double yaw, double forward = 0.0,
@@ -196,6 +205,39 @@ namespace gazebo
         }
         // (İHA poz logu artık navitas_scan_cam plugin'inde — kareyle AYNI olayda
         //  yazılır, birebir senkron; buradaki 1 Hz kopya kaldırıldı.)
+
+        // HER MODELİN tam geçmiş kaydı (eklemeli CSV) — İHA, paraşüt aşamaları
+        // (packed/partial/full) ve İKA dahil, `traj`'daki HERKES.
+        std::ofstream lg(this->MODEL_LOG_FILE, std::ios::app);
+        if (lg.good())
+        {
+          if (!this->modelLogHeaderWritten)
+          {
+            lg << "t,model,x,y,z,yaw,v,wp,rota,durum\n";
+            this->modelLogHeaderWritten = true;
+          }
+          for (auto &kv : this->traj)
+          {
+            auto m = this->world->ModelByName(kv.first);
+            if (!m) continue;
+            auto pose = m->WorldPose();
+            auto pos = pose.Pos();
+            auto vel = m->WorldLinearVel();
+            double spd = std::hypot(vel.X(), vel.Y());
+            std::string wpCol, rotaCol, durumCol;
+            if (isIka(kv.first))
+            {
+              wpCol = std::to_string(this->ikaIdx[kv.first]);
+              rotaCol = this->ikaRouteSrc[kv.first];
+              if (this->ikaIdx[kv.first] >= kv.second.size()) durumCol = "BITTI";
+              else if (this->ikaRouteSrc[kv.first] == "rota_yok") durumCol = "ROTA_YOK";
+            }
+            lg << t << "," << kv.first << "," << pos.X() << "," << pos.Y() << ","
+               << pos.Z() << "," << pose.Rot().Yaw() << "," << spd << ","
+               << wpCol << "," << rotaCol << "," << durumCol << "\n";
+          }
+        }
+
         this->lastSimWrite = t;
       }
 

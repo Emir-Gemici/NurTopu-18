@@ -19,11 +19,15 @@ Kullanım:
 import argparse
 import json
 import math
+import re
 import os
 import random
 import sys
 import tempfile
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "codes"))
+from karar_sozlesmesi import IKA_AZAMI_HIZ_MS  # noqa: E402 — TEK KAYNAK (D-438f)
 
 sys.path.insert(0, str(Path(__file__).parent))
 import arena
@@ -139,14 +143,18 @@ DIFF = {
 }
 
 # ── Gerçekçi hızlar ───────────────────────────────────────────────────────────
-IKA_SPEED   = 1.1     # m/s — gerçekçi diferansiyel rover seyir hızı (PDF: ≤10dk/HB)
+IKA_SPEED   = IKA_AZAMI_HIZ_MS  # m/s — TEK KAYNAK karar_sozlesmesi (DDR fiziksel tavan
+                                 # 4×KGX38 24V 200rpm × Ø0,125m teker = 1,309→1,3; D-438f
+                                 # üç kopya kusurunu (1,1/2,0/0,30) burada da kapatır)
 IKA_Z       = arena.START_Z
 PAD_SEC     = 4
 # İHA faz hızları (m/s) — sabit kanat: stall üstü, arena ölçeğinde gerçekçi.
 # (Şartname seyir 40-45 m/s HTAB'a İNTİKAL içindir; 50×50 arena üzerinde uygulanmaz.
-#  Tarama 10 m/s → 50×50 serpantin ~20 s = şartname "20-30 s tarama" bandı.)
+#  Tarama 10 m/s → 50×50 serpantin ~20 s = şartname "20-30 s tarama" bandı.
+#  parasut: 2-4 m/s bandı hedefi — kullanıcı isteği 2026-09-14; komşu-faz smoothing
+#  sınır noktalarını hafif yukarı çeker, iç noktalar ~3,0 m/s'de kalır.)
 PHASE_SPEED = {"rampa": 6.0, "kalkis": 18.0, "tirmanis": 18.0,
-               "tarama": 10.0, "donus": 10.0, "sokulma": 12.0, "parasut": 5.5}
+               "tarama": 10.0, "donus": 10.0, "sokulma": 12.0, "parasut": 3.0}
 SCAN_Z      = 30.0    # şartname: 30 m tarama irtifası
 
 
@@ -851,6 +859,50 @@ def _rubble(name, lx, ly, rng, big=False, height_multiplier=1.0, realism=False,
     </model>"""
 
 
+_COL_BOX_RE = re.compile(
+    r"<collision[^>]*>\s*<pose>([^<]+)</pose>\s*<geometry><box><size>([^<]+)</size>")
+
+
+def _seg_box_dist(ax, ay, bx, by, cx, cy, yaw, hx, hy):
+    """2B doğru parçası ↔ döndürülmüş kutu en kısa mesafesi (kesişirse 0)."""
+    c, s = math.cos(yaw), math.sin(yaw)
+    ax, ay = (ax - cx) * c + (ay - cy) * s, -(ax - cx) * s + (ay - cy) * c
+    bx, by = (bx - cx) * c + (by - cy) * s, -(bx - cx) * s + (by - cy) * c
+    dx, dy = bx - ax, by - ay
+    t0, t1 = 0.0, 1.0
+    for p0, d, h in ((ax, dx, hx), (ay, dy, hy)):      # slab kesişim testi
+        if abs(d) < 1e-12:
+            if abs(p0) > h:
+                t0, t1 = 1.0, 0.0
+        else:
+            ta, tb = sorted(((-h - p0) / d, (h - p0) / d))
+            t0, t1 = max(t0, ta), min(t1, tb)
+    if t0 <= t1:
+        return 0.0
+
+    def _pb(x, y):
+        return math.hypot(max(abs(x) - hx, 0.0), max(abs(y) - hy, 0.0))
+    corners = [(sx * hx, sy * hy) for sx in (-1, 1) for sy in (-1, 1)]
+    return min(_pb(ax, ay), _pb(bx, by),
+               *(arena._dist_point_seg(x, y, ax, ay, bx, by) for x, y in corners))
+
+
+def _cluster_route_gap(xml, lx, ly, wps):
+    """Moloz kümesinin (yerel HTAB koord., model yaw=0) collision kutularının açık rota
+    polyline'ına en kısa mesafesi. Merkez-nokta clearance'ı büyük parçaları (≤5 m kutu
+    + ≤2,1 m yayılım) yakalamıyordu → chicane/tıkama açık rotanın İÇİNE taşıyordu (D-489)."""
+    if dist_to_path(lx, ly, wps) > 9.0:                 # küme erişemez — hızlı çıkış
+        return float("inf")
+    gap = float("inf")
+    for pose, size in _COL_BOX_RE.findall(xml):
+        ox, oy, _, _, _, yaw = map(float, pose.split())
+        sx, sy, _ = map(float, size.split())
+        for (ax, ay), (qx, qy) in zip(wps, wps[1:]):
+            gap = min(gap, _seg_box_dist(ax, ay, qx, qy, lx + ox, ly + oy,
+                                         yaw, sx / 2.0, sy / 2.0))
+    return gap
+
+
 def make_zone_debris(z, layout="field"):
     """GERÇEKÇİ enkaz sahası (kıvrımlı haritaya göre):
       · 2 KAPALI yol: rota ÜZERİNDE tikama_n noktada moloz TIKAMASI (yolu kesen küme)
@@ -866,6 +918,8 @@ def make_zone_debris(z, layout="field"):
     # realism mesh kümeleri kütlesel (kompakt) → koridora yaklaşabilir (boş bant kalmasın),
     # ama açık rotayı kapatmayacak kadar clearance korunur (BFS ile doğrulandı).
     clear = (lane_w / 2.0 + 2.5) if realism else (lane_w / 2.0 + 1.2)
+    open_wps = H["paths"][z["road"]]
+    corridor = lane_w / 2.0      # hiçbir collision kutusu açık şeride GİREMEZ (D-489)
     richness = z.get("richness", 1.0)           # zorluk zenginlik ölçeği (küme yoğunluğu)
     lib_crumble = _rubble_lib().get("crumble", []) if realism else []
     kb, hb = H["kb"], H["hb"]
@@ -897,9 +951,12 @@ def make_zone_debris(z, layout="field"):
                 v = rng.uniform(-1.8, 1.8)                              # yol boyu eksen
                 ox = px + v * math.cos(tyaw) - u * math.sin(tyaw)
                 oy = py + v * math.sin(tyaw) + u * math.cos(tyaw)
-                p.append(_rubble(f"blk_{s}_{road}_{k}_{j}", cx + ox, cy + oy, rng,
-                                 big=True, height_multiplier=height_multiplier,
-                                 realism=realism, richness=richness))
+                xml = _rubble(f"blk_{s}_{road}_{k}_{j}", cx + ox, cy + oy, rng,
+                              big=True, height_multiplier=height_multiplier,
+                              realism=realism, richness=richness)
+                if _cluster_route_gap(xml, ox, oy, open_wps) < corridor:
+                    continue    # yollar yakınsarken tıkama AÇIK rotaya taşmasın
+                p.append(xml)
 
     # ── Saha geneli dağınık moloz ──
     # realism: SADECE açık rota temiz tutulur; kapalı rota alanları YOĞUN molozla
@@ -908,7 +965,6 @@ def make_zone_debris(z, layout="field"):
     n = int(DIFF[z["scenario"]]["debris_n"] * float(z.get("debris_multiplier", 1.0)))
     if layout == "clean":
         n //= 3
-    open_wps = H["paths"][z["road"]]
 
     def _outside_open(lx, ly, margin):
         """Açık rota + KB/HB temiz mi (realism'de sadece açık rota korunur)."""
@@ -930,9 +986,12 @@ def make_zone_debris(z, layout="field"):
         ly = rng.uniform(-HTAB_HALF + 1, HTAB_HALF - 1)
         if not _outside_open(lx, ly, clear):
             continue
-        p.append(_rubble(f"deb_{s}_{placed}", cx + lx, cy + ly, rng,
-                         height_multiplier=height_multiplier, realism=realism,
-                         richness=richness))
+        xml = _rubble(f"deb_{s}_{placed}", cx + lx, cy + ly, rng,
+                      height_multiplier=height_multiplier, realism=realism,
+                      richness=richness)
+        if _cluster_route_gap(xml, lx, ly, open_wps) < corridor:
+            continue
+        p.append(xml)
         placed += 1
 
     # ── MİKRO KIRINTI DAĞILIMI (realism) — küme-arası boşluğu 'gerçek enkaz sahası'
@@ -974,13 +1033,17 @@ def make_zone_debris(z, layout="field"):
         (px, py), (qx, qy) = op[ti], op[ti + 1]
         tyaw = math.atan2(qy - py, qx - px)
         side = 1.0 if wi % 2 == 0 else -1.0
-        off = side * (clear + rng.uniform(0.4, 1.1))
-        ox = px - off * math.sin(tyaw)
-        oy = py + off * math.cos(tyaw)
-        # realism: chicane KÜÇÜK küme (big=False → 4 m kolon YOK, koridora taşmaz)
-        p.append(_rubble(f"chic_{s}_{wi}", cx + ox, cy + oy, rng,
-                         big=not realism, height_multiplier=height_multiplier,
-                         realism=realism, richness=richness))
+        for attempt in range(6):    # küme şeride taşarsa daha dışarı it; olmazsa atla
+            off = side * (clear + rng.uniform(0.4, 1.1) + 0.8 * attempt)
+            ox = px - off * math.sin(tyaw)
+            oy = py + off * math.cos(tyaw)
+            # realism: chicane KÜÇÜK küme (big=False → 4 m kolon YOK, koridora taşmaz)
+            xml = _rubble(f"chic_{s}_{wi}", cx + ox, cy + oy, rng,
+                          big=not realism, height_multiplier=height_multiplier,
+                          realism=realism, richness=richness)
+            if _cluster_route_gap(xml, ox, oy, op) >= corridor:
+                p.append(xml)
+                break
     return "\n".join(p)
 
 

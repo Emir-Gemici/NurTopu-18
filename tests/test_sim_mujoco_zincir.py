@@ -575,7 +575,10 @@ class F_GorevKosumu(unittest.TestCase):
         self.assertTrue(r["basari"])
         self.assertGreater(r["sure_sim_ika"], 0.0)
         self.assertLessEqual(r["sure_sim_ika"], ks.SARTNAME_IKA_GOREV_SURESI_S)
-        self.assertAlmostEqual(r["sure_sim_iha_profil"], 36.98, places=1)
+        # ONARIM-12 (17 Eyl 2026): 36,98 -> 38,81. Tek neden world_generator PHASE_SPEED
+        # "parasut" 5,5 -> 3,0 m/s (kullanici istegi 2-4 m/s bandi, D-488); yalniz bu deger
+        # 5,5'e geri alininca test 36,98 ile GECTI (izolasyon olcumu, ONARIM-12).
+        self.assertAlmostEqual(r["sure_sim_iha_profil"], 38.81, places=1)
         self.assertEqual(r["kararsiz_adim"], 0)
         self.assertTrue((Path(self.tmp.name) / "gt_1_kolay_42.json").is_file())
         oz = gorev_kosumu.ozet_kur(Path(self.tmp.name))

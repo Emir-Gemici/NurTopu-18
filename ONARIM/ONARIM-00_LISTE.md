@@ -19,7 +19,7 @@ Durum etiketleri: `AÇIK` · `SÜRÜYOR` · `KAPANDI (kanıt: …)` · `BEKLİYO
 | 09 | YKS→İHA komut hattı: 5007 dinleyen yok; PC IP DHCP ile değişiyor | C | AÇIK | — |
 | 10 | Jetson servisleri hiç kurulmamıştı; venv bağımlılığı; gereksiz servisler | C | KAPANDI (/opt/navitas/python, 29 birim kapatıldı + geri alma kaydı, 5 servis enabled+active NRestarts=0; YKS_IP geçici — madde 3) | `ONARIM-10_jetson_paket_senkronu.md` §4 |
 | 11 | Jetson dalı `jetson/tek-yol-20260912` master'a girmemiş; D-480…484 numara çakışması; Emir'in PC'sinde D-490/491/492 düşüş analizleri | D depo | KAPANDI (birleştirildi, D-477…484→D-495…502, T261→T265; yeni kırmızı yok) — Emir'in D-49x'leri gelince D-503+ | `ONARIM-11_jetson_dal_birlestirme.md` |
-| 12 | Commitlenmemiş `world_generator.py`/`navitas_anim.cc` mujoco testini düşürüyor | D | BEKLİYOR (sahibi oturum) | — |
+| 12 | Commitlenmemiş `world_generator.py`/`navitas_anim.cc` mujoco testini düşürüyordu | D | KAPANDI (kök neden paraşüt 5,5→3,0 m/s ölçüldü, beklenti 38,81; sim testlerinde yeni kırmızı yok) | `ONARIM-12_gazebo_commitlenmemis_dosyalar.md` |
 | 13 | Telsiz frekansı: gövdede RFD900A (900 MHz), depo 433 MHz diyor | D | KARAR VAR (D-499: 433 MHz, RFD900A kullanılmayacak) — donanım değişimi insan işi | `ONARIM-11_jetson_dal_birlestirme.md` |
 
 **Yazılım dışı (takip için):** gövde/motor/GPS kablosu değişimi · Jetson besleme hattı (açılışta brownout) · RTC pili (CR2032) · lens odak kontrolü.
