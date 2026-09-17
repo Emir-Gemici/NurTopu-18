@@ -1,0 +1,79 @@
+{
+"dji_s0": {
+"n": 36,
+"min": 407.2,
+"medyan": 3368.8,
+"max": 10785.6
+},
+"dji_s1": {
+"n": 36,
+"min": 85.8,
+"medyan": 581.7,
+"max": 1589.5
+},
+"dji_s2": {
+"n": 36,
+"min": 14.3,
+"medyan": 67.0,
+"max": 138.4
+},
+"dji_s3": {
+"n": 36,
+"min": 5.0,
+"medyan": 15.7,
+"max": 28.7
+},
+"dji_s5": {
+"n": 36,
+"min": 2.2,
+"medyan": 3.7,
+"max": 6.3
+},
+"dji_s10": {
+"n": 36,
+"min": 1.6,
+"medyan": 1.9,
+"max": 2.1
+},
+"whatsapp_s0": {
+"n": 67,
+"min": 975.7,
+"medyan": 1373.0,
+"max": 2083.9
+},
+"whatsapp_s1": {
+"n": 67,
+"min": 268.6,
+"medyan": 352.6,
+"max": 424.5
+},
+"whatsapp_s2": {
+"n": 67,
+"min": 54.0,
+"medyan": 65.7,
+"max": 76.8
+},
+"whatsapp_s3": {
+"n": 67,
+"min": 17.0,
+"medyan": 20.3,
+"max": 22.9
+},
+"whatsapp_s5": {
+"n": 67,
+"min": 4.7,
+"medyan": 5.4,
+"max": 6.0
+},
+"whatsapp_s10": {
+"n": 67,
+"min": 2.1,
+"medyan": 2.2,
+"max": 2.3
+},
+"imx477_20260917_1058.jpg": 1.5,
+"imx477_hd_auto.jpg": 2.3,
+"kamera_kare_20260915.jpg": 129.3,
+"wb0.jpg": 176.6,
+"wb5.jpg": 17.0
+}

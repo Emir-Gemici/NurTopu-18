@@ -1,0 +1,78 @@
+{
+ "dji_blur_sigma0": {
+  "kare": 36,
+  "zemin>0": 32,
+  "zemin_ort%": 35.8,
+  "engel_ort%": 13.7
+ },
+ "dji_blur_sigma2": {
+  "kare": 36,
+  "zemin>0": 23,
+  "zemin_ort%": 14.8,
+  "engel_ort%": 24.2
+ },
+ "dji_blur_sigma5": {
+  "kare": 36,
+  "zemin>0": 5,
+  "zemin_ort%": 3.6,
+  "engel_ort%": 66.7
+ },
+ "dji_blur_sigma10": {
+  "kare": 36,
+  "zemin>0": 0,
+  "zemin_ort%": 0.0,
+  "engel_ort%": 96.1
+ },
+ "dji_blur_sigma20": {
+  "kare": 36,
+  "zemin>0": 0,
+  "zemin_ort%": 0.0,
+  "engel_ort%": 92.2
+ },
+ "dji_blur_sigma40": {
+  "kare": 36,
+  "zemin>0": 0,
+  "zemin_ort%": 0.0,
+  "engel_ort%": 76.6
+ },
+ "imx477_imx477_20260917_1058.jpg": {
+  "hw": [
+   1080,
+   1920
+  ],
+  "zemin%": 0.0,
+  "engel%": 89.4
+ },
+ "imx477_imx477_hd_auto.jpg": {
+  "hw": [
+   1080,
+   1920
+  ],
+  "zemin%": 0.0,
+  "engel%": 99.4
+ },
+ "imx477_kamera_kare_20260915.jpg": {
+  "hw": [
+   1080,
+   1920
+  ],
+  "zemin%": 0.0,
+  "engel%": 0.0
+ },
+ "imx477_wb0.jpg": {
+  "hw": [
+   1232,
+   1640
+  ],
+  "zemin%": 0.0,
+  "engel%": 0.0
+ },
+ "imx477_wb5.jpg": {
+  "hw": [
+   1232,
+   1640
+  ],
+  "zemin%": 0.0,
+  "engel%": 88.4
+ }
+}

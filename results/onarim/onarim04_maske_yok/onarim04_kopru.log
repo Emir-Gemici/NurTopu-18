@@ -1,0 +1,10 @@
+[KAMERA_KOPRUSU] t=6168.793 dinliyor http://127.0.0.1:8080/video · kare http://127.0.0.1:8080/kare.jpg · durum http://127.0.0.1:8080/durum · kaynak='/tmp/onarim04_dji.avi' [dosya] kalite=80 fps_tavani=2.0 arka_uc=auto kip=-
+[KAMERA_KOPRUSU] t=6168.804 kaynak ACILDI (deneme 1): '/tmp/onarim04_dji.avi' [dosya]
+[KAMERA_KOPRUSU] t=6178.868 kare=21 dusen=0 fps=2.0 istemci=1 kaynak_acik=True boyut=[1280, 720]
+[KAMERA_KOPRUSU] t=6188.879 kare=41 dusen=0 fps=2.0 istemci=1 kaynak_acik=True boyut=[1280, 720]
+[KAMERA_KOPRUSU] t=6199.387 kare=62 dusen=0 fps=2.0 istemci=1 kaynak_acik=True boyut=[1280, 720]
+[KAMERA_KOPRUSU] t=6209.872 kare=83 dusen=0 fps=2.0 istemci=1 kaynak_acik=True boyut=[1280, 720]
+[KAMERA_KOPRUSU] t=6219.878 kare=103 dusen=0 fps=2.0 istemci=1 kaynak_acik=True boyut=[1280, 720]
+[KAMERA_KOPRUSU] t=6230.377 kare=124 dusen=0 fps=2.0 istemci=1 kaynak_acik=True boyut=[1280, 720]
+[KAMERA_KOPRUSU] t=6240.873 kare=145 dusen=0 fps=2.0 istemci=0 kaynak_acik=True boyut=[1280, 720]
+[KAMERA_KOPRUSU] t=6246.032 kapandi

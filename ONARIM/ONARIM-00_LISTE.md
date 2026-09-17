@@ -11,7 +11,7 @@ Durum etiketleri: `AÇIK` · `SÜRÜYOR` · `KAPANDI (kanıt: …)` · `BEKLİYO
 | 01 | Hover kapısı tüm dosyanın tepesine bakıyor (kalkış/iniş geçicileri) + "motor çıkış farkı" tanımı ekibin yöntemiyle eşleşmedi | A uçuş güvenliği | BEKLİYOR (Emir'in log/yöntemi) | — |
 | 02 | `jetson_baslat.sh --kapi` parametre indirmesi (~42 s @57600) bitmeden ölçüyor → yanlış DÜŞTÜ | A | KAPANDI (test 44 OK + mutasyon; canlı koşu yok) | `ONARIM-02_mavlink_kapi_param_bekleme.md` |
 | 03 | Jetson'da kare başına kalıcı model/karar kaydı yok (stdout yalnız açılış); journald ayarı tekrarlanabilir değil | A | KAPANDI (6+44 test, mutasyon, Jetson'da gerçek kamera koşusu) | `ONARIM-03_jetson_gorev_kaydi.md` |
-| 04 | Canlı kamerada her karar `MASKE_YOK` (kayıtlı resimde maske var) — ONARIM-03 ölçümü: zemin 0 px, **engel ~%97,5** | B algı | SÜRÜYOR | — |
+| 04 | Canlı kamerada her karar `MASKE_YOK` — ölçüldü: canlı hat suçsuz (A≡B); IMX477 keskinliği 1,5–2,3 = σ≈10 bulanıklık → model hep ENGEL | B algı | SÜRÜYOR (odak ayarı sonrası yeniden ölçüm) | `ONARIM-04_canli_maske_yok.md` |
 | 05 | IMX477+6 mm odak ve FOV ölçülmedi (`--fov 63` BEYAN); sürücü yalnız 16:9 | B | BEKLİYOR (kamera uzağa) | — |
 | 06 | İşaretli video yolu yarım: `jetson_baslat.sh` yayını loopback'te tutuyor, T227 bayrağı yok | B | AÇIK | — |
 | 07 | Otomatik başlatma yok; FOV/YKS_IP/IKA_IP her seferinde elle | C saha | AÇIK (güvenlik kararı) | — |

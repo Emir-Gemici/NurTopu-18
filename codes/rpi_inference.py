@@ -2405,8 +2405,8 @@ def run_camera(model, conf, mpp=None, canli_olcek=None, kaynak=None,
             # `yayinci` None ise (hedef verilmedi) davranis bayt-es aynidir.
             # D-396: farkli serit ancak K ardisik karede teyitlenirse yayina
             # gecer; NO_ROUTE ve ayni-serit ANINDA gecer (`KararYumusatici`).
-            satir = _gorev_kare_alanlari(gorev_kaydi, ozet, sure, masks, olcek,
-                                         open_path, path_conf, karar_reddi)
+            satir = _gorev_kare_alanlari(gorev_kaydi, ozet, sure, masks, olcek, open_path,
+                                         path_conf, karar_reddi, frame=frame)
             if yumusatici.suz(open_path, karar_reddi):
                 satir["yayinlandi"] = True
                 _karari_yayinla(yayinci, open_path, path_conf, waypoints,
@@ -2941,10 +2941,18 @@ def gorev_kaydi_kapat(kayit):
 
 
 def _gorev_kare_alanlari(kayit, ozet, sure_s, masks, olcek, open_path,
-                         path_conf, karar_reddi):
+                         path_conf, karar_reddi, frame=None):
     """Kare satiri alanlari; kayit yoksa hesap yapilmaz (bos sozluk)."""
     if kayit is None:
         return {}
+    keskinlik = None
+    if frame is not None:
+        # ONARIM-04: odak kaymasi algiyi tamamen kapatir (bulanik kare -> hep ENGEL).
+        try:
+            from kare_keskinligi import kare_keskinligi
+            keskinlik = round(kare_keskinligi(frame), 1)
+        except Exception:
+            keskinlik = None
     zemin = masks.get(0)
     engel = masks.get(1)
     mpp = olcek.get("mpp") if isinstance(olcek, dict) else None
@@ -2960,6 +2968,7 @@ def _gorev_kare_alanlari(kayit, ozet, sure_s, masks, olcek, open_path,
         "yol": open_path,
         "guven": round(float(path_conf or 0.0), 4),
         "red": (str(karar_reddi[0]) if karar_reddi else None),
+        "keskinlik": keskinlik,
         "yayinlandi": False,
     }
 
