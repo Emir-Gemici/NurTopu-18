@@ -30,3 +30,10 @@ Pusula dışındakiler bu tezgâh düzeninde **beklenen**dir.
 ## Güncelleme (17 Eylül ~13:10)
 - Kullanıcı modülü yeniden yerleştirdi; yeniden ölçüm: harici [321, 192, 227] mG · dahili [93, 97, 646] mG → açı **47,4°**, PreArm "Compasses inconsistent" **sürüyor**.
 - Kalibrasyon aracı hazır: `scripts/tezgah/pusula_kalibrasyonu.py` (MAV_CMD_DO_START_MAG_CAL, tüm pusulalar, autosave, reboot yok, 300 s tavan → iptal, JSONL kayıt). **Koşulmadı:** drone henüz toplanmadı (kullanıcı). Koşul: modül + Pixhawk gövdeye sabit, manyetik kaynaklardan uzak, pervanesiz.
+
+## Güncelleme (17 Eylül ~14:35) — farklı GPS modülü takıldı
+- Takılı hâlde (yeniden başlatma öncesi): `GPS_RAW_INT.fix_type 0` (GPS **algılanmıyor**; önceki modülde 1 idi), PreArm "Compass not healthy".
+- `MAV_CMD_PREFLIGHT_REBOOT_SHUTDOWN` (disarm, ACK 0) sonrası: `fix_type 0` · **`COMPASS_DEV_ID 0`** (harici pusula bulunamadı; önceki 658953 — yedekte) · `COMPASS_DEV_ID2 658433` (dahili) · sağlıksız: 3D_MAG, Z/XY kontrol, prearm · `SCALED_IMU` (1. pusula) 0,0,0.
+- Yorum: yeni modülün ne GPS UART'ı ne I2C pusulası Pixhawk'a ulaşıyor → **kablo/konnektör/port** (GPS1 10-pin, ya da modül-Pixhawk konnektör tipi uyumu) ya da modül beslemesi. Yazılımla çözülmez. Doğru bağlanınca yeniden başlatma + pusula kalibrasyonu gerekir (`scripts/tezgah/pusula_kalibrasyonu.py`).
+- PC: kullanıcı `dialout` grubuna eklendi (+ setfacl) — yeniden başlatmadan sonra port izni kalıcı.
+- 82 dataflash logu eksiksiz indirildi (`scripts/tezgah/pixhawk_log_indir.py`); 81 = 17 Eyl 02:54 düşüş logu.
