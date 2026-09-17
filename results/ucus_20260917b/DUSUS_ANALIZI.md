@@ -102,3 +102,50 @@ Olay anındaki pilot tepkisi (karşı-dümen, 0,8 s'de disarm) doğruydu; düş�
   - Bu uçuşta CCW−CW +520 µs'ye çıktı; bu değerlerle uçuşa çıkılmaz.
 - **Kalkış ve iniş Stabilize'da;** yerdeyken Loiter'a geçilmez (W1'deki yerde devrilme).
 - Hiçbir değer sahada yalnız gözle değerlendirilmez. Her uçuştan sonra log analizi yapılır ve bir sonraki uçuşa geçilmeden önce bakılır.
+
+---
+
+## 8. YENİDEN YORUM — kullanıcı beyanı (17 Eyl, sabah)
+
+**Beyan (BEYAN, fotoğraf yok):** drone "kitap gibi ikiye katlandı". İki pervane birbirine girdi. GPS, telemetri "her şey" koptu. İki motor çalışmaz halde. Hasar büyük.
+
+**Beyanı destekleyen log ölçümleri:**
+
+| Ölçüm | Değer | Anlamı |
+|---|---|---|
+| GPS son örnek | 202,41 s; 5 Hz'de sıradaki (~202,61) gelmedi, sonraki kayıt 206,41 St 0 | GPS hattı **havada**, 202,41–202,61 arasında koptu |
+| Harici pusula (GPS modülünde) | son güncelleme 202,47; 202,57'den itibaren donmuş | Aynı kablo **havada** 202,47–202,57 arasında koptu |
+| Telemetri (MP tlog `2026-09-17 02-31-36.tlog`) | araçtan gelen son paket ATTITUDE, time_boot_ms **202,182 s** (PC 02:53:45,71); sıradaki paketler (~202,43 / 202,68 / 202,93) hiç gelmedi | Telsiz bağlantısı başlangıç anında (≤ ~0,25 s içinde) **havada** kesildi |
+| Yere çarpma | 202,97 s | Kopmalar çarpmadan **0,4–0,5 s önce** |
+| İtki kaybı sırası | \|a\| 10,4 → 5,2 (202,41), **sonra** clip patlaması 202,45–202,49 | Önce köşenin itkisi yön değiştirdi ya da kayboldu, sonra pervaneler çarpıştı |
+| Öncül | 13 s boyunca CCW−CW +16 → +520 µs, roll karışımı +10 → +74 µs, yaw hatası 14°, M4 1202 µs; çubuklar büyük ölçüde ortada | Kol ya da gövde **uçuş sırasında giderek esniyor/burulyordu**: motor itki ekseni eğildikçe yaw ve roll torku doğar |
+| Oturum titreşimi | Yere yakın eşleşik pencerelerde VIBE 00:20 öncesinin ×2,5–3,2'si; W2'de sert değmeden önce de yüksek | Gövde oturum başından beri daha az rijitti |
+
+**Yeni hüküm (güven: orta–yüksek):** Başlatıcı **uçuşta yapısal çöküş**. Gövde ya da kol bağlantısı 13 s boyunca giderek esnedi (itki ekseni kaydı → artan motor dengesizliği). 202,41 s'de aniden katlandı. Ön-sağ köşe itkisini kaybetti. Katlanan yarımların pervaneleri birbirine girdi (clip patlaması). GPS direği ve telemetri kabloları **havada** koptu. Drone ters dönüp düştü.
+
+- §4'teki (B) "dış cisme pervane darbesi" artık **düşük olasılık**. Kablo kopmaları çarpmadan önce, havada; öncül bozulma yapısal esnemeyle birebir uyumlu.
+- (A)'nın alt adayı "pervanenin GPS kablosuna değmesi" de başlatıcı olarak zayıfladı: kopma, katlanmanın sonucu olarak açıklanıyor.
+- Katlanma çizgisi logdan kesin çıkmıyor: ilk düşen köşe ön-sağ (M1). Hangi iki pervanenin çarpıştığı ve hangi iki motorun öldüğü fotoğrafla belirlenir.
+
+**Neden zayıfladı (ÇIKARIM, logla kesinleşmez):**
+- 3B baskı gövde ve kollar (`dronesolid/`).
+- 00:20 düşüşünde sağ taraf temas etti (D-490).
+- Bu oturumda ek yükler bindi: W1'de yerde, pervaneler dönerken sağ taraf aşağı 27° yatma; W2'de gaz kesilip 3,2 g sert iniş.
+- Titreşimin oturum başından yüksek olması, çatlağın ya da gevşek bağlantının 02:50'den önce var olduğunu düşündürür.
+
+**Katkı değerlendirmesi (ÖLÇÜM DEĞİL; §4'ün yerine geçer):**
+
+| Etken | Pay |
+|---|---|
+| Yapı: gövde veya kol uçuşta katlandı (hasarla zayıflamış ya da dayanımı yetersiz baskı parça) | %50–65 |
+| Operasyon: 00:20 düşüşünden 2,5 saat sonra gövdenin yapısal muayenesi ve kabul askısı olmadan, gece uçmak; oturumdaki yerde yatma ve sert inişten sonra kontrolsüz devam | %25–35 |
+| Pilotaj: W1'de yerde Loiter'a geçme (yatma), W2'de gazı kesme (sert iniş); son manevra küçük | %5–15 |
+| Sensör / elektrik / ayar | %0–5 |
+| **Bu uçuş tek başına: pilot + operasyon** | **~%30–45** |
+| **Zincir olarak (hasar 00:20 düşüşünde başladıysa — ÇIKARIM; o düşüş ~%80–85 pilot/operasyon, D-490)** | **~%55–70** |
+
+**Önleme (ders):**
+1. Düşüş yaşamış **3B baskı taşıyıcı parçalar yeniden kullanılmaz**; plaka ve kollar yenisiyle değiştirilir.
+2. Her uçuş öncesi **esneme/burulma testi**: kol ucunu elle yukarı-aşağı ve döndürerek zorla; gözle görülür esneme ya da çıtırtı varsa uçulmaz.
+3. **Uçuşta erken uyarı:** motor çıkışları arasındaki fark büyüyor ya da drone yönünü tutamıyorsa (bu uçuşta 13 s boyunca açıkça görüldü) hemen iniş. MP'de Status sekmesinde `ch9out`–`ch12out` izlenebilir. YKİ'ye otomatik alarm eklenmesi ayrı iş olarak kuyruğa önerilir.
+4. Yarışma takvimine göre gövde malzemesi kararı (karbon plaka/kol ya da baskı parametreleri: malzeme, doluluk, et kalınlığı) — insan kararı.

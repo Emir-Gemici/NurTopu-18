@@ -31681,3 +31681,12 @@ değişmedi. commit/push yok.
 **D-490 DÜZELTMESİ:** `results/ucus_20260917/DUSUS_ANALIZI.md` §1'deki "uçuş 1: Loiter, 4 kısa iniş-kalkış" YANLIŞ. Doğrusu pervanesiz yer koşusu: motorlar ≤ 1949 µs, ThO 0,89, akım en fazla 8,8 A (mimar yeniden ölçtü; çürütücü 4 buldu). D-490 düşüş hükmü (uçuş 3) değişmez; §1 tablosu düzeltildi.
 **Yöntem notu:** mimarın ilk gözlemindeki "Clip uçuş başından 6" IMU1 içindir; IMU0 10'du. Değer W2 sert değmesinden kalmadır.
 **Yazan:** mimar.
+
+### D-492 (mimar, 17 Eyl) — D-491 yeniden yorum: kullanıcı beyanı "drone kitap gibi katlandı, 2 pervane birbirine girdi, GPS/telemetri koptu, 2 motor ölü" → başlatıcı UÇUŞTA YAPISAL ÇÖKÜŞ (güven orta–yüksek)
+
+**Yeni ölçüm:** MP tlog `2026-09-17 02-31-36.tlog` (OneDrive MP logs): araçtan son paket ATTITUDE time_boot_ms 202,182 s (PC 02:53:45,71). Sıradaki akış paketleri (~202,43/202,68/202,93) gelmedi → telsiz başlangıç anında, havada kesildi.
+**D-491 ölçümleriyle birlikte:** GPS son örnek 202,41 (5 Hz; 202,61 gelmedi); harici pusula 202,47'den sonra donmuş; yere çarpma 202,97 → GPS ve telemetri kopmaları çarpmadan 0,4–0,5 s ÖNCE, havada. İtki kaybı (|a| 10,4 → 5,2, 202,41) clip patlamasından (202,45–202,49) önce. 13 s öncül: CCW−CW +16 → +520 µs, Rmix +10 → +74, yaw hatası 14° → itki ekseni kayması, yapısal esnemeyle uyumlu.
+**Hüküm:** gövde veya kol uçuşta giderek esnedi ve 202,41'de katlandı. Pervaneler çarpıştı, kablolar havada koptu. D-491 (B) "dış pervane darbesi" düşük olasılığa indi. Zayıflamanın kaynağı ÇIKARIM: 00:20 sağ taraf teması (D-490) + W1 yerde 27° yatma + W2 3,2 g sert iniş; oturum boyu VIBE ×2,5–3,2.
+**Pay (ölçüm DEĞİL):** yapı %50–65, operasyon %25–35, pilotaj %5–15, sensör/elektrik/ayar %0–5. Bu uçuş için pilot + operasyon ~%30–45; 00:20 dahil zincir ~%55–70.
+**Açık:** katlanma çizgisi ve çarpışan pervane çifti fotoğrafla belirlenecek. Önleme önerileri: düşmüş baskı taşıyıcı parçalar yeniden kullanılmaz; uçuş öncesi esneme testi; uçuşta motor çıkış dengesizliği alarmı (YKİ özelliği önerisi, kuyruğa alınmadı — kullanıcı kararı).
+**Yazan:** mimar.
