@@ -2406,7 +2406,7 @@ def run_camera(model, conf, mpp=None, canli_olcek=None, kaynak=None,
             # D-396: farkli serit ancak K ardisik karede teyitlenirse yayina
             # gecer; NO_ROUTE ve ayni-serit ANINDA gecer (`KararYumusatici`).
             satir = _gorev_kare_alanlari(gorev_kaydi, ozet, sure, masks, olcek, open_path,
-                                         path_conf, karar_reddi, frame=frame)
+                                         path_conf, karar_reddi, frame=frame, canli=canli_olcek)
             if yumusatici.suz(open_path, karar_reddi):
                 satir["yayinlandi"] = True
                 _karari_yayinla(yayinci, open_path, path_conf, waypoints,
@@ -2941,10 +2941,11 @@ def gorev_kaydi_kapat(kayit):
 
 
 def _gorev_kare_alanlari(kayit, ozet, sure_s, masks, olcek, open_path,
-                         path_conf, karar_reddi, frame=None):
+                         path_conf, karar_reddi, frame=None, canli=None):
     """Kare satiri alanlari; kayit yoksa hesap yapilmaz (bos sozluk)."""
     if kayit is None:
         return {}
+    telemetri = _gorev_telemetri_alanlari(canli)
     keskinlik = None
     if frame is not None:
         # ONARIM-04: odak kaymasi algiyi tamamen kapatir (bulanik kare -> hep ENGEL).
@@ -2969,8 +2970,36 @@ def _gorev_kare_alanlari(kayit, ozet, sure_s, masks, olcek, open_path,
         "guven": round(float(path_conf or 0.0), 4),
         "red": (str(karar_reddi[0]) if karar_reddi else None),
         "keskinlik": keskinlik,
+        **telemetri,
         "yayinlandi": False,
     }
+
+
+def _gorev_telemetri_alanlari(canli):
+    """ONARIM-08: Pixhawk boot zamani esleme + taze arac durumu (yalniz kayit icin).
+
+    `pixhawk_ms`/`pixhawk_gelis_mono`: son kabul edilen GLOBAL_POSITION_INT'in
+    time_boot_ms'i ve Jetson monotonic gelisi (kayit satirinin `monotonic_s` ile
+    ayni saat) -> .bin TimeUS ile saatten bagimsiz hizalama. `irtifa`, `armed`,
+    `mod`: taze snapshot'ta yoksa alan None (bayat deger YAZILMAZ).
+    """
+    alanlar = {"pixhawk_ms": None, "pixhawk_gelis_mono": None,
+               "irtifa_m": None, "armed": None, "mod": None}
+    okuyucu = getattr(canli, "okuyucu", None)
+    if okuyucu is None:
+        return alanlar
+    try:
+        esleme = _inis_kaniti_modulu().zaman_eslemesi(okuyucu)
+        if esleme is not None:
+            alanlar["pixhawk_ms"] = int(esleme[0])
+            alanlar["pixhawk_gelis_mono"] = round(float(esleme[1]), 6)
+        snap = okuyucu.telemetri_snapshot() if hasattr(okuyucu, "telemetri_snapshot") else {}
+        alanlar["irtifa_m"] = snap.get("alt")
+        alanlar["armed"] = snap.get("armed")
+        alanlar["mod"] = snap.get("mod")
+    except Exception:
+        pass
+    return alanlar
 
 
 def _gorev_kaydina_yaz(kayit, olay, alanlar):

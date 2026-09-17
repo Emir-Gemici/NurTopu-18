@@ -1063,3 +1063,20 @@ def _yerde_mi_sahipli(mav, ardisik=3, tavan_m=1.0,
         return False
 
     return True
+
+
+def zaman_eslemesi(okuyucu):
+    """``(pixhawk_time_boot_ms, yerel_monotonic_gelis)`` ya da ``None``.
+
+    ONARIM-08 (2026-09-17): Jetson'da RTC pili yok; duvar saati cevrimdisi
+    guvenilmez. ``BagilIrtifaOkuyucu``nun son KABUL ettigi GLOBAL_POSITION_INT'in
+    Pixhawk boot zamani ile yerel monotonic gelis damgasi, gorev kaydini Pixhawk
+    DataFlash (.bin, TimeUS = boot'tan beri) loguna saatten bagimsiz hizalar.
+    Tazelik filtresi YOKTUR: yalniz kayit/hizalama icindir, karar icin kullanilmaz.
+    Sinifin disinda ve dosya SONUNDA durur: FDR akis semalari bu dosyanin satir
+    numaralarina atif yapar, sinif govdesine ekleme hepsini kaydirirdi.
+    """
+    with okuyucu._snapshot_kilidi:
+        if okuyucu._son_uzak_ms is None or okuyucu._son_gelis_monotonic is None:
+            return None
+        return int(okuyucu._son_uzak_ms), float(okuyucu._son_gelis_monotonic)
