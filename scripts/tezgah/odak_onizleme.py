@@ -16,7 +16,15 @@ KAYIT: her ~1 s bir JSONL satiri + her 15 s bir kare (jpg):
 
 Kullanim (SSH'tan, Jetson masaustu oturumuna):
   DISPLAY=:1 XAUTHORITY=/run/user/1000/gdm/Xauthority /usr/bin/python3 scripts/tezgah/odak_onizleme.py
-Tuslar: + / - nesne genisligi (0,1 m) · [ / ] orta kare boyutu · r en iyi sifirla · s kare kaydet · q/Esc cik
+Tuslar: + / - nesne genisligi (0,1 m) · [ / ] kare genisligi 10 px · { / } 50 px ·
+        , / . mesafe beyani 1 m · < / > 5 m · r en iyi sifirla · s kare kaydet · q/Esc cik
+
+OLCUM YORDAMI (17 Eyl kullanici geri bildirimi "tam dogru gostermiyor" sonrasi):
+  Otomatik kutu karmasik sahnede rastgele kenara yapisir (merdiven korkulugu -> "7,8 m").
+  Guvenilir yol: hedef (genisligi bilinen: A3 kagit 0,42 m, 1 m tahta...) SERIT METREYLE
+  olculmus mesafeye konur; `, .` ile mesafe, `+ -` ile genislik girilir; `[ ] { }` ile SARI
+  KARE hedefin genisligine esitlenir. Ekran o zaman OLCULEN FOV'u verir (madde 5) ve
+  o mesafede 1 px'in kac cm oldugunu gosterir. Otomatik tahmin ayrica "GUVENILMEZ" yazilir.
 """
 import argparse
 import json
@@ -98,6 +106,8 @@ def main():
         return 2
     en_iyi = en_iyi_roi = 0.0
     nesne_m, kare_oran = a.nesne_m, a.kare_oran
+    kenar_px = None          # None: kare_oran'dan; tuslarla px cinsinden elle ayarlanir
+    mesafe_beyan = None      # serit metreyle olculen mesafe (m), `, .` ile
     son_satir = son_jpg = 0.0
     cv2.namedWindow("NAVITAS odak", cv2.WINDOW_NORMAL)
     print(f"kayit: {kayit}", flush=True)
@@ -110,7 +120,9 @@ def main():
             fx = odak_px(W, a.fov)
             d = kare_keskinligi(kare)
             en_iyi = max(en_iyi, d)
-            kenar = max(40, int(W * kare_oran))
+            if kenar_px is None:
+                kenar_px = max(40, int(W * kare_oran))
+            kenar = kenar_px
             x0, y0 = W // 2 - kenar // 2, H // 2 - kenar // 2
             roi = kare[y0:y0 + kenar, x0:x0 + kenar]
             d_roi = kare_keskinligi(roi)
@@ -135,14 +147,19 @@ def main():
             bant_roi = keskinlik_bandi(d_roi)
             cv2.putText(goster, f"ORTA KARE keskinlik {d_roi:7.1f} {bant_roi}  (en iyi {en_iyi_roi:.0f})",
                         (15, 92), cv2.FONT_HERSHEY_SIMPLEX, 1.0, RENK.get(bant_roi, (0, 200, 255)), 2)
-            if mesafe is not None:
-                mtxt = (f"MESAFE TAHMINI ~{mesafe:5.1f} m  (nesne {nesne_m:.1f} m = {kutu[2]} px"
-                        f" · FOV {a.fov:.0f} BEYAN)")
+            if mesafe_beyan is not None:
+                fx_olc = kenar * mesafe_beyan / nesne_m
+                fov_olc = math.degrees(2 * math.atan((W / 2.0) / fx_olc))
+                mtxt = (f"OLCUM: {mesafe_beyan:.0f} m'de {nesne_m:.2f} m = kare {kenar} px -> FOV {fov_olc:.1f} deg"
+                        f", 1px={100 * mesafe_beyan / fx_olc:.1f}cm")
+            elif mesafe is not None:
+                mtxt = (f"otomatik tahmin (GUVENILMEZ) ~{mesafe:4.1f} m | olcum icin , . mesafe gir"
+                        f" + kareyi hedefe esitle")
             else:
-                mtxt = f"MESAFE: orta karede nesne bulunamadi  (nesne {nesne_m:.1f} m)"
+                mtxt = f"MESAFE: , . ile serit metre mesafesi gir; [ ] {{ }} ile kareyi hedefe esitle"
             cv2.putText(goster, mtxt, (15, 136), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (255, 255, 0), 2)
             cv2.putText(goster, f"orta kare {kenar}px kapsar: 10m={kapsam[10]:.2f}m 20m={kapsam[20]:.2f}m "
-                        f"30m={kapsam[30]:.2f}m | 1px@30m={100 * 30 / fx:.1f}cm | +/- [ ] r s q",
+                        f"30m={kapsam[30]:.2f}m | nesne {nesne_m:.2f}m | FOV{a.fov:.0f} beyan",
                         (15, 180), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 255), 2)
             cv2.imshow("NAVITAS odak", goster)
 
@@ -155,6 +172,9 @@ def main():
                     "roi_px": kenar, "nesne_kutu_px": list(kutu) if kutu else None,
                     "nesne_m_beyan": nesne_m, "fov_beyan": a.fov, "fx_px": round(fx, 1),
                     "mesafe_tahmini_m": round(mesafe, 2) if mesafe else None,
+                    "mesafe_beyan_m": mesafe_beyan, "kare_kenar_px": kenar,
+                    "fov_olculen": (round(math.degrees(2 * math.atan((W / 2.0) / (kenar * mesafe_beyan / nesne_m))), 2)
+                                    if mesafe_beyan else None),
                     "kare_hw": [H, W]}) + "\n")
                 jsonl.flush()
             tus = cv2.waitKey(1) & 0xFF
@@ -171,10 +191,12 @@ def main():
                 nesne_m = round(nesne_m + 0.1, 2)
             elif tus == ord("-"):
                 nesne_m = max(0.1, round(nesne_m - 0.1, 2))
-            elif tus == ord("]"):
-                kare_oran = min(0.6, kare_oran + 0.02)
-            elif tus == ord("["):
-                kare_oran = max(0.04, kare_oran - 0.02)
+            elif tus in (ord("]"), ord("}"), ord("["), ord("{")):
+                adim = {ord("]"): 10, ord("}"): 50, ord("["): -10, ord("{"): -50}[tus]
+                kenar_px = int(min(H - 4, max(10, kenar_px + adim)))
+            elif tus in (ord("."), ord(","), ord(">"), ord("<")):
+                adim = {ord("."): 1, ord(","): -1, ord(">"): 5, ord("<"): -5}[tus]
+                mesafe_beyan = max(1.0, (mesafe_beyan or 0.0) + adim) if (mesafe_beyan or adim > 0) else None
     except KeyboardInterrupt:
         pass
     finally:
