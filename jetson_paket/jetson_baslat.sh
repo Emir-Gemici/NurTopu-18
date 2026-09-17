@@ -115,7 +115,7 @@ PYTHON3_VARSAYILAN="/usr/bin/python3"
 ENV_DOSYA_VARSAYILAN="/etc/navitas.env"
 KULLANICI_VARSAYILAN="navitas"
 MAVPROXY_BIN_VARSAYILAN="/home/$KULLANICI_VARSAYILAN/.local/bin"
-MAVPROXY_BIN="/home/$SERVIS_KULLANICI/.local/bin"
+MAVPROXY_BIN="${MAVPROXY_BIN:-/home/$SERVIS_KULLANICI/.local/bin}"   # ONARIM-10: /opt/navitas/python/bin ile ezilir (venv bagimsizligi)
 
 # ── CONTRACTS §7.4 uclari — TEK KAYNAK (burada + systemd/*.service) ───────────
 MAV_UC_RPI="udp:127.0.0.1:14550"      # rpi_inference    --mavlink (okur)
