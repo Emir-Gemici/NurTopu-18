@@ -31690,3 +31690,4 @@ değişmedi. commit/push yok.
 **Pay (ölçüm DEĞİL):** yapı %50–65, operasyon %25–35, pilotaj %5–15, sensör/elektrik/ayar %0–5. Bu uçuş için pilot + operasyon ~%30–45; 00:20 dahil zincir ~%55–70.
 **Açık:** katlanma çizgisi ve çarpışan pervane çifti fotoğrafla belirlenecek. Önleme önerileri: düşmüş baskı taşıyıcı parçalar yeniden kullanılmaz; uçuş öncesi esneme testi; uçuşta motor çıkış dengesizliği alarmı (YKİ özelliği önerisi, kuyruğa alınmadı — kullanıcı kararı).
 **Yazan:** mimar.
+**D-492 eki (aynı gün):** kullanıcı: "drone bir yere çarpmadı, dümdüz hover yapıyorduk". D-491 (B) dış temas ELENDİ; log uyumlu (darbe/temas izi yok; 199,8–200,4'teki 13° sağ düzeltme küçük). Pay güncellemesi (ölçüm değil): yapı %55–70, operasyon %25–35, pilotaj %0–10 (W1/W2 yer yükleri), sensör/elektrik/ayar %0–5. Bu uçuş için pilot + operasyon ~%25–40; zincir ~%50–65.

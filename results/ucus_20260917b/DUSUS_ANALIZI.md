@@ -133,16 +133,19 @@ Olay anındaki pilot tepkisi (karşı-dümen, 0,8 s'de disarm) doğruydu; düş�
 - Bu oturumda ek yükler bindi: W1'de yerde, pervaneler dönerken sağ taraf aşağı 27° yatma; W2'de gaz kesilip 3,2 g sert iniş.
 - Titreşimin oturum başından yüksek olması, çatlağın ya da gevşek bağlantının 02:50'den önce var olduğunu düşündürür.
 
+**İkinci beyan (kullanıcı):** "Drone bir yere çarpmadı, dümdüz hover yapıyorduk." → §4 (B) dış temas **elendi**.
+Log bununla uyumlu: olaydan 2 s önce 13°'lik kısa bir sağ düzeltme ve ~1 m kayma var, ama darbe ya da temas izi yok. Başlatıcı iç yapısal çöküş.
+
 **Katkı değerlendirmesi (ÖLÇÜM DEĞİL; §4'ün yerine geçer):**
 
 | Etken | Pay |
 |---|---|
-| Yapı: gövde veya kol uçuşta katlandı (hasarla zayıflamış ya da dayanımı yetersiz baskı parça) | %50–65 |
+| Yapı: gövde veya kol uçuşta katlandı (hasarla zayıflamış ya da dayanımı yetersiz baskı parça) | %55–70 |
 | Operasyon: 00:20 düşüşünden 2,5 saat sonra gövdenin yapısal muayenesi ve kabul askısı olmadan, gece uçmak; oturumdaki yerde yatma ve sert inişten sonra kontrolsüz devam | %25–35 |
-| Pilotaj: W1'de yerde Loiter'a geçme (yatma), W2'de gazı kesme (sert iniş); son manevra küçük | %5–15 |
+| Pilotaj: W1'de yerde Loiter'a geçme (yatma), W2'de gazı kesme (sert iniş) — gövdeye ek yük; son uçuşta pilotaj hatası yok | %0–10 |
 | Sensör / elektrik / ayar | %0–5 |
-| **Bu uçuş tek başına: pilot + operasyon** | **~%30–45** |
-| **Zincir olarak (hasar 00:20 düşüşünde başladıysa — ÇIKARIM; o düşüş ~%80–85 pilot/operasyon, D-490)** | **~%55–70** |
+| **Bu uçuş tek başına: pilot + operasyon** | **~%25–40** |
+| **Zincir olarak (hasar 00:20 düşüşünde başladıysa — ÇIKARIM; o düşüş ~%80–85 pilot/operasyon, D-490)** | **~%50–65** |
 
 **Önleme (ders):**
 1. Düşüş yaşamış **3B baskı taşıyıcı parçalar yeniden kullanılmaz**; plaka ve kollar yenisiyle değiştirilir.
