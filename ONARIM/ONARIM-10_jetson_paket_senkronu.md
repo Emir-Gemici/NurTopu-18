@@ -34,3 +34,16 @@ Depodaki `codes/ comms/ scripts/ jetson_paket/ config/` altındaki 458 izlenen d
 **c) Kurulum:** `jetson_paket/saha_beyan.env` (PYTHON3=/opt/navitas/python/bin/python, MAVPROXY_BIN=/opt/navitas/python/bin, KIP=udp, **YKS_IP=10.21.8.156 GEÇİCİ** — PC DHCP adresi bugün iki kez değişti, ONARIM-03/09 keşif gelene dek; IKA_IP=127.0.0.1 yer tutucu; FOV=63 BEYAN; PIXHAWK_SERI=/dev/ttyTHS1; KAMERA köprü 0.0.0.0:8080). `jetson_baslat.sh`: `MAVPROXY_BIN` artık ortamdan ezilebilir. `sudo … jetson_baslat.sh` → `/etc/navitas.env` + 6 birim, 5'i **enabled + active** (açılışta otomatik başlar).
 **d) 75 s sonra:** 5 birim `active`, `NRestarts=0`. rpi_inference: model v36 · kayıt eşleşti · görev kaydı açık · 82 kare, çıkarım ~214 ms, **keskinlik 475,5 (NET)**, iç mekân sahnesinde MASKE_YOK (engel ~%62; ONARIM-04'ün dış sahne ölçümü bekliyor). Köprü nvargus 1280×720 10 fps, 0 düşen. Çoğullayıcı: `Waiting for heartbeat from /dev/ttyTHS1` (Pixhawk Jetson'a bağlı değil — beklenen). Komut alıcı 0.0.0.0:5007 dinliyor, izinli kaynak 10.21.8.156:5005.
 ⚠ **Bellek:** kullanılabilir ~480 MB (3,4 GB'ın 2,97 GB'ı dolu; masaüstü + model + köprü); swap 6,9 GB boş. İzlenmeli; gerekirse masaüstü (gdm) sahada kapatılabilir — karar kullanıcının.
+
+## 5. Otomatik başlatmanın sistemi çökertmemesi (kullanıcı: "emin ol sistemin çökmesine neden olmasın")
+`jetson_paket/saha_servis_koruma.sh` (`--kuru` / uygula / `--kaldir`) — birim dosyalarına dokunmadan drop-in `/etc/systemd/system/<birim>.d/navitas-koruma.conf`:
+| birim | MemoryHigh / MemoryMax | Nice / CPUWeight | ölçülen (kurulum sonrası) |
+|---|---|---|---|
+| rpi-inference | 1800M / 2200M | 5 / 60 | 1,28 GB (açılış sonrası 1,66 GB = anon 1,07 GB + dosya önbelleği 0,26 GB) |
+| kamera-koprusu | 400M / 600M (+ `After=nvargus-daemon`) | 5 / 60 | 212–218 MB |
+| cogullayici | 200M / 300M | 0 / 100 | 56–68 MB |
+| iha-inis-yayinci · iha-komut-alici · seri-hub | 150M / 250M | 0 / 100 | 24–30 MB |
+Hepsinde `OOMScoreAdjust=500` (bellek biterse çekirdek önce bunları seçer), `RestartSec=2 · RestartSteps=6 · RestartMaxDelaySec=60` (çökme döngüsü kademeli yavaşlar; `StartLimitIntervalSec=0` korunur, servis vazgeçilmez). `ssh.service` drop-in `OOMScoreAdjust=-900` (ana sshd zaten −1000).
+
+**Test 1 — çökme döngüsü (komut alıcıya 4 kez `kill -9`):** yeniden kalkma 2,3 → 3,8 → 6,4 → 11,3 s, NRestarts 1→4, sonunda `active`.
+**Test 2 — gerçek yeniden başlatma (15:14):** `systemctl reboot` → SSH **56 s**'de geri; `systemd-analyze` 16,2 s. 5 birim **active, NRestarts=0**; görev kaydı yeni boot_id `f7231b16` ile açıldı, 447 kare, çıkarım 216 ms, keskinlik 481,7; MemAvailable 688 MB; rpi cgroup `memory.events` high/max/oom **0**. Açılış hataları: yalnız bilinen donanım uyarıları (camera-diagnostics, fusb301) ve `ag-portal-giris.service` FAILED (kullanıcı birimi, kampüs portalı; bizden bağımsız).
