@@ -31650,3 +31650,34 @@ değişmedi. commit/push yok.
 **Araç payı (katkı, neden değil):** çubuklar ortadayken motor yayılımı 44 µs ve CCW−CW −61 µs (D-484 kabul sınırları 40 / 60'ın biraz üstü); tam yaw sırasında roll izleme hatası maks. 10,5° (ortada 3,4°); `LOIT_BRK_DELAY` 1 s varsayılanı; LAND geçişinde MOTB ThrAvMx 0,42 → 0,30.
 **Hüküm:** doğrudan neden dış cisme temas (motor/pervane kaybı 40 ms'de yaw durdurma ve 1,6 g yatay kuvvet üretemez). Yüzde dağılımı **değerlendirmedir, ölçüm değil**: pilot/operasyon ~%80–85, Loiter frenleme ayarı ~%10, yaw dengesizliği + LAND gaz karışımı ~%5–10, teknik arıza %0. Cisim hareketliyse pilot payı düşer (logda yok). ÇIKARIM: temas sağ taraftan (−Y ivme, +X roll) → muayene önce M1/M4.
 **Yazan:** mimar.
+
+### D-491 (mimar, 17 Eyl) — 17 Eyl 02:53 düşüşü: ön-sağ (M1) köşede ani itki kaybı, iç/dış pervane darbesi logdan AYRILAMAZ; D-490 §1 düzeltmesi
+
+**Log:** `results/ucus_20260917b/2026-09-17 02-50-38.bin`. Yöntem: mimar ön çıkarımı + Workflow `dusus-log-analizi-0250` (wf_fabd0863-aa6): 3 mercek (itki/mekanik, temas/pilot, sensör/elektrik) → sentez → 3 çürütücü (neden, sayılar, paylar). Ham çıktı `workflow_sonuc.json`, betikler `betikler/`, rapor `DUSUS_ANALIZI.md`.
+**Ölçüm (çürütücü 5 bağımsız yeniden ölçtü, hepsi tuttu):**
+- 202,37 normal: roll 1,5°, M1/M2/M3/M4 1602/1788/1577/1202, 14,52 V/43,5 A.
+- **202,41:** GyrX +143, GyrY −104 °/s, |a| 10,4 → 5,2 (itki kaybı, iten çarpma değil), ΔGyrZ +2.
+- 202,45–202,49: |a| 27 → 57, Clip +22/+20, VIBE 45–67.
+- 202,47: M1 1949.
+- 202,57–203,07: 120 A tavan, 9,42 V.
+- 202,97: çarpma.
+- 203,97: CH6 disarm.
+- Olay öncesi 13 s: CCW−CW +16 → +520 µs, Rmix +10 → +74, yaw hatası 13,8°, M4 1202 µs.
+- Vcc, pil, RC, GPS, EKF temiz; parametreler 00:20 ile aynı (14 kalibrasyon ya da sayaç farkı).
+
+**Mimar ayrıca ölçtü:**
+- W1 (49,6–61,5): yerde Loiter'da DesRoll 3,4 → 20,1°, roll 27,2° (sağ aşağı), ThO 0, motorlar dönüyor.
+- Pilot 199,8–200,4 tam sağ roll (C1 ≤ 1813); gövde sağ hızı en fazla 0,71 m/s; 202,37'de hâlâ 0,14; ~1 m kayma.
+
+**Çürütmeyle düşen sentez iddiaları:**
+- "Eşleşik askıda jiro RMS ×10–15, ThO −%22": pencereler 1,6 m ile 0,45 m, yükseklikleri eşleşmiyor. Yere yakın eşleşik değerler: ThO −%13…19, VIBE ×2,5–3,2.
+- "≥120 A temiz pervane kopmasını dışlar": 00:20 düşüşünde de 115–120 A ölçüldü; akım ayırt edici değil.
+- "Yalnız yaw bozucu": roll da büyüdü.
+- "Başlatıcı donanım kaynaklı": dış pervane darbesi aynı imzayı verir.
+- "Geç disarm": çarpmadan 0,8 s sonra, FS_CRASH_CHECK'ten hızlı.
+
+**Hüküm (güven düşük–orta):** başlatıcı, havada ~0,7 m yer üstünde ön-sağ köşede ani itki kaybı; pervane darbesi imzası. İç (gevşek montaj, GPS direği/kablo, W1/W2 hasarı) ya da dış (gece sağa kayarken cisme temas) ayrımı yalnız muayeneyle yapılır (DUSUS_ANALIZI §6).
+**Pay değerlendirmesi (ölçüm DEĞİL):** pilot + operasyon — iç dal ~%15–30, dış dal ~%35–60. Operasyon kararı (düşüşten 2,5 sa sonra, belgesiz muayene ve kabul testi, gece) iki dalda da %15–25.
+**D-490 DÜZELTMESİ:** `results/ucus_20260917/DUSUS_ANALIZI.md` §1'deki "uçuş 1: Loiter, 4 kısa iniş-kalkış" YANLIŞ. Doğrusu pervanesiz yer koşusu: motorlar ≤ 1949 µs, ThO 0,89, akım en fazla 8,8 A (mimar yeniden ölçtü; çürütücü 4 buldu). D-490 düşüş hükmü (uçuş 3) değişmez; §1 tablosu düzeltildi.
+**Yöntem notu:** mimarın ilk gözlemindeki "Clip uçuş başından 6" IMU1 içindir; IMU0 10'du. Değer W2 sert değmesinden kalmadır.
+**Yazan:** mimar.

@@ -10,7 +10,7 @@ Ham çıkarımlar: `genel.txt` (olaylar + parametreler), `ucus3_pencere.txt` (0,
 
 | # | arm → disarm (s) | olay |
 |---|---|---|
-| 1 | 46,2 → 138,4 | Loiter; 4 kısa iniş-kalkış; CH6 ile disarm |
+| 1 | 46,2 → 138,4 | **Pervanesiz yer koşusu** (düzeltme D-491: motorlar 1949 µs'ye kadar, ThO 0,89, akım en fazla 8,8 A — askı ~40 A ister; EV 28/17/18 kara-algılayıcı olayları uçuş değil). CH6 ile disarm |
 | 2 | 596,0 → 605,9 | Kalkmadı; LAND anahtarı → yerde disarm |
 | 3 | 617,2 → 649,6 | **Düşüş.** Loiter, ~1,5 m; 647,9 LAND anahtarı; 648,28 çarpma; 648,6 ters döndü; 649,4 CH6 disarm |
 

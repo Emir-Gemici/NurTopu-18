@@ -1,0 +1,1694 @@
+[
+ {
+  "type": "result",
+  "key": "v2:c378406619fac0acefcc60d59d24e029a24d7519f6175f237d057d9e7db6d8b6",
+  "agentId": "a5b6fc3d46f39f952",
+  "result": {
+   "ana_bulgu": "202,4 s olayini yere temas da pilot girisi de baslatmadi. Kendi olcumlerim, arac havadayken on-sag motorda (M1) surekli bir itki ve tork asimetrisinin basladigini gosteriyor. Dis cisim temasi ise log ile tamamen dislanamiyor, cunku cevre logda yok. Ancak dis temasin IMU imzasi olay basindan once hic gorulmuyor.\n\nOlculen ayrintilar:\n(a) Yukseklik: arac, kalkis zeminine gore EKF ile 0,65 m yukarida. Kalkis oncesi yerde Alt 1,43 m, olaydan onceki son 1 s icinde 2,08 m. POS RelHomeAlt 0,10 -> 0,75 m. GPS 0,42 m, baro 0,75-1,03 m veriyor. 202,37 s de tutum duz: Roll 1,5, Pitch -5,1 derece.\n(b) Konum: kalkis noktasina uzaklik 0,69-0,71 m, olay aninda yatay hiz 0,14 m/s.\n(d) Temas imzasi yok: 202,33 ve 202,37 s IMU orneklerinde |a| 10,5 ve 10,4 m/s2, yatay ivme (axy) 0,3 ve 1,2 m/s2. 202,37 s de biten VIBE penceresinde Clip degismedi. Ilk bozuk ornek 202,41 s: roll hizi (GyrX) +143, pitch hizi (GyrY) -104 deg/s. Ayni ornekte |a| 5,2 m/s2 ye dustu (olay oncesi en dusuk deger 6,67), axy 3,6 m/s2 kaldi (olay oncesi en yuksek 3,63). Bu, itme degil itki kaybi ve tork imzasi. 25 Hz orneklemenin sinirlari belirsizliklerde yaziyor.\n- Sarsintilar donme basladiktan sonra geldi: 202,45 s de |a| 27, 202,49 s de 57,5 m/s2.\n- Yere carpma ayri ve belirgin bir olay: 202,97 s de |a| 52,8 (IMU0) ve 72,8 (IMU1), GyrY ters dondu, Clip 40 -> 115. Olay basi ile carpma arasinda 0,56 s var ve arac carpmadan once jiro entegrasyonuna gore yaklasik 170 derece ters donmustu.\n- D-490 temas imzasi (yaw donusunun ani durmasi ve 1,6 g yanal) yok: olay oncesi yaw hizi en fazla 22 deg/s.\n(c) Pilot girisi olayi baslatamaz. Yaw cubugu (C4) butun ucusta 1500, pitch (C2) son 1 s de 1501-1502, gaz (C3) 1528 ile THR_DZ icinde. Roll cubugu (C1) 202,27-202,47 s arasinda 1436, yani hafif SOLA roll (istenen roll +1,8 -> -0,9 derece). Arac ise SAGA 143 deg/s ile yuvarlandi.\n\nDis temasi zayiflatan ic kaynak kanitlari:\n- Uc eksenin yonu de M1 i (on-sag, CCW) gosteriyor: sag roll, burun asagi ve 202,33-202,37 s de sola yaw oncusu (-12,7 ve -22 deg/s).\n- Kontrolcu 0,4 s boyunca doygundu (pitch ciktisi POut 1,6-1,85). M1 1949 us (tavan), arka motor M4 1150 us iken burun-asagi donme -315 den -489 deg/s ye buyudu.\n- Akim 202,57 den 203,07 s ye kadar 120 A da doydu (sensor tavani), voltaj 9,42 V a dustu.\n- GPS ve harici pusula HAVADA kesildi ve log sonuna kadar geri gelmedi: son GPS mesaji 202,41 s, pusulanin son ornegi 202,470 s. Ucus kontrolcusunun 5 V hatti (Vcc) 5,0-5,1 V da kaldi.\n- 202,97 s deki ERR COMPASS bir carpma kaydi degil: son pusula orneginden tam 500 ms sonra dusen saglik zaman asimi.\n\n(e) Pilot tepkisi:\n- LAND secimi (C5 -> 2000) olay basindan 0,26-0,36 s sonra geldi. Hizli bir tepki, ama egim yaklasik 115 derecedeyken bir takla aninda etkisi yoktu.\n- Disarm anahtari (C6 -> 1000) olay basindan 1,26-1,36 s, carpmadan 0,7-0,8 s sonra. Arada motorlar yerde 1 s calisti: M1 1949 us, akim 120 A dan 40-58 A ya indi.\n- Olay oncesi manevralar olculu ve iyi takip edildi: en buyuk roll girisi 1814, istenen 13,5 / gercek 14,2 derece; en yuksek hiz 0,72 m/s.\n- Pilotun olayi tetikleyen bir hatasi yok. Tartisilabilecek tek pay: yerde disarm daha erken yapilabilirdi, ve karanlikta 0,65 m de sag yone yapilan manevra kontrol edilebilirdi.\n\n(f) Yer etkisi ihmal edilebilir: 9 inc pervane, z/D 2,8, Cheeseman-Bennett hesabiyla itki artisi en fazla %0,2. Alcak askinin olculen etkileri iki tane: baro gurultusu yerde 0,08-0,09 m std, askida 0,29-0,35 m std; ve kurtarma icin 0,56 s birakmasi. Ancak kontrolcu doygun oldugu icin yukseklik kurtarma saglamazdi (bu bir cikarim).\n\nBelirleyici fiziksel inceleme M1 pervanesi, motoru ve ESC si ile GPS kablosu ve diregi uzerinde yapilmali.",
+   "hipotezler": [
+    {
+     "ad": "H1 Yere temas tetikledi (inis takimi veya pervanenin zemine degmesi)",
+     "destekleyen": [
+      "Cok alcak aski: EKF ile kalkis zeminine gore 0,65 m (yuk.py: CTUN Alt 186,0-188,2 s ort 1,43 m; 201,4-202,37 s ort 2,08 m). GPS Alt farki 0,42 m (96,67 -> 97,09)",
+      "Arac son 3 s de saga kaydi, kalkis noktasina 0,69-0,71 m uzakta (istat.py, PSCN/PSCE). Zemin duzlugu bilinmiyor"
+     ],
+     "curuten": [
+      "202,37 s de tutum duz: ATT Roll 1,5, Pitch -5,1 derece (ince.py). Bu tutumla 0,65 m yukseklikte hicbir parca zemine yetisemez",
+      "Olay basi (202,41 s) ile yere carpma imzasi (202,97 s: |a| 52,8 / 72,8 m/s2, GyrY -489 -> -142 -> +387 deg/s, Clip 40 -> 115 ve 33 -> 99) arasinda 0,56 s var (imu.py, vibe.py)",
+      "Jiro entegrasyonuna gore egim 202,41 s de 11,8 derece, 202,93 s de 170,6 derece: arac zemine degmeden once havada ters dondu (donus.py)",
+      "202,41 s de ozgul kuvvet |a| 5,2 m/s2 ye DUSTU. Zemin temasi bunun tersine yukari kuvvet ve |a| artisi uretir (imu.py)",
+      "Ucus kontrolcusu 5 V hatti Vcc 5,0-5,1 V da sabitken GPS ve harici pusula 202,41-202,57 s arasinda HAVADA kesildi. Carpma daha sonra, 202,97 s de (gps.py)"
+     ],
+     "olasilik": "dusuk"
+    },
+    {
+     "ad": "H2 Dis cisim temasi tetikledi (duvar, dal, kablo, insan gibi arac seviyesindeki bir engel)",
+     "destekleyen": [
+      "Cevre logda yok, video yok. Tamamen dislanamaz",
+      "Son 3 s de saga hareket: govdeye gore saga hiz 201,0 s de 0,64 m/s, 202,37 s de 0,14 m/s (parm.py). Sag taraftaki pervaneler (M1/M4) onde gidiyordu",
+      "Ayni gece 00:20 dususunde sag tarafa dis temas cikarimi yapilmisti (D-490). Ucus gece 02:50 de, karanlikta",
+      "Havada sarsinti var: 202,45 s de ax +22,5 ve |a| 27,4; 202,49 s de ay -54,1 ve |a| 57,5 m/s2; (202,37, 202,47] penceresinde Clip +22 (IMU0) ve +20 (IMU1) (imu.py, vibe.py)",
+      "GPS ve harici pusula havada kesildi. Bir cisim GPS diregine ya da kablosuna carpmis olabilir (gps.py)"
+     ],
+     "curuten": [
+      "Rotasyondan once darbe imzasi yok: 202,33 ve 202,37 s de |a| 10,5 / 10,4 m/s2, axy 0,3 / 1,2 m/s2. 202,370 VIBE: VX 3,4, VY 6,5, VZ 17,1, Clip degismedi (10/6) (imu.py, vibe.py)",
+      "Ilk bozuk ornek 202,41 s de yatay kuvvet yok: axy 3,6 m/s2, olay oncesi en yuksek deger 3,63 (istat.py, 192,4-202,30 s). Buna karsin ozgul kuvvet 5,2 m/s2 ye dustu (olay oncesi en dusuk 6,67). Imza itme degil, itki kaybi ve tork",
+      "Sarsintilar (202,45-202,49 s) donme basladiktan (202,41 s: 143 / -104 deg/s) SONRA geldi: once donme, sonra carpmalar",
+      "D-490 temas imzasi yok: olay oncesi GyrZ en fazla -22 deg/s, ani duran bir yaw donusu yok. Olay oncesi GyrZ std 4,5 deg/s (istat.py)",
+      "Tek seferlik bir darbe acisal hiz basamagi uretir. Burada burun-asagi hiz 202,57 den 202,73 s ye -315 ten -466 deg/s ye BUYUDU. O sirada kontrolcu doygundu (POut 1,77-1,85), M1 1910-1949 us, M4 1150 us (ince.py). Bu surekli bir itki asimetrisi",
+      "Carpma aninda yatay hiz 0,14 m/s: bir engele carpip kaybedilecek anlamli momentum yok (parm.py)"
+     ],
+     "olasilik": "dusuk"
+    },
+    {
+     "ad": "H3 Pilot girisi tetikledi",
+     "destekleyen": [
+      "Pilot son 3 s de yere yakin aktif manevra yapti: 199,87-200,37 s de C1 1813-1814 (saga roll, istenen roll en fazla 13,5 derece). 201,27-202,57 s de C1 1378-1451 ile sola duzeltme (ince.py)",
+      "Son 10 s de yol 1,84 m, en yuksek yatay hiz 0,72 m/s (200,77 s) (istat.py, parm.py)"
+     ],
+     "curuten": [
+      "Yaw cubugu C4 butun ucusta 1500 (188,3-202,45 s en kucuk ve en buyuk deger 1500). Pitch C2 son saniyede 1501-1502 (RC2_DZ 20 icinde). Gaz C3 1528, THR_DZ 100 bandinda (istat.py, parm.py)",
+      "Olay aninda C1 202,27-202,47 s de sabit 1436 (hafif SOLA roll). ATT istenen roll 202,37 s de +1,8, 202,47 s de -0,9 derece. Arac SAGA 143-383 deg/s ile yuvarlandi: giris hem kucuk hem ters yonde (ince.py, imu.py)",
+      "2 s once gelen daha buyuk giris (1814) sorunsuz takip edildi: istenen roll en fazla 13,5, gercek roll en fazla 14,2 derece; olay oncesi roll ve pitch araligi -3,7 ile 14,2 derece (istat.py)",
+      "Olay oncesi EKF yenilikleri (innovation) temiz: XKF4 SV <= 0,18, SP <= 0,05, SH <= 0,08, SM <= 0,03 (parm.py, 201,0-202,57 s). Kontrolcuyu yaniltan bir EKF girdisi yok"
+     ],
+     "olasilik": "dusuk"
+    },
+    {
+     "ad": "H4 Ic kaynakli on-sag (M1, CCW) itki ve tork kaybi: pervane, motor, ESC ya da aracin kendi parcasinin pervane diskine girmesi (baska merceklerin alani; karsilastirma icin)",
+     "destekleyen": [
+      "Uc eksen de M1 kaybiyla tutarli: 202,41 s de roll saga (+143), pitch burun asagi (-104). 202,33-202,37 s de sola yaw oncusu (GyrZ -12,7 ve -22,0 deg/s). -22,0 degeri olay oncesi en dusuk degerin (-18,9) altinda; olay oncesi std 4,5 (imu.py, istat.py)",
+      "Kontrolcu M1 i 202,47 den 203,97 s ye kadar neredeyse surekli 1949 us (tavan) tuttu. On motorlar tavanda, arka motorlar tabandayken burun-asagi hiz 0,4 s buyudu (ince.py, gps2.py)",
+      "Akim 202,37 s de 43,5 A, 202,47 s de 72,7 A, 202,57-203,07 s arasinda 120,0 A (sensor doygun: BATT_AMP_PERVLT 36,36 x 3,3 V = 120 A, hesap). Voltaj 202,77 s de 9,42 V. Sikisma veya kisa devre adayi (vibe.py)",
+      "GPS ve harici pusula havada kesilip log sonuna kadar (218,67 s) geri gelmedi; 206,41 s de GPS Status 0. Vcc 5,0-5,1 V sabit, yani modul veya kablo fiziksel olarak koptu (gps.py, gps2.py)",
+      "Son ucusta askida motor yayilimi ortalama 326 us (197-202,37 s). Ayni logdaki onceki ucuslarda 190-225 us (clip.py)"
+     ],
+     "curuten": [
+      "Log pervane, motor, ESC ve kablo arasinda ayrim yapamiyor: ESC telemetrisi yok, IMU 25 Hz",
+      "Harici pusulanin son ornegi 202,470 s, rotasyon ise 202,41 s de zaten baslamis. Kablo pervaneye ilk olay olarak girseydi kesilmenin daha erken olmasi beklenirdi. Bu, 'kendi parcasi tetikledi' alt varyantini zayiflatir"
+     ],
+     "olasilik": "yuksek"
+    }
+   ],
+   "zaman_cizelgesi": [
+    {
+     "t_s": 181.67,
+     "olay": "ARM (CH6 AUXSWITCH), Loiter. Yerde EKF Alt ortalamasi 1,44 m (181,7-188,2 s)",
+     "kanit": "genel.txt ARM Method 2; yuk.py CTUN Alt ort 1,44 std 0,06"
+    },
+    {
+     "t_s": 188.3,
+     "olay": "NOT_LANDED (kalkis). Konum PN -6,65, PE -13,53",
+     "kanit": "genel.txt EV 28; istat.py PSCN/PSCE"
+    },
+    {
+     "t_s": 192.5,
+     "olay": "Gaz C3 1611 -> 1527-1528 (irtifa tutma bandi). Olay oncesi son 10 s baslangici",
+     "kanit": "tablo.py 180 204.5 0.5; istat.py C3 1527-1611"
+    },
+    {
+     "t_s": 199.87,
+     "olay": "Pilot saga roll C1 1813-1814 (199,87-200,37 s). Istenen roll en fazla 13,5, gercek en fazla 14,2 derece; takip temiz",
+     "kanit": "ince.py 198.9 204.2 RCIN; istat.py ATT"
+    },
+    {
+     "t_s": 200.77,
+     "olay": "En yuksek yatay hiz 0,72 m/s. 201,0 s de govdeye gore saga 0,64 m/s",
+     "kanit": "istat.py; parm.py govde hizi"
+    },
+    {
+     "t_s": 201.27,
+     "olay": "Pilot sola duzeltme: C1 1406-1451 (201,27-201,47 s), sonra 1378-1436 (201,77-202,57 s). Saga hiz 0,50 -> 0,14 m/s",
+     "kanit": "ince.py RCIN; parm.py"
+    },
+    {
+     "t_s": 202.33,
+     "olay": "Zayif ilk sapma: GyrY -17,1, GyrZ -12,7 deg/s; |a| 10,5, axy 0,3 m/s2 (darbe yok)",
+     "kanit": "imu.py 201.9 203.2 IMU0"
+    },
+    {
+     "t_s": 202.37,
+     "olay": "Son normal ornek: GyrZ -22,0 deg/s (olay oncesi en dusuk -18,9). |a| 10,4 m/s2. VIBE Clip degismedi (10/6). EKF Alt 2,10 m (kalkis zemininden ~0,65 m yukarida). Roll 1,5, Pitch -5,1. Akim 43,5 A",
+     "kanit": "imu.py; vibe.py; ince.py CTUN/ATT; istat.py"
+    },
+    {
+     "t_s": 202.41,
+     "olay": "OLAY BASI: GyrX +142,6, GyrY -103,7 deg/s; |a| 5,2 m/s2 (itki kaybi), axy 3,6. IMU1 ayni (146 / -105). Son GPS mesaji",
+     "kanit": "imu.py IMU0/IMU1; gps.py GPS 202,410 GMS 345243200"
+    },
+    {
+     "t_s": 202.45,
+     "olay": "Havada sarsinti: GyrX 382,7 deg/s, AccX +22,5, |a| 27,4 m/s2",
+     "kanit": "imu.py"
+    },
+    {
+     "t_s": 202.47,
+     "olay": "VIBE Clip 10 -> 32 ve 6 -> 26; M1 1949 us; akim 72,7 A, 13,32 V; roll 21,9, pitch -13,9 derece; harici pusulanin son ornegi (S = 202,470000). EKF Alt 2,07 m (dusus henuz baslamadi)",
+     "kanit": "vibe.py; ince.py RCOU/ATT/CTUN; gps.py MAG I0"
+    },
+    {
+     "t_s": 202.49,
+     "olay": "AccY -54,1, |a| 57,5 m/s2 (en buyuk havadaki sarsinti)",
+     "kanit": "imu.py"
+    },
+    {
+     "t_s": 202.57,
+     "olay": "Akim sensoru 120,0 A da doydu (203,07 s ye kadar). Burun-asagi donme -315 -> -489 deg/s; POut 1,63-1,85; M1 1910-1949 us, M4 1150 us",
+     "kanit": "vibe.py BAT; imu.py; ince.py RATE/RCOU"
+    },
+    {
+     "t_s": 202.77,
+     "olay": "Pilot LAND secti: C5 1500 -> 2000 (202,671 s de hala 1500). Olay basindan 0,26-0,36 s sonra; jiro egimi ~115 derece",
+     "kanit": "ince.py RCIN; donus.py"
+    },
+    {
+     "t_s": 202.95,
+     "olay": "MODE 9 LAND etkinlesti (anahtar gecikmesi). Egim ~170 derece, arac havada ters",
+     "kanit": "genel.txt MODE; donus.py 202,93 s 170,6 derece"
+    },
+    {
+     "t_s": 202.97,
+     "olay": "YERE CARPMA: |a| 52,8 (IMU0) ve 72,8 (IMU1), GyrY -489 -> -142 -> +387 deg/s, Clip 40 -> 115 ve 33 -> 99. Ayni anda ERR COMPASS 4: son pusula orneginden 500 ms sonra saglik zaman asimi (carpma kaydi degil)",
+     "kanit": "imu.py; vibe.py; gps.py MAG I0 H 1 -> 0, S sabit 202470000"
+    },
+    {
+     "t_s": 203.77,
+     "olay": "Pilot disarm anahtari: C6 2000 -> 1000 (203,671 s de 2000). Olay basindan 1,26-1,36 s, carpmadan 0,7-0,8 s sonra",
+     "kanit": "ince.py RCIN"
+    },
+    {
+     "t_s": 203.97,
+     "olay": "DISARM (Method 2). 202,97-203,97 s arasinda yerde M1 1949 us, M4 1508-1825 us; akim 120 -> 40-58 -> 28 A. 204,07 s de RCOU 1000, 204,17 s de 1,0 A",
+     "kanit": "gps2.py RCOU; vibe.py BAT; genel.txt ARM"
+    },
+    {
+     "t_s": 206.41,
+     "olay": "GPS Status 0 (NO_GPS). GPS log sonuna (218,67 s) kadar geri gelmedi, harici pusula 16,2 s bayat. 212,48 s de EKF dahili pusulaya gecti",
+     "kanit": "gps2.py; genel.txt MSG"
+    }
+   ],
+   "olcumler": [
+    {
+     "olcum": "Kalkis zeminine gore yukseklik, EKF (CTUN Alt: olaydan onceki son 1 s ortalamasi eksi kalkis oncesi son 2 s ortalamasi)",
+     "deger": "2,08 - 1,43 = 0,65 m (std 0,01 / 0,06). POS RelHomeAlt: 0,75 - 0,10 = 0,65 m",
+     "kaynak": "wf_0250/yuk.py, pencereler 186,0-188,2 ve 201,4-202,37 s"
+    },
+    {
+     "olcum": "Kalkis zeminine gore yukseklik, capraz kontrol",
+     "deger": "GPS Alt 97,09 - 96,67 = 0,42 m. Baro 2,39 - 1,36 = 1,03 m (son 1 s, std 0,29); 5,4 s ortalamasiyla 2,11 - 1,36 = 0,75 m. Carpma sonrasi yerde baro 0,95-1,02 m (kalkis oncesinden -0,35 m farkli)",
+     "kaynak": "wf_0250/yuk.py"
+    },
+    {
+     "olcum": "Hedef irtifa ve konum kontrolu (PSCD)",
+     "deger": "TPD -1,92, PD -2,10 m (202,37 s): arac hedefin 0,18 m ustunde. ThO ortalamasi 0,334, ThH 0,384 (197-202,37 s)",
+     "kaynak": "wf_0250/ince.py 198.9 204.2; clip.py"
+    },
+    {
+     "olcum": "Kalkis noktasina yatay uzaklik ve son 10 s hareket",
+     "deger": "Olay aninda 0,69-0,71 m (PN -6,65 -> -6,04, PE -13,53 -> -13,21). Son 10 s yol 1,84 m, kalkistan beri 2,08 m. En yuksek hiz 0,72 m/s (200,77 s)",
+     "kaynak": "wf_0250/istat.py; parm.py (PSCN/PSCE 188,3-202,38 s)"
+    },
+    {
+     "olcum": "Govdeye gore yatay hiz (yaw ~300 derece)",
+     "deger": "Saga: 201,0 s de 0,64; 201,5 s de 0,50; 202,07 s de 0,31; 202,37 s de 0,14 m/s. Ileri hiz ~0",
+     "kaynak": "wf_0250/parm.py"
+    },
+    {
+     "olcum": "Pilot girisleri, 192,4-202,45 s (RCIN)",
+     "deger": "C1 1317-1814; C2 1478-1502; C3 1527-1611; C4 1500-1500; C5 1500; C6 2000. Olay aninda (202,27-202,47 s) C1 1436, C2 1501, C3 1528, C4 1500",
+     "kaynak": "wf_0250/istat.py; ince.py"
+    },
+    {
+     "olcum": "Olay aninda istenen tutum ve gerceklesen hareket",
+     "deger": "Istenen roll 202,37 s de +1,8, 202,47 s de -0,9 derece. Gerceklesen: GyrX +142,6 (202,41 s) ve +382,7 deg/s (202,45 s); roll 21,9 derece (202,47 s)",
+     "kaynak": "wf_0250/ince.py; imu.py 201.9 203.2"
+    },
+    {
+     "olcum": "Olay oncesi IMU0 dagilimi (192,4-202,30 s, n=248)",
+     "deger": "GyrX std 19,0 (-72,8 / 63,2); GyrY std 12,1 (-47,0 / 39,4); GyrZ std 4,5 (-18,9 / 9,3) deg/s. |a| en dusuk 6,67, en yuksek 13,96 m/s2; axy en yuksek 3,63 m/s2",
+     "kaynak": "wf_0250/istat.py"
+    },
+    {
+     "olcum": "Olay basi IMU ornekleri (IMU0 / IMU1)",
+     "deger": "202,33 s: GyrX 23,3, GyrY -17,1, GyrZ -12,7 deg/s, |a| 10,5. 202,37 s: GyrZ -22,0 / -21,3, |a| 10,4. 202,41 s: GyrX 142,6 / 146,4, GyrY -103,7 / -105,4, |a| 5,2 / 5,3, axy 3,6 / 3,5. 202,45 s: |a| 27,4 / 29,6. 202,49 s: AccY -54,1 / -43,7, |a| 57,5 / 45,2 m/s2",
+     "kaynak": "wf_0250/imu.py 201.9 203.2"
+    },
+    {
+     "olcum": "VIBE ve Clip gecisleri",
+     "deger": "202,370 s: VX 3,4, VY 6,5, VZ 17,1, Clip 10/6. 202,470 s: VX 45,3, VY 66,8, VZ 43,4, Clip 32/26. 202,870 s: Clip 40/33. 202,970 s: Clip 115/99. Bu ucusta olaydan once clip artisi yok (10/6 degeri 79,47 s den kalma)",
+     "kaynak": "wf_0250/vibe.py; clip.py"
+    },
+    {
+     "olcum": "Yere carpma zamani (IMU)",
+     "deger": "202,97 s: |a| 52,8 (IMU0) / 72,8 (IMU1); GyrY -488,7 -> -141,9 -> +386,6 deg/s (202,93 -> 202,97 -> 203,01 s). Olay basindan 0,56 s sonra",
+     "kaynak": "wf_0250/imu.py"
+    },
+    {
+     "olcum": "Jiro entegre egim (baslangic: ATT 202,37 s, 25 Hz, yaklasik)",
+     "deger": "202,41 s 11,8; 202,57 s 40,1; 202,77 s 114,7; 202,93 s 170,6 derece",
+     "kaynak": "wf_0250/donus.py"
+    },
+    {
+     "olcum": "Kontrolcu doygunlugu (202,57-202,97 s)",
+     "deger": "RATE PDes +126..+319, P -141..-449 deg/s; POut 1,04-1,85. RCOU M1 1700-1949, M3 1789-1949, M4 1150-1430, M2 1150-1745 us",
+     "kaynak": "wf_0250/ince.py"
+    },
+    {
+     "olcum": "Batarya akimi ve voltaji",
+     "deger": "202,37 s: 43,5 A, 14,52 V. 202,47 s: 72,7 A, 13,32 V. 202,57-203,07 s: 120,0 A (sabit); 202,77 s de 9,42 V. 203,27 s: 57,9 A. 204,17 s: 1,0 A",
+     "kaynak": "wf_0250/vibe.py (BAT)"
+    },
+    {
+     "olcum": "Akim sensoru tavani (hesap)",
+     "deger": "BATT_AMP_PERVLT 36,36 x 3,3 V = 120,0 A. 120,0 okumasi doygunluk; gercek tepe bilinmiyor",
+     "kaynak": "wf_0250/parm.py ve genel.txt parametresi; hesap"
+    },
+    {
+     "olcum": "GPS ve harici pusula kesintisi",
+     "deger": "Son GPS mesaji 202,410 s (onceki araliklar ~0,2 s). Sonraki tek mesaj 206,41 s de Status 0. Harici pusula (MAG I0) son ornegi S = 202,470000; 202,970 s de H 1 -> 0; log sonunda 16,2 s bayat. 188-202,41 s arasinda en buyuk GPS boslugu 0,24 s. Olay disinda ucus ici kesinti yok",
+     "kaynak": "wf_0250/gps.py; gps2.py"
+    },
+    {
+     "olcum": "FC besleme (POWR) olay sirasinda",
+     "deger": "Vcc 4,997-5,162 V, VServo 5,162-5,398 V (202,27-203,37 s)",
+     "kaynak": "wf_0250/gps.py"
+    },
+    {
+     "olcum": "ERR COMPASS zamanlamasi",
+     "deger": "202,969987 s - 202,470000 s = 0,500 s. Son pusula ornegi ile hata kaydi arasi tam 500 ms",
+     "kaynak": "wf_0250/gps.py (ERR TimeUS, MAG S)"
+    },
+    {
+     "olcum": "Pilot tepki sureleri (10 Hz RCIN cozunurlugu)",
+     "deger": "LAND secimi C5 -> 2000: 202,671-202,770 s arasi, olay basindan (202,41 s) 0,26-0,36 s sonra; MODE 202,95 s. Disarm C6 -> 1000: 203,671-203,770 s arasi, olay basindan 1,26-1,36 s, carpmadan (202,97 s) 0,70-0,80 s sonra; ARM kaydi 203,97 s",
+     "kaynak": "wf_0250/ince.py 198.9 204.2"
+    },
+    {
+     "olcum": "Carpmadan sonra yerde motor calisma suresi",
+     "deger": "202,97-203,97 s (~1,0 s). M1 203,07-203,97 s arasinda surekli 1949 us, M4 1508-1825 us; akim 120 -> 111,5 -> 39,6-57,9 -> 28,3 A",
+     "kaynak": "wf_0250/gps2.py (RCOU); vibe.py (BAT)"
+    },
+    {
+     "olcum": "Olay oncesi EKF yenilikleri (XKF4 C0, 201,0-202,57 s)",
+     "deger": "SV <= 0,18, SP <= 0,05, SH <= 0,08, SM <= 0,03; FS 0",
+     "kaynak": "wf_0250/parm.py"
+    },
+    {
+     "olcum": "Askida motor yayilimi (RCOU en buyuk - en kucuk, ortalama)",
+     "deger": "Son ucus 197-202,37 s: 326 us (ort. M4 1379, M2 1703, M1 1605, M3 1518). Onceki ucuslar: 55-61 s 225 us, 76-79,9 s 190 us, 141-147 s 198 us",
+     "kaynak": "wf_0250/clip.py"
+    },
+    {
+     "olcum": "Askida titresim (189,0-202,37 s)",
+     "deger": "IMU0 VibeZ ort 18,6 (12,3-29,0), VibeY ort 7,1; yerde arm iken VibeZ ort 1,2",
+     "kaynak": "wf_0250/clip.py"
+    },
+    {
+     "olcum": "Yer etkisi (hesap, olcum degil)",
+     "deger": "R 0,1143 m (9 inc), z >= 0,65 m: T_IGE/T_OGE = 1/(1-(R/4z)^2) = 1,0019 (<= %0,2); z/D = 2,8",
+     "kaynak": "Cheeseman-Bennett formulu; yukseklik yuk.py dan"
+    },
+    {
+     "olcum": "Alcak askida baro gurultusu (pervane rüzgari ve zemin etkilesimi)",
+     "deger": "BARO0 Alt std: yerde 0,08-0,09 m; askida 0,29-0,35 m",
+     "kaynak": "wf_0250/yuk.py"
+    },
+    {
+     "olcum": "Onemli parametreler",
+     "deger": "INS_GYRO_FILTER 20, INS_ACCEL_FILTER 20 Hz; THR_DZ 100; RC1/2/4_DZ 20; FS_CRASH_CHECK 1; COMPASS_EXTERNAL 1; LOIT_ACC_MAX 500; MOT_SPIN_MAX 0,95",
+     "kaynak": "wf_0250/parm.py (PARM)"
+    }
+   ],
+   "belirsizlikler": [
+    "IMU 25 Hz (40 ms) ve 20 Hz filtreli; VIBE 10 Hz. (202,37, 202,41] araligindaki 10-30 ms lik kisa bir darbe 202,41 ornegine dusurulmus olarak yansimayabilir. Clip artisi (202,37, 202,47] penceresinde, bu nedenle sarsintinin donmeden once mi sonra mi basladigi o pencere icinde kesin ayrilamiyor. Siralamayi 202,45 ve 202,49 orneklerine dayanarak cikardim.",
+    "Cevre (duvar, agac, kablo, insan, zemin engebesi) logda YOK, video YOK: BULUNAMADI. Dis cisim temasi yalniz IMU imzasiyla zayiflatildi, dislanamadi. 'Dis cisim M1 pervanesine carpti ve kirdi' senaryosu da surekli itki asimetrisiyle uyumlu. Buna karsi tek kanit, olay basindan once darbe imzasinin olmamasi.",
+    "Yer referansi belirsiz: EKF ve RelHomeAlt 0,65 m, GPS 0,42 m, baro 0,75-1,03 m. Carpma sonrasi baro kalkis oncesinden -0,35 m farkli (kayma ya da aracin ters yatmasi). Ucus kontrolcusunun (FC) ve pervane diskinin inis takimi tabanina gore yuksekligi bilinmiyor.",
+    "202,47 s den sonra EKF konum, hiz ve irtifasi guvenilmez (clip ve takla); temas aninda yatay hizin durup durmadigi bu verilerle olculemez.",
+    "Akim sensoru 120 A da doyuyor; gercek tepe akim ve hangi motorun cektigi bilinmiyor (ESC telemetrisi yok).",
+    "GPS ve pusula kesintisinin nedeni (kablo kopmasi, konektor cikmasi, modul veya direk kirilmasi) ve GPS direginin pervanelere gore konumu fiziksel inceleme olmadan bilinemez. Pusulanin son ornegi (202,470 s) rotasyon basindan (<= 202,41 s) sonra oldugu icin kesinti buyuk olasilikla sonuc; tetikleyici olmasi zayif ama dislanmadi.",
+    "00:20 dususunden sonraki tamir kapsami (M1 motoru, pervane, kol, GPS diregi) bilinmiyor; kullanici beyani yok.",
+    "Govde inersiyasi bilinmediginden, tek motor itki kaybinin 40 ms icinde ~178 deg/s lik acisal hizi tek basina uretip uretemeyecegi hesaplanamadi.",
+    "FS_CRASH_CHECK in bu olayda ne zaman otomatik disarm yapacagi olculmedi. ArduCopter kaynak sabitlerine gore (30 derece acisal hata, 2 s, suzulmus ivme < 3 m/s2) pilot disarmindan en az ~1 s sonra olurdu; bu bir cikarim.",
+    "'Jiro entegre egim' 25 Hz orneklerin basit kuaterniyon entegrasyonu; ornekler arasindaki hizlar bilinmediginden yaklasik bir deger.",
+    "Pilotun ucus oncesi kararlari (dususten sonra ayni gece ucus, karanlik, 0,65 m de manevra, tamirden sonra yapilan kontroller) logdan olculemez."
+   ]
+  }
+ },
+ {
+  "type": "result",
+  "key": "v2:2dce733981f96cd029b998a40a1e79b3a61badf3124ad39636b94f55aa6c1f17",
+  "agentId": "a676de81f50c33de2",
+  "result": {
+   "ana_bulgu": "SENSÖR / ELEKTRİK / KONTROL merceğinden hüküm: Olaydan ÖNCE sensör, güç, RC, EKF ya da kayıt arızası izi yok. Pusula, GPS, EKF ve GCS failsafe hataları olayın SONUCU.\n\n(1) GPS ve harici pusula birlikte ve olaydan sonra kesildi. Harici pusula (DEV_ID 658953 = IST8310, I2C bus1 0x0E; Pixhawk6C hwdef: I2C1 = GPS1 soketi) son örneğini 202,47'de verdi (MAG.S 202,47'de dondu, geri gelmedi). GPS'in (SERIAL3 = GPS1 soketi) son örneği 202,41'de; sonraki kayıt 206,41'de Status=0. İkisi aynı soketten besleniyor ve 202,41–202,57 aralığında birlikte düştü. Bu, 202,41'deki IMU sıçramasından ve (202,37; 202,47] aralığındaki accel clip patlamasından (IMU0 10→32, IMU1 6→26; eşik ≥15,5 g) sonraya denk geliyor. ERR COMPASS 4 (202,97) = son örnek + 500 ms sağlık zaman aşımı (AP_Compass.cpp:1736). NO_GPS (206,41) = son örnek + 4000 ms (AP_GPS.cpp:67). Bu kayıtlar kopmanın anını değil, zaman aşımının dolduğu anı gösterir.\n\n(2) Güç temiz. Askıda (188,4–202,37): Vcc 5,021–5,121 V, VServo 5,123–5,239 V, BAT 14,52–15,17 V / 33,5–46,5 A. MCU gerilimi 3,363–3,365 V, tüm log boyunca sabit. POWR AccFlags tüm logda 1: 6C'de aşırı akım pinleri tanımlı ama bayrak hiç kalkmadı. FC yeniden başlamadı.\n\n(3) RC temiz. RCIN aralığı ≤0,1 s, gaz hiç ≤975 değil, RCI2 Flags=1 (geçerli giriş, RC failsafe yok), IOMC Nerr/RSErr/NDel=0, yaw çubuğu 1500–1505.\n\n(4) EKF/GPS temiz. XKF4 SV≤0,20, SP≤0,06, SH≤0,07, SM≤0,02; FS=0; GPS glitch biti yok; kullanılan pusula (MI) 0. Uydu 15–20, HDop 0,69–0,90. IYAW −2,1…1,4.\n\n(5) Kayıt boşluğu yok. Tüm mesajlarda 201–204,2 s arasında en büyük ardışık boşluk 40,3 ms; DSF Dp=0; PM NLon=0.\n\n(6) Olay öncesi TEK anomali KONTROL tarafında: son uçuşta yaw tork dengesizliği giderek büyüdü.\n- Yaw hatası 0,5°'den 14,6°'ye çıktı, YOut 0,008'den 0,30'a.\n- Gövde komuta karşı fiziksel olarak döndü: ATT −13,4°, jiroskop integrali −13,1°. Yani pusula/EKF sapması değil.\n- CCW−CW PWM toplam farkı 146'dan 367 µs'e çıktı (aynı logdaki önceki uçuşta −3, önceki düşüş logunda −84).\n- RMSYaw 0,115–0,170 (önceki uçuşta medyan 0,017). M4 202,37'de 1202 µs (itki ≈0,03, HESAP).\n- Karıştırıcıda doyum yok: uygulanan yaw/YOut = 1,06, yani kompanzasyon kazancı; hiçbir motor 1150/1949 µs'de değil. \"Yaw Imbalance\" ya da \"Thrust Loss\" mesajı yok.\n- ÇIKARIM: tetikleyici değil, yaw/roll payını tüketen bir ön koşul.\n\n(7) FailFlags=2 normal, bilgi taşımıyor. Kodla doğrulandı: FailFlags = thrust_boost | thrust_balanced<<1. thrust_balanced varsayılan olarak true ve yalnız ≥6 motorda false olabiliyor. thrust_boost=0, yani Thrust Loss kontrolü hiç tetiklenmedi.\n\n(8) Olayın başlangıç imzası mekanik darbeyle uyumlu:\n- 202,37: yaw −22 °/s\n- 202,41: roll +143 °/s, pitch −104 °/s, AccZ −3,8 (iki IMU aynı)\n- ≥15,5 g clip\n- 202,49: 5,9 g\nM1'in elektriksel olarak ölmesi akım ölçümüne uymuyor: 202,47'de ölçülen 72,7 A; 4 motorlu model 72,9 A verirken M1=0 modeli 32,6 A veriyor (ÇIKARIM, kaba model).",
+   "hipotezler": [
+    {
+     "ad": "H1: Pusula, GPS, EKF ve GCS hataları darbenin SONUCU (olay öncesi sensör arızası yok)",
+     "destekleyen": [
+      "MAG I0 (harici; DEV_ID 658953 = IST8310, I2C bus1 0x0E; hwdef I2C_ORDER I2C4 I2C1 I2C2 → bus1 = I2C1 'GPS+MAG') son örnek S=202,470; 202,57'den log sonuna (218,67) kadar S sabit, geri gelmedi (a_mag.py, b_mag_yakin.py 201,0–204,2)",
+      "GPS (SERIAL3_PROTOCOL=5; hwdef GPS1=USART1=SERIAL3) son örnek 202,410; son uçuşta dt 0,16–0,24 s; sonraki kayıt 206,410 Status=0 (c_gps.py). Aynı soketteki iki cihaz birlikte kesildi",
+      "Kesilme IMU başlangıcından (202,41: GyrX 143/146, GyrY −104/−105, iki IMU) ve clip artışından ((202,37; 202,47] IMU0 10→32, IMU1 6→26) sonra ya da eşzamanlı; 202,97'deki ters dönmüş ikinci darbeden (|a| 52,8 m/s², roll 157°) önce (d_zaman.py, k_vibe.py, n_imu.py)",
+      "ERR COMPASS 4 @202,970 = 202,470 + 500 ms; kod: healthy = (time − last_update_ms < 500) (AP_Compass.cpp:1736); ECode 4 = UNHEALTHY (AP_Logger.h:145)",
+      "GPS Status 0 @206,410 = 202,410 + 4000 ms; kod GPS_TIMEOUT_MS 4000 (AP_GPS.cpp:67)",
+      "Olay öncesi harici pusula |B| 493–527 (181,7–204,0) ve 201,07–202,37 arasında 512–523; akımla eğim yalnız 0,49 mG/A (p_mag_akim.py)",
+      "XKF4 C0 askıda SM≤0,02, IYAW −2,10…1,40; XKFS MI=0 (EKF harici pusulayı kullanıyordu) (j_ekf.py 188,4–202,37)",
+      "PM I2C sayaçları (10 s aralıklar): 185,57→195,57 I2CC +5546 / I2CI +29287; 205,57→215,57 I2CC +7960 / I2CI +22840. Kesilmeden sonra kesme sayısı düştü, transfer denemesi arttı: I2C cihazı yanıt vermiyor, yazılım donması değil (l_bosluk.py; ÇIKARIM)",
+      "PreArm 'Compass not healthy' ve 'EKF height variance' 205,57; EKF variance 210,37; compass 1'e geçiş 212,48; stopped aiding 217,42 — hepsi 203,97 disarm'dan sonra (genel.txt olayları, dok.py)"
+     ],
+     "curuten": [
+      "Kesilme anı 10 Hz (MAG) / 5 Hz (GPS) çözünürlüğüyle yalnız (202,41; 202,57] aralığına oturtulabiliyor; 202,41 başlangıcıyla 40–160 ms düzeyinde çakışıyor — 'önce' olduğunu gösteren tek bir örnek yok"
+     ],
+     "olasilik": "yuksek"
+    },
+    {
+     "ad": "H2: Olay öncesi güç / brownout / besleme düşüşü",
+     "destekleyen": [
+      "BULUNAMADI (olay öncesi pencerede destekleyen ölçüm yok)"
+     ],
+     "curuten": [
+      "POWR askıda (188,4–202,37) Vcc 5,021–5,121 V, VServo 5,123–5,239 V; son 2 s'de (200,37–202,37) Vcc 5,048–5,118 V (h_guc.py)",
+      "MCU MVolt tüm logda 3,363–3,365 V, MVmin 3,346–3,347 V, MTemp 30,3–31,8 °C",
+      "POWR Flags ve AccFlags tüm logda yalnız 1. Pixhawk6C hwdef'te VDD_5V_PERIPH_nOC (PE3) ve VDD_5V_HIPOWER_nOC (PC11) tanımlı; AnalogIn.cpp:848–863 bunları bayrak 8/16 olarak raporlar, AccFlags'e hiç girmedi",
+      "BAT askıda 14,521–15,169 V / 33,5–46,5 A, Res 0,037–0,038 Ω; 202,37'de 14,52 V / 43,5 A — düşüş yok",
+      "FC yeniden başlamadı: log sürekli, disarm sonrası 15 s kalıcılıkla (HAL_LOGGER_ARM_PERSIST=15) 218,67'de bitti",
+      "Darbe sırasındaki çökme (202,77'de 9,42 V; Vcc en düşük 4,997 V) 202,47'deki akım artışından sonra geldi"
+     ],
+     "olasilik": "dusuk"
+    },
+    {
+     "ad": "H3: Olay öncesi RC kopukluğu, failsafe ya da kanal sıçraması",
+     "destekleyen": [
+      "Pilotun roll girişi var: 198,97–199,47 C1 1317–1424 (sol), 199,77–200,37 1738–1814 (sağ), 201,27–202,47 1378–1451 (sol) — normal genlikte pilot düzeltmesi (i_rc.py)"
+     ],
+     "curuten": [
+      "RCIN aralığı 181,7–204,0'da en fazla 0,1 s; tüm logda >0,15 s boşluk yalnız 30,17 / 95,07 / 165,57 (disarm dönemleri)",
+      "C3 hiç ≤ FS_THR_VALUE 975 değil (tüm log: 0 örnek)",
+      "RCI2 Flags tüm logda 1 = HAS_VALID_INPUT, IN_RC_FAILSAFE yok (AP_Logger.h:438–441); OMask 0",
+      "IOMC 175–219: RSErr 0, Nerr 0, Nerr2 0, NDel 0",
+      "C4 yaw 1500–1505; C2 1478–1502; C5 (mod) ve C6 (arm) değişimleri yalnız 202,77 (LAND) ve 203,77 (disarm) — olaydan sonra"
+     ],
+     "olasilik": "dusuk"
+    },
+    {
+     "ad": "H4: Olay öncesi EKF / GPS kalite sorunu",
+     "destekleyen": [
+      "BULUNAMADI"
+     ],
+     "curuten": [
+      "GPS 181,7–202,4: NSats 15–20, HDop 0,69–0,90, Status {3,4}; GPA HAcc 0,42–0,43 m, VAcc 0,60–0,61 m (201,61–202,41) (c_gps.py)",
+      "XKF4 askıda C0: SV≤0,18, SP≤0,06, SH≤0,07, SM≤0,02; C1: SV≤0,20; FS=0, GPS=0, PI=0, TS=48 (yalnız airspeed+drag zaman aşımı bitleri) (j_ekf.py)",
+      "XKF4 SS 107327/109375 — bit 14 gps_glitching ve bit 18 dead_reckoning yok",
+      "XKF3 C0 IVN −0,38…0,35, IVE −0,12…0,19, IPD −0,70…0,90; son 1 s'de IVD 0,14–0,35 (küçük)",
+      "EV 62 (EKF_YAW_RESET) yok; ERR kaydı 202,97'den önce yok"
+     ],
+     "olasilik": "dusuk"
+    },
+    {
+     "ad": "H5: Olay öncesi kontrol sorunu — son uçuşta giderek büyüyen yaw tork dengesizliği ve tükenen pay (tetikleyici değil, ön koşul)",
+     "destekleyen": [
+      "Yaw hatası (DesYaw−Yaw) 1 s kutularda: 188,4–189,4 0,5°; 191,4–192,4 5,1°; 195,4–196,4 10,6°; 201,4–202,37 13,7°; en yüksek 14,56° (o_bin.py, e_kontrol.py)",
+      "YOut kutu ortalaması 0,008'den 0,296'ya; YDes 37–53 °/s iken gerçek Y ≈ −0,5 °/s (195–202,37)",
+      "Fiziksel dönüş: ATT Yaw 313,86→300,49 (−13,37°); RATE.Y integrali −15,44°; IMU0 GyrZ integrali −13,12° (k_vibe.py) — hata EKF/pusula sapması değil, gövde gerçekten döndü",
+      "CCW−CW PWM toplam farkı medyanı: önceki düşüş logu 619,5–629,0 −84 µs (YOut −0,052); bu logda L2 (140,9–147,5) −3; son uçuş 188,4–195'te 146; 195–202,37'de 367 (q_onceki.py)",
+      "CTRL RMSYaw 195–202,37'de 0,115–0,170; L2'de medyan 0,017, en yüksek 0,052",
+      "Motorlar (195–202,37 medyan): M2 1692, M1 1602, M3 1515, M4 1396; M4 202,37'de 1202 µs (HESAP: itki ≈0,03); pencerenin en düşük motor itkisi 0,042 (m_mikser.py)",
+      "Dengesizlik zamanla büyüyor: çıkış artarken hata da artıyor, yani bozucu tork büyüyor (ÇIKARIM)",
+      "Aynı yükseklikte askı gücü 536 W'tan (188,4–189,4) 625 W'a (201,4–202,37) çıktı; ThrOut 0,273'ten 0,343'e (o_bin.py)"
+     ],
+     "curuten": [
+      "Karıştırıcı doyumu yok: PWM'den kurulan uygulanan yaw / YOut = 1,059–1,067 (195–202,37), bu da kompanzasyon kazancına eşit; limit.yaw kırpması görülmüyor (m_mikser.py)",
+      "188,4–202,36'da hiçbir motor ≤1160 ya da ≥1940 µs değil (e_kontrol.py)",
+      "MSG'de 'Yaw Imbalance' yok: I filtresi hiç 0,75×IMAX = 0,375'i geçmedi (crash_check.cpp:216–227)",
+      "MSG'de 'Potential Thrust Loss' yok; FailFlags bit0 hiç 1 olmadı",
+      "Olayın başlangıç yönü (roll sağa, pitch aşağı, clip) yaw kaybı değil; hangi motor/pervanenin neden olduğu logdan ayırt edilemiyor (ESC/RPM logu yok)"
+     ],
+     "olasilik": "orta"
+    },
+    {
+     "ad": "H6: M1'in (ön-sağ, CCW) elektriksel arızası (ESC kesmesi, desync) olayı başlattı",
+     "destekleyen": [
+      "Başlangıç imzası ön-sağ köşenin düşmesiyle uyumlu: 202,33–202,37 GyrZ −13/−22 °/s (190–202,30 tabanı: en düşük −18,9, sd 4,3), 202,41 GyrX +143 (sağa roll), GyrY −104 (burun aşağı) (n_imu.py)",
+      "M1 202,47–202,67'de 1949 µs tavanda iken tutum sapmaya devam etti: roll 21,9→56,8°, pitch −13,9→−51,7° (d_zaman.py)"
+     ],
+     "curuten": [
+      "Akım modeli (hover'a oturtuldu; V²·Σ(esc³), ortalama |hata| 2,23 A, en fazla 6,64 A): 202,47'de ölçülen 72,7 A; 4 motor modeli 72,9 A; M1=0 modeli 32,6 A. Diğer model Σthrust^1,5: 89,2 / 40,2 A. M1 akım çekiyordu (r_akim_model.py; ÇIKARIM — spool gecikmesi ve 10 Hz örnekleme nedeniyle kaba)",
+      "Voltaj çökmesinden bağımsız hesap (16,2−V)/0,038 = 76 A ve iç pusula alanından hesap 70 A, 202,47 ölçümünü (72,7 A) doğruluyor (p_mag_akim.py)",
+      "(202,37; 202,47] içinde iki IMU'da da ≥15,5 g clip (kod: _clip_limit 15,5 g, ICM42688/BMI055) ve 202,49'da |a| 57,5 m/s²: saf itki kaybı bu şoku üretmez (ÇIKARIM)",
+      "Olay öncesi 188,4–202,37'de akım, gerilim ve motor çıkışında sıçrama yok; Thrust Loss kontrolü tetiklenmedi (1 s şartı)"
+     ],
+     "olasilik": "dusuk"
+    },
+    {
+     "ad": "H7: Başlatıcı olay mekanik darbe (dış temas ya da pervane/kol çarpması); sensör kayıpları bunun sonucu",
+     "destekleyen": [
+      "(202,37; 202,47] içinde IMU0 22, IMU1 20 clip (eşik ≥15,5 g); 190–202,30 arasında hiç yeni clip yok; önceki clip artışı 79,47'de (k_vibe.py)",
+      "202,45'te |ω| 415 °/s, AccX 22,5; 202,49'da AccY −54,1 (|a| 57,5 m/s²) — ikinci büyük şok 202,97'den (ters dönmüş hâlde yere çarpma, roll 157°) önce, havada (n_imu.py çıktısı)",
+      "202,57–203,17 akımı sensör tavanında (119,986 A = 3,3 V × 36,36): dolaylı tahmin voltajdan 133–178 A, iç pusula alanından 152–233 A. Normal pervane yükü modeli 34–99 A → durdurulmuş/engellenmiş motor ile uyumlu (ÇIKARIM)",
+      "Aynı gece 00:20 düşüşü dış temasla açıklanmıştı (D-490); bu logda da GPS soketi cihazları ilk şokla kesildi"
+     ],
+     "curuten": [
+      "Logda temas eden cismin ya da temas noktasının doğrudan ölçümü yok; 25 Hz IMU ile yaw öncülünün (202,37) temastan önce mi sonra mı olduğu ayrılamıyor",
+      "Yükseklik ~0,5–0,7 m (EKF Alt farkı, menzil ölçer yok); 202,49'daki tutumla (roll 21,9°, pitch −13,9°) kol/pervanenin yere değmesi bu yükseklikte zor (ÇIKARIM; mekanik mercekte değerlendirilmeli)"
+     ],
+     "olasilik": "orta"
+    },
+    {
+     "ad": "H8: İç pusula akım paraziti olayın nedeni",
+     "destekleyen": [
+      "MAG I1 (iç; DEV_ID2 658433 = IST8310, bus0 0x0C = hwdef dahili) |B| = 8,33·Curr + 523,5; r=0,996 (181,7–202,37). Askıda 800–895 mG, yerde ~520; COMPASS_MOT_* = 0, COMPASS_USE2 = 1 (p_mag_akim.py, g_param.py)"
+     ],
+     "curuten": [
+      "Olay öncesi EKF iki çekirdekte de MI=0 (harici pusula) kullanıyordu; iç pusulaya geçiş 212,48'de, disarm'dan sonra",
+      "SM≤0,02, IYAW küçük; yaw hatasının gerçek gövde dönüşü olduğu jiroskopla doğrulandı"
+     ],
+     "olasilik": "dusuk"
+    }
+   ],
+   "zaman_cizelgesi": [
+    {
+     "t_s": 181.67,
+     "olay": "ARM (Method 2, CH6 anahtarı), Loiter",
+     "kanit": "genel.txt ARM ArmState 1; RCIN C6 181,47'de 1000→2000 (i_rc.py)"
+    },
+    {
+     "t_s": 188.3,
+     "olay": "NOT_LANDED; askıya kalkış. EKF Alt yerde 1,33–1,51, askıda 1,9–2,1 → ~0,5–0,7 m yer üstü (HESAP)",
+     "kanit": "EV 28; f_seri.py 181,5–202,5 CTUN Alt"
+    },
+    {
+     "t_s": 189.4,
+     "olay": "Yaw hatası büyümeye başladı: 1 s ortalaması 4,1°, YOut 0,072 (188,4–189,4'te 0,5° / 0,008)",
+     "kanit": "o_bin.py 1 s kutular"
+    },
+    {
+     "t_s": 195,
+     "olay": "Yaw hatası sıçradı: 195,0'da 8,9°, 195,5'te 11,0°; YOut ~0,18–0,19; M4 1340",
+     "kanit": "f_seri.py 0,5 s adım; o_bin.py"
+    },
+    {
+     "t_s": 198.97,
+     "olay": "Pilot roll girişleri: 198,97–199,47 sol (C1 1317–1424), 199,77–200,37 sağ (1738–1814), 201,27–202,47 sol (1378–1451). Yaw çubuğu hiç oynamadı (C4 1500–1505)",
+     "kanit": "d_zaman.py 198,0–204,2 RCIN; i_rc.py"
+    },
+    {
+     "t_s": 201.73,
+     "olay": "Son GCS heartbeat'inin alt sınırı; kesin an (201,73; 202,07] aralığında (GCS failsafe 207,065 − 5 s; kontrol 3 Hz). MAV chan1 rxp 201,54'te 263, 202,54'te 264, sonra sabit",
+     "kanit": "l_bosluk/MAV dökümü; events.cpp failsafe_gcs_check; Copter.cpp three_hz_loop"
+    },
+    {
+     "t_s": 202,
+     "olay": "Olay öncesi son normal durum: yaw hatası 14,5°, YOut 0,30; Volt 14,66, Curr 43,0 A; Vcc 5,11; XKF1 VD +0,11…0,18 m/s (yavaş iniş)",
+     "kanit": "f_seri.py; d_zaman.py 201,5–202,45"
+    },
+    {
+     "t_s": 202.37,
+     "olay": "Son normal 10 Hz örneği: BAT 14,52 V / 43,5 A; Vcc 5,096; ATT roll 1,53 / pitch −5,14 (istenen 1,75 / −3,3). PWM M1 1602, M2 1788, M3 1577, M4 1202 (M4 itkisi ≈0,03, HESAP). Öncül: IMU0 GyrZ 202,33'te −13, 202,37'de −22 °/s (taban en düşük −18,9)",
+     "kanit": "d_zaman.py 202,0–202,7; n_imu.py 190–202,30 taban istatistiği"
+    },
+    {
+     "t_s": 202.41,
+     "olay": "BAŞLANGIÇ: GyrX 143/146, GyrY −104/−105 °/s, AccZ −3,8/−4,0 m/s² (iki IMU aynı). Son GPS örneği (202,410)",
+     "kanit": "d_zaman.py IMU I0/I1; c_gps.py"
+    },
+    {
+     "t_s": 202.45,
+     "olay": "|ω| 415 °/s (GyrX 383/414), AccX +22,5/+23,2 m/s²",
+     "kanit": "d_zaman.py; n_imu.py |a|,|ω| dökümü"
+    },
+    {
+     "t_s": 202.47,
+     "olay": "Harici pusulanın son örneği (S=202,470). VIBE Clip IMU0 10→32, IMU1 6→26 (≥15,5 g, (202,37; 202,47] içinde). RCOU M1 1949 (tavan); ROut −0,273, POut +0,139. BAT 13,32 V / 72,7 A",
+     "kanit": "b_mag_yakin.py; k_vibe.py; d_zaman.py; h_guc.py"
+    },
+    {
+     "t_s": 202.49,
+     "olay": "En büyük havadaki şok: AccY −54,1/−43,7, |a| 57,5 m/s² (5,9 g)",
+     "kanit": "n_imu.py |a| dökümü"
+    },
+    {
+     "t_s": 202.57,
+     "olay": "Harici pusulanın beklenen örneği yok (S 202,47'de dondu). BAT akımı ADC tavanında 119,986 A (3,3×36,36), 10,56 V. Motor PWM: M3 1949, M1 1910, M4 1150. İç pusula |B| 2225 (akım paraziti)",
+     "kanit": "b_mag_yakin.py; h_guc.py; d_zaman.py"
+    },
+    {
+     "t_s": 202.61,
+     "olay": "GPS'in beklenen 5 Hz örneği yok; sonraki kayıt 206,41 (Status 0)",
+     "kanit": "c_gps.py (GPS >0,3 s boşluk 202,410154 → +3,99968 s)"
+    },
+    {
+     "t_s": 202.77,
+     "olay": "Pilot LAND anahtarı (RCIN C5 1500→2000). Araç ters: roll 124°. BAT en düşük 9,42 V",
+     "kanit": "i_rc.py sıçrama listesi; n_imu.py ATT; h_guc.py"
+    },
+    {
+     "t_s": 202.95,
+     "olay": "MODE 9 LAND",
+     "kanit": "genel.txt"
+    },
+    {
+     "t_s": 202.97,
+     "olay": "ERR COMPASS ECode 4 (UNHEALTHY) = son pusula örneği 202,47 + 500 ms zaman aşımı. Aynı anda ikinci büyük şok |a| 52,8 m/s² (roll 157°, ters yere çarpma — ÇIKARIM)",
+     "kanit": "genel.txt ERR; a_mag.py Health 0 @202,969976; AP_Compass.cpp:1736; n_imu.py"
+    },
+    {
+     "t_s": 203.77,
+     "olay": "CH6 disarm anahtarı (RCIN C6 2000→1000)",
+     "kanit": "i_rc.py"
+    },
+    {
+     "t_s": 203.97,
+     "olay": "DISARM (Method 2). Akım 28,3 A; 204,07'de 15,8 A; 204,17'de 1,0 A",
+     "kanit": "genel.txt ARM; h_guc.py BAT dökümü"
+    },
+    {
+     "t_s": 205.571,
+     "olay": "PreArm: Compass not healthy; EKF height variance (sonuç)",
+     "kanit": "genel.txt MSG"
+    },
+    {
+     "t_s": 206.41,
+     "olay": "GPS Status 0 (NO_GPS) = son örnek 202,41 + 4000 ms zaman aşımı",
+     "kanit": "c_gps.py; AP_GPS.cpp:67 GPS_TIMEOUT_MS 4000"
+    },
+    {
+     "t_s": 207.065,
+     "olay": "GCS Failsafe (ERR 8/1): son heartbeat'ten 5 s sonra",
+     "kanit": "genel.txt; FS_GCS_TIMEOUT 5 (g_param.py)"
+    },
+    {
+     "t_s": 210.37,
+     "olay": "EKF variance, FAILSAFE_EKFINAV (sonuç)",
+     "kanit": "genel.txt ERR 16/2, 17/1"
+    },
+    {
+     "t_s": 212.482,
+     "olay": "EKF3 iki çekirdek de compass 1'e (iç, akım paraziti yüksek) geçti",
+     "kanit": "genel.txt MSG"
+    },
+    {
+     "t_s": 218.67,
+     "olay": "Log sonu = disarm + ~15 s kalıcılık (HAL_LOGGER_ARM_PERSIST 15)",
+     "kanit": "genel.txt süre; AP_Logger.cpp:55–56, 1516–1524"
+    }
+   ],
+   "olcumler": [
+    {
+     "olcum": "Harici pusula (I0) |B|, son uçuş 181,7–204,0",
+     "deger": "493–527 mG (ortalama 513); 201,07–202,37 arası 512–523; son örnek 202,47'de 512 (bileşenler tutumla değişti: Y 262→292, Z 421→391)",
+     "kaynak": "wf_0250/a_mag.py, b_mag_yakin.py 201,0–204,2"
+    },
+    {
+     "olcum": "Harici pusula son güncelleme zamanı (MAG.S) ve Health",
+     "deger": "S=202,470000, log sonuna kadar sabit; Health 1→0 @202,969976",
+     "kaynak": "a_mag.py (tüm log), b_mag_yakin.py"
+    },
+    {
+     "olcum": "Pusula donanım kimliği",
+     "deger": "COMPASS_DEV_ID 658953 = IST8310, I2C bus1, 0x0E, EXTERNAL=1 (hwdef: bus1 = I2C1 'GPS+MAG'); DEV_ID2 658433 = IST8310, bus0, 0x0C (hwdef dahili); PRIO1 = 658953",
+     "kaynak": "g_param.py; src_hwdef6c satır 134–147, 221"
+    },
+    {
+     "olcum": "İç pusula (I1) akım paraziti",
+     "deger": "|B| = 8,33·Curr + 523,5 mG, r=0,996, n=207 (181,7–202,37); MagZ eğimi 9,60 mG/A; COMPASS_MOT_X/Y/Z=0, MOTCT=0",
+     "kaynak": "p_mag_akim.py; g_param.py"
+    },
+    {
+     "olcum": "GPS kalitesi ve sürekliliği, son uçuş",
+     "deger": "181,7–202,4: NSats 15–20, HDop 0,69–0,90, Status {3,4}, dt 0,160–0,240 s; son örnek 202,410154; sonraki 206,409835 Status 0",
+     "kaynak": "c_gps.py 200–206 ve 206–219; tüm log boşluk listesi"
+    },
+    {
+     "olcum": "POWR askıda (188,4–202,37)",
+     "deger": "Vcc 5,021–5,121 V (medyan 5,096); VServo 5,123–5,239 V; Flags [1], AccFlags [1]",
+     "kaynak": "h_guc.py"
+    },
+    {
+     "olcum": "POWR darbe sırasında (202,38–204,0)",
+     "deger": "Vcc en düşük 4,997 V (202,77); VServo en yüksek 5,398 V (202,77)",
+     "kaynak": "h_guc.py"
+    },
+    {
+     "olcum": "POWR AccFlags tüm log",
+     "deger": "Yalnız 1 (BRICK_VALID); aşırı akım bitleri 8/16 hiç yok. Safety değeri arm'da 6, disarm'da 2",
+     "kaynak": "h_guc.py; AnalogIn.cpp:848–863; hwdef PE3/PC11 nOC"
+    },
+    {
+     "olcum": "MCU tüm log",
+     "deger": "MVolt 3,363–3,365 V; MVmin 3,346–3,347; MVmax 3,380; MTemp 30,3–31,8 °C",
+     "kaynak": "h_guc.py"
+    },
+    {
+     "olcum": "BAT askıda (188,4–202,37)",
+     "deger": "Volt 14,521–15,169 V; Curr 33,5–46,5 A (medyan 40,6); Res 0,037–0,038 Ω; H/SH (1,0)",
+     "kaynak": "h_guc.py"
+    },
+    {
+     "olcum": "BAT darbe",
+     "deger": "202,47: 13,32 V / 72,7 A; 202,57–203,07: 119,986 A (ADC tavanı: 3,3×36,36 = 119,988); en düşük Volt 9,42 @202,77",
+     "kaynak": "h_guc.py BAT dökümü"
+    },
+    {
+     "olcum": "Gerçek tepe akımı dolaylı hesap (202,57–203,17) — HESAP",
+     "deger": "Voltaj çökmesinden (16,2−V)/0,038: 133–178 A; iç pusula alanından: 152–233 A. Kontrol noktası 202,47: 76 A ve 70 A (ölçülen 72,7)",
+     "kaynak": "p_mag_akim.py"
+    },
+    {
+     "olcum": "Akım modeli M1 testi @202,47 — HESAP",
+     "deger": "V²·Σesc³ modeli: 4 motor 72,9 A, M1=0 32,6 A. Σthrust^1,5 modeli: 89,2 / 40,2 A. Ölçülen 72,7 A. Hover uyumu: ortalama |hata| 2,23 A / 2,65 A",
+     "kaynak": "r_akim_model.py (oturtma 188,4–202,37)"
+    },
+    {
+     "olcum": "RCIN sürekliliği ve failsafe",
+     "deger": "181,7–204,0 dt ≤0,1 s; C3 ≤975 örnek sayısı 0; RCI2 Flags tüm logda 1; OMask 0",
+     "kaynak": "i_rc.py"
+    },
+    {
+     "olcum": "IOMC 175–219",
+     "deger": "RSErr 0, Nerr 0, Nerr2 0, NDel 0; NPkt düzenli artıyor",
+     "kaynak": "i_rc.py"
+    },
+    {
+     "olcum": "XKF4 test oranları askıda (188,4–202,37)",
+     "deger": "C0: SV≤0,18, SP≤0,06, SH≤0,07, SM≤0,02; C1: SV≤0,20, SP≤0,06, SH≤0,07, SM≤0,02; FS 0, TS 48, GPS 0, PI 0, errRP 0,01",
+     "kaynak": "j_ekf.py"
+    },
+    {
+     "olcum": "XKF3 inovasyonları askıda (C0)",
+     "deger": "IVN −0,38…0,35; IVE −0,12…0,19; IVD −0,12…0,45; IPD −0,70…0,90; IYAW −2,10…1,40; IMX/IMY/IMZ 0 (yalnız heading füzyonu)",
+     "kaynak": "j_ekf.py"
+    },
+    {
+     "olcum": "XKFS sensör seçimi",
+     "deger": "Olay öncesi ve darbe süresince MI 0, BI 0, GI 0, AI 0 (her iki çekirdek)",
+     "kaynak": "j_ekf.py"
+    },
+    {
+     "olcum": "Yaw izleme, son uçuş",
+     "deger": "188,4–195: hata medyan 4,27°, YOut medyan 0,082; 195–202,37: hata 8,65–14,56°, YOut 0,179–0,311, YDes 37–53 °/s, Y medyan −0,54 °/s",
+     "kaynak": "e_kontrol.py"
+    },
+    {
+     "olcum": "Yaw fiziksel dönüş doğrulaması 188,4–202,37",
+     "deger": "ATT Yaw 313,86→300,49 (−13,37°); RATE.Y integrali −15,44°; IMU0 GyrZ integrali −13,12°",
+     "kaynak": "k_vibe.py"
+    },
+    {
+     "olcum": "CCW−CW PWM toplam farkı (M1+M2−M3−M4) medyanı",
+     "deger": "Önceki düşüş logu 619,5–629,0: −84 µs; bu log L2 140,9–147,5: −3; son uçuş 188,4–195: 146; 195–202,37: 367",
+     "kaynak": "q_onceki.py"
+    },
+    {
+     "olcum": "CTRL RMSYaw",
+     "deger": "L2 medyan 0,017 (en yüksek 0,052); son uçuş 195–202,37: 0,115–0,170",
+     "kaynak": "e_kontrol.py"
+    },
+    {
+     "olcum": "Karıştırıcı doyumu (PWM'den itki uzayı)",
+     "deger": "Uygulanan yaw / YOut = 1,059–1,067 (195–202,37); uygulanan roll medyanı 0,127 / ROut 0,119. 188,4–202,36 arasında ≤1160 ya da ≥1940 µs motor oranı 0,0",
+     "kaynak": "m_mikser.py; e_kontrol.py"
+    },
+    {
+     "olcum": "MOTB askıda",
+     "deger": "FailFlags yalnız 2; LiftMax 1; ThLimit 1; BatVolt 1; ThrOut 0,265–0,355; ThrAvMx 0,305–0,394",
+     "kaynak": "e_kontrol.py"
+    },
+    {
+     "olcum": "FailFlags anlamı (kod)",
+     "deger": "mot_fail_flags = _thrust_boost | (_thrust_balanced<<1); thrust_balanced başlangıçta true, yalnız number_motors≥6 iken false olabilir; thrust_boost yalnız Copter::thrust_loss_check ile açılır ('Potential Thrust Loss' + ERR). 2 = normal",
+     "kaynak": "src AP_MotorsMulticopter.cpp:393; AP_MotorsMatrix.cpp:449–453; AP_Motors_Class.cpp:56–57; crash_check.cpp:160–171; LogStructure.h:1212"
+    },
+    {
+     "olcum": "Askı güç trendi (1 s kutular)",
+     "deger": "188,4–189,4: 536 W, ThrOut 0,273; 201,4–202,37: 625 W, ThrOut 0,343; M2 1529→1727, M4 1502→1339",
+     "kaynak": "o_bin.py"
+    },
+    {
+     "olcum": "IMU tabanı 190–202,30 (IMU0)",
+     "deger": "GyrX −72,8…63,2 (sd 18,8); GyrY −47,0…39,4; GyrZ −18,9…9,3 (sd 4,3); AccZ −13,9…−6,6",
+     "kaynak": "n_imu.py"
+    },
+    {
+     "olcum": "IMU sağlık",
+     "deger": "181–219 arasında her iki IMU EG 0, EA 0, GH 1, AH 1; sıcaklık 44,3–45,3 °C",
+     "kaynak": "n_imu.py"
+    },
+    {
+     "olcum": "Accel clip sayaçları",
+     "deger": "IMU0: 79,47'de 10; 202,47'de 32; 202,57'de 40; 202,97'de 115; 203,07'de 145. IMU1: 6→26→33→99→117. Eşik ≥15,5 g",
+     "kaynak": "k_vibe.py; AP_InertialSensor_Backend.h:142; Invensensev3.cpp:1036–1040"
+    },
+    {
+     "olcum": "VibeZ askıda",
+     "deger": "L2 IMU0 10,8–27,8; son uçuş 188,4–195 12,3–29,0; 195–202,37 12,4–23,3",
+     "kaynak": "k_vibe.py"
+    },
+    {
+     "olcum": "Kayıt boşlukları",
+     "deger": "188,4–204,2 IMU dt 39–41 ms, 10 Hz mesajlar 100 ms; tüm mesajlar 201–204,2 arasında en büyük ardışık boşluk 40,3 ms; geri giden TimeUS 0; DSF Dp 0",
+     "kaynak": "l_bosluk.py"
+    },
+    {
+     "olcum": "PM zamanlayıcı ve I2C",
+     "deger": "NLon 0, MaxT 2520–2549 µs (205,57'ye kadar; 215,57'de NLon 1, MaxT 3316). I2CC/I2CI 10 s artışları: 185,57→195,57 5546/29287; 195,57→205,57 6338/27293; 205,57→215,57 7960/22840",
+     "kaynak": "l_bosluk.py PM dökümü"
+    },
+    {
+     "olcum": "GCS uplink (MAV chan1 = SERIAL1)",
+     "deger": "rxp 196,52'de 257 … 201,54'te 263, 202,54'te 264; 218,58'e kadar 264 sabit; rxdp 0. GCS failsafe 207,065 → son heartbeat (201,73; 202,07]",
+     "kaynak": "MAV dökümü (l_bosluk sonrası python -c); events.cpp:126–160; Copter.cpp:185"
+    },
+    {
+     "olcum": "Motor çıkış eşlemesi (SERVO1..8)",
+     "deger": "SERVO1..8_FUNCTION = 34,34,33,34,34,36,33,34 (motor fonksiyonları); C1..C8 AUX değerlerinden medyan 26–50 µs farklı; C13/C14 = C9/C10 birebir",
+     "kaynak": "g_param/servo dökümü; lag karşılaştırması"
+    }
+   ],
+   "belirsizlikler": [
+    "Örnekleme çözünürlüğü: IMU 25 Hz, MAG/RCOU/BAT/RATE 10 Hz, GPS 5 Hz. GPS ve pusula kesilmesi yalnız (202,41; 202,57] aralığına oturtulabiliyor; yaw öncülü (202,33–202,37) ile darbe (clip) arasındaki sıra 40 ms altında ayrılamıyor.",
+    "ESC telemetrisi ya da RPM logu yok: motor bazında elektriksel durum (desync, ESC kesmesi, motor akımı) BULUNAMADI. M1 akım testi kaba bir model (spool gecikmesi, 10 Hz tek örnek).",
+    "Akım sensörü 119,99 A'da doyuyor; 202,57–203,07 gerçek tepe akımı BULUNAMADI. 133–233 A yalnız dolaylı HESAP.",
+    "GCS uplink kaybının anı belirsiz: son heartbeat (201,73; 202,07], sonraki beklenen ≤~203,07 gelmedi. Kaybın olaydan önce mi sonra mı olduğu logdan ayrılamıyor. Bu uçuşa ait GCS tlog BULUNAMADI (results/ucus_20260917b içinde yalnız .bin var).",
+    "GPS ve pusula kaybının fiziksel nedeni (GPS1 kablo/soket çıkması, direk ya da modül kırılması, port beslemesi) logdan ayırt edilemiyor. AccFlags'te aşırı akım yok ama örnekleme periyodundan kısa geçici kısa devre kaçabilir.",
+    "Yaw tork dengesizliğinin kaynağı (hangi motor/pervane, motor eğikliği, pervane kayması, ESC ısınması) BULUNAMADI. İki uçuş arasındaki tamirin kapsamı bilinmiyor. Dengesizliğin 14 s içinde büyüdüğü ölçüldü, nedeni ölçülmedi.",
+    "Yerden yükseklik yalnız EKF Alt farkından (~0,5–0,7 m); menzil ölçer yok. EKF irtifası darbeden sonra −2 m'ye kaydı.",
+    "Mimarın 'C1..C8 motor DEĞİL' ifadesi parametreyle çelişiyor: SERVO1..8_FUNCTION motor fonksiyonlarına atanmış (C1..C8 = IO çıkışlarında motor komutu kopyası). Bu çıkışlara fiziksel ESC bağlı olup olmadığı logda yok; kullanıcı beyanına (ESC AUX1–4) dayanılmalı.",
+    "İç pusula akım paraziti (8,33 mG/A, r=0,996; COMPASS_MOT_*=0) olayın nedeni değil (olay öncesi MI=0) ama gizli bir risk: harici pusula uçuşta kaybolursa EKF kirli iç pusulaya geçer (bu logda 212,48'de geçti).",
+    "Clip eşiği kodda 15,5 g (ICM42688/BMI055 varsayılanı). Kartta ICM45686 varyantı olsaydı eşik 29,5 g olurdu; hangi IMU çipinin takılı olduğu log mesajlarından doğrulanmadı.",
+    "Önceki düşüş logu karşılaştırması (CCW−CW −84 µs) mimarın −61 µs değerinden farklı: pencere 619,5–629,0 seçildi, mimarınki n=125. Yönü (negatif) ve büyüklük sırası aynı."
+   ]
+  }
+ },
+ {
+  "type": "result",
+  "key": "v2:b2f992cb9b443f9037c1274f066d3421d4fc6753c9e821e2f865f465ade40124",
+  "agentId": "a4e03afebde5ace1d",
+  "result": {
+   "ana_bulgu": "YANIT (motor): 202,4 s olayında itki ve tork kaybeden köşe M1 (ön-sağ, CCW, C11). Olay 202,33 s'de başlıyor. Başlangıçta üç eksenin işareti de yalnız M1 kaybıyla tutuyor: roll +143 °/s (sağ taraf aşağı), pitch −104 °/s (burun aşağı), yaw −13 → −22 °/s (CCW pervanenin CW tepki torku kayboldu). M2, M3 ve M4'ün her biri en az bir eksende ters işaret veriyor. FC, M1'i 202,47–203,17 arasında 8 ardışık örnekte 1910–1949 µs'de doyumda tuttu. Buna rağmen ön-sağ köşe hiç toparlanmadı. Burun aşağı dönüş 202,65–202,89 arasında −394…−471 °/s'de kaldı; o 0,2 s'lik aralıkta net açısal ivme ≈ +95 °/s², oysa POut 1,63–1,85 ile doymuştu.\n\nYANIT (mekanizma): Olay, bir pervanenin kendiliğinden ve temiz biçimde düşmesiyle İYİ AÇIKLANMIYOR. Dört ölçüm bunu gösteriyor:\n(1) Olaydan önce 13 s boyunca bozulma büyüdü. CCW−CW farkı iki kademede arttı ve bu sırada çubuklar ortadaydı (C1 1499, C4 1500):\n- 189,5 s: yaw +132 µs, roll +16, pitch +6.\n- 194,6 s: yaw +177 µs, roll +15, pitch −19. Hemen öncesinde 194,47 s'de VibeZ 29 sıçraması var.\n- Ardından rampa: 201,4–202,37 arasında CCW−CW +511 µs, yaw hatası 14,3–14,8°, YOut 0,29–0,33, M4 1202 µs'ye indi.\nTek motor ya da pervane zayıflasaydı roll, pitch ve yaw bileşenleri eşit büyüklükte olurdu. Burada bozulma neredeyse yalnız yaw'da; bu, bir motor itki ekseninin dönmesi (kol ya da motor yatağının burulması veya gevşemesi) ile uyumlu. Hangi motor olduğu bu imzadan ayrılamıyor; M1 ile bağlantısı yalnız ÇIKARIM.\n(2) 202,37–202,47 arasında araç havadayken sert bir mekanik patlama var: Clip IMU0'da 10→32, IMU1'de 6→26; VibeX/Y/Z 3,4/6,5/17 → 45/67/43. VIBE 0,3 s içinde 51 → 10'a düştü, M1 ise 1949'da kaldı. Yani titreşim kaynağı durdu.\n(3) Akım 202,57–203,07 arasında 120,0 A'da kaldı; bu sensör tavanı (36,36 × 3,3). Gerilim 9,42–11,14 V'a düştü. Gerilim sarkmasından tahmin edilen akım 149–179 A. Aynı çıkışlarla beklenen akım: tüm pervaneler yüklüyse 74–89 A, M1 pervanesiz ise 31–51 A. Pervane uçmuş olsaydı akım düşerdi. Yüksek akım, M1'de sıkışma/stall ya da ikincil desync ile daha uyumlu. Bu model yuvarlanmada ±60 A şaşıyor; kanıt orta güçte.\n(4) AccZ oranı 0,39–0,42. Yalnız M1 tamamen kaybolsaydı beklenen oran 0,73.\n\nEN OLASI (ÇIKARIM): M1 köşesinde mekanik montaj arızası. Uçuş içinde kademeli eksen dönmesi ve ardından pervanenin veya motorun çarpması/sıkışmasıyla itki kaybı. ESC desync'in olayı başlatması olası değil (M1 olay öncesi sabit 1602–1666 µs'deydi) ama 1949'a sert adım sonrası ikincil olarak mümkün. Olaydan önceki son 1 s'de pilot girdileri küçüktü: roll çubuğu 1389–1436 (sola), gaz 1528. Yatay hız 202,37 s'de 0,11 m/s idi. Yerden yükseklik EKF'ye göre 0,63 m, baroya göre 1,05 m.\n\n00:20 HASARI: Olası ama kanıtlanamıyor. 02:50 logunda ilk gerçek askıdan (W5, 141–148 s) itibaren durum 00:20 logundan belirgin biçimde farklı:\n- Askıda VIBE X/Y/Z: 1,07/2,15/7,10 → 3,73/6,03/17,36.\n- 1100 µs rölantide VibeY: 0,27 → 1,02–1,72.\n- Ortalama |ROut|: 0,025 → 0,122.\n- Gyro açısal ivme p50: 61 → 820 °/s².\n- 79,45 s sert inişinden (Clip 0→10) önce de yüksekti: 5–15 A aralığında VibeZ 8,1, 00:20 logunda 3,0; 00:20 tarafında örnek sayısı 2, kanıt zayıf.\nÖte yandan yaw dengesizliği W5'te yoktu (CCW−CW −6 µs) ve W6'nın başında da yoktu (+22). Yani 00:20'den kalan sabit bir sapma yok; büyüme uçuş içinde oldu. VIBE artışı onarımda FC montajının değişmesinden de gelebilir; onarım kapsamı bilinmiyor.\n\nMuayene önceliği: M1 kolu ve motor yatağı (burulma izi, vida, çatlak), M1 motorunun elle serbest dönmesi, yatak ve sargı yanığı, M1 pervane göbeği, M1 ESC'si. Öncül bozulmadaki motor belirlenemediği için tüm kolların eksen dikliği de kontrol edilmeli.",
+   "hipotezler": [
+    {
+     "ad": "H0 — İlk anda itki/tork kaybeden köşe M1 (ön-sağ, CCW); M2, M3 ya da M4 değil",
+     "destekleyen": [
+      "202,33 → 202,41 IMU0 GyrX +23 → +143, GyrY −17 → −104, GyrZ −13 → −22 °/s; IMU1 +146/−105/−20 ile uyumlu. Yalnız M1 kaybı (+,−,−) işaretlerini veriyor: M4 (+,+,+), M3 (−,−,+), M2 (−,+,−).",
+      "RCOU C11 (M1): 202,37'de 1602, 202,47–203,17 arasında 1949/1910/1949/1949/1949/1700/1949/1949. FC ön-sağdaki kaldırma açığını sürekli görüyor.",
+      "202,65–202,89 GyrY −394…−471 °/s; POut 1,63–1,85 doymuşken ve ön M1 1949 / M3 1789–1901, arka M2 1150–1325 / M4 1150–1430 iken net ivme ≈ +95 °/s².",
+      "HESAP (VARSAYIM L/√2 0,18–0,21 m, I 0,02–0,04 kg·m²): M1 202,37'de T = 0,405·Tmax ≈ 8,5 N; tam kaybı 2200–5100 °/s² verir. Başlangıçta ölçülen +3863 (roll) / −2459 (pitch) bu aralıkta."
+     ],
+     "curuten": [
+      "AccZ −9,66 → −3,75/−4,05 (oran 0,39/0,42); yalnız M1 kaybında beklenen 0,73 (hesap.py). IMU konumu bilinmiyor (INS_POS=0) ve kayıt 25 Hz tek örnek.",
+      "202,45 +6036 ve 202,49 −9152 °/s² (IMU1 −10800) varsayılan tek-motor aralığını aşıyor; FC düzeltmesi ya da ek darbe/yapısal kuvvet gerekiyor.",
+      "Yuvarlanmada 202,57–202,93 GyrZ +16 → +171 °/s (CW); M3/M4 baskın olsaydı CCW beklenirdi. Yuvarlanma dinamiği yüzünden zayıf karşı kanıt."
+     ],
+     "olasilik": "yuksek"
+    },
+    {
+     "ad": "H1 — M1 köşesinde mekanik montaj arızası: uçuş içinde kademeli motor ekseni dönmesi (kol/motor yatağı burulması ya da gevşemesi), 202,33–202,41'de kopma/çarpma ve pervane-motor sıkışmasıyla itki kaybı",
+     "destekleyen": [
+      "Öncül yalnız yaw'da ve kademeli: 189,5 s yaw +132 / roll +16 / pitch +6 µs; 194,6 s yaw +177 / roll +15 / pitch −19 µs; çubuklar ortada (basamak2.py). Tek motor zayıflaması üç bileşeni eşit verirdi.",
+      "194,47–194,57 VibeZ 29,0 (çevresi ~17), hemen ardından GyrZ −13…−19 °/s ve yaw hatası 3,3 → 8,9°: ani mekanik kayma imzası.",
+      "Rampa ile 201,4–202,37 arasında CCW−CW +511 µs, yaw hatası 14,3–14,8°, M4 1202 µs (202,37).",
+      "202,37–202,47 havada Clip +22/+20, VibeX/Y 45/67. VIBE 0,3 s'de 51 → 10'a indi, M1 1949'da kaldı: titreşim kaynağı durdu (sıkışma ya da stall ile uyumlu).",
+      "202,57–203,07 akım ≥120 A (sensör tavanı), gerilimden tahmin 149–179 A; tüm pervaneler yüklü model 74–89 A. Aşırı akım stall/sıkışma ile uyumlu.",
+      "Onset M1 imzası (H0) ve D-490'ın 00:20 temasını sağ tarafa (M1/M4) koyan çıkarımı."
+     ],
+     "curuten": [
+      "Yaw basamakları hangi motorun ekseninin döndüğünü göstermez; öncülü M1'e bağlamak ÇIKARIM.",
+      "Rüzgâr ya da aerodinamik yaw torku kesin elenemiyor; basamakların 5–7 s kalıcı olması buna karşı.",
+      "Akım modeli 00:20 logu yuvarlanmasında −64…+24 A şaşıyor; ESC telemetrisi yok."
+     ],
+     "olasilik": "orta"
+    },
+    {
+     "ad": "H2 — M1 pervanesinin havada temiz biçimde kırılması ya da çıkması (motor ve yatak sağlam)",
+     "destekleyen": [
+      "Onset işaretleri M1 ile uyumlu (H0).",
+      "Kısa titreşim patlaması ve ardından sönme, pervanenin gitmesiyle uyumlu.",
+      "M1 1949'dayken ön-sağ köşe toparlanmadı."
+     ],
+     "curuten": [
+      "Akım: M1 pervanesizse model 31–51 A (202,57–202,87); ölçülen ≥120 A (tavan), gerilimden tahmin 149–179 A. 00:20 logunda modelin en büyük aşımı +24 A'ydı.",
+      "Öncül yaw-yalnız basamaklarını açıklamıyor; pervane kayması roll ve pitch'i de eşit etkilerdi.",
+      "AccZ oranı 0,39–0,42; tek M1 kaybında beklenen 0,73."
+     ],
+     "olasilik": "dusuk"
+    },
+    {
+     "ad": "H3 — M1 ESC/motor desync'i (elektriksel) olayı başlattı",
+     "destekleyen": [
+      "MOT_SLEW_UP_TIME=0; 202,47'de M1 1602 → 1949 adımı, gerilim 9,42 V'a indi, akım ≥120 A. Olay sonrası ikincil desync (M1/M3) aşırı akım ve ön otorite kaybıyla uyumlu."
+     ],
+     "curuten": [
+      "Onset öncesi M1 komutu sabit (202,07–202,37: 1610/1666/1638/1602); desync'i tetikleyecek adım yok.",
+      "Havada 16 g düzeyinde Clip patlaması (IMU0 +22) saf desync ile beklenmez.",
+      "ESC telemetrisi yok (logda ESC mesajı yok); doğrudan test edilemiyor."
+     ],
+     "olasilik": "dusuk"
+    },
+    {
+     "ad": "H4 — Önceden arıza olmadan dış cisme ya da zemine pervane teması (M1 köşesi)",
+     "destekleyen": [
+      "Clip patlaması ve 202,45–202,49 büyük ivmeler bir darbeyle uyumlu olabilir.",
+      "Log cisim göremez; elenemez."
+     ],
+     "curuten": [
+      "Yükseklik EKF'ye göre 0,63 m, baroya göre 1,05 m; 202,37'de Roll 1,5°, Pitch −5,1°, yatay hız 0,11/0,08 m/s. Pervane ucu zemine uzak.",
+      "202,41 Ay +3,2/+2,9, Ax −1,7/−2,0 m/s²; clip öncesi darbe izi yok.",
+      "13 s'lik kademeli yaw öncülüyle tesadüf daha az tutumlu."
+     ],
+     "olasilik": "dusuk"
+    },
+    {
+     "ad": "H5 — Donanım kırılmadan yaw otoritesinin tükenmesiyle kontrol kaybı",
+     "destekleyen": [
+      "202,37'de M4 1202 µs (T 0,026), YOut 0,329, yaw hatası 14,8°: yaw payı neredeyse bitmiş.",
+      "YOut 0,01 → 0,31 büyüdü; ATC_RAT_YAW_I 0,018 ile integratör bozulmanın gerisinde kaldı."
+     ],
+     "curuten": [
+      "YOut en fazla 0,311 < ATC_RAT_YAW_IMAX 0,5. Karıştırıcı yaw'ı tam uyguladı: (M1+M2−M3−M4)/4 = 0,157 ≈ 0,5×YOut. MOTB ThLimit 1, LiftMax 1.",
+      "Onset ivmeleri 3863–9152 °/s²; W6 içinde en fazla 1838 °/s² (p99 1536). Havada Clip patlaması doyum kaymasıyla açıklanmaz.",
+      "Yalnız katkı etkeni olabilir; tek başına neden değil."
+     ],
+     "olasilik": "dusuk"
+    },
+    {
+     "ad": "H6 — Aracın mekanik durumu 00:20 düşüşünden ya da onarımından sonra bozulmuş (202,4 olayının zemini)",
+     "destekleyen": [
+      "Askıda VIBE X/Y/Z: 00:20 logunda (622,5–647,8) 1,07/2,15/7,10; 02:50 W5'te 3,73/6,03/17,36, W6'da 3,51/7,13/18,44.",
+      "1100 µs rölanti VIBE: 00:20 logunda (599–602) 0,18/0,27/0,43; 02:50 logunda (116–118) 0,52/1,59/0,72 ve (184,6–185,4) 0,45/1,35/0,99.",
+      "Ortalama |ROut|/|POut|: 00:20 logu 0,025/0,029; W5 0,122/0,116. Gyro açısal ivme p50: 00:20 logu 61, W5 820, W6 380 °/s².",
+      "79,45 s sert inişinden önce de yüksek: 5–15 A'da VibeZ 8,09 (n=64); 00:20 logunda 2,99 (n=2)."
+     ],
+     "curuten": [
+      "Yaw dengesizliği W5'te (CCW−CW −6 µs, T −0,020) ve W6 başında (+22) yok; sabit bir kalıntı değil, uçuş içinde büyüdü.",
+      "VIBE artışı onarımda FC montajının değişmesinden de olabilir; onarım kapsamı bilinmiyor.",
+      "02:50 logunda 79,45 s'de ikinci aday hasar olayı var: |a| 31,3 m/s², Clip 0→10."
+     ],
+     "olasilik": "orta"
+    }
+   ],
+   "zaman_cizelgesi": [
+    {
+     "t_s": 637,
+     "olay": "[00:20 logu] Uçuş 3 sakin askı, çubuklar ortada: M1..M4 1585/1602/1585/1586, yayılım 17 µs, CCW−CW +15, VibeZ 7,0, Clip 0. Tüm uçuş 3 (çubuk ortada) yayılım 44, CCW−CW −70.",
+     "kanit": "askida.py a.pkl sert a_F3sakin:637:643 (n=38) ve a_F3:621.9:647.8 (n=64)"
+    },
+    {
+     "t_s": 54.3,
+     "olay": "İlk arm penceresi (≈49,6–61,5): NOT_LANDED var ama ThO ≈ 0,00, akım 9–10 A; gerçek askı yok (yerde/sıçrama). Motorlar 1161–1393 µs, integratör birikimi.",
+     "kanit": "trend.py b.pkl 49 81 2; askida.py b.pkl sert b_W1:54.4:61.4"
+    },
+    {
+     "t_s": 79.45,
+     "olay": "Sert yere değme: |a| en fazla 31,3 m/s²; Clip IMU0 0→10, IMU1 0→6, VibeZ 56,8. Mimarın 'uçuş başından Clip 6' dediği sayaç buradan geliyor.",
+     "kanit": "ek.py (b 79.0–79.8) ve satır içi Clip değişim taraması (b IMU0 t=79.470 Clip=10)"
+    },
+    {
+     "t_s": 116.2,
+     "olay": "Yerde 1100 µs rölanti: VIBE X/Y/Z 0,52/1,59/0,72. 00:20 logunda aynı çıkışta 0,18/0,27/0,43.",
+     "kanit": "basamak2.py"
+    },
+    {
+     "t_s": 141,
+     "olay": "W5 askısı (141–148): M1..M4 1495/1525/1530/1496, yayılım 34, CCW−CW −6, sağ−sol −63, ön−arka +4 µs; yaw dengeli (YOut −0,012); VibeZ 17,4; |ROut| 0,122.",
+     "kanit": "askida.py b.pkl sert b_W5:141:147.5 (n=58); satır içi doyum/|ROut| betiği"
+    },
+    {
+     "t_s": 188.3,
+     "olay": "Son uçuş kalkışı (EV 28). 188,8–189,4: CCW−CW ≈ +33…+40, yaw hatası 0,1–1,2°.",
+     "kanit": "basamak.py; trend.py b.pkl 181.5 204 1"
+    },
+    {
+     "t_s": 189.47,
+     "olay": "Yaw bozulması basamak 1: yaw hızı −6,7 → −8,7 °/s, yaw hatası 1,6 → 4,8°. Motor değişimi M1..M4 +39/+44/−19/−30 → yaw +132, roll +16, pitch +6 µs. C1 1499, C4 1500.",
+     "kanit": "basamak.py; basamak2.py (188,8–189,4 ile 189,8–190,6 karşılaştırması)"
+    },
+    {
+     "t_s": 194.47,
+     "olay": "VibeZ 29,0 sıçraması (çevresi 15–18). 194,57–194,97 basamak 2: GyrZ −13…−19 °/s, yaw hatası 3,3 → 8,9°. Motor değişimi +24/+41/−57/−55 → yaw +177, roll +15, pitch −19 µs.",
+     "kanit": "basamak.py; basamak2.py (193,6–194,5 ile 194,95–195,8 karşılaştırması)"
+    },
+    {
+     "t_s": 195,
+     "olay": "Rampa (195–202,37): CCW−CW +182 µs daha, roll +121, pitch +73; YOut 0,19 → 0,31; 198,5–202,4 arası pilot roll girdisi (C1 sapması ≤ 314). 200–202 yatay hız 0,48–0,49 m/s.",
+     "kanit": "basamak2.py (rampa); trend.py; ek.py (eğim/hız)"
+    },
+    {
+     "t_s": 202.33,
+     "olay": "İlk sapma: IMU0 GyrX +23,3, GyrY −17,1, GyrZ −12,7 °/s (IMU1 +23,5/−16,2/−13,5).",
+     "kanit": "olay.py b.pkl 202.0 203.2 IMU"
+    },
+    {
+     "t_s": 202.37,
+     "olay": "Olay öncesi son kayıt: RCOU M1 1602, M2 1788, M3 1577, M4 1202 (CCW−CW +611); RATE ROut 0,299, YOut 0,329, YDes 52,8, Y −22,1 °/s; yaw hatası 14,8°; BAT 43,5 A / 14,52 V; VIBE 3,4/6,5/17,1, Clip 10. Titreşimde öncül yok.",
+     "kanit": "olay.py b.pkl 202.0 203.2 ...; olay.py b.pkl 201.4 203.1 VIBE"
+    },
+    {
+     "t_s": 202.41,
+     "olay": "Ön-sağ köşe düşüyor: GyrX +142,6/+146,4, GyrY −103,7/−105,4 °/s; AccZ −3,75/−4,05 (öncesi ort. −9,66); açısal ivme +3863 (roll), −2459 (pitch) °/s².",
+     "kanit": "olay.py; acisal.py; hesap.py"
+    },
+    {
+     "t_s": 202.45,
+     "olay": "GyrX 382,7/414,2 °/s (+6036 °/s²); Ay iki IMU'da çelişiyor (+9,2 / −15,6) → yüksek frekanslı mekanik olay.",
+     "kanit": "olay.py; acisal.py"
+    },
+    {
+     "t_s": 202.47,
+     "olay": "Clip 10→32 / 6→26, VibeX/Y/Z 45,3/66,8/43,4 (araç havada). RCOU M1 1949, M2 1708, M3 1490, M4 1604. BAT 72,7 A / 13,32 V (tüm pervaneler yüklü modeli 80,7; M1 pervanesiz modeli 37,6 A). Roll 21,9°, Pitch −13,9°.",
+     "kanit": "olay.py (VIBE, RCOU, BAT, ATT); hesap.py"
+    },
+    {
+     "t_s": 202.49,
+     "olay": "Roll hızı +383 → +14 (IMU1 −20) °/s, −9152 / −10800 °/s²; Ay −54,1/−43,7 (clip'li, güvenilmez).",
+     "kanit": "olay.py; acisal.py"
+    },
+    {
+     "t_s": 202.57,
+     "olay": "RCOU M1 1910, M3 1949, M2 1481, M4 1150; POut 1,773 doymuş; GyrY −315 °/s; BAT 120,0 A (sensör tavanı) / 10,56 V → tahmin 149 A (modeller: 89,3 sağlam / 51,3 M1 pervanesiz); VIBE 51/66/59, Clip 40/33.",
+     "kanit": "olay.py; hesap.py; BATT_AMP_PERVLT 36,36 × 3,3 = 120"
+    },
+    {
+     "t_s": 202.65,
+     "olay": "Sürekli burun aşağı dönüş: GyrY −394, −460, −466, −450, −471, −417, −441 °/s (202,65–202,89); M1 1949 sabit, M3 1901–1789; VIBE 28,6 → 10,1'e söndü (Clip 40 sabit).",
+     "kanit": "olay.py IMU/RCOU/VIBE"
+    },
+    {
+     "t_s": 202.77,
+     "olay": "Gerilim en düşük 9,42 V (tahmin 179 A, model 74,2 / 31,0 A); RCIN C5 2000 (LAND anahtarı); Roll 124°, araç ters dönüyor.",
+     "kanit": "olay.py; hesap.py"
+    },
+    {
+     "t_s": 202.95,
+     "olay": "MODE 9 (LAND) kaydı; 202,97 ERR Subsys 3 ECode 4 (pusula); yere çarpma |a| 72,8 m/s², Clip 40→115 / 33→99.",
+     "kanit": "param_fark.py olay listesi; ek.py; olay.py VIBE"
+    },
+    {
+     "t_s": 203.97,
+     "olay": "CH6 ile disarm (ARM Method 2). Sonrasında PreArm pusula, GCS failsafe, EKF variance mesajları.",
+     "kanit": "param_fark.py olay listesi"
+    }
+   ],
+   "olcumler": [
+    {
+     "olcum": "Parametre farkı (00:20 logu → 02:50 logu)",
+     "deger": "Yalnız kalibrasyon, sayaç ve MOT_THST_HOVER (0,3837 → 0,3818) farklı. SERVO9..12_FUNCTION 36/34/33/35, MOT_THST_EXPO 0,65, SPIN_MIN/MAX 0,15/0,95, MOT_SLEW_UP_TIME 0, INS_LOG_BAT_MASK 0, INS_POS1/2 = 0 iki logda aynı.",
+     "kaynak": "wf_0250/param_fark.py (cikar.py ile üretilen a.pkl/b.pkl)"
+    },
+    {
+     "olcum": "Askı motor dengesi, çubuk ortada (M1/M2/M3/M4 µs; yayılım; CCW−CW; sağ−sol; ön−arka)",
+     "deger": "00:20 logu 637–643 (n=38): 1585/1602/1585/1586; 17; +15; −15; −18. 00:20 logu uçuş 3 (621,9–647,8, n=64): 1556/1573/1600/1600; 44; −70; −17; −17. W5 (141–147,5, n=58): 1495/1525/1530/1496; 34; −6; −63; +4. W6 (188,4–202,35, n=72): 1582/1661/1517/1418; 243; +307; −178; +20. W6a (188,4–195, n=22): yayılım 162, CCW−CW +176. W6b (195–202,35, n=50): 278, +365.",
+     "kaynak": "wf_0250/askida.py <pkl> sert (çubuk süzgeci |C1,C2,C4 − trim| ≤ 30, |C3 − 1500| < 100)"
+    },
+    {
+     "olcum": "Süzgeçsiz askı dengesi (tüm havada)",
+     "deger": "00:20 logu 637–643 (n=60): 1555/1567/1615/1609, yayılım 59, CCW−CW −102. W5 (n=65): yayılım 38, −8. W6 (n=139): yayılım 218, CCW−CW +270, sağ−sol −165.",
+     "kaynak": "wf_0250/askida.py <pkl> gevsek"
+    },
+    {
+     "olcum": "Diğer arm pencereleri (gerçek askı değil)",
+     "deger": "02:50 W1 54,4–61,4: ThO 0,001, 9,8 A, 1201/1289/1393/1161 (yerde). W2 75,6–79,9: ThO 0,07–0,13, 10,9–17,9 A (kısa sıçrama). W3/W4 113–118 / 120–124: yalnız 1100 µs rölanti. 00:20 uçuş 1 (91–136): 1400–1800 µs'de 2,4–5,1 A, VibeZ ≈ 1 → ÇIKARIM pervanesiz. 00:20 uçuş 2 (596–606): yerde.",
+     "kaynak": "wf_0250/trend.py b.pkl 49 81 2; b.pkl 113 125 1; a.pkl 46 139 5; a.pkl 595 606 1"
+    },
+    {
+     "olcum": "W6 1 s kutularında öncül trend",
+     "deger": "CCW−CW: +22 (188,5) → +152 (189,5) → +150…+172 (190,5–194,5) → +290 (194,5) → +317/+335/+368/+367/+419/+450 (195,5–201,5). Yaw hatası 0,6 → 4,5 → 3,8 → 8,4 → 10,1…11,6°; 202,07–202,37 anlık 14,3–14,8°. YOut +0,01 → +0,26; 202,07–202,37 anlık 0,290–0,329.",
+     "kaynak": "wf_0250/trend.py b.pkl 181.5 204 1; olay.py b.pkl 202.0 203.2 ATT,RATE"
+    },
+    {
+     "olcum": "Yaw basamaklarının ayrıştırılması (µs, toplam ölçek)",
+     "deger": "Basamak 1 (188,8–189,4 → 189,8–190,6): ΔM1..M4 +39/+44/−19/−30 → yaw +132, roll(sol−sağ) +16, pitch(ön−arka) +6. Basamak 2 (193,6–194,5 → 194,95–195,8): +24/+41/−57/−55 → +177/+15/−19. Rampa (195–197 → 201,4–202,37): +43/+67/+12/−85 → +182/+121/+73. 201,4–202,37 ort. 1636/1727/1513/1339 → CCW−CW +511.",
+     "kaynak": "wf_0250/basamak2.py"
+    },
+    {
+     "olcum": "Basamak anları (0,1 s)",
+     "deger": "189,47–189,77: RATE Y −6,7 → −8,7 °/s, yaw hatası 1,6 → 3,7. 194,47 ve 194,57: VibeZ 29,0. 194,67–194,97: Y −10,9 → −17,9 °/s, GyrZ −13…−19, yaw hatası 4,4 → 8,9. C1 1499, C4 1500 boyunca.",
+     "kaynak": "wf_0250/basamak.py"
+    },
+    {
+     "olcum": "İtki birimli ayrıştırma (T = 0,35a + 0,65a², a = (PWM − 1150)/800)",
+     "deger": "W5 T(M1..M4) 0,278/0,311/0,320/0,289 → yaw_ccw −0,020, roll_sol +0,064, pitch_on −0,001. W6 201,4–202,37: 0,453/0,590/0,293/0,121 → +0,629/+0,310/+0,035. Fark: yaw +0,649, roll +0,246, pitch +0,035, kolektif +0,065. Hiçbir tek motorun zayıflama işaret deseni (+,+,+) değil. Karıştırıcı kontrolü: 0,629/4 = 0,157 ≈ 0,5 × YOut 0,31.",
+     "kaynak": "wf_0250/hesap.py"
+    },
+    {
+     "olcum": "Yaw çıkışı ve doyum payı",
+     "deger": "YOut: W5 ort −0,009; W6 188,5–195 ort +0,075 (en fazla 0,189); 195–202,37 ort +0,225 (en fazla 0,311); ATC_RAT_YAW_IMAX 0,5. M4 en düşük 1231 µs (195–202,37), 202,37'de 1202. MOTB ThLimit ve LiftMax 1,0; FailFlags iki logda sabit 2.",
+     "kaynak": "satır içi doyum betiği (wf_0250/ortak.py ile); wf_0250/ek.py"
+    },
+    {
+     "olcum": "Denetim çabası, ortalama |ROut| / |POut|",
+     "deger": "00:20 logu uçuş 3: 0,025 / 0,029. W5: 0,122 / 0,116. W6 188,5–195: 0,107 / 0,063. W6 195–202,37: 0,123 / 0,025.",
+     "kaynak": "satır içi doyum betiği (RATE ROut/POut)"
+    },
+    {
+     "olcum": "Askı VIBE X/Y/Z (IMU0 ort.)",
+     "deger": "00:20 logu 622,5–647,8: 1,07/2,15/7,10. 00:20 logu 637–643: 1,03/2,14/6,96. W5 141,5–148: 3,73/6,03/17,36. W6 188,5–202,37: 3,51/7,13/18,44. W6 201,47–202,37 anlık VibeZ 15,3–23,3.",
+     "kaynak": "wf_0250/basamak2.py; olay.py b.pkl 201.4 203.1 VIBE"
+    },
+    {
+     "olcum": "1100 µs yerde rölanti VIBE X/Y/Z",
+     "deger": "00:20 logu 599,2–601,9: 0,18/0,27/0,43. 02:50 logu 116,2–117,9: 0,52/1,59/0,72; 123,2–124,1: 0,61/1,72/0,68; 137,2–138,9: 0,66/1,02/0,81; 184,6–185,4: 0,45/1,35/0,99.",
+     "kaynak": "wf_0250/basamak2.py"
+    },
+    {
+     "olcum": "Eşit akımda VIBE (sert inişten önce/sonra)",
+     "deger": "5–15 A: 00:20 logu Z 2,99 (n=2); 02:50 logu 49–79,4 Z 8,09 (n=64); 79,6–202,37 Z 11,04 (n=19). 35–45 A: 00:20 logu Z 7,14 (n=195); 02:50 öncesi Z 22,80 (n=3); sonrası Z 18,12 (n=193).",
+     "kaynak": "satır içi eşleşik akım betiği"
+    },
+    {
+     "olcum": "Gyro farkından açısal ivme (IMU0, 25 Hz), |aX| / |aY| °/s²",
+     "deger": "00:20 logu uçuş 3 havada: p50 61 / 52, p95 403 / 541, en fazla 955 / 1467. W5: p50 820 / 727, en fazla 2487 / 2782. W6 188,5–202,33: p50 380 / 226, p99 1536, en fazla 1838 / 1382. Olay: 202,41 +3863 / −2459; 202,45 +6036; 202,49 −9152 (IMU1 −10800). 00:20 logu temas sonrası 648,28–648,80 en fazla 3985 / 4862.",
+     "kaynak": "wf_0250/acisal.py"
+    },
+    {
+     "olcum": "Onset gyro ve ivme (IMU0 / IMU1)",
+     "deger": "202,33 Gx +23,3/+23,5, Gy −17,1/−16,2, Gz −12,7/−13,5. 202,37 Gx −11,6, Gy −5,5, Gz −22,0. 202,41 Gx +142,6/+146,4, Gy −103,7/−105,4, Gz −19,6/−19,7; Ax −1,71/−1,97, Ay +3,16/+2,85, Az −3,75/−4,05. 202,45 Gx +382,7/+414,2, Gy −148,2/−142,6; Ax +22,5/+23,2; Ay +9,15/−15,56.",
+     "kaynak": "wf_0250/olay.py b.pkl 202.0 203.2 IMU"
+    },
+    {
+     "olcum": "AccZ düşüşü ile tek motor kaybı (HESAP)",
+     "deger": "201,9–202,37 ort. AccZ −9,66 (iki IMU). 202,37 T 0,405/0,693/0,372/0,025 (toplam 1,495). Tam kayıpta beklenen itki oranı: M1 0,73 (−7,04), M2 0,54 (−5,19), M3 0,75 (−7,26), M4 0,98 (−9,50). Gözlenen 0,39 / 0,42.",
+     "kaynak": "wf_0250/hesap.py"
+    },
+    {
+     "olcum": "RCOU dizisi (M1 C11 / M2 C10 / M3 C12 / M4 C9)",
+     "deger": "202,07 1610/1751/1532/1319; 202,17 1666/1701/1498/1379; 202,27 1638/1725/1552/1294; 202,37 1602/1788/1577/1202; 202,47 1949/1708/1490/1604; 202,57 1910/1481/1949/1150; 202,67 1949/1325/1901/1150; 202,77 1949/1150/1797/1405; 202,87 1949/1150/1789/1430; 202,97 1700/1745/1949/1150; 203,07 1949/1150/1583/1699; 203,17 1949/1150/1676/1508.",
+     "kaynak": "wf_0250/olay.py b.pkl 202.0 203.2 RCOU"
+    },
+    {
+     "olcum": "RATE çıkışları (olay)",
+     "deger": "202,37 ROut 0,299, POut 0,028, YOut 0,329. 202,47 ROut −0,273, POut 0,139, YOut 0,416. 202,57 POut 1,773. 202,67 POut 1,633. 202,77 POut 1,854. 202,87 POut 1,732. RATE P: −314,5 / −413,8 / −448,9 / −443,6 °/s.",
+     "kaynak": "wf_0250/olay.py b.pkl 202.0 203.2 RATE"
+    },
+    {
+     "olcum": "Clip ve VIBE olay dizisi (IMU0; IMU1)",
+     "deger": "202,37 Clip 10;6, X/Y/Z 3,4/6,5/17,1. 202,47 Clip 32;26, 45,3/66,8/43,4. 202,57 40;33, 51,0/65,6/59,1. 202,67 40;33, 28,6/37,5/35,1. 202,77 16,2/20,8/27,1. 202,87 10,1/22,2/31,9. 202,97 115;99, 73,3/81,9/92,1. 203,07 145;117.",
+     "kaynak": "wf_0250/olay.py b.pkl 201.4 203.1 VIBE; satır içi Clip değişim taraması"
+    },
+    {
+     "olcum": "Batarya (olay)",
+     "deger": "202,37 43,5 A / 14,52 V. 202,47 72,7 A / 13,32 V. 202,57 120,0 / 10,56. 202,67 120,0 / 10,44. 202,77 120,0 / 9,42. 202,87 120,0 / 10,31. 202,97 120,0 / 11,06. 203,07 120,0 / 11,14. 203,17 111,5 / 10,61. 120,0 = BATT_AMP_PERVLT 36,36 × 3,3 V (ADC tavanı).",
+     "kaynak": "wf_0250/olay.py b.pkl 202.0 203.2 BAT; param_fark.py"
+    },
+    {
+     "olcum": "Akım modeli I = k·Σ T^1,5 (HESAP) ve kalibrasyon hatası",
+     "deger": "k = 44,5 A (201,4–202,37 ort. 42,8 A). Sağlam / M1 pervanesiz / ölçülen / (16,16 − V)/0,0377: 202,47 80,7 / 37,6 / 72,7 / 75. 202,57 89,3 / 51,3 / ≥120 / 149. 202,67 84,0 / 40,8 / ≥120 / 152. 202,77 74,2 / 31,0 / ≥120 / 179. 202,87 74,1 / 31,0 / ≥120 / 155. 00:20 logu 648,30–648,80 model/ölçülen: 68,6/66,4, 90,6/114,8, 73,0/55,3, 79,3/15,6, 75,8/22,3, 51,5/54,7 (hata −64…+24 A).",
+     "kaynak": "wf_0250/hesap.py"
+    },
+    {
+     "olcum": "Yükseklik, eğim ve yatay hız",
+     "deger": "EKF PD yerde 184–188 −1,46, askıda 201,4–202,37 −2,09 (0,63 m). CTUN BAlt 1,34 → 2,39 (1,05 m). XKF1 VN/VE: 202,27 0,12/0,12; 202,37 0,11/0,08; 200–202 hız 0,48–0,49 m/s. Pitch ortalaması: W5 −1,05…−2,27°, W6 −0,27 (188) → −3,2…−3,95° (196–202). 202,37 Roll 1,53, Pitch −5,14.",
+     "kaynak": "wf_0250/ek.py; olay.py ATT"
+    },
+    {
+     "olcum": "Çarpma ivme tepeleri",
+     "deger": "02:50 logu 79,0–79,8: 31,3 m/s² (79,450, I1). 202,30–202,55: 57,5 (202,490, I0; clip'li). 202,88–203,10: 72,8 (202,970, I1). 00:20 logu 648,2–648,35 (dış temas): 16,5. 648,8–648,95 (yer): 73,6.",
+     "kaynak": "wf_0250/ek.py"
+    }
+   ],
+   "belirsizlikler": [
+    "ESC telemetrisi yok (logda ESC mesajı yok) ve INS_LOG_BAT_MASK=0. Motor başına devir ya da akım bilinmiyor; pervane frekansı çözülemiyor. IMU 25 Hz tek örnek (INS_ACCEL/GYRO_FILTER 20 Hz). 202,45–202,55 ivme değerleri clip'li, sayısal olarak güvenilmez.",
+    "Öncül bozulma yalnız yaw'da. Hangi motorun itki ekseninin döndüğü bu imzadan ayrılamıyor; M1 ile bağlantı ÇIKARIM. Kalıcı rüzgâr ya da aerodinamik yaw torku kesin elenmedi (5–7 s kalıcı basamaklar buna karşı).",
+    "Açısal ivme hesabı log dışı varsayımlara dayanıyor: L/√2 0,18–0,21 m, I 0,02–0,04 kg·m², Tmax = (3,28·9,81/4)/0,3818 ≈ 21,1 N. Kol boyu ve atalet ölçülmedi; sonuç en az 2 kat belirsiz.",
+    "Akım modeli (T^1,5) 00:20 logu yuvarlanmasında −64…+24 A şaştı. Akım sensörü 120 A'da doyuyor; gerilimden akım tahmini sabit R = 37,7 mΩ ve VoltR 16,16 V varsayıyor. Aşırı akım kanıtı orta güçte.",
+    "Skywalker 60A V2 ESC ayarları (düşük gerilim koruması, timing) bilinmiyor. 9,42–11,14 V (2,35–2,8 V/hücre) veriyolu korumayı tetiklemiş olabilir; doğrulanmadı. Sürekli burun aşağı dönüşte ön otoritenin neredeyse sıfır olması 'yalnız M1 kaybı + gerilim sarkması' HESAP'ıyla (≥ ~1900 °/s² beklenir) tam uyuşmuyor; M3'ün de itki üretmemesi (ikincil desync ya da koruma) veya bilinmeyen temas olasılığı açık.",
+    "02:50 logundaki VIBE ve denetim çabası artışı (×2,5–5) onarımda FC montajının ya da sönümleyicinin değişmesinden de gelebilir. Onarım kapsamı ve pervane/motor değişimi hakkında kullanıcı beyanı yok.",
+    "02:50 logunda 79,45 s'de ikinci aday hasar olayı var (sert yere değme, 31,3 m/s², Clip 10). Ondan önceki VIBE eşleşmesinde 00:20 tarafında örnek sayısı 2–3; zayıf.",
+    "Yerden yükseklik EKF'ye göre 0,63 m, baroya göre 1,05 m; ikisi de sürüklenme ve yer etkisi altında. Dış cisim ya da zemin teması logda görülemez; H4 elenemiyor.",
+    "MOTB FailFlags iki logda sabit 2. ArduPilot kaynağına göre (oturumda doğrulanmadı) motor kaybı/thrust boost algılaması 4 ve daha az motorlu çerçevede kapalı, dolayısıyla bu alan bilgi taşımıyor.",
+    "00:20 logu uçuş 1'in pervanesiz olduğu yalnız akımdan çıkarım (1400–1800 µs'de 2,4–5,1 A).",
+    "Eksen işaret yorumu (sağ taraf aşağı = GyrX +, burun aşağı = GyrY −) AHRS_ORIENTATION=0 ve kartın ileri bakacak biçimde takılı olmasına dayanıyor. Motor sırası ve yönü daha önce yalnız BEYAN ile doğrulanmıştı.",
+    "Mimarın gözlemlerine düzeltme: 'Clip uçuş başından 6' IMU1 için doğru; IMU0'da 10. İkisi de 79,45 s sert yere değmesinden birikmiş. 'Neredeyse durağan' ifadesi 202,27–202,37 için doğru (0,11–0,12 m/s), ama 200–202 arasında pilot roll girdisiyle 0,48–0,49 m/s hız var.",
+    "Bağlam, bu oturumda yeniden ölçülmedi: results/ucus_analiz_20260915/RAPOR.md 13 Eylül'de açıklanamayan benzer sıçramalar kaydediyor (CCW−CW +63 → +204 µs, VibeZ 19,7 → 27,3) ve M4 kolunun fazla yüklü olduğunu (T279) yazıyor. Bu araçta tekrarlayan mekanik durum değişimi geçmişi olabilir."
+   ]
+  }
+ },
+ {
+  "type": "result",
+  "key": "v2:8a41b85f5107b1119449e4f5c962c184ddb1acfb42be7aafee16fa6edeae1762",
+  "agentId": "a2a32cabd43bb69e3",
+  "result": {
+   "birincil_neden": "Başlatıcı olay, 202,41 s'de havada başlayan ön-sağ M1 (CCW, C11) köşesindeki donanım kaynaklı itki ve tork kaybıdır. Arkasından sırasıyla şunlar geldi:\n- 202,45–202,49 s: araç içinde havada sert mekanik darbe. |a| 27,4 → 57,5 m/s² oldu, Clip sayacı IMU0'da 10→32, IMU1'de 6→26 arttı.\n- 202,47–202,57 s: GPS1 soketindeki GPS ve harici pusula havada kesildi.\n- 202,57–203,07 s: akım 120 A sensör tavanında kaldı, gerilim 9,42 V'a indi. Bu sarkmadan hesaplanan akım 179 A (HESAP).\n- Kontrolcü 0,16 s içinde doyuma girdi. Araç 202,77'de 124° roll ile ters döndü ve 202,97'de yere çarptı.\n\nBaşlatıcı OLMAYANLAR: pilot girişi (C1 1436 hafif sola iken araç sağa +143 °/s döndü, C4 1500), yere veya dış cisme temas (202,33/202,37'de |a| 10,5/10,4; ilk bozuk örnekte |a| 5,2'ye DÜŞTÜ, yani itme değil itki kaybı), güç (Vcc 5,02–5,12 V, BAT 14,52–15,17 V), RC (dt ≤ 0,1 s) ve GPS/pusula (kesinti olaydan sonra).\n\nZemin iki etkenden oluşuyor:\n(a) 00:20 düşüşünden sonra itki/yapı düzeni değişmiş bir araç. Eşleşik askıda itki komutu −%22, VibeZ ×2,6, roll jiro RMS ×15, 6,3 Hz tepe.\n(b) Son uçuşta 189,5 ve 194,6 s'de basamakla başlayıp CCW−CW +520 µs'ye ve 13,8° yaw hatasına büyüyen, yalnız yaw ekseninde bir mekanik bozucu.\n\nKesin mekanizma logdan ayrılamıyor. Adaylar:\n- pervane ya da motorun bir şeye çarpıp sıkışması (kablo dolanması dahil),\n- kol ya da motor yatağının gevşemesi,\n- ESC desync veya faz kısa devresi.\n\nTemiz bir pervane kopması akım ölçümüyle çelişiyor.",
+   "birincil_neden_guven": "orta",
+   "zaman_cizelgesi": [
+    {
+     "t_s": 79.45,
+     "olay": "Aynı oturumda, W2 kısa sıçraması sırasında sert yere değme (Alt 0,78–1,05, ThO 0–0,30). |a| 31,1/31,3 m/s², VibeZ 56,8, Clip IMU0 0→10, IMU1 0→6. Uçuş içindeki ilk clip artışı; son uçuşa kadar başka artış yok. İkinci aday hasar olayı.",
+     "kanit": "wf_0250/hakem/h_ek.py (IMU 79,33–79,57; VIBE 79,27–79,67; Clip değişim listesi)"
+    },
+    {
+     "t_s": 143.9,
+     "olay": "W5 askısı (143,9–146,9; çubuklar ortada; Alt 1,66–1,71):\n- ThO 0,293; 14,87 V / 38,3 A\n- VIBE X/Y/Z 3,8/6,2/18,0\n- GyrX/GyrY RMS 31,9/26,9 °/s; 6,33 Hz tepesi 30 °/s\n- hız hatası RMS roll/pitch 47,1/40,1 °/s; |ROut| 0,125\n- CCW−CW 1 s kutularda −71…+63 µs (yaw dengeli)\n\n00:20 logunun temiz askısı (639,1–642,5):\n- ThO 0,376; 14,75 V / 41,8 A\n- VIBE 1,0/2,1/6,8\n- jiro RMS 2,1/2,6; hız hatası 2,6/6,1; |ROut| 0,014\n\nAraç 00:20'den sonra itki ya da yapı olarak değişmiş.",
+     "kanit": "wf_0250/hakem/h_temiz.py; h_fft.py; h_trend.py hb.pkl 140.9 147.5 1"
+    },
+    {
+     "t_s": 188.3,
+     "olay": "Son uçuşun kalkışı (EV 28). 192,5 s'ye kadar C3 1611 ile tırmanış. 188,4–189,4 kutusu: CCW−CW +16 µs, yaw hatası 0,5°, ThO 0,273.",
+     "kanit": "genel.txt EV; wf_0250/hakem/h_trend.py hb.pkl 188.4 202.4 1; h_basamak.py"
+    },
+    {
+     "t_s": 189.47,
+     "olay": "Yaw bozucusu, basamak 1. RATE Y −6,7 (189,47) → −8,7 °/s (189,67). Yaw hatası 1,6 → 5,1° (190,07). 1 s kutuda CCW−CW +16 → +144 µs, ardından 190,4–194,4 arasında +140…+166 platosu. C1 1499, C4 1500 ama C3 1611: basamak TIRMANIŞ sırasında (Alt 1,53→1,62).",
+     "kanit": "wf_0250/hakem/h_basamak.py (188,9–190,1); h_trend.py"
+    },
+    {
+     "t_s": 194.37,
+     "olay": "VibeZ 29,0 (194,37 ve 194,47; son uçuşun en yüksek değeri). Ardından basamak 2 geldi:\n- GyrZ −9 (194,67) → −18/−19 °/s (194,87)\n- RATE Y −17,9 °/s\n- roll −1,0 → +3,3°\n- yaw hatası 3,3 → 8,9° (194,97)\n- 1 s kutuda CCW−CW +154 → +271 µs\n\nBu sırada çubuklar ortada, C3 1528, Alt 1,92 sabit.",
+     "kanit": "wf_0250/hakem/h_basamak.py (193,9–195,3); h_ek.py (W6 VibeZ en yüksek 194,47)"
+    },
+    {
+     "t_s": 195.4,
+     "olay": "Rampa (195,4–202,4): CCW−CW +316 → +520 µs, YOut 0,183 → 0,299, yaw hatası 10,6 → 13,8°. Hiçbir motor 1150/1949'da değil; M4 en düşük 1231 µs, yani doyum yok. ThO 0,293 (192,5–193,5) → 0,327 (196,4–198,4) → 0,342 (201,4–202,37); gerilim 14,87 → 14,61 V, Alt 1,87–2,10. 199,4–202,4 arasında pilot roll girişleri var.",
+     "kanit": "wf_0250/hakem/h_trend.py; h_rc.py; h_temiz.py; h_guc.py"
+    },
+    {
+     "t_s": 202.33,
+     "olay": "İlk küçük sapma: GyrX +23,3/+23,5, GyrY −17,1/−16,2, GyrZ −12,7/−13,5 °/s; |a| 10,53/9,59. Darbe imzası yok.",
+     "kanit": "wf_0250/hakem/h_olay.py 202.25 203.12 (IMU)"
+    },
+    {
+     "t_s": 202.37,
+     "olay": "Son normal örnek:\n- RCOU M1 1602, M2 1788, M3 1577, M4 1202 (CCW−CW +611)\n- YOut 0,329; Y −22,1 °/s; GyrZ −22,0 (190–202,30 arası en düşük −18,9, std 4,3)\n- |a| 10,40; Roll 1,5, Pitch −5,1; DesYaw 314,2, Yaw 299,4\n- BAT 14,52 V / 43,5 A; VIBE 3,4/6,5/17,1, Clip 10/6; Alt 2,10\n- C1 1436 (hafif sola), C4 1500",
+     "kanit": "wf_0250/hakem/h_olay.py; h_guc.py"
+    },
+    {
+     "t_s": 202.41,
+     "olay": "BAŞLANGIÇ, ön-sağ köşe düşüyor:\n- GyrX +142,6/+146,4 (sağ taraf aşağı)\n- GyrY −103,7/−105,4 (burun aşağı)\n- GyrZ −19,6/−19,7\n- AccZ −3,75/−4,05; |a| 5,19/5,33 (itki kaybı)\n\nİşaret deseni (+,−,−) yalnız M1 kaybına uyuyor. Son GPS örneği bu anda; sonraki GPS kaydı 206,41'de.",
+     "kanit": "wf_0250/hakem/h_olay.py (IMU, GPS)"
+    },
+    {
+     "t_s": 202.45,
+     "olay": "Havada sert mekanik darbe: |a| 27,4/29,6, AccX +22,5/+23,2, GyrX 383/414, GyrZ +58/+91 °/s. 202,49'da |a| 57,5/45,2, AccY −54,1/−43,7, GyrZ −92/−94 °/s (yüksek frekanslı iç olay).",
+     "kanit": "wf_0250/hakem/h_olay.py (IMU)"
+    },
+    {
+     "t_s": 202.47,
+     "olay": "VIBE Clip 10→32 / 6→26; VibeX/Y/Z 45,3/66,8/43,4. Harici pusula (MAG I0) SON güncellemesi S=202,47. RCOU M1 1949 (tavan), M2 1708, M3 1490, M4 1604. BAT 13,32 V / 72,7 A. Roll 21,9°, Pitch −13,9°.",
+     "kanit": "wf_0250/hakem/h_olay.py (VIBE, MAG, RCOU, BAT, ATT)"
+    },
+    {
+     "t_s": 202.57,
+     "olay": "MAG I0 S 202,47'de dondu (I1 güncelleniyor); GPS1 soketindeki iki cihaz havada koptu. BAT 120,0 A (tavan) / 10,56 V. RCOU M1 1910, M3 1949, M2 1481, M4 1150. POut 1,773, P −314,5 °/s. Clip 40/33.",
+     "kanit": "wf_0250/hakem/h_olay.py"
+    },
+    {
+     "t_s": 202.77,
+     "olay": "Gerilim en düşük 9,42 V (VoltR 14,35). HESAP: (16,16−9,42)/0,0377 = 179 A. Roll 124,4° (ters dönüyor); ThO 0,594'e kısılıyor. Pilot LAND anahtarı: C5 2000 (202,67'de 1500).",
+     "kanit": "wf_0250/hakem/h_olay.py (BAT, ATT, CTUN, RCIN)"
+    },
+    {
+     "t_s": 202.95,
+     "olay": "MODE 9 (LAND) kaydı; anahtardan 0,18–0,28 s sonra. Etkisi yok.",
+     "kanit": "results/ucus_20260917b/genel.txt"
+    },
+    {
+     "t_s": 202.97,
+     "olay": "Ters hâlde yere çarpma: |a| 52,8/72,8, Clip 40→115 / 33→99, Roll 156,8°, CTUN Alt 0,70 → 0,13 (203,07). ERR COMPASS 4, son pusula örneği + 500 ms: zaman aşımı, çarpma kaydı değil. MAG I0 Health 1→0.",
+     "kanit": "wf_0250/hakem/h_olay.py; genel.txt"
+    },
+    {
+     "t_s": 203.27,
+     "olay": "Aşırı akım bitti: 203,17'de 111,5 A / 10,61 V → 203,27'de 57,9 A / 14,14 V. M1 hâlâ 1949. 203,47–203,77 arasında 39,5–42,1 A.",
+     "kanit": "wf_0250/hakem/h_ek.py (RCOU/BAT 203,1–204,3)"
+    },
+    {
+     "t_s": 203.77,
+     "olay": "Pilot disarm anahtarı: C6 1000 (203,67'de 2000). Başlangıçtan 1,36 s, çarpmadan 0,8 s sonra. Yerde yaklaşık 1 s boyunca M1 1949 µs çalıştı.",
+     "kanit": "wf_0250/hakem/h_ek.py"
+    },
+    {
+     "t_s": 203.97,
+     "olay": "DISARM (Method 2). RCOU 204,07'de 1000, akım 204,17'de 1,0 A.",
+     "kanit": "genel.txt ARM; wf_0250/hakem/h_ek.py"
+    },
+    {
+     "t_s": 206.41,
+     "olay": "GPS Status 0, NSats 0 (202,41 + 4 s zaman aşımı). 207,065 GCS Failsafe, 210,37 EKF variance: sonuçlar.",
+     "kanit": "wf_0250/hakem/h_olay.py (GPS); genel.txt"
+    }
+   ],
+   "katki_tablosu": [
+    {
+     "etken": "Mekanik: M1 köşesinde uçuş içi donanım arızası; onarımdan sonra değişmiş ve uçuşta bozulan mekanik durum",
+     "kanit": "- Başlangıç işaretleri (+143, −104, −22 °/s) yalnız M1 kaybıyla tutuyor (üç mercek aynı sonuçta).\n- M1 202,47–203,17 arasında 1910–1949 µs'de kaldı, köşe toparlanmadı.\n- Havada iç darbe: 202,45 |a| 27,4, 202,49 57,5; Clip +22/+20.\n- 202,57–203,07 akım ≥120 A (tavan). Gerilimden hesap 179 A (HESAP); tüm pervaneler yüklü modelde 74–89 A (itki merceği modeli). Temiz pervane kopması dışlanıyor.\n- Aşırı akım, M1 hâlâ 1949'dayken 203,27'de 57,9 A'ya düştü.\n- Yalnız yaw'da bozucu basamaklar: 189,47'de +16→+144 µs; 194,6'da +154→+271 µs, VibeZ 29,0, roll +4°.\n- Eşleşik askıda 00:20'ye göre ThO −%22, akım −%8, VIBE ×2,6–3,8, jiro RMS ×10–15, 6,3 Hz tepe.",
+     "pay_araligi": "%55–70"
+    },
+    {
+     "etken": "Pilot / operasyon",
+     "kanit": "PİLOTAJ (%0–5):\n- Başlatmadı: C1 202,27–202,47 arası 1436 (sola) iken araç sağa döndü; C4 1500–1505; C3 1528, ölü bantta.\n- LAND anahtarı başlangıçtan 0,26–0,36 s sonra geldi; takla sırasında etkisi yok.\n- Disarm çarpmadan 0,8 s sonra geldi. Yerde yaklaşık 1 s M1 1949 µs ve 111→40 A çalıştı: ikincil hasar, düşüşe katkı yok.\n\nOPERASYON (%15–25):\n- 00:20 düşüşünden yaklaşık 2,5 sa sonra, kapsamı belgelenmemiş bir onarımla gece uçuşu yapıldı.\n- Oturum içinde 79,45 s'deki sert değmeden (|a| 31,3, Clip 0→10) sonra uçuşa devam edildi.\n- W5'te roll hız hatası RMS 47 °/s (00:20'de 2,6) ve VibeZ 18 gibi anormal bulgular varken son uçuşa geçildi.\n- D-490 §5'in önerdiği muayene, pervanesiz test, U1 kabul askısı, ≥3 m irtifa ve aydınlatma logdan doğrulanamıyor; son askı 0,65 m'de, 02:50'de yapıldı.\n- Son uçuşta 13 s boyunca çubuklar ortadayken yaw 14° kaydı; gece fark edilmesi zor olabilir (ÇIKARIM).",
+     "pay_araligi": "%20–30"
+    },
+    {
+     "etken": "Ayar",
+     "kanit": "- ATC_RAT_RLL/PIT P ve I 0,135, D 0,0036 iki logda aynı (14 parametre farkının hepsi kalibrasyon ya da sayaç). İtki düzeni değiştikten sonra yeniden ayar yapılmadı: W5'te 6,3 Hz tepe, |ROut| ×9.\n- INS_HNTCH_ENABLE 0.\n- MOT_SLEW_UP_TIME 0: M1 202,37 → 202,47 arasında 1602→1949 adımı; desync riskini büyütür, doğrulanamadı.\n- ATC_RAT_YAW_I 0,018: yaw hatası 14,8°'ye kadar birikti ama doyum yok (M4 ≥1202, YOut ≤0,33 < IMAX 0,5).\n- MOT_BAT_VOLT_MAX 0; FS_CRASH_CHECK ≥2 s.\n- SERVO1..8 motor fonksiyonlu (atıl).\n- Hiçbiri başlatıcı değil.",
+     "pay_araligi": "%5–10"
+    },
+    {
+     "etken": "Sensör / elektrik",
+     "kanit": "Olay öncesi temiz:\n- Vcc 5,021–5,121 V, VServo 5,123–5,239 V; POWR Flags ve AccFlags yalnız 1.\n- BAT 14,52–15,17 V / 33,5–46,5 A.\n- RCIN dt ≤ 0,1 s.\n\nGPS ve harici pusula başlangıçtan (202,41) sonra koptu: MAG I0 son güncelleme 202,47, GPS 202,41 → 206,41 St 0. ERR COMPASS bir zaman aşımı.\n\nPay yalnız ESC/motorun elektriksel bileşeninin büyütücü olma olasılığından geliyor (desync, faz kısa devresi, 9,42 V'ta ESC düşük gerilim davranışı). ESC telemetrisi yok; doğrulanamadı.",
+     "pay_araligi": "%2–8"
+    }
+   ],
+   "pilot_payi_araligi": "Toplam %20–30: uçuş anı pilotajı %0–5, operasyon kararları %15–25. Pilot girişi olayı başlatmadı. LAND anahtarı yanlış bir araç oldu ama sonucu değiştirmedi. Geç disarm yalnız ikincil hasar yarattı. Payın ana kaynağı, onarımdan sonra anormal ölçümler varken belgesiz kabul testiyle, gece ve 0,65 m'de uçmaya devam etme kararı.",
+   "onceki_dusus_baglantisi": "ÖLÇÜLEN:\n(1) Parametreler iki logda aynı. 14 farkın hepsi kalibrasyon ya da sayaç (BARO1_GND_PRESS, COMPASS_DEC, jiro ofsetleri, MOT_THST_HOVER 0,3837→0,3818, STAT_*). Değişiklik yazılımda değil (hakem/h_param.py).\n\n(2) Eşleşik temiz askı karşılaştırması:\n\n| Ölçüm | 00:20 (639,1–642,5) | 02:50 W5 (143,9–146,9) | Değişim |\n|---|---|---|---|\n| ThO | 0,376 | 0,293 | −%22; gerilim düzeltmesiyle −%21 |\n| Gerilim / akım | 14,75 V / 41,8 A | 14,87 V / 38,3 A | akım −%8 |\n| VIBE X/Y/Z | 1,0/2,1/6,8 | 3,8/6,2/18,0 | ×2,6–3,8 |\n| GyrX/GyrY RMS (°/s) | 2,1/2,6 | 31,9/26,9 | ×10–15; 6,33 Hz tepesi 30 °/s |\n| Hız hatası RMS roll/pitch (°/s) | 2,6/6,1 | 47,1/40,1 | — |\n| \\|ROut\\| | 0,014 | 0,125 | ×9 |\n\n(hakem/h_temiz.py, h_fft.py)\n\nBağlam, yeniden ölçülmedi: ucus_analiz_20260915/RAPOR.md'de 4S+9x5x3 askıları ThO 0,325–0,360, VibeZ 9,3–11,6. 00:20 bu banda yakın, 02:50 değil.\n\nÇIKARIM: 00:20 ile 02:50 arasında itki zinciri ya da yapı değişti. Adaylar: pervane tipi/boyu, ESC kalibrasyonu, motor/kol değişimi, gevşek montaj. Yalnız kütle değişimi akım −%8 ile komut −%22'yi birlikte açıklamıyor.\n\n(3) Yaw dengesizliği 00:20'den sabit kalıntı olarak taşınmadı. W5'te CCW−CW −71…+63 µs; son uçuşta 189,5 ve 194,6 s basamaklarıyla uçuş içinde doğdu.\n\n(4) Oturum içinde 79,45 s'de ikinci aday hasar olayı var (|a| 31,3, Clip 0→10).\n\n(5) D-490 00:20 temasını ÇIKARIM olarak sağ tarafa (M1/M4) koymuştu; 02:50 arızası da M1 köşesinde başladı. İkisi uyumlu, ama aynı parçanın hasar görüp uçtuğu KANITLANAMAZ, çünkü onarım kapsamına dair beyan yok.\n\nHÜKÜM: Bağlantı olası (orta güven). Hasarlı ya da düzeni değişmiş araçla uçma kararı, W5'teki anormal ölçümler varken verildi; bu bir operasyon kararıdır ve pilot/operasyon payının ana kaynağıdır. D-490 §5'in önerileri (sağ taraf muayenesi, pervanesiz motor testi, U1 kabul askısı, ≥3 m, aydınlatma) logdan doğrulanamıyor: LOG_DISARMED=0 olduğu için yer testleri kayda girmez, son askı 0,65 m'de ve gece yapıldı.",
+   "muayene_onceligi": [
+    "1. M1 köşesi (ön-sağ, CCW, RCOU C11) mekaniği:\n- pervane: kırık ya da eksik kanat, göbek/adaptör kayması, sürtme veya kablo izi\n- motor çanı: elle serbest dönüş, stator sürtmesi, yatak boşluğu, mil\n- motor vidaları ve motor yatağı\n- kol: burulma, çatlak, gövde plakasına bağlantı\nNot: disarm'dan önce yerde yaklaşık 1 s 1949 µs ve 111→40 A çalıştı. Yanık ya da aşınma ikincil olabilir; bulguyu bu bilgiyle yorumla.",
+    "2. GPS1 kablosu, konektörü, GPS direği ve modülü: kopma, ezilme, pervane izi. Direğin ve kablonun M1 pervane diskine mesafesini ölç. GPS ve harici pusula 202,47–202,57 arasında havada birlikte koptu. Kabloda kesik ve M1 kanadında iz birlikte varsa, sıkışma ve ≥120 A mekanizması büyük olasılıkla budur.",
+    "3. M1 ESC'si (Skywalker 60A V2), faz kabloları ve lehimleri: yanık, kısa devre, kondansatör. ESC programını oku (düşük gerilim kesmesi, timing). Pervanesiz tezgâhta 1150→1949 µs adım ve desync testi yap.",
+    "4. Dört pervanenin tipi, boyu ve yönü; 00:20 öncesiyle aynı mı? Askıda itki komutu −%22 değişmiş bir itki zincirine işaret ediyor. Pervane ucu ile gövde, GPS direği, kablolar ve iniş takımı arasındaki açıklıkları ölç.",
+    "5. CW köşeler M3 (ön-sol) ve M4 (arka-sağ) ile tüm kollar: motor ekseni dikliği, teğetsel eğim, kol-gövde bağlantısı, vida torku. Yalnız yaw'daki öncül bozucunun motoru belirlenemedi. Zayıf eğim ipucu M3'ü gösteriyor; M4 kolu daha önce T279'da işaretliydi.",
+    "6. Uçuş kontrolcüsü montajı, sönümleyiciler ve gövde plakaları (Plaka3 alt çerçeve dahil): VIBE ×2,6–3,8 ve 6,3 Hz salınım; plaka ya da vida gevşekliği.",
+    "7. Güç zinciri: pil XT konnektörü, PM06 güç modülü, ana kablolar, ESC güç girişleri (≥120 A, 9,42 V sarkma: erime ya da ısınma izi). Pil hücre gerilimleri ve şişme.",
+    "8. Kullanıcıdan onarım beyanı al: 00:20–02:50 arasında değiştirilen parçalar (pervane, motor, ESC, kol, GPS direği), ESC kalibrasyonu, kütle değişimi, 79,45 s sert değmeden sonra kontrol yapılıp yapılmadığı.",
+    "9. Düşük öncelik: telemetri radyosu ve RC alıcı bağlantıları (GCS heartbeat kaybı çarpma sonrası). Yeniden uçuştan önce itki düzeni değiştiği için PID ayarı ve U1 kabul askısını tekrarla."
+   ],
+   "mercek_celiskileri": [
+    "Yaw öncülünün biçimi. İtki merceği 'basamaklı', sensör merceği 'giderek büyüyen' diyor.\nHakem ölçümü (h_trend, h_basamak), 1 s kutularda CCW−CW:\n- 188,4: +16\n- 189,4: +144 (basamak)\n- 190,4–194,4: +140…+166 (plato)\n- 194,4: +271 (basamak; VibeZ 29,0 ile)\n- 195,4–199,4: +316…+368\n- 199,4–202,4: +412→+520 (rampa)\nHÜKÜM: İkisi de doğru; biçim basamak + plato + rampa. Düzeltme: basamak 1 C3 1611 ile tırmanış sırasında oldu. İtki merceğinin 'çubuklar ortada' ifadesi yalnız roll/yaw çubuğu için geçerli.",
+    "W5 motor yayılımı: itki merceği 34 µs, temas merceği 198 µs.\nHakem ölçümü (h_basamak): pencere ortalamalarının yayılımı 38, anlık yayılım ortalaması 203. 00:20 logunda 52 / 128; son uçuşun sonunda 324 / 326.\nHÜKÜM: Yöntem farkı, gerçek çelişki yok.",
+    "Yaw payı: itki H5 'neredeyse bitmiş', sensör 'doyum yok' diyor.\nHakem ölçümü (h_guc): 188,4–202,37 arasında motor aralıkları M1 1408–1685, M2 1465–1755, M3 1346–1648, M4 1231–1641. 202,37'de M4 1202, yani tabana 52 µs kalmış.\nHÜKÜM: Uyumlu. Doyum yok, pay dar; tetikleyici değil.",
+    "GPS/pusula kesintisi: temas merceği 'kablo veya direk çarpması tetiklemiş olabilir', sensör merceği 'sonuç' diyor.\nHakem ölçümü (h_olay): MAG I0 son güncelleme S=202,47, 202,57'de donmuş. GPS son kayıt 202,41, sonraki 206,41 St 0. İlk bozuk IMU örneği 202,41, havadaki darbe 202,45.\nHÜKÜM: Kesinti başlangıçtan en az 60 ms sonra geldi: SONUÇ. Aşırı akımın başladığı 100 ms'lik pencereyle çakışması kablonun M1 pervanesine girmesiyle uyumlu (ÇIKARIM), ama başlatıcı değil.",
+    "Mimar 'C1..C8 motor DEĞİL' diyor; sensör merceği SERVO1..8'in motor fonksiyonlu olduğunu buldu.\nHakem ölçümü (h_param): SERVO1..8 = 34,34,33,34,34,36,33,34; SERVO9..12 = 36,34,33,35; SERVO13..16 = 36,34,33,35.\nHÜKÜM: MAIN çıkışlarında motor sinyali var, ama M2 fonksiyonu 5 çıkışta tekrarlı. ESC'ler bu çıkışlara bağlı olsaydı araç askıda duramazdı; W5 dengeli uçtu. C9..C12 eşlemesi geçerli. Atıl yapılandırma, nedensel değil.",
+    "Başlatıcı darbe mi itki kaybı mı? Sensör H7 'mekanik darbe (dış ya da iç)' için orta, temas H2 dış temas için düşük diyor.\nHakem ölçümü (h_olay): |a| 202,33'te 10,53, 202,37'de 10,40, 202,41'de 5,19 (düşüş), 202,45'te 27,4, 202,49'da 57,5. Clip artışı (202,37; 202,47] aralığında.\nHÜKÜM: Önce itki kaybı, sonra darbe; dış temas düşük olasılık. 40 ms'den kısa bir iç çarpma (pervane) 202,41'den hemen önce olmuş olabilir; bu iç-mekanik mekanizmayla çelişmez.",
+    "Akım: itki merceği 'M1 sıkışma/stall', sensör merceği 'M1 akım çekiyordu, elektriksel ölü değil' diyor.\nHakem ölçümü (h_olay, h_ek): 202,57–203,07 arası 120,0 A tavan; 202,77'de 9,42 V → (16,16−9,42)/0,0377 = 179 A (HESAP). 203,27–203,77'de M1 hâlâ 1949 iken 57,9 → 39,5 A.\nHÜKÜM: İki mercek uyumlu. Temiz pervane kopması dışlanıyor. Aşırı akım havada ve çarpma çevresinde sınırlı kaldı; yerde M1 sıkışık değildi. Hangi motorun çektiği ölçülemiyor.",
+    "Clip sayacı: mimar 'uçuş başından 6' diyor, itki merceği IMU0'da 10.\nHakem ölçümü (h_ek): IMU0 79,47'de 0→10, IMU1 0→6; 202,37'de 10/6.\nHÜKÜM: İtki merceği haklı. 6 değeri IMU1 için geçerli, ikisi de 79,45 sert değmesinden kalma.",
+    "00:20 CCW−CW tabanı: mimar −61, itki −70, sensör −84 µs.\nHakem ölçümü: 4 s kutularda −13…−100.\nHÜKÜM: Pencere seçimi farkı; hepsi küçük ve negatif. Sonuca etkisi yok.",
+    "Yeni bulgu (hiçbir mercekte yok): eşleşik askıda itki komutu 0,376 → 0,293 (−%22), akım −%8, hız hatası RMS ×7–18. Mercekler 'VIBE artışı FC montajından olabilir' demişti. Bu ölçüm değişikliğin itki zincirini de kapsadığını gösteriyor (h_temiz, h_fft)."
+   ],
+   "belirsizlikler": [
+    "ESC telemetrisi ya da RPM kaydı yok. IMU 25 Hz, RCOU/BAT/VIBE 10 Hz, GPS 5 Hz. Şu mekanizmalar birbirinden ayrılamıyor: M1'in sıkışması veya stall'u, pervane kırılması ile kablo dolanması, kol ya da motor yatağı gevşemesi, ESC desync, faz kısa devresi.",
+    "202,41'de AccZ oranı 0,39–0,42; tek M1 kaybında beklenen 0,73 (itki merceği hesabı, yeniden koşulmadı). IMU konumu bilinmiyor (INS_POS1=0), 20 Hz filtre ve 40 ms örnekleme var. Ek itki kaybı ya da darbe dışlanamıyor.",
+    "179 A akım tahmini hesaptır: sabit R 37,7 mΩ ((16,16−14,52)/43,5, 202,37) ve VoltR 16,16 varsayar. Ölçülen tek şey 120 A sensör tavanı.",
+    "Yalnız yaw'daki öncül bozucunun kaynağı ve motoru belirlenemedi. W5'ten son uçuş sonuna eğim kayması: roll +1,3…+1,9°, pitch −3,2…−3,9° (W5'te −1,0…−2,3). Teğetsel eğim modelinde bu M3'ü (ön-sol) gösterir, ama basamak 2'deki pitch değişimi (+2,3°) bununla tutarsız; rüzgâr ve konum tutma etkisi de ayrılamıyor. ZAYIF. Öncülün M1 arızasıyla aynı kaynak olduğu kanıtlanamıyor.",
+    "İtki düzeni değişikliğinin ne olduğu logda yok (pervane, ESC kalibrasyonu, kütle, motor ya da kol); kullanıcı beyanı yok. 6,3 Hz tepe 25 Hz örneklemede örtüşme (alias) olabilir. Bağlamdaki 15 Eyl referansı RAPOR.md'den alındı, yeniden ölçülmedi, o günün kütlesi bilinmiyor.",
+    "Son uçuşta ThO 0,293 → 0,327 arttı (gerilim düzeltmesiyle ~%9 fazla itki komutu). W5'te de 5 s'de ~%5 artış var. Uçuş içi verim kaybı kanıtı zayıf.",
+    "79,45 s sert değmenin kalıcı hasar bırakıp bırakmadığı ayrılamıyor; W5 bu olaydan sonra.",
+    "Dış cisim ya da zemin logda görülmez, video yok. Yer yüksekliği yaklaşık: EKF 0,65 m, GPS 0,42 m, baro 0,75–1,03 m (temas merceği).",
+    "Skywalker 60A V2 ESC'lerin programlanması bilinmiyor. 202,65–202,89 arasında M3 1789–1901 µs iken GyrY −394…−471 °/s ile burun aşağı dönüş sürdü; bu, M1 dışında da ön otoritenin azaldığını düşündürüyor. Ancak 202,77'den sonra ters dönüşte gaz kısılması (ThO 0,594 → 0,05) yorumu zayıflatıyor.",
+    "Motor eşlemesi C9–C12 kullanıcı beyanına ve SERVO9..12 parametrelerine dayanıyor. Eksen işaret yorumu AHRS_ORIENTATION=0 ve kartın ileri bakacak biçimde takılı olduğu varsayımına dayanıyor.",
+    "Sensör merceğinin EKF, IOMC, PM ve GCS heartbeat bulgularını ve kaynak kod referanslarını bağımsız olarak yeniden koşmadım. POWR, BAT, RCIN, MAG ve GPS zamanlamasını kendim doğruladım.",
+    "Yüzdeler ölçüm değil, kanıta dayalı değerlendirmedir. Onarım kapsamı öğrenilirse pilot/operasyon ile mekanik arasındaki pay kayabilir.",
+    "Hakem betikleri ve önbellekler: C:\\Users\\yunus\\AppData\\Local\\Temp\\claude\\O--navitas\\3e104177-9b44-4ec7-a18f-1f32ed2c3f72\\scratchpad\\wf_0250\\hakem\\ (h_cikar.py → hb.pkl/ha.pkl doğrudan .bin'den; h_param, h_olay, h_trend, h_basamak, h_fft, h_temiz, h_rc, h_ek, h_guc, h_pil)."
+   ]
+  }
+ },
+ {
+  "type": "result",
+  "key": "v2:0039114dcc88d1fd5a05f6242dd0091e5d61e7df97c4c228ffe3282ae387d2f7",
+  "agentId": "a7a0180a9ed68afb2",
+  "result": {
+   "birincil_neden_ayakta": true,
+   "pilot_payi_makul": false,
+   "curutulen_iddialar": [
+    {
+     "iddia": "Operasyon kanıtı: 'Eşleşik askıda 00:20'ye göre ThO −%22, VIBE ×2,6–3,8, jiro RMS ×10–15, hız hatası 2,6/6,1 → 47,1/40,1'.",
+     "neden": "İki pencere aynı yükseklikte değil. 00:20 askısı yerden yaklaşık 1,6 m yüksekte (Alt 5,82–5,86, yer referansı 4,23–4,26). W5 ise yaklaşık 0,41–0,48 m yüksekte (Alt 1,66–1,71, yer 1,23–1,25). Aynı yükseklikteki pencereyle karşılaştırınca yön değişmiyor ama büyüklük abartılı çıkıyor. Bu anormallikler operasyon payının gerekçesi olarak kullanıldığı için pay da şişiyor.",
+     "kanit": "Aynı yükseklikteki 00:20 penceresi 622,4–624,6 (yerden 0,05–0,62 m, CRt ort. 19,7 cm/s): ThO 0,337; VIBE0 1,2/2,1/7,1; Gyr RMS 9,0/6,2 °/s; RATE hata RMS 12,4/7,7; tutum hata RMS 0,57/0,74°.\nW5 143,9–146,9: ThO 0,293; VIBE0 3,8/6,2/18,0; Gyr RMS 31,9/26,9; RATE hata 47,1/40,1; tutum hata 1,41/1,07°.\nSonuç: ThO −%13, VibeZ ×2,5, jiro ×3,5–4,3, hız hatası ×3,8–5,2.\nKomutlar: c3/c_pencere.py a.pkl 622.4 624.6; c3/c_pencere.py b.pkl 143.9 146.9; c3/c_profil.py a.pkl 617 632 0.5 (yer Alt 4,23–4,26); c3/c_profil.py b.pkl 134.1 150.9 0.5 (yer 1,23–1,25)."
+    },
+    {
+     "iddia": "Operasyon payı: 'W5'te anormal bulgular varken son uçuşa geçildi' (sahada fark edilebilirmiş gibi yazılmış).",
+     "neden": "W5'teki anormallikleri yalnız aletler gösteriyor; gözle görülebilen bir işaret ölçülmedi. Tutum ve motor dengesi U1 eşiklerinin içinde. VibeZ 18 de ekibin daha önce uçtuğu aralıkta. Log incelemesi olmadan sahada bu karar 'anormalliği görmezden gelmek' sayılamaz.",
+     "kanit": "W5 tutum hata RMS roll/pitch 1,41/1,07° (U1 ≤ 1,5°). Roll std 1,15°, pitch std 0,92°. Motor ortalama yayılımı 40 µs, CCW−CW +15.\nİlk kalkış W2a 75,5–76,3 (yayılım 33, CCW−CW −22): denge normal.\nBağlam, yeniden ölçülmedi: RAPOR.md 15 Eyl tablosunda askı VibeZ A 17,2, C 21,0/21,1.\nKomut: c3/c_pencere.py b.pkl 75.5 76.3 W2a ... 143.9 146.9 W5."
+    },
+    {
+     "iddia": "'D-490 §5'in önerdiği pervanesiz test logdan doğrulanamıyor; LOG_DISARMED=0 olduğu için yer testleri kayda girmez.'",
+     "neden": "Telemetri logunda (tlog) çarpmadan sonra yapılmış bir motor testi var. Test D-490 yazılmadan (01:40:43) önce yapılmış. Yalnız %15 gazda; yük altındaki yatak, pervane ya da montaj kusurunu göstermez. Onarımdan önce mi sonra mı olduğu bilinmiyor. 02:50 .bin logunda yüksek gazlı pervanesiz koşu YOK. 00:20 oturumunda ise vardı.",
+     "kanit": "results/ucus_20260917/2026-09-17 00-44-57.tlog, 00:45:31–00:45:51:\n- COMMAND_LONG 209 (DO_MOTOR_TEST) ×4 motor, param3 = 15 (%), param4 = 20 s\n- STATUSTEXT 'starting/finished motor test'\n- SERVO_OUTPUT_RAW C9–C12 = 1150\n- SYS_STATUS akım 1,00–1,37 A (boşta 0,25–0,29 A)\nKarşılaştırma: 02:50 logunda pervaneli yer dönüşü, M ≈ 1156–1182 µs'de 2,6–2,8 A (139,1–140,1). Yani test büyük olasılıkla pervanesizdi (ÇIKARIM).\n00:20 logu 92–109 s: M 1900–1949 µs, 5,7–7,2 A, Roll/Pitch sabit −1,3/−2,0 → pervanesiz yer koşusu.\nKomutlar: c3/c_tlog.py, c3/c_tlog2.py (tlog); c3/c_profil.py a.pkl 92 138.5 0.5."
+    },
+    {
+     "iddia": "Pilotaj payı yalnız olay anıyla sınırlı (%0–5). 79,45'teki olay yalnız 'sert değme'; o oturumda başka pilot kaynaklı yer olayı yok.",
+     "neden": "Sentez iki şeyi atlıyor.\n\n(1) W1'de araç yerde devrildi. Pilot Stabilize'da arm etti ve gazı biraz açtı; NOT_LANDED kaydı düştü. Ardından yerde Loiter'a geçti. Denetleyici yerde istenen roll'u 21°'ye çıkardı ve araç sağ taraf (M1/M4) aşağı 27,9°'ye yattı; motorlar bu sırada dönüyordu.\n\n(2) 79,45'teki sert değmenin nedeni pilotun havada gazı en alta çekmesi.\n\nİkisi de olaydan 2–2,5 dk önce. Hasara yol açtıklarına dair ölçüm yok: W1'de IMU darbe imzası yok, W2'deki yüksek titreşim ise sert değmeden önce de vardı.",
+     "kanit": "W1:\n- MODE 0 49,57; EV 28 54,335 (C3 1040); MODE 5 54,652\n- DesRoll 0,9 (54,97) → 10,5 (58,57) → 21,3 (61,47)\n- Roll 26,2–27,9° (60,77–61,47); C3 1000–1002; M1 1400–1542 µs (60,87–61,27)\n- C6 1000 61,27; motorlar 61,57'de 1000\n- |a| ≤ 11,5 m/s², Clip 0\n\nW2:\n- C3 1683 (78,57) → 1110 (78,87) → 1001 (78,97)\n- Alt 0,97–1,05 (yer 0,61–0,64)\n- |a| 31,06 (79,45), 22,59 (79,73); Clip0 0→10\n- Sert değmeden ÖNCE W2a'da VibeZ ort. 17,6, p95 25,9\n\nKomutlar: c3/c_ham.py b.pkl 54.0 59.4 ATT; c3/c_ham.py b.pkl 59.4 61.8; c3/c_ham.py b.pkl 78.2 79.75; c3/c_pencere.py b.pkl 75.5 76.3."
+    },
+    {
+     "iddia": "Operasyon gerekçesi: 'son askı 0,65 m'de yapıldı'.",
+     "neden": "Alçak askı düşüşe neden olmadı. ArduCopter 4.5.7'de dört motorlu araçta tek motor kaybı telafi edilmiyor; araç her yükseklikte düşer, alçakta çarpma enerjisi daha azdır. 0,65 m yalnız askının U1 kabul testi olarak geçerliliğini bozar (U1: ~3 m, ≥ 30 s). Bu ölçülen bir sapmadır ama nedensel katkı değildir.",
+     "kanit": "scratchpad/wf_0250/src_libraries_AP_Motors_AP_MotorsMatrix.cpp:449: 'if (number_motors >= 6 && thrust_balance >= 1.5f && _thrust_balanced)'. İtki artırma (thrust boost) ≥ 6 motorlu araçlarda devreye giriyor.\nW6 yerden yükseklik: 202,37'de Alt 2,10, yer 1,33–1,51 → 0,59–0,77 m.\nOturumdaki en uzun temiz askı 2,9 s (143,97–146,87).\nKomutlar: grep; c3/c_profil.py b.pkl 181.6 190 0.5; c3/c_pencere.py."
+    },
+    {
+     "iddia": "'Geç disarm yalnız ikincil hasar yarattı' ve 'Son uçuşta 13 s boyunca çubuklar ortadayken yaw 14° kaydı'.",
+     "neden": "Disarm geç değildi. Pilot çarpmadan 0,80 s sonra disarm etti; FS_CRASH_CHECK otomatik disarm için ≥ 2 s bekler, yani pilot daha hızlıydı. Başlangıçtan 0,36 s sonra doğru yönde karşı-dümen de verdi.\nÇubuklar 13 s değil yaklaşık 9,3 s ortada kaldı (189,5–198,8). 198,8'den sonra pilot aktif yanal manevra yaptı: 13,5° yatış, sağa 0,71 m/s.",
+     "kanit": "RCIN:\n- C1 1391 (202,77), C5 2000 (202,77), C6 1000 (203,77); çarpma 202,97; DISARM 203,97\n- C1 1499 (198,6) → 1424 (198,8) → 1361 (199,0) → 1813 (199,8–200,0) → 1386–1436 (201,2–202,4)\n- DesRoll 13,5° (200,0)\n- Gövde sağ hızı 0,71 (200,6) → 0,14 m/s (202,2)\nKomutlar: c3/c_ham.py b.pkl 202.25 204.2 RCIN; python -c PSCN/PSCE 196–202,5 (b.pkl)."
+    },
+    {
+     "iddia": "Pay tablosu: 'Mekanik %55–70' ile 'Sensör/elektrik %2–8' ayrı; 'Ayar %5–10'.",
+     "neden": "Sentez, başlatıcı mekanizma adayları arasında ESC desync ve faz kısa devresini (elektrik) de sayıyor. ESC telemetrisi yokken mekanik ile ESC payını ayırmak kanıttan daha kesin bir sonuç veriyor.\nAyar payı için gösterilen parametrelerin hepsi varsayılan değer. Dört motorlu araçta motor kaybı ayarla kurtarılamıyor (MotorsMatrix.cpp:449). MOT_SLEW_UP_TIME üzerinden desync riski de sentezin kendi ifadesiyle doğrulanamadı. %5–10'u destekleyen ölçüm yok; en fazla %0–5.",
+     "kanit": "PARM (her iki log): ATC_RAT_RLL_P 0,135, MOT_SLEW_UP_TIME 0, INS_HNTCH_ENABLE 0, MOT_THST_EXPO 0,65, INS_GYRO_FILTER 20.\nKaynak satırı 449 (number_motors >= 6).\nKomutlar: python -c PARM (a.pkl, b.pkl); grep MotorsMatrix."
+    }
+   ],
+   "tekrar_olculen": [
+    {
+     "olcum": "Olayın başlangıcı: IMU, motor çıkışları, pil",
+     "sentezdeki": "202,37 |a| 10,40; 202,41 |a| 5,19, GyrX 142,6, GyrY −103,7; 202,45 |a| 27,4; 202,49 57,5; M1 202,47'de 1949; 120 A tavan 202,57–203,07; en düşük 9,42 V (202,77)",
+     "olculen": "Aynı: 202,37 |a| 10,40; 202,41 5,19 (Gyr 142,6/−103,7/−19,6); 202,45 27,39; 202,49 57,48. RCOU 202,37 M1 1602 → 202,47 M1 1949. BAT 202,57–203,07 119,99 A; 202,77 9,421 V; 203,27 57,9 A / 14,14 V. Clip0 10 → 32 (202,47).",
+     "komut": "cd scratchpad/wf_0250/c3; python c_cikar.py '<02-50-38.bin>' b.pkl; python c_ham.py b.pkl 202.30 202.60 IMU0,RCOU,VIBE,CTUN; python -c BAT 202,3–203,3"
+    },
+    {
+     "olcum": "Yükseklik eşleşmesi: 00:20 askısı ile W5'in yerden yüksekliği",
+     "sentezdeki": "'Eşleşik temiz askı' 00:20 639,1–642,5 ile W5 143,9–146,9; yükseklik farkı belirtilmemiş",
+     "olculen": "00:20: yer Alt 4,23–4,26 (617,0–621,0), askı 5,82–5,86 → yerden ≈ 1,6 m. W5: yer 1,23–1,25 (139,6–140,6) ve inişten sonra 1,24–1,32, askı 1,66–1,71 → ≈ 0,41–0,48 m. W6: yer 1,33–1,51, 202,37'de 2,10 → ≈ 0,59–0,77 m.",
+     "komut": "python c_profil.py a.pkl 617.0 632.0 0.5; python c_profil.py b.pkl 134.1 150.9 0.5; python c_profil.py b.pkl 181.6 190.0 0.5"
+    },
+    {
+     "olcum": "Aynı yükseklikte karşılaştırma: 00:20 alçak tırmanış ile W5",
+     "sentezdeki": "ThO −%22; VIBE ×2,6–3,8; jiro RMS ×10–15; hız hatası 2,6/6,1 → 47,1/40,1",
+     "olculen": "00:20 622,4–624,6 (yerden 0,05–0,62 m, CRt 19,7 cm/s):\n- ThO 0,337\n- VIBE0 1,2/2,1/7,1 (p95 Z 9,2)\n- Gyr RMS 9,0/6,2\n- RATE hata 12,4/7,7\n- tutum 0,57/0,74°\n\nW5:\n- ThO 0,293\n- VIBE0 3,8/6,2/18,0 (p95 Z 24,1)\n- Gyr RMS 31,9/26,9\n- RATE hata 47,1/40,1\n- tutum 1,41/1,07°\n\nFark: ThO −%13, VibeZ ×2,5, jiro ×3,5–4,3.\n\n00:20 1,6 m askısında ölçülen değerler sentezle aynı: ThO 0,376; VIBE 1,0/2,1/6,8; Gyr RMS 2,1/2,6; RATE 2,6/6,1.",
+     "komut": "python c_pencere.py a.pkl 622.4 624.6 u3_alcak_tirmanis 624.6 627.4 u3_orta_tirmanis; python c_pencere.py a.pkl 621.8 647.8 u3; python c_pencere.py b.pkl 143.9 146.9 W5"
+    },
+    {
+     "olcum": "W5'in gözle görülebilirliği: tutum ve motor dengesi",
+     "sentezdeki": "'W5'te roll hız hatası RMS 47 °/s ve VibeZ 18 gibi anormal bulgular varken son uçuşa geçildi'",
+     "olculen": "W5:\n- tutum hata RMS roll/pitch/yaw 1,41/1,07/0,9°\n- roll std 1,15°, pitch std 0,92°\n- motor ort. M1 1505, M2 1545, M3 1530, M4 1504; yayılım 40 µs, CCW−CW +15\n- |ROut| p90 0,248\n\nW2a (ilk kalkış): yayılım 33 µs, CCW−CW −22.\n\nTutum ve denge U1 eşiklerinde (≤ 1,5°, ≤ 40 µs). Anormallik yalnız VIBE, ThO ve jiro/RATE'te.",
+     "komut": "python c_pencere.py b.pkl 75.5 76.3 W2a 143.9 146.9 W5"
+    },
+    {
+     "olcum": "W1'de yerde Loiter devrilmesi (sentezde yok)",
+     "sentezdeki": "Yok (W1 yalnız 'arm penceresi' olarak geçiyor)",
+     "olculen": "- MODE 0 49,57; EV 28 NOT_LANDED 54,335 (C3 1040); MODE 5 54,652\n- C3 1027–1434, ThO 0,000\n- DesRoll: 54,97'de 0,9 → 58,57'de 10,5 → 59,47'de 14,6 → 61,47'de 21,3\n- Roll 60,17'de 15,7 → 60,77–61,47'de 26,2–27,9° (sağ taraf aşağı), Pitch −1,1…−1,3\n- M1 1400–1542 µs (60,87–61,27), akım 15,6 A'ya kadar\n- C6 1000 61,27; RCOU 1000 61,57\n- |a| ≤ 11,47 m/s², VIBE Clip 0\n\nPervanenin yere değip değmediği ÖLÇÜLEMEDİ.",
+     "komut": "python c_profil.py b.pkl 49.5 61.6 0.5; python c_ham.py b.pkl 54.0 59.4 ATT; python c_ham.py b.pkl 59.4 61.8 IMU0,ATT,RCOU,RCIN,VIBE0,RATE"
+    },
+    {
+     "olcum": "W2'deki 79,45 sert değmesinin nedeni ve öncesindeki titreşim",
+     "sentezdeki": "'W2 kısa sıçraması sırasında sert yere değme (|a| 31,1/31,3, Clip 0→10); ikinci aday hasar olayı'. Pilot nedeni yazılmamış.",
+     "olculen": "- C3 1683 (78,57) → 1646 (78,67) → 1463 (78,77) → 1110 (78,87) → 1001 (78,97): pilot havada gazı en alta çekti\n- C4 1530–1644 (yaw girişi)\n- Alt 0,97–1,05, yer 0,61–0,64 (yerden ≈ 0,35–0,45 m)\n- CRt −56 cm/s (79,37); |a| 31,06 (79,45), 22,59 (79,73); VIBE0 56,8, Clip 0→10\n\nSert değmeden ÖNCE W2a 75,5–76,3'te VibeZ ort. 17,6, p95 25,9. W2b 77,9–79,4'te 14,7 / 22,8.",
+     "komut": "python c_ham.py b.pkl 78.2 79.75 IMU0,CTUN,RCIN,VIBE0,RCOU; python c_pencere.py b.pkl 75.5 76.3 W2a 77.9 79.4 W2b"
+    },
+    {
+     "olcum": "Oturum içi dönüş süreleri ve saatler",
+     "sentezdeki": "'00:20 düşüşünden yaklaşık 2,5 sa sonra'; dönüş süresi yok",
+     "olculen": "Yerel saat (GPS GWk/GMS, UTC+3): 00:20 çarpması 00:20:30; W1 arm 02:51:12; W2 değme 02:51:42; W5 kalkış 02:52:43; W6 arm 02:53:24; başlangıç 02:53:45. Aradaki süre 2 sa 33 dk; oturum 2 dk 33 s.\n\nDönüşler:\n- W1 disarm 61,47 → W2 arm 65,97: 4,5 s\n- W2 80,17 → W3 113,27: 33,1 s\n- W4 124,27 → W5 134,17: 9,9 s\n- W5 150,655 → W6 181,67: 31,0 s\n\n176,57 ve 178,47'de 'Arm: LAND mode not armable'.\nD-490 commit zamanı: 01:40:43 (git log).\nSTAT_BOOTCNT 163 → 167, STAT_FLTTIME 1140 → 1175 s.",
+     "komut": "python -c (a.pkl/b.pkl GPS GWk,GMS → UTC −18 s, +3 sa); genel.txt ARM satırları; git log -3 --date=iso 4fa78e76; python -c PARM STAT_* (a.pkl, b.pkl)"
+    },
+    {
+     "olcum": "Çarpmadan sonra yapılan motor testi (tlog)",
+     "sentezdeki": "'pervanesiz test ... logdan doğrulanamıyor; LOG_DISARMED=0'",
+     "olculen": "00:44:58–01:24:50 tlog:\n- 00:45:31 DO_MOTOR_TEST ×4 (motor 1–4, %15, 20 s)\n- 00:45:31 'starting motor test' → 00:45:51 'finished motor test'; bu sürede armed=True\n- SERVO_OUTPUT_RAW C9–C12 1150\n- akım 1,00–1,37 A; VIBRATION z 0,20–1,34; clip 0\n- 00:45:15 PARAM_SET BATT_AMP_PERVLT 36,36 ve BATT_VOLT_MULT 18,55 (mevcut değerlerle aynı)\n\nPervaneli yer dönüşü, 02:50 logunda benzer PWM'de 2,6–2,8 A → test büyük olasılıkla pervanesiz (ÇIKARIM).\n02:50 .bin'de yüksek gazlı pervanesiz koşu yok. 00:20 .bin'de 92–109 s arasında 1949 µs'ye kadar 5,7–7,2 A pervanesiz koşu var.",
+     "komut": "python c_tlog.py 'results/ucus_20260917/2026-09-17 00-44-57.tlog'; python c_tlog2.py (aynı tlog); python c_profil.py a.pkl 92.0 138.5 0.5"
+    },
+    {
+     "olcum": "Yerde rölantide titreşim: hasar ayırt edilebilir miydi?",
+     "sentezdeki": "Yok",
+     "olculen": "Motorlar ≈ 1150–1225 µs'de yerdeyken VibeZ:\n- 00:20 (620,5–621,0): 2,5–2,8\n- 02:50 W5 (139,1–140,1): 2,2–2,6\n- 02:50 W6 (186,1–187,6): 2,2–2,9\n\nRölantide fark yok. Yüksek titreşim ancak havada görünüyor (W2a VibeZ 17,6).",
+     "komut": "python c_profil.py a.pkl 617 632 0.5; python c_profil.py b.pkl 134.1 150.9 0.5; python c_profil.py b.pkl 181.6 190 0.5"
+    },
+    {
+     "olcum": "Olay anında pilot tepkisi",
+     "sentezdeki": "'LAND anahtarı başlangıçtan 0,26–0,36 s sonra; disarm çarpmadan 0,8 s sonra; geç disarm'",
+     "olculen": "C1 1391, yani sola karşı-dümen (202,77; 202,67'de 1499). C5 2000 (202,77). MODE 9 (202,95). C6 1000 (203,77; 203,67'de 2000). DISARM 203,97. Çarpma 202,97 → disarm anahtarı +0,80 s. Zamanlar sentezle aynı. 'Geç' nitelemesi desteklenmiyor.",
+     "komut": "python c_ham.py b.pkl 202.25 204.2 RCIN; genel.txt"
+    }
+   ],
+   "duzeltme_onerileri": [
+    "Pilot/operasyon payını '%20–30' yerine '%10–30' yaz ve üç bileşene ayır:\n- Olay anı pilotaj %0–2: 202,77'de doğru yönde karşı-dümen; disarm çarpmadan 0,80 s sonra, FS_CRASH_CHECK'ten hızlı.\n- Oturum içindeki yer ve iniş kullanımı %0–5: W1'de yerde Loiter devrilmesi (27,9°), W2'de gaz kesme (|a| 31). Bunların M1 hasarıyla nedensel bağı ölçülemedi.\n- Operasyon kararı %10–25: çarpmadan 2 sa 33 dk sonra, onarım beyanı ve kabul askısı yokken; 4,5 / 33 / 31 s dönüşlerle; gece.\nAlt sınır onarım ve muayene beyanına bağlı; bunu açıkça yaz.",
+    "Zaman çizelgesine W1'i ekle: 54,335 NOT_LANDED (Stabilize, C3 1040) → 54,652 Loiter → DesRoll 21° → 60,77–61,47 Roll 26–28° (sağ taraf aşağı, M1 1400–1542 µs) → 61,27 disarm. Bunu 'aday hasar olayı, IMU darbe imzası yok' diye etiketle.",
+    "79,45 satırını 'pilot havada gazı en alta çekti (C3 1683 → 1001, 78,57–78,97) → sert değme' diye düzelt. W2a'da VibeZ'nin sert değmeden önce 17,6 (p95 25,9) olduğunu ekle: yüksek titreşim bu değmeden doğmamış. Belirsizlikler listesindeki '79,45'in kalıcı hasar bırakıp bırakmadığı ayrılamıyor' maddesini buna göre daralt.",
+    "'Eşleşik temiz askı' tablosunu değiştir. Karşılaştırılan iki pencere aynı yükseklikte değil (≈1,6 m / ≈0,45 m). Yerine aynı yükseklikteki pencereyi koy: 00:20 622,4–624,6 ile W5; ThO −%13, VibeZ ×2,5, jiro RMS ×3,5–4,3, hız hatası ×3,8–5,2. '−%22' ve '×10–15' değerlerini ya kaldır ya da 'yükseklik eşleşmemiş' diye işaretle. 'Yalnız kütle değişimi −%22'yi açıklamaz' çıkarımını −%13 ile yeniden kur.",
+    "Operasyon gerekçesindeki 'anormal bulgular varken' ifadesine görünürlük notu ekle:\n- W5 tutum hata 1,41/1,07° ve motor yayılımı 40 µs, U1 eşiklerinin içinde.\n- Anormallikleri yalnız VIBE, ThO ve jiro gösteriyor; logu incelemeden sahada görülemez.\n- Ekibin önceki uçuşlarında da askı VibeZ 17–21 idi (RAPOR.md; bağlam, yeniden ölçülmedi).",
+    "'Pervanesiz test logdan doğrulanamıyor' cümlesini düzelt:\n- tlog 00:45:31–51'de DO_MOTOR_TEST var (4 motor, %15, 20 s, 1,00–1,37 A; büyük olasılıkla pervanesiz).\n- Bu test D-490'dan önce yapıldı ve düşük gazda; onarım sonrası kabul testi sayılmaz.\n- 02:50 .bin'de yüksek gazlı pervanesiz koşu yok, 00:20 oturumunda vardı (92–109 s, 1949 µs, 5,7–7,2 A).",
+    "'Son askı 0,65 m'de' ifadesini operasyon payının gerekçesinden çıkar ya da şöyle yaz: 'U1 kabul testinin geçerliliğini bozdu (en uzun temiz askı 2,9 s, yerden ≤ 0,8 m), düşüşe nedensel katkısı yok'. Dört motorlu araçta tek motor kaybı telafi edilmiyor (AP_MotorsMatrix.cpp:449, number_motors >= 6).",
+    "'Geç disarm' ifadesini kaldır. '13 s çubuklar ortada' yerine şunu yaz: '189,5–198,8 (≈9,3 s) çubuklar ortada; 198,8–202,4 pilot yanal manevra (C1 1361–1813, 13,5° yatış, 0,71 m/s)'.",
+    "Ayar payını %5–10'dan %0–5'e indir: ilgili parametrelerin hepsi varsayılan, dört motorda motor kaybı ayarla kurtarılamaz, MOT_SLEW_UP_TIME desync riski doğrulanmadı. Mekanik ile sensör/elektrik paylarını 'M1 köşesi donanımı (mekanik veya ESC; ESC telemetrisi olmadan ayrılamaz)' başlığında birleştir.",
+    "D-490 (results/ucus_20260917/DUSUS_ANALIZI.md §1) için kanıtlı REVIEW_LOG kaydı öner (bu görev yalnız okuma olduğu için yazılmadı). 'Uçuş 1: 46,2–138,4 Loiter; 4 kısa iniş-kalkış' yanlış: bu pervanesiz yer koşusu. Kanıt: ThO 0,86–0,89 ve M 1900–1949 µs'de akım 5,7–7,2 A; Roll/Pitch sabit −1,3/−2,0°; komut c3/c_profil.py a.pkl 92 138.5 0.5.",
+    "Kullanıcıdan şu beyanları iste; bunlar gelmeden operasyon payının alt sınırı sabitlenmesin:\n(a) 00:20–02:50 arası onarım kapsamı ve 00:45 motor testinin pervaneli olup olmadığı.\n(b) D-490 §5 önerileri (01:40) pilota ulaştı mı.\n(c) W1 devrilmesinde sağ pervaneler yere değdi mi.\n(d) W2 sert değmesinden ve W1 devrilmesinden sonra görsel kontrol yapıldı mı."
+   ]
+  }
+ },
+ {
+  "type": "result",
+  "key": "v2:d20b18166832e2aa982ccfa28f7f7a72bd2c45956d2b43843fdf541ab219a626",
+  "agentId": "a62427b4cd6f8cef8",
+  "result": {
+   "birincil_neden_ayakta": true,
+   "pilot_payi_makul": true,
+   "curutulen_iddialar": [
+    {
+     "iddia": "Eşleşik askı karşılaştırması (00:20 639,1–642,5 ile 02:50 W5 143,9–146,9) aracın değiştiğini gösteriyor: roll jiro RMS ×10–15, hız hatası RMS ×7–18, 6,3 Hz tepe. Pilot/operasyon payı gerekçesinde de 'W5'te roll hız hatası 47 °/s (00:20'de 2,6)' diye kullanılıyor.",
+     "neden": "Pencereler yere yükseklikte eşleşmiyor. 00:20 penceresi zeminden 1,57–1,61 m yukarıda, W5 0,45–0,50 m yukarıda (zemin: CTUN Alt 00:20'de 612–619 s ortalaması 4,25; W5 uçuşunda 134–139 s ortalaması 1,21). Aynı 00:20 aracı yere yakınken de salınıyordu. Yere yakın eşleşik pencereler (00:20 622,3–623,9 s, 0,03–0,39 m, CRt 0…+26 cm/s; W5 kalkışı 141,2–142,8 s, 0,05–0,19 m, CRt −3…+28 cm/s): GyrX std 10,4 → 26,6 (×2,6), GyrY std 7,8 → 13,8 (×1,8). 5–8 Hz tepesi 00:20'de de var: yere yakın GyrX 9,1 °/s @5,62 Hz, GyrY 7,1 @6,88 Hz; 1,6 m'de ise 0,6. ×10–15 büyüklüğü çoğunlukla yükseklik farkından geliyor. Yükseklikten bağımsız farklar ise duruyor: ThO 0,329 → 0,266 (−%19), akım 39,6 → 34,8 A (−%12), VIBE X/Y/Z 1,2/2,1/6,7 → 3,8/5,8/18,0 (×2,7–3,2). Yani yön doğru, büyüklük abartılı.",
+     "kanit": "C:\\Users\\yunus\\AppData\\Local\\Temp\\claude\\O--navitas\\3e104177-9b44-4ec7-a18f-1f32ed2c3f72\\scratchpad\\wf_0250\\cur2\\c2_irtifa.py ve c2_fft.py (c2_a.pkl/c2_b.pkl, c2_cikar.py ile doğrudan .bin'den çıkarıldı)"
+    },
+    {
+     "iddia": "Yaw dengesizliği 00:20'den taşınmadı: W5'te CCW−CW −71…+63 µs; son uçuşta 189,47 s basamak 1 ve 194,6 s basamak 2 ile uçuş içinde doğdu.",
+     "neden": "W5 penceresi 147,5'te kesilmiş, dengesizliğin başladığı yer pencerenin dışında kalmış. W5 uçuşunun havadaki son saniyesinde (147,37–148,07; Alt 1,67–1,73, yani yerden ~0,45 m) CCW−CW sırasıyla +85, +142, +163, +204, +134, +198, +159, +155 µs; yaw hatası 1,5 → 2,8°. 1 s kutu 147,0–148,0 +119, 146,9–147,9 +108. Son uçuşta kalkış 188,57 civarında (CRt 4 → 11 cm/s). Yaw hatası 188,97'den (0,4°) itibaren tekdüze büyüyor: 0,8 / 1,1 / 1,2 / 1,6 (189,47) / 2,1 / 2,8 / 3,7 / 4,4 / 5,1 (190,07). 189,47'de araç zeminden yalnız ~0,2 m yukarıda (Alt 1,53, zemin 1,35). Basamak 1, W5 sonunda zaten var olan +150 µs düzeyindeki bozucunun kalkışta görünür olmasından AYIRT EDİLEMİYOR. Uçuş içinde doğduğu ölçümle doğrulanan yalnız basamak 2: 194,57–194,97 arası C3 1528 sabit, Alt 1,92; CCW−CW +146 → +345; yaw hatası 3,6 → 8,9°.",
+     "kanit": "c2_ince.py c2_b.pkl 146.4 150.8 ve c2_ince.py c2_b.pkl 187.8 190.6; c2_iz.py c2_b.pkl 134 151 1; W5 146.9–147.5 alt kutusu +63 (6 örnek)"
+    },
+    {
+     "iddia": "Aşırı akım 179 A (HESAP) anormal; tüm pervaneler yüklüyken model 74–89 A veriyor, dolayısıyla temiz pervane kopması akım ölçümüyle çelişiyor.",
+     "neden": "(a) Doğrusal R HESAP'ı 00:20 logunda sınandı: ölçülen akımdan %9–22 fazla veriyor. Pencere öncesi VoltR 16,08 V (647,90), Res 0,0330 Ω. 648,396: HESAP 128 A, ölçülen 114,8. 649,096: HESAP 145, ölçülen 118,5. 649,196: HESAP 115, ölçülen 105,4. Aynı düzeltmeyle 179 A yaklaşık 147–164 A'ya iner.\n(b) 120 A tavanı ayırt edici değil. D-490'ın teknik arıza bulmadığı 00:20 düşüşünde havada 648,396'da 114,8 A ölçüldü (3 motor a = 0,45–0,96). Yerde 649,10–649,60 arası 118,5–120,0 A, en düşük gerilim 9,76 V; aynı HESAP ~192 A verir.\n(c) 202,57'de M3 1949, M1 1910, M2 1481 µs. 00:20'deki 114,8 A örneğiyle aynı büyüklük düzeyinde (ÇIKARIM: M1 ve M3'ün tam gazda normal yüklü çekimi tavana ulaşmaya yetebilir; stall veya kısa devre gerekmiyor).\n(d) Çarpmadan sonra 203,47–203,97 arasında M1 1949 µs, M4 1786–1825 µs iken toplam akım yalnız 28,3–42,1 A. 00:20'de ise yerde M1 1949 ile 120 A çekilmişti. ÇIKARIM: M1 yerde yüklü tam gaz çekmiyordu (pervane kırık/kopuk ya da ESC kesmesi). 'Çelişiyor' ve 'dışlanıyor' hükümleri ölçümle desteklenmiyor; doğru ifade 'akım mekanizmayı ayırt etmiyor'. Kendi 74–89 A modelimi kuramadım: askı verisi dar aralıkta (I 32–56 A), genelleme için yetersiz.",
+     "kanit": "c2_bat.py c2_a.pkl 647.8 649.8; c2_ince.py c2_b.pkl 203.0 204.4; c2_akim.py (model denemesi: yalnız askı verisiyle p tanımlanamadı, RMSE 2,6 A); BATT_AMP_PERVLT 36,36 × 3,3 V = 119,99 A tavanı; 02:50'de 119,99 A olan 6 örnek 202,570–203,070"
+    },
+    {
+     "iddia": "Rampa 195,4–202,4: 'Hiçbir motor 1150/1949'da değil; M4 en düşük 1231 µs'.",
+     "neden": "202,37 örneği bu pencerenin içinde ve M4 orada 1202 µs (sentez aynı örneği başka yerde 1202 diye veriyor). 1231 yalnız 188,4–202,30 için geçerli. Küçük tutarsızlık; 'doyum yok' hükmü değişmiyor (1202 > 1150).",
+     "kanit": "c2_diger.py (M4 min 1231, 188.4–202.30) ve c2_olay.py 202.2 203.1 (202.370 M4(C9) 1202)"
+    },
+    {
+     "iddia": "202,97: 'CTUN Alt 0,70 → 0,13 (203,07)' çarpmayı destekliyor.",
+     "neden": "Aynı çerçevede zemin ≈1,35 (187,5–188,5 ortalaması). Alt 202,87'de 1,16'ya iniyor, yani zeminin altında. 203,07'den sonra 204,37'de −6,42'ye kadar sürüyor ve CRt −552…−569 cm/s'de sabit kalıyor: EKF ters dönüşte ıraksamış. Bu Alt değeri yer teması kanıtı olamaz. Çarpma zamanını gerçekten destekleyen ölçümler IMU |a| 52,84/72,79 ve Clip 40 → 115 / 33 → 99 (202,97).",
+     "kanit": "c2_olay.py 202.2 203.1 (CTUN); c2_ince.py c2_b.pkl 203.0 204.4 (Alt −0.42…−6.42, CRt)"
+    },
+    {
+     "iddia": "Zaman çizelgesi: 79,45 'ikinci aday hasar olayı', oturumdaki ilk sert olay gibi sunuluyor.",
+     "neden": "Sentez ilk arm dönemini atlamış. 54,335'te EV 28 (NOT_LANDED), ThO 0,000 iken araç yerde sağa yattı: roll 0,3° (56,87) → 11,2° (58,37) → 27,9° (61,37–61,47). AccY −4,0…−5,5 ve AccZ −8,0…−8,7 m/s² gerçek eğimi doğruluyor. Bu sırada M1 1400–1542 µs, M4 1150 µs. 60,37'de C3 1000; 61,47'de roll 27,9° iken disarm. Clip 0, VibeZ ≤15,9: pervane darbesi imzası yok. Sağ taraf (M1/M4) ile ilgili bir yer olayı olarak operasyon payı kanıtına eklenmeli.",
+     "kanit": "c2_ince.py c2_b.pkl 56.5 61.6; c2_iz.py c2_b.pkl 49 125 1"
+    }
+   ],
+   "tekrar_olculen": [
+    {
+     "olcum": "Motor eşlemesi (parametre)",
+     "sentezdeki": "SERVO9..12 = 36,34,33,35 → C9 = M4, C10 = M2, C11 = M1, C12 = M3; SERVO1..8 = 34,34,33,34,34,36,33,34; SERVO13..16 = 36,34,33,35",
+     "olculen": "Aynı: SERVO9..12 = 36,34,33,35; SERVO1..8 = 34,34,33,34,34,36,33,34; SERVO13..16 = 36,34,33,35. MOT_PWM_MIN/MAX 1000/2000, SPIN_MIN/MAX 0,15/0,95 → 1150/1949(1950). AHRS_ORIENTATION 0. Not: C1..C8 aynı fonksiyonda aynı değeri taşıyor ama AUX'tan farklı (202,37'de C1 1770, C10 1788; C6 1218, C9 1202).",
+     "komut": "\"O:\\navitas-local-train\\venv\\Scripts\\python.exe\" C:\\Users\\yunus\\AppData\\Local\\Temp\\claude\\O--navitas\\3e104177-9b44-4ec7-a18f-1f32ed2c3f72\\scratchpad\\wf_0250\\cur2\\c2_cikar.py \"O:\\navitas\\results\\ucus_20260917b\\2026-09-17 02-50-38.bin\" c2_b.pkl; ardından c2_olay.py 202.2 203.1 (PARAM bölümü)"
+    },
+    {
+     "olcum": "Motor eşlemesi (karışım regresyonu ve fiziksel doğrulama, W5 141,5–147,9 + son uçuş 188,7–202,30; n = 200)",
+     "sentezdeki": "C9..C12 eşlemesi 'geçerli' (yalnız parametre ve askıda durabilme gerekçesi)",
+     "olculen": "Karışım katsayıları ROut/POut/YOut sırasıyla: C9 −477/−496/−431 (M4 −,−,−); C10 +426/−407/+377 (M2 +,−,+); C11 −428/+456/+449 (M1 −,+,+); C12 +479/+448/−396 (M3 +,+,−). Fiziksel test: 24 permütasyon içinde komutla sonraki 80 ms açısal ivme korelasyonu en yüksek olan (C9,C10,C11,C12) = (M4,M2,M1,M3); roll r = +0,773, pitch r = +0,895. Konum eşlemesi DOĞRULANDI. Yaw r = +0,032: pervane dönüş yönü bu yöntemle doğrulanamadı.",
+     "komut": "\"O:\\navitas-local-train\\venv\\Scripts\\python.exe\" C:\\Users\\yunus\\AppData\\Local\\Temp\\claude\\O--navitas\\3e104177-9b44-4ec7-a18f-1f32ed2c3f72\\scratchpad\\wf_0250\\cur2\\c2_esleme.py"
+    },
+    {
+     "olcum": "202,33–202,49 IMU (I0/I1)",
+     "sentezdeki": "202,33: GyrX +23,3/+23,5, GyrY −17,1/−16,2, GyrZ −12,7/−13,5, |a| 10,53/9,59. 202,37: |a| 10,40, GyrZ −22,0. 202,41: GyrX 142,6/146,4, GyrY −103,7/−105,4, GyrZ −19,6/−19,7, AccZ −3,75/−4,05, |a| 5,19/5,33. 202,45: |a| 27,4/29,6, AccX 22,5/23,2, GyrX 383/414, GyrZ 58/91. 202,49: |a| 57,5/45,2, AccY −54,1/−43,7, GyrZ −92/−94",
+     "olculen": "Tümü aynı. 202,33: 23,3/23,5, −17,1/−16,2, −12,7/−13,5, 10,53/9,59. 202,37: 10,40/10,36, GyrZ −22,0/−21,3. 202,41: 142,6/146,4, −103,7/−105,4, −19,6/−19,7, AccZ −3,75/−4,05, |a| 5,19/5,33. 202,45: 27,39/29,57, AccX 22,49/23,18, GyrX 382,7/414,2, GyrZ 58,4/90,9. 202,49: 57,48/45,21, AccY −54,11/−43,74, GyrZ −91,8/−93,7.",
+     "komut": "c2_olay.py 202.2 203.1 (IMU bölümü; GyrX rad/s → °/s)"
+    },
+    {
+     "olcum": "RCOU (M1 = C11, M2 = C10, M3 = C12, M4 = C9) olay anları",
+     "sentezdeki": "202,37: 1602/1788/1577/1202, CCW−CW +611. 202,47: M1 1949, M2 1708, M3 1490, M4 1604. 202,57: M1 1910, M2 1481, M3 1949, M4 1150",
+     "olculen": "Aynı. 202,370: 1602/1788/1577/1202, +611. 202,470: 1949/1708/1490/1604. 202,570: 1910/1481/1949/1150. 202,671: 1949/1325/1901/1150. 202,770: 1949/1150/1797/1405.",
+     "komut": "c2_olay.py 202.2 203.1 (RCOU bölümü)"
+    },
+    {
+     "olcum": "BAT olay penceresi ve akım tavanı",
+     "sentezdeki": "202,37: 14,52 V / 43,5 A. 202,47: 13,32 / 72,7. 202,57–203,07: 120,0 A tavan. En düşük gerilim 9,42 V (202,77), VoltR 14,35. HESAP (16,16−9,42)/0,0377 = 179 A",
+     "olculen": "202,370: 14,521 V / 43,46 A, VoltR 16,158, Res 0,03767. 202,470: 13,323 / 72,66. 202,570–203,070 arası 6 örnek 119,986 A (BATT_AMP_PERVLT 36,36 × 3,3 = 119,99 → sensör tavanı doğrulandı, BATT_AMP_OFFSET 0). 202,770: 9,421 V, VoltR 14,352. Aritmetik 178,8 A doğru. Ancak aynı yöntem 00:20 logunda ölçülenden %9–22 fazla veriyor (çürütülen iddia 3).",
+     "komut": "c2_olay.py 202.2 203.1 (BAT, PARAM); c2_bat.py c2_a.pkl 647.8 649.8"
+    },
+    {
+     "olcum": "VIBE / Clip",
+     "sentezdeki": "202,47: Clip 10→32 / 6→26, VibeX/Y/Z 45,3/66,8/43,4. 202,57: Clip 40/33. 202,97: Clip 40→115 / 33→99. 79,45: Clip 0→10 / 0→6, VibeZ 56,8. Son uçuşta VibeZ en yüksek 29,0 (194,37 ve 194,47). Mimar: 'Clip uçuş başından 6'.",
+     "olculen": "202,470: IMU0 Clip 32, IMU1 26; VibeX/Y/Z 45,31/66,75/43,37. 202,570: 40/33. 202,970: 115/99. Tüm logdaki Clip değişimleri: IMU0 79,470 0→10, 202,470, 202,570, 202,970, 203,070; IMU1 79,470 0→6 ve aynı dört an. 79,470'te VibeZ0 56,8. 188,3–202,37 arasında VibeZ0 en yüksek 29,00 (194,37 ve 194,47), VibeZ1 26,94. Mimarın '6' değeri yalnız IMU1 için geçerli; sentez haklı.",
+     "komut": "c2_olay.py 202.2 203.1; c2_diger.py (Clip değişimleri, VibeZ en yüksek); c2_ince.py c2_b.pkl 193.8 195.5"
+    },
+    {
+     "olcum": "79,45 sert yere değme",
+     "sentezdeki": "|a| 31,1/31,3; VibeZ 56,8; Alt 0,78–1,05; ThO 0–0,30",
+     "olculen": "79,450: |a| 31,06/31,26, AccZ −28,49/−28,71. 79,470: VibeZ0 56,8, VibeZ1 55,8. CTUN 79,07–79,97: Alt 0,99–1,05, ThO 0,000–0,213 (sentezin aralığı daha geniş pencereden olabilir). Doğrulandı.",
+     "komut": "c2_diger.py (79.2–79.8 bölümü)"
+    },
+    {
+     "olcum": "MAG I0 ve GPS kesintisi",
+     "sentezdeki": "MAG I0 son güncelleme S = 202,47; 202,57'de donmuş; 202,97'de Health 1→0. GPS son örnek 202,41, sonraki 206,41 St 0. ERR COMPASS 4 = son örnek + 500 ms",
+     "olculen": "MAG I0 S = 202470000 µs; 202,570–203,070 arası aynı S ve aynı MagX/Y/Z 155/292/391 (donmuş). I1 güncellenmeye devam ediyor. Health I0 202,970'te 0. GPS 202,410: Status 4, NSats 19; sonraki kayıt 206,410: Status 0, NSats 0. ERR Subsys 3 ECode 4 202,970 = 202,47 + 0,50. Doğrulandı. COMPASS_DEV_ID 658953 (I2C bus 1, adres 0x0E) ile DEV_ID2 658433 (bus 0, adres 0x0C) I0'ın harici olmasıyla uyumlu (ÇIKARIM).",
+     "komut": "c2_olay.py 202.2 203.1 (MAG, GPS, ERR); c2_diger.py (COMPASS_DEV_ID)"
+    },
+    {
+     "olcum": "RCIN, mod ve disarm zamanlaması",
+     "sentezdeki": "C1 1436 (202,27–202,47), C4 1500. C5 202,67'de 1500, 202,77'de 2000. MODE 9 202,95. C6 203,67'de 2000, 203,77'de 1000. DISARM 203,97. RC dt ≤ 0,1 s",
+     "olculen": "Aynı. C1 1436 (202,270/202,370/202,470), 1457 (202,570); C4 1500; RC1_REVERSED 0. C5 1500 (202,671) → 2000 (202,770). MODE 9 202,950. C6 2000 (203,671) → 1000 (203,770). ARM Method 2 disarm 203,970. RCIN dt en fazla 0,100 s (181,7–204,0, n = 224).",
+     "komut": "c2_olay.py 202.2 203.1; c2_ince.py c2_b.pkl 203.0 204.4; c2_diger.py"
+    },
+    {
+     "olcum": "ATT ve CTUN olay anları",
+     "sentezdeki": "202,37: Roll 1,5, Pitch −5,1, DesYaw 314,2, Yaw 299,4. 202,47: Roll 21,9, Pitch −13,9. 202,77: Roll 124,4, ThO 0,594. 202,97: Roll 156,8, ThO → 0,05. 202,57: POut 1,773, P −314,5",
+     "olculen": "Aynı. 202,370: 1,5/−5,1, DesYaw 314,2, Yaw 299,4. 202,470: 21,9/−13,9. 202,770: 124,4, ThO 0,594. 202,970: 156,8, ThO 0,050. 202,570: POut 1,773, P −314,543.",
+     "komut": "c2_olay.py 202.2 203.1 (ATT, CTUN, RATE)"
+    },
+    {
+     "olcum": "Yaw öncülü, 1 s kutularda CCW−CW ve yaw hatası (son uçuş)",
+     "sentezdeki": "188,4 +16; 189,4 +144; 190,4–194,4 +140…+166; 194,4 +271; 195,4–199,4 +316…+368; 199,4–202,4 +412 → +520. Yaw hatası 10,6 → 13,8°",
+     "olculen": "188,4 +16; 189,4 +144; 190,4 +140; 191,4 +166; 192,4 +161; 193,4 +154; 194,4 +271; 195,4 +316; 196,4 +336; 197,4 +364; 198,4 +368; 199,4 +412; 200,4 +445; 201,4 +520. Yaw hatası ortalaması 4,1 (189,4) … 10,6 (195,4) … 13,8 (201,4). Sayılar doğrulandı. Ancak W5 uçuşunun sonunda 147,37–148,07 arasında +85…+204 zaten var (çürütülen iddia 2).",
+     "komut": "c2_iz.py c2_b.pkl 181.4 203.4 1; c2_iz.py c2_b.pkl 134 151 1"
+    },
+    {
+     "olcum": "Yaw basamakları, 0,1 s çözünürlük",
+     "sentezdeki": "Basamak 1: RATE Y −6,7 (189,47) → −8,7 (189,67); yaw hatası 1,6 → 5,1° (190,07). Basamak 2: GyrZ −9 (194,67) → −18/−19 (194,87); RATE Y −17,9; roll −1,0 → +3,3°; yaw hatası 3,3 → 8,9° (194,97)",
+     "olculen": "189,47: RATE Y −6,7, yaw hatası +1,6. 189,67: −8,7. 190,07: +5,1. Hata 188,97'den (0,4°) beri tekdüze artıyor. 188,57'de CRt 4 → 11 cm/s: kalkış. IMU GyrZ I0/I1: 194,650 −8,9/−8,7; 194,810 −18,9/−19,6. RATE Y 194,77'de −17,9. Roll 194,57 −1,0 → 194,87 3,3. Yaw hatası 194,47 +3,3 → 194,97 +8,9. Sayılar doğrulandı.",
+     "komut": "c2_ince.py c2_b.pkl 187.8 190.6; c2_ince.py c2_b.pkl 193.8 195.5; c2_diger.py (194.5–195.0 IMU GyrZ)"
+    },
+    {
+     "olcum": "W5 ile 00:20 askı karşılaştırması (sentezin kendi pencereleri)",
+     "sentezdeki": "W5: ThO 0,293; 14,87 V / 38,3 A; VIBE 3,8/6,2/18,0; GyrX/GyrY RMS 31,9/26,9; 6,33 Hz tepe 30 °/s; hız hatası RMS 47,1/40,1; |ROut| 0,125. 00:20: ThO 0,376; 14,75 V / 41,8 A; VIBE 1,0/2,1/6,8; jiro 2,1/2,6; hız hatası 2,6/6,1; |ROut| 0,014",
+     "olculen": "Sayılar birebir tuttu. W5: 0,293; 14,87/38,3; 3,8/6,2/18,0; 31,9/26,9; 6,33 Hz 30,0; 47,1/40,1; 0,125. 00:20: 0,376; 14,75/41,8; 1,0/2,1/6,8; GyrX 2,1, GyrY RMS 2,8 (std 2,6); 2,6/6,1; 0,014. ANCAK yere yükseklik farklı: W5 0,45–0,50 m, 00:20 1,57–1,61 m. Yere yakın eşleşikte ThO −%19, VIBE ×2,7–3,2, GyrX ×2,6, GyrY ×1,8. 00:20 penceresinde GyrZ std 30,1 °/s ve C4 1477–1506: yaw hareketi var.",
+     "komut": "c2_istat.py; c2_irtifa.py; c2_fft.py"
+    },
+    {
+     "olcum": "Son uçuş aralıkları (188,4–202,30)",
+     "sentezdeki": "Motor aralıkları M1 1408–1685, M2 1465–1755, M3 1346–1648, M4 1231–1641. BAT 14,52–15,17 V / 33,5–46,5 A. Vcc 5,021–5,121, VServo 5,123–5,239. GyrZ 190–202,30 en düşük −18,9, std 4,3",
+     "olculen": "M1 1408–1685, M2 1465–1755, M3 1346–1648, M4 1231–1641 (202,37'deki 1202 hariç). BAT 14,52–15,17 V / 33,5–46,5 A. Vcc 5,021–5,121, VServo 5,123–5,239; POWR Flags ve AccFlags yalnız 1. IMU0 GyrZ en düşük −18,9, ortalama −0,75, std 4,3. ATT Yaw 190,0'da 309,0 → 202,37'de 300,5; DesYaw 313,7–314,2.",
+     "komut": "c2_diger.py"
+    },
+    {
+     "olcum": "Çarpma sonrası akım ve RCOU",
+     "sentezdeki": "203,17: 111,5 A / 10,61 V. 203,27: 57,9 A / 14,14 V; M1 hâlâ 1949. 203,47–203,77: 39,5–42,1 A. RCOU 204,07'de 1000. Akım 204,17'de 1,0 A",
+     "olculen": "Aynı. 203,171: 111,5 / 10,61. 203,270: 57,9 / 14,14. 203,47–203,77: 39,5 / 42,1 / 41,9 / 39,6. M1 203,07–203,97 arası 1949. 204,07: tüm motorlar 1000. 204,17: 1,0 A. Ek bulgu: 203,87–203,97'de M1 1949, M4 1799–1825 iken toplam akım 31,2 / 28,3 A.",
+     "komut": "c2_ince.py c2_b.pkl 203.0 204.4"
+    },
+    {
+     "olcum": "İki log arası parametre farkı ve ayar parametreleri",
+     "sentezdeki": "14 fark, hepsi kalibrasyon ya da sayaç; MOT_THST_HOVER 0,3837 → 0,3818. ATC_RAT_RLL/PIT P = I = 0,135, D 0,0036. YAW_I 0,018, IMAX 0,5. INS_HNTCH_ENABLE 0. MOT_SLEW_UP_TIME 0",
+     "olculen": "14 fark: BARO1_GND_PRESS, COMPASS_DEC, INS_GYR1_CALTEMP, INS_GYR2OFFS_X/Y/Z, INS_GYR2_CALTEMP, INS_GYROFFS_X/Y/Z, MOT_THST_HOVER 0,38375 → 0,38178, STAT_BOOTCNT, STAT_FLTTIME, STAT_RUNTIME. ATC değerleri aynı; ATC_RAT_YAW_IMAX 0,5; INS_HNTCH_ENABLE 0; MOT_SLEW_UP_TIME 0; MOT_HOVER_LEARN 2; INS_GYRO_FILTER 20.",
+     "komut": "c2_istat.py (param farkları); c2_olay.py (PARAM); c2_diger.py (ATC params)"
+    },
+    {
+     "olcum": "Son askıda yere yükseklik",
+     "sentezdeki": "EKF 0,65 m, GPS 0,42 m, baro 0,75–1,03 m; mimar ~0,5–0,7 m",
+     "olculen": "CTUN Alt zemini (187,5–188,5) 1,35; askıda (201,4–202,37) 2,06–2,10 → EKF 0,71–0,75 m. GPS Alt (185–188,2 ile 201–202,41 ortalamaları farkı) +0,34 m. BARO zemin 1,35, askıda 1,70–2,76 (gürültülü). Pencere seçimine bağlı küçük fark; hüküm değişmiyor.",
+     "komut": "c2_ince.py c2_b.pkl 56.5 61.6 (satır içi python bölümü: GPS/BARO/CTUN zemin-askı)"
+    },
+    {
+     "olcum": "00:20 logunda motor yayılımı",
+     "sentezdeki": "00:20 logunda pencere ortalamalarının yayılımı / anlık yayılım ortalaması 52 / 128 µs (pencere belirtilmemiş)",
+     "olculen": "639,1–642,5 penceresinde 19 / 93 µs; W5'te 40 / 215 (sentez 38 / 203). Sentezin 00:20 değeri bu pencerede ÜRETİLEMEDİ; farklı bir pencere kullanılmış olabilir.",
+     "komut": "c2_istat.py (RCOU yayılım satırları)"
+    }
+   ],
+   "duzeltme_onerileri": [
+    "'Eşleşik askı' tablosu ve pilot/operasyon gerekçesi yere yükseklikle eşleşmeli. 00:20 penceresi zeminden 1,57–1,61 m, W5 0,45–0,50 m yukarıda. Yere yakın eşleşik değerlerle değiştir (00:20 622,3–623,9 ile W5 141,2–142,8): ThO 0,329 → 0,266 (−%19), akım 39,6 → 34,8 A (−%12), VIBE ×2,7–3,2, GyrX std ×2,6, GyrY std ×1,8. 'Jiro RMS ×10–15', 'hız hatası ×7–18' ve 'W5'te 47 °/s (00:20'de 2,6)' ifadelerini kaldır. 5–8 Hz tepesinin 00:20'de de yere yakınken bulunduğunu yaz (9,1 °/s); 02:50'de yaklaşık 3–4 kat büyük.",
+    "Yaw öncülü bölümünü düzelt. W5 uçuşunun havadaki son saniyesinde (147,37–148,07) CCW−CW +85…+204 µs ve yaw hatası 2,8° zaten vardı. Son uçuşta hata kalkışla birlikte (188,57'den sonra, 188,97'den itibaren tekdüze) büyüdü. 'Basamak 1 uçuş içinde doğdu' hükmünü 'W5 sonundan taşınmış bozucunun kalkışta görünmesinden ayrılamıyor' diye değiştir. Uçuş içinde doğduğu doğrulanan yalnız basamak 2 (194,57–194,97).",
+    "Akım bölümünü yeniden yaz. 179 A HESAP'ına 00:20 sınamasını ekle: aynı doğrusal R yöntemi 105–119 A'de ölçülenden %9–22 fazla veriyor. 120 A tavanına 00:20 düşüşünde de ulaşıldı (649,10–649,60; 9,76 V; havada 648,396'da 114,8 A). 'Temiz pervane kopması akım ölçümüyle çelişiyor / dışlanıyor' yerine 'akım mekanizmayı ayırt etmiyor' yaz. Ayrıca şunu ekle: 203,47–203,97'de M1 1949 µs iken toplam akım 28–42 A, yani M1 yerde yüklü tam gaz çekmiyordu (pervane kırık/kopuk ya da ESC kesmesi, ÇIKARIM).",
+    "Zaman çizelgesine ilk arm dönemini ekle (başlangıç 54,335 EV 28): ThO 0 iken yerde roll 0 → 27,9°, sağ taraf aşağı, AccY −4…−5,5 m/s². M1 1400–1542 µs; 60,37'de C3 1000; 61,47'de roll 27,9° iken disarm. Clip 0, VibeZ ≤15,9 (pervane darbesi imzası yok). 79,45 olayının 'ikinci aday' numarasını ve operasyon payı kanıtlarını buna göre güncelle.",
+    "202,97 satırında 'CTUN Alt 0,70 → 0,13' çarpma kanıtı olarak kullanılmasın: zemin aynı çerçevede ≈1,35, EKF 202,87'de zaten zeminin altında, 204,37'de −6,42 ve CRt −552…−569 sabit. Çarpma kanıtı olarak IMU |a| 52,8/72,8 ve Clip 40 → 115 kalsın.",
+    "Rampa satırındaki 'M4 en düşük 1231 µs (195,4–202,4)' ifadesini '188,4–202,30 arası 1231; 202,37'de 1202' diye düzelt.",
+    "Motor eşlemesi için yalnız parametreye değil fiziksel doğrulamaya da dayan. Karışım regresyonu C9..C12 için (−,−,−), (+,−,+), (−,+,+), (+,+,−) verdi. 24 permütasyon içinde en iyi eşleme beyan edileninin aynısı (roll r = +0,773, pitch r = +0,895). Pervane dönüş yönü bu yöntemle doğrulanamadı (yaw r = +0,03); belirsizliklere ekle.",
+    "Mercek çelişkilerindeki '00:20 logunda 52 / 128 µs' için pencereyi belirt. 639,1–642,5 penceresinde 19 / 93 µs ölçüldü, sentezin değeri yeniden üretilemedi.",
+    "Birincil neden (202,41'de M1 köşesinde itki kaybı) ölçümle ayakta: işaret deseni (+142,6, −103,7, −19,6), |a| 5,19, 202,47'de M1 1949 iken sağa dönüşün sürmesi ve fiziksel eşleme doğrulandı. Güven 'orta' kalsın. Mekanizma listesindeki 'stall/kısa devre' ağırlığını düşür; çarpma sonrası M1'in yüksüz göründüğü akım bulgusunu ekle."
+   ]
+  }
+ },
+ {
+  "type": "result",
+  "key": "v2:198dd92cc7a43080b97f21a6fcee2088c05b14fc947a8f2baba768326541b412",
+  "agentId": "aa8e5cfb4606621c7",
+  "result": {
+   "birincil_neden_ayakta": false,
+   "pilot_payi_makul": false,
+   "curutulen_iddialar": [
+    {
+     "iddia": "Başlatıcı OLMAYANLAR: yere veya dış cisme temas. Gerekçe: 202,33/202,37'de |a| 10,5/10,4 iken ilk bozuk örnekte |a| 5,2'ye DÜŞTÜ, yani itme değil itki kaybı. Birincil neden 'donanım kaynaklı'.",
+     "neden": "Bu argüman yalnız gövdeye çarpan, onu İTEN bir teması dışlıyor. Dış bir cisme giren pervane (bitki, dal, direk, halat, insan) aynı imzayı üretir: köşede itki kaybı ve yüksek frekanslı darbe (clip). İtme olmaz. Yani |a| düşüşü iç arızayı dış pervane darbesinden AYIRAMAZ. Üstelik araç olaydan hemen önce 0,68 m AGL'de, sağ tarafı (M1/M4) önde olacak biçimde sağa taşınıyordu, saat 02:50'ydi. 'Donanım kaynaklı' nitelemesi logdan kurulamıyor.\n\nİki analiz arasında ölçüt de tutarsız. D-490 (00:20) dış teması '40 ms'de duran dönüş + 1,6 g yanal ivme' ile çıkarmıştı. Burada 202,45→202,49'da roll hızı 383/414 → 14/−20 °/s'ye iniyor (40 ms), AccY −54/−44 m/s² (5,5/4,5 g). Aynı ölçütle bu da temas sayılırdı, ama sentez 'iç olay' diyor. Uyarı: bu anda VIBE 45–67 ve iki IMU arasında AccY farkı 25 m/s², yani örtüşme olası. Bu durum ölçütü iki yönde de zayıflatır, 'iç' sınıflamasını desteklemez.",
+     "kanit": "cur1/c_olay.py 202.20 203.10 (IMU 202.37: GyrX −11.6/−12.3; 202.41: |a| 5.19/5.33; 202.45: GyrX 382.7/414.2, AccY +9.15/−15.56; 202.49: GyrX 14.4/−20.4, AccY −54.11/−43.74). cur1/c_irtifa.py: kalkış öncesi yer referansı CTUN Alt 1.42 (186.3–188.25), 202.37 Alt 2.10 → AGL 0.68 m. cur1/c_iz.py 198.0 202.4 0.2: 200.2→202.4 arasında PN −6.94→−6.02, PE −13.69→−13.20 (gövde sağına 1.04 m); 202.4'te sağa hız 0.14 m/s. D-490 ölçütü: O:\\navitas\\results\\ucus_20260917\\DUSUS_ANALIZI.md §2–3."
+    },
+    {
+     "iddia": "İşaret deseni (+,−,−) yalnız M1 kaybına uyuyor. İtki VE tork kaybı (katkı tablosu: +143, −104, −22 °/s).",
+     "neden": "Üçüncü işaret (yaw −20 °/s) olaydan önce de vardı, olayla gelmedi. 202,37→202,41 arasında GyrZ değişimi +2,4 / +1,6 °/s. CCW dönen M1'in reaksiyon torkunu yitirmesi negatif bir yaw adımı üretmeliydi; ölçülen değişim sıfıra yakın ve ters işaretli. Bu yüzden 'tork kaybı' başlangıçta ölçülmüyor. Yalnız roll/pitch (+,−) ön-sağ köşenin düştüğünü gösteriyor. Bu da M1 itki kaybıyla da, o köşeye dışarıdan uygulanan bir kuvvetle de uyumlu.",
+     "kanit": "cur1/c_normal.py: olay dGyrZ [2.4, 78.0, −150.2] (IMU0), [1.6, 110.6, −184.6] (IMU1). 193–202.37 arası GyrZ −18.9…+9.3 (IMU0)."
+    },
+    {
+     "iddia": "Zemin (b): son uçuşta 189,5 ve 194,6 s'de basamakla başlayıp büyüyen, YALNIZ yaw ekseninde bir mekanik bozucu.",
+     "neden": "Roll kanalı da yaw ile paralel büyüdü. Motor karışımı Rmix = (M2+M3−M1−M4)/4, 1 s kutuların ortalaması. Rmix +10 µs'den (188,4–189,4) +74 µs'ye (201,4–202,4) çıktı; ROut ortalaması 0,021'den 0,161'e çıktı. Aynı aralıkta Ymix +4'ten +130'a çıktı; Rmix/Ymix oranı ~0,57–0,72. Olaydan önce denge roll'ü +1,3…+1,9°, pitch'i −3,2…−3,9° (W5'te roll −0,7…+0,3°). M4 202,37'de 1202 µs ile uçuşun en düşük değerindeydi. Sağ taraf (M1+M4) itki payı T(p) modeliyle ~%29. Bozucu 'roll+yaw' bozucusudur. Pilot girişi olmayan 193,4–198,4 kutularında da Rmix +30…+51.",
+     "kanit": "cur1/c_mix.py c.pkl 188.4 202.4 1.0 (Rmix 10,26,26,41,26,35,41,30,51,40,57,64,69,74; ROut 0.021→0.161; Ymix 4→130). W5: cur1/c_mix.py c.pkl 141.0 147.5 1.0 (Rmix 3…26, Ymix −19…+16). 00:20: c_mix.py c0020.pkl 636 643 1 (Rmix 0…6)."
+    },
+    {
+     "iddia": "202,57–203,07 akım ≥120 A (tavan), gerilimden 179 A. Tüm pervaneler yüklü modelde 74–89 A. Bu, sıkışma/stall/desync/faz kısa devresi adaylarını destekliyor.",
+     "neden": "Bu tavan akım, bu gövdede dış temasla düşülen 00:20 düşüşünde de aynı komut desenleriyle ölçüldü:\n- 648,40 havada: M1 1751, M2 1914, M3 1783, M4 1512 → 114,8 A / 11,84 V.\n- 649,1–649,6 yerde ters: M1 1949, M2 1150, M3 1616–1910, M4 1267–1752 → 105,4–120,0 A, en düşük 9,76 V. Aynı HESAP'la ~168 A.\n02:50'de 202,77'de benzer desen: M1 1949, M2 1150, M3 1797, M4 1405 → 9,42 V.\n\nNormal uçuş verisi en fazla ~0,8–1,2 birim a³ komuta kadar uzanıyor (41–52 A). 74–89 A modeli doyumlu takla bölgesine geçerli biçimde uzatılamaz. Bu yüzden ≥120 A anormal yükün (sıkışma/kısa devre) kanıtı değildir. 'Temiz pervane kopması dışlanıyor' ise yalnız model bağımlı ve zayıf bir çıkarım olarak kalabilir.",
+     "kanit": "cur1/c_akim.py c0020.pkl 647.8 649.7; cur1/c_akim.py c.pkl 202.95 204.3; cur1/c_olay.py 202.20 203.10 (BAT); cur1/c_akimfit.py (normal uçuş: sum_a3 ≤0.76 → I ≤46.5 A [02:50]; ≤1.24 → ≤56.4 A [00:20])."
+    },
+    {
+     "iddia": "Aşırı akım, M1 hâlâ 1949'dayken 203,27'de 57,9 A'ya düştü. Yerde M1 sıkışık değildi; yerde ~1 s M1 1949 µs çalıştı.",
+     "neden": "Yerde M1 tek başına değildi: 203,27–203,97 arasında M4 1617–1825 µs, M3 1150–1602 µs. Akım M1'e atfedilemez. 111,5 → 57,9 A düşüşü komutlar neredeyse aynıyken oldu (Σa³ 1,37 → 1,38). 00:20'de aynı desende yerde akım 105–120 A'da kalmıştı. ÇIKARIM: 02:50'de ~203,2 s'de bir motorun yükü kalktı (pervane kırıldı, bloke oldu ya da ESC kesti). Hangi motor olduğu ölçülemiyor. 'M1 sıkışık değildi' desteklenmiyor.",
+     "kanit": "cur1/c_akim.py c.pkl 202.95 204.3 (203.17 I 111.5, sum_a3 1.37; 203.27 I 57.9, sum_a3 1.38; 203.47–203.97 M4 1786–1825, I 28.3–42.1). cur1/c_akim.py c0020.pkl 647.8 649.7."
+    },
+    {
+     "iddia": "Eşleşik temiz askı karşılaştırması (00:20 639,1–642,5 ile 02:50 W5 143,9–146,9): araç 00:20'den sonra değişmiş (VIBE ×2,6–3,8, jiro RMS ×10–15, ThO −%22).",
+     "neden": "Pencereler EŞLEŞİK DEĞİL, yer yükseklikleri farklı. 00:20 askısı AGL 1,61 m'de (yer ref. 4,23). W5 askısı AGL 0,44 m'de (yer ref. 1,24), yani yer etkisi ve pervane akışının geri dolaşımı bölgesinde. 00:20 logunda düşük AGL'de sabit bir askı penceresi bulunamadı. Jiro RMS, hız hatası ve VIBE oranları bu karışık etkenle şişmiş olabilir. ThO −%22 ile akım −%8 arasındaki ayrışma yer etkisiyle tam açıklanamaz. 'İtki zinciri değişti' çıkarımı zayıflamış olarak ayakta; 'yapı/titreşim ×10–15' karşılaştırması ise kanıt olarak geçersiz.",
+     "kanit": "cur1/c_aski2.py c0020.pkl ... 621.791:647.8 → 639.1–641.1 AGL 1.61, ThO 0.378, I 42.0, jiro RMS 2.1/2.9, VIBE 1.0/2.1/6.6. cur1/c_aski2.py c.pkl ... 140.868:147.55 → 143.7–145.7 AGL 0.44, ThO 0.290, I 38.1, jiro RMS 29.5/31.2, VIBE 4.0/5.9/18.1. Düşük AGL'de 00:20 askısı: 99.9–107.9 pencerelerinde I 3.5–5.5 A (uçuş değil) → BULUNAMADI."
+    },
+    {
+     "iddia": "Pilot girişi başlatıcı değil (C1 1436 hafif sola iken araç sağa döndü). Uçuş anı pilotajı %0–5.",
+     "neden": "Anlık çubuk girişi için doğru (DesRoll 1,3–1,8°; 143 °/s üretemez; ATC_ACCEL_R_MAX 1100 °/s²). Ama eksik: 199,8–200,4'te pilot tam sağ roll verdi (C1 1607–1813, DesRoll 13,5°). Araç 0,68 m AGL'de gece gövde sağına 0,71 m/s hızlandı ve 2,2 s'de ~1,04 m sağa kaydı. 201,4–202,4 arasındaki C1 1378–1436 bu kaymayı frenleme girişiydi. Olay anında araç hâlâ sağa gidiyordu (0,14 m/s) ve düşen köşe önde giden sağ taraftaydı. Dış pervane darbesi dışlanamadığı için pilotaj payının üst sınırı %5'e bağlanamaz. Aynı gece 00:20'de de engel yakınında düşülmüştü.",
+     "kanit": "cur1/c_iz.py 198.0 202.4 0.2 (200.0 C1 1813, DesR 9.9; 200.2 DesR 13.5; 200.8 v_sag 0.71; 202.4 v_sag 0.14, PN −6.02, PE −13.20). cur1/c_param.py (RC1_REVERSED 0, RC1_DZ 20, ATC_ACCEL_R_MAX 110000)."
+    }
+   ],
+   "tekrar_olculen": [
+    {
+     "olcum": "Başlangıç örneği 202,41 IMU0/IMU1",
+     "sentezdeki": "GyrX +142,6/+146,4; GyrY −103,7/−105,4; GyrZ −19,6/−19,7; AccZ −3,75/−4,05; |a| 5,19/5,33",
+     "olculen": "Sentezdekiyle aynı. Ek: 202,37'de GyrX −11,6/−12,3; 40 ms adım ΔGyrX +154,2/+158,7, ΔGyrY −98,2/−99,9, ΔGyrZ +2,4/+1,6.",
+     "komut": "cd scratchpad/wf_0250/cur1; python c_cikar.py \"O:/navitas/results/ucus_20260917b/2026-09-17 02-50-38.bin\" c.pkl; python c_olay.py 202.20 203.10; python c_normal.py"
+    },
+    {
+     "olcum": "Olay öncesi normal aralık (193,0–202,37)",
+     "sentezdeki": "GyrZ en düşük −18,9, std 4,3 (190–202,30)",
+     "olculen": "GyrZ −18,9…+9,3 (IMU0). 40 ms ΔGyrX en fazla +73,4/+56,8, ΔGyrY −52,8/−54,2. ROut −0,125…+0,346; 93 örnekten 1'i ≥0,299. Olay adımı normalin ~2 katı.",
+     "komut": "python c_normal.py"
+    },
+    {
+     "olcum": "Son normal örnek 202,37 (RCOU/RATE)",
+     "sentezdeki": "M1 1602, M2 1788, M3 1577, M4 1202; CCW−CW +611; YOut 0,329; Y −22,1",
+     "olculen": "Sentezdekiyle aynı. Ek: ROut 0,299 (202,27'de 0,183); RDes 12,9 / R −11,1; POut 0,028. Karışım T 1542, Rmix +140, Pmix +47, Ymix +153. M4 uçuşun en düşük değerinde.",
+     "komut": "python c_olay.py 202.20 203.10"
+    },
+    {
+     "olcum": "202,45–202,49 darbe",
+     "sentezdeki": "|a| 27,4/29,6; AccX +22,5/+23,2; GyrX 383/414; 202,49 |a| 57,5/45,2, AccY −54,1/−43,7, GyrZ −92/−94",
+     "olculen": "Sentezdekiyle aynı. Ek: 202,45'te AccY IMU0 +9,15, IMU1 −15,56 (25 m/s² fark → örtüşme). GyrX 382,7/414,2 → 14,4/−20,4 (40 ms'de roll dönüşü durdu). 202,53–202,93 arasında örnekten örneğe |ΔGyrX| en fazla 167,5/162,8.",
+     "komut": "python c_olay.py 202.20 203.10; python c_normal.py"
+    },
+    {
+     "olcum": "Akım/gerilim 202,47–203,07",
+     "sentezdeki": "202,47 13,32 V/72,7 A; 202,57–203,07 120,0 A; 202,77 9,42 V (VoltR 14,35); HESAP 179 A",
+     "olculen": "Sentezdekiyle aynı. (16,16−9,42)/0,0377 = 178,8 A. BAT.Res 0,0377 → 0,0411.",
+     "komut": "python c_olay.py 202.20 203.10"
+    },
+    {
+     "olcum": "00:20 düşüşünde (dış temas) aynı komut desenindeki akım",
+     "sentezdeki": "yok (sentez ≥120 A'yı anormal yük sayıyor; model 74–89 A)",
+     "olculen": "648,40 havada 114,8 A / 11,84 V (M1 1751, M2 1914, M3 1783, M4 1512). 649,10–649,60 yerde 105,4–120,0 A, en düşük 9,76 V (M1 1949, M2 1150, M3 1616–1910, M4 1267–1752).",
+     "komut": "python c_cikar.py \"O:/navitas/results/ucus_20260917/1980-01-09 23-09-53.bin\" c0020.pkl; python c_akim.py c0020.pkl 647.8 649.7"
+    },
+    {
+     "olcum": "Çarpma sonrası yerde motorlar ve akım (203,07–204,17)",
+     "sentezdeki": "203,27 57,9 A; 203,47–203,77 39,5–42,1 A; M1 1949; 'yerde M1 sıkışık değildi'",
+     "olculen": "Akımlar aynı. Ama M4 1508–1825, M3 1150–1676 da çalışıyor. 203,17 111,5 A (Σa³ 1,37) → 203,27 57,9 A (Σa³ 1,38): komut değişmeden yük düştü. 203,97 28,3 A. 204,17 1,0 A.",
+     "komut": "python c_akim.py c.pkl 202.95 204.3"
+    },
+    {
+     "olcum": "Motor karışımı eğilimi (1 s kutular, 188,4–202,4)",
+     "sentezdeki": "CCW−CW +16 → +144 → +271 → +520; 'yalnız yaw'",
+     "olculen": "Ymix×4: +16, +144, …, +272, …, +520 (doğrulandı). Rmix +10, 26, 26, 41, 26, 35, 41, 30, 51, 40, 57, 64, 69, 74. ROut ortalaması 0,021 → 0,161. Roll +1,03…+1,85° (pilot girişi olmayan kutular), pitch −3,1…−3,9°.",
+     "komut": "python c_mix.py c.pkl 188.4 202.4 1.0"
+    },
+    {
+     "olcum": "Yer üstü yükseklik (AGL)",
+     "sentezdeki": "son askı 0,65 m (EKF 0,65, GPS 0,42, baro 0,75–1,03)",
+     "olculen": "Yer ref. CTUN Alt 1,42 (186,3–188,25) → 202,37'de 2,10 → 0,68 m. W5 AGL 0,44 (ref. 1,24). 00:20 karşılaştırma askısı AGL 1,61 (ref. 4,23). 79,45 olayı Alt 1,01–1,05 (ref. 0,76) → ~0,27 m.",
+     "komut": "python c_irtifa.py; python c_aski2.py c.pkl 54.335:61.4 75.53:79.9 140.868:147.55 188.3:202.37; python c_aski2.py c0020.pkl 94.308:99.0 99.1:110.2 115.143:116.8 120.883:122.8 131.758:132.9 621.791:647.8"
+    },
+    {
+     "olcum": "'Eşleşik' askı karşılaştırması",
+     "sentezdeki": "00:20: ThO 0,376, 41,8 A, VIBE 1,0/2,1/6,8, jiro RMS 2,1/2,6. W5: ThO 0,293, 38,3 A, VIBE 3,8/6,2/18,0, jiro RMS 31,9/26,9.",
+     "olculen": "00:20, 2 s pencereler: ThO 0,372–0,378, I 41,3–42,1, VIBE 0,9–1,0/2,1–2,2/6,6–7,2, jiro 1,8–2,1/1,7–2,9, AGL 1,61. W5: ThO 0,286–0,294, I 37,8–38,4, VIBE 3,6–4,0/5,8–6,5/16,9–18,6, jiro 26,8–35,4/23,8–36,8, AGL 0,43–0,45. Değerler doğrulandı; irtifa eşleşmiyor.",
+     "komut": "python c_aski2.py (yukarıdaki argümanlar)"
+    },
+    {
+     "olcum": "Pilot manevrası 198–202,4",
+     "sentezdeki": "199,4–202,4 arasında pilot roll girişleri var; C1 1436 hafif sola",
+     "olculen": "199,2–199,6 C1 1361–1439 (sol). 199,8–200,4 C1 1607–1813 (tam sağ), DesRoll 13,5°. 200,8'de gövde sağına 0,71 m/s. 200,2→202,4 arasında ~1,04 m sağa, 0,04 m ileri. 201,4–202,4 C1 1378–1436 (fren). 202,4'te 0,14 m/s sağa.",
+     "komut": "python c_iz.py 198.0 202.4 0.2"
+    },
+    {
+     "olcum": "79,45 s sert değme",
+     "sentezdeki": "|a| 31,1/31,3; VibeZ 56,8; Clip 0→10 / 0→6; tek ek clip artışı",
+     "olculen": "Sentezdekiyle aynı. Clip değişimleri yalnız 79,47, 202,47, 202,57, 202,97 ve 203,07'de. ThO 0,178 → 0,030 (iniş).",
+     "komut": "python c_79.py"
+    },
+    {
+     "olcum": "LAND anahtarı / disarm / GPS-pusula zamanlaması",
+     "sentezdeki": "C5 202,67 1500 → 202,77 2000; MODE 9 202,95; C6 203,67 2000 → 203,77 1000; MAG I0 S son 202,47; GPS son 202,41, sonraki 206,41 St 0",
+     "olculen": "Hepsi doğrulandı. MAG I0 Health 202,97'de 0.",
+     "komut": "python c_olay.py 202.20 203.10; python c_akim.py c.pkl 202.95 204.3"
+    }
+   ],
+   "duzeltme_onerileri": [
+    "Birincil nedeni şöyle yeniden yaz: '202,41 s'de havada (0,68 m AGL) ön-sağ (M1) köşede ani itki kaybı; imza pervane darbesiyle uyumlu (clip +22/+20, VIBE 45–67). Darbenin iç parçaya mı (GPS kablosu/direği, gevşemiş montaj) yoksa dış bir cisme mi olduğu logdan AYRILAMAZ.' 'Donanım kaynaklı' nitelemesini kaldır. Güveni 'orta'dan 'düşük–orta'ya indir.",
+    "'Başlatıcı OLMAYANLAR' listesinden 'yere veya dış cisme temas'ı çıkar. Yalnız 'yere temas'ı (AGL 0,68 m) ve 'gövdeyi iten çarpışmayı' (|a| düşüşü) dışla. Dış pervane darbesini 'ayrılamayan aday' olarak yaz.",
+    "Zaman çizelgesine 199,8–202,4 pilot manevrasını ekle: C1 1813'e kadar tam sağ, DesRoll 13,5°, gövde sağına 0,71 m/s, 2,2 s'de ~1,04 m sağa, olay anında hâlâ 0,14 m/s sağa. Sağ taraf öndeydi.",
+    "'(+,−,−) yalnız M1 kaybına uyuyor' cümlesini düzelt: '(+,−) roll/pitch ön-sağ köşenin düştüğünü gösteriyor. Başlangıçta yaw adımı yok (ΔGyrZ +2,4/+1,6 °/s), M1 tork kaybı imzası ölçülmedi.'",
+    "Zemin (b)'yi 'yalnız yaw' yerine 'roll+yaw denge bozucusu' olarak yaz: Rmix +10 → +74 µs, ROut 0,021 → 0,161, Ymix +4 → +130 µs. M4 202,37'de 1202 µs'de, uçuşun en düşüğü; sağ tarafın itki yedeği dardı.",
+    "Akım yorumunu düzelt. ≥120 A / 9,42 V, 00:20'deki dış temaslı düşüşte de aynı komut deseninde ölçüldü (114,8–120 A, 9,76 V); bu yüzden sıkışma/kısa devre kanıtı değil. 'Temiz kopma dışlanıyor' ifadesini 'model bağımlı, zayıf' diye işaretle.",
+    "'Yerde M1 sıkışık değildi' cümlesini sil. Yerine şunu yaz: '203,17→203,27 arasında komutlar değişmeden akım 111,5 → 57,9 A'ya düştü; bir motorun yükü kalktı. Yerde M4 de 1617–1825 µs'deydi; hangi motor olduğu belirsiz.'",
+    "Askı karşılaştırmasını 'eşleşik' diye adlandırma. AGL 1,61 m ile 0,44 m'yi açıkça yaz. Jiro RMS/VIBE oranlarını yer etkisi karışıklığı nedeniyle kanıt listesinden çıkar ya da 'karışık etkenli' diye işaretle. ThO −%22 / akım −%8 ayrışmasını daha sağlam gösterge olarak tut.",
+    "Pilot payını genişlet ve koşullu yaz. İç arıza dalında pilotaj %0–5; dış pervane darbesi dalında pilotaj (0,68 m AGL'de gece 1 m yanal manevra) %20–40. Operasyon %15–25 kalabilir. Toplam aralık yaklaşık %20–50 olmalı, %20–30 fazla dar.",
+    "D-490 ile ölçüt tutarlılığı notu ekle: '40 ms'de duran dönüş + >1,5 g yanal ivme' 00:20'de dış temas kanıtı sayıldı. 202,45→202,49'da da var (roll 414 → −20 °/s, AccY −54 m/s²). Ya burada da aynı ölçütle değerlendir, ya da VIBE >40'ta 25 Hz örtüşmesi nedeniyle ölçütün iki analizde de sınırlı olduğunu yaz.",
+    "Muayene listesine ayırt edici bir madde ekle: M1 pervanesinde ve sağ kollarda yabancı malzeme izi ara (bitki özsuyu, ahşap, boya, toprak) ve bunu GPS kablosu plastiği izinden ayır. Kullanıcıdan düşüş noktasının 1 m çevresindeki engelleri ve varsa tanık anlatımını iste. İç/dış ayrımı ancak bu muayeneyle yapılabilir.",
+    "Kanıt betikleri: C:\\Users\\yunus\\AppData\\Local\\Temp\\claude\\O--navitas\\3e104177-9b44-4ec7-a18f-1f32ed2c3f72\\scratchpad\\wf_0250\\cur1\\ (c_cikar.py → c.pkl / c0020.pkl doğrudan .bin'den; c_olay, c_akim, c_akimfit, c_mix, c_irtifa, c_iz, c_aski2, c_normal, c_79, c_param)."
+   ]
+  }
+ }
+]

@@ -1,0 +1,501 @@
+200.570 MAG {'I': 0, 'MagX': 166, 'MagY': 308, 'MagZ': 378, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 200570002}
+200.570 MAG {'I': 1, 'MagX': 44, 'MagY': 223, 'MagZ': 840, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 200570004}
+200.570 RATE {'RDes': -17.29, 'R': -48.35, 'ROut': 0.12, 'PDes': 8.39, 'P': -1.23, 'POut': 0.02, 'YDes': 45.79, 'Y': 9.21, 'YOut': 0.25, 'ADes': 4.74, 'A': -70.93, 'AOut': 0.34, 'AOutSlew': 0.28}
+200.570 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 0.36, 'ThrOut': 0.34, 'FailFlags': 2}
+200.570 PSCN {'TPN': -6.72, 'PN': -6.79, 'DVN': 0.57, 'TVN': 0.64, 'VN': 0.57, 'DAN': 0.0, 'TAN': 0.68, 'AN': 1.34}
+200.570 PSCE {'TPE': -13.6, 'PE': -13.59, 'DVE': 0.34, 'TVE': 0.33, 'VE': 0.29, 'DAE': 0.0, 'TAE': -0.11, 'AE': -0.09}
+200.570 PSCD {'TPD': -1.92, 'PD': -1.95, 'DVD': -0.0, 'TVD': 0.03, 'VD': 0.08, 'DAD': 0.0, 'TAD': -0.05, 'AD': 0.71}
+200.670 MAG {'I': 0, 'MagX': 169, 'MagY': 276, 'MagZ': 403, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 200669951}
+200.670 MAG {'I': 1, 'MagX': 40, 'MagY': 205, 'MagZ': 859, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 200669966}
+200.670 RATE {'RDes': 0.9, 'R': -31.73, 'ROut': 0.27, 'PDes': 2.01, 'P': 6.69, 'POut': 0.01, 'YDes': 44.0, 'Y': 5.65, 'YOut': 0.24, 'ADes': 3.7, 'A': -29.1, 'AOut': 0.34, 'AOutSlew': 0.22}
+200.670 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 0.37, 'ThrOut': 0.34, 'FailFlags': 2}
+200.671 PSCN {'TPN': -6.66, 'PN': -6.73, 'DVN': 0.59, 'TVN': 0.66, 'VN': 0.63, 'DAN': 0.0, 'TAN': 0.75, 'AN': 0.98}
+200.671 PSCE {'TPE': -13.56, 'PE': -13.56, 'DVE': 0.36, 'TVE': 0.35, 'VE': 0.33, 'DAE': 0.0, 'TAE': -0.16, 'AE': -0.19}
+200.671 PSCD {'TPD': -1.92, 'PD': -1.96, 'DVD': -0.0, 'TVD': 0.04, 'VD': 0.04, 'DAD': 0.0, 'TAD': -0.04, 'AD': 0.29}
+200.770 MAG {'I': 0, 'MagX': 165, 'MagY': 262, 'MagZ': 414, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 200770026}
+200.770 MAG {'I': 1, 'MagX': 45, 'MagY': 179, 'MagZ': 871, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 200770028}
+200.770 RATE {'RDes': 14.59, 'R': -10.44, 'ROut': 0.23, 'PDes': 3.46, 'P': -5.18, 'POut': 0.02, 'YDes': 43.63, 'Y': -0.85, 'YOut': 0.25, 'ADes': -10.51, 'A': -15.57, 'AOut': 0.34, 'AOutSlew': 0.06}
+200.770 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 0.35, 'ThrOut': 0.34, 'FailFlags': 2}
+200.770 PSCN {'TPN': -6.6, 'PN': -6.67, 'DVN': 0.59, 'TVN': 0.67, 'VN': 0.64, 'DAN': 0.0, 'TAN': 0.89, 'AN': 0.9}
+200.770 PSCE {'TPE': -13.53, 'PE': -13.53, 'DVE': 0.36, 'TVE': 0.36, 'VE': 0.32, 'DAE': 0.0, 'TAE': -0.03, 'AE': -0.19}
+200.770 PSCD {'TPD': -1.92, 'PD': -1.98, 'DVD': -0.0, 'TVD': 0.06, 'VD': 0.01, 'DAD': 0.0, 'TAD': 0.11, 'AD': 0.16}
+200.870 MAG {'I': 0, 'MagX': 166, 'MagY': 258, 'MagZ': 415, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 200870034}
+200.870 MAG {'I': 1, 'MagX': 47, 'MagY': 176, 'MagZ': 856, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 200870036}
+200.870 RATE {'RDes': 15.22, 'R': 5.2, 'ROut': 0.17, 'PDes': 3.61, 'P': 4.52, 'POut': -0.02, 'YDes': 43.94, 'Y': -0.13, 'YOut': 0.26, 'ADes': -15.14, 'A': -13.76, 'AOut': 0.34, 'AOutSlew': 0.19}
+200.870 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 0.36, 'ThrOut': 0.34, 'FailFlags': 2}
+200.870 PSCN {'TPN': -6.54, 'PN': -6.61, 'DVN': 0.59, 'TVN': 0.66, 'VN': 0.6, 'DAN': 0.0, 'TAN': 0.89, 'AN': 0.91}
+200.870 PSCE {'TPE': -13.49, 'PE': -13.5, 'DVE': 0.36, 'TVE': 0.36, 'VE': 0.3, 'DAE': 0.0, 'TAE': -0.0, 'AE': -0.19}
+200.870 PSCD {'TPD': -1.92, 'PD': -1.99, 'DVD': -0.0, 'TVD': 0.07, 'VD': 0.09, 'DAD': 0.0, 'TAD': 0.15, 'AD': 0.14}
+200.970 MAG {'I': 0, 'MagX': 161, 'MagY': 262, 'MagZ': 414, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 200970049}
+200.970 MAG {'I': 1, 'MagX': 41, 'MagY': 193, 'MagZ': 851, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 200970051}
+200.970 RATE {'RDes': 9.1, 'R': 8.42, 'ROut': 0.08, 'PDes': -0.05, 'P': 11.77, 'POut': -0.06, 'YDes': 44.75, 'Y': -2.7, 'YOut': 0.27, 'ADes': -25.27, 'A': 196.27, 'AOut': 0.34, 'AOutSlew': 0.11}
+200.970 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 0.34, 'ThrOut': 0.34, 'FailFlags': 2}
+200.970 PSCN {'TPN': -6.48, 'PN': -6.54, 'DVN': 0.58, 'TVN': 0.64, 'VN': 0.57, 'DAN': 0.0, 'TAN': 0.87, 'AN': 0.89}
+200.970 PSCE {'TPE': -13.46, 'PE': -13.47, 'DVE': 0.35, 'TVE': 0.36, 'VE': 0.28, 'DAE': 0.0, 'TAE': -0.03, 'AE': -0.18}
+200.970 PSCD {'TPD': -1.92, 'PD': -2.01, 'DVD': -0.0, 'TVD': 0.09, 'VD': 0.04, 'DAD': 0.0, 'TAD': 0.25, 'AD': -1.96}
+201.070 MAG {'I': 0, 'MagX': 159, 'MagY': 266, 'MagZ': 415, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 201070034}
+201.070 MAG {'I': 1, 'MagX': 31, 'MagY': 200, 'MagZ': 852, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 201070035}
+201.070 RATE {'RDes': 13.22, 'R': -6.85, 'ROut': 0.23, 'PDes': 0.58, 'P': -0.59, 'POut': 0.01, 'YDes': 45.63, 'Y': 0.96, 'YOut': 0.27, 'ADes': -28.66, 'A': -99.81, 'AOut': 0.33, 'AOutSlew': 0.11}
+201.070 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 0.36, 'ThrOut': 0.33, 'FailFlags': 2}
+201.070 PSCN {'TPN': -6.42, 'PN': -6.49, 'DVN': 0.56, 'TVN': 0.62, 'VN': 0.52, 'DAN': 0.0, 'TAN': 0.96, 'AN': 0.88}
+201.070 PSCE {'TPE': -13.42, 'PE': -13.44, 'DVE': 0.34, 'TVE': 0.37, 'VE': 0.27, 'DAE': 0.0, 'TAE': 0.05, 'AE': -0.18}
+201.070 PSCD {'TPD': -1.92, 'PD': -2.03, 'DVD': -0.0, 'TVD': 0.11, 'VD': 0.02, 'DAD': 0.0, 'TAD': 0.29, 'AD': 1.0}
+201.170 MAG {'I': 0, 'MagX': 155, 'MagY': 267, 'MagZ': 413, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 201170007}
+201.170 MAG {'I': 1, 'MagX': 34, 'MagY': 193, 'MagZ': 861, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 201170009}
+201.170 RATE {'RDes': 9.38, 'R': 4.29, 'ROut': 0.15, 'PDes': -0.7, 'P': 3.46, 'POut': -0.02, 'YDes': 46.0, 'Y': -0.46, 'YOut': 0.27, 'ADes': -27.76, 'A': 13.49, 'AOut': 0.34, 'AOutSlew': 0.16}
+201.171 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 0.36, 'ThrOut': 0.34, 'FailFlags': 2}
+201.171 PSCN {'TPN': -6.37, 'PN': -6.44, 'DVN': 0.55, 'TVN': 0.61, 'VN': 0.55, 'DAN': 0.0, 'TAN': 0.95, 'AN': 0.9}
+201.171 PSCE {'TPE': -13.39, 'PE': -13.42, 'DVE': 0.33, 'TVE': 0.37, 'VE': 0.28, 'DAE': 0.0, 'TAE': -0.03, 'AE': -0.18}
+201.171 PSCD {'TPD': -1.92, 'PD': -2.04, 'DVD': -0.0, 'TVD': 0.12, 'VD': 0.08, 'DAD': 0.0, 'TAD': 0.28, 'AD': -0.13}
+201.270 MAG {'I': 0, 'MagX': 154, 'MagY': 271, 'MagZ': 411, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 201269990}
+201.270 MAG {'I': 1, 'MagX': 27, 'MagY': 199, 'MagZ': 852, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 201269991}
+201.270 RATE {'RDes': -6.98, 'R': -0.62, 'ROut': 0.11, 'PDes': 0.82, 'P': -1.98, 'POut': -0.0, 'YDes': 46.53, 'Y': -3.1, 'YOut': 0.27, 'ADes': -22.9, 'A': 129.97, 'AOut': 0.34, 'AOutSlew': 0.18}
+201.270 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 0.36, 'ThrOut': 0.34, 'FailFlags': 2}
+201.270 PSCN {'TPN': -6.31, 'PN': -6.39, 'DVN': 0.53, 'TVN': 0.6, 'VN': 0.5, 'DAN': -0.45, 'TAN': 0.56, 'AN': 0.85}
+201.270 PSCE {'TPE': -13.35, 'PE': -13.4, 'DVE': 0.32, 'TVE': 0.37, 'VE': 0.26, 'DAE': -0.28, 'TAE': -0.25, 'AE': -0.21}
+201.270 PSCD {'TPD': -1.92, 'PD': -2.05, 'DVD': -0.0, 'TVD': 0.13, 'VD': 0.1, 'DAD': 0.0, 'TAD': 0.23, 'AD': -1.3}
+201.370 MAG {'I': 0, 'MagX': 156, 'MagY': 268, 'MagZ': 416, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 201370037}
+201.370 MAG {'I': 1, 'MagX': 37, 'MagY': 189, 'MagZ': 856, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 201370038}
+201.370 RATE {'RDes': 3.02, 'R': -18.94, 'ROut': 0.2, 'PDes': -0.44, 'P': -1.76, 'POut': 0.01, 'YDes': 46.76, 'Y': -1.03, 'YOut': 0.27, 'ADes': -22.0, 'A': 160.54, 'AOut': 0.34, 'AOutSlew': 0.25}
+201.370 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 0.34, 'ThrOut': 0.34, 'FailFlags': 2}
+201.370 PSCN {'TPN': -6.26, 'PN': -6.35, 'DVN': 0.5, 'TVN': 0.58, 'VN': 0.47, 'DAN': -0.4, 'TAN': 0.7, 'AN': 0.7}
+201.370 PSCE {'TPE': -13.32, 'PE': -13.37, 'DVE': 0.3, 'TVE': 0.35, 'VE': 0.26, 'DAE': -0.25, 'TAE': -0.24, 'AE': -0.29}
+201.370 PSCD {'TPD': -1.92, 'PD': -2.06, 'DVD': -0.0, 'TVD': 0.14, 'VD': 0.11, 'DAD': 0.0, 'TAD': 0.22, 'AD': -1.61}
+201.470 MAG {'I': 0, 'MagX': 156, 'MagY': 262, 'MagZ': 418, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 201469988}
+201.470 MAG {'I': 1, 'MagX': 27, 'MagY': 183, 'MagZ': 865, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 201469989}
+201.470 RATE {'RDes': 9.23, 'R': 1.82, 'ROut': 0.14, 'PDes': -0.28, 'P': 4.86, 'POut': -0.04, 'YDes': 47.12, 'Y': -1.48, 'YOut': 0.28, 'ADes': -13.28, 'A': 22.51, 'AOut': 0.34, 'AOutSlew': 0.09}
+201.470 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 0.36, 'ThrOut': 0.34, 'FailFlags': 2}
+201.470 PSCN {'TPN': -6.22, 'PN': -6.3, 'DVN': 0.46, 'TVN': 0.54, 'VN': 0.43, 'DAN': -0.18, 'TAN': 0.82, 'AN': 0.62}
+201.470 PSCE {'TPE': -13.29, 'PE': -13.35, 'DVE': 0.28, 'TVE': 0.33, 'VE': 0.25, 'DAE': -0.11, 'TAE': -0.17, 'AE': -0.33}
+201.470 PSCD {'TPD': -1.92, 'PD': -2.06, 'DVD': -0.0, 'TVD': 0.14, 'VD': 0.11, 'DAD': 0.0, 'TAD': 0.13, 'AD': -0.23}
+201.570 MAG {'I': 0, 'MagX': 152, 'MagY': 261, 'MagZ': 423, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 201570039}
+201.570 MAG {'I': 1, 'MagX': 29, 'MagY': 180, 'MagZ': 860, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 201570040}
+201.570 RATE {'RDes': 15.02, 'R': 23.51, 'ROut': 0.1, 'PDes': 4.12, 'P': -1.51, 'POut': -0.02, 'YDes': 48.28, 'Y': -5.86, 'YOut': 0.29, 'ADes': -8.06, 'A': -43.8, 'AOut': 0.34, 'AOutSlew': 0.11}
+201.570 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 0.36, 'ThrOut': 0.34, 'FailFlags': 2}
+201.570 PSCN {'TPN': -6.17, 'PN': -6.26, 'DVN': 0.42, 'TVN': 0.51, 'VN': 0.42, 'DAN': 0.0, 'TAN': 0.93, 'AN': 0.76}
+201.570 PSCE {'TPE': -13.27, 'PE': -13.33, 'DVE': 0.26, 'TVE': 0.32, 'VE': 0.23, 'DAE': 0.0, 'TAE': -0.03, 'AE': -0.3}
+201.570 PSCD {'TPD': -1.92, 'PD': -2.07, 'DVD': -0.0, 'TVD': 0.15, 'VD': 0.16, 'DAD': 0.0, 'TAD': 0.08, 'AD': 0.44}
+201.670 MAG {'I': 0, 'MagX': 152, 'MagY': 268, 'MagZ': 419, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 201670022}
+201.670 MAG {'I': 1, 'MagX': 21, 'MagY': 197, 'MagZ': 858, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 201670023}
+201.670 RATE {'RDes': 19.56, 'R': -2.54, 'ROut': 0.22, 'PDes': 3.04, 'P': -2.37, 'POut': 0.04, 'YDes': 49.79, 'Y': -8.07, 'YOut': 0.3, 'ADes': -7.46, 'A': -72.79, 'AOut': 0.34, 'AOutSlew': 0.18}
+201.671 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 0.36, 'ThrOut': 0.34, 'FailFlags': 2}
+201.671 PSCN {'TPN': -6.13, 'PN': -6.23, 'DVN': 0.4, 'TVN': 0.49, 'VN': 0.38, 'DAN': 0.0, 'TAN': 1.13, 'AN': 0.89}
+201.671 PSCE {'TPE': -13.24, 'PE': -13.31, 'DVE': 0.24, 'TVE': 0.31, 'VE': 0.24, 'DAE': 0.0, 'TAE': 0.05, 'AE': -0.28}
+201.671 PSCD {'TPD': -1.92, 'PD': -2.07, 'DVD': -0.0, 'TVD': 0.15, 'VD': 0.15, 'DAD': 0.0, 'TAD': 0.07, 'AD': 0.73}
+201.770 MAG {'I': 0, 'MagX': 149, 'MagY': 275, 'MagZ': 417, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 201770008}
+201.770 MAG {'I': 1, 'MagX': 16, 'MagY': 200, 'MagZ': 869, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 201770010}
+201.770 RATE {'RDes': -1.52, 'R': 6.41, 'ROut': 0.13, 'PDes': 0.94, 'P': 4.67, 'POut': -0.01, 'YDes': 51.42, 'Y': -8.35, 'YOut': 0.31, 'ADes': -3.52, 'A': -102.09, 'AOut': 0.34, 'AOutSlew': 0.19}
+201.770 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 0.37, 'ThrOut': 0.34, 'FailFlags': 2}
+201.770 PSCN {'TPN': -6.09, 'PN': -6.2, 'DVN': 0.38, 'TVN': 0.48, 'VN': 0.33, 'DAN': -0.36, 'TAN': 0.8, 'AN': 0.88}
+201.770 PSCE {'TPE': -13.22, 'PE': -13.29, 'DVE': 0.23, 'TVE': 0.3, 'VE': 0.21, 'DAE': -0.21, 'TAE': -0.19, 'AE': -0.28}
+201.770 PSCD {'TPD': -1.92, 'PD': -2.08, 'DVD': -0.0, 'TVD': 0.16, 'VD': 0.14, 'DAD': 0.0, 'TAD': 0.04, 'AD': 1.02}
+201.870 MAG {'I': 0, 'MagX': 142, 'MagY': 277, 'MagZ': 415, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 201870005}
+201.870 MAG {'I': 1, 'MagX': 19, 'MagY': 200, 'MagZ': 864, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 201870006}
+201.870 RATE {'RDes': -13.45, 'R': -2.39, 'ROut': 0.08, 'PDes': 6.16, 'P': -9.59, 'POut': 0.07, 'YDes': 52.85, 'Y': -2.85, 'YOut': 0.31, 'ADes': -6.82, 'A': -66.45, 'AOut': 0.34, 'AOutSlew': 0.04}
+201.870 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 0.38, 'ThrOut': 0.34, 'FailFlags': 2}
+201.870 PSCN {'TPN': -6.06, 'PN': -6.16, 'DVN': 0.34, 'TVN': 0.45, 'VN': 0.32, 'DAN': -0.63, 'TAN': 0.34, 'AN': 0.69}
+201.870 PSCE {'TPE': -13.2, 'PE': -13.27, 'DVE': 0.21, 'TVE': 0.29, 'VE': 0.2, 'DAE': -0.36, 'TAE': -0.32, 'AE': -0.35}
+201.870 PSCD {'TPD': -1.92, 'PD': -2.08, 'DVD': -0.0, 'TVD': 0.16, 'VD': 0.1, 'DAD': 0.0, 'TAD': 0.07, 'AD': 0.66}
+201.970 MAG {'I': 0, 'MagX': 139, 'MagY': 268, 'MagZ': 420, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 201970006}
+201.970 MAG {'I': 1, 'MagX': 11, 'MagY': 188, 'MagZ': 875, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 201970009}
+201.970 RATE {'RDes': -1.28, 'R': -19.56, 'ROut': 0.17, 'PDes': 0.8, 'P': 3.85, 'POut': 0.02, 'YDes': 52.57, 'Y': 2.09, 'YOut': 0.3, 'ADes': -8.44, 'A': -65.23, 'AOut': 0.34, 'AOutSlew': 0.08}
+201.970 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 0.37, 'ThrOut': 0.34, 'FailFlags': 2}
+201.970 PSCN {'TPN': -6.02, 'PN': -6.12, 'DVN': 0.29, 'TVN': 0.39, 'VN': 0.29, 'DAN': -0.58, 'TAN': 0.38, 'AN': 0.46}
+201.970 PSCE {'TPE': -13.18, 'PE': -13.25, 'DVE': 0.18, 'TVE': 0.26, 'VE': 0.21, 'DAE': -0.33, 'TAE': -0.42, 'AE': -0.43}
+201.970 PSCD {'TPD': -1.92, 'PD': -2.09, 'DVD': -0.0, 'TVD': 0.17, 'VD': 0.11, 'DAD': 0.0, 'TAD': 0.08, 'AD': 0.65}
+202.070 MAG {'I': 0, 'MagX': 142, 'MagY': 259, 'MagZ': 427, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 202070027}
+202.070 MAG {'I': 1, 'MagX': 12, 'MagY': 176, 'MagZ': 860, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 202070028}
+202.070 RATE {'RDes': 1.61, 'R': -12.22, 'ROut': 0.2, 'PDes': 0.68, 'P': 3.89, 'POut': -0.0, 'YDes': 52.05, 'Y': 1.38, 'YOut': 0.29, 'ADes': -7.11, 'A': 34.6, 'AOut': 0.34, 'AOutSlew': 0.11}
+202.070 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 0.36, 'ThrOut': 0.34, 'FailFlags': 2}
+202.070 PSCN {'TPN': -6.0, 'PN': -6.09, 'DVN': 0.23, 'TVN': 0.33, 'VN': 0.25, 'DAN': -0.56, 'TAN': 0.36, 'AN': 0.33}
+202.070 PSCE {'TPE': -13.16, 'PE': -13.24, 'DVE': 0.15, 'TVE': 0.22, 'VE': 0.19, 'DAE': -0.32, 'TAE': -0.44, 'AE': -0.46}
+202.070 PSCD {'TPD': -1.92, 'PD': -2.1, 'DVD': -0.0, 'TVD': 0.18, 'VD': 0.13, 'DAD': 0.0, 'TAD': 0.07, 'AD': -0.35}
+202.170 MAG {'I': 0, 'MagX': 142, 'MagY': 254, 'MagZ': 435, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 202169996}
+202.170 MAG {'I': 1, 'MagX': 15, 'MagY': 170, 'MagZ': 870, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 202169998}
+202.170 RATE {'RDes': 5.56, 'R': 16.7, 'ROut': 0.08, 'PDes': 6.23, 'P': -6.08, 'POut': 0.03, 'YDes': 51.36, 'Y': 3.33, 'YOut': 0.29, 'ADes': -3.82, 'A': -113.39, 'AOut': 0.35, 'AOutSlew': 0.11}
+202.171 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 0.37, 'ThrOut': 0.35, 'FailFlags': 2}
+202.171 PSCN {'TPN': -5.98, 'PN': -6.07, 'DVN': 0.18, 'TVN': 0.26, 'VN': 0.23, 'DAN': -0.34, 'TAN': 0.45, 'AN': 0.38}
+202.171 PSCE {'TPE': -13.15, 'PE': -13.22, 'DVE': 0.11, 'TVE': 0.19, 'VE': 0.15, 'DAE': -0.2, 'TAE': -0.29, 'AE': -0.44}
+202.171 PSCD {'TPD': -1.92, 'PD': -2.1, 'DVD': -0.0, 'TVD': 0.18, 'VD': 0.18, 'DAD': 0.0, 'TAD': 0.04, 'AD': 1.13}
+202.270 MAG {'I': 0, 'MagX': 144, 'MagY': 257, 'MagZ': 427, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 202269947}
+202.270 MAG {'I': 1, 'MagX': 14, 'MagY': 170, 'MagZ': 871, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 202269948}
+202.270 RATE {'RDes': 18.51, 'R': 1.39, 'ROut': 0.18, 'PDes': 2.63, 'P': -5.78, 'POut': 0.06, 'YDes': 50.56, 'Y': 2.13, 'YOut': 0.29, 'ADes': 0.35, 'A': -131.11, 'AOut': 0.35, 'AOutSlew': 0.1}
+202.270 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 0.38, 'ThrOut': 0.35, 'FailFlags': 2}
+202.270 PSCN {'TPN': -5.96, 'PN': -6.04, 'DVN': 0.13, 'TVN': 0.21, 'VN': 0.12, 'DAN': -0.27, 'TAN': 0.81, 'AN': 0.51}
+202.270 PSCE {'TPE': -13.14, 'PE': -13.21, 'DVE': 0.09, 'TVE': 0.16, 'VE': 0.12, 'DAE': -0.16, 'TAE': -0.17, 'AE': -0.44}
+202.270 PSCD {'TPD': -1.92, 'PD': -2.1, 'DVD': -0.0, 'TVD': 0.18, 'VD': 0.18, 'DAD': 0.0, 'TAD': -0.0, 'AD': 1.31}
+202.370 MAG {'I': 0, 'MagX': 147, 'MagY': 262, 'MagZ': 421, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 202369974}
+202.370 MAG {'I': 1, 'MagX': 25, 'MagY': 184, 'MagZ': 897, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 202369976}
+202.370 RATE {'RDes': 12.92, 'R': -11.14, 'ROut': 0.3, 'PDes': 15.8, 'P': -4.91, 'POut': 0.03, 'YDes': 52.84, 'Y': -22.12, 'YOut': 0.33, 'ADes': 5.89, 'A': 60.99, 'AOut': 0.35, 'AOutSlew': 0.19}
+202.370 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 0.35, 'ThrOut': 0.35, 'FailFlags': 2}
+202.370 PSCN {'TPN': -5.95, 'PN': -6.02, 'DVN': 0.09, 'TVN': 0.17, 'VN': 0.11, 'DAN': -0.27, 'TAN': 0.73, 'AN': 0.54}
+202.370 PSCE {'TPE': -13.13, 'PE': -13.2, 'DVE': 0.06, 'TVE': 0.13, 'VE': 0.08, 'DAE': -0.15, 'TAE': 0.02, 'AE': -0.35}
+202.370 PSCD {'TPD': -1.92, 'PD': -2.1, 'DVD': -0.0, 'TVD': 0.18, 'VD': 0.18, 'DAD': 0.0, 'TAD': -0.06, 'AD': -0.61}
+202.470 MAG {'I': 0, 'MagX': 155, 'MagY': 292, 'MagZ': 391, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 202470000}
+202.470 MAG {'I': 1, 'MagX': -147, 'MagY': 201, 'MagZ': 1078, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 202470001}
+202.470 RATE {'RDes': -175.74, 'R': 116.65, 'ROut': -0.27, 'PDes': 101.0, 'P': -55.55, 'POut': 0.14, 'YDes': 60.14, 'Y': -60.9, 'YOut': 0.42, 'ADes': 180.34, 'A': -838.32, 'AOut': 0.55, 'AOutSlew': 4.91}
+202.470 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 0.29, 'ThrOut': 0.53, 'FailFlags': 2}
+202.470 PSCN {'TPN': -5.94, 'PN': -5.97, 'DVN': 0.06, 'TVN': 0.09, 'VN': 0.85, 'DAN': -0.28, 'TAN': -3.4, 'AN': -0.13}
+202.470 PSCE {'TPE': -13.12, 'PE': -13.19, 'DVE': 0.05, 'TVE': 0.11, 'VE': 0.53, 'DAE': -0.13, 'TAE': -1.35, 'AE': -0.1}
+202.470 PSCD {'TPD': -1.92, 'PD': -2.07, 'DVD': -0.0, 'TVD': 0.15, 'VD': 0.88, 'DAD': 0.0, 'TAD': -1.8, 'AD': 8.38}
+202.570 MAG {'I': 0, 'MagX': 155, 'MagY': 292, 'MagZ': 391, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 202470000}
+202.570 MAG {'I': 1, 'MagX': -564, 'MagY': 63, 'MagZ': 2151, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 202570069}
+202.570 RATE {'RDes': -151.41, 'R': -36.59, 'ROut': 0.36, 'PDes': 158.56, 'P': -314.54, 'POut': 1.77, 'YDes': 34.0, 'Y': 15.74, 'YOut': 0.39, 'ADes': 516.6, 'A': -3093.39, 'AOut': 0.89, 'AOutSlew': 2.6}
+202.570 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 1.0, 'ThrOut': 0.51, 'FailFlags': 2}
+202.570 PSCN {'TPN': -5.94, 'PN': -5.92, 'DVN': 0.03, 'TVN': 0.01, 'VN': 0.59, 'DAN': -0.27, 'TAN': -1.49, 'AN': -0.78}
+202.570 PSCE {'TPE': -13.12, 'PE': -13.22, 'DVE': 0.03, 'TVE': 0.13, 'VE': -0.21, 'DAE': -0.06, 'TAE': 2.65, 'AE': 0.62}
+202.570 PSCD {'TPD': -1.92, 'PD': -1.99, 'DVD': -0.0, 'TVD': 0.07, 'VD': 1.61, 'DAD': 0.0, 'TAD': -5.17, 'AD': 30.93}
+202.670 MAG {'I': 0, 'MagX': 155, 'MagY': 292, 'MagZ': 391, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 202470000}
+202.670 MAG {'I': 1, 'MagX': -277, 'MagY': 74, 'MagZ': 1954, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 202670040}
+202.670 RATE {'RDes': -180.17, 'R': -91.52, 'ROut': 0.01, 'PDes': 235.73, 'P': -413.81, 'POut': 1.63, 'YDes': 3.12, 'Y': 3.12, 'YOut': 0.21, 'ADes': 1049.76, 'A': -941.21, 'AOut': 1.0, 'AOutSlew': 10.49}
+202.671 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 1.0, 'ThrOut': 0.47, 'FailFlags': 2}
+202.671 PSCN {'TPN': -5.94, 'PN': -5.86, 'DVN': -0.0, 'TVN': -0.07, 'VN': 0.6, 'DAN': 0.0, 'TAN': -0.9, 'AN': 0.35}
+202.671 PSCE {'TPE': -13.12, 'PE': -13.25, 'DVE': 0.03, 'TVE': 0.16, 'VE': -0.32, 'DAE': 0.0, 'TAE': 1.72, 'AE': 1.23}
+202.671 PSCD {'TPD': -1.92, 'PD': -1.82, 'DVD': -0.0, 'TVD': -0.1, 'VD': 2.37, 'DAD': 0.0, 'TAD': -10.5, 'AD': 9.41}
+202.770 MAG {'I': 0, 'MagX': 155, 'MagY': 292, 'MagZ': 391, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 202470000}
+202.770 MAG {'I': 1, 'MagX': -336, 'MagY': 298, 'MagZ': 2424, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 202770046}
+202.770 RATE {'RDes': -221.14, 'R': -18.54, 'ROut': -0.57, 'PDes': 305.17, 'P': -448.91, 'POut': 1.85, 'YDes': 68.4, 'Y': 68.4, 'YOut': 0.14, 'ADes': 1697.65, 'A': -777.67, 'AOut': 0.59, 'AOutSlew': 8.39}
+202.770 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 1.0, 'ThrOut': 0.44, 'FailFlags': 2}
+202.770 PSCN {'TPN': -5.94, 'PN': -5.81, 'DVN': -0.01, 'TVN': -0.13, 'VN': 0.53, 'DAN': 0.17, 'TAN': -0.61, 'AN': 1.37}
+202.770 PSCE {'TPE': -13.11, 'PE': -13.27, 'DVE': 0.05, 'TVE': 0.21, 'VE': -0.15, 'DAE': 0.61, 'TAE': 0.64, 'AE': -0.15}
+202.770 PSCD {'TPD': -1.92, 'PD': -1.54, 'DVD': -0.0, 'TVD': -0.38, 'VD': 3.44, 'DAD': 0.0, 'TAD': -16.98, 'AD': 7.78}
+202.870 MAG {'I': 0, 'MagX': 155, 'MagY': 292, 'MagZ': 391, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 202470000}
+202.870 MAG {'I': 1, 'MagX': -201, 'MagY': 1031, 'MagZ': 1948, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 202870060}
+202.870 RATE {'RDes': -315.71, 'R': 26.66, 'ROut': -0.59, 'PDes': 319.27, 'P': -443.63, 'POut': 1.73, 'YDes': 141.52, 'Y': 141.52, 'YOut': 0.12, 'ADes': 2390.08, 'A': -388.17, 'AOut': 0.17, 'AOutSlew': 2.44}
+202.870 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 1.0, 'ThrOut': 0.45, 'FailFlags': 2}
+202.870 PSCN {'TPN': -5.94, 'PN': -5.74, 'DVN': 0.01, 'TVN': -0.18, 'VN': 0.61, 'DAN': 0.0, 'TAN': -1.55, 'AN': 1.33}
+202.870 PSCE {'TPE': -13.11, 'PE': -13.27, 'DVE': 0.08, 'TVE': 0.24, 'VE': 0.12, 'DAE': -0.0, 'TAE': -0.49, 'AE': 0.62}
+202.870 PSCD {'TPD': -1.92, 'PD': -1.16, 'DVD': -0.0, 'TVD': -0.76, 'VD': 4.37, 'DAD': 0.0, 'TAD': -23.9, 'AD': 3.88}
+202.970 MAG {'I': 0, 'MagX': 155, 'MagY': 292, 'MagZ': 391, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 0, 'S': 202470000}
+202.970 MAG {'I': 1, 'MagX': 10, 'MagY': 910, 'MagZ': 1895, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 202969962}
+202.970 ERR {'Subsys': 3, 'ECode': 4}
+202.970 RATE {'RDes': -380.35, 'R': -437.32, 'ROut': 1.2, 'PDes': 126.1, 'P': -141.31, 'POut': 1.04, 'YDes': -183.85, 'Y': -183.85, 'YOut': 0.22, 'ADes': 2875.62, 'A': -2623.06, 'AOut': 0.05, 'AOutSlew': 0.71}
+202.970 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 1.0, 'ThrOut': 0.51, 'FailFlags': 2}
+202.970 PSCN {'TPN': -5.94, 'PN': -5.68, 'DVN': 0.02, 'TVN': -0.23, 'VN': 1.14, 'DAN': -0.03, 'TAN': -2.47, 'AN': -0.82}
+202.970 PSCE {'TPE': -13.1, 'PE': -13.24, 'DVE': 0.08, 'TVE': 0.23, 'VE': 0.15, 'DAE': -0.1, 'TAE': -2.11, 'AE': 1.24}
+202.970 PSCD {'TPD': -1.92, 'PD': -0.7, 'DVD': 0.0, 'TVD': -1.2, 'VD': 5.7, 'DAD': 0.1, 'TAD': -28.76, 'AD': 26.23}
+203.070 MAG {'I': 0, 'MagX': 155, 'MagY': 292, 'MagZ': 391, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 0, 'S': 202470000}
+203.070 MAG {'I': 1, 'MagX': -79, 'MagY': 718, 'MagZ': 1638, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 203070010}
+203.070 RATE {'RDes': -323.31, 'R': 88.83, 'ROut': -2.41, 'PDes': 249.63, 'P': -258.32, 'POut': 1.73, 'YDes': 128.13, 'Y': 128.13, 'YOut': 0.15, 'ADes': 3569.06, 'A': -598.11, 'AOut': 0.01, 'AOutSlew': 0.21}
+203.070 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 1.0, 'ThrOut': 0.45, 'FailFlags': 2}
+203.070 PSCN {'TPN': -5.94, 'PN': -5.62, 'DVN': 0.02, 'TVN': -0.29, 'VN': 0.65, 'DAN': -0.04, 'TAN': -1.88, 'AN': -0.78}
+203.070 PSCE {'TPE': -13.09, 'PE': -13.25, 'DVE': 0.07, 'TVE': 0.23, 'VE': -0.02, 'DAE': -0.14, 'TAE': 0.63, 'AE': 1.3}
+203.070 PSCD {'TPD': -1.92, 'PD': -0.13, 'DVD': 0.04, 'TVD': -1.57, 'VD': 6.08, 'DAD': 0.6, 'TAD': -35.69, 'AD': 5.98}
+203.170 MAG {'I': 0, 'MagX': 155, 'MagY': 292, 'MagZ': 391, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 0, 'S': 202470000}
+203.170 MAG {'I': 1, 'MagX': 155, 'MagY': 906, 'MagZ': 1909, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 203169971}
+203.170 RATE {'RDes': -332.01, 'R': -169.34, 'ROut': -0.6, 'PDes': 251.11, 'P': -76.19, 'POut': 0.95, 'YDes': 115.59, 'Y': 115.59, 'YOut': 0.16, 'ADes': 3500.3, 'A': -634.19, 'AOut': 0.0, 'AOutSlew': 0.06}
+203.171 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 1.0, 'ThrOut': 0.42, 'FailFlags': 2}
+203.171 PSCN {'TPN': -5.93, 'PN': -5.6, 'DVN': 0.02, 'TVN': -0.31, 'VN': -0.01, 'DAN': -0.03, 'TAN': 1.94, 'AN': 0.29}
+203.171 PSCE {'TPE': -13.09, 'PE': -13.26, 'DVE': 0.06, 'TVE': 0.23, 'VE': -0.18, 'DAE': -0.11, 'TAE': 1.08, 'AE': 0.71}
+203.171 PSCD {'TPD': -1.91, 'PD': 0.42, 'DVD': 0.12, 'TVD': -1.79, 'VD': 5.51, 'DAD': 1.0, 'TAD': -35.0, 'AD': 6.34}
+203.270 MAG {'I': 0, 'MagX': 155, 'MagY': 292, 'MagZ': 391, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 0, 'S': 202470000}
+203.270 MAG {'I': 1, 'MagX': 99, 'MagY': 276, 'MagZ': 793, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 203269968}
+203.270 RATE {'RDes': -355.76, 'R': -60.13, 'ROut': -0.89, 'PDes': 191.49, 'P': -114.76, 'POut': 0.86, 'YDes': 65.61, 'Y': 65.61, 'YOut': 0.15, 'ADes': 3639.25, 'A': -56.33, 'AOut': 0.0, 'AOutSlew': 0.02}
+203.270 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 1.0, 'ThrOut': 0.43, 'FailFlags': 2}
+203.270 PSCN {'TPN': -5.93, 'PN': -5.63, 'DVN': 0.01, 'TVN': -0.29, 'VN': -0.55, 'DAN': -0.03, 'TAN': 3.11, 'AN': 0.85}
+203.270 PSCE {'TPE': -13.08, 'PE': -13.28, 'DVE': 0.05, 'TVE': 0.25, 'VE': -0.34, 'DAE': -0.09, 'TAE': 1.89, 'AE': -0.33}
+203.270 PSCD {'TPD': -1.89, 'PD': 0.97, 'DVD': 0.22, 'TVD': -1.96, 'VD': 5.62, 'DAD': 1.0, 'TAD': -36.39, 'AD': 0.56}
+203.370 MAG {'I': 0, 'MagX': 155, 'MagY': 292, 'MagZ': 391, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 0, 'S': 202470000}
+203.370 MAG {'I': 1, 'MagX': 263, 'MagY': 241, 'MagZ': 478, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 203369977}
+203.370 RATE {'RDes': -366.8, 'R': -4.3, 'ROut': -0.93, 'PDes': 113.1, 'P': -37.27, 'POut': 0.37, 'YDes': 42.17, 'Y': 42.17, 'YOut': 0.15, 'ADes': 3728.53, 'A': -17.49, 'AOut': 0.0, 'AOutSlew': 0.01}
+203.370 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 1.0, 'ThrOut': 0.41, 'FailFlags': 2}
+203.370 PSCN {'TPN': -5.93, 'PN': -5.68, 'DVN': 0.01, 'TVN': -0.24, 'VN': -0.52, 'DAN': -0.02, 'TAN': 1.37, 'AN': 1.96}
+203.370 PSCE {'TPE': -13.08, 'PE': -13.32, 'DVE': 0.04, 'TVE': 0.29, 'VE': -0.56, 'DAE': -0.08, 'TAE': 2.96, 'AE': -0.61}
+203.370 PSCD {'TPD': -1.87, 'PD': 1.53, 'DVD': 0.32, 'TVD': -2.09, 'VD': 5.6, 'DAD': 0.91, 'TAD': -37.29, 'AD': 0.17}
+203.470 MAG {'I': 0, 'MagX': 155, 'MagY': 292, 'MagZ': 391, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 0, 'S': 202470000}
+203.470 MAG {'I': 1, 'MagX': 748, 'MagY': 309, 'MagZ': 30, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 203469978}
+203.470 RATE {'RDes': -363.91, 'R': 15.38, 'ROut': -0.92, 'PDes': 83.44, 'P': 13.7, 'POut': 0.2, 'YDes': 10.92, 'Y': 10.92, 'YOut': 0.15, 'ADes': 3794.67, 'A': 29.47, 'AOut': 0.0, 'AOutSlew': 0.0}
+203.470 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 1.0, 'ThrOut': 0.41, 'FailFlags': 2}
+203.470 PSCN {'TPN': -5.93, 'PN': -5.73, 'DVN': 0.01, 'TVN': -0.19, 'VN': -0.56, 'DAN': -0.02, 'TAN': 1.64, 'AN': 2.78}
+203.470 PSCE {'TPE': -13.07, 'PE': -13.39, 'DVE': 0.03, 'TVE': 0.35, 'VE': -0.73, 'DAE': -0.06, 'TAE': 3.47, 'AE': -0.06}
+203.470 PSCD {'TPD': -1.55, 'PD': 2.08, 'DVD': 0.39, 'TVD': -2.11, 'VD': 5.58, 'DAD': 0.55, 'TAD': -37.95, 'AD': -0.29}
+203.570 MAG {'I': 0, 'MagX': 155, 'MagY': 292, 'MagZ': 391, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 0, 'S': 202470000}
+203.570 MAG {'I': 1, 'MagX': 649, 'MagY': 253, 'MagZ': 283, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 203569984}
+203.570 RATE {'RDes': -363.88, 'R': 1.26, 'ROut': -0.89, 'PDes': 62.47, 'P': 1.94, 'POut': 0.23, 'YDes': 3.44, 'Y': 3.44, 'YOut': 0.15, 'ADes': 3799.61, 'A': 3.14, 'AOut': 0.0, 'AOutSlew': 0.0}
+203.570 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 1.0, 'ThrOut': 0.41, 'FailFlags': 2}
+203.570 PSCN {'TPN': -5.93, 'PN': -5.79, 'DVN': 0.01, 'TVN': -0.13, 'VN': -0.63, 'DAN': -0.01, 'TAN': 1.94, 'AN': 3.3}
+203.570 PSCE {'TPE': -13.07, 'PE': -13.47, 'DVE': 0.03, 'TVE': 0.42, 'VE': -0.83, 'DAE': -0.05, 'TAE': 3.36, 'AE': 0.16}
+203.570 PSCD {'TPD': -1.0, 'PD': 2.62, 'DVD': 0.43, 'TVD': -2.07, 'VD': 5.62, 'DAD': 0.33, 'TAD': -38.0, 'AD': -0.03}
+203.670 MAG {'I': 0, 'MagX': 155, 'MagY': 292, 'MagZ': 391, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 0, 'S': 202470000}
+203.670 MAG {'I': 1, 'MagX': 473, 'MagY': 295, 'MagZ': 543, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 203670012}
+203.670 RATE {'RDes': -364.53, 'R': 0.48, 'ROut': -0.9, 'PDes': 56.63, 'P': -5.23, 'POut': 0.23, 'YDes': -0.8, 'Y': -0.8, 'YOut': 0.14, 'ADes': 3800.29, 'A': -73.83, 'AOut': 0.0, 'AOutSlew': 0.0}
+203.671 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 1.0, 'ThrOut': 0.41, 'FailFlags': 2}
+203.671 PSCN {'TPN': -5.93, 'PN': -5.85, 'DVN': 0.01, 'TVN': -0.07, 'VN': -0.7, 'DAN': -0.01, 'TAN': 1.87, 'AN': 3.47}
+203.671 PSCE {'TPE': -13.07, 'PE': -13.55, 'DVE': 0.02, 'TVE': 0.5, 'VE': -0.94, 'DAE': -0.04, 'TAE': 2.94, 'AE': 0.16}
+203.671 PSCD {'TPD': -0.46, 'PD': 3.17, 'DVD': 0.46, 'TVD': -2.04, 'VD': 5.61, 'DAD': 0.2, 'TAD': -38.0, 'AD': 0.74}
+203.770 MAG {'I': 0, 'MagX': 155, 'MagY': 292, 'MagZ': 391, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 0, 'S': 202470000}
+203.770 MAG {'I': 1, 'MagX': 425, 'MagY': 256, 'MagZ': 469, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 203769992}
+203.770 RATE {'RDes': -364.48, 'R': -14.8, 'ROut': -0.85, 'PDes': 34.62, 'P': -13.13, 'POut': 0.19, 'YDes': -16.42, 'Y': -16.42, 'YOut': 0.15, 'ADes': 3803.77, 'A': 32.87, 'AOut': 0.0, 'AOutSlew': 0.0}
+203.770 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 1.0, 'ThrOut': 0.4, 'FailFlags': 2}
+203.770 PSCN {'TPN': -5.93, 'PN': -5.93, 'DVN': 0.0, 'TVN': 0.0, 'VN': -0.77, 'DAN': -0.01, 'TAN': 1.88, 'AN': 3.37}
+203.770 PSCE {'TPE': -13.07, 'PE': -13.66, 'DVE': 0.02, 'TVE': 0.6, 'VE': -1.08, 'DAE': -0.03, 'TAE': 2.5, 'AE': 0.24}
+203.770 PSCD {'TPD': 0.08, 'PD': 3.7, 'DVD': 0.48, 'TVD': -2.02, 'VD': 5.6, 'DAD': 0.12, 'TAD': -38.04, 'AD': -0.33}
+203.870 MAG {'I': 0, 'MagX': 155, 'MagY': 292, 'MagZ': 391, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 0, 'S': 202470000}
+203.870 MAG {'I': 1, 'MagX': 229, 'MagY': 191, 'MagZ': 385, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 203869945}
+203.870 RATE {'RDes': -365.13, 'R': -5.86, 'ROut': -0.89, 'PDes': 21.62, 'P': -11.79, 'POut': 0.16, 'YDes': -10.59, 'Y': -10.59, 'YOut': 0.14, 'ADes': 3803.21, 'A': 18.95, 'AOut': 0.0, 'AOutSlew': 0.0}
+203.870 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 1.0, 'ThrOut': 0.41, 'FailFlags': 2}
+203.870 PSCN {'TPN': -5.93, 'PN': -6.01, 'DVN': 0.0, 'TVN': 0.08, 'VN': -0.84, 'DAN': -0.01, 'TAN': 1.92, 'AN': 3.15}
+203.870 PSCE {'TPE': -13.07, 'PE': -13.77, 'DVE': 0.01, 'TVE': 0.71, 'VE': -1.17, 'DAE': -0.03, 'TAE': 2.06, 'AE': 0.19}
+203.870 PSCD {'TPD': 0.6, 'PD': 4.23, 'DVD': 0.49, 'TVD': -2.01, 'VD': 5.61, 'DAD': 0.07, 'TAD': -38.03, 'AD': -0.19}
+203.970 MAG {'I': 0, 'MagX': 155, 'MagY': 292, 'MagZ': 391, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 0, 'S': 202470000}
+203.970 MAG {'I': 1, 'MagX': 323, 'MagY': 242, 'MagZ': 283, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 203970001}
+203.970 RATE {'RDes': -365.77, 'R': -15.53, 'ROut': -0.84, 'PDes': 10.28, 'P': -9.13, 'POut': 0.09, 'YDes': -22.04, 'Y': -22.04, 'YOut': 0.14, 'ADes': 3804.39, 'A': -12.54, 'AOut': 0.0, 'AOutSlew': 0.0}
+203.970 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 1.0, 'ThrOut': 0.42, 'FailFlags': 2}
+203.970 PSCN {'TPN': -5.93, 'PN': -6.09, 'DVN': 0.0, 'TVN': 0.17, 'VN': -0.89, 'DAN': -0.01, 'TAN': 1.94, 'AN': 2.9}
+203.970 PSCE {'TPE': -13.07, 'PE': -13.89, 'DVE': 0.01, 'TVE': 0.83, 'VE': -1.3, 'DAE': -0.02, 'TAE': 1.63, 'AE': 0.04}
+203.970 PSCD {'TPD': 1.13, 'PD': 4.76, 'DVD': 0.49, 'TVD': -2.01, 'VD': 5.59, 'DAD': 0.04, 'TAD': -38.04, 'AD': 0.13}
+204.070 MAG {'I': 0, 'MagX': 155, 'MagY': 292, 'MagZ': 391, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 0, 'S': 202470000}
+204.070 MAG {'I': 1, 'MagX': 299, 'MagY': 233, 'MagZ': 241, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 204069953}
+204.070 RATE {'RDes': -372.0, 'R': -2.74, 'ROut': -0.9, 'PDes': 139.71, 'P': -1.4, 'POut': 0.38, 'YDes': -0.59, 'Y': -0.59, 'YOut': 0.07, 'ADes': -12.45, 'A': -12.45, 'AOut': 0.0, 'AOutSlew': 0.0}
+204.070 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 0.64, 'ThrOut': 0.0, 'FailFlags': 2}
+204.070 PSCN {'TPN': -6.19, 'PN': -6.19, 'DVN': -0.96, 'TVN': -0.96, 'VN': -0.96, 'DAN': 0.0, 'TAN': 0.73, 'AN': 1.72}
+204.070 PSCE {'TPE': -14.02, 'PE': -14.02, 'DVE': -1.34, 'TVE': -1.34, 'VE': -1.34, 'DAE': 0.0, 'TAE': 0.62, 'AE': -0.02}
+204.070 PSCD {'TPD': 5.24, 'PD': 5.24, 'DVD': 5.59, 'TVD': 5.59, 'VD': 5.59, 'DAD': 0.12, 'TAD': 0.12, 'AD': 0.12}
+204.170 MAG {'I': 0, 'MagX': 155, 'MagY': 292, 'MagZ': 391, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 0, 'S': 202470000}
+204.170 MAG {'I': 1, 'MagX': 444, 'MagY': 267, 'MagZ': -16, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 204169952}
+204.170 RATE {'RDes': -360.44, 'R': 8.21, 'ROut': -0.88, 'PDes': 189.4, 'P': 6.98, 'POut': 0.45, 'YDes': 10.71, 'Y': 10.71, 'YOut': 0.04, 'ADes': -12.33, 'A': -12.33, 'AOut': 0.0, 'AOutSlew': 0.0}
+204.170 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 0.35, 'ThrOut': 0.0, 'FailFlags': 2}
+204.171 PSCN {'TPN': -6.29, 'PN': -6.29, 'DVN': -1.02, 'TVN': -1.02, 'VN': -1.02, 'DAN': 0.0, 'TAN': 0.4, 'AN': 0.87}
+204.171 PSCE {'TPE': -14.16, 'PE': -14.16, 'DVE': -1.41, 'TVE': -1.41, 'VE': -1.41, 'DAE': 0.0, 'TAE': 0.33, 'AE': -0.01}
+204.171 PSCD {'TPD': 5.67, 'PD': 5.67, 'DVD': 5.56, 'TVD': 5.56, 'VD': 5.56, 'DAD': 0.12, 'TAD': 0.12, 'AD': 0.12}
+204.270 MAG {'I': 0, 'MagX': 155, 'MagY': 292, 'MagZ': 391, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 0, 'S': 202470000}
+204.270 MAG {'I': 1, 'MagX': 463, 'MagY': 251, 'MagZ': -31, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 204269962}
+204.270 RATE {'RDes': -353.71, 'R': -1.7, 'ROut': -0.82, 'PDes': 207.04, 'P': 0.29, 'POut': 0.51, 'YDes': -2.64, 'Y': -2.64, 'YOut': 0.02, 'ADes': -27.46, 'A': -27.46, 'AOut': 0.0, 'AOutSlew': 0.0}
+204.270 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 0.2, 'ThrOut': 0.0, 'FailFlags': 2}
+204.270 PSCN {'TPN': -6.39, 'PN': -6.39, 'DVN': -1.09, 'TVN': -1.09, 'VN': -1.09, 'DAN': 0.0, 'TAN': 0.21, 'AN': 0.45}
+204.270 PSCE {'TPE': -14.3, 'PE': -14.3, 'DVE': -1.54, 'TVE': -1.54, 'VE': -1.54, 'DAE': 0.0, 'TAE': 0.18, 'AE': -0.01}
+204.270 PSCD {'TPD': 6.06, 'PD': 6.06, 'DVD': 5.55, 'TVD': 5.55, 'VD': 5.55, 'DAD': 0.27, 'TAD': 0.27, 'AD': 0.27}
+204.370 MAG {'I': 0, 'MagX': 155, 'MagY': 292, 'MagZ': 391, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 0, 'S': 202470000}
+204.370 MAG {'I': 1, 'MagX': 463, 'MagY': 254, 'MagZ': -31, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 204369908}
+204.370 RATE {'RDes': -352.42, 'R': -5.7, 'ROut': -0.82, 'PDes': 202.11, 'P': -5.01, 'POut': 0.5, 'YDes': -7.78, 'Y': -7.78, 'YOut': 0.01, 'ADes': 10.39, 'A': 10.39, 'AOut': 0.0, 'AOutSlew': 0.0}
+204.370 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 0.13, 'ThrOut': 0.0, 'FailFlags': 2}
+204.370 PSCN {'TPN': -6.51, 'PN': -6.51, 'DVN': -1.16, 'TVN': -1.16, 'VN': -1.16, 'DAN': 0.0, 'TAN': 0.11, 'AN': 0.23}
+204.370 PSCE {'TPE': -14.46, 'PE': -14.46, 'DVE': -1.64, 'TVE': -1.64, 'VE': -1.64, 'DAE': 0.0, 'TAE': 0.1, 'AE': -0.0}
+204.370 PSCD {'TPD': 6.42, 'PD': 6.42, 'DVD': 5.53, 'TVD': 5.53, 'VD': 5.53, 'DAD': -0.1, 'TAD': -0.1, 'AD': -0.1}
+204.470 MAG {'I': 0, 'MagX': 155, 'MagY': 292, 'MagZ': 391, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 0, 'S': 202470000}
+204.470 MAG {'I': 1, 'MagX': 455, 'MagY': 259, 'MagZ': -21, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 204469888}
+204.470 RATE {'RDes': -350.56, 'R': 1.48, 'ROut': -0.83, 'PDes': 206.27, 'P': 1.54, 'POut': 0.49, 'YDes': 3.43, 'Y': 3.43, 'YOut': 0.0, 'ADes': -9.11, 'A': -9.11, 'AOut': 0.0, 'AOutSlew': 0.0}
+204.470 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 0.09, 'ThrOut': 0.0, 'FailFlags': 2}
+204.470 PSCN {'TPN': -6.62, 'PN': -6.62, 'DVN': -1.22, 'TVN': -1.22, 'VN': -1.22, 'DAN': 0.0, 'TAN': 0.06, 'AN': 0.12}
+204.470 PSCE {'TPE': -14.63, 'PE': -14.63, 'DVE': -1.72, 'TVE': -1.72, 'VE': -1.72, 'DAE': 0.0, 'TAE': 0.05, 'AE': -0.0}
+204.470 PSCD {'TPD': 6.74, 'PD': 6.74, 'DVD': 5.49, 'TVD': 5.49, 'VD': 5.49, 'DAD': 0.09, 'TAD': 0.09, 'AD': 0.09}
+204.570 MAG {'I': 0, 'MagX': 155, 'MagY': 292, 'MagZ': 391, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 0, 'S': 202470000}
+204.570 MAG {'I': 1, 'MagX': 458, 'MagY': 259, 'MagZ': -21, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 204569970}
+204.570 RATE {'RDes': -349.86, 'R': -1.91, 'ROut': -0.82, 'PDes': 206.71, 'P': -1.02, 'POut': 0.49, 'YDes': -1.24, 'Y': -1.24, 'YOut': 0.0, 'ADes': -4.42, 'A': -4.42, 'AOut': 0.0, 'AOutSlew': 0.0}
+204.570 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 0.06, 'ThrOut': 0.0, 'FailFlags': 2}
+204.570 PSCN {'TPN': -6.75, 'PN': -6.75, 'DVN': -1.28, 'TVN': -1.28, 'VN': -1.28, 'DAN': 0.0, 'TAN': 0.03, 'AN': 0.06}
+204.570 PSCE {'TPE': -14.8, 'PE': -14.8, 'DVE': -1.82, 'TVE': -1.82, 'VE': -1.82, 'DAE': 0.0, 'TAE': 0.03, 'AE': -0.0}
+204.570 PSCD {'TPD': 7.04, 'PD': 7.04, 'DVD': 5.45, 'TVD': 5.45, 'VD': 5.45, 'DAD': 0.04, 'TAD': 0.04, 'AD': 0.04}
+204.670 MAG {'I': 0, 'MagX': 155, 'MagY': 292, 'MagZ': 391, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 0, 'S': 202470000}
+204.670 MAG {'I': 1, 'MagX': 457, 'MagY': 261, 'MagZ': -31, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 204669992}
+204.670 RATE {'RDes': -349.35, 'R': -0.37, 'ROut': -0.82, 'PDes': 207.76, 'P': -0.18, 'POut': 0.49, 'YDes': 0.06, 'Y': 0.06, 'YOut': 0.0, 'ADes': -9.79, 'A': -9.79, 'AOut': 0.0, 'AOutSlew': 0.0}
+204.671 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 0.05, 'ThrOut': 0.0, 'FailFlags': 2}
+204.671 PSCN {'TPN': -6.88, 'PN': -6.88, 'DVN': -1.35, 'TVN': -1.35, 'VN': -1.35, 'DAN': 0.0, 'TAN': 0.02, 'AN': 0.03}
+204.671 PSCE {'TPE': -14.99, 'PE': -14.99, 'DVE': -1.92, 'TVE': -1.92, 'VE': -1.92, 'DAE': 0.0, 'TAE': 0.01, 'AE': -0.0}
+204.671 PSCD {'TPD': 7.32, 'PD': 7.32, 'DVD': 5.41, 'TVD': 5.41, 'VD': 5.41, 'DAD': 0.1, 'TAD': 0.1, 'AD': 0.1}
+204.770 MAG {'I': 0, 'MagX': 155, 'MagY': 292, 'MagZ': 391, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 0, 'S': 202470000}
+204.770 MAG {'I': 1, 'MagX': 458, 'MagY': 255, 'MagZ': -33, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 204769933}
+204.770 RATE {'RDes': -349.11, 'R': -0.11, 'ROut': -0.82, 'PDes': 208.05, 'P': 0.29, 'POut': 0.49, 'YDes': 0.13, 'Y': 0.13, 'YOut': 0.0, 'ADes': -6.92, 'A': -6.92, 'AOut': 0.0, 'AOutSlew': 0.0}
+204.770 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 0.05, 'ThrOut': 0.0, 'FailFlags': 2}
+204.770 PSCN {'TPN': -7.02, 'PN': -7.02, 'DVN': -1.41, 'TVN': -1.41, 'VN': -1.41, 'DAN': 0.0, 'TAN': 0.01, 'AN': 0.02}
+204.770 PSCE {'TPE': -15.18, 'PE': -15.18, 'DVE': -2.01, 'TVE': -2.01, 'VE': -2.01, 'DAE': 0.0, 'TAE': 0.01, 'AE': -0.0}
+204.770 PSCD {'TPD': 7.58, 'PD': 7.58, 'DVD': 5.37, 'TVD': 5.37, 'VD': 5.37, 'DAD': 0.07, 'TAD': 0.07, 'AD': 0.07}
+204.870 MAG {'I': 0, 'MagX': 155, 'MagY': 292, 'MagZ': 391, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 0, 'S': 202470000}
+204.870 MAG {'I': 1, 'MagX': 458, 'MagY': 257, 'MagZ': -28, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 204869917}
+204.870 RATE {'RDes': -348.94, 'R': -0.12, 'ROut': -0.82, 'PDes': 208.31, 'P': -0.0, 'POut': 0.49, 'YDes': 0.12, 'Y': 0.12, 'YOut': 0.0, 'ADes': -6.76, 'A': -6.76, 'AOut': 0.0, 'AOutSlew': 0.0}
+204.870 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 0.04, 'ThrOut': 0.0, 'FailFlags': 2}
+204.870 PSCN {'TPN': -7.16, 'PN': -7.16, 'DVN': -1.47, 'TVN': -1.47, 'VN': -1.47, 'DAN': 0.0, 'TAN': 0.01, 'AN': 0.01}
+204.870 PSCE {'TPE': -15.38, 'PE': -15.38, 'DVE': -2.1, 'TVE': -2.1, 'VE': -2.1, 'DAE': 0.0, 'TAE': 0.0, 'AE': -0.0}
+204.870 PSCD {'TPD': 7.82, 'PD': 7.82, 'DVD': 5.32, 'TVD': 5.32, 'VD': 5.32, 'DAD': 0.07, 'TAD': 0.07, 'AD': 0.07}
+204.970 MAG {'I': 0, 'MagX': 155, 'MagY': 292, 'MagZ': 391, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 0, 'S': 202470000}
+204.970 MAG {'I': 1, 'MagX': 454, 'MagY': 258, 'MagZ': -25, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 204969923}
+204.970 RATE {'RDes': -348.82, 'R': -0.06, 'ROut': -0.82, 'PDes': 208.51, 'P': 0.19, 'POut': 0.49, 'YDes': -0.05, 'Y': -0.05, 'YOut': 0.0, 'ADes': -6.96, 'A': -6.96, 'AOut': 0.0, 'AOutSlew': 0.0}
+204.970 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 0.04, 'ThrOut': 0.0, 'FailFlags': 2}
+204.970 PSCN {'TPN': -7.31, 'PN': -7.31, 'DVN': -1.53, 'TVN': -1.53, 'VN': -1.53, 'DAN': 0.0, 'TAN': 0.0, 'AN': 0.0}
+204.970 PSCE {'TPE': -15.59, 'PE': -15.59, 'DVE': -2.2, 'TVE': -2.2, 'VE': -2.2, 'DAE': 0.0, 'TAE': 0.0, 'AE': -0.0}
+204.970 PSCD {'TPD': 8.04, 'PD': 8.04, 'DVD': 5.27, 'TVD': 5.27, 'VD': 5.27, 'DAD': 0.07, 'TAD': 0.07, 'AD': 0.07}
+205.070 MAG {'I': 0, 'MagX': 155, 'MagY': 292, 'MagZ': 391, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 0, 'S': 202470000}
+205.070 MAG {'I': 1, 'MagX': 459, 'MagY': 260, 'MagZ': -24, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 205069898}
+205.070 RATE {'RDes': -348.72, 'R': -0.1, 'ROut': -0.82, 'PDes': 208.66, 'P': 0.06, 'POut': 0.49, 'YDes': -0.02, 'Y': -0.02, 'YOut': 0.0, 'ADes': -7.21, 'A': -7.21, 'AOut': 0.0, 'AOutSlew': 0.0}
+205.070 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 0.04, 'ThrOut': 0.0, 'FailFlags': 2}
+205.070 PSCN {'TPN': -7.47, 'PN': -7.47, 'DVN': -1.59, 'TVN': -1.59, 'VN': -1.59, 'DAN': 0.0, 'TAN': 0.0, 'AN': 0.0}
+205.070 PSCE {'TPE': -15.82, 'PE': -15.82, 'DVE': -2.29, 'TVE': -2.29, 'VE': -2.29, 'DAE': 0.0, 'TAE': 0.0, 'AE': -0.0}
+205.070 PSCD {'TPD': 8.25, 'PD': 8.25, 'DVD': 5.22, 'TVD': 5.22, 'VD': 5.22, 'DAD': 0.07, 'TAD': 0.07, 'AD': 0.07}
+205.170 MAG {'I': 0, 'MagX': 155, 'MagY': 292, 'MagZ': 391, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 0, 'S': 202470000}
+205.170 MAG {'I': 1, 'MagX': 457, 'MagY': 264, 'MagZ': -23, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 205169930}
+205.170 RATE {'RDes': -348.63, 'R': -0.1, 'ROut': -0.82, 'PDes': 208.82, 'P': 0.12, 'POut': 0.49, 'YDes': -0.01, 'Y': -0.01, 'YOut': 0.0, 'ADes': -6.21, 'A': -6.21, 'AOut': 0.0, 'AOutSlew': 0.0}
+205.170 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 0.04, 'ThrOut': 0.0, 'FailFlags': 2}
+205.171 PSCN {'TPN': -7.62, 'PN': -7.62, 'DVN': -1.65, 'TVN': -1.65, 'VN': -1.65, 'DAN': 0.0, 'TAN': 0.0, 'AN': 0.0}
+205.171 PSCE {'TPE': -16.04, 'PE': -16.04, 'DVE': -2.39, 'TVE': -2.39, 'VE': -2.39, 'DAE': 0.0, 'TAE': 0.0, 'AE': -0.0}
+205.171 PSCD {'TPD': 8.43, 'PD': 8.43, 'DVD': 5.17, 'TVD': 5.17, 'VD': 5.17, 'DAD': 0.06, 'TAD': 0.06, 'AD': 0.06}
+205.270 MAG {'I': 0, 'MagX': 155, 'MagY': 292, 'MagZ': 391, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 0, 'S': 202470000}
+205.270 MAG {'I': 1, 'MagX': 459, 'MagY': 256, 'MagZ': -29, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 205269918}
+205.270 RATE {'RDes': -348.54, 'R': -0.09, 'ROut': -0.82, 'PDes': 208.95, 'P': 0.11, 'POut': 0.49, 'YDes': 0.03, 'Y': 0.03, 'YOut': 0.0, 'ADes': -6.83, 'A': -6.83, 'AOut': 0.0, 'AOutSlew': 0.0}
+205.270 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 0.04, 'ThrOut': 0.0, 'FailFlags': 2}
+205.270 PSCN {'TPN': -7.79, 'PN': -7.79, 'DVN': -1.71, 'TVN': -1.71, 'VN': -1.71, 'DAN': 0.0, 'TAN': 0.0, 'AN': 0.0}
+205.270 PSCE {'TPE': -16.28, 'PE': -16.28, 'DVE': -2.48, 'TVE': -2.48, 'VE': -2.48, 'DAE': 0.0, 'TAE': 0.0, 'AE': -0.0}
+205.270 PSCD {'TPD': 8.61, 'PD': 8.61, 'DVD': 5.12, 'TVD': 5.12, 'VD': 5.12, 'DAD': 0.07, 'TAD': 0.07, 'AD': 0.07}
+205.370 MAG {'I': 0, 'MagX': 155, 'MagY': 292, 'MagZ': 391, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 0, 'S': 202470000}
+205.370 MAG {'I': 1, 'MagX': 458, 'MagY': 259, 'MagZ': -27, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 205369931}
+205.370 RATE {'RDes': -348.45, 'R': -0.11, 'ROut': -0.82, 'PDes': 209.11, 'P': 0.08, 'POut': 0.49, 'YDes': 0.03, 'Y': 0.03, 'YOut': 0.0, 'ADes': -6.72, 'A': -6.72, 'AOut': 0.0, 'AOutSlew': 0.0}
+205.370 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 0.04, 'ThrOut': 0.0, 'FailFlags': 2}
+205.370 PSCN {'TPN': -7.96, 'PN': -7.96, 'DVN': -1.76, 'TVN': -1.76, 'VN': -1.76, 'DAN': 0.0, 'TAN': 0.0, 'AN': 0.0}
+205.370 PSCE {'TPE': -16.52, 'PE': -16.52, 'DVE': -2.57, 'TVE': -2.57, 'VE': -2.57, 'DAE': 0.0, 'TAE': 0.0, 'AE': -0.0}
+205.370 PSCD {'TPD': 8.77, 'PD': 8.77, 'DVD': 5.06, 'TVD': 5.06, 'VD': 5.06, 'DAD': 0.07, 'TAD': 0.07, 'AD': 0.07}
+205.470 MAG {'I': 0, 'MagX': 155, 'MagY': 292, 'MagZ': 391, 'OfsX': 6, 'OfsY': 12, 'OfsZ': 16, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 0, 'S': 202470000}
+205.470 MAG {'I': 1, 'MagX': 454, 'MagY': 262, 'MagZ': -25, 'OfsX': 43, 'OfsY': -84, 'OfsZ': 7, 'MOX': 0, 'MOY': 0, 'MOZ': 0, 'Health': 1, 'S': 205469917}
+205.470 RATE {'RDes': -348.37, 'R': -0.07, 'ROut': -0.82, 'PDes': 209.27, 'P': 0.15, 'POut': 0.49, 'YDes': 0.0, 'Y': 0.0, 'YOut': 0.0, 'ADes': -6.65, 'A': -6.65, 'AOut': 0.0, 'AOutSlew': 0.0}
+205.470 MOTB {'LiftMax': 1.0, 'BatVolt': 1.0, 'ThLimit': 1.0, 'ThrAvMx': 0.04, 'ThrOut': 0.0, 'FailFlags': 2}
+205.470 PSCN {'TPN': -8.13, 'PN': -8.13, 'DVN': -1.82, 'TVN': -1.82, 'VN': -1.82, 'DAN': 0.0, 'TAN': 0.0, 'AN': 0.0}
+205.470 PSCE {'TPE': -16.77, 'PE': -16.77, 'DVE': -2.66, 'TVE': -2.66, 'VE': -2.66, 'DAE': 0.0, 'TAE': 0.0, 'AE': -0.0}
+205.470 PSCD {'TPD': 8.92, 'PD': 8.92, 'DVD': 5.0, 'TVD': 5.0, 'VD': 5.0, 'DAD': 0.07, 'TAD': 0.07, 'AD': 0.07}
+201.530 IMU {'I': 0, 'GyrX': 9, 'GyrY': -1, 'GyrZ': -3, 'AccX': -0.8, 'AccY': 0.4, 'AccZ': -8.4}
+201.530 IMU {'I': 1, 'GyrX': 12, 'GyrY': 0, 'GyrZ': -3, 'AccX': -0.6, 'AccY': -0.1, 'AccZ': -8.6}
+201.570 IMU {'I': 0, 'GyrX': 23, 'GyrY': -2, 'GyrZ': -6, 'AccX': -0.4, 'AccY': -0.8, 'AccZ': -9.3}
+201.570 IMU {'I': 1, 'GyrX': 22, 'GyrY': -2, 'GyrZ': -6, 'AccX': -0.3, 'AccY': -0.9, 'AccZ': -9.1}
+201.610 IMU {'I': 0, 'GyrX': 11, 'GyrY': 2, 'GyrZ': -7, 'AccX': -0.8, 'AccY': -2.7, 'AccZ': -9.1}
+201.610 IMU {'I': 1, 'GyrX': 6, 'GyrY': 3, 'GyrZ': -8, 'AccX': -1.0, 'AccY': -2.8, 'AccZ': -9.7}
+201.650 IMU {'I': 0, 'GyrX': -6, 'GyrY': 4, 'GyrZ': -9, 'AccX': -0.6, 'AccY': -1.8, 'AccZ': -10.7}
+201.650 IMU {'I': 1, 'GyrX': -2, 'GyrY': 5, 'GyrZ': -9, 'AccX': -0.6, 'AccY': -1.4, 'AccZ': -10.4}
+201.690 IMU {'I': 0, 'GyrX': 14, 'GyrY': -2, 'GyrZ': -8, 'AccX': -0.7, 'AccY': -1.6, 'AccZ': -10.0}
+201.690 IMU {'I': 1, 'GyrX': 11, 'GyrY': 0, 'GyrZ': -8, 'AccX': -0.8, 'AccY': -1.7, 'AccZ': -9.2}
+201.730 IMU {'I': 0, 'GyrX': 15, 'GyrY': 2, 'GyrZ': -7, 'AccX': -1.2, 'AccY': -0.9, 'AccZ': -10.0}
+201.730 IMU {'I': 1, 'GyrX': 18, 'GyrY': 1, 'GyrZ': -6, 'AccX': -1.0, 'AccY': -1.0, 'AccZ': -8.8}
+201.770 IMU {'I': 0, 'GyrX': 6, 'GyrY': 4, 'GyrZ': -8, 'AccX': -0.6, 'AccY': -1.4, 'AccZ': -8.6}
+201.770 IMU {'I': 1, 'GyrX': -2, 'GyrY': 4, 'GyrZ': -8, 'AccX': -0.7, 'AccY': -1.8, 'AccZ': -9.3}
+201.810 IMU {'I': 0, 'GyrX': -16, 'GyrY': 0, 'GyrZ': -4, 'AccX': -1.2, 'AccY': -1.2, 'AccZ': -9.6}
+201.810 IMU {'I': 1, 'GyrX': -11, 'GyrY': 2, 'GyrZ': -4, 'AccX': -1.4, 'AccY': -1.2, 'AccZ': -10.4}
+201.850 IMU {'I': 0, 'GyrX': -6, 'GyrY': -5, 'GyrZ': -5, 'AccX': -1.2, 'AccY': -0.1, 'AccZ': -11.1}
+201.850 IMU {'I': 1, 'GyrX': -9, 'GyrY': -2, 'GyrZ': -5, 'AccX': -1.2, 'AccY': -0.2, 'AccZ': -10.9}
+201.890 IMU {'I': 0, 'GyrX': -11, 'GyrY': -3, 'GyrZ': -1, 'AccX': -1.0, 'AccY': -0.6, 'AccZ': -9.4}
+201.890 IMU {'I': 1, 'GyrX': -8, 'GyrY': -4, 'GyrZ': -2, 'AccX': -0.7, 'AccY': -0.6, 'AccZ': -9.0}
+201.930 IMU {'I': 0, 'GyrX': -25, 'GyrY': 4, 'GyrZ': -1, 'AccX': -0.1, 'AccY': -1.2, 'AccZ': -8.1}
+201.930 IMU {'I': 1, 'GyrX': -28, 'GyrY': 1, 'GyrZ': -1, 'AccX': -0.3, 'AccY': -1.5, 'AccZ': -8.4}
+201.970 IMU {'I': 0, 'GyrX': -20, 'GyrY': 3, 'GyrZ': 2, 'AccX': -1.0, 'AccY': -0.0, 'AccZ': -9.0}
+201.970 IMU {'I': 1, 'GyrX': -21, 'GyrY': 4, 'GyrZ': 2, 'AccX': -1.2, 'AccY': -0.2, 'AccZ': -9.5}
+202.010 IMU {'I': 0, 'GyrX': -3, 'GyrY': -7, 'GyrZ': 1, 'AccX': -1.4, 'AccY': -1.0, 'AccZ': -8.6}
+202.010 IMU {'I': 1, 'GyrX': -3, 'GyrY': -6, 'GyrZ': 1, 'AccX': -1.5, 'AccY': -0.9, 'AccZ': -9.1}
+202.050 IMU {'I': 0, 'GyrX': -8, 'GyrY': 3, 'GyrZ': 3, 'AccX': -1.4, 'AccY': -1.3, 'AccZ': -11.4}
+202.050 IMU {'I': 1, 'GyrX': -9, 'GyrY': 5, 'GyrZ': 4, 'AccX': -1.3, 'AccY': -1.4, 'AccZ': -11.1}
+202.090 IMU {'I': 0, 'GyrX': -18, 'GyrY': 4, 'GyrZ': 0, 'AccX': -0.7, 'AccY': -0.7, 'AccZ': -10.7}
+202.090 IMU {'I': 1, 'GyrX': -13, 'GyrY': 3, 'GyrZ': 0, 'AccX': -0.6, 'AccY': -0.2, 'AccZ': -10.4}
+202.130 IMU {'I': 0, 'GyrX': -6, 'GyrY': -7, 'GyrZ': 3, 'AccX': -0.5, 'AccY': -0.4, 'AccZ': -9.1}
+202.130 IMU {'I': 1, 'GyrX': -5, 'GyrY': -8, 'GyrZ': 3, 'AccX': -0.4, 'AccY': -0.2, 'AccZ': -9.1}
+202.171 IMU {'I': 0, 'GyrX': 16, 'GyrY': -7, 'GyrZ': 3, 'AccX': 0.0, 'AccY': 0.9, 'AccZ': -8.6}
+202.171 IMU {'I': 1, 'GyrX': 19, 'GyrY': -7, 'GyrZ': 3, 'AccX': -0.0, 'AccY': 0.8, 'AccZ': -8.9}
+202.210 IMU {'I': 0, 'GyrX': 5, 'GyrY': 4, 'GyrZ': 2, 'AccX': -0.3, 'AccY': -0.7, 'AccZ': -9.4}
+202.210 IMU {'I': 1, 'GyrX': -2, 'GyrY': 4, 'GyrZ': 3, 'AccX': -0.6, 'AccY': -0.7, 'AccZ': -9.6}
+202.250 IMU {'I': 0, 'GyrX': -13, 'GyrY': -2, 'GyrZ': 2, 'AccX': -1.5, 'AccY': -0.2, 'AccZ': -9.7}
+202.250 IMU {'I': 1, 'GyrX': -7, 'GyrY': -2, 'GyrZ': 2, 'AccX': -1.3, 'AccY': 0.1, 'AccZ': -10.4}
+202.290 IMU {'I': 0, 'GyrX': 15, 'GyrY': -8, 'GyrZ': 1, 'AccX': 0.2, 'AccY': 1.5, 'AccZ': -10.5}
+202.290 IMU {'I': 1, 'GyrX': 16, 'GyrY': -7, 'GyrZ': 1, 'AccX': 0.3, 'AccY': 1.3, 'AccZ': -9.5}
+202.330 IMU {'I': 0, 'GyrX': 23, 'GyrY': -17, 'GyrZ': -13, 'AccX': 0.1, 'AccY': -0.3, 'AccZ': -10.5}
+202.330 IMU {'I': 1, 'GyrX': 24, 'GyrY': -16, 'GyrZ': -13, 'AccX': 0.2, 'AccY': 0.0, 'AccZ': -9.6}
+202.370 IMU {'I': 0, 'GyrX': -12, 'GyrY': -6, 'GyrZ': -22, 'AccX': -0.6, 'AccY': -1.1, 'AccZ': -10.3}
+202.370 IMU {'I': 1, 'GyrX': -12, 'GyrY': -5, 'GyrZ': -21, 'AccX': -0.6, 'AccY': -0.8, 'AccZ': -10.3}
+202.410 IMU {'I': 0, 'GyrX': 143, 'GyrY': -104, 'GyrZ': -20, 'AccX': -1.7, 'AccY': 3.2, 'AccZ': -3.8}
+202.410 IMU {'I': 1, 'GyrX': 146, 'GyrY': -105, 'GyrZ': -20, 'AccX': -2.0, 'AccY': 2.8, 'AccZ': -4.0}
+202.450 IMU {'I': 0, 'GyrX': 383, 'GyrY': -148, 'GyrZ': 58, 'AccX': 22.5, 'AccY': 9.1, 'AccZ': 12.7}
+202.450 IMU {'I': 1, 'GyrX': 414, 'GyrY': -143, 'GyrZ': 91, 'AccX': 23.2, 'AccY': -15.6, 'AccZ': 9.8}
+202.490 IMU {'I': 0, 'GyrX': 14, 'GyrY': -65, 'GyrZ': -92, 'AccX': -9.8, 'AccY': -54.1, 'AccZ': 16.7}
+202.490 IMU {'I': 1, 'GyrX': -20, 'GyrY': -102, 'GyrZ': -94, 'AccX': -10.5, 'AccY': -43.7, 'AccZ': 4.6}
+202.530 IMU {'I': 0, 'GyrX': -54, 'GyrY': -152, 'GyrZ': -67, 'AccX': -1.9, 'AccY': -22.3, 'AccZ': -14.2}
+202.530 IMU {'I': 1, 'GyrX': -47, 'GyrY': -131, 'GyrZ': -66, 'AccX': 0.9, 'AccY': -14.1, 'AccZ': -13.0}
+202.570 IMU {'I': 0, 'GyrX': -37, 'GyrY': -315, 'GyrZ': 16, 'AccX': 23.4, 'AccY': -0.5, 'AccZ': 13.5}
+202.570 IMU {'I': 1, 'GyrX': -47, 'GyrY': -323, 'GyrZ': 30, 'AccX': 17.3, 'AccY': 5.0, 'AccZ': 16.0}
+202.610 IMU {'I': 0, 'GyrX': 129, 'GyrY': -323, 'GyrZ': -17, 'AccX': 12.2, 'AccY': -5.0, 'AccZ': -10.4}
+202.610 IMU {'I': 1, 'GyrX': 116, 'GyrY': -332, 'GyrZ': -9, 'AccX': 12.5, 'AccY': -4.9, 'AccZ': -11.3}
+202.650 IMU {'I': 0, 'GyrX': -39, 'GyrY': -394, 'GyrZ': -14, 'AccX': -0.7, 'AccY': -2.2, 'AccZ': 4.6}
+202.650 IMU {'I': 1, 'GyrX': -39, 'GyrY': -394, 'GyrZ': -13, 'AccX': -0.3, 'AccY': -2.0, 'AccZ': 4.5}
+202.690 IMU {'I': 0, 'GyrX': -78, 'GyrY': -460, 'GyrZ': 17, 'AccX': 5.0, 'AccY': -4.9, 'AccZ': 3.9}
+202.690 IMU {'I': 1, 'GyrX': -83, 'GyrY': -459, 'GyrZ': 22, 'AccX': 5.2, 'AccY': -5.2, 'AccZ': 4.1}
+202.730 IMU {'I': 0, 'GyrX': -88, 'GyrY': -466, 'GyrZ': 31, 'AccX': -0.1, 'AccY': 1.5, 'AccZ': 3.6}
+202.730 IMU {'I': 1, 'GyrX': -81, 'GyrY': -465, 'GyrZ': 36, 'AccX': -0.0, 'AccY': 1.6, 'AccZ': 2.2}
+202.770 IMU {'I': 0, 'GyrX': -19, 'GyrY': -450, 'GyrZ': 68, 'AccX': -1.6, 'AccY': 1.8, 'AccZ': 4.7}
+202.770 IMU {'I': 1, 'GyrX': -17, 'GyrY': -450, 'GyrZ': 73, 'AccX': -2.0, 'AccY': 2.4, 'AccZ': 3.1}
+202.810 IMU {'I': 0, 'GyrX': 12, 'GyrY': -471, 'GyrZ': 97, 'AccX': 2.5, 'AccY': -12.0, 'AccZ': 5.9}
+202.810 IMU {'I': 1, 'GyrX': 9, 'GyrY': -471, 'GyrZ': 100, 'AccX': 2.8, 'AccY': -11.8, 'AccZ': 4.8}
+202.850 IMU {'I': 0, 'GyrX': 121, 'GyrY': -417, 'GyrZ': 100, 'AccX': 1.5, 'AccY': -7.7, 'AccZ': 1.2}
+202.850 IMU {'I': 1, 'GyrX': 115, 'GyrY': -432, 'GyrZ': 101, 'AccX': 2.5, 'AccY': -4.4, 'AccZ': 3.4}
+202.890 IMU {'I': 0, 'GyrX': 24, 'GyrY': -441, 'GyrZ': 126, 'AccX': 3.4, 'AccY': 1.6, 'AccZ': -0.7}
+202.890 IMU {'I': 1, 'GyrX': 13, 'GyrY': -440, 'GyrZ': 134, 'AccX': 4.5, 'AccY': 1.4, 'AccZ': -0.1}
+202.930 IMU {'I': 0, 'GyrX': 3, 'GyrY': -489, 'GyrZ': 171, 'AccX': -7.7, 'AccY': 4.3, 'AccZ': 4.3}
+202.930 IMU {'I': 1, 'GyrX': 12, 'GyrY': -484, 'GyrZ': 205, 'AccX': -14.4, 'AccY': -4.5, 'AccZ': 6.6}
+202.970 IMU {'I': 0, 'GyrX': -438, 'GyrY': -142, 'GyrZ': -184, 'AccX': -44.0, 'AccY': 26.7, 'AccZ': -11.8}
+202.970 IMU {'I': 1, 'GyrX': -435, 'GyrY': -134, 'GyrZ': -142, 'AccX': -52.9, 'AccY': 44.6, 'AccZ': -22.6}
+203.010 IMU {'I': 0, 'GyrX': -291, 'GyrY': 387, 'GyrZ': 146, 'AccX': 4.3, 'AccY': -1.5, 'AccZ': 17.6}
+203.010 IMU {'I': 1, 'GyrX': -269, 'GyrY': 378, 'GyrZ': 165, 'AccX': 15.9, 'AccY': -7.1, 'AccZ': 34.3}
+203.050 IMU {'I': 0, 'GyrX': -429, 'GyrY': -43, 'GyrZ': 73, 'AccX': 7.7, 'AccY': -1.7, 'AccZ': 6.5}
+203.050 IMU {'I': 1, 'GyrX': -382, 'GyrY': -72, 'GyrZ': 85, 'AccX': 3.9, 'AccY': -2.6, 'AccZ': 11.3}
+203.090 IMU {'I': 0, 'GyrX': 152, 'GyrY': -279, 'GyrZ': 217, 'AccX': -11.7, 'AccY': -23.6, 'AccZ': -8.2}
+203.090 IMU {'I': 1, 'GyrX': 147, 'GyrY': -273, 'GyrZ': 223, 'AccX': -12.2, 'AccY': -24.4, 'AccZ': -8.2}
+203.130 IMU {'I': 0, 'GyrX': -131, 'GyrY': -40, 'GyrZ': 184, 'AccX': -11.3, 'AccY': -12.3, 'AccZ': 17.7}
+203.130 IMU {'I': 1, 'GyrX': -141, 'GyrY': -33, 'GyrZ': 185, 'AccX': -9.6, 'AccY': -14.5, 'AccZ': 14.2}
+203.171 IMU {'I': 0, 'GyrX': -170, 'GyrY': -77, 'GyrZ': 116, 'AccX': -2.7, 'AccY': -0.7, 'AccZ': 2.8}
+203.171 IMU {'I': 1, 'GyrX': -162, 'GyrY': -78, 'GyrZ': 117, 'AccX': -3.0, 'AccY': 0.1, 'AccZ': 3.8}
+203.210 IMU {'I': 0, 'GyrX': -88, 'GyrY': -135, 'GyrZ': 51, 'AccX': -4.0, 'AccY': -9.2, 'AccZ': 3.9}
+203.210 IMU {'I': 1, 'GyrX': -93, 'GyrY': -132, 'GyrZ': 49, 'AccX': -3.8, 'AccY': -7.8, 'AccZ': 3.8}
+203.250 IMU {'I': 0, 'GyrX': -154, 'GyrY': -45, 'GyrZ': 43, 'AccX': -4.0, 'AccY': 9.2, 'AccZ': 2.9}
+203.250 IMU {'I': 1, 'GyrX': -145, 'GyrY': -48, 'GyrZ': 62, 'AccX': -0.7, 'AccY': 11.6, 'AccZ': 0.7}
+203.290 IMU {'I': 0, 'GyrX': 0, 'GyrY': -102, 'GyrZ': 93, 'AccX': -3.7, 'AccY': -8.1, 'AccZ': 2.5}
+203.290 IMU {'I': 1, 'GyrX': 3, 'GyrY': -100, 'GyrZ': 94, 'AccX': -4.1, 'AccY': -9.3, 'AccZ': 1.6}
+203.330 IMU {'I': 0, 'GyrX': -39, 'GyrY': -37, 'GyrZ': 58, 'AccX': -3.5, 'AccY': -1.5, 'AccZ': 9.8}
+203.330 IMU {'I': 1, 'GyrX': -37, 'GyrY': -35, 'GyrZ': 60, 'AccX': -3.0, 'AccY': -1.6, 'AccZ': 9.7}
+203.370 IMU {'I': 0, 'GyrX': -5, 'GyrY': -38, 'GyrZ': 42, 'AccX': -5.1, 'AccY': -4.4, 'AccZ': 7.5}
+203.370 IMU {'I': 1, 'GyrX': -2, 'GyrY': -35, 'GyrZ': 41, 'AccX': -5.7, 'AccY': -4.1, 'AccZ': 6.6}
+203.410 IMU {'I': 0, 'GyrX': -1, 'GyrY': 1, 'GyrZ': 28, 'AccX': -3.8, 'AccY': -3.9, 'AccZ': 6.3}
+203.410 IMU {'I': 1, 'GyrX': 2, 'GyrY': 1, 'GyrZ': 29, 'AccX': -3.9, 'AccY': -4.0, 'AccZ': 6.0}
+203.450 IMU {'I': 0, 'GyrX': 13, 'GyrY': 9, 'GyrZ': 11, 'AccX': -4.2, 'AccY': -4.7, 'AccZ': 7.4}
+203.450 IMU {'I': 1, 'GyrX': 13, 'GyrY': 10, 'GyrZ': 11, 'AccX': -4.1, 'AccY': -4.5, 'AccZ': 7.3}
+203.490 IMU {'I': 0, 'GyrX': 19, 'GyrY': 15, 'GyrZ': 13, 'AccX': -3.4, 'AccY': -5.9, 'AccZ': 7.0}
+203.490 IMU {'I': 1, 'GyrX': 19, 'GyrY': 14, 'GyrZ': 14, 'AccX': -3.2, 'AccY': -6.0, 'AccZ': 7.1}
+203.530 IMU {'I': 0, 'GyrX': 0, 'GyrY': 6, 'GyrZ': 13, 'AccX': -5.3, 'AccY': -3.7, 'AccZ': 7.1}
+203.530 IMU {'I': 1, 'GyrX': 1, 'GyrY': 8, 'GyrZ': 13, 'AccX': -5.3, 'AccY': -3.5, 'AccZ': 7.1}
+203.570 IMU {'I': 0, 'GyrX': 1, 'GyrY': 1, 'GyrZ': 4, 'AccX': -4.0, 'AccY': -6.4, 'AccZ': 6.5}
+203.570 IMU {'I': 1, 'GyrX': 3, 'GyrY': 2, 'GyrZ': 4, 'AccX': -3.8, 'AccY': -5.9, 'AccZ': 5.9}
+203.610 IMU {'I': 0, 'GyrX': 12, 'GyrY': 9, 'GyrZ': 7, 'AccX': -5.1, 'AccY': -5.6, 'AccZ': 7.1}
+203.610 IMU {'I': 1, 'GyrX': 10, 'GyrY': 9, 'GyrZ': 6, 'AccX': -4.9, 'AccY': -5.8, 'AccZ': 7.1}
+203.650 IMU {'I': 0, 'GyrX': -5, 'GyrY': 0, 'GyrZ': 4, 'AccX': -4.4, 'AccY': -4.2, 'AccZ': 6.8}
+203.650 IMU {'I': 1, 'GyrX': -4, 'GyrY': 0, 'GyrZ': 4, 'AccX': -4.2, 'AccY': -4.2, 'AccZ': 6.9}
+203.690 IMU {'I': 0, 'GyrX': -12, 'GyrY': -11, 'GyrZ': -6, 'AccX': -4.6, 'AccY': -3.7, 'AccZ': 7.6}
+203.690 IMU {'I': 1, 'GyrX': -11, 'GyrY': -10, 'GyrZ': -6, 'AccX': -4.6, 'AccY': -3.6, 'AccZ': 7.5}
+203.730 IMU {'I': 0, 'GyrX': -13, 'GyrY': -9, 'GyrZ': -12, 'AccX': -4.9, 'AccY': -4.8, 'AccZ': 7.7}
+203.730 IMU {'I': 1, 'GyrX': -13, 'GyrY': -9, 'GyrZ': -13, 'AccX': -4.7, 'AccY': -4.7, 'AccZ': 7.4}
+203.770 IMU {'I': 0, 'GyrX': -15, 'GyrY': -14, 'GyrZ': -16, 'AccX': -4.5, 'AccY': -5.0, 'AccZ': 7.8}
+203.770 IMU {'I': 1, 'GyrX': -15, 'GyrY': -13, 'GyrZ': -17, 'AccX': -4.5, 'AccY': -5.1, 'AccZ': 7.7}
+203.810 IMU {'I': 0, 'GyrX': -24, 'GyrY': -7, 'GyrZ': -17, 'AccX': -3.5, 'AccY': -5.5, 'AccZ': 7.9}
+203.810 IMU {'I': 1, 'GyrX': -23, 'GyrY': -7, 'GyrZ': -16, 'AccX': -3.3, 'AccY': -5.3, 'AccZ': 7.7}
+203.850 IMU {'I': 0, 'GyrX': -10, 'GyrY': -6, 'GyrZ': -13, 'AccX': -4.5, 'AccY': -5.8, 'AccZ': 7.3}
+203.850 IMU {'I': 1, 'GyrX': -10, 'GyrY': -6, 'GyrZ': -14, 'AccX': -4.4, 'AccY': -5.8, 'AccZ': 7.2}
+203.890 IMU {'I': 0, 'GyrX': -11, 'GyrY': -8, 'GyrZ': -10, 'AccX': -4.0, 'AccY': -5.5, 'AccZ': 7.2}
+203.890 IMU {'I': 1, 'GyrX': -10, 'GyrY': -9, 'GyrZ': -10, 'AccX': -4.0, 'AccY': -5.5, 'AccZ': 7.2}
+203.930 IMU {'I': 0, 'GyrX': -14, 'GyrY': -11, 'GyrZ': -15, 'AccX': -3.7, 'AccY': -5.4, 'AccZ': 6.1}
+203.930 IMU {'I': 1, 'GyrX': -13, 'GyrY': -10, 'GyrZ': -15, 'AccX': -3.5, 'AccY': -5.2, 'AccZ': 6.3}
+203.970 IMU {'I': 0, 'GyrX': -16, 'GyrY': -10, 'GyrZ': -22, 'AccX': -4.3, 'AccY': -5.2, 'AccZ': 7.3}
+203.970 IMU {'I': 1, 'GyrX': -17, 'GyrY': -10, 'GyrZ': -23, 'AccX': -4.2, 'AccY': -5.2, 'AccZ': 7.7}
+204.010 IMU {'I': 0, 'GyrX': -14, 'GyrY': -8, 'GyrZ': -20, 'AccX': -2.6, 'AccY': -6.9, 'AccZ': 6.7}
+204.010 IMU {'I': 1, 'GyrX': -13, 'GyrY': -8, 'GyrZ': -20, 'AccX': -2.7, 'AccY': -6.9, 'AccZ': 6.8}
+204.050 IMU {'I': 0, 'GyrX': -8, 'GyrY': -8, 'GyrZ': -4, 'AccX': -3.1, 'AccY': -6.1, 'AccZ': 7.0}
+204.050 IMU {'I': 1, 'GyrX': -7, 'GyrY': -8, 'GyrZ': -4, 'AccX': -3.0, 'AccY': -6.1, 'AccZ': 6.9}
+204.090 IMU {'I': 0, 'GyrX': 4, 'GyrY': 8, 'GyrZ': 1, 'AccX': -3.2, 'AccY': -6.1, 'AccZ': 7.3}
+204.090 IMU {'I': 1, 'GyrX': 5, 'GyrY': 8, 'GyrZ': 1, 'AccX': -3.0, 'AccY': -6.0, 'AccZ': 7.2}
+204.130 IMU {'I': 0, 'GyrX': 5, 'GyrY': 2, 'GyrZ': 11, 'AccX': -3.2, 'AccY': -6.1, 'AccZ': 7.1}
+204.130 IMU {'I': 1, 'GyrX': 6, 'GyrY': 3, 'GyrZ': 11, 'AccX': -3.2, 'AccY': -6.1, 'AccZ': 7.0}
+204.171 IMU {'I': 0, 'GyrX': 8, 'GyrY': 6, 'GyrZ': 11, 'AccX': -3.9, 'AccY': -5.9, 'AccZ': 6.9}
+204.171 IMU {'I': 1, 'GyrX': 8, 'GyrY': 7, 'GyrZ': 11, 'AccX': -3.8, 'AccY': -5.9, 'AccZ': 6.8}
+204.210 IMU {'I': 0, 'GyrX': 6, 'GyrY': 4, 'GyrZ': 7, 'AccX': -3.9, 'AccY': -5.5, 'AccZ': 7.1}
+204.210 IMU {'I': 1, 'GyrX': 7, 'GyrY': 4, 'GyrZ': 7, 'AccX': -3.9, 'AccY': -5.4, 'AccZ': 7.0}
+204.250 IMU {'I': 0, 'GyrX': 1, 'GyrY': 2, 'GyrZ': 1, 'AccX': -4.1, 'AccY': -5.5, 'AccZ': 7.0}
+204.250 IMU {'I': 1, 'GyrX': 2, 'GyrY': 3, 'GyrZ': 0, 'AccX': -4.0, 'AccY': -5.5, 'AccZ': 7.0}
+204.290 IMU {'I': 0, 'GyrX': -7, 'GyrY': -6, 'GyrZ': -4, 'AccX': -3.8, 'AccY': -5.6, 'AccZ': 7.0}
+204.290 IMU {'I': 1, 'GyrX': -7, 'GyrY': -6, 'GyrZ': -5, 'AccX': -3.7, 'AccY': -5.6, 'AccZ': 6.9}
+204.330 IMU {'I': 0, 'GyrX': -7, 'GyrY': -6, 'GyrZ': -12, 'AccX': -3.9, 'AccY': -5.6, 'AccZ': 7.2}
+204.330 IMU {'I': 1, 'GyrX': -6, 'GyrY': -5, 'GyrZ': -12, 'AccX': -3.9, 'AccY': -5.5, 'AccZ': 7.1}
+204.370 IMU {'I': 0, 'GyrX': -6, 'GyrY': -6, 'GyrZ': -8, 'AccX': -3.1, 'AccY': -6.4, 'AccZ': 7.0}
+204.370 IMU {'I': 1, 'GyrX': -6, 'GyrY': -5, 'GyrZ': -8, 'AccX': -3.1, 'AccY': -6.4, 'AccZ': 6.9}
+204.410 IMU {'I': 0, 'GyrX': -1, 'GyrY': -1, 'GyrZ': 1, 'AccX': -3.5, 'AccY': -6.1, 'AccZ': 7.1}
+204.410 IMU {'I': 1, 'GyrX': 0, 'GyrY': 0, 'GyrZ': 1, 'AccX': -3.4, 'AccY': -6.1, 'AccZ': 7.0}
+204.450 IMU {'I': 0, 'GyrX': 2, 'GyrY': 3, 'GyrZ': 3, 'AccX': -3.5, 'AccY': -6.1, 'AccZ': 7.0}
+204.450 IMU {'I': 1, 'GyrX': 3, 'GyrY': 3, 'GyrZ': 3, 'AccX': -3.4, 'AccY': -6.0, 'AccZ': 6.9}
+204.490 IMU {'I': 0, 'GyrX': -1, 'GyrY': -1, 'GyrZ': 3, 'AccX': -3.6, 'AccY': -5.9, 'AccZ': 7.0}
+204.490 IMU {'I': 1, 'GyrX': 0, 'GyrY': 0, 'GyrZ': 3, 'AccX': -3.6, 'AccY': -5.8, 'AccZ': 6.9}

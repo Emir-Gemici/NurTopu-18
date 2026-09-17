@@ -1,0 +1,25 @@
+from h_ortak import *
+import math, sys
+v=yukle("hb.pkl"); t0,t1=float(sys.argv[1]),float(sys.argv[2])
+print("IMU (I, GyrX GyrY GyrZ deg/s, AccX AccY AccZ, |a|)")
+for d in pen(v,"IMU",t0,t1):
+    g=[math.degrees(d[k]) for k in ("GyrX","GyrY","GyrZ")]; a=[d[k] for k in ("AccX","AccY","AccZ")]
+    print(f"{d['t']:.3f} I{d['I']} G {g[0]:8.1f} {g[1]:8.1f} {g[2]:7.1f}  A {a[0]:7.2f} {a[1]:7.2f} {a[2]:7.2f} |a| {math.sqrt(sum(x*x for x in a)):6.2f}")
+print("RCOU M1=C11 M2=C10 M3=C12 M4=C9")
+for d in pen(v,"RCOU",t0,t1): print(f"{d['t']:.3f} M1 {d['C11']} M2 {d['C10']} M3 {d['C12']} M4 {d['C9']}  CCW-CW {d['C11']+d['C10']-d['C12']-d['C9']}")
+print("RATE")
+for d in pen(v,"RATE",t0,t1): print(f"{d['t']:.3f} RDes {d['RDes']:7.1f} R {d['R']:7.1f} ROut {d['ROut']:6.3f} PDes {d['PDes']:7.1f} P {d['P']:7.1f} POut {d['POut']:6.3f} YDes {d['YDes']:6.1f} Y {d['Y']:6.1f} YOut {d['YOut']:6.3f}")
+print("ATT")
+for d in pen(v,"ATT",t0,t1): print(f"{d['t']:.3f} DesR {d['DesRoll']:6.1f} R {d['Roll']:6.1f} DesP {d['DesPitch']:6.1f} P {d['Pitch']:6.1f} DesY {d['DesYaw']:6.1f} Y {d['Yaw']:6.1f}")
+print("BAT")
+for d in pen(v,"BAT",t0,t1): print(f"{d['t']:.3f} V {d['Volt']:.2f} VR {d.get('VoltR',0):.2f} I {d['Curr']:.1f}")
+print("VIBE")
+for d in pen(v,"VIBE",t0,t1): print(f"{d['t']:.3f} IMU{d['IMU']} {d['VibeX']:.1f} {d['VibeY']:.1f} {d['VibeZ']:.1f} Clip {d['Clip']}")
+print("MAG")
+for d in pen(v,"MAG",t0,t1): print(f"{d['t']:.3f} I{d['I']} H {d['Health']} S {d['S']/1e6 if d['S']>1e3 else d['S']} Mag {d['MagX']},{d['MagY']},{d['MagZ']}")
+print("GPS")
+for d in pen(v,"GPS",t0-1,t1+5): print(f"{d['t']:.3f} St {d['Status']} NS {d['NSats']}")
+print("RCIN C1 C2 C3 C4 C5 C6")
+for d in pen(v,"RCIN",t0,t1): print(f"{d['t']:.3f} {d['C1']} {d['C2']} {d['C3']} {d['C4']} {d['C5']} {d['C6']}")
+print("CTUN")
+for d in pen(v,"CTUN",t0,t1): print(f"{d['t']:.3f} ThI {d['ThI']:.3f} ThO {d['ThO']:.3f} ThH {d['ThH']:.3f} Alt {d['Alt']:.2f} BAlt {d['BAlt']:.2f} CRt {d['CRt']:.0f}")

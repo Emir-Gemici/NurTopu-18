@@ -1,0 +1,94 @@
+sure 15.622679 218.670787 203.04810799999998
+mesaj sayilari: {'IMU': 7738, 'FILE': 4690, 'XKF4': 3096, 'XKF1': 3096, 'XKF2': 3096, 'XKF3': 3096, 'XKFS': 3096, 'XKQ': 3096, 'VIBE': 3094, 'MAG': 3090, 'XKY0': 2378, 'XKY1': 2378, 'RCIN': 1565, 'RCI2': 1565, 'BARO': 1548, 'CTUN': 1548, 'ATT': 1548, 'RATE': 1548, 'XKF5': 1548, 'AHR2': 1548, 'MOTB': 1548, 'RCOU': 1547, 'RCO2': 1547, 'CTRL': 1547, 'DCM': 1547, 'EAHR': 1547, 'POWR': 1545, 'MCU': 1545, 'BAT': 1545, 'STAK': 1535, 'POS': 1455, 'PSCN': 1350, 'PSCE': 1350, 'PSCD': 1350, 'PARM': 1042, 'GPS': 694, 'GPA': 694, 'XKV1': 310, 'XKV2': 310, 'MAV': 310, 'FMT': 173, 'FMTU': 173, 'DU32': 156, 'HEAT': 155, 'DSF': 154, 'TERR': 146, 'IOMC': 146, 'XKT': 62, 'EV': 40, 'UNIT': 36, 'UBX2': 27, 'MSG': 25, 'AUXF': 17, 'MAVC': 16, 'MULT': 15, 'PM': 15, 'ORGN': 14, 'SRTL': 13, 'TSYN': 12, 'MODE': 11}
+    15.703 MSG   {'Message': 'ArduCopter V4.5.7 (2a3dc4b7)'}
+    15.703 MSG   {'Message': 'ChibiOS: 6a85082c'}
+    15.703 MSG   {'Message': 'Pixhawk6C 00440022 35335114 38323631'}
+    15.703 MSG   {'Message': 'Param space used: 907/5376'}
+    15.703 MSG   {'Message': 'RC Protocol: IBUS'}
+    15.703 MSG   {'Message': 'RCOut: PWM:1-16'}
+    15.703 MSG   {'Message': 'New mission'}
+    15.703 MSG   {'Message': 'New rally'}
+    15.703 MSG   {'Message': 'New fence'}
+    15.703 MSG   {'Message': 'Frame: QUAD/X'}
+    15.703 MODE  {'Mode': 0, 'ModeNum': 0, 'Rsn': 1}
+    15.703 MSG   {'Message': 'GPS 1: detected as u-blox at 230400 baud'}
+    23.237 MSG   {'Message': 'EKF3 IMU0 origin set'}
+    23.238 EV    {'Id': 25}
+    23.240 MSG   {'Message': 'EKF3 IMU1 origin set'}
+    23.270 MSG   {'Message': 'Field Elevation Set: 125m'}
+    27.710 MSG   {'Message': 'u-blox 1 HW: 000A0000 SW: ROM SPG 5.10 (7b202e)'}
+    49.570 MODE  {'Mode': 0, 'ModeNum': 0, 'Rsn': 1}
+    51.572 EV    {'Id': 57}
+    54.170 EV    {'Id': 15}
+    54.335 EV    {'Id': 28}
+    54.652 MODE  {'Mode': 5, 'ModeNum': 5, 'Rsn': 1}
+    61.470 ARM   {'ArmState': 0, 'ArmChecks': 0, 'Forced': 0, 'Method': 2}
+    61.470 EV    {'Id': 11}
+    61.470 EV    {'Id': 18}
+    61.470 EV    {'Id': 17}
+    61.472 EV    {'Id': 56}
+    65.970 ARM   {'ArmState': 1, 'ArmChecks': 1, 'Forced': 0, 'Method': 2}
+    65.970 EV    {'Id': 10}
+    65.970 MODE  {'Mode': 5, 'ModeNum': 5, 'Rsn': 1}
+    67.130 EV    {'Id': 15}
+    67.972 EV    {'Id': 57}
+    75.530 EV    {'Id': 28}
+    79.940 EV    {'Id': 17}
+    80.170 ARM   {'ArmState': 0, 'ArmChecks': 0, 'Forced': 0, 'Method': 2}
+    80.170 EV    {'Id': 11}
+    80.170 EV    {'Id': 18}
+    80.172 EV    {'Id': 56}
+   113.270 ARM   {'ArmState': 1, 'ArmChecks': 1, 'Forced': 0, 'Method': 2}
+   113.270 EV    {'Id': 10}
+   113.271 MODE  {'Mode': 5, 'ModeNum': 5, 'Rsn': 1}
+   115.272 EV    {'Id': 57}
+   118.170 ARM   {'ArmState': 0, 'ArmChecks': 0, 'Forced': 0, 'Method': 2}
+   118.170 EV    {'Id': 11}
+   118.172 EV    {'Id': 56}
+   120.471 ARM   {'ArmState': 1, 'ArmChecks': 1, 'Forced': 0, 'Method': 2}
+   120.471 EV    {'Id': 10}
+   120.471 MODE  {'Mode': 5, 'ModeNum': 5, 'Rsn': 1}
+   122.472 EV    {'Id': 57}
+   124.270 ARM   {'ArmState': 0, 'ArmChecks': 0, 'Forced': 0, 'Method': 2}
+   124.270 EV    {'Id': 11}
+   124.272 EV    {'Id': 56}
+   134.170 ARM   {'ArmState': 1, 'ArmChecks': 1, 'Forced': 0, 'Method': 2}
+   134.170 EV    {'Id': 10}
+   134.170 MODE  {'Mode': 5, 'ModeNum': 5, 'Rsn': 1}
+   136.172 EV    {'Id': 57}
+   138.210 EV    {'Id': 15}
+   140.868 EV    {'Id': 28}
+   147.600 MODE  {'Mode': 9, 'ModeNum': 9, 'Rsn': 1}
+   149.345 EV    {'Id': 17}
+   150.147 EV    {'Id': 18}
+   150.655 ARM   {'ArmState': 0, 'ArmChecks': 0, 'Forced': 0, 'Method': 13}
+   150.655 EV    {'Id': 11}
+   150.657 EV    {'Id': 56}
+   176.570 MSG   {'Message': 'Arm: LAND mode not armable'}
+   178.470 MSG   {'Message': 'Arm: LAND mode not armable'}
+   180.855 MODE  {'Mode': 5, 'ModeNum': 5, 'Rsn': 1}
+   181.670 ARM   {'ArmState': 1, 'ArmChecks': 1, 'Forced': 0, 'Method': 2}
+   181.670 EV    {'Id': 10}
+   181.671 MODE  {'Mode': 5, 'ModeNum': 5, 'Rsn': 1}
+   183.672 EV    {'Id': 57}
+   184.930 EV    {'Id': 15}
+   188.300 EV    {'Id': 28}
+   202.950 MODE  {'Mode': 9, 'ModeNum': 9, 'Rsn': 1}
+   202.970 ERR   {'Subsys': 3, 'ECode': 4}
+   203.970 ARM   {'ArmState': 0, 'ArmChecks': 0, 'Forced': 0, 'Method': 2}
+   203.970 EV    {'Id': 11}
+   203.970 EV    {'Id': 18}
+   203.970 EV    {'Id': 17}
+   203.972 EV    {'Id': 56}
+   205.571 MSG   {'Message': 'PreArm: Compass not healthy'}
+   205.571 MSG   {'Message': 'PreArm: EKF height variance'}
+   207.065 ERR   {'Subsys': 8, 'ECode': 1}
+   207.065 MSG   {'Message': 'GCS Failsafe'}
+   210.370 ERR   {'Subsys': 16, 'ECode': 2}
+   210.370 MSG   {'Message': 'EKF variance'}
+   210.370 ERR   {'Subsys': 17, 'ECode': 1}
+   212.482 MSG   {'Message': 'EKF3 IMU1 switching to compass 1'}
+   212.487 MSG   {'Message': 'EKF3 IMU0 switching to compass 1'}
+   217.420 MSG   {'Message': 'EKF3 IMU0 stopped aiding'}
+   217.422 MSG   {'Message': 'EKF3 IMU1 stopped aiding'}
+{'FRAME_CLASS': 1.0, 'FRAME_TYPE': 1.0, 'MOT_THST_HOVER': 0.3817777633666992, 'MOT_SPIN_MIN': 0.15000000596046448, 'MOT_SPIN_ARM': 0.10000000149011612, 'MOT_SLEW_UP_TIME': 0.0, 'RC_SPEED': 490.0, 'BATT_CAPACITY': 13000.0, 'BATT_LOW_VOLT': 13.199999809265137, 'BATT_CRT_VOLT': 12.800000190734863, 'BATT_FS_VOLTSRC': 0.0, 'BATT_ARM_VOLT': 9.0, 'FS_THR_ENABLE': 3.0, 'FS_GCS_ENABLE': 5.0, 'FLTMODE1': 0.0, 'FLTMODE2': 0.0, 'FLTMODE3': 0.0, 'FLTMODE4': 5.0, 'FLTMODE5': 0.0, 'FLTMODE6': 9.0, 'FLTMODE_CH': 5.0, 'RC6_OPTION': 153.0, 'ANGLE_MAX': 3000.0, 'PILOT_SPEED_UP': 250.0, 'ATC_RAT_RLL_P': 0.13500000536441803, 'ATC_RAT_PIT_P': 0.13500000536441803, 'ATC_RAT_YAW_P': 0.18000000715255737, 'ATC_ANG_RLL_P': 4.5, 'INS_LOG_BAT_MASK': 0.0, 'LOG_BITMASK': 176126.0, 'AUTO_OPTIONS': 0.0, 'SERVO9_FUNCTION': 36.0, 'SERVO10_FUNCTION': 34.0, 'SERVO11_FUNCTION': 33.0, 'SERVO12_FUNCTION': 35.0, 'AHRS_ORIENTATION': 0.0, 'COMPASS_ORIENT': 6.0, 'FS_CRASH_CHECK': 1.0, 'DISARM_DELAY': 10.0, 'MOT_BAT_VOLT_MAX': 0.0, 'MOT_BAT_VOLT_MIN': 0.0, 'INS_HNTCH_ENABLE': 0.0, 'STAT_BOOTCNT': 167.0, 'STAT_FLTTIME': 1175.0, 'RC3_MIN': 1000.0, 'RC3_MAX': 2000.0, 'RC3_TRIM': 1001.0, 'RC1_TRIM': 1500.0, 'RC2_TRIM': 1502.0, 'RC4_TRIM': 1500.0, 'PILOT_THR_BHV': 0.0, 'THR_DZ': 100.0, 'LOG_DISARMED': 0.0, 'BATT_VOLT_MULT': 18.55093002319336, 'BATT_AMP_PERVLT': 36.36000061035156}
