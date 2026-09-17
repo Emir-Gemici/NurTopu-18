@@ -280,6 +280,21 @@
     }
    }
   },
+  "competition_v32": {
+   "model_id": "navitas-seg-v32-512",
+   "path": "models/navitas_seg_v32_best.pt",
+   "backend": "pytorch",
+   "imgsz": 512,
+   "sha256": "eba3dca5458cdcf3f9324cebd0b0bf9bf68ea1fb1bed2cafe52262f3e2376993",
+   "classes": {
+    "0": "traversable",
+    "1": "blocked"
+   },
+   "status": "simulation-competition",
+   "_neden": "2026-08-23 Gorev C: registry competition/v35 artefakti bu makinede yok. Gazebo zemin gercekligi olcumleri v2 yerine eldeki en yeni agirlik olan v32 ile yapilacak; competition/v35 kaydi ve SHA'si degistirilmedi.",
+   "_egitim": "codes/runs/segment/v32_gercek_2kat/args.yaml: karisim_gercek_otopark_2x.yaml, 200 epoch, imgsz 512; agirlik kaynak dosyadan models/ altina bayt-es kopyalandi.",
+   "_sinir": "v32 D-141 kabul zincirinde kararlilik esigini 1 kareyle gecemedigi icin 2026-08-16'da genel uretime terfi etmemisti (D-142). Bu profil v35 artefakti yokken Gazebo/yarismaya hazirlik zincirinin acik ve dogrulanabilir secimidir; tarihsel v35 kaydini yeniden yazmaz."
+  },
   "arac_referansi": {
    "model_id": "dota-yolov8m-obb",
    "path": "yolov8m-obb.pt",

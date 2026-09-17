@@ -697,7 +697,7 @@ kalıp kopyalanmaz, tek yerden okunur):
 
 | süreç | bayrak eklenir | kilit uygulanır |
 |---|---|---|
-| `codes/rpi_inference.py` | `:2568` | `:2719` |
+| `codes/rpi_inference.py` | `:2569` | `:2728` |
 | `comms/iha_inis_yayinci.py` | `:432` | `:475` |
 | `comms/iha_komut_alici.py` | `:855` | `:899` |
 
@@ -2903,7 +2903,7 @@ Bölümde geçen her sayının kaynağı. Biçim: **değer** · *dosya yolu* · 
 | v36 için sınıf bazlı artefakt YOK; `sinif_bazli` en son v15 (rescuenet val/test) | `results/capraz_dogrulama_v15_ft2sinif_20260812/capraz_dogrulama.json` | `scripts/olcum/11_capraz_dogrulama.py` | 2026-08-12 |
 | Sentetik üreteçte ışık açısı/gölge parametresi yok; zemin L bandı 105–190, moloz dL 25–75 | `scripts/olcum/51_sentetik_arena.py:200,218` · `O:\navitas-local-train\calisma\sentetik_arena_kadraj_t66\manifest.json → ornekler[].arena.lab_zemin_hedefi` | üreteç kaynak kodu (okuma) | 2026-09-05 |
 | 5 Eylül: uçuş yok, arena benzeri kare 0 (motor testi 4/4) | `REVIEW_LOG.md` D-426 | saha tutanağı | 2026-09-05 |
-| Tek-yazar kilidi üç süreçte tek mekanizma: `/dev/tty*` · `COM*` · `serial:` → çıkış 2, tek red metni; yalnız `--seri-pixhawk-bilerek` aşar; `iha_komut_alici --serial` reddedilir | `comms/inis_kaniti.py:101-140` · `codes/rpi_inference.py:2568,2719` · `comms/iha_inis_yayinci.py:432,475` · `comms/iha_komut_alici.py:855,891,899` · `REVIEW_LOG.md` D-419 §3–4 | `tests/test_seri_pixhawk_kilidi.py` **13/13** (bu rapor için koşuldu) | 2026-09-04 (birleştirme) |
+| Tek-yazar kilidi üç süreçte tek mekanizma: `/dev/tty*` · `COM*` · `serial:` → çıkış 2, tek red metni; yalnız `--seri-pixhawk-bilerek` aşar; `iha_komut_alici --serial` reddedilir | `comms/inis_kaniti.py:101-140` · `codes/rpi_inference.py:2569,2728` · `comms/iha_inis_yayinci.py:432,475` · `comms/iha_komut_alici.py:855,891,899` · `REVIEW_LOG.md` D-419 §3–4 | `tests/test_seri_pixhawk_kilidi.py` **13/13** (bu rapor için koşuldu) | 2026-09-04 (birleştirme) |
 | H1c: sınıflandırılamayan yayımlanmış çevrilme **0/0**; tohum 7 → (i) 6 + (ii) 1 = 7 · tohum 42 → (i) 9 + (ii) 2 = 11; ikinci koşum ham 13/24, yayımlanan 7/11 birebir; `H1_ozgun: false` değişmedi | `results/p5_histerezis/ON_KAYIT.md` ("H1c — KOŞULDU") · `results/p5_histerezis/olcum_20260903.json` · `results/p5_histerezis/olcum_h1c_tekrar_20260903.json` | `scripts/olcum/171_histerezis_kararliligi.py` · kapı `tests/test_p5_h1c_damgasi.py` **23/23** (bu rapor için koşuldu) | 2026-09-03 |
 | Hakem kanıt olay kümesi **16 olay** · `KANIT_TEKRAR_ARALIGI_S = 30 s` · uçtan uca `--demo --fda` kaydı 18 satır / 9 farklı olay | `CONTRACTS.md` §6.8 · `comms/yks_gui.py:127-144` · `REVIEW_LOG.md` D-412, D-419 §2 | `tests/test_yks_hakem_kanit_olaylari.py` **22/22** · `tests/test_yks_hakem_kanit_yolu.py` **6/6** (bu rapor için koşuldu) | 2026-09-04 |
 | Saha ÖLÇÜM satırları: `ArduCopter V4.5.7 (2a3dc4b7)` · `Frame: QUAD/X` · `u-blox 1 HW: 000A0000 SW: ROM SPG 5.10` · `RCInput: decoding IBUS(1)` · `starting motor test` → `finished motor test` | `REVIEW_LOG.md` D-426 §1 (Mission Planner `Messages`, operatör yapıştırdı) | saha ölçümü; ESC kal. / pusula / RC failsafe / param dökümü **AÇIK** (D-426 §4) | 2026-09-05 |

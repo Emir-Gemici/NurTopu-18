@@ -2297,7 +2297,7 @@ def run_video(model, path_str, conf, save=True, mpp=None, canli_olcek=None,
 
 def run_camera(model, conf, mpp=None, canli_olcek=None, kaynak=None,
                arac_modeli=None, senaryo=None, yayinci=None, *, ekransiz=False,
-               gorev_kaydi=None):
+               gorev_kaydi=None, isaretli=None):
     # D-404 (Faz B, Gorev C olcumu): systemd altinda DISPLAY yokken kosulsuz
     # cv2.imshow ILK KAREDE cokup Restart dongusune giriyordu (hands-off
     # ihlali). `ekransiz=True` pencere/waitKey'i atlar; karar yolu ve yayin
@@ -2412,6 +2412,7 @@ def run_camera(model, conf, mpp=None, canli_olcek=None, kaynak=None,
                 _karari_yayinla(yayinci, open_path, path_conf, waypoints,
                                 kare_mpp, karar_reddi)
             gorev_kaydi = _gorev_kaydina_yaz(gorev_kaydi, "KARE", satir)
+            _isaretli_bildir(isaretli, satir, sq, icerik, masks, ozet, open_path, path_conf, waypoints, karar_reddi)
             # D-404: ekransiz kipte gorsel HIC uretilmez (karar yukarida yayinlandi).
             if ekransiz:
                 continue
@@ -2600,6 +2601,10 @@ def _arguman_ayristirici():
         "--gorev-kaydi", type=Path, default=None, metavar="DIZIN",
         help=("ONARIM-03: kare basina karar kaydi (JSONL, her satir fsync) "
               "DIZIN/<tarih>_<boot>_<pid>/gorev_kaydi.jsonl; yalniz --camera"))
+    parser.add_argument(
+        "--isaretli-yayin", type=str, default=None, metavar="HOST:PORT",
+        help=("T227: YAYINLANMIS karar bindirmeli 1280x720 kare, <= 2 Hz, HTTP /video /kare.jpg "
+              "(or. 127.0.0.1:8081); KARAR URETMEZ; yalniz --camera"))
     # T162 (ON_KAYIT SS28 · sartname SS6.2/SS6.4): IHA-UB ALAN IHLALI denetimi
     # YKS'de VARDI ama uretimde `x,y` ureten yol YOKTU — kapi sahada OLUYDU.
     # Referans, IHA-UB'nin KOSESIDIR (yerel cerceve 0..kenar). BEYAN EDILIR,
@@ -2713,6 +2718,10 @@ def _argumanlari_dogrula(parser, args):
         parser.error("--camera icin --mavlink zorunludur")
     if args.gorev_kaydi is not None and not args.camera:
         parser.error("--gorev-kaydi yalniz --camera ile kullanilir")
+    if args.isaretli_yayin is not None:
+        if not args.camera:
+            parser.error("--isaretli-yayin yalniz --camera ile kullanilir")
+        _host_port_coz(parser, args.isaretli_yayin, "--isaretli-yayin")
     if args.mavlink is not None:
         # CONTRACTS §7.4: seri cihaz yolu REDDEDILIR (cikis 2). Fail-closed —
         # bayrak yoksa (elle kurulmus namespace) kilit ACIK sayilmaz.
@@ -2840,13 +2849,16 @@ def main():
                       yayinci=yayinci, ekransiz=args.ekransiz)
         elif args.camera:
             gorev_kaydi = gorev_kaydi_ac(args.gorev_kaydi, model_yolu)
+            isaretli = isaretli_yayin_ac(args.isaretli_yayin)
             try:
                 run_camera(model, args.conf, canli_olcek=canli_olcek,
                            kaynak=args.kaynak, arac_modeli=arac_modeli,
                            senaryo=args.senaryo, yayinci=yayinci,
-                           ekransiz=args.ekransiz, gorev_kaydi=gorev_kaydi)
+                           ekransiz=args.ekransiz, gorev_kaydi=gorev_kaydi, isaretli=isaretli)
             finally:
                 gorev_kaydi_kapat(gorev_kaydi)
+                if isaretli is not None:
+                    isaretli.durdur()
     except KeyboardInterrupt:
         # Isleyici kurulamadiginda (ana iplik degil) ya da SIGINT isleyiciden
         # ONCE geldiginde hala buraya duseriz. run_* finally'leri kamerayi
@@ -3016,6 +3028,49 @@ def _gorev_kaydina_yaz(kayit, olay, alanlar):
             pass
         return None
     return kayit
+
+
+
+# ── T227 / ONARIM-06: isaretli yayin baglantisi ───────────────────────────────
+def _host_port_coz(parser, metin, bayrak):
+    host, _, port = str(metin).rpartition(":")
+    if not host or not port.isdigit() or not 1 <= int(port) <= 65535:
+        parser.error("{} HOST:PORT bicimindedir (or. 127.0.0.1:8081)".format(bayrak))
+    return host, int(port)
+
+
+def _isaretli_modulu():
+    kok = str(_here)
+    if kok not in sys.path:
+        sys.path.insert(0, kok)
+    return importlib.import_module("isaretli_yayin")
+
+
+def isaretli_yayin_ac(adres):
+    """`adres` None ise None. Acilamazsa (port dolu vb.) UYARI + None: karar yolu surer."""
+    if adres is None:
+        return None
+    host, _, port = adres.rpartition(":")
+    try:
+        return _isaretli_modulu().IsaretliYayin(host, int(port)).baslat()
+    except Exception as exc:
+        print(f"UYARI: isaretli yayin ACILAMADI ({adres}): {exc!r} — yayinsiz devam", flush=True)
+        return None
+
+
+def _isaretli_bildir(isaretli, satir, tuval, icerik, masks, ozet, open_path, path_conf,
+                     waypoints, karar_reddi):
+    """YAYINLANAN karari (satir['yayinlandi']) bindirme durumuna yazar, kareyi birakir.
+    Hata karari etkilemez."""
+    if isaretli is None:
+        return
+    try:
+        seq = int(ozet.get("okunan", 0))
+        if satir.get("yayinlandi"):
+            isaretli.karar_yayinlandi(open_path, path_conf, waypoints, karar_reddi, seq)
+        isaretli.kare_bildir(tuval, icerik, masks, seq)
+    except Exception as exc:
+        print(f"UYARI: isaretli yayin bildirimi: {exc!r}", flush=True)
 
 
 if __name__ == "__main__":

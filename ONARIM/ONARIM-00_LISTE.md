@@ -13,7 +13,7 @@ Durum etiketleri: `AÇIK` · `SÜRÜYOR` · `KAPANDI (kanıt: …)` · `BEKLİYO
 | 03 | Jetson'da kare başına kalıcı model/karar kaydı yok (stdout yalnız açılış); journald ayarı tekrarlanabilir değil | A | KAPANDI (6+44 test, mutasyon, Jetson'da gerçek kamera koşusu) | `ONARIM-03_jetson_gorev_kaydi.md` |
 | 04 | Canlı kamerada her karar `MASKE_YOK` — ölçüldü: canlı hat suçsuz (A≡B); IMX477 keskinliği 1,5–2,3 = σ≈10 bulanıklık → model hep ENGEL | B algı | SÜRÜYOR (odak ayarı sonrası yeniden ölçüm) | `ONARIM-04_canli_maske_yok.md` |
 | 05 | IMX477+6 mm odak ve FOV ölçülmedi (`--fov 63` BEYAN); sürücü yalnız 16:9 | B | KISMEN (odak ayarlandı: keskinlik 1,5 → ~350–550 NET; FOV ölçüm aracı hazır, 20–30 m ölçümü BEKLİYOR) | `ONARIM-10_jetson_paket_senkronu.md` §3 |
-| 06 | İşaretli video yolu yarım: `jetson_baslat.sh` yayını loopback'te tutuyor, T227 bayrağı yok | B | AÇIK | — |
+| 06 | İşaretli video yolu yarım: T227 `--isaretli-yayin` yoktu | B | KAPANDI (9 test + mutasyon; Jetson'da dosya kaynağıyla koşuldu, FPS etkisi −%1,3; canlı kamera/gösterici koşusu yok) | `ONARIM-06_isaretli_yayin.md` |
 | 07 | Otomatik başlatma yok; FOV/YKS_IP/IKA_IP her seferinde elle | C saha | AÇIK (güvenlik kararı) | — |
 | 08 | Log saatleri Pixhawk'la hizalanmıyor (RTC pilsiz; fake-hwclock yalnız telafi); log adında boot id yok | C | KAPANDI (yazılım: pixhawk_ms eşlemesi + boot_id; RTC pili donanım) | `ONARIM-08_log_zaman_hizalama.md` |
 | 09 | YKS→İHA komut hattı: 5007 dinleyen yok; PC IP DHCP ile değişiyor | C | AÇIK | — |

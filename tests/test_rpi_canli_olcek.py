@@ -476,7 +476,7 @@ class CanliOlcekCliTesti(unittest.TestCase):
         run_camera.assert_called_once_with(
             model, 0.30, canli_olcek=saglayici, kaynak=None,
             arac_modeli=None, senaryo=None, yayinci=None, ekransiz=False,
-            gorev_kaydi=None)  # ONARIM-03: bayrak verilmedi -> kayit YOK
+            gorev_kaydi=None, isaretli=None)  # ONARIM-03/06: bayraklar verilmedi -> kayit/yayin YOK
         saglayici.kapat.assert_called_once_with()
 
     def test_model_yukleme_hatasinda_poller_kapatilir(self):

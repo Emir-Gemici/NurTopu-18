@@ -2296,7 +2296,8 @@ def run_video(model, path_str, conf, save=True, mpp=None, canli_olcek=None,
 
 
 def run_camera(model, conf, mpp=None, canli_olcek=None, kaynak=None,
-               arac_modeli=None, senaryo=None, yayinci=None, *, ekransiz=False):
+               arac_modeli=None, senaryo=None, yayinci=None, *, ekransiz=False,
+               gorev_kaydi=None, isaretli=None):
     # D-404 (Faz B, Gorev C olcumu): systemd altinda DISPLAY yokken kosulsuz
     # cv2.imshow ILK KAREDE cokup Restart dongusune giriyordu (hands-off
     # ihlali). `ekransiz=True` pencere/waitKey'i atlar; karar yolu ve yayin
@@ -2323,6 +2324,7 @@ def run_camera(model, conf, mpp=None, canli_olcek=None, kaynak=None,
     else:
         print("Kamera acik — cikmak icin 'q'")
     fps_buf = []
+    tum_sureler = []  # T233: tum oturum, p95/ortalama icin (fps_buf'tan bagimsiz)
     ozet = {"bitis": None, "okunan": 0, "dusen_toplam": 0, "dusen_ardisik_maks": 0}
     # P5 (D-396): yayin histerezisi — yalniz AKIS yollarinda, yayindan hemen
     # once. Analiz katmani ve zincir olcumleri (61/65) DEGISMEZ (madde 15).
@@ -2358,9 +2360,16 @@ def run_camera(model, conf, mpp=None, canli_olcek=None, kaynak=None,
 
             t0 = time.perf_counter()
             results = model.predict(small, imgsz=INFER_SIZE, conf=conf, verbose=False)
-            fps_buf.append(time.perf_counter() - t0)
+            sure = time.perf_counter() - t0
+            fps_buf.append(sure)
             if len(fps_buf) > 30:
                 fps_buf.pop(0)
+            # T233: ekransiz kipte ekrana YAZILAN `live_fps` hic hesaplanmiyordu
+            # (asagidaki `if ekransiz: continue` ekrani atlar) - A10'da SS4.4
+            # kapisinin p95 kosulu canli kamerada OLCULEMIYORDU. `fps_buf`
+            # yalniz SON 30 kareyi tutar (ekrandaki anlik gostergedir, dokunulmadi);
+            # `tum_sureler` OTURUM BOYUNCA biriktirir, dongu sonunda ozet'e yazilir.
+            tum_sureler.append(sure)
 
             masks = get_masks(results, orig_h, orig_w)
             masks = _maskeleri_icerige_kirp(masks, icerik)
@@ -2396,9 +2405,14 @@ def run_camera(model, conf, mpp=None, canli_olcek=None, kaynak=None,
             # `yayinci` None ise (hedef verilmedi) davranis bayt-es aynidir.
             # D-396: farkli serit ancak K ardisik karede teyitlenirse yayina
             # gecer; NO_ROUTE ve ayni-serit ANINDA gecer (`KararYumusatici`).
+            satir = _gorev_kare_alanlari(gorev_kaydi, ozet, sure, masks, olcek, open_path,
+                                         path_conf, karar_reddi, frame=frame, canli=canli_olcek)
             if yumusatici.suz(open_path, karar_reddi):
+                satir["yayinlandi"] = True
                 _karari_yayinla(yayinci, open_path, path_conf, waypoints,
                                 kare_mpp, karar_reddi)
+            gorev_kaydi = _gorev_kaydina_yaz(gorev_kaydi, "KARE", satir)
+            _isaretli_bildir(isaretli, satir, sq, icerik, masks, ozet, open_path, path_conf, waypoints, karar_reddi)
             # D-404: ekransiz kipte gorsel HIC uretilmez (karar yukarida yayinlandi).
             if ekransiz:
                 continue
@@ -2425,7 +2439,16 @@ def run_camera(model, conf, mpp=None, canli_olcek=None, kaynak=None,
         cap.release()
         if not ekransiz:
             cv2.destroyAllWindows()
+    # T233: yalniz ekransiz kipte eklenir — ekranli kipin `ozet` sozlesmesi
+    # (ve ona bakan mevcut testler) DEGISMEZ (madde 15/16).
+    if ekransiz and tum_sureler:
+        sureler_ms = [s * 1000.0 for s in tum_sureler]
+        ozet["fps_ortalama"] = round(1000.0 / (sum(sureler_ms) / len(sureler_ms)), 3)
+        p95_ms = float(np.percentile(sureler_ms, 95))
+        ozet["fps_p95"] = round(1000.0 / p95_ms, 3) if p95_ms > 0 else None
+        ozet["fps_ornek"] = len(tum_sureler)
     print(kamera_bitis_raporu(ozet))
+    _gorev_kaydina_yaz(gorev_kaydi, "KAMERA_BITTI", dict(ozet))
     return ozet
 
 
@@ -2483,10 +2506,17 @@ def kamera_kareleri(cap, ozet, *, ust_sinir=None, bekleme_s=None,
 
 
 def kamera_bitis_raporu(ozet):
-    """Bitis satiri (log/YKS): neden + okunan + dusen (toplam / ardisik maks)."""
-    return (f"KAMERA BITIS: neden={ozet.get('bitis')} okunan={ozet.get('okunan', 0)} "
-            f"dusen_toplam={ozet.get('dusen_toplam', 0)} "
-            f"dusen_ardisik_maks={ozet.get('dusen_ardisik_maks', 0)}")
+    """Bitis satiri (log/YKS): neden + okunan + dusen (toplam / ardisik maks).
+
+    T233: `fps_ortalama`/`fps_p95` yalniz ekransiz kipte `ozet`e eklenir; yoksa
+    (eski davranis, ekranli kip) satir DEGISMEZ."""
+    satir = (f"KAMERA BITIS: neden={ozet.get('bitis')} okunan={ozet.get('okunan', 0)} "
+             f"dusen_toplam={ozet.get('dusen_toplam', 0)} "
+             f"dusen_ardisik_maks={ozet.get('dusen_ardisik_maks', 0)}")
+    if "fps_ortalama" in ozet:
+        satir += (f" fps_ortalama={ozet['fps_ortalama']} fps_p95={ozet['fps_p95']} "
+                  f"fps_ornek={ozet['fps_ornek']}")
+    return satir
 
 
 def _arguman_ayristirici():
@@ -2567,6 +2597,14 @@ def _arguman_ayristirici():
         "--telsiz-seri", type=str, default=None, metavar="PORT",
         help="SiK telsiz seri portu (saha yayin; ACK beklenmez)")
     parser.add_argument("--telsiz-baud", type=int, default=57600)
+    parser.add_argument(
+        "--gorev-kaydi", type=Path, default=None, metavar="DIZIN",
+        help=("ONARIM-03: kare basina karar kaydi (JSONL, her satir fsync) "
+              "DIZIN/<tarih>_<boot>_<pid>/gorev_kaydi.jsonl; yalniz --camera"))
+    parser.add_argument(
+        "--isaretli-yayin", type=str, default=None, metavar="HOST:PORT",
+        help=("T227: YAYINLANMIS karar bindirmeli 1280x720 kare, <= 2 Hz, HTTP /video /kare.jpg "
+              "(or. 127.0.0.1:8081); KARAR URETMEZ; yalniz --camera"))
     # T162 (ON_KAYIT SS28 · sartname SS6.2/SS6.4): IHA-UB ALAN IHLALI denetimi
     # YKS'de VARDI ama uretimde `x,y` ureten yol YOKTU — kapi sahada OLUYDU.
     # Referans, IHA-UB'nin KOSESIDIR (yerel cerceve 0..kenar). BEYAN EDILIR,
@@ -2678,6 +2716,12 @@ def _argumanlari_dogrula(parser, args):
         parser.error("--camera statik --mpp kabul etmez; canli MAVLink gerekir")
     if args.camera and args.mavlink is None:
         parser.error("--camera icin --mavlink zorunludur")
+    if args.gorev_kaydi is not None and not args.camera:
+        parser.error("--gorev-kaydi yalniz --camera ile kullanilir")
+    if args.isaretli_yayin is not None:
+        if not args.camera:
+            parser.error("--isaretli-yayin yalniz --camera ile kullanilir")
+        _host_port_coz(parser, args.isaretli_yayin, "--isaretli-yayin")
     if args.mavlink is not None:
         # CONTRACTS §7.4: seri cihaz yolu REDDEDILIR (cikis 2). Fail-closed —
         # bayrak yoksa (elle kurulmus namespace) kilit ACIK sayilmaz.
@@ -2804,10 +2848,17 @@ def main():
                       arac_modeli=arac_modeli, senaryo=args.senaryo,
                       yayinci=yayinci, ekransiz=args.ekransiz)
         elif args.camera:
-            run_camera(model, args.conf, canli_olcek=canli_olcek,
-                       kaynak=args.kaynak, arac_modeli=arac_modeli,
-                       senaryo=args.senaryo, yayinci=yayinci,
-                       ekransiz=args.ekransiz)
+            gorev_kaydi = gorev_kaydi_ac(args.gorev_kaydi, model_yolu)
+            isaretli = isaretli_yayin_ac(args.isaretli_yayin)
+            try:
+                run_camera(model, args.conf, canli_olcek=canli_olcek,
+                           kaynak=args.kaynak, arac_modeli=arac_modeli,
+                           senaryo=args.senaryo, yayinci=yayinci,
+                           ekransiz=args.ekransiz, gorev_kaydi=gorev_kaydi, isaretli=isaretli)
+            finally:
+                gorev_kaydi_kapat(gorev_kaydi)
+                if isaretli is not None:
+                    isaretli.durdur()
     except KeyboardInterrupt:
         # Isleyici kurulamadiginda (ana iplik degil) ya da SIGINT isleyiciden
         # ONCE geldiginde hala buraya duseriz. run_* finally'leri kamerayi
@@ -2827,6 +2878,199 @@ def main():
             if canli_olcek.kapat() is not True:
                 print("UYARI: irtifa poller'i durmadi; MAVLink baglantisi "
                       "thread altindan kapatilmadi.")
+
+
+# ── ONARIM-03 (2026-09-17): Jetson gorev kaydi ────────────────────────────────
+# NEDEN: 17 Eylul dususunden sonra Jetson'da uçusa ait TEK model kaydi yoktu ve
+# 15 Eylul canli kosusunda her karar MASKE_YOK iken cihazda maske piksel sayisi,
+# tespit sayisi, olcek kaynagi hicbir yere yazilmamisti (stdout yalniz acilis
+# satirlarini basar). Kayit comms/hakem_kaydi.HakemKaydi ile yazilir: satir basina
+# flush + fsync (ani guc kesilmesinde en fazla son satir gider), monotonic saniye +
+# boot_id (RTC pilsiz; duvar saati cevrimdisi guvenilmez — ONARIM-08).
+# KAYIT KARARI ETKILEMEZ: yazma hatasi ucusu durdurmaz; bir kez UYARI basilir ve
+# kayit kapatilir (karar yolu ve yayin bayt-es aynidir).
+
+def _hakem_kaydi_modulu():
+    """HakemKaydi'yi repo (comms/) ve duz Jetson paketinde tembel yukle."""
+    repo_modul = _here.parent / "comms" / "hakem_kaydi.py"
+    if repo_modul.is_file():
+        repo_koku = str(_here.parent)
+        eklendi = repo_koku not in sys.path
+        if eklendi:
+            sys.path.insert(0, repo_koku)
+        try:
+            return importlib.import_module("comms.hakem_kaydi")
+        finally:
+            if eklendi:
+                try:
+                    sys.path.remove(repo_koku)
+                except ValueError:
+                    pass
+    return importlib.import_module("hakem_kaydi")
+
+
+def _boot_id():
+    try:
+        return Path("/proc/sys/kernel/random/boot_id").read_text().strip() or None
+    except OSError:
+        return None
+
+
+def gorev_kaydi_yolu(dizin, boot_id=None, pid=None, simdi=None):
+    """DIZIN/<YYYYmmdd_HHMMSS>_<boot8>_<pid>/gorev_kaydi.jsonl (dosya olusturmaz)."""
+    damga = time.strftime("%Y%m%d_%H%M%S", time.localtime(simdi))
+    boot = (boot_id or "bootyok").replace("-", "")[:8]
+    kimlik = os.getpid() if pid is None else int(pid)
+    return Path(dizin) / f"{damga}_{boot}_{kimlik}" / "gorev_kaydi.jsonl"
+
+
+def gorev_kaydi_ac(dizin, model_yolu=None, *, kaydi_sinifi=None):
+    """Kaydi ac; `dizin` None ise None. Acilamazsa UYARI + None (ucus surer)."""
+    if dizin is None:
+        return None
+    boot = _boot_id()
+    try:
+        sinif = kaydi_sinifi or _hakem_kaydi_modulu().HakemKaydi
+        kayit = sinif(gorev_kaydi_yolu(dizin, boot_id=boot))
+        kayit.yaz("GOREV_BASLADI", boot_id=boot, pid=os.getpid(),
+                  model=(Path(model_yolu).name if model_yolu else None),
+                  argv=sys.argv[1:])
+    except Exception as exc:  # kayit karari etkilemez
+        print(f"UYARI: gorev kaydi ACILAMADI ({dizin}): {exc!r} — kayitsiz devam",
+              flush=True)
+        return None
+    print(f"gorev kaydi: {kayit.yol}", flush=True)
+    return kayit
+
+
+def gorev_kaydi_kapat(kayit):
+    if kayit is None:
+        return
+    try:
+        kayit.kapat()
+    except Exception as exc:
+        print(f"UYARI: gorev kaydi kapatilamadi: {exc!r}", flush=True)
+
+
+def _gorev_kare_alanlari(kayit, ozet, sure_s, masks, olcek, open_path,
+                         path_conf, karar_reddi, frame=None, canli=None):
+    """Kare satiri alanlari; kayit yoksa hesap yapilmaz (bos sozluk)."""
+    if kayit is None:
+        return {}
+    telemetri = _gorev_telemetri_alanlari(canli)
+    keskinlik = None
+    if frame is not None:
+        # ONARIM-04: odak kaymasi algiyi tamamen kapatir (bulanik kare -> hep ENGEL).
+        try:
+            from kare_keskinligi import kare_keskinligi
+            keskinlik = round(kare_keskinligi(frame), 1)
+        except Exception:
+            keskinlik = None
+    zemin = masks.get(0)
+    engel = masks.get(1)
+    mpp = olcek.get("mpp") if isinstance(olcek, dict) else None
+    return {
+        "kare": int(ozet.get("okunan", 0)),
+        "dusen_toplam": int(ozet.get("dusen_toplam", 0)),
+        "cikarim_ms": round(float(sure_s) * 1000.0, 2),
+        "zemin_px": int(np.count_nonzero(zemin)) if zemin is not None else None,
+        "engel_px": int(np.count_nonzero(engel)) if engel is not None else None,
+        "maske_hw": list(zemin.shape[:2]) if zemin is not None else None,
+        "olcek_kaynak": olcek.get("kaynak") if isinstance(olcek, dict) else None,
+        "mpp": (round(float(mpp), 6) if mpp is not None else None),
+        "yol": open_path,
+        "guven": round(float(path_conf or 0.0), 4),
+        "red": (str(karar_reddi[0]) if karar_reddi else None),
+        "keskinlik": keskinlik,
+        **telemetri,
+        "yayinlandi": False,
+    }
+
+
+def _gorev_telemetri_alanlari(canli):
+    """ONARIM-08: Pixhawk boot zamani esleme + taze arac durumu (yalniz kayit icin).
+
+    `pixhawk_ms`/`pixhawk_gelis_mono`: son kabul edilen GLOBAL_POSITION_INT'in
+    time_boot_ms'i ve Jetson monotonic gelisi (kayit satirinin `monotonic_s` ile
+    ayni saat) -> .bin TimeUS ile saatten bagimsiz hizalama. `irtifa`, `armed`,
+    `mod`: taze snapshot'ta yoksa alan None (bayat deger YAZILMAZ).
+    """
+    alanlar = {"pixhawk_ms": None, "pixhawk_gelis_mono": None,
+               "irtifa_m": None, "armed": None, "mod": None}
+    okuyucu = getattr(canli, "okuyucu", None)
+    if okuyucu is None:
+        return alanlar
+    try:
+        esleme = _inis_kaniti_modulu().zaman_eslemesi(okuyucu)
+        if esleme is not None:
+            alanlar["pixhawk_ms"] = int(esleme[0])
+            alanlar["pixhawk_gelis_mono"] = round(float(esleme[1]), 6)
+        snap = okuyucu.telemetri_snapshot() if hasattr(okuyucu, "telemetri_snapshot") else {}
+        alanlar["irtifa_m"] = snap.get("alt")
+        alanlar["armed"] = snap.get("armed")
+        alanlar["mod"] = snap.get("mod")
+    except Exception:
+        pass
+    return alanlar
+
+
+def _gorev_kaydina_yaz(kayit, olay, alanlar):
+    """Yaz; hata olursa BIR KEZ uyar ve None dondur (cagiran kaydi birakir)."""
+    if kayit is None:
+        return None
+    try:
+        kayit.yaz(olay, **alanlar)
+    except Exception as exc:  # disk dolu / cikarilmis vb. — ucus surer
+        print(f"UYARI: gorev kaydi yazilamadi, kayit KAPATILDI: {exc!r}", flush=True)
+        try:
+            kayit.kapat()
+        except Exception:
+            pass
+        return None
+    return kayit
+
+
+
+# ── T227 / ONARIM-06: isaretli yayin baglantisi ───────────────────────────────
+def _host_port_coz(parser, metin, bayrak):
+    host, _, port = str(metin).rpartition(":")
+    if not host or not port.isdigit() or not 1 <= int(port) <= 65535:
+        parser.error("{} HOST:PORT bicimindedir (or. 127.0.0.1:8081)".format(bayrak))
+    return host, int(port)
+
+
+def _isaretli_modulu():
+    kok = str(_here)
+    if kok not in sys.path:
+        sys.path.insert(0, kok)
+    return importlib.import_module("isaretli_yayin")
+
+
+def isaretli_yayin_ac(adres):
+    """`adres` None ise None. Acilamazsa (port dolu vb.) UYARI + None: karar yolu surer."""
+    if adres is None:
+        return None
+    host, _, port = adres.rpartition(":")
+    try:
+        return _isaretli_modulu().IsaretliYayin(host, int(port)).baslat()
+    except Exception as exc:
+        print(f"UYARI: isaretli yayin ACILAMADI ({adres}): {exc!r} — yayinsiz devam", flush=True)
+        return None
+
+
+def _isaretli_bildir(isaretli, satir, tuval, icerik, masks, ozet, open_path, path_conf,
+                     waypoints, karar_reddi):
+    """YAYINLANAN karari (satir['yayinlandi']) bindirme durumuna yazar, kareyi birakir.
+    Hata karari etkilemez."""
+    if isaretli is None:
+        return
+    try:
+        seq = int(ozet.get("okunan", 0))
+        if satir.get("yayinlandi"):
+            isaretli.karar_yayinlandi(open_path, path_conf, waypoints, karar_reddi, seq)
+        isaretli.kare_bildir(tuval, icerik, masks, seq)
+    except Exception as exc:
+        print(f"UYARI: isaretli yayin bildirimi: {exc!r}", flush=True)
 
 
 if __name__ == "__main__":

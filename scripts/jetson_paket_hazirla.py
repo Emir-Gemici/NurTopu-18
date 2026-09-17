@@ -24,6 +24,10 @@ KOPYALAR = {
     KOK / "config" / "model_registry.json": PAKET / "config" / "model_registry.json",
     KOK / "codes" / "karar_sozlesmesi.py": PAKET_KOD / "karar_sozlesmesi.py",
     KOK / "codes" / "rpi_inference.py": PAKET_KOD / "rpi_inference.py",
+    # ONARIM-06/T227: --isaretli-yayin bindirme + HTTP (kamera_koprusu sunucusunu kullanir)
+    KOK / "codes" / "isaretli_yayin.py": PAKET_KOD / "isaretli_yayin.py",
+    # ONARIM-04: gorev kaydi keskinlik alani
+    KOK / "codes" / "kare_keskinligi.py": PAKET_KOD / "kare_keskinligi.py",
     KOK / "codes" / "costmap_path_finder.py": PAKET_KOD / "costmap_path_finder.py",
     # 🔴 OLCEK KATMANI — T83 onarimi. `rpi_inference._arac_kisa_kenari` bu
     # modulu GECIKMELI + try/except ile import eder; dosya pakette YOKSA
