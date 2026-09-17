@@ -249,7 +249,7 @@ class JetsonIkiliKipTest(unittest.TestCase):
         self.assertEqual(_arg_degeri(b["birimler"]["navitas-iha-komut-alici"], "--izinli-kaynak"), "127.0.0.1:5100")
         kod2, out2, _ = _kos(BETIK, m.env(KIP="ikili", FOV="78"))
         self.assertEqual(kod2, 3, out2)
-        self.assertIn("YKS_IP (KIP=ikili", out2)
+        self.assertIn("YKS_IP ya da YKS_ESLESME (KIP=ikili", out2)
         kod3, out3, _ = _kos(BETIK, m.env(KIP="sik", FOV="78"))
         self.assertNotIn("--lan-bind", _bolumler(out3)["birimler"].get("navitas-seri-hub", ""))
 

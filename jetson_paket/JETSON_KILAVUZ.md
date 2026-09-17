@@ -365,11 +365,12 @@ Jetson'da klasör yapısını koru:
 mkdir -p ~/navitas/{codes,comms,scripts,models,data,config}
 cp kod/rpi_inference.py kod/costmap_path_finder.py kod/karar_sozlesmesi.py kod/arac_maskesi.py kod/isaretli_yayin.py kod/kare_keskinligi.py ~/navitas/codes/
 cp kod/model_registry.py kod/kamera_dogrula.py kod/karisim_arena.yaml ~/navitas/codes/
-cp kod/protocol.py kod/link.py kod/iha_sender.py kod/inis_kaniti.py kod/iha_inis_yayinci.py kod/iha_komut_alici.py kod/seri_hub.py ~/navitas/comms/
+cp kod/protocol.py kod/link.py kod/iha_sender.py kod/inis_kaniti.py kod/iha_inis_yayinci.py kod/iha_komut_alici.py kod/seri_hub.py kod/yks_kesif.py ~/navitas/comms/
 cp kod/mavlink_dogrula.py ~/navitas/scripts/   # Faz B on-ucus kapisi (jetson_baslat.sh --kapi, D-404)
 cp kod/kamera_koprusu.py ~/navitas/scripts/    # Gorev K: CSI kamera koprusu (navitas-kamera-koprusu, KAMERA=http://127.0.0.1:8080/video)
 cp kod/isaretli_gosterici.py ~/navitas/scripts/ # T228: isaretli gosterici, MK15 video hatti (GOSTERICI_KIP; gosterici/GOSTERICI_KURULUM.md)
 cp kod/jetson_fps.py ~/navitas/scripts/
+cp kod/yks_eslestir.py ~/navitas/scripts/     # ONARIM-03: YKS eslestirme (tara/esle)
 cp models/* ~/navitas/models/
 cp config/model_registry.json ~/navitas/config/
 cp -r test_goruntuleri ~/navitas/data/

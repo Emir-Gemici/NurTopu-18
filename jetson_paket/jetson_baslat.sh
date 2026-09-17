@@ -128,7 +128,8 @@ IKA_PORT=5006
 KOMUT_PORT=5007
 SERI_HUB_DINLE="127.0.0.1:5100"                 # KIP=sik: surecler buraya yazar
 SERI_HUB_TUKETICI="127.0.0.1:${KOMUT_PORT}"     # hub seri hattan geleni buraya verir
-HUB_LAN_PORT="${HUB_LAN_PORT:-5009}"             # ONARIM-09 KIP=ikili: YKS --iha <jetson>:5009
+HUB_LAN_PORT="${HUB_LAN_PORT:-5009}"
+YKS_ESLESME="${YKS_ESLESME:-}"                   # ONARIM-03: eslesme dosyasi (KIP=ikili, YKS_IP yerine)             # ONARIM-09 KIP=ikili: YKS --iha <jetson>:5009
 hub_kipi() { [ "$KIP" = sik ] || [ "$KIP" = ikili ]; }
 
 hata() { echo "HATA: $*" >&2; exit 1; }
@@ -268,7 +269,13 @@ case "$KIP" in
     RPI_TELSIZ_ARGS="--yks-hedef ${SERI_HUB_DINLE}"
     INIS_TELSIZ_ARGS="--yks ${SERI_HUB_DINLE}"
     KOMUT_TELSIZ_ARGS="--bind ${SERI_HUB_TUKETICI} --izinli-kaynak ${SERI_HUB_DINLE}"
-    HUB_LAN_ARGS="--lan-bind 0.0.0.0:${HUB_LAN_PORT} --lan-yks ${YKS_IP}:${YKS_PORT}"
+    # ONARIM-03: YKS_ESLESME verilirse YKS adresi imzali duyurudan OGRENILIR (DHCP'ye
+    # dayanikli, "Bluetooth mantigi"); yoksa sabit YKS_IP beyanı.
+    if [ -n "$YKS_ESLESME" ]; then
+      HUB_LAN_ARGS="--lan-bind 0.0.0.0:${HUB_LAN_PORT} --lan-yks-eslesme ${YKS_ESLESME}"
+    else
+      HUB_LAN_ARGS="--lan-bind 0.0.0.0:${HUB_LAN_PORT} --lan-yks ${YKS_IP}:${YKS_PORT}"
+    fi
     ;;
   *) hata "KIP='$KIP' taninmiyor (udp | sik | ikili)" ;;
 esac
@@ -277,7 +284,7 @@ HUB_LAN_ARGS="${HUB_LAN_ARGS:-}"
 # /etc/navitas.env'e yazilan ve ExecStart'ta yerine konan anahtarlar
 ENV_ANAHTARLAR=(NAVITAS_KOK PYTHON3 LOG_DIZIN KIP PIXHAWK_SERI PIXHAWK_BAUD SYSID
                 SIK_SERI SIK_BAUD KANIT_TIMEOUT RPI_EK_ARGS RPI_TELSIZ_ARGS
-                INIS_TELSIZ_ARGS KOMUT_TELSIZ_ARGS HUB_LAN_ARGS
+                INIS_TELSIZ_ARGS KOMUT_TELSIZ_ARGS HUB_LAN_ARGS YKS_ESLESME
                 KAMERA_PYTHON KAMERA_KOPRU_BIND KAMERA_KOPRU_PORT KAMERA_KOPRU_ARGS
                 GOSTERICI_KIP ISARETLI_YAYIN)   # T228: DRM gosterici birimi ${ISARETLI_YAYIN} okur
 # Tek deger tasiyan beyanlar: bosluk/glob/kacis icerirse systemd ($VAR) ve bash (nohup $k)
@@ -367,7 +374,9 @@ sozlesme_denetle() {  # birim dosyalari CONTRACTS §7.4'ten sapmis mi? (elle boz
     case " $k " in *" --port $SIK_SERI "*) ;; *) hata "navitas-seri-hub: '--port $SIK_SERI' yok" ;; esac
     case " $k " in *" --bind $SERI_HUB_DINLE "*) ;; *) hata "navitas-seri-hub: '--bind $SERI_HUB_DINLE' yok" ;; esac
     case " $k " in *" --tuketici $SERI_HUB_TUKETICI "*) ;; *) hata "navitas-seri-hub: '--tuketici $SERI_HUB_TUKETICI' yok" ;; esac
-    if [ "$KIP" = ikili ]; then
+    if [ "$KIP" = ikili ] && [ -n "$YKS_ESLESME" ]; then
+      case " $k " in *" --lan-yks-eslesme $YKS_ESLESME "*) ;; *) hata "navitas-seri-hub: KIP=ikili '--lan-yks-eslesme $YKS_ESLESME' yok" ;; esac
+    elif [ "$KIP" = ikili ]; then
       case " $k " in *" --lan-yks $YKS_IP:$YKS_PORT "*) ;; *) hata "navitas-seri-hub: KIP=ikili '--lan-yks $YKS_IP:$YKS_PORT' yok" ;; esac
     fi
   fi
@@ -393,8 +402,8 @@ beyan_eksikleri() {  # stdout: her satir bir eksik
   if [ -n "$FOV" ] && [ -n "$ODAK" ]; then
     echo "FOV ve ODAK birlikte verilmez (rpi_inference: karsilikli dislar)"
   fi
-  if [ "$KIP" = ikili ] && [ -z "$YKS_IP" ]; then
-    echo "YKS_IP (KIP=ikili: LAN aynasinin YKS'si, port $YKS_PORT)"
+  if [ "$KIP" = ikili ] && [ -z "$YKS_IP" ] && [ -z "$YKS_ESLESME" ]; then
+    echo "YKS_IP ya da YKS_ESLESME (KIP=ikili: LAN aynasinin YKS'si; eslesme dosyasi DHCP'ye dayanikli)"
   fi
   if [ "$KIP" = udp ]; then
     if [ -z "$YKS_IP" ]; then echo "YKS_IP (KIP=udp: hakem ekrani hedefi, port $YKS_PORT)"; fi
@@ -558,6 +567,10 @@ kuru() {
     else echo "[YOK] SiK seri $SIK_SERI <- SIK_SERI ile ez"; yok=$((yok + 1)); fi
   elif [ "$KIP" = ikili ] && [ ! -e "$SIK_SERI" ]; then
     echo "UYARI: KIP=ikili SiK seri yok ($SIK_SERI) — yalniz LAN yolu calisir"
+  fi
+  if [ "$KIP" = ikili ] && [ -n "$YKS_ESLESME" ]; then
+    if [ -r "$YKS_ESLESME" ]; then echo "[VAR] YKS eslesme $YKS_ESLESME"
+    else echo "[YOK] YKS eslesme $YKS_ESLESME <- scripts/yks_eslestir.py esle ... (YKS'deki dosya)"; yok=$((yok + 1)); fi
   fi
   liste="$(kurulu_py_dosyalari)"
   while read -r b y; do

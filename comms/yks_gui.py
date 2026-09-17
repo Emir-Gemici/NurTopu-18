@@ -4823,6 +4823,31 @@ def demo_besle(yks_port, durum):
     threading.Thread(target=ika, daemon=True).start()
 
 
+def yks_duyurusu_baslat(args, logla, *, yayinci_sinifi=None):
+    """ONARIM-03: eslesme dosyasini oku (yoksa uret) ve duyuruyu baslat.
+    Hedefler: LAN broadcast + (varsa) --iha host'u dogrudan (broadcast engelli aglar icin).
+    Hata YKS'yi durdurmaz: kirmizi gunluk + None."""
+    import yks_kesif
+    try:
+        if not Path(args.eslesme).exists():
+            yks_kesif.eslesme_yaz(args.eslesme, yks_kesif.eslesme_uret("YKS"))
+        es = yks_kesif.eslesme_oku(args.eslesme)
+        port = int(str(args.bind).rsplit(":", 1)[1])
+        hedefler = [("255.255.255.255", yks_kesif.DUYURU_PORT)]
+        if args.iha:
+            hedefler.append((args.iha[0], yks_kesif.DUYURU_PORT))
+        yayinci = (yayinci_sinifi or yks_kesif.DuyuruYayinci)(
+            es, port, hedefler=hedefler, log=lambda m: logla(m, "sari"))
+        yayinci.start()
+    except Exception as exc:
+        logla(f"⚠ YKS DUYURUSU BAŞLATILAMADI ({args.eslesme}): {exc} — Jetson YKS'yi "
+              "bulamayabilir", "kirmizi")
+        return None
+    logla(f"YKS DUYURUSU: kimlik {es['kimlik']} · EŞLEŞME KODU {yks_kesif.eslesme_kodu(es)} "
+          f"· port {port} · hedef {', '.join(f'{h}:{p}' for h, p in hedefler)}", "mavi")
+    return yayinci
+
+
 def kapanis_kaynaklarini_temizle(app, link):
     """YKİ kaynaklarını birbirinden bağımsız ve en iyi gayretle kapat.
 
@@ -4832,6 +4857,7 @@ def kapanis_kaynaklarini_temizle(app, link):
     de görebilir.
     """
     kaynaklar = (
+        ("YKS DUYURUSU", getattr(app, "duyuru_yayinci", None), "durdur"),
         ("KAMERA", getattr(app, "kamera_istemci", None), "durdur"),
         ("KANIT KAYDI", getattr(app, "hakem_kaydi", None), "kapat"),
         ("HABERLEŞME", link, "close"),
@@ -4860,6 +4886,11 @@ def main():
                          "heartbeat kaynağı kullanılır ve komut alıcıya "
                          "ULAŞMAZ, D-403)")
     ap.add_argument("--serial", help="SiK telsiz seri portu (örn. COM5)")
+    ap.add_argument(
+        "--eslesme", type=Path, default=None, metavar="DOSYA",
+        help=("ONARIM-03: YKS kendini LAN'da imzali duyurur (Bluetooth mantigi); Jetson "
+              "eslestigi YKS'nin adresini DHCP degisse de ogrenir. Dosya yoksa uretilir: "
+              "scripts/yks_eslestir.py yeni --dosya DOSYA"))
     ap.add_argument(
         "--coklu", action="store_true",
         help=("ONARIM-09: --serial ile --bind/--iha/--ika'yı BİRLİKTE kullan — LAN "
@@ -5009,6 +5040,9 @@ def main():
     app._logla(f"YKS hazır — dinleniyor: "
                f"{args.serial or args.bind}", "mavi")
     app._logla(f"KALICI HAKEM KAYDI: {hakem_log_yolu}", "mavi")
+    app.duyuru_yayinci = None
+    if args.eslesme is not None:
+        app.duyuru_yayinci = yks_duyurusu_baslat(args, app._logla)
     app._logla(
         (f"RAW kamera LAN kaynağı: {args.kamera_url}" if args.kamera_url else
          "RAW kamera KAPALI: --kamera-url/NAVITAS_KAMERA_URL verilmedi; "

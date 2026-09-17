@@ -28,6 +28,9 @@ KOPYALAR = {
     KOK / "codes" / "isaretli_yayin.py": PAKET_KOD / "isaretli_yayin.py",
     # ONARIM-04: gorev kaydi keskinlik alani
     KOK / "codes" / "kare_keskinligi.py": PAKET_KOD / "kare_keskinligi.py",
+    # ONARIM-03: seri_hub --lan-yks-eslesme kesif modulu
+    KOK / "comms" / "yks_kesif.py": PAKET_KOD / "yks_kesif.py",
+    KOK / "scripts" / "yks_eslestir.py": PAKET_KOD / "yks_eslestir.py",
     KOK / "codes" / "costmap_path_finder.py": PAKET_KOD / "costmap_path_finder.py",
     # 🔴 OLCEK KATMANI — T83 onarimi. `rpi_inference._arac_kisa_kenari` bu
     # modulu GECIKMELI + try/except ile import eder; dosya pakette YOKSA

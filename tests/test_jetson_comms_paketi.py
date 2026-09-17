@@ -66,8 +66,9 @@ class JetsonCommsPaketiTests(unittest.TestCase):
         #     yoksa GOSTERICI_KIP=x11 autostart'i `No such file` ile olurdu.
         # ONARIM-06/04'te 22 -> 24 (17 Eylul 2026): isaretli_yayin.py (T227 --isaretli-yayin),
         # kare_keskinligi.py (gorev kaydi keskinlik alani).
-        self.assertEqual(24, len(KOPYALAR),
-                         "paket kopya sozlesmesi 24 dosya olmali (+isaretli_yayin, kare_keskinligi) "
+        # ONARIM-03'te 24 -> 26: yks_kesif.py (seri_hub kesif), yks_eslestir.py (eslestirme araci).
+        self.assertEqual(26, len(KOPYALAR),
+                         "paket kopya sozlesmesi 26 dosya olmali (+isaretli_yayin, kare_keskinligi, yks_kesif, yks_eslestir) "
                          "(17 .py + karisim_arena.yaml + config/model_registry.json + "
                          "Orin Nano belgesi + 2 kurulum betigi · "
                          "T103/T83/T202/D-403/D-404/Gorev K/D-431/T228)")
