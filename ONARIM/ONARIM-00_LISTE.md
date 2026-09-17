@@ -24,3 +24,4 @@ Durum etiketleri: `AÇIK` · `SÜRÜYOR` · `KAPANDI (kanıt: …)` · `BEKLİYO
 
 **Yazılım dışı (takip için):** gövde/motor/GPS kablosu değişimi · Jetson besleme hattı (açılışta brownout) · RTC pili (CR2032) · lens odak kontrolü.
 | 14 | Uçuş logları (`results/ucus_20260912…20260917b/` 27 `.bin` + 4 `.tlog` + `DUSUS_ANALIZI.md`) yalnız Emir'in PC'sinde; D-492 kanıtı `.tlog` OneDrive'da tek kopya | D | BEKLİYOR (kullanıcı Emir'in PC'sinde) | — |
+| 15 | Pixhawk düşüş sonrası durum: kart/firmware/TELEM2 ayarı sağlam, 1025 param yedeklendi; 🔴 pusulalar ~49° tutarsız ("Compasses inconsistent"), GPS iç mekânda fix yok | A | TESPİT TAMAM — pusula yönü/kalibrasyonu ve dış GPS testi BEKLİYOR (insan) | `ONARIM-15_pixhawk_durum_tespiti.md` |
