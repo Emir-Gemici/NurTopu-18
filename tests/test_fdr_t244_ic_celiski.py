@@ -499,7 +499,7 @@ class T1_MavlinkTekYazarKilidi(unittest.TestCase):
             self.assertTrue(inis[satir - 1].startswith(ad), (ad, satir, inis[satir - 1][:40]))
         self.assertIn("COMMS/INIS_KANITI.PY:101-143", m)
         for dosya, ekle, uygula in (
-                (KOK / "codes" / "rpi_inference.py", 2562, 2707),
+                (KOK / "codes" / "rpi_inference.py", 2568, 2719),
                 (KOK / "comms" / "iha_inis_yayinci.py", 432, 475),
                 (KOK / "comms" / "iha_komut_alici.py", 855, 899)):
             satirlar = oku(dosya).splitlines()

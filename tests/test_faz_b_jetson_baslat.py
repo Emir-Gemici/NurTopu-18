@@ -1078,7 +1078,7 @@ class JetsonBaslatKurKapiShim(unittest.TestCase):
             kod, out, err = _kos(m.betik, e2, "--kur")
             self.assertEqual(kod, 0, f"stdout:\n{out}\nstderr:\n{err}")
             env2 = m.env_dosya.read_text(encoding="utf-8")
-            self.assertIn("RPI_EK_ARGS=--fov 90\n", env2)
+            self.assertIn(f"RPI_EK_ARGS=--fov 90 --gorev-kaydi {e2['LOG_DIZIN']}/gorev\n", env2)
             self.assertIn("RPI_TELSIZ_ARGS=--yks-hedef 10.0.0.9:5005 --ika-hedef 10.0.0.2:5006\n", env2)
             sc2 = self._systemctl(m)
             self.assertIn(("restart", udp_birimler), sc2, "ikinci --kur: yeni beyan canli surece uygulanmali")

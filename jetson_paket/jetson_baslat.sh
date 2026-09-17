@@ -224,6 +224,9 @@ if [ -n "$ODAK" ]; then RPI_EK_ARGS="$RPI_EK_ARGS --odak $ODAK"; fi
 if [ -n "$SENARYO" ]; then RPI_EK_ARGS="$RPI_EK_ARGS --senaryo $SENARYO"; fi
 if [ -n "$KAMERA" ]; then RPI_EK_ARGS="$RPI_EK_ARGS --kaynak $KAMERA"; fi
 if [ -n "$UB_REFERANS" ]; then RPI_EK_ARGS="$RPI_EK_ARGS --ub-referans $UB_REFERANS"; fi
+# ONARIM-03: kare basina karar kaydi HER ZAMAN acik (fsync'li JSONL, LOG_DIZIN diskte).
+# 17 Eyl dususunde Jetson'da tek model kaydi yoktu; stdout yalniz acilis satirlarini basar.
+RPI_EK_ARGS="$RPI_EK_ARGS --gorev-kaydi $LOG_DIZIN/gorev"
 # T228: gosterici acikken isaretli yayin (T227) acilir; kapaliyken bayrak VERILMEZ (mevcut davranis)
 if [ "$GOSTERICI_KIP" != kapali ]; then RPI_EK_ARGS="$RPI_EK_ARGS --isaretli-yayin $ISARETLI_YAYIN"; fi
 RPI_EK_ARGS="${RPI_EK_ARGS# }"
