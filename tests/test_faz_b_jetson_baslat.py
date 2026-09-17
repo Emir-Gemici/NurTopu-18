@@ -344,6 +344,14 @@ sleep "${FAKE_SLEEP:-1}"
 _SHIM_SYSTEMCTL = """#!/usr/bin/env bash
 echo "$EPOCHREALTIME systemctl $*" >> "$SHIM_LOG"
 case "$1" in is-active) echo active;; show) echo 0;; esac
+# ONARIM-02: gercek MAVProxy parametre indirmesi bitince <state-basedir>/mav.parm yazar.
+case " $* " in *" restart navitas-cogullayici.service "*)
+  if [ -z "${FAKE_PARM_YAZMA:-}" ]; then
+    mkdir -p "$LOG_DIZIN/mavproxy"
+    ( sleep "${FAKE_PARM_GECIKME:-0}"; date > "$LOG_DIZIN/mavproxy/mav.parm"
+      echo "$EPOCHREALTIME PARM_YAZILDI" >> "$SHIM_LOG.parm" ) >/dev/null 2>&1 &
+  fi;;
+esac
 exit 0
 """
 _SHIM_SUDO = """#!/usr/bin/env bash
@@ -460,9 +468,9 @@ class _AnaMakine:
             for s in p.read_text(encoding="utf-8").splitlines():
                 t, olay, _ = s.split(" ", 2)
                 if olay == "DOGRULA_BASLA":
-                    basla = float(t)
+                    basla = float(t.replace(",", "."))
                 elif olay == "DOGRULA_BITTI":
-                    bitti = float(t)
+                    bitti = float(t.replace(",", "."))
             z[port] = (basla, bitti)
         return z
 
@@ -1161,7 +1169,47 @@ class JetsonBaslatKurKapiShim(unittest.TestCase):
             ham = [s for s in m.shim_log.read_text(encoding="utf-8").splitlines()
                    if " systemctl restart " + tuketici_birimler[0] in s]
             self.assertEqual(len(ham), 1, ham)
-            self.assertGreater(float(ham[0].split(" ", 1)[0]), max(s for _, s in z.values()))
+            self.assertGreater(float(ham[0].split(" ", 1)[0].replace(",", ".")), max(s for _, s in z.values()))
+        finally:
+            m.temizle()
+
+    def test_K10_kapi_param_indirmesi_bitmeden_OLCMEZ(self):
+        """ONARIM-02: TELEM2 @57600'de 1025 parametre ~42 s surdu; sabit `sleep 3` ile kapi
+        indirme sirasinda olcup 0/3 veriyordu. Uc dogrulamanin HICBIRI mav.parm yazilmadan
+        baslamaz."""
+        m = _AnaMakine(sbin=True, kullanici=self.KULLANICI, crlf_paket=True)
+        try:
+            e = m.env(KIP="udp", **BEYAN_TAM, FAKE_SURE="1", FAKE_PARM_GECIKME="4")
+            kod, out, err = _kos(m.betik, e, "--kapi", timeout=120)
+            self.assertEqual(kod, 0, f"stdout:\n{out}\nstderr:\n{err}")
+            self.assertIn("[PARAM] indirme bitti", out)
+            self.assertNotIn("parametre indirmesi bitmedi", out)
+            parm = Path(str(m.shim_log) + ".parm").read_text(encoding="utf-8").split()
+            parm_t = float(parm[0].replace(",", "."))
+            z = m.dogrula_zamanlari()
+            self.assertEqual(set(z), {"14550", "14551", "14552"}, z)
+            for port, (basla, _) in z.items():
+                self.assertGreaterEqual(basla, parm_t, f"{port}: dogrulama param indirmesi bitmeden basladi")
+        finally:
+            m.temizle()
+
+    def test_K10_kapi_ESKI_mav_parm_sayilmaz_tavanda_UYARI_ve_yine_olcer(self):
+        """Onceki kosumdan kalan mav.parm 'indirme bitti' sayilmaz; tavan dolunca kapi yine
+        olcer (hukmu mavlink_dogrula verir, bekleme gecirmez)."""
+        m = _AnaMakine(sbin=True, kullanici=self.KULLANICI, crlf_paket=True)
+        try:
+            eski = m.log / "mavproxy" / "mav.parm"
+            eski.parent.mkdir(parents=True)
+            eski.write_text("eski\n")
+            gecmis = time.time() - 3600
+            os.utime(eski, (gecmis, gecmis))
+            e = m.env(KIP="udp", **BEYAN_TAM, FAKE_SURE="1", FAKE_PARM_YAZMA="1",
+                      PARAM_BEKLE_TAVAN_S="2")
+            kod, out, err = _kos(m.betik, e, "--kapi", timeout=120)
+            self.assertEqual(kod, 0, f"stdout:\n{out}\nstderr:\n{err}")
+            self.assertIn("UYARI: 2 s icinde parametre indirmesi bitmedi", out)
+            self.assertNotIn("[PARAM] indirme bitti", out)
+            self.assertEqual(len(self._shim_komutlar(m, "sudo")), 3, "tavan dolunca uc uc yine olculur")
         finally:
             m.temizle()
 
