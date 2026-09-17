@@ -60,6 +60,15 @@ CIKIS_TAMAM, CIKIS_BASARISIZ, CIKIS_OLCULEMEDI = 0, 1, 2
 
 VIBE_TIPLERI = ("VIBRATION", "VIBE")
 PWM_TIPLERI = ("SERVO_OUTPUT_RAW", "RCOU")
+#: ONARIM-01 (2026-09-17): hover dilimi durum mesajlari. DataFlash: ARM.ArmState,
+#: CTUN.Alt (m) / CTUN.CRt (cm/s). tlog: HEARTBEAT.base_mode (SAFETY_ARMED=128),
+#: GLOBAL_POSITION_INT.relative_alt (mm) / vz (cm/s, asagi pozitif).
+DURUM_TIPLERI = ("ARM", "CTUN", "HEARTBEAT", "GLOBAL_POSITION_INT")
+#: Hover sayilma kosulu (ON KAYIT, ONARIM-01): arm'li · irtifa > 0,3 m · |dikey hiz| < 0,3 m/s.
+HOVER_ASGARI_IRTIFA_M = 0.3
+HOVER_AZAMI_DIKEY_HIZ_MS = 0.3
+MAV_MODE_FLAG_SAFETY_ARMED = 128
+MAV_TYPE_GCS = 6
 
 
 def _vibez(msg):
@@ -87,22 +96,77 @@ def _motor_degerleri(msg, kanallar):
     return degerler if len(degerler) >= 2 else None
 
 
+class HoverDurumu:
+    """Mesaj akisindan 'su an hover mi' durumunu izler (ONARIM-01).
+
+    NEDEN: eski surum TUM dosyanin tepesine bakiyordu: (1) hic ucus olmayan (motor
+    1000 us, VibeZ ~0) log `KAPI: TAMAM` aliyordu — fail-open; (2) kalkis/inis
+    gecicileri gercek hover'i haksiz dusuruyordu. Olculen 4 gercek .bin (17 Eyl,
+    results/ucus_zaman_senkronsuz/): 2 yer logu TAMAM almisti.
+    Durum bilinmiyorsa (mesaj yok) hover SAYILMAZ -> olcum OLCULEMEDI olur.
+    """
+
+    def __init__(self):
+        self.armed = None
+        self.irtifa_m = None
+        self.dikey_ms = None
+
+    def guncelle(self, msg):
+        tp = msg.get_type()
+        try:
+            if tp == "ARM":
+                self.armed = bool(int(msg.ArmState))
+            elif tp == "CTUN":
+                self.irtifa_m = float(msg.Alt)
+                self.dikey_ms = float(msg.CRt) / 100.0
+            elif tp == "HEARTBEAT":
+                if int(getattr(msg, "type", -1)) == MAV_TYPE_GCS:
+                    return
+                self.armed = bool(int(msg.base_mode) & MAV_MODE_FLAG_SAFETY_ARMED)
+            elif tp == "GLOBAL_POSITION_INT":
+                self.irtifa_m = float(msg.relative_alt) / 1000.0
+                self.dikey_ms = float(msg.vz) / 100.0
+        except (AttributeError, TypeError, ValueError):
+            pass
+
+    def hover_mi(self):
+        return (self.armed is True and self.irtifa_m is not None and self.dikey_ms is not None
+                and math.isfinite(self.irtifa_m) and math.isfinite(self.dikey_ms)
+                and self.irtifa_m > HOVER_ASGARI_IRTIFA_M
+                and abs(self.dikey_ms) < HOVER_AZAMI_DIKEY_HIZ_MS)
+
+
 def pencereleri_hesapla(mesajlar, pencere_s, kanallar, vibez_esik=VIBEZ_ESIK,
-                         motor_fark_esik_us=MOTOR_FARK_ESIK_US):
-    """(mesaj) akisindan pencere sozlukleri (t_bas'a gore sirali). Saf: dosya acmaz."""
+                         motor_fark_esik_us=MOTOR_FARK_ESIK_US, sayac=None):
+    """(mesaj) akisindan pencere sozlukleri (t_bas'a gore sirali). Saf: dosya acmaz.
+
+    Yalniz HOVER anindaki VIBE/PWM ornekleri sayilir (HoverDurumu). `sayac` verilirse
+    {"hover_disi_vibe", "hover_disi_pwm"} dislanan ornek sayilarini doldurur.
+    """
     if not (pencere_s > 0):
         raise ValueError("pencere > 0 olmali")
+    durum = HoverDurumu()
+    if sayac is None:
+        sayac = {}
+    sayac.setdefault("hover_disi_vibe", 0)
+    sayac.setdefault("hover_disi_pwm", 0)
     kutular = {}
     t0 = None
     for msg in mesajlar:
+        tp = msg.get_type()
+        if tp in DURUM_TIPLERI:
+            durum.guncelle(msg)
+            continue
         t = getattr(msg, "_timestamp", None)
         if t is None:                 # 0.0 gecerli damgadir; `not t` onu da atlardi
+            continue
+        if tp in VIBE_TIPLERI + PWM_TIPLERI and not durum.hover_mi():
+            sayac["hover_disi_vibe" if tp in VIBE_TIPLERI else "hover_disi_pwm"] += 1
             continue
         if t0 is None:
             t0 = t
         anahtar = int((t - t0) // pencere_s)
         k = kutular.setdefault(anahtar, {"vibez": [], "motor_fark": []})
-        tp = msg.get_type()
         if tp in VIBE_TIPLERI:
             vz = _vibez(msg)
             if vz is not None:
@@ -135,7 +199,7 @@ def dosyadan_mesajlar(yol):
     """pymavlink ile tlog/bin oku; yalniz ilgili tipleri uret."""
     from pymavlink import mavutil  # tembel: --help pymavlink istemez
     m = mavutil.mavlink_connection(str(yol))
-    tipler = list(VIBE_TIPLERI + PWM_TIPLERI)
+    tipler = list(VIBE_TIPLERI + PWM_TIPLERI + DURUM_TIPLERI)
     try:
         while True:
             msg = m.recv_match(type=tipler, blocking=False)
@@ -185,12 +249,17 @@ def tek_dosya(yol, pencere_s, kanallar, ofset_saat, json_yol,
     if not yol.is_file():
         print(f"OLCULEMEDI: dosya yok: {yol}", file=sys.stderr)
         return CIKIS_OLCULEMEDI
+    sayac = {}
     satirlar = pencereleri_hesapla(dosyadan_mesajlar(yol), pencere_s, kanallar,
-                                    vibez_esik, motor_fark_esik_us)
+                                    vibez_esik, motor_fark_esik_us, sayac=sayac)
     vibe_var = any(r["n_vibe"] for r in satirlar)
     pwm_var = any(r["n_pwm"] for r in satirlar)
     if not vibe_var and not pwm_var:
-        print(f"OLCULEMEDI: {yol.name} icinde VIBE/VIBRATION ve PWM mesaji yok", file=sys.stderr)
+        print(f"OLCULEMEDI: {yol.name} icinde HOVER aninda VIBE/PWM ornegi yok "
+              f"(arm'li · irtifa > {HOVER_ASGARI_IRTIFA_M:g} m · |dikey hiz| < "
+              f"{HOVER_AZAMI_DIKEY_HIZ_MS:g} m/s; hover disi dislanan: {sayac}) — "
+              f"ucus yok ya da ARM/CTUN/HEARTBEAT/GLOBAL_POSITION_INT kaydi eksik",
+              file=sys.stderr)
         return CIKIS_OLCULEMEDI
     if not vibe_var:
         print(f"OLCULEMEDI: {yol.name} icinde VIBE/VIBRATION mesaji yok "
@@ -206,7 +275,10 @@ def tek_dosya(yol, pencere_s, kanallar, ofset_saat, json_yol,
     print(f"HOVER KAPISI  {yol.name}  pencere {pencere_s:g} s  "
           f"(esik: VibeZ<={vibez_esik:g} m/s/s, motor farki<={motor_fark_esik_us:g} us)")
     print(tablo_metni(satirlar, ofset_saat, kanallar))
-    print(f"TOPLAM: VibeZ tepe {vz_tepe:.2f} m/s/s · motor fark tepe {mf_tepe:.0f} us")
+    print(f"TOPLAM (yalniz hover): VibeZ tepe {vz_tepe:.2f} m/s/s · motor fark tepe {mf_tepe:.0f} us"
+          f" · hover disi dislanan {sayac}")
+    print("NOT: 'motor fark' = anlik max-min (kanallar arasi). Ekibin +16/+520 us tanimiyla "
+          "ESLESTIRILMEDI (ONARIM-01) — normal hover'da max-min 75-95 us medyan olculdu.")
     if tamam:
         print("KAPI: TAMAM")
     else:
@@ -223,6 +295,7 @@ def tek_dosya(yol, pencere_s, kanallar, ofset_saat, json_yol,
             "dosya": yol.name, "pencere_s": pencere_s, "kanallar": list(kanallar),
             "vibez_esik": vibez_esik, "motor_fark_esik_us": motor_fark_esik_us,
             "vibez_tepe": vz_tepe, "motor_fark_tepe_us": mf_tepe, "kapi_tamam": tamam,
+            "hover_disi_dislanan": sayac,
             "pencereler": satirlar,
         }, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         print(f"JSON: {json_yol}")

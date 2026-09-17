@@ -8,7 +8,7 @@ Durum etiketleri: `AÇIK` · `SÜRÜYOR` · `KAPANDI (kanıt: …)` · `BEKLİYO
 
 | No | Sorun | Grup | Durum | Dosya |
 |---|---|---|---|---|
-| 01 | Hover kapısı tüm dosyanın tepesine bakıyor (kalkış/iniş geçicileri) + "motor çıkış farkı" tanımı ekibin yöntemiyle eşleşmedi | A uçuş güvenliği | BEKLİYOR (Emir'in log/yöntemi) | — |
+| 01 | Hover kapısı tüm dosyanın tepesine bakıyor; **uçuşsuz log TAMAM alıyordu (fail-open)**; "motor çıkış farkı" tanımı ekiple eşleşmedi | A uçuş güvenliği | KISMEN (fail-open + hover dilimi KAPANDI, gerçek .bin; tanım BEKLİYOR — normal hover max−min 75–95 µs) | `ONARIM-01_hover_kapisi.md` |
 | 02 | `jetson_baslat.sh --kapi` parametre indirmesi (~42 s @57600) bitmeden ölçüyor → yanlış DÜŞTÜ | A | KAPANDI (test 44 OK + mutasyon; canlı koşu yok) | `ONARIM-02_mavlink_kapi_param_bekleme.md` |
 | 03 | Jetson'da kare başına kalıcı model/karar kaydı yok (stdout yalnız açılış); journald ayarı tekrarlanabilir değil | A | KAPANDI (6+44 test, mutasyon, Jetson'da gerçek kamera koşusu) | `ONARIM-03_jetson_gorev_kaydi.md` |
 | 04 | Canlı kamerada her karar `MASKE_YOK` — ölçüldü: canlı hat suçsuz (A≡B); IMX477 keskinliği 1,5–2,3 = σ≈10 bulanıklık → model hep ENGEL | B algı | SÜRÜYOR (odak ayarı sonrası yeniden ölçüm) | `ONARIM-04_canli_maske_yok.md` |

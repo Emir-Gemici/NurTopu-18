@@ -1,0 +1,2 @@
+OLCULEMEDI: 1980-01-12 15-45-52.bin icinde HOVER aninda VIBE/PWM ornegi yok (arm'li · irtifa > 0.3 m · |dikey hiz| < 0.3 m/s; hover disi dislanan: {'hover_disi_vibe': 616, 'hover_disi_pwm': 308}) — ucus yok ya da ARM/CTUN/HEARTBEAT/GLOBAL_POSITION_INT kaydi eksik
+cikis=2

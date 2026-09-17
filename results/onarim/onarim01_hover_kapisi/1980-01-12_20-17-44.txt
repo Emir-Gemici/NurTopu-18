@@ -1,0 +1,18 @@
+HOVER KAPISI  1980-01-12 20-17-44.bin  pencere 5 s  (esik: VibeZ<=16 m/s/s, motor farki<=60 us)
+ pencere  n_v VibeZ maks  n_p motor fark maks us  not   (kanallar 9,10,11,12)
+21:18:20   16       0.05    8                  0  
+21:25:00   72      22.68   36                174  ESIK ASILDI
+21:25:05  100      18.27   50                160  ESIK ASILDI
+21:25:10  100      18.24   50                138  ESIK ASILDI
+21:25:15   80      18.09   40                301  ESIK ASILDI
+21:25:20    6       1.94    3                 50  
+21:25:35   60       4.45   30                 28  
+21:25:40   40      20.03   20                157  ESIK ASILDI
+21:25:45  100      21.11   50                142  ESIK ASILDI
+21:25:50  100      25.38   50                100  ESIK ASILDI
+21:25:55   94      22.51   47                 65  ESIK ASILDI
+21:26:05   42      12.61   21                359  ESIK ASILDI
+TOPLAM (yalniz hover): VibeZ tepe 25.38 m/s/s · motor fark tepe 359 us · hover disi dislanan {'hover_disi_vibe': 2392, 'hover_disi_pwm': 1196}
+NOT: 'motor fark' = anlik max-min (kanallar arasi). Ekibin +16/+520 us tanimiyla ESLESTIRILMEDI (ONARIM-01) — normal hover'da max-min 75-95 us medyan olculdu.
+KAPI: BASARISIZ — VibeZ tepe 25.38 > esik 16 · motor fark tepe 359 us > esik 60 us — UCULMAYACAK (takim karari 2026-09-17)
+cikis=1
