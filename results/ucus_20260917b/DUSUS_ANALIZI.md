@@ -136,19 +136,28 @@ Olay anındaki pilot tepkisi (karşı-dümen, 0,8 s'de disarm) doğruydu; düş�
 **İkinci beyan (kullanıcı):** "Drone bir yere çarpmadı, dümdüz hover yapıyorduk." → §4 (B) dış temas **elendi**.
 Log bununla uyumlu: olaydan 2 s önce 13°'lik kısa bir sağ düzeltme ve ~1 m kayma var, ama darbe ya da temas izi yok. Başlatıcı iç yapısal çöküş.
 
+**Üçüncü beyan (kullanıcı):** "Muayene tamamen yapılmıştı ve doğrulanmıştı" (00:20 düşüşünden sonra, 02:50 uçuşlarından önce). Kabul edildi, BEYAN. "Muayenesiz uçuş" gerekçesi kaldırıldı.
+
+**Bu beyanla log birlikte ne söylüyor (ÇIKARIM):**
+- Oturumun başında, W1 yer yatması ve W2 sert inişten önce, W2 kısa sıçramasında VibeZ zaten ~17,6'ydı. Yere yakın eşleşik pencerelerde bu, 00:20 öncesinin ×2,5–3,2'si.
+- Yani gövde muayeneden **geçmiş hâliyle** daha az rijitti. Görsel ya da elle yapılan muayenenin yakalayamadığı bir **gizli hasar** (baskı katmanları arası iç çatlak, bağlantı vidasının plastikte gevşemesi) ya da gövdenin **tasarım/malzeme dayanımının** bu yük için yetersizliği olası.
+- W5 askısının logu bunu ölçümle gösteriyordu: VibeZ ~18; havadaki son saniyede CCW−CW +85…+204 µs. Sorun muayenenin eksikliği değil; **ölçümlü kabul kriterinin** (log kontrolü) sahada bulunmaması.
+
 **Katkı değerlendirmesi (ÖLÇÜM DEĞİL; §4'ün yerine geçer):**
 
 | Etken | Pay |
 |---|---|
-| Yapı: gövde veya kol uçuşta katlandı (hasarla zayıflamış ya da dayanımı yetersiz baskı parça) | %55–70 |
-| Operasyon: 00:20 düşüşünden 2,5 saat sonra gövdenin yapısal muayenesi ve kabul askısı olmadan, gece uçmak; oturumdaki yerde yatma ve sert inişten sonra kontrolsüz devam | %25–35 |
-| Pilotaj: W1'de yerde Loiter'a geçme (yatma), W2'de gazı kesme (sert iniş) — gövdeye ek yük; son uçuşta pilotaj hatası yok | %0–10 |
+| Yapı / tasarım: gövde veya kol uçuşta katlandı; muayenede görülmeyen gizli hasar ya da yetersiz dayanım | %70–85 |
+| Pilotaj: W1'de yerde Loiter'a geçme (27° yatma), W2'de gazı kesme (3,2 g sert iniş) — muayeneden SONRA gövdeye ek yük; son uçuşta pilotaj hatası yok | %5–15 |
+| Operasyon: W1/W2 olaylarından sonra 30–60 s içinde yeniden kalkış (oturum saatleri: W2 değme 02:51:42, W5 kalkış 02:52:43); gece; ölçümlü kabul kontrolü yok | %5–15 |
 | Sensör / elektrik / ayar | %0–5 |
-| **Bu uçuş tek başına: pilot + operasyon** | **~%25–40** |
-| **Zincir olarak (hasar 00:20 düşüşünde başladıysa — ÇIKARIM; o düşüş ~%80–85 pilot/operasyon, D-490)** | **~%50–65** |
+| **Bu uçuş tek başına: pilot + operasyon** | **~%10–25** |
+| **Zincir: gizli hasar 00:20 düşüşünden kaldıysa (ÇIKARIM; o düşüş ~%80–85 pilot/operasyon, D-490)** | **~%50–65** |
+| **Zincir: gizli hasar değil, tasarım/malzeme yetersizliğiyse** | **~%10–25** |
 
 **Önleme (ders):**
-1. Düşüş yaşamış **3B baskı taşıyıcı parçalar yeniden kullanılmaz**; plaka ve kollar yenisiyle değiştirilir.
+1. Düşüş yaşamış **3B baskı taşıyıcı parçalar yeniden kullanılmaz**; plaka ve kollar yenisiyle değiştirilir. Muayeneden geçse bile: baskı parçada katman arası çatlak gözle görülmeyebilir (bu düşüş, doğrulanmış muayeneye rağmen oldu).
 2. Her uçuş öncesi **esneme/burulma testi**: kol ucunu elle yukarı-aşağı ve döndürerek zorla; gözle görülür esneme ya da çıtırtı varsa uçulmaz.
+2b. **Görsel muayeneye ek olarak ölçümlü kabul:** ilk askıdan sonra log kontrolü (VibeZ p95 ≤ 16, motor yayılımı ≤ 40 µs, CCW−CW ≤ 60 µs) geçmeden bir sonraki uçuşa geçilmez. W5 bu kontrolden geçemezdi (VibeZ ~18, sonda CCW−CW +204 µs).
 3. **Uçuşta erken uyarı:** motor çıkışları arasındaki fark büyüyor ya da drone yönünü tutamıyorsa (bu uçuşta 13 s boyunca açıkça görüldü) hemen iniş. MP'de Status sekmesinde `ch9out`–`ch12out` izlenebilir. YKİ'ye otomatik alarm eklenmesi ayrı iş olarak kuyruğa önerilir.
 4. Yarışma takvimine göre gövde malzemesi kararı (karbon plaka/kol ya da baskı parametreleri: malzeme, doluluk, et kalınlığı) — insan kararı.
