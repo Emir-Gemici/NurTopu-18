@@ -1,0 +1,41 @@
+HOVER KAPISI  081_2026-09-17_02-54-00.bin  pencere 2 s  (esik: VibeZ<=16 m/s/s, motor farki<=60 us)
+ pencere  n_v VibeZ maks  n_p motor fark maks us  not   (kanallar 9,10,11,12)
+02:51:28   42       0.04   21                  0  
+02:51:30   40       2.14   20                  0  
+02:51:32   40       5.71   20                 54  
+02:51:34   40       5.34   20                 72  ESIK ASILDI
+02:51:36   40      27.11   20                 76  ESIK ASILDI
+02:51:38   40      25.91   20                404  ESIK ASILDI
+02:51:40   36      54.36   18                507  ESIK ASILDI
+02:51:42    2       9.35    1                124  ESIK ASILDI
+02:52:14   16       0.04    8                  0  
+02:52:16   40       1.61   20                  0  
+02:52:18   40       0.97   20                  0  
+02:52:20    2       1.13    1                  0  
+02:52:22   32       0.04   16                  0  
+02:52:24   40       1.41   20                  0  
+02:52:26    4       0.57    2                  0  
+02:52:36   38       0.04   19                  0  
+02:52:38   40       1.80   20                  0  
+02:52:40   40       3.13   20                 67  ESIK ASILDI
+02:52:42   40      23.38   20                346  ESIK ASILDI
+02:52:44   32      27.76   16                450  ESIK ASILDI
+02:52:46   40      24.37   20                432  ESIK ASILDI
+02:52:48   40      26.58   20                559  ESIK ASILDI
+02:52:50   28      40.25   14                577  ESIK ASILDI
+02:52:52   12       3.09    6                166  ESIK ASILDI
+02:53:22    8       0.04    4                  0  
+02:53:24   40       1.46   20                  0  
+02:53:26   40       1.15   20                  0  
+02:53:28   40       3.53   20                 70  ESIK ASILDI
+02:53:30   40      20.86   20                356  ESIK ASILDI
+02:53:32   40      27.26   20                328  ESIK ASILDI
+02:53:34   40      22.61   20                379  ESIK ASILDI
+02:53:36   40      29.00   20                331  ESIK ASILDI
+02:53:38   40      20.33   20                409  ESIK ASILDI
+02:53:40   40      22.91   20                524  ESIK ASILDI
+02:53:42   40      23.09   20                479  ESIK ASILDI
+02:53:44    8      23.32    4                586  ESIK ASILDI
+TOPLAM (yalniz hover): VibeZ tepe 54.36 m/s/s · motor fark tepe 586 us · hover disi dislanan {'hover_disi_vibe': 1914, 'hover_disi_pwm': 957}
+NOT: 'motor fark' = anlik max-min (kanallar arasi). Ekibin +16/+520 us tanimiyla ESLESTIRILMEDI (ONARIM-01) — normal hover'da max-min 75-95 us medyan olculdu.
+KAPI: BASARISIZ — VibeZ tepe 54.36 > esik 16 · motor fark tepe 586 us > esik 60 us — UCULMAYACAK (takim karari 2026-09-17)
