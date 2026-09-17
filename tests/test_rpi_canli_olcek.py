@@ -475,7 +475,8 @@ class CanliOlcekCliTesti(unittest.TestCase):
         # DEGISMEDI; systemd birimi bayragi acikca verir).
         run_camera.assert_called_once_with(
             model, 0.30, canli_olcek=saglayici, kaynak=None,
-            arac_modeli=None, senaryo=None, yayinci=None, ekransiz=False)
+            arac_modeli=None, senaryo=None, yayinci=None, ekransiz=False,
+            gorev_kaydi=None)  # ONARIM-03: bayrak verilmedi -> kayit YOK
         saglayici.kapat.assert_called_once_with()
 
     def test_model_yukleme_hatasinda_poller_kapatilir(self):

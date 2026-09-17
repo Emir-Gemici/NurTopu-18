@@ -52,3 +52,8 @@ Ham kanıt: `results/onarim/onarim03_jetson_gorev_kaydi/` (41 satır JSONL + std
 - Satır başına fsync ~3–5 Hz'de NVMe için önemsiz; TensorRT ile 15–20 Hz'de de ölçülmeli.
 - Kayıt dizini büyümesi: 1 saatlik uçuş ≈ 15 000 satır ≈ 5 MB — sorun değil, temizlik yok.
 - `iha_inis_yayinci` / `iha_komut_alici` kendi kalıcı kayıtlarını tutmuyor (stdout → journald 5 s). Gerekirse ayrı madde.
+
+## ⚠ Düzeltme (aynı gün)
+- İlk push'ta (`f51ad4fe`) `tests/test_rpi_canli_olcek.py::test_main_canli_saglayiciyi_kamera_dongusune_aynen_tasir` **kırıktı**: `run_camera` çağrısına eklenen `gorev_kaydi=None` beklentide yoktu. Kapı zincirindeki komut dizisi kırmızıda durmadığı için push gitti — yordam hatası.
+- Düzeltme: beklentiye `gorev_kaydi=None` eklendi (bayrak verilmezse kayıt yok — davranış doğru, test bayattı).
+- Sonrası geniş karşılaştırma: `rpi_inference`/`run_camera`'ya dokunan **68 test dosyası**, Emir'in commit'i `5436929d` (taban) ile düzeltme sonrası HEAD arasında temiz worktree'de koşuldu → **fark yok** (yalnız yeni `test_onarim03_gorev_kaydi` OK). Tabanda da kırmızı olanlar (bu işten bağımsız): `test_jetson_comms_paketi`, `test_t202_jetson_paket_butunlugu`, `test_t143_turev_ve_kamera`, `test_t135_kamera_dogrula_icerik`, `test_gece_akis_diyagramlari`, `test_imgsz_tek_kaynak`, `test_jetson_paket_defteri`, `test_k0_iki_olcum_hatti`, `test_saha_kuru_kosu`, `test_saha_parametrik`, `test_sim_mujoco_olcum`, `test_t155_serit_numarasi`, `test_yks_gui_uretim_hizasi`.
