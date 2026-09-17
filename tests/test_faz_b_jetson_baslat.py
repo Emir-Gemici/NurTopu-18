@@ -503,7 +503,10 @@ class JetsonBaslatKuruUdp(unittest.TestCase):
         self.assertIn("sudo -E bash", self.b_h["sonuc"])
         self.assertEqual(set(self.b_h["birimler"]), {COGULLAYICI, *TUKETICILER},
                          "KIP=udp'de hub OLMAMALI, dort birim olmali")
-        self.assertEqual(len(self.m.shim_satirlari()), 0, "--kuru hicbir shim'i CALISTIRMAZ")
+        # ONARIM-10: tek istisna salt okunur modul denetimi (`python3 -c import ...`) — hicbir
+        # birim/surec BASLATMAZ; baska her shim cagrisi yasak kalir.
+        diger = [s for s in self.m.shim_satirlari() if not s.startswith("python3 -c import ")]
+        self.assertEqual(diger, [], "--kuru hicbir shim'i CALISTIRMAZ (modul denetimi haric)")
 
     def test_K1_varsayilanlarla_exit_YOK_sayisiyla_tutarli(self):
         """Varsayilan yollarla (bu makinede ne varsa): [YOK] yoksa 0/tamam, varsa 3/eksik —
@@ -646,7 +649,7 @@ class JetsonBaslatKuruUdp(unittest.TestCase):
         gorulen = set()
         kullanici = None
         for satir in b["makine"]:
-            m = re.match(r"^\[(VAR|YOK)\] (kullanici|yorumlayici|Pixhawk seri|SiK seri|kurulu) (\S+)", satir)
+            m = re.match(r"^\[(VAR|YOK)\] (kullanici|yorumlayici|modul|Pixhawk seri|SiK seri|kurulu) (\S+)", satir)
             self.assertIsNotNone(m, f"ana makine satiri bicimi: {satir!r}")
             durum, tur, deger = m.groups()
             if tur == "kullanici":
@@ -654,13 +657,20 @@ class JetsonBaslatKuruUdp(unittest.TestCase):
                 gercek = _bash_id_var(deger)
             elif tur == "yorumlayici":
                 gercek = _bash_test("-x", deger)
+            elif tur == "modul":
+                # ONARIM-10: betik ile AYNI sinama — yorumlayici modulleri gercekten import eder mi
+                moduller = satir.split(" import ", 1)[1].split(" <- ", 1)[0].split()
+                kod = "; ".join(f"import {x}" for x in moduller)
+                gercek = subprocess.run([_bash(), "-c", 'if [ -n "$2" ]; then PATH="$2:$PATH"; fi; "$1" -c "$3"',
+                                         "_", deger, path_on, kod],
+                                        capture_output=True, timeout=120).returncode == 0
             elif tur == "kurulu":
                 gercek = _bash_test("-f", deger)
             else:
                 gercek = _bash_test("-e", deger)
             self.assertEqual(durum, "VAR" if gercek else "YOK", satir)
             gorulen.add(tur)
-        self.assertLessEqual({"kullanici", "yorumlayici", "Pixhawk seri", "kurulu"}, gorulen, b["makine"])
+        self.assertLessEqual({"kullanici", "yorumlayici", "modul", "Pixhawk seri", "kurulu"}, gorulen, b["makine"])
         self.assertEqual(sum(1 for s in b["makine"] if " kurulu " in s), len(b["birimler"]) - 1,
                          "cogullayici disinda her birimin kurulu .py satiri")
         mav = [s for s in b["paket"] if "mavproxy.py (PATH)" in s]

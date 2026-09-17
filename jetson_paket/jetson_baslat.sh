@@ -131,6 +131,16 @@ SERI_HUB_TUKETICI="127.0.0.1:${KOMUT_PORT}"     # hub seri hattan geleni buraya 
 
 hata() { echo "HATA: $*" >&2; exit 1; }
 
+# ONARIM-10 (2026-09-17): `-x $PYTHON3` yetmiyordu. Jetson'da varsayilan /usr/bin/python3
+# calistirilabilir ama ultralytics yalniz ~/venv312'de -> --kuru [VAR] diyordu, kurulan
+# navitas-rpi-inference birimi ilk satirda ModuleNotFoundError ile Restart dongusune girerdi.
+PYTHON3_MODULLERI="${PYTHON3_MODULLERI:-ultralytics cv2 numpy pymavlink}"
+yorumlayici_modulleri_var() {
+  local m kod=""
+  for m in $PYTHON3_MODULLERI; do kod="${kod}import $m; "; done
+  "$PYTHON3" -c "$kod" >/dev/null 2>&1
+}
+
 # MAVProxy pip ile kullanici dizinine kurulur (~/.local/bin); sudo altinda secure_path
 # onu gormez. Birim dosyasi (Environment=PATH=...) ile AYNI arama yolu kullanilir.
 MAVPROXY_PATH="$MAVPROXY_BIN:/usr/local/bin:/usr/bin:/bin"
@@ -456,6 +466,8 @@ dosya_denetle() {  # kurulu kopyada kullanici, dosyalar ve cihazlar var mi? (kur
   id -u "$SERVIS_KULLANICI" >/dev/null 2>&1 \
     || hata "servis kullanicisi yok: $SERVIS_KULLANICI (SERVIS_KULLANICI ile ez; birimler User=$SERVIS_KULLANICI ile kosar)"
   [ -x "$PYTHON3" ] || hata "yorumlayici yok: $PYTHON3"
+  yorumlayici_modulleri_var \
+    || hata "$PYTHON3 '$PYTHON3_MODULLERI' import EDEMIYOR — servis cokme dongusune girerdi; PYTHON3 ile venv yorumlayicisini ver (ONARIM-10)"
   [ -e "$PIXHAWK_SERI" ] || hata "Pixhawk seri cihazi yok: $PIXHAWK_SERI (PIXHAWK_SERI ile ez)"
   if [ "$KIP" = sik ]; then [ -e "$SIK_SERI" ] || hata "SiK seri cihazi yok: $SIK_SERI (SIK_SERI ile ez)"; fi
   if [ "$KAMERA_KOPRU" = 1 ]; then
@@ -508,6 +520,10 @@ kuru() {
   else echo "[YOK] kullanici $SERVIS_KULLANICI <- SERVIS_KULLANICI ile ez (JETSON_KILAVUZ §2 ~/navitas sahibi)"; yok=$((yok + 1)); fi
   if [ -x "$PYTHON3" ]; then echo "[VAR] yorumlayici $PYTHON3"
   else echo "[YOK] yorumlayici $PYTHON3 <- PYTHON3 ile ez"; yok=$((yok + 1)); fi
+  if [ -x "$PYTHON3" ]; then
+    if yorumlayici_modulleri_var; then echo "[VAR] modul $PYTHON3 import $PYTHON3_MODULLERI"
+    else echo "[YOK] modul $PYTHON3 import $PYTHON3_MODULLERI <- bu yorumlayicida yok; Jetson'da PYTHON3=/home/$SERVIS_KULLANICI/venv312/bin/python ile ez (ONARIM-10)"; yok=$((yok + 1)); fi
+  fi
   if [ "$KAMERA_KOPRU" = 1 ]; then
     if [ -x "$KAMERA_PYTHON" ]; then echo "[VAR] kopru yorumlayicisi $KAMERA_PYTHON"
     else echo "[YOK] kopru yorumlayicisi $KAMERA_PYTHON <- KAMERA_PYTHON ile ez (GStreamer'li sistem Python)"; yok=$((yok + 1)); fi
