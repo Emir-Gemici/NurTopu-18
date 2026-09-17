@@ -799,7 +799,7 @@ class YksArayuz:
     def __init__(
             self, kok, link, otomatik_onay=False, demo=False, ika_peer=None,
             iha_peer=None, kamera_url=None, hakem_log_yolu=None,
-            oturum_kunyesi=None, kamera_etiket=""):
+            oturum_kunyesi=None, kamera_etiket="", ika_kesif=False):
         self.kok = kok
         self.link = link
         self.reader = FrameReader()
@@ -809,7 +809,7 @@ class YksArayuz:
         self.protokol_kilidi = not demo
         self.kaynak_kilidi = bool(
             not demo and not isinstance(link, SerialLink)
-            and iha_peer is not None and ika_peer is not None)
+            and iha_peer is not None and (ika_peer is not None or ika_kesif))
         self._son_heartbeat_seq = {}
         self.kaynak_ret_sayaci = 0
         self.protokol_ret_sayaci = 0
@@ -4848,6 +4848,36 @@ def yks_duyurusu_baslat(args, logla, *, yayinci_sinifi=None):
     return yayinci
 
 
+def ika_adresini_uygula(app, adres):
+    """ONARIM-03c: keşfedilen İKA adresini pinle (thread'den çağrılır; dict ataması atomik).
+    Kaynak kilidi bu adresle doğrular; günlük satırı ana döngü kuyruğundan yazılır."""
+    adres = (str(adres[0]), int(adres[1]))
+    eski = app.sabit_adr.get("ika")
+    app.sabit_adr["ika"] = adres
+    app.son_adr["ika"] = adres
+    app.algi_kuyruk.put(("log", f"İKA KEŞFİ: eşleşen İKA adresi {eski} → {adres[0]}:{adres[1]}"))
+
+
+def ika_kesfi_baslat(app, dosya, *, dinleyici_sinifi=None):
+    import yks_kesif
+    try:
+        es = yks_kesif.eslesme_oku(dosya)
+        if es.get("tur") != "IKA":
+            raise ValueError(f"dosya İKA türünde değil (tur={es.get('tur')!r})")
+        secici = yks_kesif.DugumSecici(es)
+        dinleyici = (dinleyici_sinifi or yks_kesif.KesifDinleyici)(
+            secici, lambda adr: ika_adresini_uygula(app, adr),
+            log=lambda m: app.algi_kuyruk.put(("log", m)))
+        dinleyici.start()
+    except Exception as exc:
+        app._logla(f"⚠ İKA KEŞFİ BAŞLATILAMADI ({dosya}): {exc} — İKA verisi kabul edilmeyecek",
+                   "kirmizi")
+        return None
+    app._logla(f"İKA KEŞFİ: kimlik {es['kimlik']} · EŞLEŞME KODU {yks_kesif.eslesme_kodu(es)} "
+               f"bekleniyor (İKA bulunana dek İKA verisi reddedilir)", "sari")
+    return dinleyici
+
+
 def kapanis_kaynaklarini_temizle(app, link):
     """YKİ kaynaklarını birbirinden bağımsız ve en iyi gayretle kapat.
 
@@ -4858,6 +4888,7 @@ def kapanis_kaynaklarini_temizle(app, link):
     """
     kaynaklar = (
         ("YKS DUYURUSU", getattr(app, "duyuru_yayinci", None), "durdur"),
+        ("İKA KEŞFİ", getattr(app, "ika_kesif", None), "durdur"),
         ("KAMERA", getattr(app, "kamera_istemci", None), "durdur"),
         ("KANIT KAYDI", getattr(app, "hakem_kaydi", None), "kapat"),
         ("HABERLEŞME", link, "close"),
@@ -4891,6 +4922,10 @@ def main():
         help=("ONARIM-03: YKS kendini LAN'da imzali duyurur (Bluetooth mantigi); Jetson "
               "eslestigi YKS'nin adresini DHCP degisse de ogrenir. Dosya yoksa uretilir: "
               "scripts/yks_eslestir.py yeni --dosya DOSYA"))
+    ap.add_argument(
+        "--ika-eslesme", type=Path, default=None, metavar="DOSYA",
+        help=("ONARIM-03c: İKA adresini sabit --ika yerine İKA'nın imzalı duyurusundan öğren "
+              "(İKA bulunana dek İKA verisi REDDEDİLİR; kaynak kilidi gevşemez)"))
     ap.add_argument(
         "--coklu", action="store_true",
         help=("ONARIM-09: --serial ile --bind/--iha/--ika'yı BİRLİKTE kullan — LAN "
@@ -4963,9 +4998,11 @@ def main():
     if args.serial and args.iha and not args.coklu:
         ap.error("--serial ile --iha birlikte kullanılamaz; seri kipte İHA "
                  "aynı SiK hattındadır ve UDP hedefi uygulanmaz")
-    if args.coklu and not (args.iha and args.ika):
+    if args.ika and args.ika_eslesme:
+        ap.error("--ika ile --ika-eslesme birlikte verilmez (sabit adres YA DA keşif)")
+    if args.coklu and not (args.iha and (args.ika or args.ika_eslesme)):
         ap.error("--coklu kipinde --iha ve --ika HOST:PORT zorunlu (LAN hattı)")
-    if not args.serial and not args.demo and not args.ika:
+    if not args.serial and not args.demo and not args.ika and not args.ika_eslesme:
         ap.error("UDP kipinde --ika HOST:PORT zorunlu")
     if not args.serial and not args.demo and not args.iha:
         ap.error("UDP kipinde --iha HOST:PORT zorunlu: ARM/DISARM/RTL/LAND "
@@ -5032,7 +5069,8 @@ def main():
             iha_peer=iha_peer, kamera_url=args.kamera_url,
             hakem_log_yolu=hakem_log_yolu,
             oturum_kunyesi=oturum_kunyesi,
-            kamera_etiket=args.kamera_etiket)
+            kamera_etiket=args.kamera_etiket,
+            ika_kesif=args.ika_eslesme is not None)
     except Exception:
         link.close()
         kok.destroy()
@@ -5043,6 +5081,9 @@ def main():
     app.duyuru_yayinci = None
     if args.eslesme is not None:
         app.duyuru_yayinci = yks_duyurusu_baslat(args, app._logla)
+    app.ika_kesif = None
+    if args.ika_eslesme is not None:
+        app.ika_kesif = ika_kesfi_baslat(app, args.ika_eslesme)
     app._logla(
         (f"RAW kamera LAN kaynağı: {args.kamera_url}" if args.kamera_url else
          "RAW kamera KAPALI: --kamera-url/NAVITAS_KAMERA_URL verilmedi; "

@@ -31,6 +31,9 @@ from pathlib import Path
 
 DUYURU_PORT = 5010
 DUYURU_TIPI = "YKS_DUYURU"
+#: ONARIM-03c (17 Eyl 2026): ayni mekanizma IKA icin de ("IKA da eslesmeyle bulunsun").
+#: Tur imzali govdenin icindedir: YKS duyurusu IKA diye KABUL EDILEMEZ (ve tersi).
+DUGUM_TURLERI = ("YKS", "IKA")
 DUYURU_SURUMU = 1
 DUYURU_ARALIGI_S = 1.0
 #: Kabul edilen duyuru, YKS saatine gore ogrenilen farktan en cok bu kadar sapabilir.
@@ -40,9 +43,20 @@ SECIM_BAYAT_S = 5.0
 NONCE_HAFIZA = 256
 
 
-def eslesme_uret(ad="YKS"):
-    """Yeni eslesme: {"kimlik", "anahtar"(hex), "ad"}."""
-    return {"kimlik": f"{ad}-{secrets.token_hex(4)}", "anahtar": secrets.token_hex(32), "ad": str(ad)}
+def _tur_dogrula(tur):
+    if tur not in DUGUM_TURLERI:
+        raise ValueError(f"bilinmeyen dugum turu {tur!r} (secenekler: {', '.join(DUGUM_TURLERI)})")
+    return tur
+
+
+def duyuru_tipi(tur):
+    return f"{_tur_dogrula(tur)}_DUYURU"
+
+
+def eslesme_uret(ad="YKS", tur="YKS"):
+    """Yeni eslesme: {"kimlik", "anahtar"(hex), "ad", "tur"}."""
+    return {"kimlik": f"{ad}-{secrets.token_hex(4)}", "anahtar": secrets.token_hex(32),
+            "ad": str(ad), "tur": _tur_dogrula(tur)}
 
 
 def eslesme_kodu(eslesme):
@@ -58,6 +72,8 @@ def eslesme_oku(yol):
     anahtar = bytes.fromhex(str(veri.get("anahtar", "")))
     if len(anahtar) < 16:
         raise ValueError("eslesme dosyasi: anahtar en az 16 bayt hex olmali")
+    veri.setdefault("tur", "YKS")                   # eski (tur alansiz) dosyalar YKS'dir
+    _tur_dogrula(veri["tur"])
     return veri
 
 
@@ -70,8 +86,8 @@ def eslesme_yaz(yol, eslesme):
     os.replace(gecici, yol)
 
 
-def _govde(kimlik, port, t, nonce):
-    return json.dumps({"v": DUYURU_SURUMU, "type": DUYURU_TIPI, "kimlik": kimlik,
+def _govde(kimlik, port, t, nonce, tur="YKS"):
+    return json.dumps({"v": DUYURU_SURUMU, "type": duyuru_tipi(tur), "kimlik": kimlik,
                        "port": int(port), "t": round(float(t), 3), "nonce": nonce},
                       sort_keys=True, separators=(",", ":")).encode("utf-8")
 
@@ -79,7 +95,7 @@ def _govde(kimlik, port, t, nonce):
 def duyuru_uret(eslesme, port, t=None, nonce=None):
     t = time.time() if t is None else t
     nonce = nonce or secrets.token_hex(8)
-    govde = _govde(eslesme["kimlik"], port, t, nonce)
+    govde = _govde(eslesme["kimlik"], port, t, nonce, eslesme.get("tur", "YKS"))
     mac = hmac.new(bytes.fromhex(eslesme["anahtar"]), govde, hashlib.sha256).hexdigest()
     paket = json.loads(govde)
     paket["mac"] = mac
@@ -92,7 +108,8 @@ def duyuru_coz(veri):
         m = json.loads(veri.decode("utf-8"))
     except (UnicodeDecodeError, ValueError, AttributeError):
         return None
-    if (not isinstance(m, dict) or m.get("type") != DUYURU_TIPI or m.get("v") != DUYURU_SURUMU
+    tipler = {duyuru_tipi(t): t for t in DUGUM_TURLERI}
+    if (not isinstance(m, dict) or m.get("type") not in tipler or m.get("v") != DUYURU_SURUMU
             or not isinstance(m.get("kimlik"), str) or not isinstance(m.get("nonce"), str)
             or not isinstance(m.get("mac"), str)):
         return None
@@ -102,7 +119,7 @@ def duyuru_coz(veri):
         return None
     if not 1 <= port <= 65535:
         return None
-    m["port"], m["t"] = port, t
+    m["port"], m["t"], m["tur"] = port, t, tipler[m["type"]]
     return m
 
 
@@ -111,6 +128,7 @@ class YksSecici:
 
     def __init__(self, eslesme, *, saat=time.monotonic, duvar=time.time):
         self.eslesme = eslesme
+        self.tur = _tur_dogrula(eslesme.get("tur", "YKS"))
         self._anahtar = bytes.fromhex(eslesme["anahtar"])
         self.saat = saat
         self.duvar = duvar
@@ -120,7 +138,7 @@ class YksSecici:
         self._nonce = []
         self.gorulen = {}              # kimlik -> {"ip","port","son","dogrulandi"}
         self.sayac = {"kabul": 0, "baska_kimlik": 0, "imza_red": 0, "bayat_red": 0,
-                      "tekrar_red": 0, "bozuk": 0, "adres_degisti": 0}
+                      "tekrar_red": 0, "bozuk": 0, "adres_degisti": 0, "baska_tur": 0}
 
     def isle(self, veri, kaynak_ip):
         """-> "KABUL" | "ADRES_DEGISTI" | red sebebi (str)."""
@@ -128,6 +146,9 @@ class YksSecici:
         if m is None:
             self.sayac["bozuk"] += 1
             return "BOZUK"
+        if m["tur"] != self.tur:                    # ayni portta diger dugumun duyurusu
+            self.sayac["baska_tur"] += 1
+            return "BASKA_TUR"
         simdi = self.saat()
         g = self.gorulen.setdefault(m["kimlik"], {})
         g.update(ip=kaynak_ip, port=m["port"], son=simdi)
@@ -135,7 +156,7 @@ class YksSecici:
             g["dogrulandi"] = False
             self.sayac["baska_kimlik"] += 1
             return "BASKA_KIMLIK"
-        beklenen = hmac.new(self._anahtar, _govde(m["kimlik"], m["port"], m["t"], m["nonce"]),
+        beklenen = hmac.new(self._anahtar, _govde(m["kimlik"], m["port"], m["t"], m["nonce"], m["tur"]),
                             hashlib.sha256).hexdigest()
         if not hmac.compare_digest(beklenen, m["mac"]):
             g["dogrulandi"] = False
@@ -171,12 +192,51 @@ class YksSecici:
         return "TAZE" if self.saat() - self._son_kabul <= SECIM_BAYAT_S else "BAYAT"
 
 
+#: Tur bagimsiz ad (IKA icin de ayni sinif).
+DugumSecici = YksSecici
+
+
+class KesifDinleyici(threading.Thread):
+    """ONARIM-03c: arka planda duyuru dinler; secicinin adresi degisince `geri_cagir(adres)`.
+    YKS'de IKA'yi (ve istenirse baska dugumu) bulmak icin; hata YKS'yi durdurmaz."""
+
+    def __init__(self, secici, geri_cagir, *, bind=("0.0.0.0", DUYURU_PORT), log=print):
+        super().__init__(name=f"kesif-{secici.tur.lower()}", daemon=True)
+        self.secici, self.geri_cagir, self.log = secici, geri_cagir, log
+        self.sock = dinleyici_soketi(bind)
+        self.sock.settimeout(0.5)
+        self._dur = threading.Event()
+
+    def run(self):
+        while not self._dur.is_set():
+            try:
+                veri, adr = self.sock.recvfrom(2048)
+            except (socket.timeout, BlockingIOError):
+                continue
+            except OSError:
+                if self._dur.is_set():
+                    return
+                continue
+            if self.secici.isle(veri, adr[0]) == "ADRES_DEGISTI":
+                try:
+                    self.geri_cagir(self.secici.adres)
+                except Exception as exc:
+                    self.log(f"kesif geri cagirma hatasi: {exc!r}")
+
+    def durdur(self):
+        self._dur.set()
+        try:
+            self.sock.close()
+        except OSError:
+            pass
+
+
 class DuyuruYayinci(threading.Thread):
     """YKS tarafi: her DUYURU_ARALIGI_S'de broadcast. Hata YKS'yi durdurmaz."""
 
     def __init__(self, eslesme, port, *, hedefler=(("255.255.255.255", DUYURU_PORT),),
                  aralik_s=DUYURU_ARALIGI_S, log=print):
-        super().__init__(name="yks-duyuru", daemon=True)
+        super().__init__(name=f"{eslesme.get('tur', 'YKS').lower()}-duyuru", daemon=True)
         self.eslesme, self.port, self.hedefler = eslesme, int(port), list(hedefler)
         self.aralik_s, self.log = float(aralik_s), log
         self._dur = threading.Event()

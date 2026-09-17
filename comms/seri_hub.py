@@ -186,7 +186,8 @@ class SeriHub:
     def __init__(self, seri_link, udp_link, tuketiciler=(), *, seri_ac=None,
                  yeniden_acma_araligi_s=SERI_YENIDEN_ACMA_ARALIGI_S,
                  log_aralik_s=VARSAYILAN_LOG_ARALIGI_S, saat=time.monotonic,
-                 lan_link=None, lan_yks=None, yks_secici=None, kesif_soketi=None):
+                 lan_link=None, lan_yks=None, yks_secici=None, kesif_soketi=None,
+                 ika_secici=None):
         if not callable(saat):
             raise TypeError("saat cagrilabilir olmali")
         if seri_ac is not None and not callable(seri_ac):
@@ -206,6 +207,11 @@ class SeriHub:
             raise ValueError("lan_link ile lan_yks YA DA yks_secici (tam biri) verilmeli")
         if (yks_secici is None) != (kesif_soketi is None):
             raise ValueError("yks_secici ve kesif_soketi birlikte verilmeli")
+        # ONARIM-03c: IKA de LAN'da kesifle bulunur; hub rota/inis cercevelerini ona da aynalar.
+        if ika_secici is not None and kesif_soketi is None:
+            raise ValueError("ika_secici icin kesif_soketi (YKS kesfiyle ayni soket) gerekli")
+        self.ika_secici = ika_secici
+        self.lan_ika = None
         self.lan_link = lan_link
         self.lan_yks = None if lan_yks is None else (str(lan_yks[0]), int(lan_yks[1]))
         self.yks_secici = yks_secici
@@ -230,7 +236,7 @@ class SeriHub:
                       # ONARIM-09 LAN aynasi
                       "lan_gonderilen": 0, "lan_hata": 0, "lan_alinan": 0,
                       "lan_cerceve": 0, "lan_yabanci": 0, "lan_yks_yok": 0,
-                      "kesif_adres_degisti": 0}
+                      "kesif_adres_degisti": 0, "lan_ika_gonderilen": 0}
         self._dur = threading.Event()
         self._ariza_t = None             # seri kapaliyken: son ariza/deneme ani
         self._seri_yok_loglandi = False
@@ -413,6 +419,10 @@ class SeriHub:
                 return
             except OSError:
                 return
+            if self.ika_secici is not None and self.ika_secici.isle(veri, adr[0]) == "ADRES_DEGISTI":
+                eski, self.lan_ika = self.lan_ika, self.ika_secici.adres
+                self._logla(f"IKA KESFI: eslesen IKA {self.ika_secici.eslesme['kimlik']} "
+                            f"adresi {eski} -> {self.lan_ika[0]}:{self.lan_ika[1]}", kirmizi=eski is not None)
             sonuc = self.yks_secici.isle(veri, adr[0])
             if sonuc == "ADRES_DEGISTI":
                 eski, self.lan_yks = self.lan_yks, self.yks_secici.adres
@@ -423,11 +433,17 @@ class SeriHub:
     def _lan_gonder(self, veri):
         if self.lan_link is None:
             return
+        if not veri.endswith(CERCEVE_SONU):
+            veri += CERCEVE_SONU
+        if self.lan_ika is not None:        # IKA, YKS'den BAGIMSIZ aynalanir
+            try:
+                self.lan_link.send(veri, self.lan_ika)
+                self.sayac["lan_ika_gonderilen"] += 1
+            except OSError:
+                self.sayac["lan_hata"] += 1
         if self.lan_yks is None:            # kesif: eslesen YKS henuz duyurmadi
             self.sayac["lan_yks_yok"] += 1
             return
-        if not veri.endswith(CERCEVE_SONU):
-            veri += CERCEVE_SONU
         try:
             self.lan_link.send(veri, self.lan_yks)
         except OSError as exc:
@@ -450,7 +466,8 @@ class SeriHub:
             if not veri:
                 return
             self.sayac["lan_alinan"] += 1
-            if adr is None or self.lan_yks is None or str(adr[0]) != self.lan_yks[0]:
+            izinli = {a[0] for a in (self.lan_yks, self.lan_ika) if a is not None}
+            if adr is None or str(adr[0]) not in izinli:
                 self.sayac["lan_yabanci"] += 1      # yalniz pinli YKS IP'si kabul
                 if self.sayac["lan_yabanci"] in (1, 100, 10000):
                     self._logla(f"LAN yabanci kaynak DUSURULDU: {adr!r} (beklenen "
@@ -644,6 +661,9 @@ def _arg_parser():
     ap.add_argument("--lan-yks-eslesme", default=None, metavar="DOSYA",
                     help="ONARIM-03: --lan-yks YERINE eslesme dosyasi; YKS adresi imzali "
                          "duyurudan ogrenilir (DHCP degisimine dayanikli)")
+    ap.add_argument("--lan-ika-eslesme", default=None, metavar="DOSYA",
+                    help="ONARIM-03c: IKA eslesme dosyasi; hub cerceveleri kesfedilen IKA'ya da aynalar "
+                         "(--lan-yks-eslesme ile birlikte)")
     ap.add_argument("--log-aralik", type=float, default=VARSAYILAN_LOG_ARALIGI_S,
                     help="periyodik sayac logu (sn; 0 = kapali; varsayilan "
                          "%(default)s)")
@@ -688,11 +708,17 @@ def main(argv=None):
                   f"{exc} (baska bir hub mu calisiyor? once `systemctl stop "
                   f"navitas-seri-hub`)", file=sys.stderr, flush=True)
             return 3
-        secici = kesif = None
+        secici = kesif = ika_secici = None
+        if args.lan_ika_eslesme is not None and args.lan_yks_eslesme is None:
+            parser.error("--lan-ika-eslesme icin --lan-yks-eslesme gerekli")
         if args.lan_yks_eslesme is not None:
             import yks_kesif
             try:
                 secici = yks_kesif.YksSecici(yks_kesif.eslesme_oku(args.lan_yks_eslesme))
+                if args.lan_ika_eslesme is not None:
+                    ika_secici = yks_kesif.DugumSecici(yks_kesif.eslesme_oku(args.lan_ika_eslesme))
+                    if ika_secici.tur != "IKA":
+                        raise ValueError("--lan-ika-eslesme dosyasi IKA turunde degil")
                 kesif = yks_kesif.dinleyici_soketi()
             except (OSError, ValueError) as exc:
                 print(f"{LOG_ONEKI} KIRMIZI HATA: YKS eslesme/kesif acilamadi: {exc}",
@@ -723,7 +749,7 @@ def main(argv=None):
                 return 4
         hub = SeriHub(seri, udp, tuketiciler, seri_ac=seri_ac,
                       log_aralik_s=args.log_aralik, lan_link=lan, lan_yks=lan_yks,
-                      yks_secici=secici, kesif_soketi=kesif)
+                      yks_secici=secici, kesif_soketi=kesif, ika_secici=ika_secici)
         sigterm_eski = _sigterm_kur(hub)           # D-405: systemd stop temiz
         print(f"{LOG_ONEKI} seri {args.port} @ {args.baud} <-> udp "
               f"{bind[0]}:{bind[1]} statik={len(tuketiciler)}", flush=True)

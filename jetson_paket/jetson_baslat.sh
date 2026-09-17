@@ -129,7 +129,8 @@ KOMUT_PORT=5007
 SERI_HUB_DINLE="127.0.0.1:5100"                 # KIP=sik: surecler buraya yazar
 SERI_HUB_TUKETICI="127.0.0.1:${KOMUT_PORT}"     # hub seri hattan geleni buraya verir
 HUB_LAN_PORT="${HUB_LAN_PORT:-5009}"
-YKS_ESLESME="${YKS_ESLESME:-}"                   # ONARIM-03: eslesme dosyasi (KIP=ikili, YKS_IP yerine)             # ONARIM-09 KIP=ikili: YKS --iha <jetson>:5009
+YKS_ESLESME="${YKS_ESLESME:-}"
+IKA_ESLESME="${IKA_ESLESME:-}"                   # ONARIM-03c: IKA eslesme dosyasi (YKS_ESLESME ile)                   # ONARIM-03: eslesme dosyasi (KIP=ikili, YKS_IP yerine)             # ONARIM-09 KIP=ikili: YKS --iha <jetson>:5009
 hub_kipi() { [ "$KIP" = sik ] || [ "$KIP" = ikili ]; }
 
 hata() { echo "HATA: $*" >&2; exit 1; }
@@ -273,6 +274,8 @@ case "$KIP" in
     # dayanikli, "Bluetooth mantigi"); yoksa sabit YKS_IP beyanı.
     if [ -n "$YKS_ESLESME" ]; then
       HUB_LAN_ARGS="--lan-bind 0.0.0.0:${HUB_LAN_PORT} --lan-yks-eslesme ${YKS_ESLESME}"
+      # ONARIM-03c: IKA de eslesmeyle bulunur; hub rota/inis cercevelerini ona da aynalar.
+      if [ -n "$IKA_ESLESME" ]; then HUB_LAN_ARGS="$HUB_LAN_ARGS --lan-ika-eslesme ${IKA_ESLESME}"; fi
     else
       HUB_LAN_ARGS="--lan-bind 0.0.0.0:${HUB_LAN_PORT} --lan-yks ${YKS_IP}:${YKS_PORT}"
     fi
@@ -284,7 +287,7 @@ HUB_LAN_ARGS="${HUB_LAN_ARGS:-}"
 # /etc/navitas.env'e yazilan ve ExecStart'ta yerine konan anahtarlar
 ENV_ANAHTARLAR=(NAVITAS_KOK PYTHON3 LOG_DIZIN KIP PIXHAWK_SERI PIXHAWK_BAUD SYSID
                 SIK_SERI SIK_BAUD KANIT_TIMEOUT RPI_EK_ARGS RPI_TELSIZ_ARGS
-                INIS_TELSIZ_ARGS KOMUT_TELSIZ_ARGS HUB_LAN_ARGS YKS_ESLESME
+                INIS_TELSIZ_ARGS KOMUT_TELSIZ_ARGS HUB_LAN_ARGS YKS_ESLESME IKA_ESLESME
                 KAMERA_PYTHON KAMERA_KOPRU_BIND KAMERA_KOPRU_PORT KAMERA_KOPRU_ARGS
                 GOSTERICI_KIP ISARETLI_YAYIN)   # T228: DRM gosterici birimi ${ISARETLI_YAYIN} okur
 # Tek deger tasiyan beyanlar: bosluk/glob/kacis icerirse systemd ($VAR) ve bash (nohup $k)
@@ -571,6 +574,11 @@ kuru() {
   if [ "$KIP" = ikili ] && [ -n "$YKS_ESLESME" ]; then
     if [ -r "$YKS_ESLESME" ]; then echo "[VAR] YKS eslesme $YKS_ESLESME"
     else echo "[YOK] YKS eslesme $YKS_ESLESME <- scripts/yks_eslestir.py esle ... (YKS'deki dosya)"; yok=$((yok + 1)); fi
+  fi
+  if [ "$KIP" = ikili ] && [ -n "$IKA_ESLESME" ]; then
+    if [ -z "$YKS_ESLESME" ]; then echo "[YOK] IKA_ESLESME icin YKS_ESLESME de gerekli"; yok=$((yok + 1))
+    elif [ -r "$IKA_ESLESME" ]; then echo "[VAR] IKA eslesme $IKA_ESLESME"
+    else echo "[YOK] IKA eslesme $IKA_ESLESME <- scripts/yks_eslestir.py esle --tur IKA ..."; yok=$((yok + 1)); fi
   fi
   liste="$(kurulu_py_dosyalari)"
   while read -r b y; do

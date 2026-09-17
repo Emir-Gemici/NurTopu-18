@@ -333,6 +333,10 @@ def main():
     ap.add_argument("--baud", type=int, default=57600)
     ap.add_argument("--yks", help="YKS adresi host:port — OPEN_ROUTE ACK "
                     "kopyası hakem ekranına yansıtılır (K8, UDP)")
+    ap.add_argument("--eslesme", default=None, metavar="DOSYA",
+                    help=("ONARIM-03c: İKA kendini LAN'da imzalı duyurur (tur IKA); YKS ve Jetson "
+                          "eşleştiği İKA'yı IP değişse de bulur. Dosya: "
+                          "scripts/yks_eslestir.py yeni --tur IKA --dosya DOSYA"))
     args = ap.parse_args()
 
     if args.serial:
@@ -346,6 +350,7 @@ def main():
     if args.yks:
         h, p = args.yks.split(":")
         yks_peer = (h, int(p))
+    duyuru = ika_duyurusu_baslat(args) if args.eslesme else None
     rx = IkaReceiver(link, yks_peer=yks_peer)
     rx.on_route = lambda m: print(
         f"[İKA] ✓ Açık yol alındı: {m['label'].upper()} ({m['road']}) "
@@ -365,7 +370,28 @@ def main():
     except KeyboardInterrupt:
         print("\n[İKA] kapatılıyor")
     finally:
+        if duyuru is not None:
+            duyuru.durdur()
         link.close()
+
+
+def ika_duyurusu_baslat(args, *, yayinci_sinifi=None, log=print):
+    """ONARIM-03c: İKA duyurusu (yalnız UDP kipinde anlamlı). Hedefler: broadcast + --yks host'u."""
+    if args.serial:
+        log("[İKA] --eslesme seri kipte uygulanmaz (LAN yok); duyuru başlatılmadı")
+        return None
+    import yks_kesif
+    es = yks_kesif.eslesme_oku(args.eslesme)
+    if es.get("tur") != "IKA":
+        raise SystemExit(f"--eslesme dosyası İKA türünde değil (tur={es.get('tur')!r})")
+    port = int(str(args.bind).rsplit(":", 1)[1])
+    hedefler = [("255.255.255.255", yks_kesif.DUYURU_PORT)]
+    if args.yks:
+        hedefler.append((args.yks.rsplit(":", 1)[0], yks_kesif.DUYURU_PORT))
+    yayinci = (yayinci_sinifi or yks_kesif.DuyuruYayinci)(es, port, hedefler=hedefler, log=log)
+    yayinci.start()
+    log(f"[İKA] duyuru: kimlik {es['kimlik']} · EŞLEŞME KODU {yks_kesif.eslesme_kodu(es)} · port {port}")
+    return yayinci
 
 
 if __name__ == "__main__":

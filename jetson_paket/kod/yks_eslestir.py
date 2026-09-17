@@ -25,7 +25,9 @@ def main(argv=None):
     alt = ap.add_subparsers(dest="komut", required=True)
     y = alt.add_parser("yeni")
     y.add_argument("--dosya", type=Path, required=True)
-    y.add_argument("--ad", default="YKS")
+    y.add_argument("--ad", default=None)
+    y.add_argument("--tur", choices=yk.DUGUM_TURLERI, default="YKS",
+                   help="YKS (hakem PC'si) ya da IKA (Raspberry Pi) — ONARIM-03c")
     y.add_argument("--uzerine-yaz", action="store_true")
     t = alt.add_parser("tara")
     t.add_argument("--sure", type=float, default=5.0)
@@ -35,6 +37,7 @@ def main(argv=None):
     e.add_argument("--kimlik", required=True)
     e.add_argument("--anahtar", required=True)
     e.add_argument("--dosya", type=Path, required=True)
+    e.add_argument("--tur", choices=yk.DUGUM_TURLERI, default="YKS")
     a = ap.parse_args(argv)
 
     if a.komut == "yeni":
@@ -42,14 +45,15 @@ def main(argv=None):
             es = yk.eslesme_oku(a.dosya)
             print(f"MEVCUT eslesme korunuyor: {a.dosya}")
         else:
-            es = yk.eslesme_uret(a.ad)
+            es = yk.eslesme_uret(a.ad or a.tur, a.tur)
             yk.eslesme_yaz(a.dosya, es)
             print(f"YENI eslesme yazildi: {a.dosya}")
-        print(f"kimlik : {es['kimlik']}\nanahtar: {es['anahtar']}\nESLESME KODU: {yk.eslesme_kodu(es)}")
+        print(f"tur    : {es.get('tur', 'YKS')}\nkimlik : {es['kimlik']}\nanahtar: {es['anahtar']}\nESLESME KODU: {yk.eslesme_kodu(es)}")
         return 0
 
     if a.komut == "esle":
-        es = {"kimlik": a.kimlik, "anahtar": a.anahtar.strip().lower(), "ad": a.kimlik.split("-")[0]}
+        es = {"kimlik": a.kimlik, "anahtar": a.anahtar.strip().lower(), "ad": a.kimlik.split("-")[0],
+              "tur": a.tur}
         bytes.fromhex(es["anahtar"])
         yk.eslesme_yaz(a.dosya, es)
         print(f"eslesme kaydedildi: {a.dosya}\nESLESME KODU: {yk.eslesme_kodu(es)} (YKS ekranindakiyle AYNI olmali)")
@@ -69,15 +73,15 @@ def main(argv=None):
         if m is None:
             continue
         sonuc = secici.isle(veri, adr[0]) if secici else "IMZA_DENETLENMEDI"
-        gorulen[(m["kimlik"], adr[0], m["port"])] = sonuc
+        gorulen[(f"{m['tur']}:{m['kimlik']}", adr[0], m["port"])] = sonuc
     s.close()
     if not gorulen:
         print(f"{a.sure:g} s icinde YKS duyurusu YOK (port {a.port}; YKS acik mi, ayni agda mi, guvenlik duvari?)")
         return 2
-    print(f"{'KIMLIK':<24} {'IP':<16} {'PORT':<6} DURUM")
+    print(f"{'TUR:KIMLIK':<28} {'IP':<16} {'PORT':<6} DURUM")
     for (kimlik, ip, port), sonuc in sorted(gorulen.items()):
         isaret = " <- SECILEN" if sonuc in ("KABUL", "ADRES_DEGISTI") else ""
-        print(f"{kimlik:<24} {ip:<16} {port:<6} {sonuc}{isaret}")
+        print(f"{kimlik:<28} {ip:<16} {port:<6} {sonuc}{isaret}")
     return 0
 
 
