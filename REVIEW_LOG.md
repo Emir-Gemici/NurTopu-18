@@ -31692,3 +31692,26 @@ değişmedi. commit/push yok.
 **Yazan:** mimar.
 **D-492 eki (aynı gün):** kullanıcı: "drone bir yere çarpmadı, dümdüz hover yapıyorduk". D-491 (B) dış temas ELENDİ; log uyumlu (darbe/temas izi yok; 199,8–200,4'teki 13° sağ düzeltme küçük). Pay güncellemesi (ölçüm değil): yapı %55–70, operasyon %25–35, pilotaj %0–10 (W1/W2 yer yükleri), sensör/elektrik/ayar %0–5. Bu uçuş için pilot + operasyon ~%25–40; zincir ~%50–65.
 **D-492 eki 2 (aynı gün):** kullanıcı: "muayene tamamen yapılmıştı ve doğrulanmıştı" (BEYAN, kabul). "Muayenesiz uçuş" operasyon gerekçesi kaldırıldı. Log + beyan birlikte (ÇIKARIM): VibeZ, W1/W2 yüklerinden önce de ~17,6 (00:20 öncesinin ×2,5–3,2) → muayeneden geçmiş gövde daha az rijitti → gizli hasar (katman arası çatlak, plastikte gevşeyen bağlantı) ya da tasarım/malzeme yetersizliği. Pay (ölçüm değil): yapı/tasarım %70–85, pilotaj %5–15 (muayene sonrası W1 yer yatması, W2 sert iniş), operasyon %5–15 (30–60 s içinde yeniden kalkış, gece, ölçümlü kabul yok), sensör/elektrik/ayar %0–5. Bu uçuş için pilot + operasyon ~%10–25. Zincir: gizli hasar 00:20'den kaldıysa ~%50–65, tasarım/malzeme yetersizliğiyse ~%10–25. Süreç dersi: görsel muayeneye ek olarak log tabanlı kabul kontrolü (W5 geçemezdi: VibeZ ~18, sonda CCW−CW +204 µs).
+
+### D-493 (mimar, 17 Eyl) — 02:53 düşüşü log videosu üretildi ve denetlendi (Workflow `dusus-log-videosu-0253`, wf_2a5e9026-8e8)
+
+**Çıktı:** `results/ucus_20260917b/video/dusus_0253.mp4` (ffprobe: h264 High, 1920x1080, yuv420p, 30 fps, 1422 kare, 47,4 s, 5,28 MB; tam çözme hatasız).
+**Kaynaklar:** betik `log_video.py` (tüm veri .bin ve tlog'dan okunur), `OKUBENI.md`, örnek kareler `kareler/`.
+**Bölümler:** başlık → oturum özeti (W1–W6) → son uçuş ×1 (186,0–202,2) → ağır çekim ×0,1 (202,2–203,4) → sonrası (203,4–206,6) → sonuç kartı.
+**İşaret testleri:** roll +30 sağ aşağı, pitch −30 burun aşağı, yaw +45 saat yönü — üçü de uyumlu.
+
+**Denetim:** üretim → tur 0 (veri: 3 bulgu, görsel: 10 bulgu; ikisi de kabul etmedi) → düzeltme. Düzeltilenler:
+- telemetri "KOPTU" yazısı artık ancak beklenen sıradaki paketin geleceği 202,432 s'den sonra çıkıyor;
+- gaz ölü bandı hesabı eklendi; "çubuklar ortada" yalnız roll/pitch/yaw için söyleniyor, kalkış yavaş tırmanış olarak yazıldı;
+- etiket çakışmaları giderildi; yazılar ≥ 18/16 px;
+- |a| ayrı eksende gösteriliyor;
+- çıkarım etiketleri eklendi.
+
+Tur 1'de iki denetçi de KABUL etti; yalnız küçük bulgular kaldı:
+- "Ters 124°" Euler roll değeri; gövde asıl olarak burun aşağı takla attı.
+- W5 VibeZ ortalaması p95 eşiğiyle karşılaştırılıyor.
+- HUD'da GPS son değeri, kesilme başlığıyla aynı anda görünüyor (~1 s).
+- 16 px dipnotlar.
+
+**Mimar kontrolü:** 195,00 s ve 202,52 s karelerini açtı. Motor değerleri, CCW−CW, HUD ve açıklamalar D-491/D-492 ile tutarlı.
+**Yazan:** mimar.
