@@ -197,7 +197,7 @@ class KarisiklikMatrisiNobetci(unittest.TestCase):
         self.assertEqual({int(k): v for k, v in d["names"].items()}, dict(IKI_SINIF_ADLARI))
         self.assertEqual(d["train"], d["val"], "train ve val ikisi de test dizinini gostermeli (0038 egitime girmez)")
         self.assertTrue(str(d["val"]).replace("\\", "/").endswith("images/test"))
-        kok = Path(d["path"])
+        kok = Path(str(d["path"]).replace("\\", "/"))
         self.assertEqual(kok.name, "dji_kirsal_0038_bolum_v3")
         self.assertEqual(len(list(ETIKET_DIZIN.glob("*.txt"))), BEKLENEN_KARE)
         self.assertEqual(self.veri["ornek_duzeyi"]["yaml"], YAML_YOLU.relative_to(KOK).as_posix())

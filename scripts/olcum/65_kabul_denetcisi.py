@@ -15,7 +15,7 @@ import re
 import statistics
 import subprocess
 import sys
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 
 import cv2
 import numpy as np
@@ -420,7 +420,14 @@ def kume_parmak_izi(kok):
     kok = Path(kok)
     if not kok.is_dir():
         return {"n": 0, "ozet": None, "not": f"dizin yok: {kok}"}
-    dosyalar = sorted(p for p in kok.rglob("*") if p.is_file())
+    # Dondurulmus kayitlar Windows'ta uretildi: Path siralamasi orada
+    # buyuk/kucuk harfe duyarsizdir. POSIX'te URETIM_KOMUTU.md farkli yere
+    # geldigi icin ayni dosyalar farkli ozet veriyordu. Tarihi siralamayi
+    # platformdan bagimsiz koru; es anahtarlari goreli adla kesinlestir.
+    dosyalar = sorted(
+        (p for p in kok.rglob("*") if p.is_file()),
+        key=lambda p: (PureWindowsPath(p.relative_to(kok).as_posix()),
+                       p.relative_to(kok).as_posix()))
     h = hashlib.sha256()
     for p in dosyalar:
         h.update(p.relative_to(kok).as_posix().encode("utf-8"))

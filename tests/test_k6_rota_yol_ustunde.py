@@ -65,8 +65,10 @@ class TekTanim(unittest.TestCase):
         # 142'nin adlari rota_yol_olcumu'ndan gelir (kod kopyasi degil).
         self.assertEqual(M142.KAPI_B_EK2, RYO.KAPI_B_EK2)
         self.assertEqual(M142.KAPI_B_EK2, {"yol_payi_min": 0.90, "engel_wp_maks": 0})
-        self.assertIs(M142.rota_yol_olc.__code__.co_filename,
-                      RYO.rota_yol_olc.__code__.co_filename)
+        # 142 kendi spec yuklemesini yapar; bagimsiz modul nesnelerinin
+        # kimligi degil, kullandigi modulden dogrudan bag ve kod kokeni aynidir.
+        self.assertIs(M142.rota_yol_olc, M142._RYO.rota_yol_olc)
+        self.assertEqual(M142.rota_yol_olc.__code__, RYO.rota_yol_olc.__code__)
         self.assertEqual(M142.rota_yol_olc.__code__.co_filename,
                          str(OLCUM / "rota_yol_olcumu.py"))
 

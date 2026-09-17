@@ -51,20 +51,29 @@ class SatirSonuUyarlamasi(unittest.TestCase):
                       "sessizce uygulanmaz (D-370)")
 
     def test_UYARLAMA_CRLF_DOSYADA_CALISIYOR(self):
-        """Gercek dosya uzerinde: LF'li desen CRLF hâline cevrilebiliyor mu?"""
+        """Gercek kaynaktan LF ve CRLF fiksturleri: mutasyon ikisinde de uygulanir."""
         import importlib.util as u
         sp = u.spec_from_file_location("m129", BETIK)
         m = u.module_from_spec(sp)
         sp.loader.exec_module(m)
-        icerik = NAV.read_bytes()
+        icerik_lf = NAV.read_bytes().replace(b"\r\n", b"\n")
         desen_lf = b"        current_no_route is None\n"
-        self.assertNotIn(desen_lf, icerik,
-                         "on kosul: dosya CRLF olmali, yoksa bu test bos")
-        bulunan = m._satir_sonuna_uyarla(icerik, desen_lf)
-        self.assertIn(bulunan, icerik,
-                      "uyarlanan desen dosyada BULUNAMIYOR — M2' yine "
-                      "uygulanmayacak")
-        self.assertTrue(bulunan.endswith(b"\r\n"))
+        for eol in (b"\n", b"\r\n"):
+            with self.subTest(satir_sonu=eol):
+                icerik = icerik_lf.replace(b"\n", eol)
+                beklenen = desen_lf.replace(b"\n", eol)
+                self.assertEqual(icerik.count(beklenen), 1, "mutasyon capasi tek olmali")
+                bulunan = m._satir_sonuna_uyarla(icerik, desen_lf)
+                self.assertEqual(bulunan, beklenen)
+                yeni = m._es_satir_sonu(b"        True  # MUTASYON\n", bulunan)
+                mutant = icerik.replace(bulunan, yeni, 1)
+                self.assertNotEqual(mutant, icerik, "mutasyon uygulanmadi")
+                self.assertNotIn(beklenen, mutant)
+                self.assertIn(yeni, mutant)
+                if eol == b"\r\n":
+                    self.assertNotIn(b"\n", mutant.replace(b"\r\n", b""))
+                else:
+                    self.assertNotIn(b"\r", mutant)
 
     def test_YERINE_YAZILAN_da_UYARLANIYOR(self):
         """CRLF dosyaya LF sokulmamali; dosya karisik satir sonlu olmamali."""

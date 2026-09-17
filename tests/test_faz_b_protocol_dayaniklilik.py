@@ -20,9 +20,11 @@ Mutasyon kontrolu (scratchpad, repoya dokunmadan): protocol.py'de
 """
 import contextlib
 import io
+import inspect
 import json
 import sys
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
 KOK = Path(__file__).resolve().parents[1]
@@ -34,17 +36,42 @@ from link import UDPLink  # noqa: E402
 from protocol import FrameReader, command, encode  # noqa: E402
 
 YEREL = "127.0.0.1"
-#: Olculen tetikleyici (r_q3.py): 3000 derinlik > Python varsayilan ozyineleme
-#: siniri (1000); 3001 B < CERCEVE_TAMPON_TAVANI (tampon savunmasi DEVREYE
-#: GIRMEZ, satir tek newline ile kapanir — yani bu bir "cerceve"dir).
-DERIN_IC_ICE_DERINLIK = 3000
+# Tam, gecerli JSON: eksik kapatma parantezinin JSONDecodeError vermesine
+# baglanmaz. 2002 bayt tampon tavanindan ve UDP datagram tavanindan kucuk.
+DERIN_IC_ICE_DERINLIK = 1000
 
 
 def _derin_satir():
-    return b"[" * DERIN_IC_ICE_DERINLIK + b"\n"
+    return b"[" * DERIN_IC_ICE_DERINLIK + b"0" + b"]" * DERIN_IC_ICE_DERINLIK + b"\n"
 
 
-class TestFrameReaderRecursion(unittest.TestCase):
+class _RecursionSiniri(unittest.TestCase):
+    def setUp(self):
+        onceki = sys.getrecursionlimit()
+        self.addCleanup(sys.setrecursionlimit, onceki)
+        sys.setrecursionlimit(500)
+        # CPython 3.12 C tarayicisinin siniri sys recursion limitinden bagimsiz.
+        # Gercek saf Python JSON tarayicisi ayni gecerli JSON'u deterministik
+        # sinirda ayrisir; 2002 bayt UDPLink.recv(4096) icinde TAM gelir.
+        decoder = json.JSONDecoder()
+        decoder.scan_once = json.scanner.py_make_scanner(decoder)
+        self.enterContext(patch.object(json, "_default_decoder", decoder))
+        # Her davranis testi kendi on kosulunu dogrular; yalniz secilince de bos gecmez.
+        with self.assertRaises(RecursionError):
+            json.loads(_derin_satir())
+        from protocol import CERCEVE_TAMPON_TAVANI
+        self.assertLess(len(_derin_satir()), CERCEVE_TAMPON_TAVANI)
+
+
+class TestVarsayilanJSON(unittest.TestCase):
+    def test_eski_eksik_json_varsayilan_decoder_ile_reddedilir(self):
+        # Tarihsel saldiri eksik JSON'dur: C tarayicisi/Python surumune gore
+        # hata sinifi degisir; deterministik Recursion kilidi asagida ayridir.
+        with self.assertRaises((json.JSONDecodeError, RecursionError)):
+            json.loads(b"[" * 3000 + b"\n")
+
+
+class TestFrameReaderRecursion(_RecursionSiniri):
 
     def test_0_on_kosul_json_loads_derin_satirda_recursion_error(self):
         """Vakum korumasi: duzeltmenin hedefi olan istisna bu Python'da
@@ -75,7 +102,7 @@ class TestFrameReaderRecursion(unittest.TestCase):
         self.assertEqual([mesaj], list(okuyucu.feed(encode(mesaj))))
 
 
-class TestIhaKomutAliciDerinSatir(unittest.TestCase):
+class TestIhaKomutAliciDerinSatir(_RecursionSiniri):
 
     def test_2_iha_komut_alici_poll_derin_datagramda_yasar_sonraki_cmd_islenir(self):
         """Uretim `IhaKomutAlici` (UDP, mav=None: aktarim yok ama CMD sayilir)
@@ -83,6 +110,10 @@ class TestIhaKomutAliciDerinSatir(unittest.TestCase):
         artirir. protocol.py duzeltmesi tuketiciyi de kurtarir — alici
         kodunda degisiklik YOK."""
         from iha_komut_alici import IhaKomutAlici
+        gecerli = encode(command("PARACHUTE", "iha", seq=41))
+        recv_tavani = inspect.signature(UDPLink.recv).parameters["bufsize"].default
+        self.assertLess(len(_derin_satir()) + len(gecerli), recv_tavani,
+                        "UDP datagrami kirpilirsa Recursion savunmasi sinanmaz")
         alici_link = UDPLink(bind=(YEREL, 0), timeout=0.05)
         yks = UDPLink(bind=(YEREL, 0), timeout=0.05)
         self.addCleanup(alici_link.close)
@@ -94,8 +125,7 @@ class TestIhaKomutAliciDerinSatir(unittest.TestCase):
             sonuc = alici.poll()                    # ISTISNA SIZMAMALI
             self.assertEqual([], sonuc)
             self.assertEqual(0, alici.sayac["cmd"])
-            yks.send(encode(command("PARACHUTE", "iha", seq=41)),
-                     (YEREL, alici_link.port))
+            yks.send(gecerli, (YEREL, alici_link.port))
             sonuc = alici.poll()
         self.assertEqual(1, len(sonuc), "derin datagram sonrasi CMD islenmedi")
         self.assertEqual(1, alici.sayac["cmd"])

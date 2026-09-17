@@ -18,9 +18,9 @@ Durum etiketleri: `AÇIK` · `SÜRÜYOR` · `KAPANDI (kanıt: …)` · `BEKLİYO
 | 08 | Log saatleri Pixhawk'la hizalanmıyor (RTC pilsiz; fake-hwclock yalnız telafi); log adında boot id yok | C | KAPANDI (yazılım: pixhawk_ms eşlemesi + boot_id; RTC pili donanım) | `ONARIM-08_log_zaman_hizalama.md` |
 | 09 | YKS→İHA komut hattı: 5007 dinleyen yok; PC IP DHCP ile değişiyor | C | AÇIK | — |
 | 10 | İKA ve systemd birimleri sahada hiç koşmadı | C | AÇIK | — |
-| 11 | Jetson dalı `jetson/tek-yol-20260912` master'a girmemiş; D-480…484 numara çakışması; **Emir'in PC'sinde D-490/491/492 düşüş analizleri** (master'da aynı numaralar Gazebo/Jetson) — `LOG_ENVANTERI_20260917.md` | D depo | AÇIK | — |
+| 11 | Jetson dalı `jetson/tek-yol-20260912` master'a girmemiş; D-480…484 numara çakışması; Emir'in PC'sinde D-490/491/492 düşüş analizleri | D depo | KAPANDI (birleştirildi, D-477…484→D-495…502, T261→T265; yeni kırmızı yok) — Emir'in D-49x'leri gelince D-503+ | `ONARIM-11_jetson_dal_birlestirme.md` |
 | 12 | Commitlenmemiş `world_generator.py`/`navitas_anim.cc` mujoco testini düşürüyor | D | BEKLİYOR (sahibi oturum) | — |
-| 13 | Telsiz frekansı: gövdede RFD900A (900 MHz), depo 433 MHz diyor | D | BEKLİYOR (ölçüm) | — |
+| 13 | Telsiz frekansı: gövdede RFD900A (900 MHz), depo 433 MHz diyor | D | KARAR VAR (D-499: 433 MHz, RFD900A kullanılmayacak) — donanım değişimi insan işi | `ONARIM-11_jetson_dal_birlestirme.md` |
 
 **Yazılım dışı (takip için):** gövde/motor/GPS kablosu değişimi · Jetson besleme hattı (açılışta brownout) · RTC pili (CR2032) · lens odak kontrolü.
 | 14 | Uçuş logları (`results/ucus_20260912…20260917b/` 27 `.bin` + 4 `.tlog` + `DUSUS_ANALIZI.md`) yalnız Emir'in PC'sinde; D-492 kanıtı `.tlog` OneDrive'da tek kopya | D | BEKLİYOR (kullanıcı Emir'in PC'sinde) | — |
