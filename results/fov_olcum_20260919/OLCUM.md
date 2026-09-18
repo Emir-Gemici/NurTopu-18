@@ -16,6 +16,7 @@ kağıda mesafe şerit metreyle ölçüldü. Kağıdın piksel genişliği, parl
 |---|---|---|---|---|
 | 1,00 m | **100 px** (99–100, 2 satır) | 1,024 m | **54,3°** | `kare_1m.jpg` |
 | 2,00 m | **51 px** (12 satırda 49–52) | 2,008 m | **53,3°** | `kare_2m.jpg` |
+| 2,00 m, **kadraj merkezi** | **50,96 px** (11 satır, Codex-1) | 2,010 m | **53,35°** | `kare_merkez.jpg` |
 
 **ÖN KAYIT (ölçümden ÖNCE yazıldı):** 1 m'deki 100 px doğruysa 2 m'de **50 ± 2 px** çıkmalıydı.
 **Ölçülen 51 px → ön kayıt TUTTU.** Piksel oranı 100/51 = 1,96 (beklenen 2,00), yani iki
@@ -33,12 +34,15 @@ mesafe ölçümü de birbirini doğruluyor.
 aynı görüş alanını kapsıyor.
 
 ## Kullanılacak değer
-**`FOV=54`** (iki ölçümün ortalaması 53,8°). Belirsizlik ≈ ±1,5°: kağıt kadrajın
-**merkezinde değil** (x≈800–855, merkez 640) ve bu lenste belirgin **varil bozulması** var
-(masa kenarı görüntüde kavisli). Kenarlar sıkıştığı için ölçüm gerçek değerden bir miktar
-**dar** çıkmış olabilir; merkezde tekrarlanırsa 55°'ye yaklaşabilir.
+**`FOV=54`** — üç ölçümün ortalaması 53,65°.
 
-`FOV=55` de savunulabilir (ölçümün %2 içinde). **`FOV=63` savunulamaz.**
+**Belirsizlik ±1,5° → ±0,5°'ye indi.** Başlangıçta kağıt kadrajın sağındaydı (x≈800–855) ve bu
+lenste görünür **varil bozulması** var (masa kenarı görüntüde kavisli), bu yüzden ölçümün
+"kenarda sıkışma" yüzünden dar çıkabileceği kaydedilmişti. Üçüncü ölçüm kağıt **kadraj
+merkezine** alınarak tekrarlandı (Codex-1): **53,35°** — kenardaki 53,3° ile neredeyse birebir.
+**Yani bozulma bu ölçek aralığında sonucu etkilemiyor; endişe ölçümle kapandı.**
+
+`FOV=55` de ölçümün %2,5'i içinde kalır. **`FOV=63` savunulamaz (%17 fazla).**
 
 ## Yan bulgu — keskinlik hükmü düzeltildi
 Aynı oturumda tavana bakarken ölçülen keskinlik **13,2** "lens bulanık" sanılmıştı. Bu karelerde
