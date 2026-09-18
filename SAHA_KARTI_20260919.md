@@ -1,6 +1,6 @@
 # SAHA KARTI — 19 Eylül 2026 (tünel düzeni, D-494)
 
-**Sürüm:** PC YKİ = worktree `tunel-saha-20260918` (aef6ccb8 ya da üstü) · Jetson = e33b592a paketi (`~/navitas`) · yedek: `~/yedek_arkadas_ikili_20260918.tar.gz` + `~/GERI_DON_ARKADAS_IKILI.txt`
+**Sürüm (19 Eyl 01:10 ölçüldü):** PC YKİ = worktree `tunel-saha-20260918` (bff1f534+) · Jetson `~/navitas`: tünel paketi e33b592a + `comms/iha_inis_yayinci.py` **8a483ade** (49aed678…) + `codes/rpi_inference.py` **origin/master 70e8e1c7** (Halil, görev kaydı `--gorev-kaydi`; karar yolu aynı, yalnız kayıt/işaretli yayın eklendi; yedek `rpi_inference.py.yedek_20260919`) · `/etc/navitas.env` RPI_EK_ARGS `--fov 63 --kaynak … --gorev-kaydi …` · yedek: `~/yedek_arkadas_ikili_20260918.tar.gz`. Halil'in notları: `origin/master:EMIR_EKIBINE_NOTLAR_20260919.md`.
 **Roller (isim yazın):** Pilot ____ · MP operatörü (parametre yazan TEK kişi) ____ · YKİ operatörü ____ · Jetson sorumlusu ____ · Pilot ≠ YKİ operatörü.
 
 ## 1. Malzeme
@@ -34,6 +34,8 @@ K8 dün DÜŞTÜ (p95 268/360 ms > 200; 473 B rota %43 kayıp; D-494). Uçuştan
 7. Failsafe: A4 CH6 disarm 3/3 · A1 kumanda kapat → ≤ 2 s Radio Failsafe + LAND.
 8. **YKİ'den ARM (iki basış) → motorlar döner → DISARM; ACİL LAND iki basış → mod LAND.** Bu, komut yolunun kanıtıdır.
 9. **Yerde armlı gaz testi YAPILMAZ:** yazılım bunu kalkış sayar ve uçuştan önce YKİ'ye SAHTE bir iniş kanıtı yazar (kırmızı "İHLAL RİSKİ" satırıyla). KALKIŞ düğmesinden ÖNCE olursa kronometreye dokunmaz; SONRA olursa kronometreyi yanlış durdurur ve geri alınamaz. Gerçek inişin kanıtı yine gelir (yeni seq). Yapıldıysa tutanağa yaz.
+10. **(isteğe bağlı, 10 dk) FOV ölçümü:** `--fov 63` BEYAN, hiç ölçülmedi (ONARIM-05); yanlışsa rota metreleri ölçekli kayar, geçersizlik yaratmaz. Vakit varsa yol haritası Faz 0.5d (iki işaret, `kamera_fov_hesapla.py`); değer değişirse `/etc/navitas.env` RPI_EK_ARGS `--fov <derece>` + `sudo systemctl restart navitas-rpi-inference`.
+11. **(isteğe bağlı) Alan ihlali denetimi:** Jetson `--ub-referans <lat,lon>` almadığı için YKİ'de ALAN İHLALİ uyarısı çalışmıyor. Alanın başlangıç noktası MP'den okununca: `/etc/navitas.env` RPI_EK_ARGS sonuna ` --ub-referans 40.xxxxxx,29.xxxxxx` + `sudo systemctl restart navitas-rpi-inference`; YKİ günlüğünde x,y görünmeli.
 
 ## 4. Uçuş kuralları
 - **İlk askı (U1):** ipli/alçak, Stabilize/AltHold, ≥ 2 s gaz rampası, 1–2 m, ≥ 30 s. **Yerde Loiter'a geçilmez.** Salınım → hemen indir. `.bin` USB ile → `ucus_bin_analiz.py`: VibeZ p95 ≤ 16, motor yayılımı ≤ 40 µs, CCW−CW ≤ 60 µs, tutum ≤ 1,5°. **Geçmeden U2 yok.**
