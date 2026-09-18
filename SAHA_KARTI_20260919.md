@@ -6,6 +6,13 @@
 ## 1. Malzeme
 4S 13 Ah pil ×__ (uçuşa çıkış ≥ 16,6 V multimetre) · iMAX B6 + 12 V kaynak · multimetre · **Ethernet kablosu** (Jetson ↔ laptop, sahada şart) · RFD900A yer modülü + USB + 2 anten · Pixhawk USB kablosu (.bin) · yedek 1045 CW/CCW + somun anahtarı · FS-i6 + piller · laptop + şarj · ip/kayış (ilk askı) · aydınlatma.
 
+## 1b. SABAH İLK İŞ — telsiz ayarı + kısa K8 (≈ 25 dk, MP operatörü + mimar)
+K8 dün DÜŞTÜ (p95 268/360 ms > 200; 473 B rota %43 kayıp; D-494). Uçuştan önce şu sırayla, her adımdan sonra 100 problük kısa ölçüm (mimar koşar):
+1. **MP telemetri hızları** (Config → Planner → Telemetry Rates): Attitude **1**, Position **2**, Mode/Status **1**, RC **0**, Sensors **0**, Extra/EXT **1**. Disconnect → Connect. Hedef: yönlendirici penceresinde `seri->udp` ≤ ~1200 B/s tünelsiz.
+2. **RFD Max Window 131 → 33 ms** (yalnız gecikme hâlâ > 200 ms ise; iki telsizde birden): yönlendiriciyi kapat → MP **COM7 57600'e doğrudan** bağlan (bağlantısız) → Setup → Optional Hardware → **SiK Radio** → Load Settings → Max Window 33 (yerel) → "Copy required items to remote" → Save Settings → her iki telsizde 33 olduğunu Load ile doğrula → MP'yi ayır → `SAHA_YKI_BASLAT.cmd`. **Geri alma:** aynı ekran, 131.
+3. Air Speed 128 → 250 ve TELEM2 baud: YALNIZ 1–2 yetmezse ve menzil ölçülmüş değilse YAPILMAZ (T271).
+4. Ölçüm sonucu (kayıp %, p95) saha tutanağına: hedef K8a/K8b p95 < 200 ms, 473 B kayıp ≤ %20. Ulaşılamazsa uçuş yine yapılır: komut/onay 20 tekrarla gider; rota YKİ'ye gecikmeli gelebilir (tutanağa yazılır).
+
 ## 2. Açılış sırası (her seferinde aynı)
 1. Pil tak → Jetson açılır (1–2 dk). Ethernet takılıysa: `ssh n4vitas@fe80::991b:7948:5cff:884f%8` (parola ekipte).
 2. RFD yer modülünü USB'ye tak (COM7). **Mission Planner COM7'ye BAĞLANMAZ.**
