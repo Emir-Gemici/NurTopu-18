@@ -31733,3 +31733,8 @@ Tur 1'de iki denetçi de KABUL etti; yalnız küçük bulgular kaldı:
 **Yer yolu kararı:** MP aynası yazma yönünde ek kayıp yaratmıyor (AYRIM 1 aynadan yapıldı: %4) ama MP her açılışta aynayı unutuyor (16:47 yeniden açılışta ayna yoktu, ölçüldü) ve iki kaynak aynı porta yazınca akran çakışıyor. Bu gece: `yer_yonlendirici.py` COM7'de, MP UDP 14550, YKİ `--tunel 127.0.0.1:14590`. Yönlendirici izlenmeyen/testsiz betik; MP'nin acil LAND yolu ona bağlı — sahada MP'yi COM7'ye doğrudan bağlamak yedek yol.
 **Yan bulgular:** Jetson saati 4 sa gerideydi (RTC pilsiz) → `date -s` ile düzeltildi; kamera iç mekânda 33 bin karede zemin %0 (MASKE_YOK) — model canlı kanıtı yok (kullanıcı testi atladı); MP telemetri hızları kullanıcı tarafından düşürüldü (TELEM1 %31; tünel açıkken %45).
 **Yazan:** mimar.
+
+### D-496 (mimar, 18 Eyl) — Gece askı testi (21:17 logu, 3S): uçuş temiz ama motor dengesizliği eşiğin 2 katı; YKİ hiçbir telemetri almadı (3S'te Jetson beslenemiyor)
+
+`results/ucus_20260918/UCUS_ANALIZI_2117.md` + `analiz_2117.json`. W2 30 s askı 0,7 m: VibeZ p95 6,5 clip 0; tutum RMS 1,27/0,55°; hız hatası 11,2/4,1 °/s; **motor yayılımı 105 µs, CCW−CW +112 µs** (W4 120/+145); roll 6,9 Hz 2,1 °/s; ThO 0,33 (3S+1045); 3S 12,28 → 10,48 V @ 39 A. EKF yaw reset 120,8 s. Pil parametreleri 3S'e yazılmış (12,0/11,2/10,2); 4S için geri yazılacak. **YKİ prova 20260918_191533: 21:10 sonrası 0 olay** → yazılım zinciri uçuşta doğrulanmadı; ÇIKARIM 3S buck brownout (sabah ölçülen). Yarın: 4S, sabah pusula kalibrasyonu, M2/M4 kol/motor ekseni kontrolü, 4S'te salınım yeniden ölçümü. D-495 numarası worktree'deki diğer oturuma ayrıldı (iha_inis_yayinci yeniden yayın).
+**Yazan:** mimar.
