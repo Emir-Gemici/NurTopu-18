@@ -31864,3 +31864,85 @@ Refspec `+refs/heads/*:refs/remotes/origin/*` olarak düzeltildi; dal ve içinde
 **Bilinen kırmızı (bu işten ÖNCE de vardı):** `test_yks_mk15_hakem_ekrani.py` H2c
 `ana road3 945x630` kalıntı kesişim beklenen 1, ölçülen 0. `git worktree` ile HEAD
 (b75b1722) ayrıca koşuldu, aynı tek hata orada da çıktı.
+
+### 2026-09-18 · ONARIM-18 üretici doğrulaması / tam süit bulguları (Codex-1; mimar karar numarası verilmedi)
+
+Kullanıcı doğrudan devam ettirdi. Bu kayıt bağımsız onay değildir. Komutların
+mutlak yorumlayıcısı `/home/trs/projects/navitas-unified-20260822/.venv/bin/python`.
+Tam argv/exit listesi: `results/onarim18_tamamlama_20260918/kapilar.json`.
+
+- `-B results/onarim18_tamamlama_20260918/dogrula.py`: hedefli `Ran 186 tests in
+  29.816s / OK`, exit 0; heartbeat 4/4 ve kalkış 4/4 mutant yakalandı, exit 0;
+  `codes/test_rota_sentetik.py` iki kol 15/15, exit 0.
+- `-B results/onarim18_tamamlama_20260918/sitl_dogrula.py`: gerçek yerel
+  ArduCopter IN_AIR 3,059 m → ON_GROUND → 0,044 m'de IHA_LANDED seq=1+ACK;
+  yerde açılışta yayın yok; exit 0. İlk ARM reddi exit 1 kanıtı korunmuştur;
+  `Arm: Need Position Estimate` sonrası EKF hazır olunca sonraki koşu geçti.
+- `-B results/onarim18_tamamlama_20260918/udp_kesinti_dogrula.py`: iki gerçek
+  yayıncı/UDP, telemetri süreci kill + 10 s kesinti sırasında GNSS/ARM temiz,
+  sağlık canlı; yeni süreç/akış ile toparlanma, sıra reddi 0; exit 0.
+- `-B -m unittest discover -s tests -p 'test_yks*.py'`: 236 test, 1 failure,
+  exit 1; H2c 945x630 kalıntı kesişim beklenen 1/ölçülen 0 (D-503'te de kayıtlı).
+- `-B -m unittest discover -s tests -v`: `Ran 3010 tests in 498.792s`,
+  `FAILED (failures=42, errors=10, skipped=34)`, exit 1. Ham kanıt aynı dizinde
+  `tam_suit.log`; 52 alt-test/hata başlığı `tam_suit_bulgulari.txt`.
+  Sınıflar: belge/satır atıfları, defter ileri işaretleri, depo kökü,
+  model_registry, simülasyon API/SHA/PNG, eksik trimesh/model/fikstür,
+  T155 waypoint referansları, paket ONNX beyanı, H2c görsel beklentisi.
+  **Tamamı eski kusur ilan edilmedi:** taban tam süiti bu tur koşulmadı;
+  özellikle `iha_inis_yayinci.py:475` ve YKS atıfları ONARIM-18'in satır
+  kaymalarıyla ilişkili belge entegrasyon borcu olabilir. Mimar belgeleri,
+  kabul eşikleri ve mevcut REVIEW_LOG kayıtları değiştirilmedi.
+
+Jetson 10.21.8.7:22 salt TCP erişimi timeout. Canlı cihaz/R1–R5 ve bağımsız
+inceleme BEKLİYOR. A açık, B READY_FOR_REVIEW korundu; commit/push yapılmadı.
+Sözleşme önerisi 17 Eylül SONUC.md'de duruyor. Paket ikizleri SHA-256 eş.
+
+### 2026-09-18 · ONARIM-18B kaynaklı FDR satır kayması giderildi (Codex-1)
+
+Kullanıcının ilettiği denetim: kalkış bekleme fonksiyonu eklenince
+`comms/iha_inis_yayinci.py:475` atfı 520'ye kaydı. Bu gerileme Codex'in
+önceki düzenlemesinden kaynaklandı. Fonksiyon main sonrasına taşındı;
+CLI yardım metninin ek satırı birleştirildi. Bayrak 432/kilit 475 korundu,
+fonksiyon AST gövdeleri birebir aynı, Jetson eş kopyası güncellendi.
+FDR raporuna veya test kabul ölçütüne dokunulmadı.
+
+Kanıt: `/home/trs/projects/navitas-unified-20260822/.venv/bin/python -B -m
+unittest discover -s tests -p test_fdr_t244_ic_celiski.py` → `Ran 44 tests in
+6.200s / OK`, exit 0. Aynı yorumlayıcıyla
+`results/onarim18_satir_kilidi_20260918/dogrula.py` → 91 iniş/paket testi OK
+(17.477s), mutant 4/4, genel kapı iki kol 15/15; hepsi exit 0.
+Ham log/argv: `results/onarim18_satir_kilidi_20260918/`.
+Tam süit yeniden koşulmadı. Bağımsız onay bekleniyor, commit/push yapılmadı.
+
+### D-504 — **BAĞIMSIZ DENETİM (mimar): Codex'in ONARIM-18 satır-kayması düzeltmesi KABUL**
+
+**Neden gerekti:** ONARIM-18 düzeltmelerini **ben** commit edip push ettim (`a967ace6`), ama
+tam süiti koşmamıştım. Codex'in tam süit koşumu (3010 test) 42 başarısızlık + 10 hata gösterdi.
+Kural gereği (bir iş, onu yazanın onayıyla kapanmaz) üreticiden bağımsız ölçtüm.
+
+**Ölçüm — taban ayrımı (`git worktree` ile `b75b1722`):**
+
+| Test | Taban | a967ace6 sonrası | Hüküm |
+|---|---|---|---|
+| `test_atolye_test_gunu` | 9 hata | 9 hata (**birebir aynı liste**) | Önceden bozuk |
+| `test_gece_akis_diyagramlari` | 2 hata | 2 hata | Önceden bozuk |
+| `test_t202_jetson_paket_butunlugu` | FAILED | FAILED (eksik: `models/*.pt`, `*.onnx`) | Önceden bozuk |
+| `test_fdr_t244_ic_celiski` | **OK** | **FAILED** | 🔴 **REGRESYON — bizden** |
+
+Yani tam süitteki 52 kırmızının **yalnız 1'i** bu işten geldi. Kök neden: kalkış-bekleme bloğu
+`comms/iha_inis_yayinci.py`'nin ortasına konmuş, FDR raporunun `:432` / `:475` satır atıflarını
+kaydırmıştı (`seri_pixhawk_kilidini_uygula` 475 → 520). `origin/tunel-saha-20260918` aynı
+düzeltmeyi satır kilitlerini bozmadan yapmıştı (D-495, blok dosya sonunda) — çözüm oradan görüldü.
+
+**Codex'in düzeltmesi ve denetimi:** blok dosya sonuna taşındı.
+Diff **saf taşımadır**: eklenen/silinen satırlar sıralandığında tek fark iki satırlık `help`
+metninin tek satıra birleşmesi — **mantık değişmedi** (ölçüldü, `git diff` karşılaştırması).
+`:432` ve `:475` yerinde. Jetson kopyaları (`iha_inis_yayinci.py`, `protocol.py`) kaynakla **birebir eş**.
+
+**Koşulan kapılar (mimar, bağımsız):** `test_fdr_t244_ic_celiski` **OK** (regresyon kapandı) ·
+`test_onarim18_kalkis_kapisi` OK · `test_onarim18_heartbeat_akislari` OK · `test_iha_inis_yayinci` OK ·
+`test_jetson_comms_paketi` OK · `test_t162_alan_ihlali` OK · **genel kapı GEÇTİ** (15/15 · şerit 15/15).
+
+**HÜKÜM: KABUL.** Kalan kırmızılar bu işten önce de vardı ve ayrı kalemlerdir (model dosyaları
+gitignore'lu, atölye kâğıdı atıfları, MuJoCo/sim ortam bağımlılıkları).

@@ -1,0 +1,70 @@
+F
+======================================================================
+FAIL: test_yerde_binlerce_saniye_bekler_inis_uretmez_timeout_baslamaz (test_onarim18_kalkis_kapisi.KalkisKapisi.test_yerde_binlerce_saniye_bekler_inis_uretmez_timeout_baslamaz)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/trs/projects/navitas-unified-20260822/tests/test_onarim18_kalkis_kapisi.py", line 72, in test_yerde_binlerce_saniye_bekler_inis_uretmez_timeout_baslamaz
+    with self.assertRaises(AkisBitti):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+AssertionError: AkisBitti not raised
+
+----------------------------------------------------------------------
+Ran 1 test in 0.006s
+
+FAILED (failures=1)
+M1 kalkış kapısı atlanır YAKALANDI
+FF
+======================================================================
+FAIL: test_in_air_ve_takeoff_sonrasi_gercek_inis_kaniti_yayinlanir (test_onarim18_kalkis_kapisi.KalkisKapisi.test_in_air_ve_takeoff_sonrasi_gercek_inis_kaniti_yayinlanir) (kalkis=2)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/trs/projects/navitas-unified-20260822/tests/test_onarim18_kalkis_kapisi.py", line 84, in test_in_air_ve_takeoff_sonrasi_gercek_inis_kaniti_yayinlanir
+    self.assertEqual(0, self.kos(mav))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 3
+
+======================================================================
+FAIL: test_in_air_ve_takeoff_sonrasi_gercek_inis_kaniti_yayinlanir (test_onarim18_kalkis_kapisi.KalkisKapisi.test_in_air_ve_takeoff_sonrasi_gercek_inis_kaniti_yayinlanir) (kalkis=3)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/trs/projects/navitas-unified-20260822/tests/test_onarim18_kalkis_kapisi.py", line 84, in test_in_air_ve_takeoff_sonrasi_gercek_inis_kaniti_yayinlanir
+    self.assertEqual(0, self.kos(mav))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 3
+
+----------------------------------------------------------------------
+Ran 1 test in 0.002s
+
+FAILED (failures=2)
+M2 süre açılıştan başlar YAKALANDI
+F
+======================================================================
+FAIL: test_beyansiz_ilk_kaynak_kalkis_ve_iniste_ayni_kalir (test_onarim18_kalkis_kapisi.KalkisKapisi.test_beyansiz_ilk_kaynak_kalkis_ve_iniste_ayni_kalir)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/trs/projects/navitas-unified-20260822/tests/test_onarim18_kalkis_kapisi.py", line 103, in test_beyansiz_ilk_kaynak_kalkis_ve_iniste_ayni_kalir
+    with self.assertRaises(AkisBitti):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+AssertionError: AkisBitti not raised
+
+----------------------------------------------------------------------
+Ran 1 test in 0.002s
+
+FAILED (failures=1)
+M3 inişte kaynak pini kaybolur YAKALANDI
+F
+======================================================================
+FAIL: test_yerde_binlerce_saniye_bekler_inis_uretmez_timeout_baslamaz (test_onarim18_kalkis_kapisi.KalkisKapisi.test_yerde_binlerce_saniye_bekler_inis_uretmez_timeout_baslamaz)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/trs/projects/navitas-unified-20260822/tests/test_onarim18_kalkis_kapisi.py", line 72, in test_yerde_binlerce_saniye_bekler_inis_uretmez_timeout_baslamaz
+    with self.assertRaises(AkisBitti):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+AssertionError: AkisBitti not raised
+
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+FAILED (failures=1)
+M4 yerde durumu kalkış sayılır YAKALANDI
+MUTASYON: 4/4 yakalandi

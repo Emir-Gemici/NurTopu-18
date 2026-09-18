@@ -1,0 +1,6 @@
+{
+  "endpoint": "10.21.8.7:22",
+  "operation": "TCP reachability only",
+  "reachable": false,
+  "error": "timed out"
+}

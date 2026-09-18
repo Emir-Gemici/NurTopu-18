@@ -1,0 +1,29 @@
+.....................................................................................................................................KANIT KAYDI HATASI — uçuş/onay başlatma kapatıldı; ARM ve acil komutlar kullanılabilir: RuntimeError: YKS_ARAYUZ_HAZIR: OSError: disk dolu
+.KANIT KAYDI HATASI — uçuş/onay başlatma kapatıldı; ARM ve acil komutlar kullanılabilir: RuntimeError: OLAY_A: OSError: ilk
+................../usr/lib64/python3.14/tempfile.py:484: ResourceWarning: Implicitly cleaning up <HTTPError 503: 'Service Unavailable'>
+  _warnings.warn(self.warn_message, ResourceWarning)
+....KAMERA KAPATMA HATASI: kamera worker kapanmadi
+.KANIT KAYDI KAPATMA HATASI: fsync/kapatma hatasi
+...............F..................................[T36_KAPI] demo=1 kaynak=kompozit ilk_kare=data/arena_kompozit/images/a.jpg exit=0
+.............................
+======================================================================
+FAIL: test_H2c_olcek_1_5_hakem_ekrani (test_yks_mk15_hakem_ekrani.H2c_EtiketCakismasi.test_H2c_olcek_1_5_hakem_ekrani) (olcek=1.5, durum='ana_open_route_road3')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/trs/projects/navitas-unified-20260822/tests/test_yks_mk15_hakem_ekrani.py", line 993, in _ana_open_route_kalinti
+    self.assertEqual(
+    ~~~~~~~~~~~~~~~~^
+        len(beklenen), len(gozlenen),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        f"ana road{yol} {boyut}: KALINTI KESİŞİM SAYISI DEĞİŞTİ "
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        f"(beklenen {len(beklenen)}, ölçülen {len(gozlenen)}): "
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        f"{[(ta, ba, tb, bb) for ta, ba, tb, bb in ciftler]}")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0 : ana road3 945x630: KALINTI KESİŞİM SAYISI DEĞİŞTİ (beklenen 1, ölçülen 0): []
+
+----------------------------------------------------------------------
+Ran 236 tests in 31.476s
+
+FAILED (failures=1)

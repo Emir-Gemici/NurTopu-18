@@ -380,3 +380,61 @@ iş yoktur.
   ayrıntı `REVIEW_LOG.md`'de. Yeni iş almadan önce oraya bak, aynı kusuru tekrar üretme.
 - `S1` görevi **TIKAYICI**: veri üreteci araçları "zemin" olarak etiketliyor.
   **S1 düzeltilmeden hiçbir veri üretimi veya eğitim koşusu başlatılmaz.**
+
+## 17 Eylül 2026 · ONARIM-18 yerel düzeltmeleri (Codex-1)
+
+Kullanıcı önce salt inceleme istedi, sonra "yetişebildiği kadar yap, adım adım
+gidelim" dedi. İki kusurun kodu ve paket kopyaları düzeltildi; canlı Jetson'a
+aktarılmadı. Tam rapor: `results/onarim18_heartbeat_20260917/SONUC.md`.
+
+- Heartbeat akış kimliği/sırası, ayrı telemetri tazeliği; kalkış görülmeden iniş
+  yayını yok, timeout kalkıştan. `inis_kaniti.py` değişmedi.
+- Değişen üretim: comms/{protocol,yks_gui,iha_inis_yayinci}.py;
+  jetson_paket/kod/{protocol,iha_inis_yayinci}.py. Yeni ONARIM-18 testleri ve
+  mevcut protokol/iniş test fikstürleri güncellendi.
+- 96 hedefli + 84 iniş + 7 paket testleri OK (gruplar bazı testleri ortak içerir;
+  sayılar toplanıp benzersiz test sayısı diye sunulmaz). 4+4 mutant yakalandı.
+  Genel kapı son durum: kol1 15/15 · kol2 serit 15/15, exit 0.
+- Geniş YKS 236 test: 1 görsel kırmızı, HEAD sürümüyle de aynı. Kanıt iki logda.
+  Bu nedenle A görevi [ ]; B READY_FOR_REVIEW; bağımsız denetim bekliyor.
+- Sonraki ilk iş: diff + SONUC.md incele; CONTRACTS önerisini mimar değerlendirsin.
+  Ardından YKS ve Jetson'daki iki üreticiyi birlikte güncelle, SITL ile uçtan uca
+  ve R1–R5 testlerini yap. Sudo parolası yok, kaydedilmedi. Bu oturumda Jetson
+  servislerine dokunulmadı; geride çalışan test süreci bırakılmadı.
+- Commit/push yapılmadı. Kullanıcının diğer dosyaları korundu.
+
+## 18 Eylül 2026 · ONARIM-18 tamamlama (Codex-1)
+
+Kullanıcı “madem sen yaptın sen bitir işini” diyerek devam ettirdi. Üretim
+koduna yeni değişiklik gerekmedi; a967ace6 içindeki düzeltmeler ve commit dışı
+iki Jetson kopyası doğrulandı. Kanıt: `results/onarim18_tamamlama_20260918/SONUC.md`.
+
+- 186 hedefli test OK, 8/8 mutant yakalandı; genel kapı iki kol 15/15, exit 0.
+- Gerçek yerel ArduCopter SITL: yerde yayın yok; IN_AIR 3,059 m sonrası inişte
+  0,044 m'de IHA_LANDED+ACK; yayıncı/betik exit 0. İlk ARM reddi exit 1 ham
+  kanıtı korundu; EKF konum kestirimi hazır olunca sonraki koşu geçti.
+- Gerçek iki süreç/UDP: telemetri üreticisi kill, 10 s kesinti boyunca sağlık
+  heartbeat'i sürerken GNSS/ARM temiz; yeni akış/seq ile toparlanma PASS, exit 0.
+- Geniş YKS 236 test/1 görsel failure, exit 1. Tam süit 3010 test:
+  42 failure, 10 error, 34 skip, exit 1. Hata listesi aynı dizindedir.
+  Tümüne eski hata denmez: taban tam süiti bu tur koşulmadı; özellikle
+  YKS/iniş yayıncısı satır kaymaları FDR belge entegrasyon borcu olabilir.
+- Jetson 10.21.8.7:22 TCP denemesi timeout; cihaza aktarım/servis değişikliği
+  yapılmadı. Yerel SITL veya UDP kanıtı canlı Jetson/R1–R5 kabulü değildir.
+- A açık, B READY_FOR_REVIEW; bağımsız onay yok. CONTRACTS önerisi mimarda.
+  Kullanıcının dosyaları ve başka işin kilidi korundu. Commit/push yapılmadı.
+- Devralanın ilk işi: SONUC.md ve tam_suit_bulgulari.txt'yi okumak; belge
+  atıfları ve diğer kırmızıları kendi görev kapsamlarında değerlendirmek.
+  Cihaz erişilebilir olduğunda YKS+iki üreticiyi birlikte güncelleyip saha
+  zincirini ölçmek. Test çocuk süreçleri sonlandırıldı; canlı servis açılmadı.
+
+## 18 Eylül · ONARIM-18B FDR atıf gerilemesi giderildi
+
+Kullanıcı diğer oturumun denetim bulgusunu iletti. `kalkisi_bekle` main
+sonrasına, __main__ çağrısından önceye taşındı; aynı CLI yardım metni tek satıra
+alındı. Bayrak 432 / seri kilidi 475 yeniden doğru; bütün fonksiyon AST'leri
+aynı. `comms/iha_inis_yayinci.py` ve Jetson kopyası güncellendi.
+FDR 44/44, iniş+paket 91/91, mutant 4/4, genel kapı iki kol 15/15; hepsi exit 0.
+Kanıt ve tam komutlar `results/onarim18_satir_kilidi_20260918/SONUC.md`.
+B READY_FOR_REVIEW, bağımsız onay bekler. Tam süit tekrar koşulmadı;
+commit/push yok. Kullanıcı Jetson'ın kapalı olduğunu bildirdi; erişim denenmedi.

@@ -1,0 +1,125 @@
+{
+  "passed": false,
+  "events": [
+    {
+      "t": 0.201,
+      "event": "sitl_connected",
+      "pid": 27454
+    },
+    {
+      "t": 1.435,
+      "event": "command_ack",
+      "command": 511,
+      "result": 0
+    },
+    {
+      "t": 1.435,
+      "event": "command_ack",
+      "command": 511,
+      "result": 0
+    },
+    {
+      "t": 1.435,
+      "event": "command_ack",
+      "command": 511,
+      "result": 0
+    },
+    {
+      "t": 2.435,
+      "event": "landed_state",
+      "value": 1
+    },
+    {
+      "t": 9.982,
+      "event": "ground_ready",
+      "state": {
+        "landed": 1,
+        "alt": -0.027,
+        "armed": false,
+        "mode": 0,
+        "gps": 6
+      }
+    },
+    {
+      "t": 11.448,
+      "event": "command_ack",
+      "command": 511,
+      "result": 0
+    },
+    {
+      "t": 11.448,
+      "event": "command_ack",
+      "command": 511,
+      "result": 0
+    },
+    {
+      "t": 11.448,
+      "event": "command_ack",
+      "command": 511,
+      "result": 0
+    },
+    {
+      "t": 17.985,
+      "event": "ground_no_landing_PASS"
+    },
+    {
+      "t": 17.99,
+      "event": "command_ack",
+      "command": 176,
+      "result": 0
+    },
+    {
+      "t": 18.088,
+      "event": "guided",
+      "state": {
+        "landed": 1,
+        "alt": -0.027,
+        "armed": false,
+        "mode": 4,
+        "gps": 6
+      }
+    },
+    {
+      "t": 18.093,
+      "event": "command_ack",
+      "command": 400,
+      "result": 4
+    },
+    {
+      "t": 21.949,
+      "event": "command_ack",
+      "command": 511,
+      "result": 0
+    },
+    {
+      "t": 21.949,
+      "event": "command_ack",
+      "command": 511,
+      "result": 0
+    },
+    {
+      "t": 21.949,
+      "event": "command_ack",
+      "command": 511,
+      "result": 0
+    },
+    {
+      "t": 32.444,
+      "event": "command_ack",
+      "command": 511,
+      "result": 0
+    },
+    {
+      "t": 32.444,
+      "event": "command_ack",
+      "command": 511,
+      "result": 0
+    },
+    {
+      "t": 32.444,
+      "event": "command_ack",
+      "command": 511,
+      "result": 0
+    }
+  ]
+}

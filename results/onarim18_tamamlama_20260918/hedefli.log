@@ -1,0 +1,253 @@
+test_akis_kayitlari_sinirlidir (test_onarim18_heartbeat_akislari.HeartbeatAkislari.test_akis_kayitlari_sinirlidir) ... ok
+test_akis_kimligi_olmayan_eski_snapshot_davranisi_korunur (test_onarim18_heartbeat_akislari.HeartbeatAkislari.test_akis_kimligi_olmayan_eski_snapshot_davranisi_korunur) ... ok
+test_ayni_akista_tekrar_ve_geri_sira_reddedilir (test_onarim18_heartbeat_akislari.HeartbeatAkislari.test_ayni_akista_tekrar_ve_geri_sira_reddedilir) ... ok
+test_bozuk_akis_kimligi_durumu_degistiremez (test_onarim18_heartbeat_akislari.HeartbeatAkislari.test_bozuk_akis_kimligi_durumu_degistiremez) ... ok
+test_fork_ile_miras_alinan_kimlik_yenilenir (test_onarim18_heartbeat_akislari.HeartbeatAkislari.test_fork_ile_miras_alinan_kimlik_yenilenir) ... ok
+test_gui_tiki_saglik_canliyken_gnssyi_bayat_gosterir (test_onarim18_heartbeat_akislari.HeartbeatAkislari.test_gui_tiki_saglik_canliyken_gnssyi_bayat_gosterir) ... ok
+test_iki_yayinci_her_iki_sirada_da_telemetriyi_korur (test_onarim18_heartbeat_akislari.HeartbeatAkislari.test_iki_yayinci_her_iki_sirada_da_telemetriyi_korur) ... ok
+test_saglik_canliyken_model_kaybi_esikte_gecersizlesir (test_onarim18_heartbeat_akislari.HeartbeatAkislari.test_saglik_canliyken_model_kaybi_esikte_gecersizlesir) ... ok
+test_surec_kimligi_sabit_yeni_surecte_farkli (test_onarim18_heartbeat_akislari.HeartbeatAkislari.test_surec_kimligi_sabit_yeni_surecte_farkli) ... ok
+test_telemetri_akisinin_bos_snapshoti_gnss_ve_armi_siler (test_onarim18_heartbeat_akislari.HeartbeatAkislari.test_telemetri_akisinin_bos_snapshoti_gnss_ve_armi_siler) ... ok
+test_yeniden_baslayan_model_seq_bir_ile_hemen_doner (test_onarim18_heartbeat_akislari.HeartbeatAkislari.test_yeniden_baslayan_model_seq_bir_ile_hemen_doner) ... ok
+test_bayat_ornekte_konum_da_None (test_t162_alan_ihlali.InisKanitiDegismedi.test_bayat_ornekte_konum_da_None)
+Tazelik sozlesmesi irtifayla AYNI — ayrisamaz. ... ok
+test_konum_BOZUKKEN_irtifa_AYNI (test_t162_alan_ihlali.InisKanitiDegismedi.test_konum_BOZUKKEN_irtifa_AYNI) ... ok
+test_konum_yokken_irtifa_AYNI (test_t162_alan_ihlali.InisKanitiDegismedi.test_konum_yokken_irtifa_AYNI) ... ok
+test_saglam_konum_okunur (test_t162_alan_ihlali.InisKanitiDegismedi.test_saglam_konum_okunur) ... ok
+test_GUI_ciplak_sabit_kullanmiyor (test_t162_alan_ihlali.Mutasyon.test_GUI_ciplak_sabit_kullanmiyor) ... ok
+test_URETIM_heartbeat_yolunda_konum_kancasi_VAR (test_t162_alan_ihlali.Mutasyon.test_URETIM_heartbeat_yolunda_konum_kancasi_VAR) ... ok
+test_kenar_kucultulunce_IC_NOKTA_ihlal_olur (test_t162_alan_ihlali.Mutasyon.test_kenar_kucultulunce_IC_NOKTA_ihlal_olur)
+Sabit gercekten kullaniliyor mu — 300 yerine 30 verilirse deger. ... ok
+test_sozlesme_sabiti_sartnameye_uygun (test_t162_alan_ihlali.Mutasyon.test_sozlesme_sabiti_sartnameye_uygun) ... ok
+test_yerel_konum_fail_closed (test_t162_alan_ihlali.Mutasyon.test_yerel_konum_fail_closed) ... ok
+test_None_alan_YAZILMAZ (test_t162_alan_ihlali.ProtokolBayutEs.test_None_alan_YAZILMAZ) ... ok
+test_argumansiz_heartbeat_alan_kumesi_akis_kimligi_icerir (test_t162_alan_ihlali.ProtokolBayutEs.test_argumansiz_heartbeat_alan_kumesi_akis_kimligi_icerir) ... ok
+test_sozlesme_disi_alan_REDDEDILIR (test_t162_alan_ihlali.ProtokolBayutEs.test_sozlesme_disi_alan_REDDEDILIR) ... ok
+test_x_y_verilince_yazilir (test_t162_alan_ihlali.ProtokolBayutEs.test_x_y_verilince_yazilir) ... ok
+test_URETIM_dongusu_konum_YOKKEN_alan_yazmaz (test_t162_alan_ihlali.UctanUca.test_URETIM_dongusu_konum_YOKKEN_alan_yazmaz) ... ok
+test_URETIM_dongusu_saglayici_PATLARSA_yayin_surer (test_t162_alan_ihlali.UctanUca.test_URETIM_dongusu_saglayici_PATLARSA_yayin_surer)
+Konum hatasi heartbeat'i durdurmamali (baglanti-failsafe). ... ok
+test_URETIM_dongusu_x_y_gecirir (test_t162_alan_ihlali.UctanUca.test_URETIM_dongusu_x_y_gecirir) ... ok
+test_okuyucusuz_olcekte_saglayici_KURULMAZ (test_t162_alan_ihlali.UctanUca.test_okuyucusuz_olcekte_saglayici_KURULMAZ) ... ok
+test_referans_yoksa_saglayici_KURULMAZ (test_t162_alan_ihlali.UctanUca.test_referans_yoksa_saglayici_KURULMAZ) ... ok
+test_yayinci_x_y_tasiyor_ve_ihlal_uretiliyor (test_t162_alan_ihlali.UctanUca.test_yayinci_x_y_tasiyor_ve_ihlal_uretiliyor) ... ok
+test_None_ise_YAZILMAZ (test_a2_karar_yasi.A_Sozlesme.test_None_ise_YAZILMAZ) ... ok
+test_alan_sozlesmede (test_a2_karar_yasi.A_Sozlesme.test_alan_sozlesmede) ... ok
+test_deger_verilince_tasinir (test_a2_karar_yasi.A_Sozlesme.test_deger_verilince_tasinir) ... ok
+test_sozlesme_disi_alan_hala_ValueError (test_a2_karar_yasi.A_Sozlesme.test_sozlesme_disi_alan_hala_ValueError) ... ok
+test_heartbeat_yas_hesabi_monotonik (test_a2_karar_yasi.B_Monotonik.test_heartbeat_yas_hesabi_monotonik) ... ok
+test_karar_damgasi_monotonik (test_a2_karar_yasi.B_Monotonik.test_karar_damgasi_monotonik) ... ok
+test_gonderim_sonrasi_GECEN_SURE_de_sayilir (test_a2_karar_yasi.C_AsilKapi.test_gonderim_sonrasi_GECEN_SURE_de_sayilir)
+Alan 3 sn'de gonderildi, alim 4 sn once -> etkin 7 > 5. ... ok
+test_heartbeat_AKARKEN_karar_yasi_asarsa_BAYAT (test_a2_karar_yasi.C_AsilKapi.test_heartbeat_AKARKEN_karar_yasi_asarsa_BAYAT)
+D-374 senaryosu: hat CANLI (hb 0,5 sn), algi OLU (karar 10 sn). ... ok
+test_taze_karar_yasi_BAYATLATMAZ (test_a2_karar_yasi.C_AsilKapi.test_taze_karar_yasi_BAYATLATMAZ) ... ok
+test_ACK_sonrasi_OPEN_ROUTE_sussa_bile_dugme_ACIK (test_a2_karar_yasi.D_GerilemeKorumasi_D321.test_ACK_sonrasi_OPEN_ROUTE_sussa_bile_dugme_ACIK)
+IHA rotayi ACK alana kadar tekrarlar, sonra SUSAR (T172/D-321). ... ok
+test_alan_yoksa_TAZE_SAYILMAZ (test_a2_karar_yasi.E_EksikAlan.test_alan_yoksa_TAZE_SAYILMAZ) ... ok
+test_etiket_BILINMIYOR_diyor (test_a2_karar_yasi.E_EksikAlan.test_etiket_BILINMIYOR_diyor) ... ok
+test_eksik_alan_dali_kaldirilinca_E_DUSER (test_a2_karar_yasi.F_Mutasyon.test_eksik_alan_dali_kaldirilinca_E_DUSER) ... ok
+test_karar_yas_denetimi_kaldirilinca_C_DUSER (test_a2_karar_yasi.F_Mutasyon.test_karar_yas_denetimi_kaldirilinca_C_DUSER) ... ok
+test_capa_Tk_ACMADAN_cagrilabiliyor (test_a2_karar_yasi.G_CapaVeUcaUc.test_capa_Tk_ACMADAN_cagrilabiliyor) ... ok
+test_heartbeat_alani_uctan_uca (test_a2_karar_yasi.G_CapaVeUcaUc.test_heartbeat_alani_uctan_uca)
+Gercek is parcaciklariyla: karar oncesi alan YOK, sonrasi VAR. ... ok
+test_yayinci_karar_damgasi_gercekten_tazeleniyor (test_a2_karar_yasi.G_CapaVeUcaUc.test_yayinci_karar_damgasi_gercekten_tazeleniyor) ... ok
+test_ALIM_SUZGECI_gecersizi_almaz (test_a2_karar_yasi.H_D383_Korumalar.test_ALIM_SUZGECI_gecersizi_almaz)
+Alim katmani da suzer (derinlemesine savunma iki katman). ... ok
+test_DEMO_F6_algi_anahtari_var (test_a2_karar_yasi.H_D383_Korumalar.test_DEMO_F6_algi_anahtari_var)
+F6 tatbikati artik ekranla CELISMEZ: senaryo('algi') anahtari ... ok
+test_DUVAR_SAATI_GERI_ATLASA_da_BAYAT (test_a2_karar_yasi.H_D383_Korumalar.test_DUVAR_SAATI_GERI_ATLASA_da_BAYAT)
+Curutucunun birebir senaryosu: karar_yas=20 sn, simdi 30 sn GERIYE ... ok
+test_NEGATIF_karar_yas_TAZE_SAYILMAZ (test_a2_karar_yasi.H_D383_Korumalar.test_NEGATIF_karar_yas_TAZE_SAYILMAZ) ... ok
+test_NaN_karar_yas_TAZE_SAYILMAZ (test_a2_karar_yasi.H_D383_Korumalar.test_NaN_karar_yas_TAZE_SAYILMAZ)
+nan > esik daima False: NaN, BILINMIYOR korumasini atlatip ... ok
+test_atomik_saglayici_varken_eski_kancalar_cagrilmaz (test_yki_gnss_telemetri.KararYayinciSnapshotTests.test_atomik_saglayici_varken_eski_kancalar_cagrilmaz) ... ok
+test_bos_ve_hatalı_snapshot_son_deger_uydurmaz_heartbeat_surer (test_yki_gnss_telemetri.KararYayinciSnapshotTests.test_bos_ve_hatalı_snapshot_son_deger_uydurmaz_heartbeat_surer) ... ok
+test_snapshot_gercek_protokol_heartbeat_cercevesine_girer (test_yki_gnss_telemetri.KararYayinciSnapshotTests.test_snapshot_gercek_protokol_heartbeat_cercevesine_girer) ... ok
+test_MUTASYON_pixhawk_reboot_iki_ilerleyen_ornekle_yeni_cag_acar (test_yki_gnss_telemetri.TekOkuyucuSnapshotTests.test_MUTASYON_pixhawk_reboot_iki_ilerleyen_ornekle_yeni_cag_acar)
+Eski kod iki reboot paketini de eski uptime aşılana dek reddederdi. ... ok
+test_baglanti_yasam_dongusu_sira_damgalarini_da_sifirlar (test_yki_gnss_telemetri.TekOkuyucuSnapshotTests.test_baglanti_yasam_dongusu_sira_damgalarini_da_sifirlar) ... ok
+test_bozuk_gps_yalniz_gps_alanlarini_temizler (test_yki_gnss_telemetri.TekOkuyucuSnapshotTests.test_bozuk_gps_yalniz_gps_alanlarini_temizler) ... ok
+test_durum_esigi_verilmezse_armed_yayinlanmaz (test_yki_gnss_telemetri.TekOkuyucuSnapshotTests.test_durum_esigi_verilmezse_armed_yayinlanmaz) ... ok
+test_irtifa_gps_ve_armed_kendi_tazelik_esiklerinde_omit (test_yki_gnss_telemetri.TekOkuyucuSnapshotTests.test_irtifa_gps_ve_armed_kendi_tazelik_esiklerinde_omit) ... ok
+test_kucuk_out_of_order_reboot_sayilmaz_ve_yasi_yenilemez (test_yki_gnss_telemetri.TekOkuyucuSnapshotTests.test_kucuk_out_of_order_reboot_sayilmaz_ve_yasi_yenilemez) ... ok
+test_tekrar_gps_paketi_yasi_yenilemez (test_yki_gnss_telemetri.TekOkuyucuSnapshotTests.test_tekrar_gps_paketi_yasi_yenilemez) ... ok
+test_uc_akis_tek_atomik_snapshotta (test_yki_gnss_telemetri.TekOkuyucuSnapshotTests.test_uc_akis_tek_atomik_snapshotta) ... ok
+test_uydu_255_bilinmiyor_alanini_yazmaz (test_yki_gnss_telemetri.TekOkuyucuSnapshotTests.test_uydu_255_bilinmiyor_alanini_yazmaz) ... ok
+test_yabanci_kaynak_hicbir_alani_degistirmez (test_yki_gnss_telemetri.TekOkuyucuSnapshotTests.test_yabanci_kaynak_hicbir_alani_degistirmez) ... ok
+test_yerde_alt_sifir_ve_gps_gorunur_ama_olcek_irtifasi_olmaz (test_yki_gnss_telemetri.TekOkuyucuSnapshotTests.test_yerde_alt_sifir_ve_gps_gorunur_ama_olcek_irtifasi_olmaz) ... ok
+test_okuyucu_yoksa_ikinci_telemetri_yolu_acilmaz (test_yki_gnss_telemetri.UretimSaglayiciTests.test_okuyucu_yoksa_ikinci_telemetri_yolu_acilmaz) ... ok
+test_referans_yokken_ham_gnss_kalir_xy_uydurulmaz (test_yki_gnss_telemetri.UretimSaglayiciTests.test_referans_yokken_ham_gnss_kalir_xy_uydurulmaz) ... ok
+test_tek_snapshot_ham_gnss_ve_ayni_ornekten_yerel_xy_uretir (test_yki_gnss_telemetri.UretimSaglayiciTests.test_tek_snapshot_ham_gnss_ve_ayni_ornekten_yerel_xy_uretir) ... ok
+test_T1_her_boyut_gercek_encode_ile_yeniden_uretilebilir (test_t243_mesaj_boyutu.BoyutTablosu.test_T1_her_boyut_gercek_encode_ile_yeniden_uretilebilir) ... ok
+test_T2_open_route_worst_case_MAKS_WP_sabitiyle_esit (test_t243_mesaj_boyutu.BoyutTablosu.test_T2_open_route_worst_case_MAKS_WP_sabitiyle_esit) ... ok
+test_T3_no_route_sebebi_gercek_sabit (test_t243_mesaj_boyutu.BoyutTablosu.test_T3_no_route_sebebi_gercek_sabit) ... ok
+test_T4_gercek_udp_loopback_makul_araliktadir (test_t243_mesaj_boyutu.GercekVeriHizi.test_T4_gercek_udp_loopback_makul_araliktadir) ... ok
+test_ack_eksigi_false_ve_tasiyici_kapali (test_iha_inis_yayinci.OrtakYayinGovdesiTests.test_ack_eksigi_false_ve_tasiyici_kapali) ... ok
+test_bos_hedefte_enjekte_tasiyici_da_kapanir (test_iha_inis_yayinci.OrtakYayinGovdesiTests.test_bos_hedefte_enjekte_tasiyici_da_kapanir) ... ok
+test_ika_receiver_serial_hatta_adressiz_ack_gonderir (test_iha_inis_yayinci.OrtakYayinGovdesiTests.test_ika_receiver_serial_hatta_adressiz_ack_gonderir) ... ok
+test_serial_broadcast_tek_fiziksel_mesajla_iki_ack_bekler (test_iha_inis_yayinci.OrtakYayinGovdesiTests.test_serial_broadcast_tek_fiziksel_mesajla_iki_ack_bekler) ... ok
+test_gecersiz_udp_hedefi_mavlinki_acmadan_reddedilir (test_iha_inis_yayinci.SahaCliTests.test_gecersiz_udp_hedefi_mavlinki_acmadan_reddedilir) ... ok
+test_help_pymavlink_olmadan_calismaya_devam_eder (test_iha_inis_yayinci.SahaCliTests.test_help_pymavlink_olmadan_calismaya_devam_eder) ... ok
+test_kanit_false_ise_hicbir_yayin_hatti_acilmaz (test_iha_inis_yayinci.SahaCliTests.test_kanit_false_ise_hicbir_yayin_hatti_acilmaz) ... [İHA] IHA_LANDED ACK eksik: seq=27 beklenen=['ika'] gelen=[]
+[İHA] IHA_LANDED yayınlandı: seq=28 ACK=['ika', 'yks']
+[İHA] Kalkış kanıtı bekleniyor; iniş süresi henüz başlamadı.
+[İHA] Kalkış kanıtı doğrulandı: sysid=42; iniş beklemesi başlıyor.
+[İHA] akış isteği özeti: tur=1 gönderilen=0 gonderim_hatasi=1 ertelenen=0 sessizlik_uyarisi=0 son_EXTENDED=5.0 s önce
+ok
+test_kanit_timeout_default_degil_ve_pozitif_olmalidir (test_iha_inis_yayinci.SahaCliTests.test_kanit_timeout_default_degil_ve_pozitif_olmalidir) ... ok
+test_pixhawk_kanitindan_gercek_udp_ika_latch_i_acilir (test_iha_inis_yayinci.SahaCliTests.test_pixhawk_kanitindan_gercek_udp_ika_latch_i_acilir) ... [İHA] KIRMIZI akış isteği gönderilemiyor: MAVLink gönderim arayüzü yok (mav.mav.command_long_send)
+[İHA] Kalkış kanıtı bekleniyor; iniş süresi henüz başlamadı.
+[İHA] Kalkış kanıtı doğrulandı: sysid=42; iniş beklemesi başlıyor.
+[İHA] akış isteği özeti: tur=1 gönderilen=0 gonderim_hatasi=1 ertelenen=0 sessizlik_uyarisi=0 son_EXTENDED=0.0 s önce
+ok
+test_pymavlink_eksigi_acik_nonzero_doner (test_iha_inis_yayinci.SahaCliTests.test_pymavlink_eksigi_acik_nonzero_doner) ... ok
+test_serial_kanit_sonrasi_ika_ack_bekler (test_iha_inis_yayinci.SahaCliTests.test_serial_kanit_sonrasi_ika_ack_bekler) ... [İHA] KIRMIZI akış isteği gönderilemiyor: MAVLink gönderim arayüzü yok (mav.mav.command_long_send)
+[İHA] IHA_LANDED yayınlandı: seq=29 ACK=['ika']
+[T20_KAPI] IHA_LANDED_saha=1 ACK=ika exit=0
+[İHA] Kalkış kanıtı bekleniyor; iniş süresi henüz başlamadı.
+[İHA] Kalkış kanıtı doğrulandı: sysid=42; iniş beklemesi başlıyor.
+[İHA] akış isteği özeti: tur=1 gönderilen=0 gonderim_hatasi=1 ertelenen=0 sessizlik_uyarisi=0 son_EXTENDED=0.0 s önce
+ok
+test_udp_hedefleri_kanit_sonrasi_ortak_govdeye_gider (test_iha_inis_yayinci.SahaCliTests.test_udp_hedefleri_kanit_sonrasi_ortak_govdeye_gider) ... [İHA] KIRMIZI akış isteği gönderilemiyor: MAVLink gönderim arayüzü yok (mav.mav.command_long_send)
+[İHA] Kalkış kanıtı bekleniyor; iniş süresi henüz başlamadı.
+[İHA] Kalkış kanıtı doğrulandı: sysid=42; iniş beklemesi başlıyor.
+[İHA] akış isteği özeti: tur=1 gönderilen=0 gonderim_hatasi=1 ertelenen=0 sessizlik_uyarisi=0 son_EXTENDED=0.0 s önce
+ok
+test_hedef_yalniz_camera_veya_video_ile (test_rpi_telsiz_yayin.CliTests.test_hedef_yalniz_camera_veya_video_ile) ... ok
+test_main_yayinciyi_kurar_ve_kapatir (test_rpi_telsiz_yayin.CliTests.test_main_yayinciyi_kurar_ve_kapatir) ... ok
+test_ilk_nokta_sifir_y_ekseni_ters_ve_segment_yogunlastirilir (test_rpi_telsiz_yayin.PikselRotaCevirimiTests.test_ilk_nokta_sifir_y_ekseni_ters_ve_segment_yogunlastirilir) ... ok
+test_olceksiz_veya_tek_noktali_rota_reddedilir (test_rpi_telsiz_yayin.PikselRotaCevirimiTests.test_olceksiz_veya_tek_noktali_rota_reddedilir) ... ok
+test_esik_alti_guven_open_route_olarak_KACAMAZ (test_rpi_telsiz_yayin.RunCameraTelsizTests.test_esik_alti_guven_open_route_olarak_KACAMAZ)
+Kapı IhaSender.send_open_route'tadir (cogaltilmaz); yayinci ona uyar. ... ok
+test_heartbeat_ayri_is_parcaciginda_surekli_yayinlanir (test_rpi_telsiz_yayin.RunCameraTelsizTests.test_heartbeat_ayri_is_parcaciginda_surekli_yayinlanir) ... ok
+test_hedef_verilmezse_telsiz_modulu_HIC_yuklenmez (test_rpi_telsiz_yayin.RunCameraTelsizTests.test_hedef_verilmezse_telsiz_modulu_HIC_yuklenmez) ... ok
+test_karar_yok_sessizlik_degil_no_route_karar_yok (test_rpi_telsiz_yayin.RunCameraTelsizTests.test_karar_yok_sessizlik_degil_no_route_karar_yok) ... ok
+test_open_route_ika_ve_yks_ye_ulasir_road_sozlesmesiyle (test_rpi_telsiz_yayin.RunCameraTelsizTests.test_open_route_ika_ve_yks_ye_ulasir_road_sozlesmesiyle) ... ok
+test_ret_sebebi_varken_yol_verilse_bile_open_route_uretilmez (test_rpi_telsiz_yayin.RunCameraTelsizTests.test_ret_sebebi_varken_yol_verilse_bile_open_route_uretilmez) ... ok
+test_ret_sebepli_karar_no_route_olur (test_rpi_telsiz_yayin.RunCameraTelsizTests.test_ret_sebepli_karar_no_route_olur) ... ok
+test_beyansiz_ilk_kaynak_kalkis_ve_iniste_ayni_kalir (test_onarim18_kalkis_kapisi.KalkisKapisi.test_beyansiz_ilk_kaynak_kalkis_ve_iniste_ayni_kalir) ... ok
+test_in_air_ve_takeoff_sonrasi_gercek_inis_kaniti_yayinlanir (test_onarim18_kalkis_kapisi.KalkisKapisi.test_in_air_ve_takeoff_sonrasi_gercek_inis_kaniti_yayinlanir) ... ok
+test_kalkis_beklerken_akis_istekleri_yenilenir (test_onarim18_kalkis_kapisi.KalkisKapisi.test_kalkis_beklerken_akis_istekleri_yenilenir) ... ok
+test_kalkis_beklerken_gecici_okuma_hatasi_toparlanir (test_onarim18_kalkis_kapisi.KalkisKapisi.test_kalkis_beklerken_gecici_okuma_hatasi_toparlanir) ... ok
+test_kalkis_sonrasi_timeout_asilirsa_inis_yayinlanmaz (test_onarim18_kalkis_kapisi.KalkisKapisi.test_kalkis_sonrasi_timeout_asilirsa_inis_yayinlanmaz) ... ok
+test_yabanci_ve_bozuk_kalkis_yerdeki_araca_izin_vermez (test_onarim18_kalkis_kapisi.KalkisKapisi.test_yabanci_ve_bozuk_kalkis_yerdeki_araca_izin_vermez) ... ok
+test_yerde_binlerce_saniye_bekler_inis_uretmez_timeout_baslamaz (test_onarim18_kalkis_kapisi.KalkisKapisi.test_yerde_binlerce_saniye_bekler_inis_uretmez_timeout_baslamaz) ... ok
+test_ayni_mav_ikinci_okuyucu_ve_yerde_mi_tuketimini_reddeder (test_inis_kaniti.BagilIrtifaOkuyucuTests.test_ayni_mav_ikinci_okuyucu_ve_yerde_mi_tuketimini_reddeder) ... ok
+test_baglanti_target_system_kaynagi_sabitler (test_inis_kaniti.BagilIrtifaOkuyucuTests.test_baglanti_target_system_kaynagi_sabitler) ... ok
+test_beklenen_sysid_ve_target_system_yoksa_fail_closed (test_inis_kaniti.BagilIrtifaOkuyucuTests.test_beklenen_sysid_ve_target_system_yoksa_fail_closed) ... ok
+test_duplicate_ve_sira_disi_paket_yasi_yenilemez (test_inis_kaniti.BagilIrtifaOkuyucuTests.test_duplicate_ve_sira_disi_paket_yasi_yenilemez) ... ok
+test_durdurulan_okuyucu_taze_snapshot_i_bile_kullanmaz (test_inis_kaniti.BagilIrtifaOkuyucuTests.test_durdurulan_okuyucu_taze_snapshot_i_bile_kullanmaz) ... ok
+test_gecersiz_kurucu_parametreleri_reddedilir (test_inis_kaniti.BagilIrtifaOkuyucuTests.test_gecersiz_kurucu_parametreleri_reddedilir) ... ok
+test_gecersiz_mesaj_ve_okuma_hatasi_cache_i_gecersiz_kilar (test_inis_kaniti.BagilIrtifaOkuyucuTests.test_gecersiz_mesaj_ve_okuma_hatasi_cache_i_gecersiz_kilar) ... ok
+test_irtifa_snapshot_okumasi_kuyrugu_tuketmez (test_inis_kaniti.BagilIrtifaOkuyucuTests.test_irtifa_snapshot_okumasi_kuyrugu_tuketmez) ... ok
+test_poller_recv_aninda_damgalar_sonradan_sorgu_tazelemez (test_inis_kaniti.BagilIrtifaOkuyucuTests.test_poller_recv_aninda_damgalar_sonradan_sorgu_tazelemez) ... ok
+test_taze_telemetri_metre_doner_ve_nonblocking_okunur (test_inis_kaniti.BagilIrtifaOkuyucuTests.test_taze_telemetri_metre_doner_ve_nonblocking_okunur) ... ok
+test_tazelik_esiginde_eski_deger_donmez (test_inis_kaniti.BagilIrtifaOkuyucuTests.test_tazelik_esiginde_eski_deger_donmez) ... ok
+test_yabanci_veya_adsiz_kaynak_cache_e_dokunmaz (test_inis_kaniti.BagilIrtifaOkuyucuTests.test_yabanci_veya_adsiz_kaynak_cache_e_dokunmaz)
+D-389 (B1): yabanci/adsiz paket KANIT DEGILDIR — atlanir. ... ok
+test_yeni_paket_irtifayi_ve_yasi_yeniler (test_inis_kaniti.BagilIrtifaOkuyucuTests.test_yeni_paket_irtifayi_ve_yasi_yeniler) ... ok
+test_butun_ornekler_ayni_sysid_olmalidir (test_inis_kaniti.InisKanitiTests.test_butun_ornekler_ayni_sysid_olmalidir) ... ok
+test_deadline_yok_gecmis_ve_sonlu_degilse_okuma_yapmaz (test_inis_kaniti.InisKanitiTests.test_deadline_yok_gecmis_ve_sonlu_degilse_okuma_yapmaz) ... ok
+test_farkli_sysid_durum_ve_irtifa_eslenmez (test_inis_kaniti.InisKanitiTests.test_farkli_sysid_durum_ve_irtifa_eslenmez) ... ok
+test_gecersiz_parametreler_false (test_inis_kaniti.InisKanitiTests.test_gecersiz_parametreler_false) ... ok
+test_in_air_sonrasi_uc_temiz_cift_kanit_uretir (test_inis_kaniti.InisKanitiTests.test_in_air_sonrasi_uc_temiz_cift_kanit_uretir)
+D-389 (A2): alcalmadaki IN_AIR bekleme penceresini oldurmez. ... ok
+test_irtifa_beklerken_in_air_mesaji_yutulmaz (test_inis_kaniti.InisKanitiTests.test_irtifa_beklerken_in_air_mesaji_yutulmaz) ... ok
+test_tavan_esitligi_fail_closed (test_inis_kaniti.InisKanitiTests.test_tavan_esitligi_fail_closed) ... ok
+test_tek_yerde_mesaji_uc_irtifayi_kanit_saymaz (test_inis_kaniti.InisKanitiTests.test_tek_yerde_mesaji_uc_irtifayi_kanit_saymaz) ... ok
+test_uc_taze_yerde_ve_dusuk_irtifa_cifti_gecer (test_inis_kaniti.InisKanitiTests.test_uc_taze_yerde_ve_dusuk_irtifa_cifti_gecer) ... ok
+test_yabanci_extended_kaniti_dusuremez (test_inis_kaniti.InisKanitiTests.test_yabanci_extended_kaniti_dusuremez)
+D-389 (B1 kardesi): pine uymayan kaynak atlanir, terminal olmaz. ... ok
+test_yalniz_gps_akisi_mutlak_deadline_i_uzatmaz (test_inis_kaniti.InisKanitiTests.test_yalniz_gps_akisi_mutlak_deadline_i_uzatmaz) ... ok
+test_yuksek_irtifa_ve_okuma_hatalari_false (test_inis_kaniti.InisKanitiTests.test_yuksek_irtifa_ve_okuma_hatalari_false) ... ok
+test_eksik_pymavlink_acik_import_hatasi_verir (test_inis_kaniti.PymavlinkBagimliligiTests.test_eksik_pymavlink_acik_import_hatasi_verir) ... ok
+test_A1_baslangicta_uc_akis_icin_SET_MESSAGE_INTERVAL (test_faz_b_akis_istegi.A_BaslangicIstegi.test_A1_baslangicta_uc_akis_icin_SET_MESSAGE_INTERVAL) ... ok
+test_A1b_sysid_beyani_yoksa_baglantinin_hedefi_yoksa_0 (test_faz_b_akis_istegi.A_BaslangicIstegi.test_A1b_sysid_beyani_yoksa_baglantinin_hedefi_yoksa_0) ... ok
+test_A2_main_istegi_ilk_okumadan_once_gonderir (test_faz_b_akis_istegi.A_BaslangicIstegi.test_A2_main_istegi_ilk_okumadan_once_gonderir) ... ok
+test_A3_gercek_udp_sahte_pixhawk_istegi_alir_akis_baslar_kanit_olusur (test_faz_b_akis_istegi.A_BaslangicIstegi.test_A3_gercek_udp_sahte_pixhawk_istegi_alir_akis_baslar_kanit_olusur) ... ok
+test_A4_on_kosul_sunucu_kipindeki_sahte_akrani_gormeden_gondermez (test_faz_b_akis_istegi.A_BaslangicIstegi.test_A4_on_kosul_sunucu_kipindeki_sahte_akrani_gormeden_gondermez) ... ok
+test_B1_EXTENDED_gelmezken_KIRMIZI_bir_kez_ve_yeniden_istek (test_faz_b_akis_istegi.B_SessizlikBekcisi.test_B1_EXTENDED_gelmezken_KIRMIZI_bir_kez_ve_yeniden_istek) ... ok
+test_B2_main_yolunda_sessizlik_yeniden_istek_KIRMIZI_bir_kez (test_faz_b_akis_istegi.B_SessizlikBekcisi.test_B2_main_yolunda_sessizlik_yeniden_istek_KIRMIZI_bir_kez) ... ok
+test_C1_EXTENDED_akarken_periyodik_yenileme_var_KIRMIZI_yok (test_faz_b_akis_istegi.B_SessizlikBekcisi.test_C1_EXTENDED_akarken_periyodik_yenileme_var_KIRMIZI_yok) ... ok
+test_C2_yabanci_sysid_EXTENDED_sessizligi_bozmaz (test_faz_b_akis_istegi.B_SessizlikBekcisi.test_C2_yabanci_sysid_EXTENDED_sessizligi_bozmaz) ... ok
+test_D1_OSError_yutulmaz_sayac_artar_dongu_surer (test_faz_b_akis_istegi.D_GonderimHatasi.test_D1_OSError_yutulmaz_sayac_artar_dongu_surer) ... ok
+test_D2_main_OSError_ile_kanit_yine_olusur_exit_0 (test_faz_b_akis_istegi.D_GonderimHatasi.test_D2_main_OSError_ile_kanit_yine_olusur_exit_0) ... ok
+test_E1_udp_sunucu_akran_gorulmeden_ertelenir_gorulunce_hemen (test_faz_b_akis_istegi.E_AkranErtelemesi.test_E1_udp_sunucu_akran_gorulmeden_ertelenir_gorulunce_hemen) ... ok
+test_F1_carpan_ve_aralik_mavlink_dogrula_ile_ayni (test_faz_b_akis_istegi.F_Sozlesme.test_F1_carpan_ve_aralik_mavlink_dogrula_ile_ayni) ... ok
+test_F2_tanimlar_pymavlink_sabitlerinden_ve_inis_kaniti_mesajlari (test_faz_b_akis_istegi.F_Sozlesme.test_F2_tanimlar_pymavlink_sabitlerinden_ve_inis_kaniti_mesajlari) ... ok
+test_F3_gecersiz_parametreler_reddedilir (test_faz_b_akis_istegi.F_Sozlesme.test_F3_gecersiz_parametreler_reddedilir) ... ok
+test_G1_dilimli_bekleme_toplam_sureyi_korur_mesajda_hemen_doner (test_faz_b_akis_istegi.G_Gozcu.test_G1_dilimli_bekleme_toplam_sureyi_korur_mesajda_hemen_doner) ... ok
+test_G2_gozcu_yerde_mi_ile_ayni_karari_verir (test_faz_b_akis_istegi.G_Gozcu.test_G2_gozcu_yerde_mi_ile_ayni_karari_verir)
+Sargi karar mantigini degistirmez: ayni mesaj dizisi ayni sonuc. ... ok
+test_bekleme_60s_de_dusmez_ve_surus_deadline_i_ayri_isler (test_k5_k6_sure_limitleri.K5BeklemeVeSurusDeadlineTests.test_bekleme_60s_de_dusmez_ve_surus_deadline_i_ayri_isler) ... ok
+test_bekleme_suresi_dolunca_1_doner_surus_baslamaz (test_k5_k6_sure_limitleri.K5BeklemeVeSurusDeadlineTests.test_bekleme_suresi_dolunca_1_doner_surus_baslamaz) ... ok
+test_navigate_deadline_yoksa_hedefe_ulasir (test_k5_k6_sure_limitleri.K5BeklemeVeSurusDeadlineTests.test_navigate_deadline_yoksa_hedefe_ulasir) ... ok
+test_navigate_surus_deadline_dolunca_durur_false_doner (test_k5_k6_sure_limitleri.K5BeklemeVeSurusDeadlineTests.test_navigate_surus_deadline_dolunca_durur_false_doner) ... ok
+test_sozlesme_sabitleri_sartname_degerleri (test_k5_k6_sure_limitleri.K5BeklemeVeSurusDeadlineTests.test_sozlesme_sabitleri_sartname_degerleri) ... ok
+test_cli_varsayilani_sozlesmeden_gelir (test_k5_k6_sure_limitleri.K6InisSonrasiHeartbeatTests.test_cli_varsayilani_sozlesmeden_gelir) ... ok
+test_gercek_udp_inis_sonrasi_heartbeat_surer_link_lost_olmaz (test_k5_k6_sure_limitleri.K6InisSonrasiHeartbeatTests.test_gercek_udp_inis_sonrasi_heartbeat_surer_link_lost_olmaz)
+Gerçek UDP loopback: hb_timeout=0.4 s alıcı, 1.2 s heartbeat. ... [İHA] KIRMIZI akış isteği gönderilemiyor: MAVLink gönderim arayüzü yok (mav.mav.command_long_send)
+ok
+test_heartbeat_suresi_sahte_saatle_adet_ve_durus (test_k5_k6_sure_limitleri.K6InisSonrasiHeartbeatTests.test_heartbeat_suresi_sahte_saatle_adet_ve_durus)
+Sahte saat: 600 s süre / 0.5 s aralık → heartbeat sayısı 1200, ... ok
+test_sozlesme_heartbeat_suresi_ika_gorev_suresi (test_k5_k6_sure_limitleri.K6InisSonrasiHeartbeatTests.test_sozlesme_heartbeat_suresi_ika_gorev_suresi) ... ok
+test_1_seri_cihaz_REDDEDILIR (test_seri_pixhawk_kilidi.InisYayinciKilidi.test_1_seri_cihaz_REDDEDILIR) ... ok
+test_2_kilit_BAGLANTI_ACILMADAN_ONCE_kosar (test_seri_pixhawk_kilidi.InisYayinciKilidi.test_2_kilit_BAGLANTI_ACILMADAN_ONCE_kosar)
+Port bir an icin bile kapilmaz: `mavlink_baglantisi_ac` CAGRILMAZ. ... ok
+test_3_bilerek_bayragi_kilidi_ACAR (test_seri_pixhawk_kilidi.InisYayinciKilidi.test_3_bilerek_bayragi_kilidi_ACAR)
+Bayrakla parser hatasi YOK; akis baglanti yoluna gecer (kod 2, ama ... ok
+test_4_cogullayici_ucu_KABUL_EDILIR (test_seri_pixhawk_kilidi.InisYayinciKilidi.test_4_cogullayici_ucu_KABUL_EDILIR) ... ok
+test_5_modul_kilavuzu_seri_cihaz_ORNEGI_VERMEZ (test_seri_pixhawk_kilidi.InisYayinciKilidi.test_5_modul_kilavuzu_seri_cihaz_ORNEGI_VERMEZ)
+Kilavuz `--mavlink /dev/ttyACM0` OGRETIYORDU — geri konmasin. ... ok
+test_1_uc_surec_de_AYNI_bayragi_tanir (test_seri_pixhawk_kilidi.KilitTekKaynaktan.test_1_uc_surec_de_AYNI_bayragi_tanir) ... ok
+test_2_uc_surec_de_AYNI_hata_metnini_basar (test_seri_pixhawk_kilidi.KilitTekKaynaktan.test_2_uc_surec_de_AYNI_hata_metnini_basar) ... ok
+test_3_yordam_saf_metindir_pymavlink_ISTEMEZ (test_seri_pixhawk_kilidi.KilitTekKaynaktan.test_3_yordam_saf_metindir_pymavlink_ISTEMEZ)
+Kilit `--fps/--image` yolunu pymavlink'e bagimli kilmamali. ... ok
+test_1_seri_cihaz_REDDEDILIR (test_seri_pixhawk_kilidi.RpiInferenceKilidi.test_1_seri_cihaz_REDDEDILIR) ... ok
+test_2_cogullayici_ucu_KABUL_EDILIR (test_seri_pixhawk_kilidi.RpiInferenceKilidi.test_2_cogullayici_ucu_KABUL_EDILIR) ... ok
+test_3_bilerek_bayragi_kilidi_ACAR (test_seri_pixhawk_kilidi.RpiInferenceKilidi.test_3_bilerek_bayragi_kilidi_ACAR) ... ok
+test_4_bayrak_VARSAYILAN_OLARAK_KAPALI (test_seri_pixhawk_kilidi.RpiInferenceKilidi.test_4_bayrak_VARSAYILAN_OLARAK_KAPALI)
+Fail-closed: bayrak verilmezse kilit acik sayilmaz. ... ok
+test_5_mavlinksiz_kosumda_kilit_KARISMAZ (test_seri_pixhawk_kilidi.RpiInferenceKilidi.test_5_mavlinksiz_kosumda_kilit_KARISMAZ)
+--image/--video yollari (mavlink None) etkilenmez. ... ok
+test_arac_maskesi_paket_kopyasi_kanonikle_bayt_es (test_jetson_comms_paketi.JetsonCommsPaketiTests.test_arac_maskesi_paket_kopyasi_kanonikle_bayt_es) ... ok
+test_jetson_fps_kanonigi_scripts_altindadir (test_jetson_comms_paketi.JetsonCommsPaketiTests.test_jetson_fps_kanonigi_scripts_altindadir)
+Calistirilabilir repo betigi kanonik, paket dosyasi turetilmis aynadir. ... ok
+test_olcek_kahini_arac_katmani_izole_pakette_IMPORT_EDILIYOR (test_jetson_comms_paketi.JetsonCommsPaketiTests.test_olcek_kahini_arac_katmani_izole_pakette_IMPORT_EDILIYOR)
+Paket dizininden TEK BASINA: 'arac_maskesi modulu yok' DONMEMELI. ... ok
+test_paket_kopyalari_kanonik_kaynaklarla_birebir (test_jetson_comms_paketi.JetsonCommsPaketiTests.test_paket_kopyalari_kanonik_kaynaklarla_birebir) ... ok
+test_pymavlink_ve_pyserial_paket_bagimliligi (test_jetson_comms_paketi.JetsonCommsPaketiTests.test_pymavlink_ve_pyserial_paket_bagimliligi) ... ok
+test_rpi_canli_olcek_pymavlink_olmadan_izole_import_edilir (test_jetson_comms_paketi.JetsonCommsPaketiTests.test_rpi_canli_olcek_pymavlink_olmadan_izole_import_edilir)
+T70: duz Jetson yerlesimi ortak irtifa okuyucusunu bulabilmeli. ... ok
+test_uretim_yayincisi_pymavlink_olmadan_izole_import_edilir (test_jetson_comms_paketi.JetsonCommsPaketiTests.test_uretim_yayincisi_pymavlink_olmadan_izole_import_edilir) ... ok
+test_0_on_kosul_json_loads_derin_satirda_recursion_error (test_faz_b_protocol_dayaniklilik.TestFrameReaderRecursion.test_0_on_kosul_json_loads_derin_satirda_recursion_error)
+Vakum korumasi: duzeltmenin hedefi olan istisna bu Python'da ... ok
+test_1_feed_derin_satiri_yutar_sonraki_gecerli_ayni_okuyucudan_gecer (test_faz_b_protocol_dayaniklilik.TestFrameReaderRecursion.test_1_feed_derin_satiri_yutar_sonraki_gecerli_ayni_okuyucudan_gecer) ... ok
+test_1b_feed_derin_satir_parcali_gelse_de_yutulur (test_faz_b_protocol_dayaniklilik.TestFrameReaderRecursion.test_1b_feed_derin_satir_parcali_gelse_de_yutulur)
+Seri akista satir bayt bayt gelir; istisna yalniz newline'da ... ok
+test_2_iha_komut_alici_poll_derin_datagramda_yasar_sonraki_cmd_islenir (test_faz_b_protocol_dayaniklilik.TestIhaKomutAliciDerinSatir.test_2_iha_komut_alici_poll_derin_datagramda_yasar_sonraki_cmd_islenir)
+Uretim `IhaKomutAlici` (UDP, mav=None: aktarim yok ama CMD sayilir) ... ok
+test_eski_eksik_json_varsayilan_decoder_ile_reddedilir (test_faz_b_protocol_dayaniklilik.TestVarsayilanJSON.test_eski_eksik_json_varsayilan_decoder_ile_reddedilir) ... ok
+test_gecici_hata_sonrasi_dinleyici_yasamaya_devam_eder (test_yks_gui_dayaniklilik.DinleyiciDayanikliligiTests.test_gecici_hata_sonrasi_dinleyici_yasamaya_devam_eder) ... ok
+test_soket_kapaninca_dinleyici_temiz_cikar (test_yks_gui_dayaniklilik.DinleyiciDayanikliligiTests.test_soket_kapaninca_dinleyici_temiz_cikar) ... ok
+test_recv_baglanti_sifirlamasini_yutar (test_yks_gui_dayaniklilik.LinkDayanikliligiTests.test_recv_baglanti_sifirlamasini_yutar) ... ok
+test_recv_kapali_sokette_hala_OSError_verir (test_yks_gui_dayaniklilik.LinkDayanikliligiTests.test_recv_kapali_sokette_hala_OSError_verir)
+Gercek kapanma yutulmamali — _dinle bu sinyalle temiz cikiyor. ... ok
+test_ref_xy_none_dongusu_kopartmaz (test_yks_gui_dayaniklilik.TikDayanikliligiTests.test_ref_xy_none_dongusu_kopartmaz) ... ok
+test_uretim_ref_xy_none_cerceveyi_gercekten_isler (test_yks_gui_dayaniklilik.TikDayanikliligiTests.test_uretim_ref_xy_none_cerceveyi_gercekten_isler)
+Kok neden de duzeltilmis mi: ref_xy=None artik TypeError uretmemeli. ... ok
+
+----------------------------------------------------------------------
+Ran 186 tests in 29.816s
+
+OK
+[T207_A3] exit=0 alinan_komutlar=[(511, 245.0), (511, 33.0), (511, 24.0)] sure=3.23s
+[T207_B1] komut=12 kirmizi=2 sayac={'tur': 4, 'gonderilen': 12, 'gonderim_hatasi': 0, 'ertelenen': 0, 'sessizlik_uyarisi': 2}
+[T207_B2] exit=3 tur=48 sahte_t=474s kirmizi=1
+[T207_C1] komut=9 kirmizi=0 sahte_t=25.0s
+[K5] bekleme_deadline=+900s surus_deadline=izin+600s rota=61s izin=+240s exit=0
+[K5] surus deadline=5s -> durdu adim=5 son_vel=(0, 0) sonuc=False
+[K6] gercek UDP: landed→bitis=1.25s > hb_timeout=0.4s, heartbeat_gorulen=25, link_lost=False, exit=0
+[K6] heartbeat_suresi=600s aralik=0.5s -> heartbeat=1200
+[K6] heartbeat_suresi=0s aralik=0.5s -> heartbeat=0

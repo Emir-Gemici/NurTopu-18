@@ -1,0 +1,84 @@
+F
+======================================================================
+FAIL: test_yeniden_baslayan_model_seq_bir_ile_hemen_doner (test_onarim18_heartbeat_akislari.HeartbeatAkislari.test_yeniden_baslayan_model_seq_bir_ile_hemen_doner)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/trs/projects/navitas-unified-20260822/tests/test_onarim18_heartbeat_akislari.py", line 56, in test_yeniden_baslayan_model_seq_bir_ile_hemen_doner
+    self.assertEqual(41.0, self.g.tel["iha"]["lat"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 41.0 != 40.9599798
+
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+FAILED (failures=1)
+M1 sıra yalnız düğüm başına YAKALANDI
+EE
+======================================================================
+ERROR: test_iki_yayinci_her_iki_sirada_da_telemetriyi_korur (test_onarim18_heartbeat_akislari.HeartbeatAkislari.test_iki_yayinci_her_iki_sirada_da_telemetriyi_korur) (once_saglik=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/trs/projects/navitas-unified-20260822/tests/test_onarim18_heartbeat_akislari.py", line 44, in test_iki_yayinci_her_iki_sirada_da_telemetriyi_korur
+    self.assertEqual(40.9599798, self.g.tel["iha"]["lat"])
+                                 ~~~~~~~~~~~~~~~~~^^^^^^^
+KeyError: 'lat'
+
+======================================================================
+ERROR: test_iki_yayinci_her_iki_sirada_da_telemetriyi_korur (test_onarim18_heartbeat_akislari.HeartbeatAkislari.test_iki_yayinci_her_iki_sirada_da_telemetriyi_korur) (once_saglik=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/trs/projects/navitas-unified-20260822/tests/test_onarim18_heartbeat_akislari.py", line 44, in test_iki_yayinci_her_iki_sirada_da_telemetriyi_korur
+    self.assertEqual(40.9599798, self.g.tel["iha"]["lat"])
+                                 ~~~~~~~~~~~~~~~~~^^^^^^^
+KeyError: 'lat'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+FAILED (errors=2)
+M2 salt canlılık snapshot siler YAKALANDI
+F
+======================================================================
+FAIL: test_saglik_canliyken_model_kaybi_esikte_gecersizlesir (test_onarim18_heartbeat_akislari.HeartbeatAkislari.test_saglik_canliyken_model_kaybi_esikte_gecersizlesir)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/trs/projects/navitas-unified-20260822/tests/test_onarim18_heartbeat_akislari.py", line 80, in test_saglik_canliyken_model_kaybi_esikte_gecersizlesir
+    self.assertEqual({}, self.g.tel["iha"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {} != {'bat': 12.6, 'uydu': 10, 'lat': 40.959979[52 chars]True}
+- {}
++ {'bat': 12.6,
++  'gps_fix': 6,
++  'lat': 40.9599798,
++  'lon': 29.133553,
++  'pixhawk_canli': True,
++  'uydu': 10}
+
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+FAILED (failures=1)
+M3 telemetri yaşlandırma yok YAKALANDI
+F
+======================================================================
+FAIL: test_telemetri_akisinin_bos_snapshoti_gnss_ve_armi_siler (test_onarim18_heartbeat_akislari.HeartbeatAkislari.test_telemetri_akisinin_bos_snapshoti_gnss_ve_armi_siler)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/trs/projects/navitas-unified-20260822/tests/test_onarim18_heartbeat_akislari.py", line 71, in test_telemetri_akisinin_bos_snapshoti_gnss_ve_armi_siler
+    self.assertEqual({}, self.g.tel["iha"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {} != {'bat': 12.6, 'uydu': 10, 'lat': 40.959979[52 chars]True}
+- {}
++ {'bat': 12.6,
++  'gps_fix': 6,
++  'lat': 40.9599798,
++  'lon': 29.133553,
++  'pixhawk_canli': True,
++  'uydu': 10}
+
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+FAILED (failures=1)
+M4 boş telemetri snapshot da yok sayılır YAKALANDI
+MUTASYON: 4/4 yakalandi

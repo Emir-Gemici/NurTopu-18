@@ -1,0 +1,5 @@
+[İHA] akış isteği ertelendi: MAVLink akranı henüz görülmedi (udp sunucu kipi)
+[İHA] Kalkış kanıtı bekleniyor; iniş süresi henüz başlamadı.
+[İHA] Kalkış kanıtı doğrulandı: sysid=1; iniş beklemesi başlıyor.
+[İHA] akış isteği özeti: tur=7 gönderilen=18 gonderim_hatasi=0 ertelenen=1 sessizlik_uyarisi=0 son_EXTENDED=0.0 s önce
+[İHA] IHA_LANDED yayınlandı: seq=1 ACK=['ika']

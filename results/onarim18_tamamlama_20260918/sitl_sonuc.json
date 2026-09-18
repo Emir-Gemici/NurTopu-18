@@ -1,0 +1,516 @@
+{
+  "passed": true,
+  "events": [
+    {
+      "t": 0.201,
+      "event": "sitl_connected",
+      "pid": 29548
+    },
+    {
+      "t": 0.261,
+      "event": "status",
+      "text": "Calibrating barometer"
+    },
+    {
+      "t": 1.432,
+      "event": "command_ack",
+      "command": 511,
+      "result": 0
+    },
+    {
+      "t": 1.432,
+      "event": "command_ack",
+      "command": 511,
+      "result": 0
+    },
+    {
+      "t": 1.432,
+      "event": "command_ack",
+      "command": 511,
+      "result": 0
+    },
+    {
+      "t": 1.857,
+      "event": "status",
+      "text": "Barometer 1 calibration complete"
+    },
+    {
+      "t": 1.857,
+      "event": "status",
+      "text": "Barometer 2 calibration complete"
+    },
+    {
+      "t": 2.383,
+      "event": "status",
+      "text": "ArduPilot Ready"
+    },
+    {
+      "t": 2.383,
+      "event": "status",
+      "text": "AHRS: DCM active"
+    },
+    {
+      "t": 2.435,
+      "event": "landed_state",
+      "value": 1
+    },
+    {
+      "t": 2.682,
+      "event": "status",
+      "text": "RC7: SaveWaypoint LOW"
+    },
+    {
+      "t": 4.387,
+      "event": "status",
+      "text": "EKF3 IMU0 initialised"
+    },
+    {
+      "t": 4.387,
+      "event": "status",
+      "text": "EKF3 IMU1 initialised"
+    },
+    {
+      "t": 4.387,
+      "event": "status",
+      "text": "AHRS: EKF3 active"
+    },
+    {
+      "t": 5.734,
+      "event": "status",
+      "text": "EKF3 IMU0 tilt alignment complete"
+    },
+    {
+      "t": 5.734,
+      "event": "status",
+      "text": "EKF3 IMU1 tilt alignment complete"
+    },
+    {
+      "t": 5.837,
+      "event": "status",
+      "text": "EKF3 IMU0 MAG0 initial yaw alignment complete"
+    },
+    {
+      "t": 5.837,
+      "event": "status",
+      "text": "EKF3 IMU1 MAG0 initial yaw alignment complete"
+    },
+    {
+      "t": 9.745,
+      "event": "status",
+      "text": "GPS 1: detected as u-blox at 230400 baud"
+    },
+    {
+      "t": 9.977,
+      "event": "ground_ready",
+      "state": {
+        "landed": 1,
+        "alt": -0.027,
+        "armed": false,
+        "mode": 0,
+        "gps": 6
+      }
+    },
+    {
+      "t": 11.448,
+      "event": "command_ack",
+      "command": 511,
+      "result": 0
+    },
+    {
+      "t": 11.448,
+      "event": "command_ack",
+      "command": 511,
+      "result": 0
+    },
+    {
+      "t": 11.448,
+      "event": "command_ack",
+      "command": 511,
+      "result": 0
+    },
+    {
+      "t": 17.981,
+      "event": "ground_no_landing_PASS"
+    },
+    {
+      "t": 17.987,
+      "event": "command_ack",
+      "command": 176,
+      "result": 0
+    },
+    {
+      "t": 18.085,
+      "event": "guided",
+      "state": {
+        "landed": 1,
+        "alt": -0.027,
+        "armed": false,
+        "mode": 4,
+        "gps": 6
+      }
+    },
+    {
+      "t": 18.095,
+      "event": "command_ack",
+      "command": 400,
+      "result": 4
+    },
+    {
+      "t": 18.095,
+      "event": "status",
+      "text": "Arm: Need Position Estimate"
+    },
+    {
+      "t": 19.957,
+      "event": "status",
+      "text": "EKF3 IMU0 origin set"
+    },
+    {
+      "t": 19.983,
+      "event": "status",
+      "text": "Field Elevation Set: 20m"
+    },
+    {
+      "t": 20.09,
+      "event": "command_ack",
+      "command": 400,
+      "result": 4
+    },
+    {
+      "t": 20.09,
+      "event": "status",
+      "text": "Arm: Need Position Estimate"
+    },
+    {
+      "t": 20.147,
+      "event": "status",
+      "text": "EKF3 IMU1 origin set"
+    },
+    {
+      "t": 21.447,
+      "event": "command_ack",
+      "command": 511,
+      "result": 0
+    },
+    {
+      "t": 21.447,
+      "event": "command_ack",
+      "command": 511,
+      "result": 0
+    },
+    {
+      "t": 21.447,
+      "event": "command_ack",
+      "command": 511,
+      "result": 0
+    },
+    {
+      "t": 22.09,
+      "event": "command_ack",
+      "command": 400,
+      "result": 4
+    },
+    {
+      "t": 22.091,
+      "event": "status",
+      "text": "Arm: Need Position Estimate"
+    },
+    {
+      "t": 24.094,
+      "event": "command_ack",
+      "command": 400,
+      "result": 4
+    },
+    {
+      "t": 24.094,
+      "event": "status",
+      "text": "Arm: Need Position Estimate"
+    },
+    {
+      "t": 26.103,
+      "event": "command_ack",
+      "command": 400,
+      "result": 4
+    },
+    {
+      "t": 26.103,
+      "event": "status",
+      "text": "Arm: Need Position Estimate"
+    },
+    {
+      "t": 28.1,
+      "event": "command_ack",
+      "command": 400,
+      "result": 4
+    },
+    {
+      "t": 28.1,
+      "event": "status",
+      "text": "Arm: Need Position Estimate"
+    },
+    {
+      "t": 30.101,
+      "event": "command_ack",
+      "command": 400,
+      "result": 4
+    },
+    {
+      "t": 30.101,
+      "event": "status",
+      "text": "Arm: Need Position Estimate"
+    },
+    {
+      "t": 30.384,
+      "event": "status",
+      "text": "PreArm: Need Position Estimate"
+    },
+    {
+      "t": 31.448,
+      "event": "command_ack",
+      "command": 511,
+      "result": 0
+    },
+    {
+      "t": 31.448,
+      "event": "command_ack",
+      "command": 511,
+      "result": 0
+    },
+    {
+      "t": 31.448,
+      "event": "command_ack",
+      "command": 511,
+      "result": 0
+    },
+    {
+      "t": 32.103,
+      "event": "command_ack",
+      "command": 400,
+      "result": 4
+    },
+    {
+      "t": 32.103,
+      "event": "status",
+      "text": "Arm: Need Position Estimate"
+    },
+    {
+      "t": 34.107,
+      "event": "command_ack",
+      "command": 400,
+      "result": 4
+    },
+    {
+      "t": 34.107,
+      "event": "status",
+      "text": "Arm: Need Position Estimate"
+    },
+    {
+      "t": 36.107,
+      "event": "command_ack",
+      "command": 400,
+      "result": 4
+    },
+    {
+      "t": 36.107,
+      "event": "status",
+      "text": "Arm: Need Position Estimate"
+    },
+    {
+      "t": 38.108,
+      "event": "command_ack",
+      "command": 400,
+      "result": 4
+    },
+    {
+      "t": 38.108,
+      "event": "status",
+      "text": "Arm: Need Position Estimate"
+    },
+    {
+      "t": 40.108,
+      "event": "command_ack",
+      "command": 400,
+      "result": 4
+    },
+    {
+      "t": 40.108,
+      "event": "status",
+      "text": "Arm: Need Position Estimate"
+    },
+    {
+      "t": 41.357,
+      "event": "status",
+      "text": "EKF3 IMU0 is using GPS"
+    },
+    {
+      "t": 41.554,
+      "event": "status",
+      "text": "EKF3 IMU1 is using GPS"
+    },
+    {
+      "t": 41.946,
+      "event": "command_ack",
+      "command": 511,
+      "result": 0
+    },
+    {
+      "t": 41.946,
+      "event": "command_ack",
+      "command": 511,
+      "result": 0
+    },
+    {
+      "t": 41.947,
+      "event": "command_ack",
+      "command": 511,
+      "result": 0
+    },
+    {
+      "t": 42.112,
+      "event": "command_ack",
+      "command": 400,
+      "result": 0
+    },
+    {
+      "t": 42.112,
+      "event": "status",
+      "text": "Warning: Arming Checks Disabled"
+    },
+    {
+      "t": 42.112,
+      "event": "status",
+      "text": "Arming motors"
+    },
+    {
+      "t": 44.11,
+      "event": "armed",
+      "state": {
+        "landed": 1,
+        "alt": 0.003,
+        "armed": true,
+        "mode": 4,
+        "gps": 6
+      }
+    },
+    {
+      "t": 44.115,
+      "event": "command_ack",
+      "command": 22,
+      "result": 0
+    },
+    {
+      "t": 45.439,
+      "event": "landed_state",
+      "value": 3
+    },
+    {
+      "t": 48.124,
+      "event": "status",
+      "text": "EKF3 IMU1 MAG0 in-flight yaw alignment complete"
+    },
+    {
+      "t": 48.129,
+      "event": "status",
+      "text": "EKF3 IMU0 MAG0 in-flight yaw alignment complete"
+    },
+    {
+      "t": 49.439,
+      "event": "landed_state",
+      "value": 2
+    },
+    {
+      "t": 49.46,
+      "event": "airborne",
+      "state": {
+        "landed": 2,
+        "alt": 3.059,
+        "armed": true,
+        "mode": 4,
+        "gps": 6
+      }
+    },
+    {
+      "t": 49.465,
+      "event": "command_ack",
+      "command": 176,
+      "result": 0
+    },
+    {
+      "t": 49.938,
+      "event": "landed_state",
+      "value": 4
+    },
+    {
+      "t": 51.951,
+      "event": "command_ack",
+      "command": 511,
+      "result": 0
+    },
+    {
+      "t": 51.951,
+      "event": "command_ack",
+      "command": 511,
+      "result": 0
+    },
+    {
+      "t": 51.951,
+      "event": "command_ack",
+      "command": 511,
+      "result": 0
+    },
+    {
+      "t": 55.613,
+      "event": "status",
+      "text": "SIM Hit ground at 0.480186 m/s"
+    },
+    {
+      "t": 57.438,
+      "event": "landed_state",
+      "value": 1
+    },
+    {
+      "t": 57.685,
+      "event": "status",
+      "text": "Disarming motors"
+    },
+    {
+      "t": 58.452,
+      "event": "IHA_LANDED",
+      "seq": 1,
+      "state": {
+        "landed": 1,
+        "alt": 0.044,
+        "armed": false,
+        "mode": 9,
+        "gps": 6
+      }
+    },
+    {
+      "t": 58.529,
+      "event": "landing_received",
+      "state": {
+        "landed": 1,
+        "alt": 0.044,
+        "armed": false,
+        "mode": 9,
+        "gps": 6
+      }
+    },
+    {
+      "t": 58.529,
+      "event": "publisher_done",
+      "state": {
+        "landed": 1,
+        "alt": 0.044,
+        "armed": false,
+        "mode": 9,
+        "gps": 6
+      }
+    },
+    {
+      "t": 58.529,
+      "event": "SITL_PASS",
+      "packets": 1
+    }
+  ]
+}

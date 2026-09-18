@@ -1,0 +1,53 @@
+[
+  {
+    "name": "hedefli",
+    "command": [
+      "/home/trs/projects/navitas-unified-20260822/.venv/bin/python",
+      "-B",
+      "-c",
+      "import sys,unittest; sys.path.insert(0,\"tests\"); s=unittest.defaultTestLoader.loadTestsFromNames(['test_onarim18_heartbeat_akislari', 'test_t162_alan_ihlali', 'test_a2_karar_yasi', 'test_yki_gnss_telemetri', 'test_t243_mesaj_boyutu', 'test_iha_inis_yayinci', 'test_rpi_telsiz_yayin', 'test_onarim18_kalkis_kapisi', 'test_inis_kaniti', 'test_faz_b_akis_istegi', 'test_k5_k6_sure_limitleri', 'test_seri_pixhawk_kilidi', 'test_jetson_comms_paketi', 'test_faz_b_protocol_dayaniklilik', 'test_yks_gui_dayaniklilik']); r=unittest.TextTestRunner(verbosity=2).run(s); sys.exit(not r.wasSuccessful())"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "heartbeat_mutasyon",
+    "command": [
+      "/home/trs/projects/navitas-unified-20260822/.venv/bin/python",
+      "-B",
+      "results/onarim18_heartbeat_20260917/mutasyon.py"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "kalkis_mutasyon",
+    "command": [
+      "/home/trs/projects/navitas-unified-20260822/.venv/bin/python",
+      "-B",
+      "results/onarim18_kalkis_20260917/mutasyon.py"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "genel_kapi",
+    "command": [
+      "/home/trs/projects/navitas-unified-20260822/.venv/bin/python",
+      "-B",
+      "codes/test_rota_sentetik.py"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "tam_suit",
+    "command": [
+      "/home/trs/projects/navitas-unified-20260822/.venv/bin/python",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-v"
+    ],
+    "exit": 1
+  }
+]

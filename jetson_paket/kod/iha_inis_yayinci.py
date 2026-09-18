@@ -432,7 +432,7 @@ def _arg_parser():
     seri_pixhawk_bayragini_ekle(parser)
     parser.add_argument(
         "--kanit-timeout", required=True, type=float,
-        help="İniş kanıtı için toplam çalışma süresi (saniye)")
+        help="Kalkış kanıtından sonra inişi bekleme süresi (saniye); kalkış öncesi bekleme süresizdir")
     parser.add_argument(
         "--sysid", type=int, default=None,
         help="Beklenen MAVLink sistem kimliği (D-389: verilirse iniş kanıtı "
@@ -511,26 +511,28 @@ def main(argv=None, *, saat=time.monotonic):
         return 2
 
     try:
+        # Kalkış beklenirken de akış istekleri ve sessizlik bakımı sürer.
+        istekci = AkisIstekcisi(mav, beklenen_sysid=args.sysid, saat=saat)
+        istekci.iste()
+        gozcu = AkisGozcusu(mav, istekci)
         try:
+            kanit_sysid = kalkisi_bekle(gozcu, beklenen_sysid=args.sysid)
             son_tarih = time.monotonic() + args.kanit_timeout
             mav.inis_kaniti_deadline_monotonic = son_tarih
-        except (AttributeError, TypeError, ValueError) as exc:
-            print(f"[İHA] HATA: MAVLink son tarihi kurulamadı: {exc}",
+        except (ImportError, AttributeError, TypeError, ValueError) as exc:
+            print(f"[İHA] HATA: Kalkış/iniş beklemesi kurulamadı: {exc}",
                   file=sys.stderr)
             return 2
         # T207 (D-406 A): EXTENDED_SYS_STATE yalniz istekle akar ve istek
         # Pixhawk reboot'unda silinir. Basta iste; gozcu, yerde_mi'nin okuma
         # beklemesi icinde periyodik yenilemeyi ve sessizlik denetimini kosar.
-        istekci = AkisIstekcisi(mav, beklenen_sysid=args.sysid, saat=saat)
-        istekci.iste()
-        gozcu = AkisGozcusu(mav, istekci)
         # D-389 (A1): yerde_mi son tarihe kadar bekler (A2); yine de erken
         # False donerse (gecici istisna / beklenen kaynaktan bozuk paket)
         # sure kaldigi surece YENIDEN denenir — tek atis gorevi olduremez.
         yerde = False
         while not yerde and time.monotonic() < son_tarih:
             istekci.bakim()
-            yerde = yerde_mi(gozcu, beklenen_sysid=args.sysid)
+            yerde = yerde_mi(gozcu, beklenen_sysid=kanit_sysid)
             if not yerde:
                 time.sleep(0.05)   # bozuk paket firtinasinda sicak dongu olmasin
         print(f"{LOG_ONEKI} {istekci.ozet()}", flush=True)
@@ -559,6 +561,50 @@ def main(argv=None, *, saat=time.monotonic):
         return 0 if basarili else 5
     finally:
         _mavlink_kapat(mav)
+
+
+def kalkisi_bekle(mav, *, beklenen_sysid=None):
+    """Yerde açılışı iniş sayma; aynı kaynaktan uçuş kanıtını süresiz bekle.
+
+    AkisGozcusu kısa okuma dilimlerinde akış isteklerini yeniler. İlk geçerli
+    EXTENDED kaynağı (veya --sysid) hem kalkış hem sonraki iniş için pinlenir.
+    ARM tek başına kalkış değildir; eşik uydurmadan MAVLink IN_AIR/TAKEOFF
+    durumları kullanılır. Süreç uçuş sırasında açılırsa IN_AIR da yeterlidir.
+    """
+    m = _mavutil_al().mavlink
+    ucus_durumlari = (m.MAV_LANDED_STATE_IN_AIR, m.MAV_LANDED_STATE_TAKEOFF)
+    mesru_durumlar = (m.MAV_LANDED_STATE_ON_GROUND,
+                     m.MAV_LANDED_STATE_LANDING) + ucus_durumlari
+    kaynak_pini = beklenen_sysid
+    okuma_hatasi = False
+    print(f"{LOG_ONEKI} Kalkış kanıtı bekleniyor; iniş süresi henüz başlamadı.",
+          flush=True)
+    while True:
+        try:
+            mesaj = mav.recv_match(type=MESAJ_EXTENDED_SYS_STATE,
+                                   blocking=True, timeout=AKIS_BAKIM_DILIMI_S)
+        except OSError as exc:
+            if not okuma_hatasi:
+                print(f"{LOG_ONEKI} Kalkış beklerken MAVLink okuma hatası: {exc}",
+                      file=sys.stderr, flush=True)
+            okuma_hatasi = True
+            time.sleep(AKIS_BAKIM_DILIMI_S)
+            continue
+        okuma_hatasi = False
+        if mesaj is None or _mesaj_tipi(mesaj) != MESAJ_EXTENDED_SYS_STATE:
+            continue
+        kaynak = _mesaj_kaynagi(mesaj)
+        durum = getattr(mesaj, "landed_state", None)
+        if (not _kimlik_1_255(kaynak) or type(durum) is not int
+                or durum not in mesru_durumlar):
+            continue
+        if kaynak_pini is None:
+            kaynak_pini = kaynak
+        if kaynak != kaynak_pini or durum not in ucus_durumlari:
+            continue
+        print(f"{LOG_ONEKI} Kalkış kanıtı doğrulandı: sysid={kaynak_pini}; "
+              "iniş beklemesi başlıyor.", flush=True)
+        return kaynak_pini
 
 
 if __name__ == "__main__":

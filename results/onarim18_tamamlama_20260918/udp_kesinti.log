@@ -1,0 +1,3 @@
+{"event": "two_streams_PASS", "tel": {"lat": 40.9599798, "lon": 29.133553, "gps_fix": 6}, "armed": true, "heartbeat_age": 0.00011810199794126675}
+{"event": "10s_cut_health_alive_telemetry_stale_PASS", "tel": {}, "armed": null, "heartbeat_age": 3.131199991912581e-05}
+{"event": "new_process_seq_restart_recovers_PASS", "tel": {"lat": 40.9599798, "lon": 29.133553, "gps_fix": 6}, "armed": true, "heartbeat_age": 2.3557997337775305e-05}
