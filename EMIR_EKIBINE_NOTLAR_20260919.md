@@ -7,7 +7,7 @@ Aşağıdakilerin hepsi **ölçülmüştür**; ölçülmeyen her satırda "BEYAN
 
 ---
 
-## 1. 🔴 ÖNEMLİ: Jetson **zaten güncel** — `navitas_tunel_staging` KURULMASIN
+## 1. ⚠ DÜZELTME (00:55): "Jetson zaten güncel" iddiam **YANLIŞTI**
 
 19 Eylül 00:20'de Jetson'a (`10.21.8.7`) bağlanıp ölçtüm:
 
@@ -18,16 +18,21 @@ Aşağıdakilerin hepsi **ölçülmüştür**; ölçülmeyen her satırda "BEYAN
 | Servisler | 6 birim `active`, tünel kipinde (`seri_hub --tunel 127.0.0.1:14553 --tunel-kimlik hava`) |
 | `iha_inis_yayinci` | `--kalkis-bekle` ile koşuyor (D-495 düzeltmesi kurulu) |
 
-**Yani "Jetson güncellemesi bekliyor" kalemi fiilen kapalı.** Kod güncel; eksik olan yalnızca
-systemd birimleriydi ve onlar da **kurulu hâliyle doğru**:
+**🔴 Bu karşılaştırma yanlış referansa dayanıyordu.** Emir tarafı haklı olarak düzeltti:
+staging dizini **dünkü** paketti (`e33b592a`); bekleyen güncelleme ise bu gece denetimden geçen
+**`8a483ade`** sürümüydü (iniş kanıtı ACK gelmezse 60 kez yeniden yayın + alçalma sırasında
+yeniden başlama düzeltmesi). Ben staging'i "en yeni" varsaydım; o varsayımı ölçmemiştim.
+Emir tarafı 00:45'te tek dosyayı (`comms/iha_inis_yayinci.py`) kurdu, servis `active`,
+"kalkış kanıtı bekleniyor" diyor. **Kalem onlar tarafından kapatıldı.**
 
-```
-staging şablonu:  User=navitas      ExecStart=/usr/bin/python3 /home/navitas/navitas/...
-kurulu (DOĞRU):   User=n4vitas      ExecStart=/opt/navitas/python/bin/python /home/n4vitas/navitas/...
-```
+**İkinci düzeltme — "staging systemd şablonları sistemi bozar" uyarım da eksikti.** Şablonlar
+**elle** `/etc/systemd`'ye kopyalanırsa bozar (bu doğru), ama kurulum öyle yapılmıyor:
+`jetson_baslat.sh` şablonları kurarken kullanıcı adını ve Python yolunu ortam değişkenlerinden
+yeniden yazıyor. Ben kurulu birim ile şablonu karşılaştırıp aradaki farkı "kurulum bozar" diye
+yorumladım; doğrusu **"elle kopyalamayın, kurulum `jetson_baslat.sh` ile yapılsın"**.
 
-⚠ **Staging'deki systemd dosyaları kurulursa sistem çöker** — kullanıcı adı ve yorumlayıcı yolu
-yanlış. `/opt/navitas/python` bilerek kuruldu (ONARIM-10: venv bağımlılığı kaldırıldı, torch orada).
+**Ders (kendime):** bir dizinin "en güncel" olduğu ölçülmedikçe varsayılmaz; referansın kendisi
+doğrulanmalıydı.
 
 ## 2. `codes/rpi_inference.py` master sürümüne alındı (görev kaydı geri geldi)
 
@@ -90,7 +95,28 @@ konusunda hemfikiriz.
 | ONARIM-19 video kaynağı keşfi (`yks_gui --video-tara`) | Yalnız master'da; video kapsam dışı olduğu için saha etkilenmiyor |
 | ONARIM-16/17 YKS/İKA eşleşme keşfi | `yks_kesif.py` Jetson'da var |
 
-## 7. Bizden bekleyenler (Halil tarafı)
+## 7. 🔴 ÖLÇÜLDÜ (00:47): canlı kamerada 518/518 kare `MASKE_YOK` — **ama bu bir arıza değil**
+
+Görev kaydı açıldıktan sonra ilk gerçek ölçüm (`results/jetson_log/gorev/20260919_004640_612b01f7_8539/`):
+
+| Ölçüt | Değer |
+|---|---|
+| Kare | 518 |
+| Sonuç | **518/518 `MASKE_YOK`** |
+| `zemin_px` | **0 — beş yüz on sekiz karenin hepsinde** |
+| `engel_px` | ort. 894.960 (1280×1280'in ~%55'i) |
+| Keskinlik (Laplacian var.) | ort. **13,2** (min 12,9 · maks 13,6) → BULANIK bandı (< 20) |
+| Çıkarım süresi | ort. 142 ms (~7 FPS), medyan 135 ms |
+
+**Kareyi indirip baktım:** kamera masada duruyor ve **20–30 cm mesafedeki bir masa/raf köşesine**
+bakıyor. 6 mm lens 20–30 m için sonsuza odaklı olduğundan bu mesafede bulanıklık **beklenen**,
+ve görüntüde yol olmadığı için modelin `MASKE_YOK` demesi **doğru davranıştır** (fail-closed).
+
+⚠ **Dolayısıyla bu ölçüm modelin sahadaki başarısı hakkında bir şey söylemez.** ONARIM-04
+(canlı `MASKE_YOK` kök nedeni) **hâlâ açıktır**: kameranın ≥ 5 m uzağa, tercihen gerçek zemine
+baktığı bir koşulda tekrarlanmalı. Artık görev kaydı açık olduğu için tekrar ölçüm 2 dakikalık iştir.
+
+## 8. Bizden bekleyenler (Halil tarafı)
 
 - Ethernet kablosu + 4S şarj: **kullanıcıda**, drone toplanıyor.
 - Jetson erişimi açık, SSH ile çalışılabiliyor (`10.21.8.7`).
