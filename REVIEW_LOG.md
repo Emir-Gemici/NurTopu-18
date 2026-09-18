@@ -31715,3 +31715,21 @@ Tur 1'de iki denetçi de KABUL etti; yalnız küçük bulgular kaldı:
 
 **Mimar kontrolü:** 195,00 s ve 202,52 s karelerini açtı. Motor değerleri, CCW−CW, HUD ve açıklamalar D-491/D-492 ile tutarlı.
 **Yazan:** mimar.
+
+### D-494 (mimar, 18 Eyl) — Tünel sahada ölçüldü: yer→hava %54 kaybın kökü TELEM2 doygunluğu (eski "tüm akışlar 8 Hz" isteği); K8a kayıp %3,5 / p95 268 ms; K8b p95 360 ms; **K8 DÜŞTÜ** (eşik 0,20 s); 473 B 4 parça %43 kayıp
+
+**Düzen:** Jetson e33b592a paketi (`--kapi` 3/3, `[PARAM] indirme bitti (6 s)`, thazırlık 34 s, 6 birim aktif 0 restart) · Pixhawk TELEM1 → RFD900A → PC COM7 · yer tarafı ilk MP aynası (UDP Client 14570, Write access), sonra `scripts/yer_yonlendirici.py` (ham bayt boru: COM7 ↔ UDP 14550 MP + 14590 tünel). Ham JSON'lar `results/tunel_20260918/`.
+**Ölçümler (n=200, 0,25 s):**
+1. 18:19 MP aynası (K8a_tunel_rtt.json): ACK 7/200, kayıp %96,5, gec_ack 83, p50 420 / p95 485 ms. Jetson yankısı 200 probun **92'sini** gördü → kayıp yer→hava yönünde.
+2. 18:45 yönlendirici (…_yonlendirici.json): 18/200, %91 — koşu KİRLİ: MP aynası hâlâ 14570'e yazıyordu (akran_degisti 183).
+3. AYRIM 1 (18:56): PC→RFD→Pixhawk PARAM_REQUEST_READ 120 prob: cevap 115/120 (%4 kayıp), RTT p50 154 / p95 231 ms → **telsiz yolu sağlam**; kayıp Pixhawk→TELEM2→Jetson legindedir.
+4. AYRIM 2 (18:57, 1 Hz n=40): tünel %70 kayıp, p95 968 ms → kadans değil, kuyruk/doygunluk.
+5. **KÖK NEDEN (18:59, Jetson 14553 ölçümü):** TELEM2→Jetson **175 msg/s, 5738 B/s = %100** (57600); SYS_STATUS/POWER_STATUS/MEMINFO/NAV_CONTROLLER_OUTPUT/MISSION_CURRENT/VFR_HUD/SERVO_OUTPUT_RAW hepsi ~7,4 Hz → arkadaşın önceki MAVProxy'sinin (`--streamrate 8`) Pixhawk'ta kalan REQUEST_DATA_STREAM isteği; reboot edilmediği için sürdü. Pixhawk yönlendirmesi TELEM2 TX dolunca yer paketlerini düşürür (txspace). `REQUEST_DATA_STREAM ALL=0` (TELEM2 kanalı) → 48 msg/s %31; tüketiciler aralık isteklerini yenileyince 65 msg/s %47 (GLOBAL_POSITION_INT/GPS_RAW_INT 8 Hz, EXTENDED_SYS_STATE 2 Hz; ölçümde 3× sayım — açıklanmadı, ÇIKARIM: birden fazla kaynak/yol).
+6. **K8a (19:00, akış sıfırlandıktan sonra, K8a_tunel_rtt_akis_sifir.json): ACK 193/200, kayıp %3,5, gec_ack 0, p50 184 / p95 268 / maks 374 ms.**
+7. **K8b üretim yolu (19:10, hub elle + 5190 yankı, tüketiciler açık; K8b_uretim_rtt.json): 172/200, kayıp %14, p50 249 / p95 360 / maks 443; yer sayaç zaman_asimi_dusen 8, kimlik_boslugu 24.**
+8. **473 B prob 4 parça (19:12, K8_cok_parca_473.json): 57/100, gec 30, kayıp %43, p95 519 ms.**
+9. 165 B ve hava→yer ACK 473: **ÖLÇÜLEMEDİ** (yankı süreci o anda çalışmıyordu; ssh komutu sessiz düştü). 19:06 165 B JSON geçersiz.
+**Hüküm:** K8 **DÜŞTÜ** (K8a p95 268, K8b p95 360 > 200 ms). Eşik gevşetilmedi. İşlevsel durum: YKS komutları/onayları 0,25 s × 20 tekrarla gidiyor (%14 kayıpta 20 denemede kayıp olasılığı ≈ 0); tek parçalı çerçeveler güvenilir; **4 parçalı OPEN_ROUTE (≥ ~25 wp) %43 kayıp — açık risk**; 4 tekrarla ≈ %3 tam kayıp (HESAP). Çare adayları (kullanıcı kararı): SR1 (MP) akışlarını düşürmek, RFD Max Window 131→33 ms (RTT tabanı TDM: param yolu p95 231 ms), rota nokta sayısını sınırlamak.
+**Yer yolu kararı:** MP aynası yazma yönünde ek kayıp yaratmıyor (AYRIM 1 aynadan yapıldı: %4) ama MP her açılışta aynayı unutuyor (16:47 yeniden açılışta ayna yoktu, ölçüldü) ve iki kaynak aynı porta yazınca akran çakışıyor. Bu gece: `yer_yonlendirici.py` COM7'de, MP UDP 14550, YKİ `--tunel 127.0.0.1:14590`. Yönlendirici izlenmeyen/testsiz betik; MP'nin acil LAND yolu ona bağlı — sahada MP'yi COM7'ye doğrudan bağlamak yedek yol.
+**Yan bulgular:** Jetson saati 4 sa gerideydi (RTC pilsiz) → `date -s` ile düzeltildi; kamera iç mekânda 33 bin karede zemin %0 (MASKE_YOK) — model canlı kanıtı yok (kullanıcı testi atladı); MP telemetri hızları kullanıcı tarafından düşürüldü (TELEM1 %31; tünel açıkken %45).
+**Yazan:** mimar.
