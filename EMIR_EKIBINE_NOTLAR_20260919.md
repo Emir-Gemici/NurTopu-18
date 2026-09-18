@@ -108,11 +108,16 @@ Görev kaydı açıldıktan sonra ilk gerçek ölçüm (`results/jetson_log/gore
 | Keskinlik (Laplacian var.) | ort. **13,2** (min 12,9 · maks 13,6) → BULANIK bandı (< 20) |
 | Çıkarım süresi | ort. 142 ms (~7 FPS), medyan 135 ms |
 
-**Kareyi indirip baktım:** kamera masada duruyor ve **20–30 cm mesafedeki bir masa/raf köşesine**
-bakıyor. 6 mm lens 20–30 m için sonsuza odaklı olduğundan bu mesafede bulanıklık **beklenen**,
-ve görüntüde yol olmadığı için modelin `MASKE_YOK` demesi **doğru davranıştır** (fail-closed).
+**Kareyi indirip baktım:** kamera **tavana** bakıyor (kullanıcı teyidi) — düz, dokusuz bir yüzey
+ve tavan lambası yansıması. Görüntüde yol olmadığı için modelin `MASKE_YOK` demesi **doğru
+davranıştır** (fail-closed).
 
-⚠ **Dolayısıyla bu ölçüm modelin sahadaki başarısı hakkında bir şey söylemez.** ONARIM-04
+⚠ **Keskinlik 13,2 değeri bu sahnede "lens bulanık" anlamına GELMEZ.** Laplacian varyansı
+**dokuya** duyarlıdır; düz beyaz tavanda ölçülecek detay olmadığı için değer kusursuz bir lensle
+de düşük çıkar. Odak hakkında hüküm ancak **dokulu** bir hedefte (zemin, asfalt, test kartı)
+verilebilir. 17 Eylül'deki 350–550 ölçümü dokulu hedefteydi; ikisi karşılaştırılamaz.
+
+⚠ **Dolayısıyla bu ölçüm ne modelin sahadaki başarısı ne de lensin odağı hakkında bir şey söyler.** ONARIM-04
 (canlı `MASKE_YOK` kök nedeni) **hâlâ açıktır**: kameranın ≥ 5 m uzağa, tercihen gerçek zemine
 baktığı bir koşulda tekrarlanmalı. Artık görev kaydı açık olduğu için tekrar ölçüm 2 dakikalık iştir.
 
