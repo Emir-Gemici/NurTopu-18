@@ -9774,7 +9774,7 @@ _(henüz yok)_
 - [ ] **T275 — 7,51 V gerilim çökmesi + EKF lane switch (D-482)** — pil/konnektör/XT60 kontrolü, o pille yük testi (İNSAN, 🔴).
 - [ ] **T276 — log analiz betiğini amele yazsın** (`scripts/ucus_bin_ozet.py` + test; mimarın scratch betiği denetlenmedi, D-482).
 - [ ] **T277 — FDR yazılım koluna 13 Eyl log bulguları** (kodla GUIDED/LAND 2×, failsafe 3+1, askı gazı, titreşim riski) — wlwy3xx3m bitince.
-- [ ] **T278 — yerel master ↔ origin/master uzlaştırması** (29/43 commit, D-474…D-485 numara çakışması; push bundan sonra) — mimar, D-483.
+- [ ] **T278 — yerel master ↔ origin/master uzlaştırması** (29/43 commit, D-474…D-485 numara çakışması; push bundan sonra) — mimar, D-483. · **18 Eyl 22:30:** yerel iş `origin/tunel-saha-20260918` (8a483ade, master'a göre +87 commit: D-487…D-496, tünel kodu, runbook, yol haritası, saha kartı, K8 sonuçları) olarak İTİLDİ; master'a birleştirme AÇIK — uzak REVIEW_LOG D numaraları çakışıyor (uzakta D-478/479 İKA URDF, D-499 '433 MHz, RFD900A asla' — yerelde D-478/479 RFD900A A6 ölçümü). Birleştirmede REVIEW_LOG/TASK_QUEUE iki dalda da append; telsiz kararı (RFD900A ↔ 433) ve video kararı kullanıcıyla netleşmeden birleştirilmez.
 - [x] **T276 — log analiz aracı** `scripts/ucus_bin_analiz.py` + 17 test (D-484).
 - [x] **T274 — titreşim** — 4S+9x5x3 askıda VibeZ 9–12, clip 0; yüksek değerler kısa sıçrama/yer temasıydı (D-484). 3S+1045'in 12 Eyl 16-50 uçuşu (VibeZ 61, clip 72) tarihsel.
 - [ ] **T275 → yeniden tanımlandı:** 3S 8 Ah paketler yüksek iç dirençli (33–44 mΩ), 4 pil failsafe 22–30 s'de; **21 Eyl'de 3S paket kullanılmayacak**; 4S'e geçişte BATT_* parametreleri (D-484) şart — İNSAN.
