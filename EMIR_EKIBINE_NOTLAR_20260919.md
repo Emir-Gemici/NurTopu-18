@@ -63,11 +63,36 @@ Yani YKİ'nin alan ihlali kontrolü çalışmıyor. Tek argümanla çözülür (
 ama **referans noktasını sizin vermeniz gerekir** (uçuş alanının başlangıç noktası). Şartname
 kalemi olduğu için uçuştan önce kararlaştırılmalı.
 
-## 4. FOV **beyandır, ölçülmedi**
+## 4. FOV — hesap doğru ama **kullanılan sensör modu tam alan DEĞİL** (19 Eyl 01:00, ölçüldü)
 
-Servis `--fov 63` ile koşuyor. Bu değer `SAHA` kayıtlarında **BEYAN** olarak duruyor; IMX477 +
-6 mm lens için 20–30 m'de gerçek ölçüm hiç yapılmadı (ONARIM-05 açık). FOV yanlışsa rota
-koordinatları ölçekli olarak kayar. Ölçüm aracı hazır, yerde 10 dakikalık iş.
+Emir tarafının hesabı **tam sensör alanı için doğrudur**: IMX477 aktif alan 4056×3040 px ×
+1,55 µm = 6,287 × 4,712 mm; 6 mm lensle yatay **55,3°**, dikey 42,9°, köşegen 66,4°.
+
+**Ama Jetson'daki sürücü tam alanı hiç sunmuyor.** Kamera köprüsünün açılış günlüğü (ölçüldü):
+
+```
+GST_ARGUS: Available Sensor modes :
+  3840 x 2160 FR = 29.999999 fps
+  1920 x 1080 FR = 59.999999 fps
+Camera mode = 1            ← kullanılan: 1920x1080
+```
+
+4056×3040 modu **listede yok**. Dolayısıyla **55,3° bir ÜST SINIRDIR**, gerçek değer değil:
+
+| Mod 1 nasıl üretiliyorsa | Aktif genişlik | Gerçek yatay FOV |
+|---|---|---|
+| 3840×2160'ın 2×2 binning'i (FOV korunur) | 3840 px → 5,95 mm | **≈ 52,8°** |
+| Sensör merkezinden ek kırpma | 1920 px → 2,98 mm | **≈ 27,9°** |
+
+30 m irtifada bu, **31 m genişlik** ile **15 m genişlik** arasındaki farktır — rota koordinatları
+iki kat ölçekte kayar. Datasheet'ten ayırt **edilemez**, ölçülmelidir.
+
+**Ölçüm yordamı (yerde, drone gerekmez, ~5 dk):** duvara `W = 2,00 m` aralıkla iki işaret;
+kamera tam karşıdan `D = 3,00 m`; `/kare.jpg`'de işaretler arası piksel `p`;
+`FOV_yatay = 2·atan( (W/2)·(1280/p) / D )`. ~53° → binning, ~28° → kırpma.
+
+**Şimdilik:** `FOV=55`, `FOV=63`'ten daha savunulabilir (63 hiçbir hesaba dayanmıyor), ama
+**ikisi de tahmindir** ve ölçüm yapılana dek öyle etiketlenmelidir. ONARIM-05 açık kalır.
 
 ## 5. K8 / telsiz konusunda mutabıkız — iki düzeltmenizi kabul ediyorum
 
