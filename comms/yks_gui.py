@@ -2441,6 +2441,25 @@ class YksArayuz:
         if rota_ankor_uyarisi(self.rota):
             self._ankor_yok_onayini_kapat()
             return
+        # CONTRACTS §6.7 (D-407): FDA'da İKA yoktur, İKA ACK kanıtı hiç gelmez.
+        # onayla() bu kipte 2/2'yi kabul ediyor; düğme pasif kalırsa hakem 2/2'yi
+        # GUI'den hiç veremez ve §5.3.2 uçuşu hakem onaysız kalırdı.
+        if getattr(self, "fda_kipi", False):
+            self._onay_dugmesini_ciz(True, "2) YKS'DE GÖRÜLDÜ — ONAYLA → ACK (FDA)")
+            if self._kanit_kilidi_var():
+                return
+            # _onay_dugmesini_ciz geçersiz geometride düğmeyi kapatır; etiket
+            # düğmeyle çelişip "onay verebilirsiniz" dememeli.
+            if getattr(self, "tek_rota", False) and not self._tek_rota_gecerli():
+                self.lbl_onay.config(
+                    text="Tespit doğrulandı ✓ — ama rota geometrisi geçersiz "
+                         f"(seq={self.rota['seq']}); ikinci onay KAPALI", fg=KIRMIZI)
+                return
+            self.lbl_onay.config(
+                text=f"Tespit doğrulandı ✓ — FDA görev uçuşu: İKA yok, aktarım "
+                     f"hedefi YKS (seq={self.rota['seq']}). İkinci onayı "
+                     "verebilirsiniz (§5.3.2)", fg=SARI)
+            return
         if self.ika_aktarim_kaniti_var():
             kanit = time.strftime("%H:%M:%S", time.localtime(
                 self.ika_rota_ack[self.rota["seq"]]))

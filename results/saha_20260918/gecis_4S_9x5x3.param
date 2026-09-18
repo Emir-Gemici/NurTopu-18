@@ -1,0 +1,10 @@
+#NOTE: 4S + 9x5x3 icin kazanc farki. Yalniz asagidaki satirlari degistirir; kalibrasyon ofsetlerine dokunmaz.
+#NOTE: Gerekce: 4S+9x5x3 askida ThO 0,315-0,36 (15 Eyl D/F), 3S+1045 ~0,45 -> fabrika kazanci (0,135/0,135/0,0036) x0,7.
+#NOTE: 9x5x3 fabrika kazanciyla irtifada temiz uctu (2,2-3,0 deg/s), ama yere yakin ~6 Hz salinim vardi; x0,7 bunun icin ilk adim. Kesin deger ilk askinin loguna gore secilir.
+ATC_RAT_RLL_P,0.095
+ATC_RAT_RLL_I,0.095
+ATC_RAT_RLL_D,0.0025
+ATC_RAT_PIT_P,0.095
+ATC_RAT_PIT_I,0.095
+ATC_RAT_PIT_D,0.0025
+MOT_THST_HOVER,0.35

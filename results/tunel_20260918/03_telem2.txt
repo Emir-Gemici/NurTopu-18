@@ -1,0 +1,24 @@
+SAHA_YOL_HARITASI_20260916.md Faz 3.2 — Jetson <-> Pixhawk TELEM2 iki yonlu baglanti testi
+Tarih: 2026-09-18 (Jetson saati 1970'e donmus; zaman damgasi PC'den)
+Kablo: Pixhawk TELEM2 -> Jetson 40 pin (3 tel; 5 V baglanmadi — kullanici beyani). Jetson USB kablosu cikarildi.
+Onceden: sudo systemctl stop navitas-cogullayici navitas-seri-hub
+
+--- ls / nvgetty / console / groups / venv ---
+ls: cannot access '/dev/ttyACM*': No such file or directory
+crw-rw---- 1 root dialout 236, 1 Jan  1 02:04  /dev/ttyTHS1
+crw-rw---- 1 root dialout 236, 2 Sep 18  2026  /dev/ttyTHS2
+console=ttyTCU0,115200
+n4vitas adm dialout cdrom sudo audio dip video plugdev users i2c gdm weston-launch gpio render
+/home/n4vitas/venv312
+
+--- Faz 3.2 betigi ---
+/dev/ttyTHS1 Pixhawk->Jetson: VAR sysid=1
+/dev/ttyTHS1 Jetson->Pixhawk: VAR SYSID_THISMAV=1.0
+/dev/ttyTHS0 ACILAMADI: [Errno 2] could not open port /dev/ttyTHS0: [Errno 2] No such file or directory: '/dev/ttyTHS0'
+
+SONUC: KAPI 3 GECTI — /dev/ttyTHS1 iki yon VAR. Faz 4'te PIXHAWK_SERI=/dev/ttyTHS1.
+nvgetty ciktisi bos; seri konsol ttyTCU0'da, ttyTHS1 ile cakisma yok.
+
+Not: Bu oturumdan hemen once SSH, sudo parola isteminde "client_loop: send disconnect: Connection reset" ile koptu;
+ilk yeniden baglanma "Connection aborted" verdi. Yeni oturumda "Last login: Thu Jan 1 02:03:20 1970". Jetson'un
+kendiliginden yeniden basladigi dusunuluyor (17 Eylul brownout kaydiyla ayni imza); dogrulanmadi.

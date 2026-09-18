@@ -1,0 +1,9 @@
+#NOTE: 4S + 10x4,5 (1045) icin kazanc farki. Yalniz asagidaki satirlari degistirir; kalibrasyon ofsetlerine dokunmaz.
+#NOTE: Kaynak: kullanicinin 18 Eyl 14.55.param degerleri. Gerekce: 4S+1045 askida ThO ~0,21 (13 Eyl B ucusu), 3S+1045 ~0,45 -> fabrika kazanci x~0,5.
+ATC_RAT_RLL_P,0.07
+ATC_RAT_RLL_I,0.07
+ATC_RAT_RLL_D,0.002
+ATC_RAT_PIT_P,0.07
+ATC_RAT_PIT_I,0.07
+ATC_RAT_PIT_D,0.002
+MOT_THST_HOVER,0.2

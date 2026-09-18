@@ -1,0 +1,15 @@
+K8-0 on olcum — Mission Planner MAVLink aynasi (127.0.0.1:14570) uzerinden TELEM1 bant doluluk olcumu
+Tarih: 2026-09-18 aksam. Duzen: Pixhawk TELEM1 -> RFD900A -> PC COM7 (57600) -> Mission Planner -> ayna UDP Client 127.0.0.1:14570.
+Jetson'da tunel paketi HENUZ KURULU DEGIL (TUNNEL mesaji beklenmez).
+Betik: C:\Users\yunus\.claude\jobs\99343714\tmp\ayna_dinle.py (pymavlink udpin:127.0.0.1:14570, yalniz dinler).
+
+OLCUM 1 (6 s): toplam 1027 mesaj, ilk mesaj 0,04 s; kaynak yalniz (sysid 1, compid 1); HEARTBEAT 21, TUNNEL 0, GLOBAL_POSITION_INT 35.
+En sik: ATTITUDE 81, VFR_HUD 79, AHRS2 63, SCALED_IMU2 42, SCALED_PRESSURE 42, GPS_RAW_INT 42, SYSTEM_TIME 42, FENCE_STATUS 42, AHRS 42, TERRAIN_REPORT 42, EKF_STATUS_REPORT 42, VIBRATION 42.
+
+OLCUM 2 (8 s): 1402 mesaj, 45937 bayt -> 5737 B/s. 57600 baud 8N1 tavani 5760 B/s -> DOLULUK %100.
+En cok bayt tuketen: ATTITUDE 559, VFR_HUD 406, AHRS2 392, GPS_RAW_INT 349, RC_CHANNELS 330, BATTERY_STATUS 324, SYS_STATUS 301, GLOBAL_POSITION_INT 280 (B/s).
+
+HUKUM: Aynanin gelen yonu CALISIYOR. Ancak TELEM1 hatti telemetriyle DOYMUS; tunel (OPEN_ROUTE ~720 B x4 tekrar / 0,25 s ~ 2,9 KB/s patlama,
+heartbeat 1 Hz, hakem ACK/CMD) icin bant YOK. Plan HESABI (%75, CONTRACTS.md:1297-1312) olcumle YANLISLANDI (%100).
+ONERI: MP Planner telemetri hizlarini dusur (hedef <= %50, ~2,9 KB/s), sonra olcumu tekrarla ve K8'e gec.
+Aynanin donus yonu (Write access) bu olcumle SINANMADI; K8a/YKI ile sinanacak.

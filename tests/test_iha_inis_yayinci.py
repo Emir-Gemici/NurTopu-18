@@ -263,5 +263,103 @@ class SahaCliTests(unittest.TestCase):
                 yayinci.main(["--help"])
 
 
+class _EssMesaj:
+    def __init__(self, sysid, durum):
+        self._sysid = sysid
+        self.landed_state = durum
+
+    def get_srcSystem(self):
+        return self._sysid
+
+
+class _AkisBitti(Exception):
+    """Sahte gözcünün mesajı bitti: kalkis_bekle bu noktaya kadar DÖNMEDİ."""
+
+
+class _SiraliGozcu:
+    def __init__(self, mesajlar):
+        self._mesajlar = list(mesajlar)
+
+    def recv_match(self, type=None, blocking=False, timeout=None,
+                   condition=None):
+        if self._mesajlar:
+            return self._mesajlar.pop(0)
+        raise _AkisBitti()
+
+
+class KalkisBekleTests(unittest.TestCase):
+    """ONARIM-18 Kusur 2: yerde açılışta IHA_LANDED yayınlanmaz."""
+
+    @classmethod
+    def setUpClass(cls):
+        from pymavlink import mavutil
+        cls.YERDE = mavutil.mavlink.MAV_LANDED_STATE_ON_GROUND
+        cls.HAVADA = mavutil.mavlink.MAV_LANDED_STATE_IN_AIR
+        cls.KALKIS = mavutil.mavlink.MAV_LANDED_STATE_TAKEOFF
+
+    def _bekle(self, mesajlar, beklenen_sysid=1):
+        return yayinci.kalkis_bekle(_SiraliGozcu(mesajlar),
+                                    beklenen_sysid=beklenen_sysid)
+
+    def test_yalniz_ON_GROUND_akisinda_DONMEZ(self):
+        with self.assertRaises(_AkisBitti):
+            self._bekle([_EssMesaj(1, self.YERDE)] * 20)
+
+    def test_art_arda_iki_IN_AIR_ile_doner(self):
+        self.assertTrue(self._bekle([_EssMesaj(1, self.YERDE),
+                                     _EssMesaj(1, self.HAVADA),
+                                     _EssMesaj(1, self.HAVADA)]))
+
+    def test_TAKEOFF_da_kalkis_sayilir(self):
+        self.assertTrue(self._bekle([_EssMesaj(1, self.KALKIS),
+                                     _EssMesaj(1, self.HAVADA)]))
+
+    def test_arada_ON_GROUND_sayaci_sifirlar(self):
+        with self.assertRaises(_AkisBitti):
+            self._bekle([_EssMesaj(1, self.HAVADA), _EssMesaj(1, self.YERDE)] * 5)
+
+    def test_yabanci_sysid_sayilmaz(self):
+        with self.assertRaises(_AkisBitti):
+            self._bekle([_EssMesaj(2, self.HAVADA)] * 5, beklenen_sysid=1)
+        self.assertTrue(self._bekle([_EssMesaj(2, self.HAVADA),
+                                     _EssMesaj(1, self.HAVADA),
+                                     _EssMesaj(1, self.HAVADA)],
+                                    beklenen_sysid=1))
+
+    def test_bozuk_landed_state_sayilmaz(self):
+        with self.assertRaises(_AkisBitti):
+            self._bekle([_EssMesaj(1, None), _EssMesaj(1, True),
+                         _EssMesaj(1, "2")] * 3)
+
+    def _main_kos(self, ek):
+        mav = SahteMav()
+        sira = []
+        with mock.patch.object(yayinci, "mavlink_baglantisi_ac", return_value=mav), \
+             mock.patch.object(yayinci, "kalkis_bekle",
+                               side_effect=lambda *a, **k: sira.append("kalkis")) as kb, \
+             mock.patch.object(yayinci, "yerde_mi",
+                               side_effect=lambda *a, **k: sira.append("yerde") or True), \
+             mock.patch.object(yayinci, "iha_inisini_yayinla", return_value=True), \
+             contextlib.redirect_stdout(io.StringIO()):
+            sonuc = yayinci.main(["--mavlink", "udp:127.0.0.1:14551",
+                                  "--kanit-timeout", "5", "--heartbeat-sure", "0",
+                                  "--yks", "127.0.0.1:5100", "--sysid", "1"] + ek)
+        return sonuc, sira, kb, mav
+
+    def test_main_bayrakla_kalkis_iniş_aramasindan_ONCE(self):
+        sonuc, sira, kb, mav = self._main_kos(["--kalkis-bekle"])
+        self.assertEqual(0, sonuc)
+        self.assertEqual(["kalkis", "yerde"], sira)
+        self.assertEqual(1, kb.call_args.kwargs.get("beklenen_sysid"))
+        self.assertGreater(mav.inis_kaniti_deadline_monotonic,
+                           yayinci.time.monotonic())
+
+    def test_main_bayraksiz_kalkis_bekle_HIC_cagrilmaz(self):
+        sonuc, sira, kb, _ = self._main_kos([])
+        self.assertEqual(0, sonuc)
+        self.assertEqual(["yerde"], sira)
+        kb.assert_not_called()
+
+
 if __name__ == "__main__":
     unittest.main()

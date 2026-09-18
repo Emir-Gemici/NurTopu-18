@@ -273,7 +273,11 @@ case "$KIP" in
   tunel)
     # Tuketiciler sik ile AYNI: hub'a (5100) yazar, hub TUNNEL ile Pixhawk'a tasir.
     RPI_TELSIZ_ARGS="--yks-hedef ${SERI_HUB_DINLE}"
-    INIS_TELSIZ_ARGS="--yks ${SERI_HUB_DINLE}"
+    # ONARIM-18: --kalkis-bekle yerde acilista IHA_LANDED'i keser (Kusur 2);
+    # --heartbeat-sure 0 node='iha' heartbeat'ini rpi_inference'a birakir (Kusur 1).
+    # Ikisi birlikte: heartbeat'siz yayinci inisten sonra cikar, systemd yeniden
+    # baslatir ve yeni kalkisa dek bekler.
+    INIS_TELSIZ_ARGS="--yks ${SERI_HUB_DINLE} --kalkis-bekle --heartbeat-sure 0"
     KOMUT_TELSIZ_ARGS="--bind ${SERI_HUB_TUKETICI} --izinli-kaynak ${SERI_HUB_DINLE}"
     COGULLAYICI_EK_ARGS="--out udp:$TUNEL_HAVA_UC --streamrate $TUNEL_STREAMRATE"
     HUB_TASIYICI_ARGS="--tunel $TUNEL_HAVA_UC --tunel-kimlik $TUNEL_HUB_KIMLIGI"
@@ -706,20 +710,45 @@ kur_systemd() {
   echo "thazirlik (bu betik): ${SECONDS} s · loglar: journalctl -u navitas-<birim> -f"
 }
 
+# ONARIM-02 (2026-09-17): MAVProxy baglaninca once TUM parametreleri indirir; TELEM2 @57600'de
+# 1025 parametre ~42 s surdu ve bu surede konum/durum akislari esigin altinda kaldi -> 0/3
+# (JETSON_DEVIR_20260915.md §9, D-491 §3). Indirme bitince "Saved N parameters to
+# <state-basedir>/mav.parm" yazilir (results/jetson_20260915/jetson_tmp_loglari/
+# navitas-mavproxy-telem2.log:26). Kapi bu dosyanin cogullayici yeniden baslatildiktan SONRA
+# yazilmasini bekler. Tavan asilirsa yine olcer: hukmu kapi verir (fail-closed), bekleme degil.
+PARAM_BEKLE_TAVAN_S="${PARAM_BEKLE_TAVAN_S:-90}"
+param_indirme_bekle() {  # $1: cogullayici restart'indan ONCEKI epoch saniye
+  local bas="$1" parm="$LOG_DIZIN/mavproxy/mav.parm" gecen_s=0
+  echo "[PARAM] MAVProxy parametre indirmesi bekleniyor (en cok ${PARAM_BEKLE_TAVAN_S} s; olculen ~42 s) — Ctrl-C YAPMAYIN"
+  while [ "$gecen_s" -lt "$PARAM_BEKLE_TAVAN_S" ]; do
+    if [ -f "$parm" ] && [ "$(stat -c %Y "$parm" 2>/dev/null || echo 0)" -ge "$bas" ]; then
+      echo "[PARAM] indirme bitti (${gecen_s} s): $parm"
+      return 0
+    fi
+    sleep 1
+    gecen_s=$((gecen_s + 1))
+  done
+  echo "UYARI: ${PARAM_BEKLE_TAVAN_S} s icinde parametre indirmesi bitmedi ($parm yazilmadi) — kapi yine de olcer"
+}
+
 kapi() {  # FAZ_B_GUN_PLANI §1: cogullayici tek basina + 3 ucta AYNI ANDA mavlink_dogrula; 3/3 GECTI -> tuketiciler
-  local b d uc port rc kapi_dizin gecen=0 beklenen="${#MAV_UCLAR[@]}"
+  local b d uc port rc kapi_dizin bas gecen=0 beklenen="${#MAV_UCLAR[@]}"
   birimleri_kur "--kapi"
   d="$NAVITAS_KOK/scripts/mavlink_dogrula.py"
   [ -f "$d" ] || hata "$d yok — kapi araci kurulu degil; paket TASIMIYOR, depodan kopyala: scripts/mavlink_dogrula.py -> $NAVITAS_KOK/scripts/"
   # Onceki kurulumdan kalkmis tuketiciler 1455N uclarini tutar; kapi araci ayni ucu dinler.
   for b in $TUKETICILER; do systemctl stop "$b.service" >/dev/null 2>&1 || true; done
   # restart: PIXHAWK_SERI/BAUD degismis olabilir (D-405)
+  # RTC pilsiz Jetson acilista 1970'e doner: eski kosumdan kalan mav.parm'in mtime'i
+  # $bas'tan buyuk gorunup beklemeyi hemen bitirirdi. Yalniz TAZE dosya kabul edilsin.
+  rm -f "$LOG_DIZIN/mavproxy/mav.parm"
+  bas="$(date +%s)"
   etkinlestir_ve_yeniden_baslat navitas-cogullayici.service
   if hub_kipi; then etkinlestir_ve_yeniden_baslat navitas-seri-hub.service; fi
   if [ "$KAMERA_KOPRU" = 1 ]; then
     etkinlestir_ve_yeniden_baslat navitas-kamera-koprusu.service
   fi
-  sleep 3
+  param_indirme_bekle "$bas"   # ONARIM-02: eski sabit `sleep 3` indirme bitmeden olcuyordu
   # NEDEN paralel (D-405, curutucu kapi bulgusu): CONTRACTS §7.4 / FAZ_B_GUN_PLANI §1
   # "uc uc AYNI ANDA acikken GECTI" der; sirali kosum bunu sinamaz ve thazirlik'e
   # +22..+52 s ekler (§6.2: 30 s = 1 puan). rc dosyalari: eski kosumdan kalan

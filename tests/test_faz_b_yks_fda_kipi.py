@@ -183,5 +183,96 @@ class FdaButcesi(unittest.TestCase):
         self.assertIs(False, yks_gui.YksArayuz.fda_kipi)
 
 
+def _gercek_dugmeli_arayuz(*, fda, ika_kaniti):
+    """`_onay_arayuzu`nun aynısı, ama 2. düğmeyi çizen yol SAHTE DEĞİL.
+
+    Eski fikstür `_aktarim_onay_dugmesini_kur`'u mock'luyordu; bu yüzden FDA'da
+    düğmenin 1/2'den sonra pasif kaldığı (hakemin 2/2'yi GUI'den veremediği)
+    açık hiçbir testte görünmedi. Burada düğmenin GERÇEK durumu ölçülür.
+    """
+    g, link = _onay_arayuzu(fda=fda, ika_kaniti=ika_kaniti)
+    del g._aktarim_onay_dugmesini_kur   # sınıftaki gerçek yöntem devreye girer
+    g._kanit_yaz = mock.Mock()
+    return g, link
+
+
+class FdaIkinciOnayDugmesi(unittest.TestCase):
+    def test_7_FDA_1_2_sonrasi_ikinci_dugme_ACIK(self):
+        g, _ = _gercek_dugmeli_arayuz(fda=True, ika_kaniti=False)
+        g.onayla()                                    # 1/2
+        self.assertTrue(g.tespit_onayli)
+        self.assertEqual("normal", g.btn_onay.cget("state"),
+                         "FDA'da İKA kanıtı gelmez; 2. düğme açık olmalı")
+        self.assertIn("FDA", g.btn_onay.cget("text"))
+        self.assertIn("İkinci onayı", g.lbl_onay.cget("text"))
+
+    def test_8_FDA_periyodik_tazeleme_dugmeyi_geri_KAPATMAZ(self):
+        g, _ = _gercek_dugmeli_arayuz(fda=True, ika_kaniti=False)
+        g.onayla()
+        g._onay_dugmesini_tazele()
+        self.assertEqual("normal", g.btn_onay.cget("state"))
+
+    def test_9_FDA_dugme_yolu_2_2_yi_tamamlar_ve_ref_tipli_ACK_gider(self):
+        g, link = _gercek_dugmeli_arayuz(fda=True, ika_kaniti=False)
+        g.onayla()                                    # 1/2
+        self.assertEqual("normal", g.btn_onay.cget("state"))
+        g.onayla()                                    # 2/2: düğmenin komutu
+        self.assertTrue(g.onaylandi)
+        ackler = [m for m in _gonderilen(link) if m.get("type") == "ACK"]
+        self.assertEqual(1, len(ackler), _gonderilen(link))
+        self.assertEqual("OPEN_ROUTE", ackler[0].get("ref_tip"))
+        yazilan = [c.args[0] for c in g._kanit_yaz.call_args_list if c.args]
+        self.assertIn("HAKEM_ONAYI_2", yazilan)
+
+    def test_10_YARISMA_kipinde_dugme_PASIF_kalir_regresyon_yok(self):
+        g, _ = _gercek_dugmeli_arayuz(fda=False, ika_kaniti=False)
+        g.onayla()
+        self.assertEqual("disabled", g.btn_onay.cget("state"))
+        self.assertEqual("2) İKA ACK KANITI BEKLENİYOR", g.btn_onay.cget("text"))
+        g._onay_dugmesini_tazele()
+        self.assertEqual("disabled", g.btn_onay.cget("state"))
+
+    def test_11_FDA_kanit_kilidi_varken_dugme_ACILMAZ(self):
+        g, _ = _gercek_dugmeli_arayuz(fda=True, ika_kaniti=False)
+        g.onayla()
+        g.kanit_kaydi_hatasi = "disk dolu"
+        g._onay_dugmesini_tazele()
+        self.assertEqual("disabled", g.btn_onay.cget("state"),
+                         "kanıt kaydı yazılamıyorsa FDA'da da onay kapalı")
+
+    def test_12_FDA_kanit_kilidi_afisini_etiket_EZMEZ(self):
+        g, _ = _gercek_dugmeli_arayuz(fda=True, ika_kaniti=False)
+        g.onayla()
+        g.kanit_kaydi_hatasi = "disk dolu"
+        g._kanit_kilidi_metni = "KANIT KAYDI HATASI — test afişi"
+        g._aktarim_onay_dugmesini_kur()
+        self.assertEqual(yks_gui.KANIT_KILIDI_ONAY_METNI, g.btn_onay.cget("text"))
+        self.assertEqual("KANIT KAYDI HATASI — test afişi", g.lbl_onay.cget("text"),
+                         "kilit afişi 'ikinci onayı verebilirsiniz' ile ezilmemeli")
+
+    def test_13_FDA_ankor_yoksa_ANKOR_kilidi_FDA_dalindan_ONCE_gelir(self):
+        g, _ = _gercek_dugmeli_arayuz(fda=True, ika_kaniti=False)
+        g.onayla()
+        rota = dict(ROTA, ref_xy=None, road=None)
+        self.assertTrue(yks_gui.rota_ankor_uyarisi(rota), "önkoşul: ankor uyarısı olmalı")
+        g.rota = rota
+        g._aktarim_onay_dugmesini_kur()
+        self.assertEqual("disabled", g.btn_onay.cget("state"))
+        self.assertEqual("ANKOR YOK — ONAY KAPALI", g.btn_onay.cget("text"))
+
+    def test_14_FDA_gecersiz_geometride_etiket_dugmeyle_CELISMEZ(self):
+        g, _ = _gercek_dugmeli_arayuz(fda=True, ika_kaniti=False)
+        g.onayla()
+        rota = dict(ROTA, waypoints=[])
+        self.assertFalse(yks_gui.rota_ankor_uyarisi(rota), "önkoşul: ankor tamam")
+        g.rota = rota
+        g.tek_rota = True
+        self.assertFalse(g._tek_rota_gecerli(), "önkoşul: geometri geçersiz")
+        g._aktarim_onay_dugmesini_kur()
+        self.assertEqual("disabled", g.btn_onay.cget("state"))
+        self.assertNotIn("İkinci onayı verebilirsiniz", g.lbl_onay.cget("text"))
+        self.assertIn("geometrisi geçersiz", g.lbl_onay.cget("text"))
+
+
 if __name__ == "__main__":
     unittest.main()
