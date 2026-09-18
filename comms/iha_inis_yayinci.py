@@ -358,49 +358,6 @@ class AkisGozcusu:
                 return mesaj
 
 
-KALKIS_ARDISIK = 2
-KALKIS_BEKLE_DILIM_S = 1.0
-KALKIS_BEKLE_GUNLUK_S = 120.0
-
-
-def kalkis_bekle(gozcu, *, beklenen_sysid=None, ardisik=KALKIS_ARDISIK,
-                 dilim_s=KALKIS_BEKLE_DILIM_S, gunluk_s=KALKIS_BEKLE_GUNLUK_S,
-                 monotonic=time.monotonic):
-    """ONARIM-18 Kusur 2: yerde açılışta IHA_LANDED yayınlanmasın.
-
-    Beklenen sistemden ``EXTENDED_SYS_STATE.landed_state`` art arda ``ardisik``
-    kez IN_AIR ya da TAKEOFF görülene dek SÜRESİZ bekler, sonra True döner.
-    Kalkış görülmeden dönmez; iniş kanıtı ancak bir uçuştan sonra aranır.
-    """
-    m = _mavutil_al().mavlink
-    havada = {m.MAV_LANDED_STATE_IN_AIR, m.MAV_LANDED_STATE_TAKEOFF}
-    sayac = 0
-    son_gunluk = monotonic()
-    while True:
-        mesaj = gozcu.recv_match(type="EXTENDED_SYS_STATE", blocking=True,
-                                 timeout=dilim_s)
-        if monotonic() - son_gunluk >= gunluk_s:
-            print(f"{LOG_ONEKI} Kalkış hâlâ bekleniyor (IHA_LANDED kapalı).",
-                  flush=True)
-            son_gunluk = monotonic()
-        if mesaj is None:
-            continue
-        try:
-            kaynak = mesaj.get_srcSystem()
-            durum = getattr(mesaj, "landed_state", None)
-        except Exception:
-            continue
-        if beklenen_sysid is not None and kaynak != beklenen_sysid:
-            continue
-        if (isinstance(durum, int) and not isinstance(durum, bool)
-                and durum in havada):
-            sayac += 1
-            if sayac >= ardisik:
-                return True
-        else:
-            sayac = 0
-
-
 def iha_inisini_yayinla(
         peers, heartbeat_until=None, repeat=8, interval=0.25, *, tasiyici=None,
         heartbeat_suresi=None, heartbeat_araligi=IHA_INIS_HEARTBEAT_ARALIGI_S,
@@ -495,13 +452,7 @@ def _arg_parser():
         "--heartbeat-aralik", type=float, default=IHA_INIS_HEARTBEAT_ARALIGI_S,
         help="heartbeat aralığı (sn); ika_receiver hb_timeout'undan küçük "
              f"olmalı (varsayılan {IHA_INIS_HEARTBEAT_ARALIGI_S})")
-    parser.add_argument(
-        "--kalkis-bekle", action="store_true",
-        help="İniş kanıtını aramadan ÖNCE kalkış kanıtı bekle (EXTENDED_SYS_STATE "
-             f"IN_AIR/TAKEOFF art arda {KALKIS_ARDISIK} kez); --kanit-timeout "
-             "kalkıştan sayılır. Yerde açılışta IHA_LANDED yayınlanmasını önler "
-             "(ONARIM-18 Kusur 2).")
-    return parser
+    return _kalkis_bayragini_ekle(parser)
 
 
 def _mavlink_kapat(mav):
@@ -552,7 +503,6 @@ def main(argv=None, *, saat=time.monotonic):
         except (TypeError, ValueError) as exc:
             print(f"[İHA] HATA: UDP hedefi geçersiz: {exc}", file=sys.stderr)
             return 4
-
     try:
         mav = mavlink_baglantisi_ac(args.mavlink)
     except (ImportError, ConnectionError) as exc:
@@ -560,17 +510,7 @@ def main(argv=None, *, saat=time.monotonic):
         return 2
 
     try:
-        if args.kalkis_bekle:
-            # Kalkış beklenirken de EXTENDED_SYS_STATE akışı istenmeli (T207).
-            istekci = AkisIstekcisi(mav, beklenen_sysid=args.sysid, saat=saat)
-            istekci.iste()
-            gozcu = AkisGozcusu(mav, istekci)
-            print(f"{LOG_ONEKI} Kalkış kanıtı bekleniyor (EXTENDED_SYS_STATE "
-                  f"IN_AIR/TAKEOFF, art arda {KALKIS_ARDISIK}); o zamana dek "
-                  "IHA_LANDED yayınlanmaz.", flush=True)
-            kalkis_bekle(gozcu, beklenen_sysid=args.sysid)
-            print(f"{LOG_ONEKI} Kalkış görüldü; iniş kanıtı süresi "
-                  f"({args.kanit_timeout:.0f} s) şimdi başladı.", flush=True)
+        akis = _kalkisi_bekle(mav, args, saat) if args.kalkis_bekle else None
         try:
             son_tarih = time.monotonic() + args.kanit_timeout
             mav.inis_kaniti_deadline_monotonic = son_tarih
@@ -581,10 +521,9 @@ def main(argv=None, *, saat=time.monotonic):
         # T207 (D-406 A): EXTENDED_SYS_STATE yalniz istekle akar ve istek
         # Pixhawk reboot'unda silinir. Basta iste; gozcu, yerde_mi'nin okuma
         # beklemesi icinde periyodik yenilemeyi ve sessizlik denetimini kosar.
-        if not args.kalkis_bekle:
-            istekci = AkisIstekcisi(mav, beklenen_sysid=args.sysid, saat=saat)
-            istekci.iste()
-            gozcu = AkisGozcusu(mav, istekci)
+        # --kalkis-bekle: akis kalkis beklenirken kuruldu (_kalkisi_bekle); ayni
+        # istekci/gozcu surer, ikinci istek acilmaz.
+        istekci, gozcu = akis or _akis_kur(mav, args.sysid, saat)
         # D-389 (A1): yerde_mi son tarihe kadar bekler (A2); yine de erken
         # False donerse (gecici istisna / beklenen kaynaktan bozuk paket)
         # sure kaldigi surece YENIDEN denenir — tek atis gorevi olduremez.
@@ -614,12 +553,113 @@ def main(argv=None, *, saat=time.monotonic):
                 heartbeat_araligi=args.heartbeat_aralik)
         else:
             basarili = iha_inisini_yayinla(
-                peers,
-                heartbeat_suresi=args.heartbeat_sure,
+                peers, heartbeat_suresi=args.heartbeat_sure,
                 heartbeat_araligi=args.heartbeat_aralik)
+            basarili = basarili or (args.kalkis_bekle and _inisi_yeniden_yayinla(peers, args))
         return 0 if basarili else 5
     finally:
         _mavlink_kapat(mav)
+
+
+# --- ONARIM-18 (18 Eyl): kalkış beklemesi ve iniş kanıtının yeniden yayını ---
+# Dosyanın SONUNDA durur: FDR akış tablosu (akis_c) ile T244 T1b, main'in ve
+# seri Pixhawk kilidinin satır numaralarına bağlıdır; yukarı eklenen her satır
+# o atıfları kaydırır.
+
+KALKIS_ARDISIK = 2
+KALKIS_BEKLE_DILIM_S = 1.0
+KALKIS_BEKLE_GUNLUK_S = 120.0
+INIS_YENIDEN_DENEME = 60   # D-495 denetimi: 10 deneme ≈ 36 s idi; inişten sonra telsiz/YKS gecikmesine ≈ 3,5 dk pay
+INIS_YENIDEN_ARALIK_S = 1.0
+
+
+def kalkis_bekle(gozcu, *, beklenen_sysid=None, ardisik=KALKIS_ARDISIK,
+                 dilim_s=KALKIS_BEKLE_DILIM_S, gunluk_s=KALKIS_BEKLE_GUNLUK_S,
+                 monotonic=time.monotonic):
+    """ONARIM-18 Kusur 2: yerde açılışta IHA_LANDED yayınlanmasın.
+
+    Beklenen sistemden ``EXTENDED_SYS_STATE.landed_state`` art arda ``ardisik``
+    kez IN_AIR ya da TAKEOFF görülene dek SÜRESİZ bekler, sonra True döner.
+    Kalkış görülmeden dönmez; iniş kanıtı ancak bir uçuştan sonra aranır.
+    """
+    m = _mavutil_al().mavlink
+    # D-495 denetimi: LANDING (otonom alçalma) da "havada" sayılır; süreç alçalma
+    # sırasında yeniden başlarsa kalkışı kaçırıp inişi sonsuza dek beklemesin.
+    havada = {m.MAV_LANDED_STATE_IN_AIR, m.MAV_LANDED_STATE_TAKEOFF,
+              m.MAV_LANDED_STATE_LANDING}
+    sayac = 0
+    son_gunluk = monotonic()
+    while True:
+        mesaj = gozcu.recv_match(type="EXTENDED_SYS_STATE", blocking=True,
+                                 timeout=dilim_s)
+        if monotonic() - son_gunluk >= gunluk_s:
+            print(f"{LOG_ONEKI} Kalkış hâlâ bekleniyor (IHA_LANDED kapalı).",
+                  flush=True)
+            son_gunluk = monotonic()
+        if mesaj is None:
+            continue
+        try:
+            kaynak = mesaj.get_srcSystem()
+            durum = getattr(mesaj, "landed_state", None)
+        except Exception:
+            continue
+        if beklenen_sysid is not None and kaynak != beklenen_sysid:
+            continue
+        if (isinstance(durum, int) and not isinstance(durum, bool)
+                and durum in havada):
+            sayac += 1
+            if sayac >= ardisik:
+                return True
+        else:
+            sayac = 0
+
+
+def _kalkis_bayragini_ekle(parser):
+    parser.add_argument(
+        "--kalkis-bekle", action="store_true",
+        help="İniş kanıtını aramadan ÖNCE kalkış kanıtı bekle (EXTENDED_SYS_STATE "
+             f"IN_AIR/TAKEOFF art arda {KALKIS_ARDISIK} kez); --kanit-timeout "
+             "kalkıştan sayılır. Yerde açılışta IHA_LANDED yayınlanmasını önler "
+             "(ONARIM-18 Kusur 2). ACK eksikse kanıt en çok "
+             f"{INIS_YENIDEN_DENEME} kez yeniden yayınlanır.")
+    return parser
+
+
+def _akis_kur(mav, sysid, saat):
+    istekci = AkisIstekcisi(mav, beklenen_sysid=sysid, saat=saat)
+    istekci.iste()
+    return istekci, AkisGozcusu(mav, istekci)
+
+
+def _kalkisi_bekle(mav, args, saat):
+    # Kalkış beklenirken de EXTENDED_SYS_STATE akışı istenmeli (T207).
+    istekci, gozcu = _akis_kur(mav, args.sysid, saat)
+    print(f"{LOG_ONEKI} Kalkış kanıtı bekleniyor (EXTENDED_SYS_STATE "
+          f"IN_AIR/TAKEOFF, art arda {KALKIS_ARDISIK}); o zamana dek "
+          "IHA_LANDED yayınlanmaz.", flush=True)
+    kalkis_bekle(gozcu, beklenen_sysid=args.sysid)
+    print(f"{LOG_ONEKI} Kalkış görüldü; iniş kanıtı süresi "
+          f"({args.kanit_timeout:.0f} s) şimdi başladı.", flush=True)
+    return istekci, gozcu
+
+
+def _inisi_yeniden_yayinla(peers, args, *, deneme=INIS_YENIDEN_DENEME,
+                           aralik_s=INIS_YENIDEN_ARALIK_S):
+    """--kalkis-bekle kipinde IHA_LANDED tek atış kalmasın.
+
+    Eski akışta ACK eksik çıkıştan (5) sonra yeniden başlayan süreç yerde
+    kanıtı yeniden yollardı; kalkış beklemesi bu yolu kapattı (yeni süreç
+    kalkış bekler). Her deneme YENİ seq ile gider — YKS aynı seq'i yinelenen
+    sayıp yutar; ACK kaybında YKS'de çift kanıt satırı olabilir, kayıp olmaz.
+    """
+    for i in range(1, deneme + 1):
+        time.sleep(aralik_s)
+        print(f"{LOG_ONEKI} IHA_LANDED ACK eksikti; yeniden yayın "
+              f"{i}/{deneme}", flush=True)
+        if iha_inisini_yayinla(peers, heartbeat_suresi=args.heartbeat_sure,
+                               heartbeat_araligi=args.heartbeat_aralik):
+            return True
+    return False
 
 
 if __name__ == "__main__":

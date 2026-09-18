@@ -108,6 +108,15 @@ class JetsonBaslatTunelKuru(unittest.TestCase):
         for ad in jb.TUKETICILER:
             self.assertIsNone(jb.SERI_CIHAZ_KALIBI.search(self.b["birimler"][ad]))
 
+    def test_T3b_inis_yayincisi_tunelde_kalkis_bekler_heartbeat_KAPALI(self):
+        """ONARIM-18: tunelde yerde acilista IHA_LANDED yok (Kusur 2), inisten sonra
+        ikinci node='iha' heartbeat ureticisi yok (Kusur 1). Bayrak silinirse bu duser."""
+        inis = self.b["birimler"][jb.INIS]
+        self.assertIn("--kalkis-bekle", inis.split(), inis)
+        self.assertEqual("0", _son_arg_degeri(inis, "--heartbeat-sure"), inis)
+        kod = (jb.KOD / "iha_inis_yayinci.py").read_text(encoding="utf-8")
+        self.assertIn('"--kalkis-bekle"', kod, "paketlenen yayinci bayragi tanimali")
+
     def test_T4_PIXHAWK_SERI_varsayilani_tunelde_ttyTHS1(self):
         self.assertEqual("/dev/ttyTHS1", self.b_v["env"]["PIXHAWK_SERI"])
         self.assertIn("--master=/dev/ttyTHS1", self.b_v["birimler"][jb.COGULLAYICI])
@@ -182,6 +191,11 @@ class JetsonBaslatUdpSikTunelsiz(unittest.TestCase):
         self.assertEqual(f"--port {self.sik['env']['SIK_SERI']} --baud {self.sik['env']['SIK_BAUD']}",
                          self.sik["env"]["HUB_TASIYICI_ARGS"])
         self.assertEqual("", self.udp["env"]["HUB_TASIYICI_ARGS"])
+
+    def test_T7b_udp_sik_inis_yayincisi_ESKI_akista_kalir(self):
+        for ad, b in (("udp", self.udp), ("sik", self.sik)):
+            with self.subTest(kip=ad):
+                self.assertNotIn("--kalkis-bekle", b["birimler"][jb.INIS].split())
 
 
 class JetsonBaslatTunelBirimMetni(unittest.TestCase):

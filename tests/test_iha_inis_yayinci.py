@@ -296,6 +296,12 @@ class KalkisBekleTests(unittest.TestCase):
         cls.YERDE = mavutil.mavlink.MAV_LANDED_STATE_ON_GROUND
         cls.HAVADA = mavutil.mavlink.MAV_LANDED_STATE_IN_AIR
         cls.KALKIS = mavutil.mavlink.MAV_LANDED_STATE_TAKEOFF
+        cls.INIS = mavutil.mavlink.MAV_LANDED_STATE_LANDING
+
+    def test_LANDING_de_baslayan_surec_kalkisi_gormus_sayilir(self):
+        # D-495: alçalma sırasında yeniden başlayan süreç inişi kaçırmasın.
+        self.assertTrue(self._bekle([_EssMesaj(1, self.INIS),
+                                     _EssMesaj(1, self.INIS)]))
 
     def _bekle(self, mesajlar, beklenen_sysid=1):
         return yayinci.kalkis_bekle(_SiraliGozcu(mesajlar),
@@ -331,20 +337,48 @@ class KalkisBekleTests(unittest.TestCase):
             self._bekle([_EssMesaj(1, None), _EssMesaj(1, True),
                          _EssMesaj(1, "2")] * 3)
 
-    def _main_kos(self, ek):
+    def _main_kos(self, ek, yayin=(True,)):
         mav = SahteMav()
         sira = []
+        yayin = list(yayin)
         with mock.patch.object(yayinci, "mavlink_baglantisi_ac", return_value=mav), \
              mock.patch.object(yayinci, "kalkis_bekle",
                                side_effect=lambda *a, **k: sira.append("kalkis")) as kb, \
              mock.patch.object(yayinci, "yerde_mi",
                                side_effect=lambda *a, **k: sira.append("yerde") or True), \
-             mock.patch.object(yayinci, "iha_inisini_yayinla", return_value=True), \
+             mock.patch.object(yayinci, "iha_inisini_yayinla",
+                               side_effect=lambda *a, **k: yayin.pop(0) if len(yayin) > 1
+                               else yayin[0]) as yb, \
+             mock.patch.object(yayinci.time, "sleep"), \
              contextlib.redirect_stdout(io.StringIO()):
             sonuc = yayinci.main(["--mavlink", "udp:127.0.0.1:14551",
                                   "--kanit-timeout", "5", "--heartbeat-sure", "0",
                                   "--yks", "127.0.0.1:5100", "--sysid", "1"] + ek)
+        self.yayin_sayisi = yb.call_count
         return sonuc, sira, kb, mav
+
+    def test_main_bayrakla_ACK_eksikse_kanit_YENIDEN_yayinlanir(self):
+        sonuc, _, _, _ = self._main_kos(["--kalkis-bekle"], yayin=(False, False, True))
+        self.assertEqual(0, sonuc)
+        self.assertEqual(3, self.yayin_sayisi)
+
+    def test_main_bayrakla_ACK_hep_eksikse_SINIRLI_deneme_ve_cikis_5(self):
+        sonuc, _, _, _ = self._main_kos(["--kalkis-bekle"], yayin=(False,))
+        self.assertEqual(5, sonuc)
+        self.assertEqual(1 + yayinci.INIS_YENIDEN_DENEME, self.yayin_sayisi)
+
+    def test_main_akis_istegi_her_iki_yolda_TEK_kez_kurulur(self):
+        for ek in (["--kalkis-bekle"], []):
+            with self.subTest(ek=ek), \
+                 mock.patch.object(yayinci, "_akis_kur", wraps=yayinci._akis_kur) as ak:
+                self._main_kos(ek)
+                self.assertEqual(1, ak.call_count)
+
+    def test_main_bayraksiz_ACK_eksikse_yeniden_YAYINLAMAZ(self):
+        """Bayraksız yol f3314ba3 ile aynı kalmalı: çıkış 5, systemd yeniden başlatır."""
+        sonuc, _, _, _ = self._main_kos([], yayin=(False,))
+        self.assertEqual(5, sonuc)
+        self.assertEqual(1, self.yayin_sayisi)
 
     def test_main_bayrakla_kalkis_iniş_aramasindan_ONCE(self):
         sonuc, sira, kb, mav = self._main_kos(["--kalkis-bekle"])

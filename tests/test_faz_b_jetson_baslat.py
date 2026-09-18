@@ -1184,6 +1184,9 @@ class JetsonBaslatKurKapiShim(unittest.TestCase):
             self.assertEqual(kod, 0, f"stdout:\n{out}\nstderr:\n{err}")
             self.assertIn("[PARAM] indirme bitti", out)
             self.assertNotIn("parametre indirmesi bitmedi", out)
+            # ~42 s sessizlik operatore donmus gibi gorunur; Ctrl-C kapiyi yarida keserdi.
+            self.assertIn("Ctrl-C YAPMAYIN", out)
+            self.assertLess(out.index("Ctrl-C YAPMAYIN"), out.index("[PARAM] indirme bitti"))
             parm = Path(str(m.shim_log) + ".parm").read_text(encoding="utf-8").split()
             parm_t = float(parm[0].replace(",", "."))
             z = m.dogrula_zamanlari()

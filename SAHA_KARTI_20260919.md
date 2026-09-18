@@ -26,7 +26,7 @@
 6. Motor testi A/B/C/D %10 (A=M1 sağ-ön CCW, B=M4 sağ-arka CW, C=M2 sol-arka CCW, D=M3 sol-ön CW), videolu; ESC sinyalleri AUX1–4'te, MAIN1–4 boş.
 7. Failsafe: A4 CH6 disarm 3/3 · A1 kumanda kapat → ≤ 2 s Radio Failsafe + LAND.
 8. **YKİ'den ARM (iki basış) → motorlar döner → DISARM; ACİL LAND iki basış → mod LAND.** Bu, komut yolunun kanıtıdır.
-9. **Yerde armlı gaz testi YAPILMAZ** (yazılım kalkış sayar, gerçek inişte "İHA İNDİ" gelmez). Yapıldıysa: inişten sonra İHA İNDİ'ye elle bas, tutanağa yaz.
+9. **Yerde armlı gaz testi YAPILMAZ:** yazılım bunu kalkış sayar ve uçuştan önce YKİ'ye SAHTE bir iniş kanıtı yazar (kırmızı "İHLAL RİSKİ" satırıyla). KALKIŞ düğmesinden ÖNCE olursa kronometreye dokunmaz; SONRA olursa kronometreyi yanlış durdurur ve geri alınamaz. Gerçek inişin kanıtı yine gelir (yeni seq). Yapıldıysa tutanağa yaz.
 
 ## 4. Uçuş kuralları
 - **İlk askı (U1):** ipli/alçak, Stabilize/AltHold, ≥ 2 s gaz rampası, 1–2 m, ≥ 30 s. **Yerde Loiter'a geçilmez.** Salınım → hemen indir. `.bin` USB ile → `ucus_bin_analiz.py`: VibeZ p95 ≤ 16, motor yayılımı ≤ 40 µs, CCW−CW ≤ 60 µs, tutum ≤ 1,5°. **Geçmeden U2 yok.**
