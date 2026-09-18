@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """ONARIM-19 — VIDEO TELEMETRI KAYNAGI KESFI (YKS tarafi).
 
-NEDEN: koordinat/karar hatti radyo telemetrisindedir (D-499: 433 MHz) ve BU MODUL ONA
+NEDEN: koordinat/karar hatti radyo telemetrisindedir (telsiz BANDI kararI ACIK:
+master D-499 '433 MHz', dal tunel-saha-20260918 'RFD900A 915 MHz' — bkz.
+DAL_CAKISMA_RAPORU_20260918.md) ve BU MODUL ONA
 DOKUNMAZ. Video telemetri ise "baglanabilirsek guzel olur" kapsamindadir (kullanici,
 18 Eylul): donanim sahada takilacak, ama yer birimi goruntuyu HANGI adres/port/yoldan
 verecegi **onceden bilinmiyor** — SIYI'nin surumune, kumandanin USB/tethering kipine ve
