@@ -17,8 +17,10 @@ Mesaj tipleri:
 import itertools
 import json
 import math
+import os
 import re
 import time
+import uuid
 
 PROTOCOL_VERSION = 1
 ROAD_LABEL = {1: "sol", 2: "orta", 3: "sag"}     # şartname yön kuralı
@@ -47,6 +49,15 @@ _OTURUM_DESENI = re.compile(
     rf"^[A-Za-z0-9_-]{{{OTURUM_EN_AZ_KARAKTER},{OTURUM_EN_COK_KARAKTER}}}$")
 
 _seq = itertools.count(1)
+_heartbeat_sureci = (os.getpid(), uuid.uuid4().hex)
+
+
+def heartbeat_akis_anahtari(mesaj):
+    """Eski üretici için boş akış; yeni üretici için sınırlı ASCII kimliği."""
+    akis = mesaj.get("akis")
+    if "akis" not in mesaj:
+        return (mesaj.get("node"), "")
+    return (mesaj.get("node"), oturum_dogrula(akis))
 
 
 # ── Mesaj üreticiler ──────────────────────────────────────────────────────────
@@ -106,7 +117,7 @@ def rota_yok(sebep, detay=None, seq=None):
 # T162 (ON_KAYIT SS28): YKS heartbeat'teki `x`,`y` ile sartname SS6.2/SS6.4
 # ALAN IHLALI denetimi yapiyor (`comms/yks_gui.py`), ama URETIMDE bu alanlari
 # ureten hicbir yol yoktu — kapi sahada OLUYDU. Alanlar ISTEGE BAGLIDIR:
-# verilmezse mesaj eskisiyle ALAN ALAN AYNIDIR (kilit: test_t162...).
+# verilmezse telemetri eklenmez; ONARIM-18 süreç kimliği her zaman vardır.
 # A2 (D-381): "karar_yas" — IHA'nin son ALGI KARARININ yasi (sn, monotonik).
 # NEDEN HEARTBEAT'TE: IHA rotayi ACK alana kadar tekrarlar, ACK gelince SUSAR
 # (T172/D-321); ACK'ten sonra da akmaya devam eden TEK kanal heartbeat'tir.
@@ -124,7 +135,13 @@ HEARTBEAT_TELEMETRI_ALANLARI = (
 
 
 def heartbeat(node, seq=None, **telemetri):
+    # PID kontrolü fork ile miras alınan UUID'nin de yeniden üretilmesini sağlar.
+    global _heartbeat_sureci
+    pid = os.getpid()
+    if _heartbeat_sureci is None or _heartbeat_sureci[0] != pid:
+        _heartbeat_sureci = (pid, uuid.uuid4().hex)
     msg = {"v": PROTOCOL_VERSION, "type": MESAJ_HEARTBEAT, "node": node,
+           "akis": _heartbeat_sureci[1],
            "seq": next(_seq) if seq is None else int(seq),
            "t": round(time.time(), 3)}
     for ad in HEARTBEAT_TELEMETRI_ALANLARI:

@@ -71,9 +71,9 @@ def _okuyucu(mesajlar, sysid=1, tazelik=5.0):
 # --------------------------------------------- (a) BOZULMAMA (protokol)
 class ProtokolBayutEs(unittest.TestCase):
 
-    def test_argumansiz_heartbeat_alan_kumesi_AYNI(self):
+    def test_argumansiz_heartbeat_alan_kumesi_akis_kimligi_icerir(self):
         m = protocol.heartbeat("iha", seq=7)
-        self.assertEqual({"v", "type", "node", "seq", "t"}, set(m))
+        self.assertEqual({"v", "type", "node", "seq", "t", "akis"}, set(m))
 
     def test_None_alan_YAZILMAZ(self):
         m = protocol.heartbeat("iha", seq=7, x=None, y=None)

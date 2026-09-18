@@ -24,6 +24,7 @@ Kullanım:
 Sadece stdlib + (SS için) Pillow kullanır; tkinter Python ile gelir.
 """
 import argparse
+import atexit
 import io
 import math
 import os
@@ -44,7 +45,8 @@ from komut_tekrar import AckliTekrar, BOS, ONAYLANDI, VAZGECILDI
 from protocol import (ACK_SONUC_KABUL, encode, ack, command, heartbeat, iha_landed,
                       kritik_komut_ack_gecerli_mi, MESAJ_OPEN_ROUTE, MESAJ_NO_ROUTE,
                       open_route, MESAJ_HEARTBEAT, MESAJ_ACK, MESAJ_CMD, MESAJ_IHA_LANDED,
-                      FrameReader, PROTOCOL_VERSION, ROAD_LABEL)
+                      FrameReader, PROTOCOL_VERSION, ROAD_LABEL,
+                      HEARTBEAT_TELEMETRI_ALANLARI, heartbeat_akis_anahtari)
 
 _PROJE_KOKU = Path(__file__).resolve().parents[1]
 if str(_PROJE_KOKU / "codes") not in sys.path:
@@ -95,6 +97,8 @@ GORUNUM_SECENEKLERI = {"saha": "harita", "canli": "algi", "kamera": "kamera"}
 
 ARENA_M = 50.0        # HTAB 50×50 m (şartname)
 OLCEK = 1.0           # main() ekran DPI'sine göre ayarlar (yüksek DPI okunurluk)
+# İç bellek sınırı: yeniden başlayan yayıncılar sınırsız kayıt biriktirmesin.
+HEARTBEAT_AKIS_TAVANI = 128
 
 # Hakem haritasındaki üç şeridin TEK çizim tablosu:
 #   yol -> (merkez x, yarı genişlik, giriş y, çıkış y), metre.
@@ -1874,21 +1878,39 @@ class YksArayuz:
         self._durum_tazele()
         self.kok.after(120, self._tik)
 
-    def _heartbeat_sirasi_gecerli(self, dugum, seq, simdi=None):
+    def _heartbeat_sirasi_gecerli(self, dugum, seq, simdi=None, akis=""):
         """Aynı canlı oturumda geri/tekrar heartbeat'in durumu ezmesini önle."""
         if (dugum not in ("iha", "ika") or isinstance(seq, bool)
                 or not isinstance(seq, int) or seq < 0):
             return False
         simdi = time.monotonic() if simdi is None else float(simdi)
-        onceki = getattr(self, "_son_heartbeat_seq", {}).get(dugum)
+        anahtar = (dugum, akis)
+        onceki = getattr(self, "_son_heartbeat_seq", {}).get(anahtar)
         if onceki is not None:
             onceki_seq, onceki_zaman = onceki
             if seq <= onceki_seq and simdi - onceki_zaman <= ARM_DURUM_TAZELIK_S:
                 return False
         if not hasattr(self, "_son_heartbeat_seq"):
             self._son_heartbeat_seq = {}
-        self._son_heartbeat_seq[dugum] = (seq, simdi)
+        self._son_heartbeat_seq[anahtar] = (seq, simdi)
+        if len(self._son_heartbeat_seq) > HEARTBEAT_AKIS_TAVANI:
+            eski = min(self._son_heartbeat_seq,
+                       key=lambda k: self._son_heartbeat_seq[k][1])
+            del self._son_heartbeat_seq[eski]
+            getattr(self, "_telemetri_akislari", set()).discard(eski)
         return True
+
+    def _telemetriyi_yaslandir(self, simdi):
+        """Başka yayıncının canlılığı eski Pixhawk snapshot'ını tazelemez."""
+        for dugum, damga in getattr(self, "_son_telemetri", {}).items():
+            if 0.0 <= simdi - damga < ARM_DURUM_TAZELIK_S:
+                continue
+            self.tel[dugum] = {}
+            self.mod.pop(dugum, None)
+            getattr(self, "mod_durum_zamani", {}).pop(dugum, None)
+            if dugum == "iha":
+                self.arm_acik = None
+                self.arm_durum_zamani = None
 
     def _mesaj_isle(self, m, adr):
         if getattr(self, "protokol_kilidi", False):
@@ -2086,9 +2108,15 @@ class YksArayuz:
         elif tip == MESAJ_HEARTBEAT:
             dugum = m.get("node", "?")
             _hb_simdi = time.monotonic()
-            if (getattr(self, "protokol_kilidi", False)
-                    and not self._heartbeat_sirasi_gecerli(
-                        dugum, m.get("seq"), _hb_simdi)):
+            try:
+                anahtar = heartbeat_akis_anahtari(m)
+            except ValueError:
+                self.protokol_ret_sayaci = getattr(self, "protokol_ret_sayaci", 0) + 1
+                return
+            sira_gecerli = self._heartbeat_sirasi_gecerli(
+                dugum, m.get("seq"), _hb_simdi, akis=anahtar[1])
+            if (dugum not in ("iha", "ika")
+                    or (getattr(self, "protokol_kilidi", False) and not sira_gecerli)):
                 self.protokol_ret_sayaci = getattr(
                     self, "protokol_ret_sayaci", 0) + 1
                 if self.protokol_ret_sayaci in (1, 10, 100):
@@ -2097,6 +2125,19 @@ class YksArayuz:
                 return
             self.son_hb[dugum] = _hb_simdi   # D-384: monotonik
             self._dugum_adresini_ogren(dugum, adr)
+            if not hasattr(self, "_telemetri_akislari"):
+                self._telemetri_akislari = set()
+            if any(ad in m for ad in HEARTBEAT_TELEMETRI_ALANLARI):
+                self._telemetri_akislari.add(anahtar)
+            # Akışsız eski üreticide snapshot davranışı korunur. Yeni bir
+            # salt-canlılık akışı diğer üreticinin telemetrisini silemez.
+            if anahtar[1] and anahtar not in self._telemetri_akislari:
+                self._telemetriyi_yaslandir(_hb_simdi)
+                self.sayac[MESAJ_HEARTBEAT] += 1
+                return
+            if not hasattr(self, "_son_telemetri"):
+                self._son_telemetri = {}
+            self._son_telemetri[dugum] = _hb_simdi
             # A2 (D-381): algi canliligi hat canliligindan AYRI izlenir.
             # D-383 (curutucu): (1) alim damgasi ve gecen-sure hesabi
             # MONOTONIK — duvar saati (NTP/elle duzeltme) geri atlarsa
@@ -4420,6 +4461,7 @@ class YksArayuz:
         simdi = time.time()
         self._tespiti_yaslandir(simdi)
         _mono = time.monotonic()               # D-384: damgalar monotonik
+        self._telemetriyi_yaslandir(_mono)
         tel_durum = {}                         # CONTRACTS §6.8 kanıt özeti
         tel_yas = {}
         for ad, (nokta, metin) in self.lbl_dugum.items():
@@ -4496,7 +4538,7 @@ class YksArayuz:
                 yas_s=tel_yas, dugumler=dugumler)
         gps_etiket = getattr(self, "lbl_gps", None)
         if gps_etiket is not None:
-            iha_hb = self.son_hb.get("iha")
+            iha_hb = getattr(self, "_son_telemetri", {}).get("iha")
             if iha_hb is None or _mono - iha_hb >= ARM_DURUM_TAZELIK_S:
                 gps_etiket.config(
                     text="HAM GNSS: TELEMETRİ YOK/BAYAT · SEMANTİK HARİTADA "
@@ -4506,7 +4548,7 @@ class YksArayuz:
                 gps_var, _ = gps_telemetrisi_dogrula(gps_tel)
                 gps_etiket.config(text=gps_gosterim_metni(gps_tel),
                                   fg=YESIL if gps_var else KIRMIZI)
-        iha_hb = self.son_hb.get("iha")
+        iha_hb = getattr(self, "_son_telemetri", {}).get("iha")
         if iha_hb is None or _mono - iha_hb >= ARM_DURUM_TAZELIK_S:
             self._ucus("PIXHAWK MODU YOK/BAYAT", KIRMIZI)
         else:
@@ -4848,6 +4890,59 @@ def yks_duyurusu_baslat(args, logla, *, yayinci_sinifi=None):
     return yayinci
 
 
+def _video_koprusunu_kapat(surec, bekle_s=3.0):
+    """YKS kapanirken video koprusunu birak (yetim surec kalmasin)."""
+    try:
+        if surec.poll() is not None:
+            return
+        surec.terminate()
+        try:
+            surec.wait(timeout=bekle_s)
+        except Exception:
+            surec.kill()
+    except Exception:
+        pass
+
+
+def video_kaynagini_hazirla(args, kesif_ip=None, kesfet=None, kopru_ac=None):
+    """ONARIM-19: --video-tara verildiyse video kaynagini BUL ve YKS'ye baglanabilir hale getir.
+
+    Donus: (kamera_url|None, [gunluk satiri], kopru_sureci|None).
+    FAIL-CLOSED: video bulunamazsa ya da tarama patlarsa `None` doner ve YKS bugunku
+    "kamera kapali" davranisinda kalir. Rota/komut/telemetri hatti ETKILENMEZ — bu
+    fonksiyon link nesnesine hic dokunmaz.
+    """
+    import video_kaynagi as vk
+    gunluk = []
+    try:
+        kesfet = kesfet or vk.kesfet
+        secilen, sonuclar = kesfet(elle=args.kamera_url, jetson_ip=None,
+                                   kesif_ip=kesif_ip)
+    except Exception as exc:
+        return None, [(f"⚠ VİDEO TARAMASI PATLADI: {exc} — video kapalı, "
+                       "karar hattı etkilenmedi", "kirmizi")], None
+    denendi = [x for x in sonuclar if x.durum != vk.DURUM_ATLANDI]
+    if secilen is None:
+        gunluk.append((f"VİDEO KAYNAĞI BULUNAMADI ({len(denendi)} aday denendi) — "
+                       "video kapalı; koordinat/karar hattı ETKİLENMEZ", "sari"))
+        return None, gunluk, None
+    a = secilen.ayrinti
+    gunluk.append((f"VİDEO KAYNAĞI: {secilen.aday.url} · {a.get('genislik')}x"
+                   f"{a.get('yukseklik')} {a.get('codec') or ''} "
+                   f"({a.get('yontem')}) · {secilen.aday.aciklama}", "mavi"))
+    if not vk.kopru_gerekli(secilen.aday):
+        return vk.yks_kamera_url(secilen.aday), gunluk, None
+    komut = vk.kopru_komutu(secilen.aday)
+    try:
+        surec = (kopru_ac or subprocess.Popen)(
+            komut, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    except Exception as exc:
+        gunluk.append((f"⚠ VİDEO KÖPRÜSÜ BAŞLATILAMADI ({exc}) — video kapalı", "kirmizi"))
+        return None, gunluk, None
+    gunluk.append(("VİDEO KÖPRÜSÜ: " + " ".join(komut), "mavi"))
+    return vk.yks_kamera_url(secilen.aday), gunluk, surec
+
+
 def ika_adresini_uygula(app, adres):
     """ONARIM-03c: keşfedilen İKA adresini pinle (thread'den çağrılır; dict ataması atomik).
     Kaynak kilidi bu adresle doğrular; günlük satırı ana döngü kuyruğundan yazılır."""
@@ -4936,6 +5031,11 @@ def main():
         help=("Jetson RAW kamera kökü (örn. http://192.168.4.2:8080). "
               "Yalnız ayrı Wi-Fi/LAN; SiK üzerinden video taşınmaz. "
               "Varsayılan: NAVITAS_KAMERA_URL, yoksa kamera kapalı"))
+    ap.add_argument(
+        "--video-tara", action="store_true",
+        help=("ONARIM-19: video telemetri kaynağını TARAYARAK bul (SIYI yer birimi, "
+              "kumanda USB ağı, Jetson köprüsü). --kamera-url verilirse o İLK denenir. "
+              "Bulunamazsa video kapalı kalır; koordinat/karar hattı etkilenmez"))
     # T226 (D-443): video kaynak etiketi — başlık + KAMERA_KANIT kaynak alanı.
     ap.add_argument(
         "--kamera-etiket", default="",
@@ -5061,12 +5161,21 @@ def main():
 
     hakem_log_yolu = (args.hakem_log if args.hakem_log is not None
                        else varsayilan_hakem_log_yolu(_PROJE_KOKU))
+    # ONARIM-19: video kaynağı taraması (yalnız --video-tara ile). Karar hattına
+    # dokunmaz; bulunamazsa kamera_url None kalır ve YKS bugünkü davranışını sürdürür.
+    kamera_url, video_gunlugu, video_kopru = args.kamera_url, [], None
+    if args.video_tara:
+        kamera_url, video_gunlugu, video_kopru = video_kaynagini_hazirla(
+            args, kesif_ip=(args.iha[0] if args.iha else None))
+        if video_kopru is not None:
+            atexit.register(_video_koprusunu_kapat, video_kopru)
+
     kok = tk.Tk()
     # otomatik onay YOK: hakem onay akışı elle incelenebilsin (buton/R kısayolu)
     try:
         app = YksArayuz(
             kok, link, otomatik_onay=False, demo=args.demo, ika_peer=ika_peer,
-            iha_peer=iha_peer, kamera_url=args.kamera_url,
+            iha_peer=iha_peer, kamera_url=kamera_url,
             hakem_log_yolu=hakem_log_yolu,
             oturum_kunyesi=oturum_kunyesi,
             kamera_etiket=args.kamera_etiket,
@@ -5078,6 +5187,8 @@ def main():
     app._logla(f"YKS hazır — dinleniyor: "
                f"{args.serial or args.bind}", "mavi")
     app._logla(f"KALICI HAKEM KAYDI: {hakem_log_yolu}", "mavi")
+    for metin, renk in video_gunlugu:
+        app._logla(metin, renk)
     app.duyuru_yayinci = None
     if args.eslesme is not None:
         app.duyuru_yayinci = yks_duyurusu_baslat(args, app._logla)

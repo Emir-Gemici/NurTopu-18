@@ -137,7 +137,7 @@ class KayitMav:
 
 
 def _kanit_mesajlari(adet=3):
-    m = []
+    m = [_extended(yerde=False)]  # ONARIM-18: önce uçuş kanıtı
     for _ in range(adet):
         m.extend([_extended(), _konum()])
     return m
@@ -245,7 +245,8 @@ class A_BaslangicIstegi(unittest.TestCase):
         # Sahte Pixhawk SUNUCU kipinde: akrani gormeden hicbir sey gondermez
         # (A4). Yayincinin gonderdigi TEK sey SET_MESSAGE_INTERVAL'dir; akis
         # ancak onunla baslar -> istek olmadan kanit yok, mekanik olculur.
-        sp = SahtePixhawk(f"udpin:127.0.0.1:{port}", senaryo="yerde")
+        sp = SahtePixhawk(f"udpin:127.0.0.1:{port}", senaryo="inis",
+                         inis_suresi_s=2.0)
         self.addCleanup(sp.dur)
         sp.baslat()
         alici_link = UDPLink(bind=("127.0.0.1", 0), timeout=0.05)
@@ -374,6 +375,7 @@ class B_SessizlikBekcisi(unittest.TestCase):
         mav = KayitMav([], okuma_kancasi=kanca)   # hic mesaj yok
         with mock.patch.object(yayinci, "mavlink_baglantisi_ac",
                                return_value=mav), \
+             mock.patch.object(yayinci, "kalkisi_bekle", return_value=SYSID), \
              mock.patch.object(kanit, "_mavutil_al",
                                return_value=_sahte_mavutil()), \
              mock.patch.object(yayinci, "iha_inisini_yayinla") as yayin, \

@@ -496,13 +496,14 @@ class _GercekEkran(unittest.TestCase):
         gelmezse tespit TAZE SAYILMAZ ve onay düğmesi kapalı kalır — bu doğru,
         var olan fail-closed davranıştır; video testinin konusu değildir."""
         self._hb_seq = getattr(self, "_hb_seq", 0) + 1
-        self.iha.send(encode(heartbeat("iha", seq=self._hb_seq, karar_yas=0.3)),
+        mesaj = heartbeat("iha", seq=self._hb_seq, karar_yas=0.3)
+        self.iha.send(encode(mesaj),
                       self.hedef)
         hedef_seq = self._hb_seq
-        # `_son_heartbeat_seq[node]` = (seq, monotonik alım anı).
+        # Sıra artık yayıncı akışı başınadır (ONARIM-18).
         self.assertTrue(self._pompala(
             lambda: getattr(self.app, "_son_heartbeat_seq", {}).get(
-                "iha", (None, None))[0] == hedef_seq
+                ("iha", mesaj["akis"]), (None, None))[0] == hedef_seq
             and self.app.karar_yas_rx is not None))
 
     @staticmethod

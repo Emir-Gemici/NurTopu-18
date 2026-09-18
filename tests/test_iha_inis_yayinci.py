@@ -33,6 +33,10 @@ class SahteMav:
     def close(self):
         self.kapandi = True
 
+    def recv_match(self, **kwargs):
+        # CLI taşıyıcı testlerinin önkoşulu: uçuş daha önce gözlendi.
+        return MavMesaj(kanit.MESAJ_EXTENDED_SYS_STATE, landed_state=2)
+
 
 class MavMesaj:
     def __init__(self, tip, **alanlar):
@@ -50,7 +54,7 @@ class MavMesaj:
 class KanitMav(SahteMav):
     def __init__(self):
         super().__init__()
-        self.mesajlar = []
+        self.mesajlar = [MavMesaj(kanit.MESAJ_EXTENDED_SYS_STATE, landed_state=2)]
         for _ in range(3):
             self.mesajlar.extend([
                 MavMesaj(kanit.MESAJ_EXTENDED_SYS_STATE, landed_state=1),

@@ -31805,3 +31805,62 @@ Ters yönde: `h_asgari = 2,2534 × R` → 3 m yol için 6,76 m · 4 m için 9,01
 **Neden bu, "rota bulunamaz"dan daha tehlikeli:** `W/3` reddi yanlış yönde ateşlerse sonuç *rota yayınlanmaması*dır — puan kaybı, ama **güvenli**. Açık araziden uydurma rota ise şartname §5.3.2/§6.2 kapsamındadır: *"yanlış güzergâh tespiti yapan takımlar **0 puan alarak görevden başarısız** sayılacaktır"*. Üstelik `W/3` bu vakayı **tam kapatmaz**: kalkan yalnız **çok geniş** koridoru reddeder; açık arazideki **dar** bir şerit (iki park sırası arası, tarla içindeki bir patika) genişlik ölçütünü **geçer** ve yine uydurma rota üretir. D-501'ün zarfı bu vakayı **kapsamıyor**.
 **Ölçülmemiş olan (dürüstlük):** tek yollu + çevresi açık arazi geometrisinde sistemin davranışı **hiç ölçülmedi**. Kabul kümelerinin tamamı üç şeritli sentetik arenadır; `sa_000070` tek bir vakadır ve o da kompozit kümeden gelir. Bu kayıt bir **ölçüm değil, risk adlandırmasıdır**.
 **Sıra: T265** — tek yol + açık arazi vakasının ölçülmesi ve gerekirse sınır bilgisinin dışarıdan (telemetri/GNSS + bilinen arena köşeleri) verilmesi. Ayrıntı kuyrukta.
+
+## 2026-09-17 · ONARIM-18 · Codex-1 uygulama ve açık denetim kaydı
+
+Kullanıcının "yetişebildiği kadar yap, adım adım gidelim" talebiyle iki kusur yerelde
+onarıldı. Kayıt numarası çakışmaması için yeni D-numarası atanmadı.
+
+- Heartbeat `akis` kimliği ve (node, akis) sırası; salt canlılık akışı snapshot
+  silmez, telemetri kaybı 2,5 s sözleşme sınırında geçersizleşir. İKA alıcısında
+  aynı sıra filtresi bulunmadığından kardeş alıcıda bu kusur doğrulanmadı.
+- İniş yayıncısı önce IN_AIR/TAKEOFF bekler; kaynak pini inişe taşınır, süre kalkışta
+  başlar. `inis_kaniti.py` değişmedi. Paket kopyaları mekanik yenilendi.
+- Hedefli 96 test OK, iniş grubu 84 test OK, paket 7 test OK; tüm çıkışlar 0.
+  İki görev sonrası genel kapı kol1 15/15 · kol2 serit 15/15, exit 0.
+  Her düzeltmede 4/4 mutant yakalandı, betikler exit 0.
+- Geniş YKS: `python -m unittest discover -s tests -p 'test_yks*.py'` (tam
+  yorumlayıcı SONUC.md'de), `Ran 236 tests in 38.926s / FAILED (failures=1)`, exit 1.
+  Tek hata H2c ölçek 1,5 road3 kalıntı kesişimi: beklenen 1, ölçülen 0.
+  `baseline_gorsel.py` HEAD b75b1722 YKS koduyla aynı testi çalıştırdı:
+  `Ran 1 test in 2.147s / FAILED (failures=1)`, aynı bulgu, exit 1.
+  Beklenti değiştirilmedi. ONARIM-18A bu kırmızı yüzünden [ ] bırakıldı;
+  ONARIM-18B kendi kapıları yeşil, READY_FOR_REVIEW. Hiçbiri bağımsız onay almadı.
+- CONTRACTS salt okuma yetkisi korundu. Önerilen heartbeat/kalkış sözleşme metni,
+  gerçek komutlar ve ham loglar: `results/onarim18_heartbeat_20260917/SONUC.md`.
+  Mimar bu öneriyi değerlendirmeli. Canlı Jetson aktarımı, SITL→Jetson→YKS,
+  R1–R5, tam depo süiti ve commit/push yapılmadı.
+
+### D-503 — **Video telemetri: YKİ kaynağı KENDİ BULUYOR (ONARIM-19).** Zincirin kopuk halkası video değil, **videonun adresiydi**; gerçek akışla uçtan uca ölçüldü
+
+**Bağlam (2026-09-18, kullanıcı):** koordinat/karar hattı radyo telemetrisinde kalıyor; video
+"bağlayabilirsek güzel olur" kapsamında ama **kodu hazır olmalı**. Sorun kamera ya da köprü
+değildi — ikisi de vardı (ONARIM-06, `kamera_koprusu`); eksik olan, videonun **hangi
+adres/port/yoldan** geleceğinin önceden bilinememesiydi (SIYI sürümü, kumandanın USB/tethering
+kipi, router yokken link-local adres).
+
+**Yapılan:** `comms/video_kaynagi.py` — aday tablosu (SIYI `.25/.20/.11/.12` × 5 RTSP yolu,
+FPV UDP, kumanda tethering, Jetson HTTP köprüsü, istenirse yakalama kartı) + TCP elemesi +
+**akış doğrulaması** + önbellek; `yks_gui --video-tara` bulduğunu `kamera_koprusu` ile MJPEG'e
+çevirip YKİ'ye bağlıyor.
+
+**ÖLÇÜLDÜ (gerçek akış, sahte değil):** ffmpeg 1280×720 H.264 → `kamera_koprusu` →
+keşif `CANLI` (ffprobe, 1280x720 mjpeg) → köprü `/durum` `kaynak_acik=True fps=9.999
+boyut=[1280,720] son_hata=None` → `KameraIstemci` `durum=CANLI kare_yasi_s=0.195 jpeg=32659 B`.
+Tarama süresi 25 aday **3,3 s** (aynı `host:port` bir kez denenir).
+Testler **40/40**, mutasyon **5/5 yakalandı**. Genel kapı **GEÇTİ** (15/15 · şerit 15/15).
+
+**DÜRÜST SINIR:** gerçek SIYI donanımıyla **denenmedi**; yerel RTSP *sunucusu* kurulamadığı için
+(`ffmpeg -f rtsp` yalnız istemci) taşıyıcı olarak HTTP ölçüldü — RTSP sahada ilk kez sınanacak.
+**Uçuşta video Ethernet'ten gidemez** (Jetson'da WiFi kartı yok, havada kablo yok): Jetson HTTP
+köprüsü adayları **yalnız yerde** geçerlidir, uçuşta video ancak SIYI'nin kendi telsiziyle olur.
+
+**🔴 Ayrı bulgu — bu deponun uzak dal görüşü eksikti:** `remote.origin.fetch` yalnız
+`master`'ı çekiyordu; bu yüzden `origin/tunel-saha-20260918` (7e35405c, Emir tarafı tünel
+mimarisi) "hiçbir dalda yok" göründü ve bir belge haksız yere uydurma şüphesiyle anıldı.
+Refspec `+refs/heads/*:refs/remotes/origin/*` olarak düzeltildi; dal ve içindeki dosyalar
+`git ls-remote` ile doğrulandı. **Ders:** bir dal görünmüyorsa önce uzakta ara, hükmü sonra ver.
+
+**Bilinen kırmızı (bu işten ÖNCE de vardı):** `test_yks_mk15_hakem_ekrani.py` H2c
+`ana road3 945x630` kalıntı kesişim beklenen 1, ölçülen 0. `git worktree` ile HEAD
+(b75b1722) ayrıca koşuldu, aynı tek hata orada da çıktı.
