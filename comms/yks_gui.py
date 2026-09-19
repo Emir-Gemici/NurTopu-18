@@ -4904,7 +4904,18 @@ class YksArayuz:
             else:
                 yas = _mono - t
                 canli = 0.0 <= yas < 3.0               # ika_receiver failsafe eşiği
-                tel_durum[ad] = "TAZE" if canli else "BAYAT"
+                # NEDEN (19 Eyl kayıt kanıtı): kayıplı tünelde 1 Hz İHA
+                # heartbeat'inin 2-3 kopyası düşünce satır 1-2 sn KIRMIZI
+                # "BAĞLANTI KAYBI" / kayıtta BAYAT çakıyordu. İHA için 3 sn ile
+                # YKS_TESPIT_TAZELIK_S (onay kilidinin "hat kesik" eşiği)
+                # arası SARI "ZAYIF"; kırmızı yalnız bunun üstünde. YALNIZ
+                # GÖSTERİM: `_iha_havada_mi`, ARM/acil kapıları,
+                # `_tespiti_yaslandir` bu değişkeni OKUMAZ, kendi eşikleriyle
+                # aynen çalışır. İKA satırı değişmedi (3 sn = İKA failsafe'i).
+                zayif = (ad == "iha" and not canli
+                         and 0.0 <= yas <= YKS_TESPIT_TAZELIK_S)
+                tel_durum[ad] = ("TAZE" if canli else
+                                 "ZAYIF" if zayif else "BAYAT")
                 tel_yas[ad] = round(yas, 1)
                 tel = self.tel.get(ad) or {}
                 pixhawk_ok = (ad != "iha"
@@ -4915,7 +4926,7 @@ class YksArayuz:
                 # söyler; sarı = taşıyıcı canlı, Pixhawk kanıtı yok.
                 nokta.config(
                     fg=(YESIL if canli and pixhawk_ok
-                        else SARI if canli else KIRMIZI))
+                        else SARI if canli or zayif else KIRMIZI))
                 parcalar = []
                 if "alt" in tel:
                     parcalar.append(f"{tel['alt']:.0f} m")
@@ -4944,7 +4955,9 @@ class YksArayuz:
                         mod_notu = " ⚠AUTO DIŞI"
                     ek += f" · mod {mod}{mod_notu}"
                 metin.config(text=f"{ad.upper()} — hb {yas:.1f} sn{ek}"
-                                  + ("" if canli else "  (BAĞLANTI KAYBI!)"))
+                                  + ("" if canli else
+                                     "  (bağlantı ZAYIF)" if zayif else
+                                     "  (BAĞLANTI KAYBI!)"))
         # CONTRACTS §6.8 — telemetri tazelik ÖZETİ hakem kaydına KENAR olayı
         # olarak düşer. Her heartbeat'e satır yazmak (1 Hz × düğüm) kaydı
         # gürültüye boğardı; hiç yazmamak ise "hat NE ZAMAN kesildi, ne kadar
