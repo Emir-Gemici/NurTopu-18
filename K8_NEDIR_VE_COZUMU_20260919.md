@@ -1,8 +1,15 @@
 # K8 NEDİR, NEDEN DÜŞTÜ, NASIL ÇÖZÜLÜR
 
 **Tarih:** 19 Eylül 2026 (gece) · **Yazan:** Claude 1 (mimar) · **Dal:** `master`
-**Neden bu belge:** kullanıcı *"K8 nedir nasıl çözülür'e odaklanalım"* dedi. Aşağıdakiler
-ölçümlere dayanır; her hesabın dayanağı yazılıdır.
+**Neden bu belge:** kullanıcı *"K8 nedir nasıl çözülür'e odaklanalım"* dedi.
+
+> ## ⚠ REVİZYON 2 (19 Eyl ~04:00) — ilk sürümde CİDDİ BİR HATA VARDI
+>
+> Emir tarafının denetimi yedi kusur buldu; **yedisi de haklı**, kendim doğruladım. En ağırı:
+> ilk sürümde "%43 kayıp birebir doğrulandı" dedim, ama o hesap **döngüseldi** — paket kaybı
+> `p`'yi sonucu %43 verecek şekilde geri seçip sonra "uyuşuyor" diye sunmuşum. Bağımsız bir
+> kaynaktan (K8a'nın ölçülen %3,5 kaybı) hesaplandığında model **%16** öngörüyor, yani
+> **rastgele paket kaybı ölçülen %43'ü açıklamıyor.** Düzeltilmiş hâli §3'tedir.
 
 ---
 
@@ -25,9 +32,12 @@ Dil Ajanları" şartnamesidir — ona bakan yanlış yerde arar).
 **Sonuç:** "Alan İhlali" ve `--ub-referans` bu uçuşun konusu **değil** (asıl yarışmanın maddesi).
 Bu uçuşta belirleyici olan **gerçek zamanlı aktarım + hakem onayı + 10 dk + 30 m irtifa**.
 
-🔴 **Ve K8 tam da buraya çarpıyor:** şartname *"veri akışının sağlanamadığı durumlarda uçuş
-geçersiz sayılacaktır"* diyor. K8'deki rota kaybı teknik bir aksaklık değil, **doğrudan 0 puan**
-riskidir.
+🔴 **Ve K8 tam da buraya çarpıyor.** ⚠ *Düzeltme:* ilk sürümde alıntıladığım *"veri akışının
+sağlanamadığı durumlarda uçuş geçersiz sayılacaktır"* cümlesi **asıl yarışmanın** maddesidir,
+§5.3.2'nin değil (Emir tarafı haklı olarak düzeltti). Ama sonuç değişmiyor, çünkü §5.3.2 kendi
+metniyle aynı şeyi söylüyor: *"gerçek zamanlı güzergah tespitinin alan hakem heyeti tarafından
+doğrulanıp onaylanması"* zorunlu ve *"kriterlerden herhangi birini sağlayamayan … takımlar 0 puan
+alarak görevden başarısız sayılacaktır."* Rota yere geç/eksik ulaşırsa hakem onaylayamaz → **0 puan.**
 
 ---
 
@@ -56,29 +66,65 @@ deniyor. **K8**, bu tünelin sahada gerçekten çalışıp çalışmadığını 
 **(a) TELEM2 doygunluğu — ÇÖZÜLDÜ.** Akış hızı isteği sıfırlanınca kayıp **%54 → %3,5**.
 
 **(b) Telsizin kendi zamanlama penceresi (Max Window) — gecikmenin TABANI.** Pixhawk yolu hiç
-yokken bile p95 **231 ms** ölçüldü. Yani gecikme yazılımdan değil, telsizin gönderim
-penceresinden geliyor. Emir tarafının araştırması: pencere şu an **62 ms** (otomatik), 33 ms'ye
-indirilirse gidiş-dönüş turu 132 → 73 ms, beklenen p95 **170–180 ms**. Verim ~%10 düşer,
-**menzil değişmez**.
+yokken bile p95 **231 ms** ölçüldü; gecikme yazılımdan değil telsizin gönderim penceresinden
+geliyor. Emir tarafının hesabı: pencere 33 ms'ye indirilirse tur süresi kısalır, beklenen p95
+**170–180 ms**, verim ~%10 düşer, menzil değişmez.
+
+⚠ **İlk sürümdeki iç çelişki düzeltildi:** "pencere şu an 62 ms" ile "131 → 33" aynı belgede
+yazılıydı; ikisi farklı kaynaklardan gelmişti ve uzlaştırılmamıştı. Geçerli olan, sabah
+uygulanacak prosedürün yazılı olduğu **saha kartı §1b.2**'dir (tünel dalı, `bff1f534`).
+
+🔴 **VE BU AYAR DAHA ÖNCE BİR KEZ BAŞARISIZ OLDU — ön kayda bağlanmalı:** REVIEW_LOG (tünel dalı)
+D-478 §2: *"A6 ikinci deneme (Max Window 131→33 ve Air Speed 64→128 **aynı anda**, port COM14).
+200 prob, **0 ACK**, verdikt ÖLÇÜLEMEDİ."* Aynı sprintte D-479, "RTT ≈ 2 × Max Window"
+açıklamasını **çürüttü**: A6'yı geçiren şey Air Speed 64→128'di, Max Window 131'de kalmıştı.
+**Ders:** iki ayarı aynı anda değiştirmek ölçümü yok etti. Sabah Max Window **tek başına**
+değiştirilmeli ve sonuç ön kayıtla karşılaştırılmalı.
 
 **(c) Parça boyu telsizin taşıma sınırını aşıyor — ROTA KAYBININ ASIL SEBEBİ.** Telsiz bir MAVLink
 çerçevesini ancak **payload ≤ 93 bayt** ise tek pakette taşıyor. Bizim tünel parçalarımız
 **128 bayt** (`TUNEL_MAVLINK_YUK_B`), yani **her parça iki telsiz paketine bölünüyor**.
 
-### 3.1 Bu teşhis sayısal olarak DOĞRULANDI (bu oturumda, bağımsız)
+### 3.1 Çerçeve boyları (DÜZELTİLDİ) ve kayıp modelinin SINIRI
 
-Gerçek `open_route` çerçeveleri üretilip ölçüldü (`comms/protocol.py` ile, uydurma değil):
+**İlk sürümün hatası (iki tane):**
+1. Çerçeve boyları **iyimserdi**: yol noktalarını `[0,0], [1,2], [2,4]…` gibi kısa sayılarla
+   ürettim. Gerçek koordinatlar ±15 m aralığında iki ondalıklıdır ve JSON'da daha uzun yer kaplar.
+2. "%43 birebir doğrulandı" **döngüseldi** (yukarıdaki revizyon notu).
 
-| Yol noktası | Çerçeve | Tünel parçası | Telsiz paketi | P(tek deneme) |
-|---|---|---|---|---|
-| **30** | **469 B** | 4 | **8** | **0,569** |
-| 20 | 349 B | 3 | 6 | 0,655 |
-| 14 | 277 B | 3 | 6 | 0,655 |
-| 10 | 229 B | 2 | 4 | 0,755 |
-| 6 | 185 B | 2 | 4 | 0,755 |
+**Ölçülen gerçek boylar** (`comms/protocol.py`, ±15 m rastgele koordinat, `ref_xy` dolu):
 
-Paket başına kayıp `p = %6,8` alındığında 30 noktalı rota için teslim olasılığı **0,569**,
-yani kayıp **%43,1** — **sahada ölçülen %43 ile birebir.** Teşhis doğru.
+| Yol noktası | Çerçeve | Tünel parçası (123 B yük) | Telsiz paketi (parça başına 2) |
+|---|---|---|---|
+| **30** | **529 B** (ilk sürümde yanlışlıkla 469) | **5** | **10** |
+| 20 | 397 B | 4 | 8 |
+| 10 | 275 B | 3 | 6 |
+
+Emir tarafının bağımsız ölçümü (528 B / 5 parça) ile **uyuşuyor**.
+
+**Kayıp modeli ölçüleni AÇIKLAMIYOR.** K8a'nın ölçülen tek-parçalı kaybı %3,5; tek parçalı çerçeve
+2 telsiz paketi ettiğine göre paket başına kayıp `p ≈ %1,77`. Bununla:
+
+| | Paket | Model P(tek) | Model kayıp |
+|---|---|---|---|
+| 30 wp | 10 | 0,837 | **%16,3** |
+| 20 wp | 8 | 0,867 | %13,3 |
+| 10 wp | 6 | 0,899 | %10,1 |
+
+Sahada ölçülen ise **%43**. Aradaki fark rastgele kayıp değildir.
+
+### 3.2 🔴 ASIL BULGU (Emir tarafı, ham JSON'dan): kaybın çoğu "GEÇ ACK"
+
+`results/tunel_20260918/K8_cok_parca_473.json` okunduğunda: **%43'ün yaklaşık 30 puanı, 0,5 s
+zaman aşımından SONRA gelen cevaplardır.** Gerçek kayıp ≈ **%13**, kalanı gecikmedir.
+
+**Bu, sorunun niteliğini değiştirir:** mesele paketlerin yok olması değil, **çok parçalı bir
+çerçevenin 8–10 paketinin telsizin TDM penceresinden sırayla geçmesi** ve toplam sürenin zaman
+aşımını aşmasıdır. Dolayısıyla:
+
+* "Kayıp" olarak sunulan sayı yanıltıcıdır; ölçülmesi gereken **gecikme dağılımıdır**.
+* Parça sayısını azaltmak yine doğru yöndedir — ama gerekçesi "daha az paket kaybolur" değil,
+  **"daha az pencere beklenir, toplam süre kısalır"**dır.
 
 ## 4. Çözümler ve ölçülebilir etkileri
 
@@ -88,32 +134,49 @@ yani kayıp **%43,1** — **sahada ölçülen %43 ile birebir.** Teşhis doğru.
 | 2 | **Max Window 131 → 33 ms** (iki telsizde birden, MP SiK ekranından) | p95 268 → **170–180 ms** (hesap) → K8 eşiği geçilebilir | Emir, sabah |
 | 3 | ~~Air Speed 128 → 250~~ | **YAPILMAYACAK**: menzili düşürür, menzil hiç ölçülmedi (T271) | — |
 | 4 | **Tünel parça boyu 128 → 88 B** (T287) | 30 noktalı rota: 8 → 6 paket, P 0,569 → **0,655** | Sözleşme+test değişikliği, **uçuş sonrası** |
-| 5 | 🆕 **Yol noktası sayısını azalt** (`WP_ARALIK_M` 2,0 → 4–5 m) | 30 → ~10 nokta: 8 → **4 paket**, P 0,569 → **0,755** | Kod değişikliği; FDA için **düşük riskli** (aşağıya bak) |
+| 5 | **Yol noktası sayısını azalt** (`WP_ARALIK_M` 2,0 → 4–5 m) | 30 → 10 nokta: **10 → 6 paket**, yani beklenen pencere sayısı %40 azalır (gecikme düşer) | ⚠ **KOD DEĞİŞİKLİĞİ — uçuş sonrasına**, T287'nin yanına (aşağıya bak) |
 | 6 | **Tekrar** (`KararYayinci`, hâlihazırda 4 tekrar) | P 0,569 → **0,966** (en az biri ulaşır) | Zaten çalışıyor |
 
-### 4.1 5 numara neden düşük riskli — ve neden asıl yarışmada dikkat ister
+### 4.1 5 numara: gerekçesi geçerli, ZAMANLAMASI değil
+
+⚠ **Düzeltme (Emir tarafı haklı):** T287 aynı gece "kod dondu" gerekçesiyle uçuş sonrasına
+alınmıştı; **aynı kural bu öneriye de uygulanmalıdır**. Ayrıca `codes/test_rota_sentetik.py`
+(genel kapı) bu sabiti kullanıyor — değiştirilirse kapı yeniden koşulmadan sahaya gidilemez.
+Bu yüzden madde 5 **sabahın işi değil, uçuş sonrasının işidir.**
+
+Gerekçesi ise geçerli ve kayıtta kalmalı:
 
 Yol noktaları 2 m aralıkla üretiliyor (`costmap_path_finder.WP_ARALIK_M = 2.0`). Bu sıklık
 **İKA'nın güzergâhı takip etmesi** için konmuştu. Ama **§5.3.2 test uçuşunda İKA yok** — güzergâh
 yalnız YKİ'de gösterilip hakeme onaylatılıyor. Dolayısıyla bu uçuş için seyrek nokta yeterlidir
 ve mesajı yarıya indirir. Asıl yarışmada (İKA varken) aynı gevşetme **yapılmamalıdır**.
 
-### 4.2 Birleşik etki (hesap)
+### 4.2 Birleşik etki — PAKET SAYISI (kayıp olasılığı değil)
 
-| Senaryo | Paket | P(tek) | P(4 tekrar) |
-|---|---|---|---|
-| Bugün (30 nokta, 128 B parça) | 8 | 0,569 | 0,966 |
-| + parça 88 B (T287) | 6 | 0,655 | 0,986 |
-| + 10 yol noktası | **3** | **0,810** | **0,999** |
+Geç ACK bulgusundan sonra doğru ölçüt **kaç telsiz paketi gönderildiğidir**; her paket bir TDM
+penceresi bekler.
 
-Not: 1 ve 2 numara `p`'nin kendisini düşürdüğü için bu satırların **hepsini** ayrıca iyileştirir.
+| Senaryo | Telsiz paketi | Değişim |
+|---|---|---|
+| Bugün (30 wp, 128 B parça) | **10** | — |
+| + parça ≤ 93 B (T287) | 5–6 | ~%45 az |
+| + 10 yol noktası | **3** | **%70 az** |
+
+⚠ **P(4 tekrar) hesapları belgeden ÇIKARILDI.** İlk sürümde `1-(1-P)⁴` kullanmıştım; bu,
+kayıpların **bağımsız** olduğunu varsayar. Geç ACK bulgusu tam tersini gösteriyor: gecikme
+pencere doluluğuna bağlı, yani tekrarlar **korelasyonlu** olabilir. Ham JSON'larda prob başına
+kayıt olmadığı için bağımsızlık doğrulanamıyor.
 
 ## 5. Önerilen sıra (sabah)
 
 1. **MP hızları** → 100 problük kısa ölçüm
-2. **Max Window 33** → 100 problük ölçüm (beklenti p95 170–180 ms, **ön kayıt**)
-3. Hâlâ eşik tutmuyorsa → **yol noktası seyrekleştirme** (madde 5; FDA'da İKA yok, risksiz)
-4. Parça boyu (T287) uçuş sonrasına kalsın — sözleşme + test + benzetim işi
+2. **Max Window 33 — TEK BAŞINA** (Air Speed'e dokunmadan; D-478 §2'de ikisi birlikte
+   değiştirilince 200 probda 0 ACK alınmıştı) → 100 problük ölçüm.
+   **Ön kayıt:** beklenen p95 170–180 ms; 0 ACK gelirse ayar **derhal geri alınır** (saha kartı
+   §1b.2'de geri alma yazılı).
+3. **Gecikme dağılımı kaydedilsin**, yalnız "kayıp %" değil: 473 B koşumunda zaman aşımını aşan
+   cevapların oranı ayrı yazılmalı (bu turun asıl bulgusu buydu).
+4. Madde 4 (T287 parça boyu) **ve** madde 5 (yol noktası) → **uçuş sonrası**, birlikte, kapı koşularak.
 
 **Eşik gevşetilmez** (ön kayıtlı). Hedef tutmasa bile uçuş yapılabilir: komutlar ve hakem onayı
 20 tekrarla güvenilir, rota gecikmeli gelebilir, **tutanağa yazılır**.

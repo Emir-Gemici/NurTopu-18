@@ -31946,3 +31946,38 @@ metninin tek satıra birleşmesi — **mantık değişmedi** (ölçüldü, `git 
 
 **HÜKÜM: KABUL.** Kalan kırmızılar bu işten önce de vardı ve ayrı kalemlerdir (model dosyaları
 gitignore'lu, atölye kâğıdı atıfları, MuJoCo/sim ortam bağımlılıkları).
+
+### D-505 — 🔴 **KENDİ KUSURUM: K8 belgesinde DÖNGÜSEL DOĞRULAMA.** Emir tarafının denetimi yedi kusur buldu, yedisi de haklı; belge revize edildi
+
+**Ne yaptım (19 Eyl ~02:50, `ca6e4563`):** `K8_NEDIR_VE_COZUMU_20260919.md` yazdım ve içinde
+*"teşhis sayısal olarak DOĞRULANDI … ölçülen %43 ile birebir"* dedim.
+
+**🔴 Kusur:** paket başına kayıp `p = %6,8` değerini, sonucu **%43 verecek şekilde geri hesaplayıp**
+sonra "ölçümle uyuşuyor" diye sundum. Bu **döngüseldir** — varsayımı sonuçtan türetip sonucu
+varsayımla doğrulamak. Bağımsız kaynaktan (K8a'nın ölçülen %3,5 tek-parçalı kaybı → paket başına
+%1,77) hesaplanınca model **%16,3** öngörüyor; ölçülen %43 ile **uyuşmuyor**.
+
+**Denetimin bulduğu ve doğruladığım diğer kusurlar:**
+
+| # | Kusur | Durum |
+|---|---|---|
+| 1 | Döngüsel `p` seçimi | ✅ kabul (yukarıda) |
+| 2 | Asıl bulgu atlanmış: %43'ün ~30 puanı **geç ACK** (0,5 s aşımı), gerçek kayıp ~%13 | ✅ kabul — sorun kayıp değil **TDM pencere gecikmesi** |
+| 3 | Çerçeve boyları iyimser (kısa koordinatlarla üretilmiş): 30 wp **529 B**, 469 değil | ✅ kabul — kendi ölçümümle doğruladım (529 B, 5 parça, 10 paket) |
+| 4 | Max Window: belgede "62 ms" ile "131→33" iç çelişkisi; ayrıca D-478 §2'de MW33+AirSpeed128 birlikte denenince **200 probda 0 ACK** | ✅ kabul — sabah ayar **tek başına** değiştirilmeli, ön kayıtla |
+| 5 | *"Veri akışı sağlanamazsa geçersiz"* alıntısı asıl yarışmanın maddesi, §5.3.2'nin değil | ✅ kabul — sonuç §5.3.2'nin kendi metniyle ayakta |
+| 6 | Yol noktası seyrekleştirme **kod değişikliğidir**; T287 aynı gece donduruldu, aynı kural buna da uygulanmalı; `test_rota_sentetik.py` bu sabiti kullanıyor | ✅ kabul — uçuş sonrasına alındı |
+| 7 | `1-(1-P)⁴` tekrar hesabı kayıp bağımsızlığını varsayar; geç ACK bulgusu bunun tersini ima ediyor | ✅ kabul — hesaplar belgeden çıkarıldı |
+
+**Neden önemli:** bu, `CLAUDE.md` madde 19'daki **korelasyonlu kör nokta** uyarısının işlediği
+bir vaka. Aynı sonuca iki taraf da inanıyordu; ayıran şey model farkı değil **ham ölçüme dönmek**
+oldu (`results/tunel_20260918/K8_cok_parca_473.json`). Denetimi yapan taraf ham JSON'u okudu,
+ben hesabı kendi varsayımımla kapatmıştım.
+
+**Kalıcı ders:** bir modelin ölçümle "uyuşması", modelin parametresi o ölçümden türetildiyse
+**kanıt değildir**. Parametre bağımsız bir ölçümden gelmelidir; gelemiyorsa model "açıklama"
+değil "uyum denemesi" olarak etiketlenmelidir.
+
+**Düzeltme:** belge revize edildi (REVİZYON 2), yanlış tablo değiştirildi, geç ACK bulgusu asıl
+teşhis olarak yazıldı, sabah sırası "Max Window tek başına + gecikme dağılımı kaydı" olarak
+güncellendi. Kod değişikliği önerileri uçuş sonrasına alındı.
