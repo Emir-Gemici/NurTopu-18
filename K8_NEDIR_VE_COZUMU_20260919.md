@@ -217,16 +217,26 @@ dönüşte aynısı = 4 seri geçiş; Pixhawk'ın dahili yönlendirmesi ihmal.
 
 | Bileşen | Süre | Niteliği | `MAX_WINDOW`'dan etkilenir mi |
 |---|---|---|---|
-| **Seri serialization** (gidiş 2×145 B + dönüş 2×99 B @57600) | **84,7 ms** | ⚠ **ALT SINIR** — bkz. aşağıdaki not | ❌ hayır |
+| **Seri serialization bütçesi** (gidiş 2×145 B + dönüş 2×99 B @57600) | **84,7 ms** | ⚠ **VARSAYIMA BAĞLI HESAP** — ne alt ne üst sınır; bkz. not | ❌ hayır |
 | RF havada (244 B @128 kbps) | 15,2 ms | alt sınır | ❌ hayır |
 | **Kalan** (TDM beklemesi + işleme + tampon/zamanlama) | **≤ 131,0 ms** | üst sınır | kısmen |
 | **Ölçülen baseline p95** | **231 ms** | ölçüm | |
 
-⚠ **"Seri serialization" ≠ "toplam UART gecikmesi".** `bayt × 10 bit / baud` formülü yalnız
-**bitlerin hattan akma süresini** verir. Gerçek seri bacağında ayrıca tampon (buffer) bekleme,
-sürücü zamanlaması ve Pixhawk'ın kanallar arası yönlendirme gecikmesi vardır. Yani **84,7 ms bir
-ALT SINIRDIR**; gerçek seri payı bundan büyüktür, dolayısıyla "kalan" 131 ms'den **küçüktür**.
-Bu, `MAX_WINDOW`'un iyileştirme payını da olduğundan büyük göstermiş olabilir.
+⚠ **84,7 ms'nin tam ve dürüst tanımı:**
+
+> *mevcut paket boyutu (145 / 99 B), 8N1 (10 bit/bayt) ve **ardışık dört seri geçiş** varsayımı
+> altında hesaplanan serialization bütçesi.*
+
+**Ne alt sınırdır ne üst sınır**, çünkü iki yönde birden sapabilir:
+
+* **Büyük olabilir:** `bayt × 10 / baud` yalnız bitlerin akma süresini verir; tampon beklemesi,
+  sürücü zamanlaması ve Pixhawk'ın kanallar arası yönlendirmesi bunun üstüne biner.
+* **Küçük olabilir:** dört geçişi toplamak, hepsinin **ardışık** çalıştığını varsayar. Pixhawk
+  TELEM1'den bayt alırken eşzamanlı olarak TELEM2'ye yazıyorsa (cut-through / bayt düzeyinde
+  boru hattı), geçişler **üst üste biner** ve gerçek toplam bundan küçük olur.
+
+Hangisinin baskın olduğu **ölçülmedi**. Dolayısıyla "kalan = 131 ms" de bir hesap artığıdır,
+ölçülmüş bir büyüklük değil; `MAX_WINDOW`'un iyileştirme payı buradan **türetilemez**.
 
 ⚠ Kalanın **tam 131 ms** çıkması ile `MAX_WINDOW`'un 131 olması **rastlantı olabilir**; D-479 tam
 böyle bir örtüşmeyi (262 ↔ 265) nedensellik sanmanın hatası olarak kaydetti. Buradan nedensellik
