@@ -215,12 +215,18 @@ gerektirmez**, baud'dan doğrudan çıkar.
 **Varsayımlar:** seri hat 8N1 = 10 bit/bayt; yol `RFD(hava)→TELEM1` + `Pixhawk→TELEM2→Jetson`,
 dönüşte aynısı = 4 seri geçiş; Pixhawk'ın dahili yönlendirmesi ihmal.
 
-| Bileşen | Süre | `MAX_WINDOW`'dan etkilenir mi |
-|---|---|---|
-| **Seri hatlar** (gidiş 2×145 B + dönüş 2×99 B @57600) | **84,7 ms** | ❌ hayır |
-| RF havada (244 B @128 kbps) | 15,2 ms | ❌ hayır |
-| **Kalan = W + P** (TDM beklemesi **+ işleme**) | **131,0 ms** | kısmen (yalnız W) |
-| **Ölçülen baseline p95** | **231 ms** | |
+| Bileşen | Süre | Niteliği | `MAX_WINDOW`'dan etkilenir mi |
+|---|---|---|---|
+| **Seri serialization** (gidiş 2×145 B + dönüş 2×99 B @57600) | **84,7 ms** | ⚠ **ALT SINIR** — bkz. aşağıdaki not | ❌ hayır |
+| RF havada (244 B @128 kbps) | 15,2 ms | alt sınır | ❌ hayır |
+| **Kalan** (TDM beklemesi + işleme + tampon/zamanlama) | **≤ 131,0 ms** | üst sınır | kısmen |
+| **Ölçülen baseline p95** | **231 ms** | ölçüm | |
+
+⚠ **"Seri serialization" ≠ "toplam UART gecikmesi".** `bayt × 10 bit / baud` formülü yalnız
+**bitlerin hattan akma süresini** verir. Gerçek seri bacağında ayrıca tampon (buffer) bekleme,
+sürücü zamanlaması ve Pixhawk'ın kanallar arası yönlendirme gecikmesi vardır. Yani **84,7 ms bir
+ALT SINIRDIR**; gerçek seri payı bundan büyüktür, dolayısıyla "kalan" 131 ms'den **küçüktür**.
+Bu, `MAX_WINDOW`'un iyileştirme payını da olduğundan büyük göstermiş olabilir.
 
 ⚠ Kalanın **tam 131 ms** çıkması ile `MAX_WINDOW`'un 131 olması **rastlantı olabilir**; D-479 tam
 böyle bir örtüşmeyi (262 ↔ 265) nedensellik sanmanın hatası olarak kaydetti. Buradan nedensellik
