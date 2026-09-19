@@ -2009,6 +2009,13 @@ class YksArayuz:
                 # NEDEN: sıfırlama fail-closed VARSAYILANDIR; FDA'da aynı şerit
                 # için `_fda_onayini_tasi` ancak tüm kapılar geçerse geri yükler.
                 onceki_asama = (self.tespit_onayli, self.onaylandi)
+                # NEDEN (FDA askı): NO_ROUTE/düşük güven onayı ASKIYA aldıysa
+                # taşıma, pencere içindeyse askıdaki onay ve rotaya göre yapılır.
+                tasima_rotasi, rota_yok_vardi = onceki_rota, rota_yok_temizlendi
+                askida = self._onay_askisini_coz()
+                if askida is not None:
+                    onceki_asama, tasima_rotasi = askida["asama"], askida["rota"]
+                    rota_yok_vardi = False
                 self.onaylandi = False
                 self.tespit_onayli = False
                 self.sayac[MESAJ_OPEN_ROUTE] += 1
@@ -2045,8 +2052,8 @@ class YksArayuz:
                 self._rota_analiz(m)
                 if ankor_uyarisi:
                     self._ankor_yok_onayini_kapat(logla=True)
-                elif not self._fda_onayini_tasi(m, onceki_rota, onceki_asama,
-                                                rota_yok_temizlendi):
+                elif not self._fda_onayini_tasi(m, tasima_rotasi, onceki_asama,
+                                                rota_yok_vardi, askida=askida):
                     self._onay_dugmesini_ciz(
                         True, "1) TESPİTİ DOĞRULA (§2.2.3)")
                     if not self._kanit_kilidi_var():
@@ -2099,6 +2106,9 @@ class YksArayuz:
             if yeni:
                 sebep = m.get("sebep", "bilinmeyen neden")
                 detay = m.get("detay")
+                # NEDEN: FDA'da tek NO_ROUTE karesi hakem onayını SİLMEZ —
+                # askıya alır (yarışma kipinde no-op; bugünkü sıfırlama sürer).
+                self._onay_askiya_al()
                 self.onaylandi = False
                 self.tespit_onayli = False
                 self.sayac[MESAJ_NO_ROUTE] += 1
@@ -2121,6 +2131,7 @@ class YksArayuz:
                 self._logla(f"NO_ROUTE · {sebep}"
                             + (f" · {detay}" if detay else "")
                             + " → güvenli duruş ACK'i gönderildi", "sari")
+                self._onay_askisini_tazele()      # askıdaysa düğme+etiket
         elif tip == MESAJ_ACK:
             self._ack_isle(m, adr)
         elif tip == MESAJ_IHA_LANDED:
@@ -2260,6 +2271,9 @@ class YksArayuz:
             "kaynak_type": MESAJ_OPEN_ROUTE,
         }
         self.rx_alim[seq] = self.rx_alim.get(seq, 0) + 1
+        # NEDEN: FDA'da tek düşük güven karesi hakem onayını SİLMEZ — askıya
+        # alır (yarışma kipinde no-op). ACK bu yolda yine ASLA üretilmez.
+        self._onay_askiya_al()
         self.onaylandi = False
         self.tespit_onayli = False
         if yeni:
@@ -2282,6 +2296,7 @@ class YksArayuz:
             self._logla(
                 f"OPEN_ROUTE REDDEDİLDİ · {sebep} · {detay} · ACK YOK",
                 "sari")
+            self._onay_askisini_tazele()          # askıdaysa düğme+etiket
         self._kutu_yaz(
             "protokol",
             detay=f"{self._detay_base} · alım #{self.rx_alim[seq]} · ACK YOK")
@@ -2328,7 +2343,90 @@ class YksArayuz:
             del ackli[next(iter(ackli))]
         return rota_ack
 
-    def _fda_onayini_tasi(self, m, onceki_rota, onceki_asama, rota_yok_vardi):
+    def _onay_askiya_al(self):
+        """FDA: NO_ROUTE / düşük güven karesi hakem onayını ASKIYA alır.
+
+        NEDEN (mimar, 19 Eyl): Jetson'un karar yumuşatıcısı NO_ROUTE'u
+        beklemeden geçirir; hakemin iki tıklaması birkaç saniye sürer. Tek
+        kayıp kare onayı silerse FDA uçuşunda onay pratikte tamamlanamaz.
+        Askıdayken bayraklar SIFIRDIR (çağıran sıfırlar) → ACK üretilmez,
+        `onayla()` reddeder. Aynı şerit `YKS_TESPIT_TAZELIK_S` içinde (SON
+        KABUL EDİLEN rotanın monotonik damgasından) dönerse
+        `_fda_onayini_tasi` onayı geri yükler; dönmezse onay düşer.
+        Yarışma kipinde no-op.
+        """
+        if not getattr(self, "fda_kipi", False):
+            return
+        if getattr(self, "_onay_askida", None) is not None:
+            return          # ilk askı korunur: pencere son kabul edilen rotadan
+        t0 = getattr(self, "rota_zaman", None)
+        asama = (bool(getattr(self, "tespit_onayli", False)),
+                 bool(getattr(self, "onaylandi", False)))
+        rota = getattr(self, "rota", None)
+        if not any(asama) or not rota or t0 is None:
+            return
+        self._onay_askida = {"asama": asama, "rota": rota, "t0": t0}
+        self._logla(f"ONAY ASKIDA — seq={rota.get('seq')} yol="
+                    f"{rota.get('road')} · "
+                    f"{'2/2' if asama[1] else '1/2'} · aynı şerit "
+                    f"{YKS_TESPIT_TAZELIK_S:.0f} sn içinde dönerse geri gelir; "
+                    "askıdayken ACK yok", "sari")
+
+    def _onay_askisini_dusur(self, askida, gecen):
+        """Askıdaki onayı kalıcı bırak — günlüğe BİR KEZ yazılır."""
+        self._onay_askida = None
+        self._logla(f"ONAY DÜŞTÜ — tespit {gecen:.1f} sn kayıp (> "
+                    f"{YKS_TESPIT_TAZELIK_S:.0f} sn) · askıdaki seq="
+                    f"{askida['rota'].get('seq')} yol={askida['rota'].get('road')}"
+                    " — yeni tespitte 1. adımdan onay gerekir", "sari")
+
+    def _onay_askisini_coz(self):
+        """Kabul edilen yeni seq'li OPEN_ROUTE'ta askıyı kapat.
+
+        Pencere içindeyse askı kaydını (+ `gecen`) döndürür — taşıma kararı
+        `_fda_onayini_tasi`'nın kapılarına kalır; süresi dolduysa düşürür.
+        """
+        askida = getattr(self, "_onay_askida", None)
+        if askida is None:
+            return None
+        self._onay_askida = None
+        gecen = time.monotonic() - askida["t0"]
+        if not 0.0 <= gecen <= YKS_TESPIT_TAZELIK_S:
+            self._onay_askisini_dusur(askida, gecen)
+            return None
+        return dict(askida, gecen=gecen)
+
+    def _onay_askisini_tazele(self):
+        """Askıdaki onayın düğme/etiketini çiz; pencere dolduysa düşür.
+
+        `_durum_tazele` (her tik) ve askıyı başlatan yollar çağırır; askı
+        yoksa hiçbir şey yapmaz. Düğme TEK yazardan KAPALI çizilir.
+        """
+        askida = getattr(self, "_onay_askida", None)
+        if askida is None:
+            return
+        gecen = time.monotonic() - askida["t0"]
+        etiket = getattr(self, "lbl_onay", None)
+        if not 0.0 <= gecen <= YKS_TESPIT_TAZELIK_S:
+            self._onay_askisini_dusur(askida, gecen)
+            self._onay_dugmesini_ciz(False, "ONAY DÜŞTÜ — YENİ TESPİT BEKLENİYOR")
+            if etiket is not None and not self._kanit_kilidi_var():
+                etiket.config(
+                    text=f"ONAY DÜŞTÜ — tespit {gecen:.0f} sn kayıp; aynı şerit "
+                         f"{YKS_TESPIT_TAZELIK_S:.0f} sn içinde dönmedi. Yeni "
+                         "tespitte 1. adımdan onay gerekir.", fg=KIRMIZI)
+            return
+        self._onay_dugmesini_ciz(False, "ONAY ASKIDA — ACK YOK")
+        if etiket is not None and not self._kanit_kilidi_var():
+            neden = (getattr(self, "rota_yok", None) or {}).get("sebep")
+            etiket.config(
+                text=f"ONAY ASKIDA — tespit {gecen:.0f} sn kayıp"
+                     + (f" ({neden})" if neden else "")
+                     + f" · aynı şerit {YKS_TESPIT_TAZELIK_S - gecen:.0f} sn "
+                       "içinde dönerse onay geri gelir · ACK yok", fg=SARI)
+
+    def _fda_onayini_tasi(self, m, onceki_rota, onceki_asama, rota_yok_vardi,
+                          askida=None):
         """FDA (§5.3.2): aynı şeridin YENİ seq'li OPEN_ROUTE'u hakem onayını
         SIFIRLAMAZ — aynı tespitin tazelenmesidir.
 
@@ -2388,11 +2486,13 @@ class YksArayuz:
             return True
         self.tespit_onayli, self.onaylandi = tespit_onayli, onaylandi
         yol = m.get("road")
+        askidan = (f" · askıdan döndü ({askida['gecen']:.1f} sn)"
+                   if askida else "")
         if not onaylandi:
             self._aktarim_onay_dugmesini_kur()
             self._logla(f"ONAY KORUNDU — ayni serit, yeni seq={seq} (onceki "
                         f"{onceki_seq}) · yol={yol} · 1/2 korundu, 2. onay "
-                        "bekleniyor", "sari")
+                        f"bekleniyor{askidan}", "sari")
             return True
         # 2/2 tamamdı: İHA bu seq'i ACK alana dek tekrarlar → 2. adımla AYNI
         # yoldan ACK. Aynı seq'e ikinci ACK yok (`_rota_ack_gonder` kümesi).
@@ -2408,8 +2508,8 @@ class YksArayuz:
                  f" — ACK(seq={seq}) İHA'ya iletildi · FDA §5.3.2: İKA yok — "
                  "onay YKS aktarımına dayanır", fg=YESIL)
         self._logla(f"ONAY KORUNDU — ayni serit, yeni seq={seq} (onceki "
-                    f"{onceki_seq}) · yol={yol} · 2/2 · {ack_metni} (FDA)",
-                    "sari")
+                    f"{onceki_seq}) · yol={yol} · 2/2 · {ack_metni} (FDA)"
+                    f"{askidan}", "sari")
         return True
 
     def onayla(self):
@@ -2417,6 +2517,15 @@ class YksArayuz:
         doğrulanması, (2) İKA'ya aktarımın doğrulanması → ACK ancak 2. adımda."""
         if not self.rota or self.rota_yok or self.onaylandi:
             return
+        # NEDEN: FDA askısında onay/ACK verilmez; düğme tek savunma değildir
+        # (T180) — klavye/otomatik onay da buradan geçer. Süresi dolduysa
+        # `_onay_askisini_tazele` askıyı düşürür ve normal akış sürer.
+        if getattr(self, "_onay_askida", None) is not None:
+            self._onay_askisini_tazele()
+            if getattr(self, "_onay_askida", None) is not None:
+                self._logla("HAKEM ONAYI ASKIDA — tespit kayıp; aynı şerit "
+                            "dönmeden onay/ACK verilmez", "sari")
+                return
         if getattr(self, "tek_rota", False) and not self._tek_rota_gecerli():
             self._onay_dugmesini_ciz(False, "ROTA GEOMETRİSİ YOK — ONAY KAPALI")
             return
@@ -2524,7 +2633,9 @@ class YksArayuz:
         dogrulandiysa 2. asama (kaniti varsa aktif, yoksa gerekceyle pasif).
         Onay TAMAMLANDIYSA dugmeye DOKUNULMAZ.
         """
-        if self.onaylandi or not self.rota or self.rota_yok:
+        # NEDEN: FDA askısında düğme KAPALI kalır (`_onay_askisini_tazele`).
+        if (self.onaylandi or not self.rota or self.rota_yok
+                or getattr(self, "_onay_askida", None) is not None):
             return
         btn = getattr(self, "btn_onay", None)
         if btn is None:
@@ -4739,6 +4850,7 @@ class YksArayuz:
         self.lbl_saat.config(text=time.strftime("%H:%M:%S"))
         simdi = time.time()
         self._tespiti_yaslandir(simdi)
+        self._onay_askisini_tazele()           # FDA askısı: sayaç + süre dolumu
         self._rota_panelini_tazele()
         _mono = time.monotonic()               # D-384: damgalar monotonik
         tel_durum = {}                         # CONTRACTS §6.8 kanıt özeti

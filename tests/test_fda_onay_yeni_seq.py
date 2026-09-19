@@ -19,8 +19,9 @@ Kilitler:
   g  FDA · İHA indi → onay taşınmaz, ACK yok
   h  FDA · kanıt kaydı kilidi → onay taşınmaz, ACK yok
   i  FDA · taşınan 2/2'de asgari irtifa altı notu onay etiketini EZMEZ
-  j  FDA · arada eşik altı güvenli OPEN_ROUTE → onay taşınmaz, rota ACK'i yok
-  k  FDA · arada NO_ROUTE → onay taşınmaz, rota ACK'i yok
+  j  FDA · arada eşik altı güvenli OPEN_ROUTE → onay ASKIYA alınır, pencere
+     içinde aynı şerit dönünce taşınır (askı: `test_fda_onay_askida.py`)
+  k  FDA · arada NO_ROUTE → aynı askı davranışı; NO_ROUTE ACK'i ayrıca gider
 
 Tk açılmaz, port bağlanmaz: `test_a1_hakem_ekrani_ankoru._mesaj_gui` fikstürü
 + kayıt tutan sahte link/widget'lar.
@@ -275,29 +276,34 @@ class FdaAyniSeritYeniSeq(unittest.TestCase):
         self.assertEqual(yks_gui.KANIT_KILIDI_ONAY_METNI,
                          g.btn_onay.ayarlar.get("text"))
 
-    def test_j_dusuk_guven_arada_ise_onay_tasinmaz_ACK_yok(self):
+    def test_j_dusuk_guven_arada_ise_onay_askidan_doner(self):
+        # NEDEN: ilk sürümde (a2e69b9b) arada kayıp kare onayı SİLİYORDU;
+        # mimar kararıyla FDA'da askı penceresi eklendi — beklenti değişti.
         g = _gui()
         g._mesaj_isle(_rota(1001), IHA_ADR)
         g.onayla()
         g.onayla()
         g._mesaj_isle(_rota(1002, conf=0.01), IHA_ADR)      # eşik altı
+        self.assertFalse(g.onaylandi, "askıdayken bayrak açık kalmamalı")
         g._mesaj_isle(_rota(1003), IHA_ADR)                 # aynı şerit
-        self.assertFalse(g.onaylandi)
-        self.assertFalse(g.tespit_onayli)
-        self.assertEqual([1001], [m["ref"] for m, _ in _ackler(g)
-                                  if m.get("ref_tip") == "OPEN_ROUTE"])
+        self.assertTrue(g.onaylandi)
+        self.assertEqual([1001, 1003], [m["ref"] for m, _ in _ackler(g)
+                                        if m.get("ref_tip") == "OPEN_ROUTE"])
 
-    def test_k_NO_ROUTE_arada_ise_onay_tasinmaz_rota_ACK_yok(self):
+    def test_k_NO_ROUTE_arada_ise_onay_askidan_doner(self):
         g = _gui()
         g._mesaj_isle(_rota(1101), IHA_ADR)
         g.onayla()
         g.onayla()
         g._mesaj_isle({"v": 1, "type": "NO_ROUTE", "seq": 1102,
                        "sebep": "KORIDOR_DEGIL", "detay": "test"}, IHA_ADR)
+        self.assertFalse(g.onaylandi, "askıdayken bayrak açık kalmamalı")
+        self.assertEqual([1102], [m["ref"] for m, _ in _ackler(g)
+                                  if m.get("ref_tip") == "NO_ROUTE"])
         g._mesaj_isle(_rota(1103), IHA_ADR)
-        self.assertFalse(g.onaylandi)
-        self.assertEqual([1101], [m["ref"] for m, _ in _ackler(g)
-                                  if m.get("ref_tip") == "OPEN_ROUTE"])
+        self.assertTrue(g.onaylandi)
+        self.assertEqual([1101, 1103], [m["ref"] for m, _ in _ackler(g)
+                                        if m.get("ref_tip") == "OPEN_ROUTE"])
 
     def test_i_tasinan_tam_onayda_irtifa_notu_etiketi_ezmez(self):
         g = _gui()
