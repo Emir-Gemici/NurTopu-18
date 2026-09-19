@@ -725,17 +725,32 @@ def gps_gosterim_metni(telemetri):
     gecerli, sebep = gps_telemetrisi_dogrula(telemetri)
     lat, lon = telemetri.get("lat"), telemetri.get("lon")
     fix, uydu = telemetri.get("gps_fix"), telemetri.get("uydu")
+    # NEDEN (mimar ölçümü, 19 Eyl oturumları): heartbeat'lerin çoğu
+    # `gps_fix` alanı TAŞIMIYOR (Jetson'da GPS_RAW_INT bayat/yok) ama lat/lon
+    # taşıyor. Alan YOKSA fix BİLİNMİYOR'dur, BAŞARISIZ değil: akla yatkın
+    # koordinat (sonlu, bant içi, 0/0 değil) işaretle GÖSTERİLİR; durum yine
+    # "FIX YETERSİZ" (yeşil değil). Alan VARSA ve < 3 ise gizlenir.
+    # Katı `gps_telemetrisi_dogrula` DEĞİŞMEDİ (etiket rengi ondan okunur).
+    fix_bilinmiyor = fix is None
+    koord_sebebi = (None if lat is None or lon is None
+                    else _gnss_koordinat_sebebi(lat, lon))
     if lat is None or lon is None:
         konum = "konum YOK"
-    elif not gecerli:
+    elif gecerli or (fix_bilinmiyor and koord_sebebi is None):
+        konum = f"{float(lat):.7f}, {float(lon):.7f}"
+    else:
         # NEDEN: 3B fix'siz ya da 0/0 koordinat gerçek konum DEĞİLDİR; sayıyı
         # basmak hakeme aracı binlerce km öteye koyar. Sebep `durum`da yazılı.
         konum = "konum BİLİNMİYOR"
-    else:
-        konum = f"{float(lat):.7f}, {float(lon):.7f}"
-    fix_metin = f"fix {fix}" if fix is not None else "fix YOK"
+    fix_metin = f"fix {fix}" if not fix_bilinmiyor else "fix BİLİNMİYOR"
     uydu_metin = f"{uydu} uydu" if uydu is not None else "uydu YOK"
-    durum = "3B FIX ✓" if gecerli else f"FIX YETERSİZ: {sebep}"
+    if gecerli:
+        durum = "3B FIX ✓"
+    elif fix_bilinmiyor:
+        durum = ("FIX YETERSİZ: fix bilinmiyor (gps_fix alanı gelmedi)"
+                 + (f" · {koord_sebebi}" if koord_sebebi else ""))
+    else:
+        durum = f"FIX YETERSİZ: {sebep}"
     return (f"HAM GNSS: {konum} · {fix_metin} · {uydu_metin} · {durum} · "
             "SEMANTİK HARİTADA KULLANILMAZ")
 
@@ -747,19 +762,31 @@ def gps_telemetrisi_dogrula(telemetri):
     fix = telemetri.get("gps_fix")
     if isinstance(fix, bool) or not isinstance(fix, int) or fix < 3:
         return False, "3B fix yok"
+    sebep = _gnss_koordinat_sebebi(telemetri.get("lat"), telemetri.get("lon"))
+    if sebep is not None:
+        return False, sebep
+    return True, "3B fix"
+
+
+def _gnss_koordinat_sebebi(lat, lon):
+    """Koordinat çifti akla yatkın mı? Evetse None, değilse sebep metni.
+
+    `gps_telemetrisi_dogrula` (katı) ile `gps_gosterim_metni` (fix alanı
+    yokken) AYNI koordinat denetimini kullanır.
+    """
     try:
-        lat = float(telemetri.get("lat"))
-        lon = float(telemetri.get("lon"))
+        lat = float(lat)
+        lon = float(lon)
     except (TypeError, ValueError, OverflowError):
-        return False, "konum yok/bozuk"
+        return "konum yok/bozuk"
     if not math.isfinite(lat) or not math.isfinite(lon):
-        return False, "konum sonlu değil"
+        return "konum sonlu değil"
     if not -90.0 <= lat <= 90.0 or not -180.0 <= lon <= 180.0:
-        return False, "konum dünya bandı dışında"
+        return "konum dünya bandı dışında"
     # NEDEN: Pixhawk yeniden başlarken fix alanı eskiyken lat/lon 0/0 gelir.
     if abs(lat) < GNSS_SIFIR_KONUM_DERECE and abs(lon) < GNSS_SIFIR_KONUM_DERECE:
-        return False, "konum 0/0 (GNSS hazır değil)"
-    return True, "3B fix"
+        return "konum 0/0 (GNSS hazır değil)"
+    return None
 
 
 def _udp_adresi_gecerli(adr):

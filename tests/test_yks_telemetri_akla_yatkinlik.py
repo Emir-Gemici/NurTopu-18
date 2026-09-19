@@ -16,6 +16,14 @@ Kilitler:
   G3  geçerli 3B fix'te koordinat basılır (regresyon)
   G4  uçtan uca heartbeat → `_durum_tazele`: GNSS etiketi KIRMIZI + BİLİNMİYOR;
       kayda giden ham telemetri (TELEMETRI_KANIT dugumler) DEĞİŞMEZ
+  F1  `gps_fix` alanı YOK (mimar ölçümü: 19 Eyl oturumlarının çoğunda yok) +
+      akla yatkın lat/lon → SAYILAR gösterilir + "fix BİLİNMİYOR", durum
+      "FIX YETERSİZ" (yeşil değil); katı doğrulayıcı yine False (etiket KIRMIZI)
+  F2  `gps_fix` = 2 → gizli (regresyon)
+  F3  `gps_fix` yok + 0/0 → gizli
+  F4  `gps_fix` = 3 → değişmedi (yeşil, 3B FIX ✓)
+  F5  uçtan uca: fix'siz heartbeat → `_durum_tazele` etiketi sayıları gösterir,
+      KIRMIZI kalır
   A1  bant dışı irtifa (890,6 / 250 / -60 / NaN / bool) → "İRTİFA GEÇERSİZ",
       "sağlanıyor" YOK, onay etiketi kirlenmez
   A2  bant sınırı: 200 m (IRTIFA_MAKUL_UST_M) geçerli
@@ -96,6 +104,63 @@ class GnssGosterimi(unittest.TestCase):
         self.assertEqual(0.0, kayit["telemetri"]["lat"])
         self.assertEqual(0.0, kayit["telemetri"]["lon"])
         self.assertEqual(890.6, kayit["telemetri"]["alt"])
+
+
+class FixAlaniYok(unittest.TestCase):
+    """Mimar ölçümü (19 Eyl): prova3/4/5 ve yki_uctan_uca oturumlarında
+    lat/lon taşıyan heartbeat'lerin HİÇBİRİNDE `gps_fix` yoktu (prova2:
+    59/118). 21ae2f5f bu durumda konumu gizliyordu (gerileme)."""
+
+    FIXSIZ = {"lat": 40.9594863, "lon": 29.1337822}
+
+    def test_F1_fix_alani_yok_sayilar_gosterilir_isaretli(self):
+        metin = yks_gui.gps_gosterim_metni(dict(self.FIXSIZ))
+        self.assertIn("40.9594863, 29.1337822", metin)
+        self.assertIn("fix BİLİNMİYOR", metin)
+        self.assertIn("FIX YETERSİZ", metin)
+        self.assertNotIn("3B FIX ✓", metin)
+        self.assertNotIn("konum BİLİNMİYOR", metin)
+        # Katı doğrulayıcı GEVŞEMEDİ (etiket rengi ondan okunur).
+        self.assertEqual((False, "3B fix yok"),
+                         yks_gui.gps_telemetrisi_dogrula(dict(self.FIXSIZ)))
+        metin = yks_gui.gps_gosterim_metni(dict(self.FIXSIZ, gps_fix=None))
+        self.assertIn("40.9594863", metin)
+
+    def test_F2_fix_iki_gizler(self):
+        metin = yks_gui.gps_gosterim_metni(dict(self.FIXSIZ, gps_fix=2))
+        self.assertIn("konum BİLİNMİYOR", metin)
+        self.assertNotIn("40.9594863", metin)
+        self.assertIn("fix 2", metin)
+
+    def test_F3_fixsiz_sifir_sifir_gizlenir(self):
+        metin = yks_gui.gps_gosterim_metni({"lat": 0.0, "lon": 0.0})
+        self.assertIn("konum BİLİNMİYOR", metin)
+        self.assertNotIn("0.0000000", metin)
+        self.assertIn("0/0", metin)
+        for bozuk in ({"lat": 95.0, "lon": 29.1},
+                      {"lat": float("nan"), "lon": 29.1}):
+            with self.subTest(bozuk=bozuk):
+                self.assertIn("konum BİLİNMİYOR",
+                              yks_gui.gps_gosterim_metni(bozuk))
+
+    def test_F4_fix_uc_degismedi(self):
+        metin = yks_gui.gps_gosterim_metni(dict(self.FIXSIZ, gps_fix=3, uydu=11))
+        self.assertIn("40.9594863, 29.1337822", metin)
+        self.assertIn("fix 3", metin)
+        self.assertIn("3B FIX ✓", metin)
+        self.assertEqual((True, "3B fix"), yks_gui.gps_telemetrisi_dogrula(
+            dict(self.FIXSIZ, gps_fix=3)))
+
+    def test_F5_uctan_uca_fixsiz_heartbeat_sayilari_gosterir_kirmizi(self):
+        g = _taban_arayuz()
+        g._mesaj_isle(heartbeat("iha", seq=1, lat=40.9594863, lon=29.1337822,
+                                pixhawk_canli=True, armed=False, mod="AUTO"),
+                      None)
+        self.assertNotIn("gps_fix", g.tel["iha"])
+        g._durum_tazele()
+        self.assertIn("40.9594863, 29.1337822", g.lbl_gps.ayar["text"])
+        self.assertIn("fix BİLİNMİYOR", g.lbl_gps.ayar["text"])
+        self.assertEqual(yks_gui.KIRMIZI, g.lbl_gps.ayar["fg"])
 
 
 class IrtifaUyumSatiri(unittest.TestCase):
