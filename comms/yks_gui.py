@@ -1984,6 +1984,9 @@ class YksArayuz:
                 if yeni:
                     self.ika_rota_ack.pop(m["seq"], None)
                     self._erken_ika_rota_ack.pop(m["seq"], None)
+            # NEDEN: FDA'da aynı şeridin yeni seq'i onayı taşır; karşılaştırma
+            # için önceki rota `self.rota` ezilmeden saklanır.
+            onceki_rota = self.rota
             self.rota, self.rota_adr = m, adr
             # T169 · §6.2: her KABUL EDILEN cerceve tespiti TAZELER — tekrar
             # gonderim de canlilik kanitidir. Bayatlik `_durum_tazele`de olculur.
@@ -2003,6 +2006,9 @@ class YksArayuz:
             self.rx_alim[m["seq"]] = self.rx_alim.get(m["seq"], 0) + 1
             ankor_uyarisi = rota_ankor_uyarisi(m)
             if yeni:
+                # NEDEN: sıfırlama fail-closed VARSAYILANDIR; FDA'da aynı şerit
+                # için `_fda_onayini_tasi` ancak tüm kapılar geçerse geri yükler.
+                onceki_asama = (self.tespit_onayli, self.onaylandi)
                 self.onaylandi = False
                 self.tespit_onayli = False
                 self.sayac[MESAJ_OPEN_ROUTE] += 1
@@ -2039,7 +2045,8 @@ class YksArayuz:
                 self._rota_analiz(m)
                 if ankor_uyarisi:
                     self._ankor_yok_onayini_kapat(logla=True)
-                else:
+                elif not self._fda_onayini_tasi(m, onceki_rota, onceki_asama,
+                                                rota_yok_temizlendi):
                     self._onay_dugmesini_ciz(
                         True, "1) TESPİTİ DOĞRULA (§2.2.3)")
                     if not self._kanit_kilidi_var():
@@ -2297,6 +2304,114 @@ class YksArayuz:
             self._logla("HAKEM ONAYI REDDEDİLDİ: ANKOR YOK — rota şeride "
                         "yerleştirilemedi, ACK gönderilmedi", "sari")
 
+    def _rota_ack_gonder(self):
+        """Geçerli rota için hakem ACK'ini link'e yaz ve döndür.
+
+        `onayla()` 2/2 ile FDA'da taşınan tam onay (`_fda_onayini_tasi`) AYNI
+        yolu kullanır: aynı `ref_tip` (T206), aynı adres seçimi.
+        """
+        rota_ack = ack(self.rota["seq"], "yks",
+                       self.rota.get("type") or MESAJ_OPEN_ROUTE)
+        if self.rota_adr is not None:
+            self.link.send(encode(rota_ack), self.rota_adr)
+        else:                                   # seri hat: adres kavramı yok
+            self.link.send(encode(rota_ack))
+        # NEDEN: FDA'da eski seq'in geç kopyası taşınan onayla İKİNCİ ACK
+        # üretmesin diye ACK'lenen seq'ler tutulur; küçük ve sınırlı (en eski
+        # atılır). `onayla()` bu kümeye BAKMAZ — hakemin elle onayı her zaman
+        # ACK üretir.
+        ackli = getattr(self, "_hakem_ackli_seq", None)
+        if ackli is None:
+            ackli = self._hakem_ackli_seq = {}
+        ackli[self.rota["seq"]] = True
+        while len(ackli) > 64:
+            del ackli[next(iter(ackli))]
+        return rota_ack
+
+    def _fda_onayini_tasi(self, m, onceki_rota, onceki_asama, rota_yok_vardi):
+        """FDA (§5.3.2): aynı şeridin YENİ seq'li OPEN_ROUTE'u hakem onayını
+        SIFIRLAMAZ — aynı tespitin tazelenmesidir.
+
+        NEDEN (19 Eyl, mimar ölçümü): İHA `protocol.open_route` ile her
+        kararda YENİ seq üretir (`itertools.count`), şerit görüldükçe ~1 Hz.
+        Eski yol her yeni seq'te iki aşamayı da sıfırlıyordu: hakemin 1/2'si
+        ~1 s'de siliniyor, 2/2'ye pratikte ulaşılamıyor, tamamlanmış onay
+        sonraki karede geri alınıyordu.
+
+        Çağıran bayrakları ÖNCE sıfırlar (fail-closed varsayılan); burada
+        yalnız TÜM kapılar geçerse geri yüklenir — `onayla()`nın kapıları
+        (ankor, geometri, kanıt kilidi, bayatlık) + İHA inmemiş olmalı.
+        Yarışma kipinde (`fda_kipi` False) HİÇBİR ŞEY yapmaz: orada 2/2 İKA
+        K8 kanıtına seq ile bağlıdır, yeni seq'in kanıtı yoktur.
+
+        Döner: onay düğmesi burada çizildiyse True (çağıran 1. aşama
+        düğmesini çizmez); False → bugünkü yol (1. aşamadan yeniden onay).
+        """
+        tespit_onayli, onaylandi = onceki_asama
+        if not (getattr(self, "fda_kipi", False)
+                and (tespit_onayli or onaylandi)):
+            return False
+        if onceki_rota is None or rota_yok_vardi:
+            return False
+        seq, onceki_seq = m.get("seq"), onceki_rota.get("seq")
+        if seq == onceki_seq:
+            # Aynı seq'te geometri değişimi (tek_rota) bugünkü gibi yeni onay ister.
+            return False
+        if m.get("road") != onceki_rota.get("road"):
+            self._logla(f"SERIT DEGISTI — yeni onay gerekir (yol "
+                        f"{onceki_rota.get('road')} → {m.get('road')}, "
+                        f"seq={seq})", "sari")
+            return False
+        if rota_ankor_uyarisi(m):
+            sebep = "ANKOR YOK"
+        elif getattr(self, "tek_rota", False) and not self._tek_rota_gecerli():
+            sebep = "ROTA GEOMETRİSİ YOK"
+        elif self._kanit_kilidi_var():
+            sebep = "KANIT KAYDI HATASI"
+        elif (getattr(self, "t_iha1", None) is not None
+              or getattr(self, "iha_landed_seq", None) is not None):
+            sebep = "İHA İNDİ"
+        else:
+            sebep = None
+        if sebep is not None:
+            self._logla(f"ONAY TAŞINMADI — {sebep}: seq={seq} (onceki "
+                        f"{onceki_seq}); yeni onay gerekir, ACK yok", "sari")
+            return False
+        # NEDEN: bayatlık bayraklar SIFIRKEN sorulur — böylece
+        # `_tespiti_yaslandir` "BAYAT TESPİT" kilidini kurar ve tazelik
+        # dönünce 1. aşamayı kendisi geri açar (T176). 1. aşama düğmesi
+        # burada çizilmez (True döner).
+        if self._tespiti_yaslandir():
+            self._onay_dugmesini_ciz(False, "BAYAT TESPİT — ONAY KAPALI")
+            self._logla(f"ONAY TAŞINMADI — tespit BAYAT: seq={seq} (onceki "
+                        f"{onceki_seq}); ACK gönderilmedi", "sari")
+            return True
+        self.tespit_onayli, self.onaylandi = tespit_onayli, onaylandi
+        yol = m.get("road")
+        if not onaylandi:
+            self._aktarim_onay_dugmesini_kur()
+            self._logla(f"ONAY KORUNDU — ayni serit, yeni seq={seq} (onceki "
+                        f"{onceki_seq}) · yol={yol} · 1/2 korundu, 2. onay "
+                        "bekleniyor", "sari")
+            return True
+        # 2/2 tamamdı: İHA bu seq'i ACK alana dek tekrarlar → 2. adımla AYNI
+        # yoldan ACK. Aynı seq'e ikinci ACK yok (`_rota_ack_gonder` kümesi).
+        if seq in (getattr(self, "_hakem_ackli_seq", None) or {}):
+            ack_metni = f"ACK ref={seq} zaten gönderilmişti"
+        else:
+            self._rota_ack_gonder()
+            self.sayac["ACK_TX"] += 1
+            ack_metni = f"ACK ref={seq} gönderildi"
+        self._onay_dugmesini_ciz(False, "ONAYLANDI ✓✓", bg=YESIL)
+        self.lbl_onay.config(
+            text=f"Hakem onayı tam (seq={onceki_seq} onayı korundu, aynı şerit)"
+                 f" — ACK(seq={seq}) İHA'ya iletildi · FDA §5.3.2: İKA yok — "
+                 "onay YKS aktarımına dayanır", fg=YESIL)
+        self._logla(f"ONAY KORUNDU — ayni serit, yeni seq={seq} (onceki "
+                    f"{onceki_seq}) · yol={yol} · 2/2 · {ack_metni} (FDA)",
+                    "sari")
+        return True
+
     def onayla(self):
         """Şartname §2.2.3 İKİ AŞAMALI hakem onayı: (1) güzergâh tespitinin
         doğrulanması, (2) İKA'ya aktarımın doğrulanması → ACK ancak 2. adımda."""
@@ -2359,12 +2474,7 @@ class YksArayuz:
         # yalnız `_mesaj_isle`'nin OPEN_ROUTE dalında atanır, yani bu yol
         # tanım gereği OPEN_ROUTE onayıdır; alan eksikse (Tk'siz fikstürler)
         # tip yine OPEN_ROUTE'tur — ref_tip'siz (zayıf) ACK üretilmez.
-        rota_ack = ack(self.rota["seq"], "yks",
-                       self.rota.get("type") or MESAJ_OPEN_ROUTE)
-        if self.rota_adr is not None:
-            self.link.send(encode(rota_ack), self.rota_adr)
-        else:                                   # seri hat: adres kavramı yok
-            self.link.send(encode(rota_ack))
+        rota_ack = self._rota_ack_gonder()
         self.onaylandi = True
         self.sayac["ACK_TX"] += 1
         if self.t_iha1 is not None:
@@ -4486,7 +4596,10 @@ class YksArayuz:
         # gözünden kaçar ve §5.3.2'yi karşılamayan bir tespiti onaylar.
         # Uyarı, ONAY DÜĞMESİNİN yanında ve onay verilene dek DURUR.
         etiket = getattr(self, "lbl_onay", None)
-        if etiket is not None:
+        # NEDEN: FDA'da taşınan TAMAMLANMIŞ onayda (aynı şerit, yeni seq)
+        # etiket "onay BEKLENİYOR" deyip düğmeyle (ONAYLANDI ✓✓) çelişmesin;
+        # uyarı günlükte kalır. Diğer her çağrıda burada `onaylandi` False'tur.
+        if etiket is not None and not getattr(self, "onaylandi", False):
             etiket.config(
                 text=(f"⚠ ASGARİ İRTİFA ALTI: {float(irtifa):.1f} m < "
                       f"{SARTNAME_ASGARI_IRTIFA_M:.0f} m (§5.3.2) — "
