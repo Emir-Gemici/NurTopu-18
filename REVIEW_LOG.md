@@ -32012,6 +32012,31 @@ parametresi o ölçümden seçildiyse **kanıt sayılmaz ve öyle sunulamaz**. S
 sonuç "uyum denemesi" diye etiketlenir; "doğrulandı/açıklıyor" kelimeleri **yalnız** parametrenin
 bağımsız ölçüldüğü durumda kullanılır.
 
+
+**EK 3 (19 Eyl aksam) — K8 ölçümü sonrası: iki türetimim daha çürütüldü.**
+
+| İddiam | Çürütme (Emir tarafı, ölçümle) | Durum |
+|---|---|---|
+| Ön kayıt: MW33 sonrası p95 **133–178 ms** | K8a ölçüldü: **212 ms** | ❌ model tutmadı |
+| İyileşmeden türetim: `W ≈ 75 ms`, `P ≈ 93 ms` | Dün↔bugün karşılaştırması **temiz değil** (dün MP açıktı, yer yolu farklıydı). Aynı oturumda yalnız pencere değişince fark **~25 ms** | ❌ dayanaksız, geri çekildi |
+| "Darboğaz uç işleme / MAVProxy baş şüpheli" | Param yolunda (Jetson+MAVProxy+TELEM2 **yok**) p95 **205 ms** → zaten eşik üstü; Jetson'ın p95 katkısı **~7 ms** | ❌ çürütüldü |
+
+**Karşı tarafın asıl bulgusu — dağılımın biçimi:** gecikme sürekli değil, **basamaklı** (min 77 ms,
+maks 231 ms, değerler yığınlar hâlinde). Bu telsizin sıra-paylaşım turlarının imzasıdır; p95
+üçüncü tura düşüyor. **Doğru soru "kaç ms" değil, "bir gidiş-dönüş kaç TUR sürüyor".** Benim
+sürekli-bileşen bütçem (seri + RF + W + P) bu yüzden yapısal olarak yanlış çerçeveydi.
+
+**Örüntünün devamı:** bu turda da hatalarım aynı yönde — kendi modelimi güçlendiren, temiz
+olmayan karşılaştırmadan türetim. Kayıtlı kural (D-505) burada da ihlal edildi: iki ölçüm
+"aynı test" sanıldı, oysa aralarında birden çok değişken vardı. **Kurala ek:** iki ölçümü
+karşılaştırmadan önce *aralarında yalnız hedef değişkenin farklı olduğu* **kanıtlanmalıdır**;
+kanıtlanamıyorsa fark hiçbir bileşene atfedilemez.
+
+**Kabul edilen sıradaki adım:** `SR1_*` (Pixhawk'ın telsize bastığı telemetri hızları) düşürülüp
+**aynı oturumda** karşılaştırma. Gerekçe: kuyruk kısalırsa cevap bir önceki tura yetişebilir →
+tur sayısı düşer. Risk düşük (yalnız gönderim sıklığı; uçuş kontrolü/failsafe/mod etkilenmez),
+geri alınabilir, Jetson gerekmez. Şart: parametre dökümü önce **ve** sonra.
+
 **Düzeltme:** belge revize edildi (REVİZYON 2), yanlış tablo değiştirildi, geç ACK bulgusu asıl
 teşhis olarak yazıldı, sabah sırası "Max Window tek başına + gecikme dağılımı kaydı" olarak
 güncellendi. Kod değişikliği önerileri uçuş sonrasına alındı.
