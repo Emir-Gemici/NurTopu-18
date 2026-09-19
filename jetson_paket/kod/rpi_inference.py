@@ -85,11 +85,11 @@ if __package__:
                                    olcek_guveni_uygula,
                                    rota_olcek_reddi, serit_no,
                                    rota_serit_karari,
-                                   KAMERA_DUSEN_KARE_UST_SINIRI,
-                                   KAMERA_DUSEN_KARE_BEKLEME_S,
-                                   KAMERA_BITIS_KULLANICI,
-                                   KAMERA_BITIS_DUSEN_KARE,
-                                   KAMERA_BITIS_ACILAMADI,
+                                   KAMERA_DUSEN_KARE_UST_SINIRI, KAMERA_TANI_ARALIGI_S,
+                                   KAMERA_DUSEN_KARE_BEKLEME_S, KAMERA_SINYAL_YOKLAMA_S,
+                                   KAMERA_BITIS_KULLANICI, KAMERA_DURUM_ZAMAN_ASIMI_S,
+                                   KAMERA_BITIS_DUSEN_KARE, KAMERA_KOPRU_DURUM_YOLU,
+                                   KAMERA_BITIS_ACILAMADI, KAMERA_YENIDEN_ACMA_BEKLEMELERI_S,
                                    KAMERA_BITIS_SINYAL,
                                    MODEL_TUREV_SHA_YER_TUTUCU)
 else:
@@ -139,11 +139,11 @@ else:
                                   olcek_guveni_uygula,
                                   rota_olcek_reddi, serit_no,
                                   rota_serit_karari,
-                                  KAMERA_DUSEN_KARE_UST_SINIRI,
-                                  KAMERA_DUSEN_KARE_BEKLEME_S,
-                                  KAMERA_BITIS_KULLANICI,
-                                  KAMERA_BITIS_DUSEN_KARE,
-                                  KAMERA_BITIS_ACILAMADI,
+                                  KAMERA_DUSEN_KARE_UST_SINIRI, KAMERA_TANI_ARALIGI_S,
+                                  KAMERA_DUSEN_KARE_BEKLEME_S, KAMERA_SINYAL_YOKLAMA_S,
+                                  KAMERA_BITIS_KULLANICI, KAMERA_DURUM_ZAMAN_ASIMI_S,
+                                  KAMERA_BITIS_DUSEN_KARE, KAMERA_KOPRU_DURUM_YOLU,
+                                  KAMERA_BITIS_ACILAMADI, KAMERA_YENIDEN_ACMA_BEKLEMELERI_S,
                                   KAMERA_BITIS_SINYAL,
                                   MODEL_TUREV_SHA_YER_TUTUCU)
 
@@ -2297,7 +2297,7 @@ def run_video(model, path_str, conf, save=True, mpp=None, canli_olcek=None,
 
 def run_camera(model, conf, mpp=None, canli_olcek=None, kaynak=None,
                arac_modeli=None, senaryo=None, yayinci=None, *, ekransiz=False,
-               gorev_kaydi=None, isaretli=None):
+               gorev_kaydi=None, isaretli=None, kamera_bekle=False, bekle=None, saat=None):
     # D-404 (Faz B, Gorev C olcumu): systemd altinda DISPLAY yokken kosulsuz
     # cv2.imshow ILK KAREDE cokup Restart dongusune giriyordu (hands-off
     # ihlali). `ekransiz=True` pencere/waitKey'i atlar; karar yolu ve yayin
@@ -2313,8 +2313,8 @@ def run_camera(model, conf, mpp=None, canli_olcek=None, kaynak=None,
     # muhurlu kutu prosedurune (SS2.2.1) aykiridir.
     # Varsayilan DEGISMEDI: `kaynak` verilmezse yine indeks 0.
     coz = kamera_kaynagi_coz(kaynak)
-    cap = cv2.VideoCapture(coz)
-    if not cap.isOpened():
+    cap = ServisKamerasi(coz, gorev_kaydi, bekle, saat) if kamera_bekle else cv2.VideoCapture(coz)
+    if not cap.isOpened() and not kamera_bekle:  # servis kipi: CIKMAZ, bekler (ServisKamerasi)
         print(f"Kamera acilamadi (kaynak={coz!r}).")
         return {"bitis": KAMERA_BITIS_ACILAMADI, "okunan": 0,
                 "dusen_toplam": 0, "dusen_ardisik_maks": 0}
@@ -2334,7 +2334,7 @@ def run_camera(model, conf, mpp=None, canli_olcek=None, kaynak=None,
     # T204: dongu try/finally icinde — sinyal, istisna ve KeyboardInterrupt
     # dahil HER yolda kamera serbest birakilir (D-404 §8 KUCUK-2).
     try:
-        for frame in kamera_kareleri(cap, ozet):
+        for frame in (cap.kareler(ozet) if kamera_bekle else kamera_kareleri(cap, ozet)):
             # T204: kontrollu durdurma — SIGTERM/SIGINT bayragi kuruluysa
             # bu kare ISLENMEZ; `finally` cap.release()'i GARANTI eder.
             # Ekransiz kipte 'q' yoktur; bu, tek gercek temiz cikistir.
@@ -2516,7 +2516,7 @@ def kamera_bitis_raporu(ozet):
     if "fps_ortalama" in ozet:
         satir += (f" fps_ortalama={ozet['fps_ortalama']} fps_p95={ozet['fps_p95']} "
                   f"fps_ornek={ozet['fps_ornek']}")
-    return satir
+    return satir + (f" yeniden_acma={ozet['yeniden_acma']}" if "yeniden_acma" in ozet else "")
 
 
 def _arguman_ayristirici():
@@ -2615,7 +2615,7 @@ def _arguman_ayristirici():
         help=("IHA-UB kose referansi (ondalik derece). Verilirse her "
               "HEARTBEAT'e yerel x,y (metre) eklenir ve YKS sartname "
               "SS6.2 ALAN IHLALI denetimini yapabilir"))
-    return parser
+    return _kamera_bekleme_bayragi_ekle(parser)  # 2026-09-19 (dosya sonunda)
 
 
 def _ub_referansi_coz(parser, metin):
@@ -2851,10 +2851,10 @@ def main():
             gorev_kaydi = gorev_kaydi_ac(args.gorev_kaydi, model_yolu)
             isaretli = isaretli_yayin_ac(args.isaretli_yayin)
             try:
-                run_camera(model, args.conf, canli_olcek=canli_olcek,
-                           kaynak=args.kaynak, arac_modeli=arac_modeli,
-                           senaryo=args.senaryo, yayinci=yayinci,
-                           ekransiz=args.ekransiz, gorev_kaydi=gorev_kaydi, isaretli=isaretli)
+                run_camera(model, args.conf, canli_olcek=canli_olcek, kaynak=args.kaynak,
+                           arac_modeli=arac_modeli, senaryo=args.senaryo, yayinci=yayinci,
+                           ekransiz=args.ekransiz, gorev_kaydi=gorev_kaydi, isaretli=isaretli,
+                           kamera_bekle=args.ekransiz and not args.kamera_bekleme_yok)
             finally:
                 gorev_kaydi_kapat(gorev_kaydi)
                 if isaretli is not None:
@@ -3071,6 +3071,236 @@ def _isaretli_bildir(isaretli, satir, tuval, icerik, masks, ozet, open_path, pat
         isaretli.kare_bildir(tuval, icerik, masks, seq)
     except Exception as exc:
         print(f"UYARI: isaretli yayin bildirimi: {exc!r}", flush=True)
+
+
+# ── 2026-09-19 · SERVIS KIPI: KAMERA YOK/KOPTU -> SUREC CIKMAZ ───────────────
+# NEDEN (Jetson olcumu): CSI kamera yokken kopru /video 503 donuyor, `run_camera`
+# KAMERA_ACILAMADI ile donuyor, surec cikiyor ve systemd 2-60 s'de bir yeniden
+# kaldiriyordu (sayac 32). Her turda YOLO yeniden yukleniyor (~4,5 s CPU) ve
+# telsiz halkasi (1 Hz HEARTBEAT) yikiliyordu: YKS kalp atisini dakikada birkac
+# saniye goruyor, hub her yeni UDP tuketicisini sayip tavani asiyordu. Ayni cikis
+# oturum ortasinda KAMERA_BITIS_DUSEN_KARE ile de oluyordu.
+# Cozum: `run_camera(..., kamera_bekle=True)` (main `--ekransiz`te verir;
+# `--kamera-bekleme-yok` eski davranistir) yakalayici olarak `ServisKamerasi`
+# kullanir; acilamazsa/koparsa bekler, yeniden acar, tani basar. Karar yolu
+# (run_camera dongu govdesi) DEGISMEDI; tek `KararYumusatici` yeniden acmalar
+# boyunca KORUNUR (yeniden acma histerezisi atlatamaz). Beklerken kare YOK ->
+# karar URETILMEZ/YAYINLANMAZ; HEARTBEAT `karar_yas` buyur (fail-visible).
+# Sabitler ve gerekceleri: karar_sozlesmesi (KAMERA_YENIDEN_ACMA_* vb.).
+# ⚠ BOLUM DOSYA SONUNDADIR, BILEREK: FDR/T244 raporlari ve kapilari bu dosyaya
+# `rpi_inference.py:<satir>` ile atif yapar (tests/test_fdr_t244_ic_celiski
+# 2569/2728'i BIREBIR arar, akis diyagramlari run_camera'yi 2298'de). Yukaridaki
+# degisiklikler AYNI SATIRDA yapildi; yeni kod buraya eklendi ki atiflar kaymasin.
+_VIDEO_CIHAZ_DESENI = "/dev/video*"
+
+
+def _kamera_bekleme_bayragi_ekle(parser):
+    """`--kamera-bekleme-yok` bayragi (`_arguman_ayristirici` sonundan cagrilir)."""
+    parser.add_argument(
+        "--kamera-bekleme-yok", dest="kamera_bekleme_yok", action="store_true",
+        help=("Eski davranisa don: --ekransiz kipte kamera acilamazsa ya da "
+              "hat koparsa (30 ardisik dusen kare) surec BITER ve systemd "
+              "yeniden baslatir (model yeniden yuklenir, telsiz HEARTBEAT "
+              "kesilir). Verilmezse surec bekler, kamerayi yeniden acar ve "
+              "[KAMERA_BEKLIYOR] tanisi basar."))
+    return parser
+
+
+def _video_cihazlari():
+    """Cekirdegin gordugu V4L2 dugumleri (Windows'ta bos liste)."""
+    import glob
+    return sorted(glob.glob(_VIDEO_CIHAZ_DESENI))
+
+
+def _kopru_durum_url(kaynak):
+    """`http(s)://host:port/...` kaynaktan kopru durum URL'si; degilse None."""
+    import urllib.parse
+    if not isinstance(kaynak, str):
+        return None
+    try:
+        parca = urllib.parse.urlsplit(kaynak.strip())
+    except ValueError:
+        return None
+    sema = parca.scheme.lower()
+    # Kullanici:parola@ varsa /durum istegine ve URL'sine TASINMAZ.
+    host_port = parca.netloc.rpartition("@")[2]
+    if sema not in ("http", "https") or not host_port:
+        return None
+    return f"{sema}://{host_port}{KAMERA_KOPRU_DURUM_YOLU}"
+
+
+def _kopru_durumunu_getir(url, zaman_asimi):
+    """Kopru /durum JSON'u. Vekil sunucu ATLANIR (kopru yereldir)."""
+    import urllib.request
+    acici = urllib.request.build_opener(urllib.request.ProxyHandler({}))
+    with acici.open(url, timeout=zaman_asimi) as yanit:
+        return json.loads(yanit.read(65536).decode("utf-8"))
+
+
+def kamera_tani_satiri(kaynak, deneme, bekleme_s, *, neden=None,
+                       cihaz_listele=None, durum_getir=None):
+    """[KAMERA_BEKLIYOR] tani satirini URETIR (basmaz); ASLA istisna yukseltmez.
+
+    Icerik: kaynak, neden, deneme sayisi, gecen bekleme; `/dev/video*` listesi;
+    kaynak `http(s)://host:port/...` ise kopru `/durum`undan kaynak_acik,
+    son_hata, acma_denemesi, dusen_kare (alinamazsa ALINAMADI + neden).
+    `/dev/video*` BOSSA insan ipucu: CSI kamerayi cekirdek gormuyor.
+    `cihaz_listele()` / `durum_getir(url, zaman_asimi)` testte enjekte edilir.
+    """
+    from collections.abc import Mapping
+    if cihaz_listele is None:
+        cihaz_listele = _video_cihazlari
+    if durum_getir is None:
+        durum_getir = _kopru_durumunu_getir
+    bas = f"[KAMERA_BEKLIYOR] kaynak={kaynak!r}"
+    if neden is not None:
+        bas += f" neden={neden}"
+    parcalar = [bas + f" deneme={int(deneme)} bekleme_s={float(bekleme_s):.1f}"]
+    cihazlar = None
+    try:
+        cihazlar = [str(c) for c in cihaz_listele()]
+        parcalar.append(f"{_VIDEO_CIHAZ_DESENI}: "
+                        + (" ".join(cihazlar) if cihazlar else "YOK"))
+    except Exception as exc:
+        parcalar.append(f"{_VIDEO_CIHAZ_DESENI}: OKUNAMADI "
+                        f"({type(exc).__name__}: {exc})")
+    url = _kopru_durum_url(kaynak)
+    if url is not None:
+        try:
+            durum = durum_getir(url, KAMERA_DURUM_ZAMAN_ASIMI_S)
+            if not isinstance(durum, Mapping):
+                raise TypeError(f"JSON nesne degil: {type(durum).__name__}")
+            parcalar.append(
+                f"kopru {url}: kaynak_acik={durum.get('kaynak_acik')} "
+                f"son_hata={durum.get('son_hata')!r} "
+                f"acma_denemesi={durum.get('acma_denemesi')} "
+                f"dusen_kare={durum.get('dusen_kare')}")
+        except Exception as exc:
+            parcalar.append(f"kopru {url}: ALINAMADI "
+                            f"({type(exc).__name__}: {exc})")
+    if cihazlar == []:
+        parcalar.append(
+            "IPUCU: cekirdek CSI kamerayi GORMUYOR (/dev/video* yok) -> serit "
+            "kabloyu ve konnektor yonunu kontrol edin; CSI sicak takilmaz, "
+            "yeniden oturttuktan sonra Jetson YENIDEN BASLATILMALI")
+    # TEK satir: gomulu satir sonu journal'da satiri bolmesin.
+    return " | ".join(str(p).replace("\r", " ").replace("\n", " ")
+                      for p in parcalar)
+
+
+def _dilimli_bekle(sure_s, bekle):
+    """`sure_s` kadar KAMERA_SINYAL_YOKLAMA_S dilimleriyle bekle; her dilimden
+    once/sonra durdurma bayragina bak. Sinyal gelirse False (bekleme yarida)."""
+    kalan = float(sure_s)
+    while kalan > 0:
+        if durdurma_istendi():
+            return False
+        dilim = min(KAMERA_SINYAL_YOKLAMA_S, kalan)
+        bekle(dilim)
+        kalan -= dilim
+    return not durdurma_istendi()
+
+
+class ServisKamerasi:
+    """Servis kipi yakalayicisi: kamera YOK ya da KOPTU iken SUREC BITMEZ.
+
+    `run_camera(kamera_bekle=True)` bunu `cv2.VideoCapture` YERINE kullanir.
+    `self.cap` o anki gercek yakalayicidir (kesintide None olabilir);
+    `release()` onu birakir — run_camera'nin `finally`si ayni cagriyi yapar.
+    `kareler(ozet)`:
+      * acilamadi ya da `kamera_kareleri` KAMERA_BITIS_DUSEN_KARE ile bitti ->
+        yakalayici birakilir; KAMERA_YENIDEN_ACMA_BEKLEMELERI_S geri
+        cekilmesiyle (son deger tavan, KAMERA_SINYAL_YOKLAMA_S dilimleriyle)
+        beklenir ve yeniden acilir;
+      * kesinti ILK KAREYLE biter — acilip kare vermeyen kaynak AYNI
+        kesintidir (geri cekilme ve tani araligi sifirlanmaz);
+      * sinyal -> `ozet["bitis"] = KAMERA_BITIS_SINYAL`, uretec biter; diger
+        bitisler (kare uretecinin sinyal bitisi) aynen doner.
+    Tani: kesintinin ilk aninda ve sonra en fazla KAMERA_TANI_ARALIGI_S'de bir
+    [KAMERA_BEKLIYOR]; ilk karede [KAMERA_GERI_GELDI]. Gorev kaydina kesinti
+    basina BIR KAMERA_BEKLIYOR ve bir KAMERA_GERI_GELDI yazilir.
+    `ozet["yeniden_acma"]`: kare vererek biten kesinti sayisi.
+    ⚠ Gorev kaydi referansi dongu govdesininkinden AYRIDIR: yazma hatasinda
+    (disk dolu) iki taraf da BIRER kez UYARI basabilir; kayit karari etkilemez.
+    `bekle`/`saat`/`log` testte enjekte edilir (gercek uyku yok).
+    """
+
+    def __init__(self, kaynak, gorev_kaydi=None, bekle=None, saat=None, log=None):
+        self.kaynak = kaynak
+        self.kayit = gorev_kaydi
+        self._bekle = bekle
+        self._saat = saat
+        self._log = log
+        self.cap = cv2.VideoCapture(kaynak)
+
+    def isOpened(self):
+        return self.cap is not None and self.cap.isOpened()
+
+    def release(self):
+        cap, self.cap = self.cap, None
+        if cap is not None:
+            cap.release()
+
+    def _yaz(self, satir):
+        if self._log is not None:
+            self._log(satir)
+        else:
+            print(satir, flush=True)
+
+    def _olay(self, olay, alanlar):
+        self.kayit = _gorev_kaydina_yaz(self.kayit, olay, alanlar)
+
+    def kareler(self, ozet):
+        bekle = self._bekle if self._bekle is not None else time.sleep
+        saat = self._saat if self._saat is not None else time.monotonic
+        ozet.setdefault("yeniden_acma", 0)
+        kesinti = None
+        while True:
+            if self.isOpened():
+                for frame in kamera_kareleri(self.cap, ozet, bekle=bekle):
+                    if kesinti is not None:
+                        sure = saat() - kesinti["basla"]
+                        ozet["yeniden_acma"] += 1
+                        self._yaz(f"[KAMERA_GERI_GELDI] kaynak={self.kaynak!r} "
+                                  f"deneme={kesinti['deneme']} bekleme_s={sure:.1f} "
+                                  f"yeniden_acma={ozet['yeniden_acma']}")
+                        self._olay("KAMERA_GERI_GELDI",
+                                   {"kaynak": str(self.kaynak),
+                                    "deneme": kesinti["deneme"],
+                                    "bekleme_s": round(sure, 1)})
+                        kesinti = None
+                    yield frame
+                if ozet.get("bitis") != KAMERA_BITIS_DUSEN_KARE:
+                    return
+                # Hat koptu: bu bir BITIS nedeni degil, surec surer.
+                ozet["bitis"] = None
+                neden = KAMERA_BITIS_DUSEN_KARE
+            else:
+                neden = KAMERA_BITIS_ACILAMADI
+            self.release()
+            if durdurma_istendi():
+                ozet["bitis"] = KAMERA_BITIS_SINYAL
+                self._yaz("KONTROLLU DURDURMA: sinyal alindi, kamera beklemesi kapaniyor.")
+                return
+            simdi = saat()
+            if kesinti is None:
+                # Acilamadiysa BU yakalayici kesintinin 1. denemesidir.
+                kesinti = {"basla": simdi, "son_tani": None, "bekleme_no": 0,
+                           "deneme": 1 if neden == KAMERA_BITIS_ACILAMADI else 0}
+                self._olay("KAMERA_BEKLIYOR", {"kaynak": str(self.kaynak), "neden": neden})
+            if (kesinti["son_tani"] is None
+                    or simdi - kesinti["son_tani"] >= KAMERA_TANI_ARALIGI_S):
+                kesinti["son_tani"] = simdi
+                self._yaz(kamera_tani_satiri(self.kaynak, kesinti["deneme"],
+                                             simdi - kesinti["basla"], neden=neden))
+            sira = min(kesinti["bekleme_no"], len(KAMERA_YENIDEN_ACMA_BEKLEMELERI_S) - 1)
+            kesinti["bekleme_no"] += 1
+            if not _dilimli_bekle(KAMERA_YENIDEN_ACMA_BEKLEMELERI_S[sira], bekle):
+                ozet["bitis"] = KAMERA_BITIS_SINYAL
+                self._yaz("KONTROLLU DURDURMA: sinyal alindi, kamera beklemesi kapaniyor.")
+                return
+            kesinti["deneme"] += 1
+            self.cap = cv2.VideoCapture(self.kaynak)
 
 
 if __name__ == "__main__":

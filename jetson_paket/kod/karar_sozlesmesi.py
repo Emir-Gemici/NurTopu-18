@@ -2507,3 +2507,36 @@ def alan_etiketi_kullanilabilir_mi(hiz_m_s, tazelik_s):
     if v is None or yas is None or v < 0.0 or yas < 0.0:
         return False
     return v <= ALAN_ETIKETI_HIZ_ESIGI_M_S and yas <= ALAN_ETIKETI_TAZELIK_S
+
+
+# ── KAMERA BEKLE + YENIDEN AC (2026-09-19, Jetson olcumu) ────────────────────
+# T143 kamera sozlesmesinin (KAMERA_DUSEN_KARE_* / KAMERA_BITIS_*, yukarida)
+# devamidir. ⚠ Dosya SONUNDADIR, bilerek: FDR/atolye belgeleri bu dosyaya
+# `karar_sozlesmesi.py:<satir>` ile atif yapar (tests/test_fdr_sarkan_atif_kapisi,
+# test_atolye_test_gunu); ortaya eklenen her satir o atiflari kaydirir.
+# NEDEN: ekransiz servis kipinde kamera acilamayinca (CSI kamera yok -> kopru
+# /video 503) ya da hat koptugunda (30 ardisik dusen kare) `run_camera` donuyor,
+# surec CIKIYOR, systemd 2-60 s sonra yeniden kaldiriyordu (sayac 32'yi buldu).
+# Her yeniden baslatma YOLO'yu ~4,5 s CPU ile yeniden yukluyor ve telsiz
+# halkasini (1 Hz HEARTBEAT) yikiyordu: YKS ucagin kalp atisini dakikada yalniz
+# birkac saniye goruyor, hub her yeni UDP tuketicisini sayip "ogrenilen tavani
+# (32) asildi" diyordu. Servis kipinde surec artik CIKMAZ: bekler, yeniden acar.
+# ⚠ T143'un "kamerasiz sonsuz bekleme YOK" kurali KARAR icindir ve BOZULMAZ:
+# beklerken kare yoktur, karar URETILMEZ/YAYINLANMAZ; HEARTBEAT `karar_yas`
+# buyur ve YKS bayatligi GORUR (fail-visible). Karar yolu bayt-es aynidir.
+#  * GERI CEKILME: 1 -> 2 -> 5 s, son deger TAVANDIR. CSI yeniden oturtulup
+#    Jetson yeniden baslatilana dek kamera donmez; 5 s tavan acma denemesini
+#    seyrek tutar, kamera dondugunde de en gec ~5 s'de yakalanir.
+#  * TANI ARALIGI: [KAMERA_BEKLIYOR] satiri kesintinin ILK aninda ve sonra en
+#    fazla 30 s'de bir basilir — journal'i doldurmadan "hala bekliyor"u gosterir.
+#  * SINYAL YOKLAMA: beklemeler 0,5 s dilimlerle yapilir; SIGTERM en gec bir
+#    dilim gecikir (systemd TimeoutStopSec=5'in cok altinda).
+#  * /durum ZAMAN ASIMI: kopru tanisi (yalniz log; karar DEGIL) 1 s'den uzun
+#    bekletemez — tani, durdurma cevabini geciktirmemeli.
+KAMERA_YENIDEN_ACMA_BEKLEMELERI_S = (1.0, 2.0, 5.0)  # sirayla; son deger tavan
+KAMERA_TANI_ARALIGI_S = 30.0          # [KAMERA_BEKLIYOR] tekrar araligi (s)
+KAMERA_SINYAL_YOKLAMA_S = 0.5         # bekleme dilimi = azami SIGTERM gecikmesi (s)
+KAMERA_DURUM_ZAMAN_ASIMI_S = 1.0      # kopru /durum GET zaman asimi (s)
+# Kamera koprusunun (scripts/kamera_koprusu.py `DURUM_YOLU`) durum ucu. Kopru
+# ayri Python'da kosar (import edilmez); esitlik tests/test_kamera_bekleme.py'de.
+KAMERA_KOPRU_DURUM_YOLU = "/durum"
