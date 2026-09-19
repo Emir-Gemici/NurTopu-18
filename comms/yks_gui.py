@@ -61,6 +61,8 @@ from karar_sozlesmesi import (ARM_DURUM_TAZELIK_S,
                               PARASUT_MANUEL_CEZA_PUANI,
                               PARASUT_TEKRAR_ARALIGI_S,
                               PARASUT_TEKRAR_UST_SINIRI,
+                              ASGARI_IRTIFA_SEBEBI,
+                              IRTIFA_MAKUL_UST_M,
                               SARTNAME_ASGARI_IRTIFA_M,
                               SARTNAME_FDA_OPERASYON_SURESI_S,
                               SARTNAME_HAZIRLIK_SURESI_S,
@@ -233,6 +235,27 @@ KANIT_KILIDI_ONAY_METNI = "KANIT KAYDI HATASI — ONAY KAPALI"
 # sınırıdır.
 UCUS_MODU_AZAMI_KARAKTER = 32
 ACIL_UCUS_MODLARI = frozenset(("RTL", "LAND"))
+
+# ── Telemetri akla yatkınlığı — YALNIZ GÖSTERİM ─────────────────────────────
+# NEDEN (19 Eyl telsiz kanıtı): Pixhawk yeniden başlayınca heartbeat
+# lat/lon ≈ 0/0 taşıdı (ekran aracı ~4500 km öteye koydu); başka bir anda
+# alt = 890,6 m geldi. Yer istasyonu buna GÜVENMEZ: 0/0 ya da 3B fix'siz
+# konum "BİLİNMİYOR", bant dışı irtifa "İRTİFA GEÇERSİZ" gösterilir.
+# Karar eşiği DEĞİL, gösterim sınırıdır: kayda giden ham telemetri
+# (`TELEMETRI_KANIT.dugumler`) DEĞİŞMEZ. Üst irtifa sınırı sözleşmedeki
+# `IRTIFA_MAKUL_UST_M`'dir (yeni sabit açılmadı); alt sınır için sözleşmede
+# karşılık yok — yer/baro kayması payı.
+GNSS_SIFIR_KONUM_DERECE = 1e-6
+IRTIFA_GOSTERIM_ALT_SINIR_M = -50.0
+
+
+def irtifa_gosterimde_gecerli_mi(irtifa):
+    """Heartbeat `alt` §5.3.2 uyum satırında gösterilebilir mi (sonlu, bant içi)?"""
+    if isinstance(irtifa, bool) or not isinstance(irtifa, (int, float)):
+        return False
+    h = float(irtifa)
+    return (math.isfinite(h)
+            and IRTIFA_GOSTERIM_ALT_SINIR_M < h <= IRTIFA_MAKUL_UST_M)
 
 
 def S(px):
@@ -704,14 +727,12 @@ def gps_gosterim_metni(telemetri):
     fix, uydu = telemetri.get("gps_fix"), telemetri.get("uydu")
     if lat is None or lon is None:
         konum = "konum YOK"
+    elif not gecerli:
+        # NEDEN: 3B fix'siz ya da 0/0 koordinat gerçek konum DEĞİLDİR; sayıyı
+        # basmak hakeme aracı binlerce km öteye koyar. Sebep `durum`da yazılı.
+        konum = "konum BİLİNMİYOR"
     else:
-        try:
-            lat_f, lon_f = float(lat), float(lon)
-            konum = (f"{lat_f:.7f}, {lon_f:.7f}"
-                     if math.isfinite(lat_f) and math.isfinite(lon_f)
-                     else "konum BOZUK")
-        except (TypeError, ValueError, OverflowError):
-            konum = "konum BOZUK"
+        konum = f"{float(lat):.7f}, {float(lon):.7f}"
     fix_metin = f"fix {fix}" if fix is not None else "fix YOK"
     uydu_metin = f"{uydu} uydu" if uydu is not None else "uydu YOK"
     durum = "3B FIX ✓" if gecerli else f"FIX YETERSİZ: {sebep}"
@@ -735,6 +756,9 @@ def gps_telemetrisi_dogrula(telemetri):
         return False, "konum sonlu değil"
     if not -90.0 <= lat <= 90.0 or not -180.0 <= lon <= 180.0:
         return False, "konum dünya bandı dışında"
+    # NEDEN: Pixhawk yeniden başlarken fix alanı eskiyken lat/lon 0/0 gelir.
+    if abs(lat) < GNSS_SIFIR_KONUM_DERECE and abs(lon) < GNSS_SIFIR_KONUM_DERECE:
+        return False, "konum 0/0 (GNSS hazır değil)"
     return True, "3B fix"
 
 
@@ -4695,7 +4719,22 @@ class YksArayuz:
                 f"§5.3.2 asgari {SARTNAME_ASGARI_IRTIFA_M:.0f} m şartı "
                 "ekrandan DOĞRULANAMAZ", "soluk")
             return None
+        # NEDEN (19 Eyl, alt=890,6 m): bant dışı irtifa "sağlanıyor" DEMEZ —
+        # bilinmiyor gibi yalnız günlüğe "İRTİFA GEÇERSİZ" düşer.
+        if not irtifa_gosterimde_gecerli_mi(irtifa):
+            self._logla(
+                f"ℹ İRTİFA GEÇERSİZ: telemetri alt={irtifa!r} m makul bant "
+                f"({IRTIFA_GOSTERIM_ALT_SINIR_M:.0f}, {IRTIFA_MAKUL_UST_M:.0f}] "
+                f"dışında — §5.3.2 asgari {SARTNAME_ASGARI_IRTIFA_M:.0f} m şartı "
+                "ekrandan DOĞRULANAMAZ", "soluk")
+            return None
         not_ = asgari_irtifa_notu(irtifa)
+        if not_ is None and float(irtifa) < SARTNAME_ASGARI_IRTIFA_M:
+            # NEDEN: `asgari_irtifa_notu` <= 0 m'yi "ölçek değil" diye None
+            # döndürür; eski yol yerdeki araç (0 m) için "sağlanıyor" diyordu.
+            not_ = (ASGARI_IRTIFA_SEBEBI,
+                    f"Tespit {float(irtifa):.1f} m irtifada üretildi; şartname "
+                    f"§5.3.2 ASGARİ {SARTNAME_ASGARI_IRTIFA_M:.0f} m ister.")
         if not_ is None:
             self._logla(f"irtifa {float(irtifa):.1f} m — §5.3.2 asgari "
                         f"{SARTNAME_ASGARI_IRTIFA_M:.0f} m sağlanıyor", "soluk")
