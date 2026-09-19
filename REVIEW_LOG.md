@@ -31978,6 +31978,23 @@ ben hesabı kendi varsayımımla kapatmıştım.
 **kanıt değildir**. Parametre bağımsız bir ölçümden gelmelidir; gelemiyorsa model "açıklama"
 değil "uyum denemesi" olarak etiketlenmelidir.
 
+
+**EK (aynı gece, ikinci denetim turu):** REVİZYON 2'den sonra yazdığım **bileşen bütçesi** de
+denetlendi ve **yine haklı çıktı** — iki kusur daha:
+
+| # | Kusur | Düzeltme (ölçüldü) |
+|---|---|---|
+| 8 | Gidiş ve dönüşü 145'er bayt saydım | ACK gerçekte **77 B çerçeve → 99 B paket**; seri payı **101 → 84,7 ms** |
+| 9 | Kalan süreyi tamamen TDM sayıp `MAX_WINDOW` ile orantılı küçülttüm | Kalan **131 ms = W + P**; işleme süresi `P` pencereden etkilenmez. MW33 beklentisi tek sayı değil, **133–178 ms aralığı** (P = 0…60) |
+
+Ayrıca denetim bir **çelişki** yakaladı: *"Pixhawk yolu olmadan bile p95 231 ms"* kaydı doğruysa
+o ölçümde dört UART geçişi yoktur ve 84,7 ms'lik seri payı o tabana uygulanamaz. Hangi düzenekte
+ölçüldüğü **netleşmeden** bütçe sayıları o tabana bağlanmamalıdır (belge §7.1b).
+
+**İki turda toplam dokuz kusur, dokuzu da karşı tarafta haklı.** Ortak örüntü: **her üçü de
+(döngüsel `p`, iyimser çerçeve boyu, orantılı TDM) kendi modelimi kolaylaştıran yönde hataydı.**
+Bu, rastgele hata değil **taraflı hata** örüntüsüdür ve not edilmiştir.
+
 **Düzeltme:** belge revize edildi (REVİZYON 2), yanlış tablo değiştirildi, geç ACK bulgusu asıl
 teşhis olarak yazıldı, sabah sırası "Max Window tek başına + gecikme dağılımı kaydı" olarak
 güncellendi. Kod değişikliği önerileri uçuş sonrasına alındı.
