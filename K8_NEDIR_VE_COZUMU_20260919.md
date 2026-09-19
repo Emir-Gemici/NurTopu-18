@@ -169,14 +169,16 @@ kayıt olmadığı için bağımsızlık doğrulanamıyor.
 
 ## 5. Önerilen sıra (sabah)
 
-1. **MP hızları** → 100 problük kısa ölçüm
-2. **Max Window 33 — TEK BAŞINA** (Air Speed'e dokunmadan; D-478 §2'de ikisi birlikte
-   değiştirilince 200 probda 0 ACK alınmıştı) → 100 problük ölçüm.
-   **Ön kayıt:** beklenen p95 170–180 ms; 0 ACK gelirse ayar **derhal geri alınır** (saha kartı
-   §1b.2'de geri alma yazılı).
-3. **Gecikme dağılımı kaydedilsin**, yalnız "kayıp %" değil: 473 B koşumunda zaman aşımını aşan
-   cevapların oranı ayrı yazılmalı (bu turun asıl bulgusu buydu).
-4. Madde 4 (T287 parça boyu) **ve** madde 5 (yol noktası) → **uçuş sonrası**, birlikte, kapı koşularak.
+1. **MP telemetri hızlarını düşür** (`Config → Planner`) → **100 prob → YENİ BASELINE kaydet.**
+   ⚠ Bu adım atlanırsa MP değişikliğinin etkisi MW33'ünkinden **ayrılamaz** — D-478 §2'de iki ayar
+   birlikte değiştirilince ölçüm yorumlanamaz hâle gelmişti; aynı hataya düşülmemeli.
+2. **Yalnız `MAX_WINDOW` 131 → 33** (iki telsizde de; Air Speed'e **dokunma**) → 100–200 prob.
+3. **Karşılaştır:** p50 / p90 / p95 / p99 / maks / zaman aşımı sayısı — yalnız "kayıp %" değil.
+   **Ön kayıt:** beklenen p95 **133–178 ms** (§7.1). 0 ACK gelirse ayar **derhal geri alınır**
+   (saha kartı §1b.2).
+4. **p95 hâlâ > 200 ms ise ayar değiştirmeyi BIRAK** → RTT'yi parçala: Jetson'da `seri_hub`'ın
+   çerçeve alma / yanıt yollama zaman damgalarıyla işleme süresinin (`P`) hava yarısını ölç.
+5. T287 (parça boyu) ve yol noktası seyrekleştirme → **uçuş sonrası**, birlikte, kapı koşularak.
 
 **Eşik gevşetilmez** (ön kayıtlı). Hedef tutmasa bile uçuş yapılabilir: komutlar ve hakem onayı
 20 tekrarla güvenilir, rota gecikmeli gelebilir, **tutanağa yazılır**.
@@ -215,7 +217,7 @@ dönüşte aynısı = 4 seri geçiş; Pixhawk'ın dahili yönlendirmesi ihmal.
 | **Seri hatlar** (gidiş 2×145 B + dönüş 2×99 B @57600) | **84,7 ms** | ❌ hayır |
 | RF havada (244 B @128 kbps) | 15,2 ms | ❌ hayır |
 | **Kalan = W + P** (TDM beklemesi **+ işleme**) | **131,0 ms** | kısmen (yalnız W) |
-| **Ölçülen taban** | **231 ms** | |
+| **Ölçülen baseline p95** | **231 ms** | |
 
 ⚠ Kalanın **tam 131 ms** çıkması ile `MAX_WINDOW`'un 131 olması **rastlantı olabilir**; D-479 tam
 böyle bir örtüşmeyi (262 ↔ 265) nedensellik sanmanın hatası olarak kaydetti. Buradan nedensellik
@@ -236,7 +238,8 @@ böyle bir örtüşmeyi (262 ↔ 265) nedensellik sanmanın hatası olarak kayde
 | 60 ms | ≈ 178 ms | geçer |
 
 **Yani 147 ms "beklenen değer" değil, P≈20 ms varsayımının değeridir.** Aralığın tamamı eşiği
-geçiyor, ama bu `P < ~85 ms` olduğu sürece geçerlidir.
+geçiyor. Matematiksel sınır: `T = 132,9 + 0,748·P`, yani eşik **`P < 89,7 ms`** iken tutar;
+güvenli marjla **`P < 85 ms`** kabul edilebilir.
 
 **Sınama kuralı (düzeltildi):** ölçüm **133–180 ms** bandına düşerse model tutarlıdır.
 **> 200 ms** çıkarsa ya `P` sandığımızdan büyüktür ya da TDM davranışı doğrusal değildir
@@ -254,8 +257,8 @@ yukarıdaki bütçe o ölçüme uygulanamaz. İki ihtimal:
    ama 231 ms tabanı **bu yolun** değil;
 2. Ölçüm gerçekten tam zincirdeydi ve "Pixhawk yolu olmadan" ifadesi başka bir şeyi anlatıyor.
 
-**Sabah MW33 ölçümünden sonra bakılacak ilk şey budur.** Hangi düzenekte ölçüldüğü netleşmeden
-bütçe sayıları bir tabana bağlanmamalıdır.
+**Bu, modeldeki EN BÜYÜK BELİRSİZLİKTİR.** Hangi topolojide ölçüldüğü doğrulanmadan 84,7 ms'lik
+UART bütçesi 231 ms'ye **bağlanmamalıdır**. Sabah MW33 ölçümünden sonra bakılacak ilk şey budur.
 
 ### 7.2 🔴 Yedek kaldıraç: TELEM baud (reddedilme gerekçesi eksikti)
 
