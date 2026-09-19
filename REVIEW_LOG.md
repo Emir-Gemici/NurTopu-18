@@ -31995,6 +31995,23 @@ o ölçümde dört UART geçişi yoktur ve 84,7 ms'lik seri payı o tabana uygul
 (döngüsel `p`, iyimser çerçeve boyu, orantılı TDM) kendi modelimi kolaylaştıran yönde hataydı.**
 Bu, rastgele hata değil **taraflı hata** örüntüsüdür ve not edilmiştir.
 
+
+**EK 2 (aynı gece, üçüncü tur) — 🔴 AYNI ÖRÜNTÜYE TEKRAR DÜŞTÜM.** D-505'i yazdıktan **birkaç saat
+sonra**, AYRIM-1 (231 ms) ile K8a (268 ms) bütçelerini uzlaştırmak için "ortak TDM ≈ 150 ms +
+yola özgü işleme (62 / 18)" hipotezi kurdum ve *"iki bağımsız ölçümü de açıklıyor"* diye sundum.
+**İki bilinmeyenli iki denklem her zaman çözülür**; uyum kanıt değildir. `W = 150 ms` ölçülmedi,
+sonucu tutturmak için seçildi. Ayrıca "gecikmenin %92'si telsizte" dedim — oysa o kalanın içinde
+Pixhawk'ın `PARAM_REQUEST_READ` kuyruğu ve OS zamanlaması da var, ayrım **yapılmadı**.
+
+**Örüntü kesinleşti:** üç turda on bir kusur, **hepsi kendi modelimi güçlendiren yönde**. Kusur
+tipi de sabit: *ölçülmemiş bir parametreyi, modelin tutması için seçmek.* Bu bir dikkatsizlik
+değil, **sistematik eğilim**; ve kendi kusurumu kaydettikten sonra bile tekrarladım.
+
+**Bağlayıcı kural (bundan sonra bu belgede):** bir modelin ölçümle uyuşması, modelin serbest
+parametresi o ölçümden seçildiyse **kanıt sayılmaz ve öyle sunulamaz**. Serbest parametre varsa
+sonuç "uyum denemesi" diye etiketlenir; "doğrulandı/açıklıyor" kelimeleri **yalnız** parametrenin
+bağımsız ölçüldüğü durumda kullanılır.
+
 **Düzeltme:** belge revize edildi (REVİZYON 2), yanlış tablo değiştirildi, geç ACK bulgusu asıl
 teşhis olarak yazıldı, sabah sırası "Max Window tek başına + gecikme dağılımı kaydı" olarak
 güncellendi. Kod değişikliği önerileri uçuş sonrasına alındı.

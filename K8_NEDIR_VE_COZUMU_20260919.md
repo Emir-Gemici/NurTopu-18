@@ -176,8 +176,11 @@ kayıt olmadığı için bağımsızlık doğrulanamıyor.
 3. **Karşılaştır:** p50 / p90 / p95 / p99 / maks / zaman aşımı sayısı — yalnız "kayıp %" değil.
    **Ön kayıt:** beklenen p95 **133–178 ms** (§7.1). 0 ACK gelirse ayar **derhal geri alınır**
    (saha kartı §1b.2).
-4. **p95 hâlâ > 200 ms ise ayar değiştirmeyi BIRAK** → RTT'yi parçala: Jetson'da `seri_hub`'ın
-   çerçeve alma / yanıt yollama zaman damgalarıyla işleme süresinin (`P`) hava yarısını ölç.
+4. **p95 hâlâ > 200 ms ise ayar değiştirmeyi BIRAK — ve TELEM baud'a HEMEN GEÇME.**
+   Önce `P`'yi (uç işleme süresi) gerçekten ölç: `seri_hub`'ın çerçeve alma / yanıt yollama
+   zaman damgaları + Pixhawk tarafında kuyruk gecikmesi. **Sebep:** baud artırmanın kazancı
+   `P`'nin büyüklüğüne bağlı; `P` baskınsa baud'u ikiye katlamak neredeyse hiçbir şey kazandırmaz
+   ve karşılığında bağlantı kesilme riski alınır.
 5. T287 (parça boyu) ve yol noktası seyrekleştirme → **uçuş sonrası**, birlikte, kapı koşularak.
 
 **Eşik gevşetilmez** (ön kayıtlı). Hedef tutmasa bile uçuş yapılabilir: komutlar ve hakem onayı
@@ -265,23 +268,36 @@ o ölçümde **2 seri geçiş** var (TELEM1 gidiş+dönüş), 4 değil.
 | AYRIM-1 · 231 ms | PC→RFD→Pixhawk (Jetson YOK) | 37/42 B | **13,7 ms** | 4,9 ms | **212 ms (%92)** |
 | K8a · 268 ms | tam zincir (Jetson dahil) | 145/99 B | **84,7 ms** | 15,2 ms | **168 ms (%63)** |
 
-**Görünürdeki tuhaflık:** küçük mesajlı testte "kalan" **daha büyük** (212 > 168). Bu, ikisini
-uzlaştıran bir okuma veriyor — **kalan tek bir şey değil, TDM + o yola özgü işleme**:
+**Görünürdeki tuhaflık:** küçük mesajlı testte "kalan" **daha büyük** (212 > 168).
 
-* AYRIM-1'de işleme = **Pixhawk'ın PARAM_REQUEST_READ'i işleyip PARAM_VALUE üretmesi** (ArduPilot
-  bunu anında değil kendi döngüsünde yapar);
-* K8a'da işleme = MAVProxy + `seri_hub` + çerçeve birleştirme.
+> 🔴 **KENDİ KUSURUM — İKİNCİ KEZ AYNI ÖRÜNTÜ (denetim yakaladı, kabul ediyorum).**
+> Bu tuhaflığı "ortak TDM ≈ 150 ms + yola özgü işleme (62 / 18)" diye açıkladım ve *"hipotez iki
+> bağımsız ölçümü de açıklıyor"* dedim. **Bu doğrulama değildir:** iki bilinmeyenli (W, P) iki
+> denklem **her zaman** çözülür; uyum sağlaması modelin doğruluğuna kanıt sayılmaz. `W = 150 ms`
+> **hiçbir yerde ölçülmedi**, sonucu tutturmak için seçildi — D-505'te kaydettiğim döngüsel
+> doğrulama hatasının aynısına birkaç saat sonra tekrar yaklaştım.
 
-Ortak TDM'yi `W ≈ 150 ms` varsayarsak: 150 + 62 (param işleme) = 212 ✅ ve 150 + 18 (hub işleme)
-= 168 ✅. **Hipotez iki bağımsız ölçümü de açıklıyor** — ama hâlâ hipotezdir, `W` doğrudan
-ölçülmedi.
+**Kalan süre içinde NE OLDUĞU BİLİNMİYOR.** İçinde en az şunlar var ve hiçbiri ayrı ölçülmedi:
 
-**Sonuç:** 84,7 ms'lik UART bütçesi **K8a'ya** aittir ve oraya doğru bağlanmıştır; 231 ms'ye
-bağlanmamalıydı, artık bağlanmıyor. Her iki testte de **baskın bileşen TDM'dir** — yani
-`MAX_WINDOW` doğru hedeftir.
+| Bileşen | AYRIM-1'de | K8a'da |
+|---|---|---|
+| TDM penceresi beklemesi (`W`) | var | var |
+| Uç işleme (`P`) | **Pixhawk'ın `PARAM_REQUEST_READ`'i işleyip `PARAM_VALUE` üretmesi** — ArduPilot bunu anında değil kendi döngüsünde/kuyruğunda yapar | MAVProxy + `seri_hub` + çerçeve birleştirme |
+| İşletim sistemi zamanlama gecikmesi | var | var |
 
-**MW33 sonrası (kalan oranlı düşerse, iyimser):** AYRIM-1 ≈ 72 ms · K8a ≈ **142 ms**. Bu,
-§7.1'deki 133–178 ms bandıyla tutarlı.
+⚠ Bu yüzden **"gecikmenin %92'si telsizin kendisinde" DENEMEZ.** AYRIM-1'de kablo payının küçük
+olması (13,7 ms) yalnız şunu gösterir: **seri hatlar baskın değil.** Kalanın telsiz mi, Pixhawk
+kuyruğu mu, zamanlama mı olduğu **ölçülmedi**.
+
+**Söylenebilecek olan (ölçüme dayanan):**
+1. Seri hatların payı K8a'da 84,7 ms, AYRIM-1'de 13,7 ms — **ikisinde de baskın değil**;
+2. RF'in ham süresi her ikisinde de küçük (5–15 ms);
+3. Geriye kalan büyük pay **ya TDM ya uç işleme**, ayrımı **yapılmadı**.
+
+**Sonuç:** 84,7 ms'lik UART bütçesi **K8a'ya** aittir; 231 ms'ye bağlanmamalıydı, artık
+bağlanmıyor. `MAX_WINDOW`'un doğru hedef olduğu **SiK/RFD dokümantasyonuna** dayanır (33 ms
+resmî düşük gecikme ayarıdır: GCS'ye en az her 33 ms'de bir gönderim fırsatı verir, karşılığında
+bant genişliği düşer) — bizim bütçe hipotezimize değil.
 
 ### 7.2 🔴 Yedek kaldıraç: TELEM baud (reddedilme gerekçesi eksikti)
 
