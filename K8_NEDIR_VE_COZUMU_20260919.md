@@ -272,3 +272,26 @@ gerçekten çözüldü (akış sıfırlama, %54 → %3,5) — ama **doygunluk il
 Yani baud yükseltmenin gerekçesi doygunluk değil, **bayt süresi**. Hat boşken de kazanç sağlar.
 ⚠ Karşı tarafta dikkat: `SERIAL1_BAUD`/`SERIAL2_BAUD` değişirse MAVProxy ve RFD'nin seri hızı da
 eşitlenmeli; uyumsuzlukta bağlantı tamamen kesilir. Bu yüzden **MW33'ten sonra** sıra alır.
+
+### 7.3 Sonuçlar gelince NASIL OKUNACAK (yorumlama kuralları)
+
+**Kapı ile model AYRI şeylerdir; karıştırılmamalı:**
+
+| | Ölçüt | Anlamı |
+|---|---|---|
+| **KAPI** | p95 **< 200 ms** | K8 geçer/geçmez. Tek bağlayıcı eşik budur |
+| **MODEL** | p95 **133–178 ms** bandı | Bileşen bütçesinin tutup tutmadığı |
+
+→ Sonuç **bant dışı ama < 200 ms** ise: **K8 GEÇER**, model eksiktir. İkisi ayrı yazılır;
+"model tutmadı" diye kapı düşürülmez, "kapı geçti" diye de model doğru sayılmaz.
+
+**Üç şeye bakılacak:**
+
+1. **Asıl etki = yeni baseline → MW33 farkı (delta).** MP hızları düşürüldükten sonraki baseline
+   ile MW33 sonrası ölçümün farkı, `MAX_WINDOW`'un **tek başına** katkısıdır. 231 ms ile
+   karşılaştırmak yanıltıcıdır (arada MP değişikliği var).
+2. **p95 tek başına yetmez — p99 ve maks da.** Kuyrukta hâlâ 0,5 s'yi aşan sıçramalar varsa
+   sorun çözülmemiştir: bu turun asıl bulgusu zaten "geç ACK" idi, yani dağılımın kuyruğu.
+   `zaman_asimi` sayısı ayrıca yazılır.
+3. **Model eksikse sıradaki iş ayar değil ölçüm:** `seri_hub` zaman damgalarıyla `P`'nin hava
+   yarısı doğrudan çıkarılır (§7.1).
