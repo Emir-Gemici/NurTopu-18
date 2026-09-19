@@ -187,3 +187,48 @@ kayıt olmadığı için bağımsızlık doğrulanamıyor.
 - `comms/mavlink_tunel.py` (tünel dalı) — `TUNEL_MAVLINK_YUK_B = 128`, parça yükü 123 B
 - `codes/costmap_path_finder.py:117` — `WP_ARALIK_M = 2.0`
 - Şartname §5.3.2 ve İHA-UB tanımı — `Ileri_Otonom_Sistemler_..._Sartname_TR_Ltktw.pdf`
+
+---
+
+## 7. 🆕 231 ms NEREDE OLUŞUYOR — bileşen bütçesi (HESAP, ölçümden önce yazıldı)
+
+"Ayar kurcalamak yerine RTT'yi parçalara ayır" doğru yaklaşımdır; parçaların bir kısmı **ölçüm
+gerektirmez**, baud'dan doğrudan çıkar.
+
+**Varsayımlar (açık yazılıyor):** prob çerçevesi tek parçalı → TUNNEL yükü 133 B → MAVLink2
+paketi **145 B**; seri hat 8N1 = **10 bit/bayt**; yol `RFD(hava)→TELEM1` ve `Pixhawk→TELEM2→Jetson`,
+dönüşte aynısı = **4 seri geçiş**; Pixhawk'ın dahili TELEM1↔TELEM2 yönlendirmesi ihmal; TDM payı
+`MAX_WINDOW` ile doğrusal.
+
+| Bileşen | Süre | Pay | `MAX_WINDOW`'dan etkilenir mi |
+|---|---|---|---|
+| **Seri hatlar (4 × 25,2 ms @57600)** | **101 ms** | **%44** | ❌ **hayır** |
+| RF havada (145 B @128 kbps, gidiş-dönüş) | 18 ms | %8 | ❌ hayır |
+| Kalan: TDM penceresi + işleme | 112 ms | %48 | ✅ evet |
+| **Ölçülen taban** | **231 ms** | | |
+
+### 7.1 ÖN KAYIT — sabah ölçümünden önceki beklentiler
+
+| Senaryo | Beklenen RTT p95 | Eşik 200 ms |
+|---|---|---|
+| Bugün (`MAX_WINDOW` 131, 57600) | 231 ms (ölçüldü) | düştü |
+| **`MAX_WINDOW` 33 (tek değişken)** | **≈ 147 ms** | **geçer** |
+| + TELEM baud 115200 | ≈ 97 ms | geçer |
+| TELEM baud 115200 tek başına (MW 131) | ≈ 180 ms | sınırda geçer |
+
+**Sınama kuralı:** MW33 ölçümü ≈147 ms'ye yakın çıkarsa bu model doğrulanır. Belirgin sapma
+(ör. > 190 ms) modelde eksik bir bileşen olduğunu gösterir — o zaman parçalama ölçümü gerekir
+(Jetson'da `seri_hub` alım/yanıt zaman damgaları ile hava tarafı işleme süresini ayırmak).
+
+### 7.2 🔴 Yedek kaldıraç: TELEM baud (reddedilme gerekçesi eksikti)
+
+Emir tarafı "TELEM2 baud yükseltme yapılmayacak: **TELEM2 artık doygun değil**" dedi. Doygunluk
+gerçekten çözüldü (akış sıfırlama, %54 → %3,5) — ama **doygunluk ile gecikme aynı şey değildir**:
+
+* **Doygunluk** = hat kapasitesinin dolması → paket düşmesi. Çözüldü.
+* **Gecikme** = bir paketin bayt bayt hattan geçme süresi. 145 B @57600 = **25,2 ms**, hat boş
+  olsa bile değişmez. Dört geçişte **101 ms**.
+
+Yani baud yükseltmenin gerekçesi doygunluk değil, **bayt süresi**. Hat boşken de kazanç sağlar.
+⚠ Karşı tarafta dikkat: `SERIAL1_BAUD`/`SERIAL2_BAUD` değişirse MAVProxy ve RFD'nin seri hızı da
+eşitlenmeli; uyumsuzlukta bağlantı tamamen kesilir. Bu yüzden **MW33'ten sonra** sıra alır.
