@@ -363,3 +363,25 @@ eşitlenmeli; uyumsuzlukta bağlantı tamamen kesilir. Bu yüzden **MW33'ten son
    `zaman_asimi` sayısı ayrıca yazılır.
 3. **Model eksikse sıradaki iş ayar değil ölçüm:** `seri_hub` zaman damgalarıyla `P`'nin hava
    yarısı doğrudan çıkarılır (§7.1).
+
+### 7.4 ÖLÇÜM KAYIT FORMU — her koşu için doldurulur
+
+🔴 **Her ölçümden ÖNCE ve SONRA iki RFD'nin parametre dökümünü al.** Gerekçe teorik değil,
+bu projede **yaşanmış**: D-479'da Max Window'un değiştirildiği varsayıldı, sonradan MP ekran
+görüntüsünden **131'de kaldığı** anlaşıldı ve üstüne kurulan teşhis (D-476/D-478) çürüdü.
+Döküm olmadan "yalnız MAX_WINDOW değişti" **kanıtlanamaz**, yalnızca iddia edilir.
+
+| Alan | Örnek / not |
+|---|---|
+| Test adı + saat | `baseline_MP_dusuk_0730` |
+| **RFD1 parametre dökümü** | MP SiK ekranı · **koşudan önce** |
+| **RFD2 parametre dökümü** | aynı · iki telsiz de |
+| **RFD1/RFD2 dökümü (sonra)** | koşu bitince tekrar — ayar kaymadı mı |
+| Paket boyutu / prob sayısı | ör. tek parçalı, `--n 200 --aralik 0.25` |
+| p50 / p90 / **p95** / p99 / maks | ms |
+| **Zaman aşımı sayısı** | kaç prob cevapsız kaldı |
+| Ham JSON yolu | `results/tunel_<tarih>/…json` |
+
+**Karşılaştırma kuralı:** iki koşunun parametre dökümleri **yalnız `MAX_WINDOW` satırında**
+farklıysa ölçüm geçerlidir. Başka bir satır da değişmişse koşu **yorumlanamaz** sayılır ve
+tekrarlanır (D-478 §2'de tam bu yüzden 200 prob boşa gitti).
