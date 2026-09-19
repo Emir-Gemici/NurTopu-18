@@ -247,18 +247,41 @@ güvenli marjla **`P < 85 ms`** kabul edilebilir.
 değiştirmek değil, **RTT'yi ölçerek parçalamaktır**: Jetson'da `seri_hub`'ın çerçeveyi alma ve
 yanıtı yollama zaman damgaları kaydedilirse `P`'nin hava yarısı doğrudan çıkar.
 
-### 7.1b 🔴 ÇÖZÜLMESİ GEREKEN ÇELİŞKİ (denetimin yakaladığı)
+### 7.1b ✅ ÇELİŞKİ ÇÖZÜLDÜ (19 Eyl ~05:00) — topoloji kayıtta bulundu
 
-Kayıtlarda *"Pixhawk yolu olmadan bile p95 231 ms"* deniyor. **Eğer o ölçüm gerçekten Pixhawk'sız
-yapıldıysa dört UART geçişi de yoktur** ve 84,7 ms'lik seri payı o sayının içinde olamaz — yani
-yukarıdaki bütçe o ölçüme uygulanamaz. İki ihtimal:
+Belirsizliğin kaynağı **yanlış aktarımdı**: "Pixhawk yolu olmadan" denen ölçüm aslında
+**Jetson olmadan** yapılmış. D-494 madde 3 (tünel dalı) aynen şöyle:
 
-1. O ölçüm **başka bir yolda** yapıldı (ör. yalnız RFD çifti, USB↔USB) → bütçe bu tur için geçerli
-   ama 231 ms tabanı **bu yolun** değil;
-2. Ölçüm gerçekten tam zincirdeydi ve "Pixhawk yolu olmadan" ifadesi başka bir şeyi anlatıyor.
+> *"**AYRIM 1 (18:56): PC→RFD→Pixhawk PARAM_REQUEST_READ** 120 prob: cevap 115/120 (%4 kayıp),
+> RTT p50 154 / **p95 231 ms** → telsiz yolu sağlam; kayıp Pixhawk→TELEM2→Jetson legindedir."*
 
-**Bu, modeldeki EN BÜYÜK BELİRSİZLİKTİR.** Hangi topolojide ölçüldüğü doğrulanmadan 84,7 ms'lik
-UART bütçesi 231 ms'ye **bağlanmamalıdır**. Sabah MW33 ölçümünden sonra bakılacak ilk şey budur.
+Yani Pixhawk testin **içinde** (cevabı veren o); yok olan **Jetson ve TELEM2 bacağı**. Dolayısıyla
+o ölçümde **2 seri geçiş** var (TELEM1 gidiş+dönüş), 4 değil.
+
+**İki testin bütçesi (aynı yöntem, farklı topoloji):**
+
+| Test | Topoloji | Mesaj | Seri | RF | **Kalan = TDM + işleme** |
+|---|---|---|---|---|---|
+| AYRIM-1 · 231 ms | PC→RFD→Pixhawk (Jetson YOK) | 37/42 B | **13,7 ms** | 4,9 ms | **212 ms (%92)** |
+| K8a · 268 ms | tam zincir (Jetson dahil) | 145/99 B | **84,7 ms** | 15,2 ms | **168 ms (%63)** |
+
+**Görünürdeki tuhaflık:** küçük mesajlı testte "kalan" **daha büyük** (212 > 168). Bu, ikisini
+uzlaştıran bir okuma veriyor — **kalan tek bir şey değil, TDM + o yola özgü işleme**:
+
+* AYRIM-1'de işleme = **Pixhawk'ın PARAM_REQUEST_READ'i işleyip PARAM_VALUE üretmesi** (ArduPilot
+  bunu anında değil kendi döngüsünde yapar);
+* K8a'da işleme = MAVProxy + `seri_hub` + çerçeve birleştirme.
+
+Ortak TDM'yi `W ≈ 150 ms` varsayarsak: 150 + 62 (param işleme) = 212 ✅ ve 150 + 18 (hub işleme)
+= 168 ✅. **Hipotez iki bağımsız ölçümü de açıklıyor** — ama hâlâ hipotezdir, `W` doğrudan
+ölçülmedi.
+
+**Sonuç:** 84,7 ms'lik UART bütçesi **K8a'ya** aittir ve oraya doğru bağlanmıştır; 231 ms'ye
+bağlanmamalıydı, artık bağlanmıyor. Her iki testte de **baskın bileşen TDM'dir** — yani
+`MAX_WINDOW` doğru hedeftir.
+
+**MW33 sonrası (kalan oranlı düşerse, iyimser):** AYRIM-1 ≈ 72 ms · K8a ≈ **142 ms**. Bu,
+§7.1'deki 133–178 ms bandıyla tutarlı.
 
 ### 7.2 🔴 Yedek kaldıraç: TELEM baud (reddedilme gerekçesi eksikti)
 
@@ -272,6 +295,19 @@ gerçekten çözüldü (akış sıfırlama, %54 → %3,5) — ama **doygunluk il
 Yani baud yükseltmenin gerekçesi doygunluk değil, **bayt süresi**. Hat boşken de kazanç sağlar.
 ⚠ Karşı tarafta dikkat: `SERIAL1_BAUD`/`SERIAL2_BAUD` değişirse MAVProxy ve RFD'nin seri hızı da
 eşitlenmeli; uyumsuzlukta bağlantı tamamen kesilir. Bu yüzden **MW33'ten sonra** sıra alır.
+
+### 7.2b ⚠ ÜÇ KAVRAM KARIŞTIRILMAMALI (denetim düzeltmesi)
+
+1. **K8 bir yarışma şartı DEĞİLDİR** — kendi iç kabul testimizdir. Ama şartnamenin gerçek
+   gereksinimini (gerçek zamanlı aktarım + hakem onayı) temsil eder. "K8 düştü" demek "yarışma
+   kuralı ihlal edildi" demek değil; "kendi eşiğimizi tutturamadık" demektir.
+2. **`MAX_WINDOW = 131` "her paket 131 ms bekler" DEMEK DEĞİLDİR.** TDM'nin **azami gönderim
+   penceresini** sınırlar ve SiK'in TDM'i **uyarlamalıdır**. Bu yüzden 131 → 33 yapınca
+   gecikmenin tam 98 ms azalması **beklenmemelidir**; §7.1'deki oranlı model bir **yaklaşımdır**,
+   fizik yasası değil.
+3. **"Kaybolmadı, geç geldi" ≠ "sorun yok".** K8 açısından **zaman aşımından sonra gelen cevap da
+   başarısız denemedir.** Geç ACK ayrımı **fiziksel teşhis** için kritiktir (RF sorunu mu, sıra
+   beklemesi mi), ama kapı hükmünü yumuşatmaz.
 
 ### 7.3 Sonuçlar gelince NASIL OKUNACAK (yorumlama kuralları)
 
