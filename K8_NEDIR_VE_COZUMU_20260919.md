@@ -195,30 +195,67 @@ kayıt olmadığı için bağımsızlık doğrulanamıyor.
 "Ayar kurcalamak yerine RTT'yi parçalara ayır" doğru yaklaşımdır; parçaların bir kısmı **ölçüm
 gerektirmez**, baud'dan doğrudan çıkar.
 
-**Varsayımlar (açık yazılıyor):** prob çerçevesi tek parçalı → TUNNEL yükü 133 B → MAVLink2
-paketi **145 B**; seri hat 8N1 = **10 bit/bayt**; yol `RFD(hava)→TELEM1` ve `Pixhawk→TELEM2→Jetson`,
-dönüşte aynısı = **4 seri geçiş**; Pixhawk'ın dahili TELEM1↔TELEM2 yönlendirmesi ihmal; TDM payı
-`MAX_WINDOW` ile doğrusal.
+> ⚠ **REVİZYON 3:** bu bölümün ilk hâli iki yerde yanlıştı, denetim yakaladı, ölçüp düzelttim.
+> (a) Gidiş ve dönüşü 145'er bayt saymıştım; **ACK aslında çok daha küçük**. (b) Kalan süreyi
+> tamamen TDM sayıp `MAX_WINDOW` ile orantılı küçültmüştüm; kalanın içinde **işleme süresi (P)**
+> de var ve o pencereden etkilenmez.
 
-| Bileşen | Süre | Pay | `MAX_WINDOW`'dan etkilenir mi |
+**Gerçek çerçeve boyları (ölçüldü, `comms/protocol.py` + `mavlink_tunel.py:23` "paket = 17 + payload_length"):**
+
+| Yön | NAVITAS çerçevesi | Tünel parçası | MAVLink2 paketi |
 |---|---|---|---|
-| **Seri hatlar (4 × 25,2 ms @57600)** | **101 ms** | **%44** | ❌ **hayır** |
-| RF havada (145 B @128 kbps, gidiş-dönüş) | 18 ms | %8 | ❌ hayır |
-| Kalan: TDM penceresi + işleme | 112 ms | %48 | ✅ evet |
-| **Ölçülen taban** | **231 ms** | | |
+| Gidiş (prob, `CMD RF_PROBE`) | 123 B | 1 | **145 B** |
+| Dönüş (`ACK`) | **77 B** | 1 | **99 B** |
 
-### 7.1 ÖN KAYIT — sabah ölçümünden önceki beklentiler
+**Varsayımlar:** seri hat 8N1 = 10 bit/bayt; yol `RFD(hava)→TELEM1` + `Pixhawk→TELEM2→Jetson`,
+dönüşte aynısı = 4 seri geçiş; Pixhawk'ın dahili yönlendirmesi ihmal.
 
-| Senaryo | Beklenen RTT p95 | Eşik 200 ms |
+| Bileşen | Süre | `MAX_WINDOW`'dan etkilenir mi |
 |---|---|---|
-| Bugün (`MAX_WINDOW` 131, 57600) | 231 ms (ölçüldü) | düştü |
-| **`MAX_WINDOW` 33 (tek değişken)** | **≈ 147 ms** | **geçer** |
-| + TELEM baud 115200 | ≈ 97 ms | geçer |
-| TELEM baud 115200 tek başına (MW 131) | ≈ 180 ms | sınırda geçer |
+| **Seri hatlar** (gidiş 2×145 B + dönüş 2×99 B @57600) | **84,7 ms** | ❌ hayır |
+| RF havada (244 B @128 kbps) | 15,2 ms | ❌ hayır |
+| **Kalan = W + P** (TDM beklemesi **+ işleme**) | **131,0 ms** | kısmen (yalnız W) |
+| **Ölçülen taban** | **231 ms** | |
 
-**Sınama kuralı:** MW33 ölçümü ≈147 ms'ye yakın çıkarsa bu model doğrulanır. Belirgin sapma
-(ör. > 190 ms) modelde eksik bir bileşen olduğunu gösterir — o zaman parçalama ölçümü gerekir
-(Jetson'da `seri_hub` alım/yanıt zaman damgaları ile hava tarafı işleme süresini ayırmak).
+⚠ Kalanın **tam 131 ms** çıkması ile `MAX_WINDOW`'un 131 olması **rastlantı olabilir**; D-479 tam
+böyle bir örtüşmeyi (262 ↔ 265) nedensellik sanmanın hatası olarak kaydetti. Buradan nedensellik
+**çıkarılmıyor**.
+
+### 7.1 ÖN KAYIT — TEK SAYI DEĞİL, ARALIK
+
+`P` (işleme süresi: MAVProxy, `seri_hub`, çerçeve birleştirme, Pixhawk yönlendirme) **ölçülmedi**.
+`MAX_WINDOW` yalnız `W`'yi küçültür, `P`'yi değil. Bu yüzden beklenti bir aralıktır:
+
+`T(MW33) = 84,7 + 15,2 + P + (131,0 − P) × 33/131`
+
+| Varsayılan `P` | Beklenen p95 | Eşik 200 ms |
+|---|---|---|
+| 0 ms (**iyimser alt sınır**) | ≈ **133 ms** | geçer |
+| 20 ms | ≈ 148 ms | geçer |
+| 40 ms | ≈ 163 ms | geçer |
+| 60 ms | ≈ 178 ms | geçer |
+
+**Yani 147 ms "beklenen değer" değil, P≈20 ms varsayımının değeridir.** Aralığın tamamı eşiği
+geçiyor, ama bu `P < ~85 ms` olduğu sürece geçerlidir.
+
+**Sınama kuralı (düzeltildi):** ölçüm **133–180 ms** bandına düşerse model tutarlıdır.
+**> 200 ms** çıkarsa ya `P` sandığımızdan büyüktür ya da TDM davranışı doğrusal değildir
+(SiK'in TDM'i **uyarlamalıdır**, doğrusal küçülme garanti değil). O durumda sıradaki iş ayar
+değiştirmek değil, **RTT'yi ölçerek parçalamaktır**: Jetson'da `seri_hub`'ın çerçeveyi alma ve
+yanıtı yollama zaman damgaları kaydedilirse `P`'nin hava yarısı doğrudan çıkar.
+
+### 7.1b 🔴 ÇÖZÜLMESİ GEREKEN ÇELİŞKİ (denetimin yakaladığı)
+
+Kayıtlarda *"Pixhawk yolu olmadan bile p95 231 ms"* deniyor. **Eğer o ölçüm gerçekten Pixhawk'sız
+yapıldıysa dört UART geçişi de yoktur** ve 84,7 ms'lik seri payı o sayının içinde olamaz — yani
+yukarıdaki bütçe o ölçüme uygulanamaz. İki ihtimal:
+
+1. O ölçüm **başka bir yolda** yapıldı (ör. yalnız RFD çifti, USB↔USB) → bütçe bu tur için geçerli
+   ama 231 ms tabanı **bu yolun** değil;
+2. Ölçüm gerçekten tam zincirdeydi ve "Pixhawk yolu olmadan" ifadesi başka bir şeyi anlatıyor.
+
+**Sabah MW33 ölçümünden sonra bakılacak ilk şey budur.** Hangi düzenekte ölçüldüğü netleşmeden
+bütçe sayıları bir tabana bağlanmamalıdır.
 
 ### 7.2 🔴 Yedek kaldıraç: TELEM baud (reddedilme gerekçesi eksikti)
 
