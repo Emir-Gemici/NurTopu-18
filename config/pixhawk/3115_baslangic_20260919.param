@@ -1,0 +1,61 @@
+# NAVITAS FDA multirotor - 3115 900KV + 9x5x3 + 4S baslangic ayari
+# Taban: results/saha_20260918/15.03.param (18 Eyl, 1025 param). YALNIZ degisen satirlar.
+# Kaynak: ArduPilot InitialParamsCalculator (cap 9 inc, 4S) + docs setting-up-for-tuning.
+# Yukleme: Mission Planner > Config > Full Parameter List > Load from file > Write Params.
+# Yuklemeden ONCE: ESC kalibrasyonu, Motor Test (sira/yon), MOT_SPIN_ARM/MIN motor testiyle.
+# Yukledikten SONRA: AltHold 30 s aski -> MOT_THST_HOVER ogrenir -> PSC_ACCZ_P/I ve centik.
+#
+# --- filtreler (cap 9 inc: gyro 289.22*9^-0.838 = 46; FLT = gyro/2) ---
+INS_GYRO_FILTER,46
+INS_ACCEL_FILTER,10
+ATC_RAT_RLL_FLTD,23
+ATC_RAT_RLL_FLTT,23
+ATC_RAT_RLL_FLTE,0
+ATC_RAT_PIT_FLTD,23
+ATC_RAT_PIT_FLTT,23
+ATC_RAT_PIT_FLTE,0
+ATC_RAT_YAW_FLTD,0
+ATC_RAT_YAW_FLTT,23
+ATC_RAT_YAW_FLTE,2
+# --- ivme sinirlari (hesaplayici polinomu, cap 9) ---
+ATC_ACCEL_R_MAX,125900
+ATC_ACCEL_P_MAX,125900
+ATC_ACCEL_Y_MAX,27900
+# --- hiz dongusu: fabrika degerinin yarisi (ilk ucus; sonra manuel ayar, I = P) ---
+ATC_RAT_RLL_P,0.07
+ATC_RAT_RLL_I,0.07
+ATC_RAT_RLL_D,0.002
+ATC_RAT_RLL_IMAX,0.5
+ATC_RAT_PIT_P,0.07
+ATC_RAT_PIT_I,0.07
+ATC_RAT_PIT_D,0.002
+ATC_RAT_PIT_IMAX,0.5
+ATC_RAT_YAW_P,0.18
+ATC_RAT_YAW_I,0.018
+ATC_RAT_YAW_D,0
+ATC_ANG_RLL_P,4.5
+ATC_ANG_PIT_P,4.5
+ATC_ANG_YAW_P,4.5
+ATC_INPUT_TC,0.15
+ATC_RATE_FF_ENAB,1
+ATC_THR_MIX_MAN,0.1
+# --- motor / itki (expo 0.1405*ln(9)+0.3254 = 0.63; hover ogrenme acik) ---
+MOT_THST_EXPO,0.63
+MOT_THST_HOVER,0.2
+MOT_HOVER_LEARN,2
+MOT_SPIN_MAX,0.95
+MOT_BAT_VOLT_MAX,16.8
+MOT_BAT_VOLT_MIN,13.2
+# --- ESC: Skywalker 60A V2 spesi 50-432 Hz (D-429 karari 400; kartta 490 kalmisti) ---
+RC_SPEED,400
+# --- pil / failsafe: 4S 13 Ah, D-484 karari (kartta LOW/ARM ters yazilmisti) ---
+BATT_CAPACITY,13000
+BATT_ARM_VOLT,14.4
+BATT_LOW_VOLT,14.0
+BATT_CRT_VOLT,13.2
+BATT_FS_VOLTSRC,1
+BATT_LOW_TIMER,10
+# --- centik icin aski logu (FFT okunana kadar centik KAPALI) ---
+INS_LOG_BAT_MASK,1
+INS_LOG_BAT_OPT,0
+INS_HNTCH_ENABLE,0

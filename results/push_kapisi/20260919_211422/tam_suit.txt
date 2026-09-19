@@ -1,0 +1,822 @@
+[ONCE/SONRA] S1: 1/0.624 -> 2/1.000 (beklenen=2)
+[ONCE/SONRA] S2: 1/1.000 -> None/0.000 (beklenen=None)
+[ONCE/SONRA] S3: 3/0.396 -> 2/0.762 (beklenen=2)
+[ONCE/SONRA] uretim karariyla uyum: 0/3 -> 3/3
+[K1] 2 karar beklenirken stop(): send_no_route 2 kez
+[K8-seri] SerialLink rota ACK'lari: ['OPEN_ROUTE', 'NO_ROUTE']
+[K8-UDP] IKA_GO gonderilmedi; YKS'ye OPEN_ROUTE ACK gitti mi: True
+[T207_A3] exit=0 alinan_komutlar=[(511, 245.0), (511, 33.0), (511, 24.0)] sure=1.75s
+[T207_B1] komut=12 kirmizi=2 sayac={'tur': 4, 'gonderilen': 12, 'gonderim_hatasi': 0, 'ertelenen': 0, 'sessizlik_uyarisi': 2}
+[T207_B2] exit=3 tur=42 sahte_t=414s kirmizi=1
+[T207_C1] komut=9 kirmizi=0 sahte_t=25.0s
+KAYNAK: C:\Users\yunus\AppData\Local\Temp\navitas_bellek_yp530c1d\depo  (git BILINMIYOR)
+HEDEF : C:\Users\yunus\AppData\Local\Temp\navitas_bellek_yp530c1d\bellek_eksik
+  [   5 dosya ·      0.0 MB] jetson_paket -> jetson_paket/
+  [   2 dosya ·      0.0 MB] config/pixhawk -> config_pixhawk/
+  [   1 dosya ·      0.0 MB] SAHA_HAZIRLIK_PLANI_20260903.md -> belgeler/
+  [   1 dosya ·      0.0 MB] FAZ_B_GUN_PLANI.md -> belgeler/
+  [   1 dosya ·      0.0 MB] jetson_paket/JETSON_NANO_KURULUM.md -> belgeler/
+  [   1 dosya ·      0.0 MB] jetson_paket/JETSON_ORIN_NANO_KURULUM.md -> belgeler/
+  [   1 dosya ·      0.0 MB] jetson_paket/JETSON_BASLAT.md -> belgeler/
+  [   1 dosya ·      0.0 MB] jetson_paket/GUN1_KONTROL_LISTESI.md -> belgeler/
+  [   1 dosya ·      0.0 MB] config/pixhawk/README.md -> belgeler/
+  [   1 dosya ·      0.0 MB] results/faz_b_oncesi/CUMA_KONTROL_KARTI.md -> belgeler/
+  yok (istege bagli): wheels — Nano için çevrimdışı aarch64/cp38 tekerlekler (scripts/nano_tekerlek_indir.py) — Orin Nano'da GEREKMEZ (D-431), arşiv
+  yok (istege bagli): firmware — Pixhawk 6C ArduCopter firmware'i — kart PX4 ile gelir, flash ŞART (D-424); scripts/pixhawk_firmware_indir.py ile indirilir
+  TOPLAM ~0.0 MB
+
+🔴 EKSİK ZORUNLU PARÇALAR:
+  EKSIK (ZORUNLU): SAHA_RUNBOOK.md — saha yordamı: açılış kartı, operatör kartı, İHA/Jetson blokları
+
+İNSANIN KOYACAĞI (bu betik üretemez):
+  ☐ Jetson sistem imajı — KAPANDI (D-431) — 6 Eylül ölçümü: kart Jetson Orin Nano Developer Kit 4 GB, JetPack 7.2.1 KURULU geldi, kök NVMe; flash/SDK Manager gerekmedi. [GEÇERSİZ tarihçe — D-413: kartta microSD yuvası YOK (Nano üretim modülü + M.2, eMMC). SD imajı yolu GEÇERSİZ. Cumartesi İLK İŞ: Nano'yu aç ve bak — eMMC'de JetPack kurulu gelmiş olabilir. Boşsa Ubuntu x86_64 host + SDK Manager gerekir; Windows'ta YAPILAMAZ. Yordam: jetson_paket/JETSON_NANO_KURULUM.md §1]
+  ☐ GPU torch wheel'i (JetPack 4.6 / Python 3.8) — GEÇERSİZ (D-431) — Orin Nano'da torch 2.11.0+cu130 jetson-ai-lab'den çevrimiçi kuruldu, CUDA çalışıyor (jetson_paket/orin_nano_venv_kurulum.sh); elle wheel GEREKMEZ. [tarihçe: Qengineering deposundan elle indirilir; CPU torch zaten wheels/ içinde, GPU olursa FPS kapısı rahatlar]
+  ☐ Mission Planner kurulu dizüstü — parametre + görev planı yükleme; ⚠ D-424: Pixhawk 6C PX4 ile gelir, ÖNCE ArduCopter flash edilir — firmware/arducopter.apj bu bellekte, internet gerekmez
+
+RED: zorunlu parça eksik — bellek EKSİK hazırlandı. `--eksige-ragmen` ile bilerek geçilir (MANIFEST'e yazılır).
+KAYNAK: C:\Users\yunus\AppData\Local\Temp\navitas_bellek_48bo_ncf\depo  (git BILINMIYOR)
+HEDEF : C:\Users\yunus\AppData\Local\Temp\navitas_bellek_48bo_ncf\bellek_bilerek
+  [   5 dosya ·      0.0 MB] jetson_paket -> jetson_paket/
+  [   2 dosya ·      0.0 MB] config/pixhawk -> config_pixhawk/
+  [   1 dosya ·      0.0 MB] SAHA_HAZIRLIK_PLANI_20260903.md -> belgeler/
+  [   1 dosya ·      0.0 MB] SAHA_RUNBOOK.md -> belgeler/
+  [   1 dosya ·      0.0 MB] jetson_paket/JETSON_NANO_KURULUM.md -> belgeler/
+  [   1 dosya ·      0.0 MB] jetson_paket/JETSON_ORIN_NANO_KURULUM.md -> belgeler/
+  [   1 dosya ·      0.0 MB] jetson_paket/JETSON_BASLAT.md -> belgeler/
+  [   1 dosya ·      0.0 MB] jetson_paket/GUN1_KONTROL_LISTESI.md -> belgeler/
+  [   1 dosya ·      0.0 MB] config/pixhawk/README.md -> belgeler/
+  [   1 dosya ·      0.0 MB] results/faz_b_oncesi/CUMA_KONTROL_KARTI.md -> belgeler/
+  yok (istege bagli): wheels — Nano için çevrimdışı aarch64/cp38 tekerlekler (scripts/nano_tekerlek_indir.py) — Orin Nano'da GEREKMEZ (D-431), arşiv
+  yok (istege bagli): firmware — Pixhawk 6C ArduCopter firmware'i — kart PX4 ile gelir, flash ŞART (D-424); scripts/pixhawk_firmware_indir.py ile indirilir
+  TOPLAM ~0.0 MB
+
+🔴 EKSİK ZORUNLU PARÇALAR:
+  EKSIK (ZORUNLU): FAZ_B_GUN_PLANI.md — cumartesi saat planı ve kapıları (basılacak)
+
+İNSANIN KOYACAĞI (bu betik üretemez):
+  ☐ Jetson sistem imajı — KAPANDI (D-431) — 6 Eylül ölçümü: kart Jetson Orin Nano Developer Kit 4 GB, JetPack 7.2.1 KURULU geldi, kök NVMe; flash/SDK Manager gerekmedi. [GEÇERSİZ tarihçe — D-413: kartta microSD yuvası YOK (Nano üretim modülü + M.2, eMMC). SD imajı yolu GEÇERSİZ. Cumartesi İLK İŞ: Nano'yu aç ve bak — eMMC'de JetPack kurulu gelmiş olabilir. Boşsa Ubuntu x86_64 host + SDK Manager gerekir; Windows'ta YAPILAMAZ. Yordam: jetson_paket/JETSON_NANO_KURULUM.md §1]
+  ☐ GPU torch wheel'i (JetPack 4.6 / Python 3.8) — GEÇERSİZ (D-431) — Orin Nano'da torch 2.11.0+cu130 jetson-ai-lab'den çevrimiçi kuruldu, CUDA çalışıyor (jetson_paket/orin_nano_venv_kurulum.sh); elle wheel GEREKMEZ. [tarihçe: Qengineering deposundan elle indirilir; CPU torch zaten wheels/ içinde, GPU olursa FPS kapısı rahatlar]
+  ☐ Mission Planner kurulu dizüstü — parametre + görev planı yükleme; ⚠ D-424: Pixhawk 6C PX4 ile gelir, ÖNCE ArduCopter flash edilir — firmware/arducopter.apj bu bellekte, internet gerekmez
+
+MANIFEST: C:\Users\yunus\AppData\Local\Temp\navitas_bellek_48bo_ncf\bellek_bilerek\MANIFEST.txt  (15 dosya)
+KAYNAK: C:\Users\yunus\AppData\Local\Temp\navitas_bellek_dkrtnr8r\depo  (git BILINMIYOR)
+HEDEF : C:\Users\yunus\AppData\Local\Temp\navitas_bellek_dkrtnr8r\bellek
+  [   5 dosya ·      0.0 MB] jetson_paket -> jetson_paket/
+  [   2 dosya ·      0.0 MB] config/pixhawk -> config_pixhawk/
+  [   1 dosya ·      0.0 MB] SAHA_HAZIRLIK_PLANI_20260903.md -> belgeler/
+  [   1 dosya ·      0.0 MB] FAZ_B_GUN_PLANI.md -> belgeler/
+  [   1 dosya ·      0.0 MB] SAHA_RUNBOOK.md -> belgeler/
+  [   1 dosya ·      0.0 MB] jetson_paket/JETSON_NANO_KURULUM.md -> belgeler/
+  [   1 dosya ·      0.0 MB] jetson_paket/JETSON_ORIN_NANO_KURULUM.md -> belgeler/
+  [   1 dosya ·      0.0 MB] jetson_paket/JETSON_BASLAT.md -> belgeler/
+  [   1 dosya ·      0.0 MB] jetson_paket/GUN1_KONTROL_LISTESI.md -> belgeler/
+  [   1 dosya ·      0.0 MB] config/pixhawk/README.md -> belgeler/
+  [   1 dosya ·      0.0 MB] results/faz_b_oncesi/CUMA_KONTROL_KARTI.md -> belgeler/
+  yok (istege bagli): wheels — Nano için çevrimdışı aarch64/cp38 tekerlekler (scripts/nano_tekerlek_indir.py) — Orin Nano'da GEREKMEZ (D-431), arşiv
+  yok (istege bagli): firmware — Pixhawk 6C ArduCopter firmware'i — kart PX4 ile gelir, flash ŞART (D-424); scripts/pixhawk_firmware_indir.py ile indirilir
+  TOPLAM ~0.0 MB
+
+İNSANIN KOYACAĞI (bu betik üretemez):
+  ☐ Jetson sistem imajı — KAPANDI (D-431) — 6 Eylül ölçümü: kart Jetson Orin Nano Developer Kit 4 GB, JetPack 7.2.1 KURULU geldi, kök NVMe; flash/SDK Manager gerekmedi. [GEÇERSİZ tarihçe — D-413: kartta microSD yuvası YOK (Nano üretim modülü + M.2, eMMC). SD imajı yolu GEÇERSİZ. Cumartesi İLK İŞ: Nano'yu aç ve bak — eMMC'de JetPack kurulu gelmiş olabilir. Boşsa Ubuntu x86_64 host + SDK Manager gerekir; Windows'ta YAPILAMAZ. Yordam: jetson_paket/JETSON_NANO_KURULUM.md §1]
+  ☐ GPU torch wheel'i (JetPack 4.6 / Python 3.8) — GEÇERSİZ (D-431) — Orin Nano'da torch 2.11.0+cu130 jetson-ai-lab'den çevrimiçi kuruldu, CUDA çalışıyor (jetson_paket/orin_nano_venv_kurulum.sh); elle wheel GEREKMEZ. [tarihçe: Qengineering deposundan elle indirilir; CPU torch zaten wheels/ içinde, GPU olursa FPS kapısı rahatlar]
+  ☐ Mission Planner kurulu dizüstü — parametre + görev planı yükleme; ⚠ D-424: Pixhawk 6C PX4 ile gelir, ÖNCE ArduCopter flash edilir — firmware/arducopter.apj bu bellekte, internet gerekmez
+
+MANIFEST: C:\Users\yunus\AppData\Local\Temp\navitas_bellek_dkrtnr8r\bellek\MANIFEST.txt  (16 dosya)
+KAYNAK: C:\Users\yunus\AppData\Local\Temp\navitas_bellek_n68f8spi\depo  (git BILINMIYOR)
+HEDEF : C:\Users\yunus\AppData\Local\Temp\navitas_bellek_n68f8spi\bellek_kuru   [KURU — kopyalanmadı]
+  [   5 dosya ·      0.0 MB] jetson_paket -> jetson_paket/
+  [   2 dosya ·      0.0 MB] config/pixhawk -> config_pixhawk/
+  [   1 dosya ·      0.0 MB] SAHA_HAZIRLIK_PLANI_20260903.md -> belgeler/
+  [   1 dosya ·      0.0 MB] FAZ_B_GUN_PLANI.md -> belgeler/
+  [   1 dosya ·      0.0 MB] SAHA_RUNBOOK.md -> belgeler/
+  [   1 dosya ·      0.0 MB] jetson_paket/JETSON_NANO_KURULUM.md -> belgeler/
+  [   1 dosya ·      0.0 MB] jetson_paket/JETSON_ORIN_NANO_KURULUM.md -> belgeler/
+  [   1 dosya ·      0.0 MB] jetson_paket/JETSON_BASLAT.md -> belgeler/
+  [   1 dosya ·      0.0 MB] jetson_paket/GUN1_KONTROL_LISTESI.md -> belgeler/
+  [   1 dosya ·      0.0 MB] config/pixhawk/README.md -> belgeler/
+  [   1 dosya ·      0.0 MB] results/faz_b_oncesi/CUMA_KONTROL_KARTI.md -> belgeler/
+  yok (istege bagli): wheels — Nano için çevrimdışı aarch64/cp38 tekerlekler (scripts/nano_tekerlek_indir.py) — Orin Nano'da GEREKMEZ (D-431), arşiv
+  yok (istege bagli): firmware — Pixhawk 6C ArduCopter firmware'i — kart PX4 ile gelir, flash ŞART (D-424); scripts/pixhawk_firmware_indir.py ile indirilir
+  TOPLAM ~0.0 MB
+
+İNSANIN KOYACAĞI (bu betik üretemez):
+  ☐ Jetson sistem imajı — KAPANDI (D-431) — 6 Eylül ölçümü: kart Jetson Orin Nano Developer Kit 4 GB, JetPack 7.2.1 KURULU geldi, kök NVMe; flash/SDK Manager gerekmedi. [GEÇERSİZ tarihçe — D-413: kartta microSD yuvası YOK (Nano üretim modülü + M.2, eMMC). SD imajı yolu GEÇERSİZ. Cumartesi İLK İŞ: Nano'yu aç ve bak — eMMC'de JetPack kurulu gelmiş olabilir. Boşsa Ubuntu x86_64 host + SDK Manager gerekir; Windows'ta YAPILAMAZ. Yordam: jetson_paket/JETSON_NANO_KURULUM.md §1]
+  ☐ GPU torch wheel'i (JetPack 4.6 / Python 3.8) — GEÇERSİZ (D-431) — Orin Nano'da torch 2.11.0+cu130 jetson-ai-lab'den çevrimiçi kuruldu, CUDA çalışıyor (jetson_paket/orin_nano_venv_kurulum.sh); elle wheel GEREKMEZ. [tarihçe: Qengineering deposundan elle indirilir; CPU torch zaten wheels/ içinde, GPU olursa FPS kapısı rahatlar]
+  ☐ Mission Planner kurulu dizüstü — parametre + görev planı yükleme; ⚠ D-424: Pixhawk 6C PX4 ile gelir, ÖNCE ArduCopter flash edilir — firmware/arducopter.apj bu bellekte, internet gerekmez
+KAYNAK: C:\Users\yunus\AppData\Local\Temp\navitas_bellek_n68f8spi\depo  (git BILINMIYOR)
+HEDEF : C:\Users\yunus\AppData\Local\Temp\navitas_bellek_n68f8spi\bellek_kuru   [KURU — kopyalanmadı]
+  [   5 dosya ·      0.0 MB] jetson_paket -> jetson_paket/
+  [   2 dosya ·      0.0 MB] config/pixhawk -> config_pixhawk/
+  [   1 dosya ·      0.0 MB] SAHA_HAZIRLIK_PLANI_20260903.md -> belgeler/
+  [   1 dosya ·      0.0 MB] FAZ_B_GUN_PLANI.md -> belgeler/
+  [   1 dosya ·      0.0 MB] jetson_paket/JETSON_NANO_KURULUM.md -> belgeler/
+  [   1 dosya ·      0.0 MB] jetson_paket/JETSON_ORIN_NANO_KURULUM.md -> belgeler/
+  [   1 dosya ·      0.0 MB] jetson_paket/JETSON_BASLAT.md -> belgeler/
+  [   1 dosya ·      0.0 MB] jetson_paket/GUN1_KONTROL_LISTESI.md -> belgeler/
+  [   1 dosya ·      0.0 MB] config/pixhawk/README.md -> belgeler/
+  [   1 dosya ·      0.0 MB] results/faz_b_oncesi/CUMA_KONTROL_KARTI.md -> belgeler/
+  yok (istege bagli): wheels — Nano için çevrimdışı aarch64/cp38 tekerlekler (scripts/nano_tekerlek_indir.py) — Orin Nano'da GEREKMEZ (D-431), arşiv
+  yok (istege bagli): firmware — Pixhawk 6C ArduCopter firmware'i — kart PX4 ile gelir, flash ŞART (D-424); scripts/pixhawk_firmware_indir.py ile indirilir
+  TOPLAM ~0.0 MB
+
+🔴 EKSİK ZORUNLU PARÇALAR:
+  EKSIK (ZORUNLU): SAHA_RUNBOOK.md — saha yordamı: açılış kartı, operatör kartı, İHA/Jetson blokları
+
+İNSANIN KOYACAĞI (bu betik üretemez):
+  ☐ Jetson sistem imajı — KAPANDI (D-431) — 6 Eylül ölçümü: kart Jetson Orin Nano Developer Kit 4 GB, JetPack 7.2.1 KURULU geldi, kök NVMe; flash/SDK Manager gerekmedi. [GEÇERSİZ tarihçe — D-413: kartta microSD yuvası YOK (Nano üretim modülü + M.2, eMMC). SD imajı yolu GEÇERSİZ. Cumartesi İLK İŞ: Nano'yu aç ve bak — eMMC'de JetPack kurulu gelmiş olabilir. Boşsa Ubuntu x86_64 host + SDK Manager gerekir; Windows'ta YAPILAMAZ. Yordam: jetson_paket/JETSON_NANO_KURULUM.md §1]
+  ☐ GPU torch wheel'i (JetPack 4.6 / Python 3.8) — GEÇERSİZ (D-431) — Orin Nano'da torch 2.11.0+cu130 jetson-ai-lab'den çevrimiçi kuruldu, CUDA çalışıyor (jetson_paket/orin_nano_venv_kurulum.sh); elle wheel GEREKMEZ. [tarihçe: Qengineering deposundan elle indirilir; CPU torch zaten wheels/ içinde, GPU olursa FPS kapısı rahatlar]
+  ☐ Mission Planner kurulu dizüstü — parametre + görev planı yükleme; ⚠ D-424: Pixhawk 6C PX4 ile gelir, ÖNCE ArduCopter flash edilir — firmware/arducopter.apj bu bellekte, internet gerekmez
+[SERI_HUB] t=102841.097 seri hat YENIDEN ACILDI
+[SURUM_DONDURMA] DONDURULMADI (henuz): config\DONDURMA_KUNYESI.json yok - muhur basilinca bu kapi kapsam ozetlerini + git bagini kunyeyle kiyaslar
+[İHA] IHA_LANDED ACK eksik: seq=9 beklenen=['ika'] gelen=[]
+[İHA] IHA_LANDED yayınlandı: seq=10 ACK=['ika', 'yks']
+[İHA] akış isteği özeti: tur=1 gönderilen=0 gonderim_hatasi=1 ertelenen=0 sessizlik_uyarisi=0 son_EXTENDED=hiç gelmedi
+[İHA] akış isteği özeti: tur=1 gönderilen=0 gonderim_hatasi=1 ertelenen=0 sessizlik_uyarisi=0 son_EXTENDED=0.0 s önce
+[İHA] IHA_LANDED yayınlandı: seq=11 ACK=['ika']
+[T20_KAPI] IHA_LANDED_saha=1 ACK=ika exit=0
+[İHA] akış isteği özeti: tur=1 gönderilen=0 gonderim_hatasi=1 ertelenen=0 sessizlik_uyarisi=0 son_EXTENDED=hiç gelmedi
+[İHA] akış isteği özeti: tur=1 gönderilen=0 gonderim_hatasi=1 ertelenen=0 sessizlik_uyarisi=0 son_EXTENDED=hiç gelmedi
+[ika_nav] comms dinleniyor (127.0.0.1:0) — İHA açık yolu gönderecek...
+[ika_nav] ✓ İHA'dan dinamik rota ALINDI: ORTA (2) conf=0.95 wp=1
+[ika_nav] YKS IKA_GO + İHA iniş kanıtı bekleniyor — İKA güvenli duruşta
+[ika_nav] ✗ sürüş izni gelmedi (timeout) — İKA hareket etmez
+[T13_DEADLINE] timeout_sonrasi_latch=2 navigate_calls=0 sonuc=guvenli_ret
+[ika_nav] comms dinleniyor (127.0.0.1:0) — İHA açık yolu gönderecek...
+[ika_nav] ✓ İHA'dan dinamik rota ALINDI: ORTA (2) conf=0.95 wp=1
+[ika_nav] YKS IKA_GO + İHA iniş kanıtı bekleniyor — İKA güvenli duruşta
+[ika_nav] ✓ IKA_GO ve IHA_LANDED alındı — İKA sürüş izni açık
+[ika_nav] sürüş süresi başladı: 600 s (şartname §6.2 İKA görev süresi)
+[İHA] IHA_LANDED yayınlandı: seq=19 ACK=['ika']
+[T13_KAPI] IKA_GO=1 LANDED_oncesi_nonzero=0 LANDED_sonrasi_nonzero=1 ACK=ika exit=0
+[İHA] IHA_LANDED yayınlandı: seq=20 ACK=['ika']
+[İHA] IHA_LANDED ACK eksik: seq=23 beklenen=['ika', 'yks'] gelen=['ika']
+[T11_KAPI] exit=2 argparse=VAR traceback=YOK gonderim_mesaji=YOK
+[K4_UDP] dusurulen=3 ulasan_deneme=4 ika_go=True tekrar_durdu=1
+[ika_nav] comms dinleniyor (127.0.0.1:0) — İHA açık yolu gönderecek...
+[ika_nav] ✓ İHA'dan dinamik rota ALINDI: ORTA (2) conf=0.95 wp=1
+[ika_nav] YKS IKA_GO + İHA iniş kanıtı bekleniyor — İKA güvenli duruşta
+[ika_nav] ✓ IKA_GO ve IHA_LANDED alındı — İKA sürüş izni açık
+[ika_nav] sürüş süresi başladı: 600 s (şartname §6.2 İKA görev süresi)
+[T12_KAPI] IHA_LANDED_onceden=1 YKS_UDP_TX=1 IKA_GO_oncesi_hareket=0 IKA_GO_sonrasi_nonzero_motor=1 ACK=ika exit=0
+[ika_nav] comms dinleniyor (127.0.0.1:0) — İHA açık yolu gönderecek...
+[ika_nav] ✗ İHA NO_ROUTE bildirdi: KAPALI_DAR — İKA güvenli duruşta; geçerli rota bekleniyor
+[ika_nav] ✓ İHA'dan dinamik rota ALINDI: SAG (3) conf=0.9 wp=1
+[ika_nav] comms dinleniyor (127.0.0.1:0) — İHA açık yolu gönderecek...
+[ika_nav] comms dinleniyor (127.0.0.1:0) — İHA açık yolu gönderecek...
+[ika_nav] ✓ İHA'dan dinamik rota ALINDI: ORTA (2) conf=0.88 wp=1
+[ika_nav] comms dinleniyor (127.0.0.1:0) — İHA açık yolu gönderecek...
+[ika_nav] ✗ İHA NO_ROUTE bildirdi: KAPALI_DAR — geçici maske — İKA güvenli duruşta; geçerli rota bekleniyor
+[ika_nav] ✓ İHA'dan dinamik rota ALINDI: ORTA (2) conf=0.92 wp=2
+
+[ika_nav] Dinamik rota: ORTA | 1 segment
+[ika_nav] Başlangıç: (0.0, 0.0) → Hedef: (1.0, 0.0)
+
+[ika_nav] ── Waypoint 1/1: (1.0, 0.0)
+[ika_nav] ⚠ Rota geçersiz/NO_ROUTE — GÜVENLİ DURMA
+[ika_nav] ✓ Geçerli OPEN_ROUTE geldi — aynı waypoint'ten devam
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.20m)
+
+[ika_nav] ══ HEDEF BÖLGEYE (HB) ULAŞILDI! ══
+[KAPI] NO_ROUTE etkin komut=3, sıfır-olmayan=0; OPEN_ROUTE sonrası sıfır-olmayan=1
+[K5] bekleme_deadline=+900s surus_deadline=izin+600s rota=61s izin=+240s exit=0
+[K5] surus deadline=5s -> durdu adim=5 son_vel=(0, 0) sonuc=False
+[K6] gercek UDP: landed→bitis=1.33s > hb_timeout=0.4s, heartbeat_gorulen=21, link_lost=False, exit=0
+[K6] heartbeat_suresi=600s aralik=0.5s -> heartbeat=1200
+[K6] heartbeat_suresi=0s aralik=0.5s -> heartbeat=0
+
+[K4_02] ACK 149 ms · router={'alinan_paket': 4, 'iletilen': 4, 'txspace_dusen': 0, 'kayip_dusen': 0, 'yerel': 0, 'hedefsiz': 0, 'bozuk': 0, 'arka_plan_b': 560, 'arka_plan_atlanan': 0, 'heartbeat': 2, 'sifirlama': 0, 'kesintide_atilan': 0, 'kayip_anahtari_eksik': 0}
+
+[K4_03/04] kayip=0.0 tampon=1024: 12wp 20/20 · 30wp 20/20 · router={'alinan_paket': 252, 'iletilen': 252, 'txspace_dusen': 0, 'kayip_dusen': 0, 'yerel': 0, 'hedefsiz': 0, 'bozuk': 0, 'arka_plan_b': 35600, 'arka_plan_atlanan': 0, 'heartbeat': 22, 'sifirlama': 0, 'kesintide_atilan': 0, 'kayip_anahtari_eksik': 0} yer={zaman_asimi_dusen: 0, kimlik_boslugu: 0} hava={kimlik_boslugu: 0, zaman_asimi_dusen: 0}
+
+[K4_03/04] kayip=0.05 tampon=1024: 12wp 20/20 · 30wp 20/20 · router={'alinan_paket': 271, 'iletilen': 271, 'txspace_dusen': 0, 'kayip_dusen': 12, 'yerel': 0, 'hedefsiz': 0, 'bozuk': 0, 'arka_plan_b': 45320, 'arka_plan_atlanan': 0, 'heartbeat': 28, 'sifirlama': 0, 'kesintide_atilan': 0, 'kayip_anahtari_eksik': 0} yer={zaman_asimi_dusen: 9, kimlik_boslugu: 0} hava={kimlik_boslugu: 1, zaman_asimi_dusen: 0}
+
+[K4_03/04] kayip=0.0 tampon=256: 12wp 20/20 · 30wp 0/20 · router={'alinan_paket': 482, 'iletilen': 394, 'txspace_dusen': 88, 'kayip_dusen': 0, 'yerel': 0, 'hedefsiz': 0, 'bozuk': 0, 'arka_plan_b': 100000, 'arka_plan_atlanan': 0, 'heartbeat': 58, 'sifirlama': 0, 'kesintide_atilan': 0, 'kayip_anahtari_eksik': 0} yer={zaman_asimi_dusen: 86, kimlik_boslugu: 0} hava={kimlik_boslugu: 0, zaman_asimi_dusen: 0}
+
+[K4_03/04] kayip=0.05 tampon=256: 12wp 19/20 · 30wp 1/20 · router={'alinan_paket': 489, 'iletilen': 406, 'txspace_dusen': 83, 'kayip_dusen': 24, 'yerel': 0, 'hedefsiz': 0, 'bozuk': 0, 'arka_plan_b': 103320, 'arka_plan_atlanan': 0, 'heartbeat': 60, 'sifirlama': 0, 'kesintide_atilan': 0, 'kayip_anahtari_eksik': 0} yer={zaman_asimi_dusen: 86, kimlik_boslugu: 0} hava={kimlik_boslugu: 1, zaman_asimi_dusen: 0}
+
+[K4_05 RAPOR] %20 kayip: 12wp 8/10 · 30wp 6/10 · txspace_dusen=0 kayip_dusen=47 yer_kimlik_boslugu=0 yer_zaman_asimi=33 hava_kimlik_boslugu=1 hava_zaman_asimi=0
+
+[K4_06] hava->yer p50=93 p95=94 ms · yer->hava p50=62 p95=64 ms · HESAP 2x18 ms UART + arka plan · kapi 200 ms
+
+[K4_07] ACK 1168 ms · yer kimlik_boslugu=14 zaman_asimi_dusen=0 · router={'alinan_paket': 37, 'iletilen': 26, 'txspace_dusen': 0, 'kayip_dusen': 0, 'yerel': 0, 'hedefsiz': 11, 'bozuk': 0, 'arka_plan_b': 17120, 'arka_plan_atlanan': 1, 'heartbeat': 12, 'sifirlama': 2, 'kesintide_atilan': 9, 'kayip_anahtari_eksik': 0}
+
+[K4_08] ACK 1156 ms · hava={'gonderilen_cerceve': 5, 'gonderilen_parca': 5, 'tavan_ustu': 0, 'akran_yok': 0, 'gonderim_hatasi': 0, 'akran_sessizken_gonderilen': 0, 'alinan_datagram': 52, 'mavlink_paket': 52, 'cozum_hatasi': 0, 'yabanci_mesaj': 43, 'yabanci_payload_type': 0, 'kendi_yanki': 0, 'yabanci_kaynak': 0, 'teslim_cerceve': 5, 'udp_red': 4, 'akrandisi_datagram': 42, 'akran_degisti': 1, 'alinan_parca': 5, 'bozuk_parca': 0, 'tutarsiz_parca': 0, 'yinelenen_parca': 0, 'zaman_asimi_dusen': 0, 'eszamanli_tavan_dusen': 0, 'tamamlanan_cerceve': 5, 'kimlik_boslugu': 0, 'kimlik_geri': 0, 'kimlik_sicramasi': 0}
+
+[K4_10 RAPOR] ACK 0/20 · hava gonderilen=101 yer teslim=8 dusen=93 · yer zaman_asimi_dusen=93 kimlik_boslugu=0 eszamanli_tavan=0 · txspace_dusen=271 · yer->hava hava.kimlik_boslugu=0
+[T10_KAPI_OUTPUT] GÖREV SONUCU
+[T10_KAPI_OUTPUT] İKA görevi: ✗ BAŞARISIZ
+[T10_KAPI] worker=ika-nav exception exit=1 rapor=VAR
+
+[ika_nav] rota | 1 segment
+[ika_nav] Başlangıç: (0.0, 0.0) → Hedef: (5.0, 0.0)
+
+[ika_nav] ── Waypoint 1/1: (5.0, 0.0)
+[ika_nav] ✗ SÜRÜCÜ YANITSIZ (ardışık 3 hata) — GÜVENLİ DURMA
+
+[ika_nav] rota | 1 segment
+[ika_nav] Başlangıç: (0.0, 0.0) → Hedef: (5.0, 0.0)
+
+[ika_nav] ── Waypoint 1/1: (5.0, 0.0)
+[ika_nav] ✗ SÜRÜCÜ YANITSIZ (ardışık 3 hata) — GÜVENLİ DURMA
+[ika_nav] YKS IKA_GO + İHA iniş kanıtı bekleniyor — İKA güvenli duruşta
+[ika_nav] ✗ IKA_GO + IHA_LANDED gelmedi (timeout) — İKA hareket etmez
+[ika_nav] YKS IKA_GO + İHA iniş kanıtı bekleniyor — İKA güvenli duruşta
+[ika_nav] ✓ IKA_GO ve IHA_LANDED alındı — İKA sürüş izni açık
+
+[ika_nav] rota | 1 segment
+[ika_nav] Başlangıç: (0.0, 0.0) → Hedef: (2.0, 0.0)
+
+[ika_nav] ── Waypoint 1/1: (2.0, 0.0)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.25m)
+
+[ika_nav] ══ HEDEF BÖLGEYE (HB) ULAŞILDI! ══
+
+[iha_flight] ══ İHA UÇUŞU BAŞLIYOR ══
+[iha_flight] Rota: rampa → iniş
+[iha_flight] Segment 1: rampa → kalkış (15m, 0.8s, 3 adım)
+[iha_flight] Segment 2: kalkış → tırmanış (32m, 0.1s, 1 adım)
+[iha_flight] Segment 3: tırmanış → seyir-başı (40m, 0.0s, 1 adım)
+[iha_flight] Segment 4: seyir-başı → seyir-sonu (50m, 0.0s, 1 adım)
+[iha_flight] Segment 5: seyir-sonu → alçalış (36m, 0.0s, 1 adım)
+[iha_flight] Segment 6: alçalış → yaklaşma (17m, 0.0s, 1 adım)
+[iha_flight] Segment 7: yaklaşma → iniş (6m, 0.0s, 1 adım)
+
+[iha_flight] ══ İHA İNİŞ YAPTI: (85.0, 0.0) ══
+
+[iha_flight] ══ İHA UÇUŞU BAŞLIYOR ══
+[iha_flight] Rota: rampa → iniş
+
+[iha_flight] ══ İHA UÇUŞU BAŞLIYOR ══
+[iha_flight] Rota: rampa → iniş
+[iha_flight] Segment 1: rampa → kalkış (15m, 0.8s, 3 adım)
+[iha_flight] Segment 2: kalkış → tırmanış (32m, 0.1s, 1 adım)
+[iha_flight] Segment 3: tırmanış → seyir-başı (40m, 0.0s, 1 adım)
+[iha_flight] Segment 4: seyir-başı → seyir-sonu (50m, 0.0s, 1 adım)
+[iha_flight] Segment 5: seyir-sonu → alçalış (36m, 0.0s, 1 adım)
+[iha_flight] Segment 6: alçalış → yaklaşma (17m, 0.0s, 1 adım)
+[iha_flight] Segment 7: yaklaşma → iniş (6m, 0.0s, 1 adım)
+
+[iha_flight] ══ İHA İNİŞ YAPTI: (85.0, 0.0) ══
+
+[ika_nav] rota | 1 segment
+[ika_nav] Başlangıç: (7.0, 5.0) → Hedef: (10.0, 5.0)
+
+[ika_nav] ── Waypoint 1/1: (10.0, 5.0)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.20m)
+
+[ika_nav] ══ HEDEF BÖLGEYE (HB) ULAŞILDI! ══
+
+[ika_nav] rota | 1 segment
+[ika_nav] Başlangıç: (9.0, 5.0) → Hedef: (10.0, 5.0)
+
+[ika_nav] ── Waypoint 1/1: (10.0, 5.0)
+[ika_nav] ✗ SÜRÜCÜ YANITSIZ (ardışık 3 hata) — GÜVENLİ DURMA
+model: sahte_model.pt · kayit dogrulamasi: sinama
+Kamera acilamadi (kaynak='/dev/video7').
+Kamera acilamadi (kaynak=3).
+Kamera acilamadi (kaynak='/dev/video7').
+Kamera acilamadi (kaynak=3).
+Kamera acilamadi (kaynak=0).
+Kamera acilamadi (kaynak='/dev/video7').
+Kamera acilamadi (kaynak=3).
+[TUNEL] akran ogrenildi (arac HEARTBEAT): 127.0.0.1:54809
+[TUNEL] akran ogrenildi (arac HEARTBEAT): 127.0.0.1:52875
+[TUNEL] akran ogrenildi (arac HEARTBEAT): 127.0.0.1:52873
+[AcikYol] 15 harita en küçük açıklık (1.4664, 2, 'zor', 'bariyer_2')
+[C] deadline=600s sim → bekle çağrısı 6001, sleep 0
+[D] enjekte saat: rota seq=77 kabul, damga=5000.20 (saat 5000+)
+[E] acked=['ika', 'yks'] kanıt t=0.1 landed t=10.1 ika_go t=10.2 ack t=10.3
+[F] duman 1.9 s · sürüş 63.7 sim-s · varış 0.224 m · temas 0 · ack ['ika', 'yks']
+[F] 1 kolay 42 GT rota açıklığı 2.706 m (chicane_1)
+  val 2 · kaynagi egitimde olan val: 0
+  val 1 · kaynagi egitimde olan val: 0
+  val 1 · kaynagi egitimde olan val: 1
+  oturum sayisi : 2
+    DOGRULAMA           1 dosya
+    ucus1               1 dosya
+  oturum sayisi : 1
+    _AYRILMAMIS        14 dosya
+  oturum sayisi : 2
+    DOGRULAMA           3 dosya
+    ucus1              10 dosya
+  oturum sayisi : 1
+    _AYRILMAMIS        14 dosya
+
+  [!] PROVA KIPI - DOGRULAMA oturumu YOK (beklenen klasor adi: DOGRULAMA). T136 kisit 2: dogrulama oturumu CEKIMDE ayrilir; sonradan bolmek AYNI DAGILIMDIR ve T111 duvarini YIKMAZ (D-256 §5).
+  [!] Bu kosum ADAY URETEMEZ ve modeli TERFI ETTIREMEZ.
+  yeni cekim : medyan 130.0 · maks 130.0
+  referans   : medyan 128.0 · min  128.0   (ref)
+  yeni cekim : medyan 20.0 · maks 20.0
+  referans   : medyan 128.0 · min  128.0   (ref)
+  yeni cekim : medyan 20.0 · maks 20.0
+  referans   : medyan 128.0 · min  128.0   (ref)
+  [!] cekim REFERANSTAN KARANLIK: en aydinlik yeni kare (20.0) referansin EN KARANLIK karesine (128.0) ulasmiyor. Iki dagilim ORTUSMUYOR.
+  [!] PROVA KIPI - devam ediliyor ama bu veri EGITIME UYGUN DEGIL.
+  [!] referans kume okunamadi - parlaklik kapisi OLCULEMEDI (bu 'GECTI' DEMEK DEGILDIR)
+
+[ika_nav] rota | 1 segment
+[ika_nav] Başlangıç: (0.0, 0.0) → Hedef: (1.0, 0.0)
+
+[ika_nav] ── Waypoint 1/1: (1.0, 0.0)
+[ika_nav] ⚠ Rota geçersiz/NO_ROUTE — GÜVENLİ DURMA
+[ika_nav] ✓ Geçerli OPEN_ROUTE geldi — aynı waypoint'ten devam
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.20m)
+
+[ika_nav] ══ HEDEF BÖLGEYE (HB) ULAŞILDI! ══
+[KAPI T141] rota kapisi KAPALI · komut=5 · sifir-olmayan=0
+Kamera acilamadi (kaynak=9).
+KAMERA: kare dusdu (1/2 ardisik, toplam 1) — yeniden deneniyor
+KAMERA: 2 ardisik dusen kare (ust sinir 2) — hat KOPTU sayildi, dongu kontrollu bitiyor. toplam dusen=2 okunan=2
+RED: turev dosyasi yok: C:\Users\yunus\AppData\Local\Temp\t143_a2uoa92y\yok.engine
+{
+ "turev": "navitas_seg_v36_best_512_fp16.engine",
+ "eski_sha256": "DERLENINCE_YAZILIR",
+ "yeni_sha256": "b4bce3cd3965c449bfa1eb19ef4e8018bf46c1617968f043ac063a3cce5b92ba",
+ "profil": "competition",
+ "defter": "C:\\Users\\yunus\\AppData\\Local\\Temp\\t143_a2uoa92y\\config\\model_registry.json"
+}
+usage: python.exe -m unittest [-h] [--turev-kaydet DOSYA] [--kaynak-pt PT]
+                              [--defter DEFTER] [--profil PROFIL] [--ayna-yok]
+
+Navitas model kayit defteri araclari (T143)
+
+options:
+  -h, --help            show this help message and exit
+  --turev-kaydet DOSYA  derlenmis .engine/.onnx turevinin sha256'sini deftere
+                        yaz
+  --kaynak-pt PT        ZORUNLU: turevin derlendigi .pt; ozeti profil sha256
+                        ile kiyaslanir
+  --defter DEFTER
+  --profil PROFIL
+  --ayna-yok            jetson_paket/config aynasini guncelleme
+Kamera acilamadi (kaynak='/dev/video7').
+Kamera acilamadi (kaynak=3).
+Kamera acilamadi (kaynak='/dev/video7').
+Kamera acilamadi (kaynak=3).
+[T36_KAPI] demo=1 kaynak=kompozit ilk_kare=data/arena_kompozit/images/a.jpg exit=0
+rota_bul: [ICERIK_YOK_LETTERBOX_SUPHESI: icerik=None ile tuval letterbox gorunumlu — zemin saglamlik kapisi bu paydada olu olabilir; cagiran `icerik` gecirmeli]
+rota_bul: [ICERIK_YOK_LETTERBOX_SUPHESI: icerik=None ile tuval letterbox gorunumlu — zemin saglamlik kapisi bu paydada olu olabilir; cagiran `icerik` gecirmeli]
+[SURUM_DONDURMA] DONDURULMADI (henuz): config\DONDURMA_KUNYESI.json yok - muhur basilinca bu kapi kapsam ozetlerini + git bagini kunyeyle kiyaslar
+[İHA] KIRMIZI akış isteği gönderilemiyor: MAVLink gönderim arayüzü yok (mav.mav.command_long_send)
+[İHA] KIRMIZI akış isteği gönderilemiyor: MAVLink gönderim arayüzü yok (mav.mav.command_long_send)
+[İHA] KIRMIZI akış isteği gönderilemiyor: MAVLink gönderim arayüzü yok (mav.mav.command_long_send)
+[İHA] KIRMIZI akış isteği gönderilemiyor: MAVLink gönderim arayüzü yok (mav.mav.command_long_send)
+[İHA] KIRMIZI akış isteği gönderilemiyor: MAVLink gönderim arayüzü yok (mav.mav.command_long_send)
+[İHA] KIRMIZI akış isteği gönderilemiyor: MAVLink gönderim arayüzü yok (mav.mav.command_long_send)
+[İHA] KIRMIZI akış isteği gönderilemiyor: MAVLink gönderim arayüzü yok (mav.mav.command_long_send)
+[İHA] KIRMIZI akış isteği gönderilemiyor: MAVLink gönderim arayüzü yok (mav.mav.command_long_send)
+[İHA] KIRMIZI akış isteği gönderilemiyor: MAVLink gönderim arayüzü yok (mav.mav.command_long_send)
+[İHA] KIRMIZI akış isteği gönderilemiyor: MAVLink gönderim arayüzü yok (mav.mav.command_long_send)
+[İHA] KIRMIZI akış isteği gönderilemiyor: MAVLink gönderim arayüzü yok (mav.mav.command_long_send)
+C:\Users\yunus\AppData\Local\Programs\Python\Python313\Lib\unittest\case.py:606: ResourceWarning: unclosed <socket.socket fd=2132, family=2, type=2, proto=0, laddr=('127.0.0.1', 58023)>
+  if method() is not None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+C:\Users\yunus\AppData\Local\Programs\Python\Python313\Lib\unittest\case.py:655: ResourceWarning: unclosed <socket.socket fd=3640, family=2, type=2, proto=0, laddr=('127.0.0.1', 58022)>
+  self.doCleanups()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+C:\Users\yunus\AppData\Local\Programs\Python\Python313\Lib\unittest\case.py:606: ResourceWarning: unclosed file <_io.TextIOWrapper name=3 encoding='utf-8'>
+  if method() is not None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+rota_bul: [ICERIK_YOK_LETTERBOX_SUPHESI: icerik=None ile tuval letterbox gorunumlu — zemin saglamlik kapisi bu paydada olu olabilir; cagiran `icerik` gecirmeli]
+rota_bul: [ICERIK_YOK_LETTERBOX_SUPHESI: icerik=None ile tuval letterbox gorunumlu — zemin saglamlik kapisi bu paydada olu olabilir; cagiran `icerik` gecirmeli]
+rota_bul: [ICERIK_YOK_LETTERBOX_SUPHESI: icerik=None ile tuval letterbox gorunumlu — zemin saglamlik kapisi bu paydada olu olabilir; cagiran `icerik` gecirmeli]
+
+t144:   0%|          | 0/1 [00:00<?, ?it/s]
+t144: 100%|██████████| 1/1 [00:00<00:00, 200.16it/s]
+T153: ince beton serit cikaricisi ACIK (get_masks -> engel OR)
+Rota 65 waypoint gerektiriyor (yumusak hedef: 64); azami aralik guvenligi icin seyreltilmedi.
+Rota 67 waypoint gerektiriyor (yumusak hedef: 64); azami aralik guvenligi icin seyreltilmedi.
+rota_bul: [ICERIK_YOK_LETTERBOX_SUPHESI: icerik=None ile tuval letterbox gorunumlu — zemin saglamlik kapisi bu paydada olu olabilir; cagiran `icerik` gecirmeli]
+rota_bul: [ICERIK_YOK_LETTERBOX_SUPHESI: icerik=None ile tuval letterbox gorunumlu — zemin saglamlik kapisi bu paydada olu olabilir; cagiran `icerik` gecirmeli]
+C:\Users\yunus\AppData\Local\Programs\Python\Python313\Lib\unittest\mock.py:496: ResourceWarning: unclosed file <_io.BufferedReader name='O:\\navitas\\.claude\\worktrees\\bilgilendirme-he\\results\\ucus_20260912\\2026-09-12 16-45-10.bin'>
+  __dict__['method_calls'] = _CallList()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+KANIT KAYDI HATASI — uçuş/onay başlatma kapatıldı; ARM ve acil komutlar kullanılabilir: RuntimeError: YKS_ARAYUZ_HAZIR: OSError: disk dolu
+KANIT KAYDI HATASI — uçuş/onay başlatma kapatıldı; ARM ve acil komutlar kullanılabilir: RuntimeError: OLAY_A: OSError: ilk
+KAMERA KAPATMA HATASI: kamera worker kapanmadi
+KANIT KAYDI KAPATMA HATASI: fsync/kapatma hatasi
+O:\navitas\.claude\worktrees\bilgilendirme-he\tests\test_yks_mk15_hakem_ekrani.py:403: ResourceWarning: unclosed file <_io.BufferedReader name='O:\\navitas\\.claude\\worktrees\\bilgilendirme-he\\results\\ucus_20260912\\2026-09-12 17-42-38.bin'>
+  gc.collect()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+======================================================================
+ERROR: test_uretim_defteri_ile_INFER_SIZE_UYUSUYOR (test_imgsz_tek_kaynak.ImgszTekKaynak.test_uretim_defteri_ile_INFER_SIZE_UYUSUYOR)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\bilgilendirme-he\tests\test_imgsz_tek_kaynak.py", line 65, in test_uretim_defteri_ile_INFER_SIZE_UYUSUYOR
+    uyumlu, detay = R.model_kayit_dogrula(R.varsayilan_model_yolu())
+                                          ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "O:\navitas\.claude\worktrees\bilgilendirme-he\codes\rpi_inference.py", line 550, in varsayilan_model_yolu
+    raise RuntimeError(
+        f"Manifest `{ad}` diyor ama agirlik diskte YOK "
+        f"(bakilan: {manifest.parent}, {_here.parent / 'models'}).")
+RuntimeError: Manifest `navitas_seg_v36_best.pt` diyor ama agirlik diskte YOK (bakilan: O:\navitas\.claude\worktrees\bilgilendirme-he\jetson_paket\models, O:\navitas\.claude\worktrees\bilgilendirme-he\models).
+
+======================================================================
+ERROR: test_default_is_verified_v36_competition_model (test_model_registry.ModelRegistryTests.test_default_is_verified_v36_competition_model)
+v36 terfisi: etkin profil v35 -> v36 (imgsz 512, DEGISMEDI).
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\bilgilendirme-he\tests\test_model_registry.py", line 39, in test_default_is_verified_v36_competition_model
+    path, spec = resolve_model()
+                 ~~~~~~~~~~~~~^^
+  File "O:\navitas\.claude\worktrees\bilgilendirme-he\codes\model_registry.py", line 143, in resolve_model
+    raise ModelRegistryError(f"model artefaktı yok: {artifact}")
+codes.model_registry.ModelRegistryError: model artefaktı yok: O:\navitas\.claude\worktrees\bilgilendirme-he\models\navitas_seg_v36_best.pt
+
+======================================================================
+ERROR: test_GEVSETME_ACIKCA_istenmeli (test_saha_parametrik.FailClosedTests.test_GEVSETME_ACIKCA_istenmeli)
+`kayit_zorunlu=False` verilmeden gevseme OLMAZ.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\bilgilendirme-he\tests\test_saha_parametrik.py", line 158, in test_GEVSETME_ACIKCA_istenmeli
+    _m, yol, _d = R.load_model(R.varsayilan_model_yolu(),
+                               ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "O:\navitas\.claude\worktrees\bilgilendirme-he\codes\rpi_inference.py", line 550, in varsayilan_model_yolu
+    raise RuntimeError(
+        f"Manifest `{ad}` diyor ama agirlik diskte YOK "
+        f"(bakilan: {manifest.parent}, {_here.parent / 'models'}).")
+RuntimeError: Manifest `navitas_seg_v36_best.pt` diyor ama agirlik diskte YOK (bakilan: O:\navitas\.claude\worktrees\bilgilendirme-he\jetson_paket\models, O:\navitas\.claude\worktrees\bilgilendirme-he\models).
+
+======================================================================
+ERROR: test_UYUM_varsa_yuklenir (test_saha_parametrik.FailClosedTests.test_UYUM_varsa_yuklenir)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\bilgilendirme-he\tests\test_saha_parametrik.py", line 143, in test_UYUM_varsa_yuklenir
+    hedef = R.varsayilan_model_yolu()
+  File "O:\navitas\.claude\worktrees\bilgilendirme-he\codes\rpi_inference.py", line 550, in varsayilan_model_yolu
+    raise RuntimeError(
+        f"Manifest `{ad}` diyor ama agirlik diskte YOK "
+        f"(bakilan: {manifest.parent}, {_here.parent / 'models'}).")
+RuntimeError: Manifest `navitas_seg_v36_best.pt` diyor ama agirlik diskte YOK (bakilan: O:\navitas\.claude\worktrees\bilgilendirme-he\jetson_paket\models, O:\navitas\.claude\worktrees\bilgilendirme-he\models).
+
+======================================================================
+ERROR: test_kayit_defteri_YOKSA_uyum_SAYILMAZ (test_saha_parametrik.FailClosedTests.test_kayit_defteri_YOKSA_uyum_SAYILMAZ)
+Yokluk "sorun yok" demek DEGILDIR — fail-closed tarafinda kalir.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\bilgilendirme-he\tests\test_saha_parametrik.py", line 172, in test_kayit_defteri_YOKSA_uyum_SAYILMAZ
+    R.varsayilan_model_yolu(), kok=KOK / "boyle_bir_dizin_yok")
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "O:\navitas\.claude\worktrees\bilgilendirme-he\codes\rpi_inference.py", line 550, in varsayilan_model_yolu
+    raise RuntimeError(
+        f"Manifest `{ad}` diyor ama agirlik diskte YOK "
+        f"(bakilan: {manifest.parent}, {_here.parent / 'models'}).")
+RuntimeError: Manifest `navitas_seg_v36_best.pt` diyor ama agirlik diskte YOK (bakilan: O:\navitas\.claude\worktrees\bilgilendirme-he\jetson_paket\models, O:\navitas\.claude\worktrees\bilgilendirme-he\models).
+
+======================================================================
+ERROR: test_UC_UC_ayni_agirligi_gosteriyor (test_saha_parametrik.KayitDefteriDurumuTests.test_UC_UC_ayni_agirligi_gosteriyor)
+Kayit defteri · uretim manifesti · hakem ekrani — tek ad.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\bilgilendirme-he\tests\test_saha_parametrik.py", line 208, in test_UC_UC_ayni_agirligi_gosteriyor
+    manifest_adi = R.varsayilan_model_yolu().name
+                   ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "O:\navitas\.claude\worktrees\bilgilendirme-he\codes\rpi_inference.py", line 550, in varsayilan_model_yolu
+    raise RuntimeError(
+        f"Manifest `{ad}` diyor ama agirlik diskte YOK "
+        f"(bakilan: {manifest.parent}, {_here.parent / 'models'}).")
+RuntimeError: Manifest `navitas_seg_v36_best.pt` diyor ama agirlik diskte YOK (bakilan: O:\navitas\.claude\worktrees\bilgilendirme-he\jetson_paket\models, O:\navitas\.claude\worktrees\bilgilendirme-he\models).
+
+======================================================================
+ERROR: test_manifest_ile_kayit_defteri_ESLESIYOR (test_saha_parametrik.KayitDefteriDurumuTests.test_manifest_ile_kayit_defteri_ESLESIYOR)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\bilgilendirme-he\tests\test_saha_parametrik.py", line 187, in test_manifest_ile_kayit_defteri_ESLESIYOR
+    uyumlu, detay = R.model_kayit_dogrula(R.varsayilan_model_yolu())
+                                          ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "O:\navitas\.claude\worktrees\bilgilendirme-he\codes\rpi_inference.py", line 550, in varsayilan_model_yolu
+    raise RuntimeError(
+        f"Manifest `{ad}` diyor ama agirlik diskte YOK "
+        f"(bakilan: {manifest.parent}, {_here.parent / 'models'}).")
+RuntimeError: Manifest `navitas_seg_v36_best.pt` diyor ama agirlik diskte YOK (bakilan: O:\navitas\.claude\worktrees\bilgilendirme-he\jetson_paket\models, O:\navitas\.claude\worktrees\bilgilendirme-he\models).
+
+======================================================================
+ERROR: test_varsayilan_MANIFESTTEN_gelir (test_saha_parametrik.ModelVarsayilaniTests.test_varsayilan_MANIFESTTEN_gelir)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\bilgilendirme-he\tests\test_saha_parametrik.py", line 92, in test_varsayilan_MANIFESTTEN_gelir
+    yol = R.varsayilan_model_yolu()
+  File "O:\navitas\.claude\worktrees\bilgilendirme-he\codes\rpi_inference.py", line 550, in varsayilan_model_yolu
+    raise RuntimeError(
+        f"Manifest `{ad}` diyor ama agirlik diskte YOK "
+        f"(bakilan: {manifest.parent}, {_here.parent / 'models'}).")
+RuntimeError: Manifest `navitas_seg_v36_best.pt` diyor ama agirlik diskte YOK (bakilan: O:\navitas\.claude\worktrees\bilgilendirme-he\jetson_paket\models, O:\navitas\.claude\worktrees\bilgilendirme-he\models).
+
+======================================================================
+ERROR: test_MUTASYON_kunyedeki_sha_bozulursa_UYUSMAZ_der (test_t123_gecis_provasi.G2KosulabilirTests.test_MUTASYON_kunyedeki_sha_bozulursa_UYUSMAZ_der)
+POZITIF KONTROL: G2 gercekten KIYASLIYOR mu, yoksa hep OK mi diyor?
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\bilgilendirme-he\tests\test_t123_gecis_provasi.py", line 124, in test_MUTASYON_kunyedeki_sha_bozulursa_UYUSMAZ_der
+    exec(compile(kod, "<G2>", "exec"), {"__name__": "__g2__"})
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<G2>", line 13, in <module>
+  File "C:\Users\yunus\AppData\Local\Programs\Python\Python313\Lib\pathlib\_abc.py", line 625, in read_bytes
+    with self.open(mode='rb') as f:
+         ~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\yunus\AppData\Local\Programs\Python\Python313\Lib\pathlib\_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\yunus\\AppData\\Local\\Temp\\tmppczbq49a\\jetson_paket\\models\\navitas_seg_v35_best.pt'
+
+======================================================================
+ERROR: test_g2_KOSUYOR_ve_PATLAMIYOR (test_t123_gecis_provasi.G2KosulabilirTests.test_g2_KOSUYOR_ve_PATLAMIYOR)
+🔴 Asil kapi: onceki surum burada AttributeError ile duserdi.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\bilgilendirme-he\tests\test_t123_gecis_provasi.py", line 79, in test_g2_KOSUYOR_ve_PATLAMIYOR
+    exec(compile(kod, "<G2>", "exec"), {"__name__": "__g2__"})
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<G2>", line 13, in <module>
+  File "C:\Users\yunus\AppData\Local\Programs\Python\Python313\Lib\pathlib\_abc.py", line 625, in read_bytes
+    with self.open(mode='rb') as f:
+         ~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\yunus\AppData\Local\Programs\Python\Python313\Lib\pathlib\_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'O:\\navitas\\.claude\\worktrees\\bilgilendirme-he\\jetson_paket\\models\\navitas_seg_v35_best.pt'
+
+======================================================================
+ERROR: test_g2_YEDEGI_OK_diye_dogruluyor (test_t123_gecis_provasi.G2KosulabilirTests.test_g2_YEDEGI_OK_diye_dogruluyor)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\bilgilendirme-he\tests\test_t123_gecis_provasi.py", line 87, in test_g2_YEDEGI_OK_diye_dogruluyor
+    exec(compile(kod, "<G2>", "exec"), {"__name__": "__g2__"})
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<G2>", line 13, in <module>
+  File "C:\Users\yunus\AppData\Local\Programs\Python\Python313\Lib\pathlib\_abc.py", line 625, in read_bytes
+    with self.open(mode='rb') as f:
+         ~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\yunus\AppData\Local\Programs\Python\Python313\Lib\pathlib\_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'O:\\navitas\\.claude\\worktrees\\bilgilendirme-he\\jetson_paket\\models\\navitas_seg_v35_best.pt'
+
+======================================================================
+FAIL: test_kod_atiflari_satirda_birebir (test_atolye_test_gunu.K5_Kaynaklar.test_kod_atiflari_satirda_birebir) (atif='comms/yks_gui.py:4387')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\bilgilendirme-he\tests\test_atolye_test_gunu.py", line 355, in test_kod_atiflari_satirda_birebir
+    self.assertIn(metin, _satirlar(yol)[int(n) - 1])
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'canli = 0.0 <= yas < 3.0' not found in '            self.acil_bekleyen_komut = None'
+
+======================================================================
+FAIL: test_kod_atiflari_satirda_birebir (test_atolye_test_gunu.K5_Kaynaklar.test_kod_atiflari_satirda_birebir) (atif='comms/yks_gui.py:4428')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\bilgilendirme-he\tests\test_atolye_test_gunu.py", line 355, in test_kod_atiflari_satirda_birebir
+    self.assertIn(metin, _satirlar(yol)[int(n) - 1])
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: '(BAĞLANTI KAYBI!)' not found in '        # tetikleyebilir. Kanıt kaydı yazamıyorsa uçuş kronometresi'
+
+======================================================================
+FAIL: test_HER_CURUTULEN_KAYIT_ILERI_ISARET_VERIYOR (test_d373_defter_geri_isaret.DefterGeriIsaret.test_HER_CURUTULEN_KAYIT_ILERI_ISARET_VERIYOR)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\bilgilendirme-he\tests\test_d373_defter_geri_isaret.py", line 101, in test_HER_CURUTULEN_KAYIT_ILERI_ISARET_VERIYOR
+    self.assertEqual(
+    ~~~~~~~~~~~~~~~~^
+        [], eksik,
+        ^^^^^^^^^^
+        "su kayitlar sonradan curutuldu/duzeltildi ama basliklarinin "
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        "altinda ileri isaret YOK — okur curutulmus hukmu AYAKTA sanar "
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        "(D-373):\n  " + "\n  ".join(f"{o} <- {d}" for o, d in eksik))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != [('D-490', 'D-491')]
+
+Second list contains 1 additional elements.
+First extra element 0:
+('D-490', 'D-491')
+
+- []
++ [('D-490', 'D-491')] : su kayitlar sonradan curutuldu/duzeltildi ama basliklarinin altinda ileri isaret YOK — okur curutulmus hukmu AYAKTA sanar (D-373):
+  D-490 <- D-491
+
+======================================================================
+FAIL: test_BIR_ISARET_SILININCE_KAPI_DUSUYOR (test_d373_defter_geri_isaret.MutasyonKontrolu.test_BIR_ISARET_SILININCE_KAPI_DUSUYOR)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\bilgilendirme-he\tests\test_d373_defter_geri_isaret.py", line 124, in test_BIR_ISARET_SILININCE_KAPI_DUSUYOR
+    self.assertEqual([], eksik_once, "on kosul: su an eksik olmamali")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != [('D-490', 'D-491')]
+
+Second list contains 1 additional elements.
+First extra element 0:
+('D-490', 'D-491')
+
+- []
++ [('D-490', 'D-491')] : on kosul: su an eksik olmamali
+
+======================================================================
+FAIL: test_gercek_kuyruk_atiflarinin_tumu_defterde_VAR (test_defter_butunlugu.GercekDosyaPozitifKontrolTests.test_gercek_kuyruk_atiflarinin_tumu_defterde_VAR)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\bilgilendirme-he\tests\test_defter_butunlugu.py", line 285, in test_gercek_kuyruk_atiflarinin_tumu_defterde_VAR
+    durum = kuyruk_atif_kapisi(self.kuyruk, self.defter)
+  File "O:\navitas\.claude\worktrees\bilgilendirme-he\tests\test_defter_butunlugu.py", line 146, in kuyruk_atif_kapisi
+    raise AssertionError("; ".join(durum["hatalar"]))
+AssertionError: defterde bulunmayan kuyruk atiflari: [499]
+
+======================================================================
+FAIL: test_T7b_iki_yardim_kod_satiriyla (test_fdr_t244_ic_celiski.T7_Durustluk.test_T7b_iki_yardim_kod_satiriyla)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\bilgilendirme-he\tests\test_fdr_t244_ic_celiski.py", line 824, in test_T7b_iki_yardim_kod_satiriyla
+    self.assertIn('kb = H["kb"]', gorev[311])                 # :312
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'kb = H["kb"]' not found in '        nr = [m for m in sonuc["ika_yayin"] if m["tip"] == "NO_ROUTE"]'
+
+======================================================================
+FAIL: test_her_dugum_dosya_satir_tasir_ve_kodda_durur (test_gece_akis_diyagramlari.DugumlerKodaTutar.test_her_dugum_dosya_satir_tasir_ve_kodda_durur)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\bilgilendirme-he\tests\test_gece_akis_diyagramlari.py", line 66, in test_her_dugum_dosya_satir_tasir_ve_kodda_durur
+    self.assertEqual(hatalar, [], f"akis_{h}: " + " | ".join(hatalar))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ["sD1: 'def main()' comms/yks_gui.py:4805±[7852 chars]YOK'] != []
+
+First list contains 98 additional elements.
+First extra element 0:
+"sD1: 'def main()' comms/yks_gui.py:4805±3 içinde YOK"
+
+Diff is 8426 characters long. Set self.maxDiff to None to see it. : akis_d: sD1: 'def main()' comms/yks_gui.py:4805±3 içinde YOK | d01: 'if not args.serial and not args.demo and not args.iha:' comms/yks_gui.py:4882±3 içinde YOK | d02: 'if args.serial:' comms/yks_gui.py:4894±3 içinde YOK | d03: 'link = SerialLink(args.serial, args.baud)' comms/yks_gui.py:4895±3 içinde YOK | d04: 'def yks_udp_linki_ac()' comms/yks_gui.py:500±3 içinde YOK | d05: 'def yki_oturum_kunyesi()' comms/yks_gui.py:547±3 içinde YOK | d07: 'def YksArayuz.__init__()' comms/yks_gui.py:789±3 içinde YOK | d08: 'def YksArayuz._arayuz_kur()' comms/yks_gui.py:968±3 içinde YOK | d09: 'if args.fda:' comms/yks_gui.py:4961±3 içinde YOK | d10: 'def YksArayuz.fda_kipini_uygula()' comms/yks_gui.py:4071±3 içinde YOK | d11: 'self.fda_kipi = True' comms/yks_gui.py:4079±3 içinde YOK | d12: 'kok.mainloop()' comms/yks_gui.py:5013±3 içinde YOK | d13: 'def kapanis_kaynaklarini_temizle()' comms/yks_gui.py:4779±3 içinde YOK | sD2: 'def YksArayuz._dinle()' comms/yks_gui.py:1788±3 içinde YOK | d20: 'd, adr = self.link.recv()' comms/yks_gui.py:1791±3 içinde YOK | d21: 'if soket is None or soket.fileno() == -1:' comms/yks_gui.py:1798±3 içinde YOK | d22: 'for m in okuyucu.feed(d):' comms/yks_gui.py:1811±3 içinde YOK | d23: 'self.gelen.put((m, adr))' comms/yks_gui.py:1812±3 içinde YOK | sD3: 'def YksArayuz._tik()' comms/yks_gui.py:1815±3 içinde YOK | d30: 'while not self.gelen.empty():' comms/yks_gui.py:1816±3 içinde YOK | d31: 'def YksArayuz._kamera_tazele()' comms/yks_gui.py:2993±3 içinde YOK | d32: 'def YksArayuz._durum_tazele()' comms/yks_gui.py:4371±3 içinde YOK | d33: 'self.kok.after(120, self._tik)' comms/yks_gui.py:1855±3 içinde YOK | sD4: 'def YksArayuz._mesaj_isle()' comms/yks_gui.py:1873±3 içinde YOK | d40: 'if getattr(self, "protokol_kilidi", False):' comms/yks_gui.py:1874±3 içinde YOK | d41: 'if getattr(self, "kaynak_kilidi", False):' comms/yks_gui.py:1883±3 içinde YOK | d42: 'def mesaj_kaynagi_dogrula()' comms/yks_gui.py:739±3 içinde YOK | d43: 'if tip == MESAJ_OPEN_ROUTE:' comms/yks_gui.py:1895±3 içinde YOK | d44: 'if guven_reddi is not None:' comms/yks_gui.py:1897±3 içinde YOK | d45: 'def YksArayuz._open_route_guven_reddini_goster()' comms/yks_gui.py:2156±3 içinde YOK | d46: 'self.rota, self.rota_adr = m, adr' comms/yks_gui.py:1902±3 içinde YOK | d47: 'if yeni:' comms/yks_gui.py:1920±3 içinde YOK | d48: 'self._kanit_yaz("ROTA_ALINDI", seq=m.get("seq"),' comms/yks_gui.py:1926±3 içinde YOK | d49: 'elif tip == MESAJ_NO_ROUTE:' comms/yks_gui.py:1989±3 içinde YOK | d50: 'self._kanit_yaz("ROTA_YOK", seq=m.get("seq"), sebep=sebep,' comms/yks_gui.py:2012±3 içinde YOK | d51: 'elif tip == MESAJ_ACK:' comms/yks_gui.py:2029±3 içinde YOK | d52: 'elif tip == MESAJ_IHA_LANDED:' comms/yks_gui.py:2031±3 içinde YOK | d53: 'if seq != self.iha_landed_seq:' comms/yks_gui.py:2043±3 içinde YOK | d54: 'self.iha_landed_seq = seq' comms/yks_gui.py:2044±3 içinde YOK | d55: 'def YksArayuz.iha_indi()' comms/yks_gui.py:3934±3 içinde YOK | d56: 'elif tip == MESAJ_HEARTBEAT:' comms/yks_gui.py:2066±3 içinde YOK | d57: 'self._kanit_yaz(' comms/yks_gui.py:2048±3 içinde YOK | d59: 'elif rota_yok_temizlendi:' comms/yks_gui.py:1973±3 içinde YOK | d59b: 'self._harita_ciz()' comms/yks_gui.py:1981±3 içinde YOK | d58: 'self._erken_ika_rota_ack_esle(m["seq"])' comms/yks_gui.py:1984±3 içinde YOK | sD5: 'def YksArayuz._ack_isle()' comms/yks_gui.py:2371±3 içinde YOK | d60: 'self._kanit_yaz("ACK_ALINDI", node=m.get("node"), ref=ref,' comms/yks_gui.py:2381±3 içinde YOK | d61: 'if m.get("node") == "iha":' comms/yks_gui.py:2383±3 içinde YOK | d62: 'if m.get("node") != "ika":' comms/yks_gui.py:2437±3 içinde YOK | d63: 'if self.ika_go_tekrar.ack_geldi(m):' comms/yks_gui.py:2441±3 içinde YOK | d64: 'if ref_tip in (None, MESAJ_OPEN_ROUTE) and ref not in self.ika_rota_ack:' comms/yks_gui.py:2449±3 içinde YOK | d68: 'if self.rota and ref == self.rota["seq"]:' comms/yks_gui.py:2450±3 içinde YOK | d69: 'elif ref_tip == MESAJ_OPEN_ROUTE:' comms/yks_gui.py:2452±3 içinde YOK | sD10: 'def YksArayuz._ika_rota_ack_bagla()' comms/yks_gui.py:2457±3 içinde YOK | d84: 'if erken:' comms/yks_gui.py:2472±3 içinde YOK | d65: 'self._kanit_yaz("IKA_AKTARIM_KANITI", **alanlar)' comms/yks_gui.py:2474±3 içinde YOK | d66: 'if self.tespit_onayli and not self.onaylandi:' comms/yks_gui.py:2483±3 içinde YOK | d67: 'def YksArayuz._aktarim_onay_dugmesini_kur()' comms/yks_gui.py:2344±3 içinde YOK | sD11: 'def YksArayuz._erken_ika_rota_ack_sakla()' comms/yks_gui.py:2488±3 içinde YOK | d85: 'tampon[ref] = (time.time(), simdi, self._iha_havada_mi())' comms/yks_gui.py:2508±3 içinde YOK | sD12: 'def YksArayuz._erken_ika_rota_ack_esle()' comms/yks_gui.py:2518±3 içinde YOK | d86: 'kayit = tampon.pop(seq, None)' comms/yks_gui.py:2527±3 içinde YOK | d87: 'if kayit is None or seq in self.ika_rota_ack:' comms/yks_gui.py:2528±3 içinde YOK | d88: 'if time.monotonic() - gelis > IKA_ROTA_ACK_ERKEN_TAMPON_S:' comms/yks_gui.py:2531±3 içinde YOK | d89: 'self._ika_rota_ack_bagla(seq, damga, havada, erken=True)' comms/yks_gui.py:2537±3 içinde YOK | sD6: 'def YksArayuz.onayla()' comms/yks_gui.py:2211±3 içinde YOK | d70: 'if not self.rota or self.rota_yok or self.onaylandi:' comms/yks_gui.py:2214±3 içinde YOK | d71: 'if self._kanit_kilidi_var():' comms/yks_gui.py:2221±3 içinde YOK | d72: 'if rota_ankor_uyarisi(self.rota):' comms/yks_gui.py:2229±3 içinde YOK | d73: 'if self._tespiti_yaslandir():' comms/yks_gui.py:2237±3 içinde YOK | d74: 'if not self.tespit_onayli:' comms/yks_gui.py:2243±3 içinde YOK | d75: 'self.tespit_onayli = True' comms/yks_gui.py:2244±3 içinde YOK | d76: 'self._kanit_yaz("HAKEM_ONAYI_1", seq=self.rota.get("seq"),' comms/yks_gui.py:2247±3 içinde YOK | d77: 'if not self.fda_kipi and not self.ika_aktarim_kaniti_var():' comms/yks_gui.py:2258±3 içinde YOK | d78: 'self._kanit_yaz("HAKEM_ONAYI_REDDI", seq=self.rota.get("seq"),' comms/yks_gui.py:2262±3 içinde YOK | d79: 'rota_ack = ack(self.rota["seq"], "yks",' comms/yks_gui.py:2269±3 içinde YOK | d80: 'self.onaylandi = True' comms/yks_gui.py:2275±3 içinde YOK | d81: 'self._kanit_yaz("HAKEM_ONAYI_2", seq=self.rota.get("seq"),' comms/yks_gui.py:2291±3 içinde YOK | d82: 'self._kanit_yaz("HAKEM_ONAYI_REDDI", seq=self.rota.get("seq"),' comms/yks_gui.py:2231±3 içinde YOK | d83: 'self._kanit_yaz("HAKEM_ONAYI_REDDI", seq=self.rota.get("seq"),' comms/yks_gui.py:2240±3 içinde YOK | sD7: 'def YksArayuz._kanit_yaz()' comms/yks_gui.py:4582±3 içinde YOK | d91: 'if kayit is None or self._kanit_kilidi_var():' comms/yks_gui.py:4584±3 içinde YOK | d93: 'except Exception as exc:' comms/yks_gui.py:4588±3 içinde YOK | d94: 'def YksArayuz._kanit_hatasini_goster()' comms/yks_gui.py:4558±3 içinde YOK | d95: 'def YksArayuz._kanit_kilidi_var()' comms/yks_gui.py:4493±3 içinde YOK | d96: 'return getattr(self, "kanit_kaydi_hatasi", None) is not None' comms/yks_gui.py:4506±3 içinde YOK | sD8: 'def YksArayuz.firlatma()' comms/yks_gui.py:3897±3 içinde YOK | d100: 'if self._kanit_kilidi_var():' comms/yks_gui.py:3904±3 içinde YOK | d101: 'if (not self._arm_durumu_taze_mi()' comms/yks_gui.py:3913±3 içinde YOK | d102: 'self.t_iha0 = time.monotonic()' comms/yks_gui.py:3925±3 içinde YOK | d103: 'self._kanit_yaz("KRONOMETRE_BASLADI", kron="iha",' comms/yks_gui.py:3928±3 içinde YOK | sD9: 'def YksArayuz.ika_baslat()' comms/yks_gui.py:3951±3 içinde YOK | d110: 'if self.fda_kipi:' comms/yks_gui.py:3954±3 içinde YOK | d111: 'if self.iha_landed_seq is None:' comms/yks_gui.py:3961±3 içinde YOK | d112: 'if not self.onaylandi:' comms/yks_gui.py:3966±3 içinde YOK | d113: 'komut_mesaji = command("IKA_GO", "ika")' comms/yks_gui.py:3973±3 içinde YOK | d90: 'KANIT_OLAYLARI = (' comms/yks_gui.py:168±3 içinde YOK | d00: 'ap = argparse.ArgumentParser(description="Navitas YKS hakem ekranı")' comms/yks_gui.py:4806±3 içinde YOK
+
+======================================================================
+FAIL: test_dugum_tablosu_mmd_ile_birebir (test_gece_akis_diyagramlari.TabloBayatDegil.test_dugum_tablosu_mmd_ile_birebir)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\bilgilendirme-he\tests\test_gece_akis_diyagramlari.py", line 95, in test_dugum_tablosu_mmd_ile_birebir
+    self.assertEqual(hatalar, [])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: Lists differ: ["sD1: 'def main()' comms/yks_gui.py:4805±[7852 chars]YOK'] != []
+
+First list contains 98 additional elements.
+First extra element 0:
+"sD1: 'def main()' comms/yks_gui.py:4805±3 içinde YOK"
+
+Diff is 8426 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_load_model_hata_mesaji_IMGSZ_degerlerini_yaziyor (test_imgsz_tek_kaynak.ImgszTekKaynak.test_load_model_hata_mesaji_IMGSZ_degerlerini_yaziyor)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\bilgilendirme-he\tests\test_imgsz_tek_kaynak.py", line 165, in test_load_model_hata_mesaji_IMGSZ_degerlerini_yaziyor
+    self.assertIn("profilin imgsz'i  : 640", mesaj)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "profilin imgsz'i  : 640" not found in 'Manifest `navitas_seg_v36_best.pt` diyor ama agirlik diskte YOK (bakilan: O:\\navitas\\.claude\\worktrees\\bilgilendirme-he\\jetson_paket\\models, O:\\navitas\\.claude\\worktrees\\bilgilendirme-he\\models).'
+
+======================================================================
+FAIL: test_K4_03_K4_04_tampon_256_ZORUNLU (test_mavlink_tunel_uctan_uca.K4UctanUca.test_K4_03_K4_04_tampon_256_ZORUNLU) (kayip=0.0, tampon=256)
+On kayit: `_K4_03_K4_04_ON_KAYIT` dokstringi (alt vaka: TX tampon 256 B).
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\bilgilendirme-he\tests\test_mavlink_tunel_uctan_uca.py", line 509, in _k4_03_04
+    self.assertEqual(40, sum(sonuc), f"K4 DUSTU: {ozet}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 40 != 20 : K4 DUSTU: kayip=0.0 tampon=256: 12wp 20/20 · 30wp 0/20 · router={'alinan_paket': 482, 'iletilen': 394, 'txspace_dusen': 88, 'kayip_dusen': 0, 'yerel': 0, 'hedefsiz': 0, 'bozuk': 0, 'arka_plan_b': 100000, 'arka_plan_atlanan': 0, 'heartbeat': 58, 'sifirlama': 0, 'kesintide_atilan': 0, 'kayip_anahtari_eksik': 0} yer={zaman_asimi_dusen: 86, kimlik_boslugu: 0} hava={kimlik_boslugu: 0, zaman_asimi_dusen: 0}
+
+======================================================================
+FAIL: test_K4_03_K4_04_tampon_256_ZORUNLU (test_mavlink_tunel_uctan_uca.K4UctanUca.test_K4_03_K4_04_tampon_256_ZORUNLU) (kayip=0.05, tampon=256)
+On kayit: `_K4_03_K4_04_ON_KAYIT` dokstringi (alt vaka: TX tampon 256 B).
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\bilgilendirme-he\tests\test_mavlink_tunel_uctan_uca.py", line 509, in _k4_03_04
+    self.assertEqual(40, sum(sonuc), f"K4 DUSTU: {ozet}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 40 != 20 : K4 DUSTU: kayip=0.05 tampon=256: 12wp 19/20 · 30wp 1/20 · router={'alinan_paket': 489, 'iletilen': 406, 'txspace_dusen': 83, 'kayip_dusen': 24, 'yerel': 0, 'hedefsiz': 0, 'bozuk': 0, 'arka_plan_b': 103320, 'arka_plan_atlanan': 0, 'heartbeat': 60, 'sifirlama': 0, 'kesintide_atilan': 0, 'kayip_anahtari_eksik': 0} yer={zaman_asimi_dusen: 86, kimlik_boslugu: 0} hava={kimlik_boslugu: 1, zaman_asimi_dusen: 0}
+
+======================================================================
+FAIL: test_t20_sonrasi_kalan_kopukluklar_isim_isim_yakalaniyor (test_saha_kuru_kosu.PozitifKontrolTests.test_t20_sonrasi_kalan_kopukluklar_isim_isim_yakalaniyor) (halka='motor')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\bilgilendirme-he\tests\test_saha_kuru_kosu.py", line 147, in test_t20_sonrasi_kalan_kopukluklar_isim_isim_yakalaniyor
+    self.assertEqual(
+    ~~~~~~~~~~~~~~~~^
+        beklenen, self.durumlar[halka]["durum"],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        f"{halka} ({aciklama}) beklenen {beklenen} degil")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'SAHIPSIZ' != 'GECTI'
+- SAHIPSIZ
++ GECTI
+ : motor (gercek motor surucusu yok) beklenen SAHIPSIZ degil
+
+======================================================================
+FAIL: test_UYUSMAZLIKTA_yukselir (test_saha_parametrik.FailClosedTests.test_UYUSMAZLIKTA_yukselir)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\bilgilendirme-he\tests\test_saha_parametrik.py", line 139, in test_UYUSMAZLIKTA_yukselir
+    self.assertIn("fail-closed", str(ctx.exception))
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'fail-closed' not found in 'Manifest `navitas_seg_v36_best.pt` diyor ama agirlik diskte YOK (bakilan: O:\\navitas\\.claude\\worktrees\\bilgilendirme-he\\jetson_paket\\models, O:\\navitas\\.claude\\worktrees\\bilgilendirme-he\\models).'
+
+======================================================================
+FAIL: test_BIRINCIL_ve_YEDEK_ikisi_de_pakette (test_t123_gecis_provasi.YedekPaketteTests.test_BIRINCIL_ve_YEDEK_ikisi_de_pakette)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\bilgilendirme-he\tests\test_t123_gecis_provasi.py", line 145, in test_BIRINCIL_ve_YEDEK_ikisi_de_pakette
+    self.assertTrue((PAKET / "models" / birincil).exists())
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_KULLANILAN_HER_YOL_KURULUYOR (test_t202_jetson_paket_butunlugu.KurulumBlogu.test_KULLANILAN_HER_YOL_KURULUYOR)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\bilgilendirme-he\tests\test_t202_jetson_paket_butunlugu.py", line 113, in test_KULLANILAN_HER_YOL_KURULUYOR
+    self.assertEqual(
+    ~~~~~~~~~~~~~~~~^
+        [], eksik,
+        ^^^^^^^^^^
+    ...<4 lines>...
+          "Dosya pakette de yoksa ONCE pakete alinmali "
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+          "(scripts/jetson_paket_hazirla.py KOPYALAR).")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['models/navitas_seg_v17_best.pt', 'models[190 chars]nnx']
+
+Second list contains 6 additional elements.
+First extra element 0:
+'models/navitas_seg_v17_best.pt'
+
+- []
++ ['models/navitas_seg_v17_best.pt',
++  'models/navitas_seg_v17_best_640_fp16.onnx',
++  'models/navitas_seg_v35_best.pt',
++  'models/navitas_seg_v35_best_512_fp16.onnx',
++  'models/navitas_seg_v36_best.pt',
++  'models/navitas_seg_v36_best_512_fp16.onnx'] : Kilavuz, KURULUM BLOGUNUN TASIMADIGI dosyalari kullaniyor — saha gunu bu komutlar `No such file` ile coker (D-352). Eksik:
+  models/navitas_seg_v17_best.pt
+  models/navitas_seg_v17_best_640_fp16.onnx
+  models/navitas_seg_v35_best.pt
+  models/navitas_seg_v35_best_512_fp16.onnx
+  models/navitas_seg_v36_best.pt
+  models/navitas_seg_v36_best_512_fp16.onnx
+
+Care: ya kurulum blogunа eklensin, ya komut degistirilsin. Dosya pakette de yoksa ONCE pakete alinmali (scripts/jetson_paket_hazirla.py KOPYALAR).
+
+======================================================================
+FAIL: test_kareler_ve_sha_tutuyor (test_t38_kuru_kosu_fiksturu.FiksturSozlesmesi.test_kareler_ve_sha_tutuyor) (kare='images/sa_000000.jpg')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\bilgilendirme-he\tests\test_t38_kuru_kosu_fiksturu.py", line 58, in test_kareler_ve_sha_tutuyor
+    self.assertTrue(yol.is_file(), yol)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : O:\navitas\.claude\worktrees\bilgilendirme-he\data\kuru_kosu_fikstur\images\sa_000000.jpg
+
+======================================================================
+FAIL: test_kareler_ve_sha_tutuyor (test_t38_kuru_kosu_fiksturu.FiksturSozlesmesi.test_kareler_ve_sha_tutuyor) (kare='images/sa_000001.jpg')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\bilgilendirme-he\tests\test_t38_kuru_kosu_fiksturu.py", line 58, in test_kareler_ve_sha_tutuyor
+    self.assertTrue(yol.is_file(), yol)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : O:\navitas\.claude\worktrees\bilgilendirme-he\data\kuru_kosu_fikstur\images\sa_000001.jpg
+
+======================================================================
+FAIL: test_kareler_ve_sha_tutuyor (test_t38_kuru_kosu_fiksturu.FiksturSozlesmesi.test_kareler_ve_sha_tutuyor) (kare='images/sa_000002.jpg')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\bilgilendirme-he\tests\test_t38_kuru_kosu_fiksturu.py", line 58, in test_kareler_ve_sha_tutuyor
+    self.assertTrue(yol.is_file(), yol)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : O:\navitas\.claude\worktrees\bilgilendirme-he\data\kuru_kosu_fikstur\images\sa_000002.jpg
+
+======================================================================
+FAIL: test_okuyucu_dortlu_donuyor (test_t38_kuru_kosu_fiksturu.FiksturSozlesmesi.test_okuyucu_dortlu_donuyor)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\bilgilendirme-he\tests\test_t38_kuru_kosu_fiksturu.py", line 75, in test_okuyucu_dortlu_donuyor
+    self.assertIsNotNone(fk, "fikstur okunamadi")
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: unexpectedly None : fikstur okunamadi
+
+======================================================================
+FAIL: test_varsayilan_fiksturden_gelir (test_t38_kuru_kosu_fiksturu.VarsayilanKare.test_varsayilan_fiksturden_gelir)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\bilgilendirme-he\tests\test_t38_kuru_kosu_fiksturu.py", line 161, in test_varsayilan_fiksturden_gelir
+    self.assertTrue(satir["detay"]["fikstur_kullanildi"],
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                    "varsayilan kare hâlâ data/raw_frames'ten geliyor (T38)")
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : varsayilan kare hâlâ data/raw_frames'ten geliyor (T38)
+
+======================================================================
+FAIL: test_kompozit_dizini_listeleniyor (test_yks_gui_uretim_hizasi.KompozitKaynakTests.test_kompozit_dizini_listeleniyor)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\bilgilendirme-he\tests\test_yks_gui_uretim_hizasi.py", line 298, in test_kompozit_dizini_listeleniyor
+    self.assertTrue(dosyalar, "kompozit kume bos listelendi")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: [] is not true : kompozit kume bos listelendi
+
+----------------------------------------------------------------------
+Ran 3119 tests in 871.168s
+
+FAILED (failures=21, errors=11, skipped=34)
+<sys>:0: ResourceWarning: unclosed <socket.socket fd=2868, family=2, type=2, proto=0, laddr=('127.0.0.1', 57940)>

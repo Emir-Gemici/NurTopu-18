@@ -1,0 +1,27 @@
+{
+  "t": 1789819746.2143602,
+  "port": "COM7",
+  "baud": 57600,
+  "yerel": {
+    "FORMAT": 26,
+    "SERIAL_SPEED": 57,
+    "AIR_SPEED": 128,
+    "NETID": 73,
+    "TXPOWER": 20,
+    "ECC": 1,
+    "MAVLINK": 1,
+    "OPPRESEND": 0,
+    "MIN_FREQ": 915000,
+    "MAX_FREQ": 928000,
+    "NUM_CHANNELS": 50,
+    "DUTY_CYCLE": 100,
+    "LBT_RSSI": 0,
+    "MANCHESTER": 0,
+    "RTSCTS": 0,
+    "MAX_WINDOW": 33
+  },
+  "uzak": {},
+  "yerel_ham": "ATI5\r\nS0:FORMAT=26\r\nS1:SERIAL_SPEED=57\r\nS2:AIR_SPEED=128\r\nS3:NETID=73\r\nS4:TXPOWER=20\r\nS5:ECC=1\r\nS6:MAVLINK=1\r\nS7:OPPRESEND=0\r\nS8:MIN_FREQ=915000\r\nS9:MAX_FREQ=928000\r\nS10:NUM_CHANNELS=50\r\nS11:DUTY_CYCLE=100\r\nS12:LBT_RSSI=0\r\nS13:MANCHESTER=0\r\nS14:RTSCTS=0\r\nS15:MAX_WINDOW=33\r\n",
+  "uzak_ham": "RTI5\r\n",
+  "yerel_uzak_farki": []
+}

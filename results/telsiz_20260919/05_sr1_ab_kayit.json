@@ -1,0 +1,74 @@
+{
+ "t": 1789826791.3260992,
+ "once": {
+  "SR1_RAW_SENS": 0.0,
+  "SR1_EXT_STAT": 0.0,
+  "SR1_RC_CHAN": 0.0,
+  "SR1_RAW_CTRL": 0.0,
+  "SR1_POSITION": 4.0,
+  "SR1_EXTRA1": 0.0,
+  "SR1_EXTRA2": 0.0,
+  "SR1_EXTRA3": 1.0,
+  "SR1_PARAMS": 0.0,
+  "SR1_ADSB": 0.0
+ },
+ "yuk_A": [
+  1292,
+  {
+   "TUNNEL": 70,
+   "GLOBAL_POSITION_INT": 33,
+   "HEARTBEAT": 16,
+   "SYSTEM_TIME": 8,
+   "AHRS": 8,
+   "TERRAIN_REPORT": 8,
+   "EKF_STATUS_REPORT": 8,
+   "VIBRATION": 8
+  }
+ ],
+ "sifirla": {
+  "SR1_POSITION": true,
+  "SR1_EXTRA3": true
+ },
+ "yuk_B": [
+  1716,
+  {
+   "TUNNEL": 83,
+   "BAD_DATA": 60,
+   "GLOBAL_POSITION_INT": 38,
+   "HEARTBEAT": 21,
+   "SYSTEM_TIME": 11,
+   "AHRS": 11,
+   "TERRAIN_REPORT": 11,
+   "EKF_STATUS_REPORT": 11
+  }
+ ],
+ "geri_yaz": {
+  "SR1_POSITION": true,
+  "SR1_EXTRA3": true
+ },
+ "son": {
+  "SR1_RAW_SENS": 0.0,
+  "SR1_EXT_STAT": 0.0,
+  "SR1_RC_CHAN": 0.0,
+  "SR1_RAW_CTRL": 0.0,
+  "SR1_POSITION": 4.0,
+  "SR1_EXTRA1": 0.0,
+  "SR1_EXTRA2": 0.0,
+  "SR1_EXTRA3": 1.0,
+  "SR1_PARAMS": 0.0,
+  "SR1_ADSB": 0.0
+ },
+ "yuk_A2": [
+  1718,
+  {
+   "TUNNEL": 82,
+   "BAD_DATA": 52,
+   "GLOBAL_POSITION_INT": 44,
+   "HEARTBEAT": 21,
+   "SYSTEM_TIME": 11,
+   "AHRS": 11,
+   "TERRAIN_REPORT": 11,
+   "BATTERY_STATUS": 11
+  }
+ ]
+}

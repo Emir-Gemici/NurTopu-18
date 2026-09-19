@@ -1,0 +1,27 @@
+{
+  "etiket": "MW33_ikisi",
+  "t": 1789820947.5891724,
+  "port": "COM7",
+  "baud": 57600,
+  "param": "SYSID_THISMAV",
+  "n": 120,
+  "aralik_s": 0.25,
+  "zaman_asimi_s": 0.5,
+  "cevap": 120,
+  "zaman_asimi_sayisi": 0,
+  "kayip_yuzde": 0.0,
+  "gec_cevap": 0,
+  "rtt_ms": {
+    "ornek": 120,
+    "min": 52.6,
+    "p50": 153.2,
+    "p90": 205.3,
+    "p95": 230.3,
+    "p99": 255.1,
+    "maks": 256.1,
+    "ortalama": 149.6
+  },
+  "esik_ms": 200.0,
+  "verdikt": "DUSTU",
+  "not": "PARAM_REQUEST_READ yanki; Jetson ve TELEM2 zincirde YOK. K8'in tam zinciri DEGIL."
+}

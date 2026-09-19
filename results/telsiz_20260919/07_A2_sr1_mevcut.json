@@ -1,0 +1,27 @@
+{
+  "etiket": "A2_sr1_mevcut",
+  "t": 1789826922.2069762,
+  "port": "COM7",
+  "baud": 57600,
+  "param": "SYSID_THISMAV",
+  "n": 120,
+  "aralik_s": 0.25,
+  "zaman_asimi_s": 0.5,
+  "cevap": 119,
+  "zaman_asimi_sayisi": 1,
+  "kayip_yuzde": 0.83,
+  "gec_cevap": 0,
+  "rtt_ms": {
+    "ornek": 119,
+    "min": 51.9,
+    "p50": 153.3,
+    "p90": 230.5,
+    "p95": 234.3,
+    "p99": 277.2,
+    "maks": 280.9,
+    "ortalama": 156.6
+  },
+  "esik_ms": 200.0,
+  "verdikt": "DUSTU",
+  "not": "PARAM_REQUEST_READ yanki; Jetson ve TELEM2 zincirde YOK. K8'in tam zinciri DEGIL."
+}

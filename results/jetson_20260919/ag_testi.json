@@ -1,0 +1,12 @@
+{
+ "t": 1789823539.4640281,
+ "jetson": "10.21.8.7",
+ "tcp_acik": [
+  22
+ ],
+ "get_8080/durum": "<urlopen error [WinError 10061] Hedef makine etkin olarak reddettiğinden bağlantı kurulamadı>",
+ "get_8080/": "<urlopen error [WinError 10061] Hedef makine etkin olarak reddettiğinden bağlantı kurulamadı>",
+ "kare": "<urlopen error [WinError 10061] Hedef makine etkin olarak reddettiğinden bağlantı kurulamadı>",
+ "video": "<urlopen error [WinError 10061] Hedef makine etkin olarak reddettiğinden bağlantı kurulamadı>",
+ "udp5010": []
+}

@@ -1,5 +1,17 @@
 # NAVITAS — DEVİR PROTOKOLÜ
 
+## Devir 2026-09-19 akşam · saha yazılım günü kapandı, dal `bilgilendirme-he`
+
+**Oku:** `BILGILENDIRME_HE/00_OKU_BENI.md` (8 dosyalık ayrıntılı bilgilendirme). Defter: D-505 … D-516.
+
+- Telsiz uçtan uca çalışıyor (ethernetsiz). K8 DÜŞTÜ: K8a p95 212 ms, K8b 278 ms. Eşik gevşetilmedi.
+- YKİ: FDA hakem onayının yeni seq'le silinmesi düzeltildi (a2e69b9b, db692109). Telemetri gösterimi ve bağlantı rengi düzeltildi.
+  Yönlendirici USB'yi yeniden açıyor. Canlı telsiz onay testi **yapılmadı**.
+- Jetson: kamera beklemesi kurulu (67467c4f). Telemetri kapısı (c9ee27f0) denetlendi, **kurulmadı**; Jetson kapalı.
+  Kurulum: `results/jetson_20260919/kurulum2/uygula.py`.
+- Kamera 90° dönük: kod değişmedi. Burun yönü / `--montaj-yaw` kuralı `BILGILENDIRME_HE/05_KAMERA_YONU.md`.
+- Açık: canlı onay testi, Jetson güç yolu, harici pusula kablosu, pervane somunları, .exe paketinin yeniden üretimi.
+
 ## Devir 2026-09-11 · Onaylı birleşim tamam, tam süit yeşil
 
 **Yetki:** kullanıcının "onay" mesajı, üç hazır dalın commit ve master'a

@@ -1,0 +1,69 @@
+Jetson saati 16:13:39
+== /etc/navitas.env ==
+NAVITAS_KOK=/home/n4vitas/navitas
+PYTHON3=/opt/navitas/python/bin/python
+LOG_DIZIN=/home/n4vitas/navitas/results/jetson_log
+KIP=tunel
+PIXHAWK_SERI=/dev/ttyTHS1
+PIXHAWK_BAUD=57600
+SYSID=1
+SIK_SERI=/dev/ttyUSB0
+SIK_BAUD=57600
+KANIT_TIMEOUT=900
+RPI_TELSIZ_ARGS=--yks-hedef 127.0.0.1:5100
+INIS_TELSIZ_ARGS=--yks 127.0.0.1:5100 --kalkis-bekle --heartbeat-sure 0
+KOMUT_TELSIZ_ARGS=--bind 127.0.0.1:5007 --izinli-kaynak 127.0.0.1:5100
+KAMERA_PYTHON=/usr/bin/python3
+KAMERA_KOPRU_BIND=127.0.0.1
+KAMERA_KOPRU_PORT=8080
+KAMERA_KOPRU_ARGS=
+GOSTERICI_KIP=kapali
+ISARETLI_YAYIN=127.0.0.1:8081
+COGULLAYICI_EK_ARGS=--out udp:127.0.0.1:14553 --streamrate -1
+HUB_TASIYICI_ARGS=--tunel 127.0.0.1:14553 --tunel-kimlik hava
+RPI_EK_ARGS=--fov 54 --kaynak http://127.0.0.1:8080/video --gorev-kaydi /home/n4vitas/navitas/results/jetson_log/gorev
+== MAVProxy tam komut ==
+/home/n4vitas/venv312/bin/python /home/n4vitas/.local/bin/mavproxy.py --master=/dev/ttyTHS1 --baudrate 57600 --streamrate 8 --out udp:127.0.0.1:14550 --out udp:127.0.0.1:14551 --out udp:127.0.0.1:14552 --daemon --non-interactive --state-basedir /home/n4vitas/navitas/results/jetson_log/mavproxy --out udp:127.0.0.1:14553 --streamrate -1 
+== rpi_inference durum + gunluk ==
+● navitas-rpi-inference.service - NAVITAS uretim algi yolu (rpi_inference --camera) - cogullayici ucu udp:14550
+     Loaded: loaded (/etc/systemd/system/navitas-rpi-inference.service; enabled; preset: enabled)
+    Drop-In: /etc/systemd/system/navitas-rpi-inference.service.d
+             └─navitas-koruma.conf
+     Active: active (running) since Sat 2026-09-19 16:13:36 +03; 3s ago
+   Main PID: 10244 (python)
+Started navitas-rpi-inference.service - NAVITAS uretim algi yolu (rpi_inference --camera) - cogullayici ucu udp:14550.
+telsiz halkasi: yks=127.0.0.1:5100 ika=None seri=None · heartbeat 1 s
+UYARI: --ub-referans verilmedi ya da canli telemetri yok — HEARTBEAT'e x,y EKLENMEZ; YKS ALAN IHLALI denetimi YAPILAMAZ (sartname SS6.2/SS6.4).
+model: navitas_seg_v36_best.pt · kayit dogrulamasi: eslesti
+gorev kaydi: /home/n4vitas/navitas/results/jetson_log/gorev/20260919_161021_d14477b3_9658/gorev_kaydi.jsonl
+Kamera acilamadi (kaynak='http://127.0.0.1:8080/video').
+navitas-rpi-inference.service: Deactivated successfully.
+navitas-rpi-inference.service: Consumed 4.436s CPU time.
+navitas-rpi-inference.service: Scheduled restart job, restart counter is at 30.
+Started navitas-rpi-inference.service - NAVITAS uretim algi yolu (rpi_inference --camera) - cogullayici ucu udp:14550.
+telsiz halkasi: yks=127.0.0.1:5100 ika=None seri=None · heartbeat 1 s
+UYARI: --ub-referans verilmedi ya da canli telemetri yok — HEARTBEAT'e x,y EKLENMEZ; YKS ALAN IHLALI denetimi YAPILAMAZ (sartname SS6.2/SS6.4).
+model: navitas_seg_v36_best.pt · kayit dogrulamasi: eslesti
+gorev kaydi: /home/n4vitas/navitas/results/jetson_log/gorev/20260919_161125_d14477b3_9842/gorev_kaydi.jsonl
+Kamera acilamadi (kaynak='http://127.0.0.1:8080/video').
+navitas-rpi-inference.service: Deactivated successfully.
+navitas-rpi-inference.service: Consumed 4.425s CPU time.
+navitas-rpi-inference.service: Scheduled restart job, restart counter is at 31.
+Started navitas-rpi-inference.service - NAVITAS uretim algi yolu (rpi_inference --camera) - cogullayici ucu udp:14550.
+telsiz halkasi: yks=127.0.0.1:5100 ika=None seri=None · heartbeat 1 s
+UYARI: --ub-referans verilmedi ya da canli telemetri yok — HEARTBEAT'e x,y EKLENMEZ; YKS ALAN IHLALI denetimi YAPILAMAZ (sartname SS6.2/SS6.4).
+model: navitas_seg_v36_best.pt · kayit dogrulamasi: eslesti
+gorev kaydi: /home/n4vitas/navitas/results/jetson_log/gorev/20260919_161230_d14477b3_9989/gorev_kaydi.jsonl
+Kamera acilamadi (kaynak='http://127.0.0.1:8080/video').
+navitas-rpi-inference.service: Deactivated successfully.
+navitas-rpi-inference.service: Consumed 4.474s CPU time.
+navitas-rpi-inference.service: Scheduled restart job, restart counter is at 32.
+Started navitas-rpi-inference.service - NAVITAS uretim algi yolu (rpi_inference --camera) - cogullayici ucu udp:14550.
+telsiz halkasi: yks=127.0.0.1:5100 ika=None seri=None · heartbeat 1 s
+UYARI: --ub-referans verilmedi ya da canli telemetri yok — HEARTBEAT'e x,y EKLENMEZ; YKS ALAN IHLALI denetimi YAPILAMAZ (sartname SS6.2/SS6.4).
+== seri_hub tam sayac satiri ==
+[SERI_HUB] t=1856.516 tuketici ogrenildi: 127.0.0.1:55868
+[SERI_HUB] t=1856.516 KIRMIZI ogrenilen tavani (32) asildi; en az tazelenen dusuruldu: 127.0.0.1:51848 (uzun omurlu tuketici STATIK --tuketici ile verilir)
+== kamera donanimi ==
+ls: cannot access '/dev/video*': No such file or directory
+sudo parolasiz: HAYIR

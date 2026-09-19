@@ -1,0 +1,131 @@
+# Taban karsilastirmasi (19 Eyl ~22:00)
+Tam suit (bu dal): Ran 3119 tests · FAILED (failures=21, errors=11, skipped=34) · genel kapi GECTI 15/15
+Kirmizi veren 14 test dosyasi iki yerde ayni bicimde kosuldu (python -m unittest discover -s tests -p <dosya>):
+  taban = temiz worktree, tunel-saha-20260918 eb6a0c20 (bu dalin tabani, degisiklik yok)
+  yeni  = bilgilendirme-he (bu commit)
+Sonuc: taban 33 kirmizi, yeni 32 kirmizi. Yalniz tabanda: test_yks_gui_uretim_hizasi.test_gorunum_eslemesi_URETIMIN_IC_ADLARIYLA_AYNI (bu dalda duzeltildi). Yalniz yeni dalda: YOK.
+
+## taban (eb6a0c20)
+test_saha_parametrik | ERROR: test_GEVSETME_ACIKCA_istenmeli (test_saha_parametrik.FailClosedTests.test_GEVSETME_ACIKCA_istenmeli)
+test_saha_parametrik | ERROR: test_UYUM_varsa_yuklenir (test_saha_parametrik.FailClosedTests.test_UYUM_varsa_yuklenir)
+test_saha_parametrik | ERROR: test_kayit_defteri_YOKSA_uyum_SAYILMAZ (test_saha_parametrik.FailClosedTests.test_kayit_defteri_YOKSA_uyum_SAYILMAZ)
+test_saha_parametrik | ERROR: test_UC_UC_ayni_agirligi_gosteriyor (test_saha_parametrik.KayitDefteriDurumuTests.test_UC_UC_ayni_agirligi_gosteriyor)
+test_saha_parametrik | ERROR: test_manifest_ile_kayit_defteri_ESLESIYOR (test_saha_parametrik.KayitDefteriDurumuTests.test_manifest_ile_kayit_defteri_ESLESIYOR)
+test_saha_parametrik | ERROR: test_varsayilan_MANIFESTTEN_gelir (test_saha_parametrik.ModelVarsayilaniTests.test_varsayilan_MANIFESTTEN_gelir)
+test_saha_parametrik | FAIL: test_UYUSMAZLIKTA_yukselir (test_saha_parametrik.FailClosedTests.test_UYUSMAZLIKTA_yukselir)
+test_saha_parametrik | Ran 20 tests in 0.205s
+test_saha_parametrik | FAILED (failures=1, errors=6)
+test_t38_kuru_kosu_fiksturu | FAIL: test_kareler_ve_sha_tutuyor (test_t38_kuru_kosu_fiksturu.FiksturSozlesmesi.test_kareler_ve_sha_tutuyor) (kare='images/sa_000000.jpg')
+test_t38_kuru_kosu_fiksturu | FAIL: test_kareler_ve_sha_tutuyor (test_t38_kuru_kosu_fiksturu.FiksturSozlesmesi.test_kareler_ve_sha_tutuyor) (kare='images/sa_000001.jpg')
+test_t38_kuru_kosu_fiksturu | FAIL: test_kareler_ve_sha_tutuyor (test_t38_kuru_kosu_fiksturu.FiksturSozlesmesi.test_kareler_ve_sha_tutuyor) (kare='images/sa_000002.jpg')
+test_t38_kuru_kosu_fiksturu | FAIL: test_okuyucu_dortlu_donuyor (test_t38_kuru_kosu_fiksturu.FiksturSozlesmesi.test_okuyucu_dortlu_donuyor)
+test_t38_kuru_kosu_fiksturu | FAIL: test_varsayilan_fiksturden_gelir (test_t38_kuru_kosu_fiksturu.VarsayilanKare.test_varsayilan_fiksturden_gelir)
+test_t38_kuru_kosu_fiksturu | Ran 11 tests in 1.817s
+test_t38_kuru_kosu_fiksturu | FAILED (failures=5)
+test_t123_gecis_provasi | ERROR: test_MUTASYON_kunyedeki_sha_bozulursa_UYUSMAZ_der (test_t123_gecis_provasi.G2KosulabilirTests.test_MUTASYON_kunyedeki_sha_bozulursa_UYUSMAZ_der)
+test_t123_gecis_provasi | ERROR: test_g2_KOSUYOR_ve_PATLAMIYOR (test_t123_gecis_provasi.G2KosulabilirTests.test_g2_KOSUYOR_ve_PATLAMIYOR)
+test_t123_gecis_provasi | ERROR: test_g2_YEDEGI_OK_diye_dogruluyor (test_t123_gecis_provasi.G2KosulabilirTests.test_g2_YEDEGI_OK_diye_dogruluyor)
+test_t123_gecis_provasi | FAIL: test_BIRINCIL_ve_YEDEK_ikisi_de_pakette (test_t123_gecis_provasi.YedekPaketteTests.test_BIRINCIL_ve_YEDEK_ikisi_de_pakette)
+test_t123_gecis_provasi | Ran 6 tests in 0.029s
+test_t123_gecis_provasi | FAILED (failures=1, errors=3)
+test_mavlink_tunel_uctan_uca | FAIL: test_K4_03_K4_04_tampon_256_ZORUNLU (test_mavlink_tunel_uctan_uca.K4UctanUca.test_K4_03_K4_04_tampon_256_ZORUNLU) (kayip=0.0, tampon=256)
+test_mavlink_tunel_uctan_uca | FAIL: test_K4_03_K4_04_tampon_256_ZORUNLU (test_mavlink_tunel_uctan_uca.K4UctanUca.test_K4_03_K4_04_tampon_256_ZORUNLU) (kayip=0.05, tampon=256)
+test_mavlink_tunel_uctan_uca | Ran 15 tests in 148.637s
+test_mavlink_tunel_uctan_uca | FAILED (failures=2)
+test_imgsz_tek_kaynak | ERROR: test_uretim_defteri_ile_INFER_SIZE_UYUSUYOR (test_imgsz_tek_kaynak.ImgszTekKaynak.test_uretim_defteri_ile_INFER_SIZE_UYUSUYOR)
+test_imgsz_tek_kaynak | FAIL: test_load_model_hata_mesaji_IMGSZ_degerlerini_yaziyor (test_imgsz_tek_kaynak.ImgszTekKaynak.test_load_model_hata_mesaji_IMGSZ_degerlerini_yaziyor)
+test_imgsz_tek_kaynak | Ran 9 tests in 0.018s
+test_imgsz_tek_kaynak | FAILED (failures=1, errors=1)
+test_gece_akis_diyagramlari | FAIL: test_her_dugum_dosya_satir_tasir_ve_kodda_durur (test_gece_akis_diyagramlari.DugumlerKodaTutar.test_her_dugum_dosya_satir_tasir_ve_kodda_durur)
+test_gece_akis_diyagramlari | FAIL: test_dugum_tablosu_mmd_ile_birebir (test_gece_akis_diyagramlari.TabloBayatDegil.test_dugum_tablosu_mmd_ile_birebir)
+test_gece_akis_diyagramlari | Ran 13 tests in 0.456s
+test_gece_akis_diyagramlari | FAILED (failures=2)
+test_d373_defter_geri_isaret | FAIL: test_HER_CURUTULEN_KAYIT_ILERI_ISARET_VERIYOR (test_d373_defter_geri_isaret.DefterGeriIsaret.test_HER_CURUTULEN_KAYIT_ILERI_ISARET_VERIYOR)
+test_d373_defter_geri_isaret | FAIL: test_BIR_ISARET_SILININCE_KAPI_DUSUYOR (test_d373_defter_geri_isaret.MutasyonKontrolu.test_BIR_ISARET_SILININCE_KAPI_DUSUYOR)
+test_d373_defter_geri_isaret | Ran 6 tests in 0.135s
+test_d373_defter_geri_isaret | FAILED (failures=2)
+test_atolye_test_gunu | FAIL: test_kod_atiflari_satirda_birebir (test_atolye_test_gunu.K5_Kaynaklar.test_kod_atiflari_satirda_birebir) (atif='comms/yks_gui.py:4387')
+test_atolye_test_gunu | FAIL: test_kod_atiflari_satirda_birebir (test_atolye_test_gunu.K5_Kaynaklar.test_kod_atiflari_satirda_birebir) (atif='comms/yks_gui.py:4428')
+test_atolye_test_gunu | Ran 39 tests in 2.352s
+test_atolye_test_gunu | FAILED (failures=2)
+test_yks_gui_uretim_hizasi | FAIL: test_gorunum_eslemesi_URETIMIN_IC_ADLARIYLA_AYNI (test_yks_gui_uretim_hizasi.AcilisArgumanlariTests.test_gorunum_eslemesi_URETIMIN_IC_ADLARIYLA_AYNI)
+test_yks_gui_uretim_hizasi | FAIL: test_kompozit_dizini_listeleniyor (test_yks_gui_uretim_hizasi.KompozitKaynakTests.test_kompozit_dizini_listeleniyor)
+test_yks_gui_uretim_hizasi | Ran 55 tests in 8.088s
+test_yks_gui_uretim_hizasi | FAILED (failures=2)
+test_t202_jetson_paket_butunlugu | FAIL: test_KULLANILAN_HER_YOL_KURULUYOR (test_t202_jetson_paket_butunlugu.KurulumBlogu.test_KULLANILAN_HER_YOL_KURULUYOR)
+test_t202_jetson_paket_butunlugu | Ran 7 tests in 5.677s
+test_t202_jetson_paket_butunlugu | FAILED (failures=1)
+test_saha_kuru_kosu | FAIL: test_t20_sonrasi_kalan_kopukluklar_isim_isim_yakalaniyor (test_saha_kuru_kosu.PozitifKontrolTests.test_t20_sonrasi_kalan_kopukluklar_isim_isim_yakalaniyor) (halka='motor')
+test_saha_kuru_kosu | Ran 36 tests in 25.791s
+test_saha_kuru_kosu | FAILED (failures=1)
+test_model_registry | ERROR: test_default_is_verified_v36_competition_model (test_model_registry.ModelRegistryTests.test_default_is_verified_v36_competition_model)
+test_model_registry | Ran 4 tests in 0.003s
+test_model_registry | FAILED (errors=1)
+test_fdr_t244_ic_celiski | FAIL: test_T7b_iki_yardim_kod_satiriyla (test_fdr_t244_ic_celiski.T7_Durustluk.test_T7b_iki_yardim_kod_satiriyla)
+test_fdr_t244_ic_celiski | Ran 44 tests in 9.155s
+test_fdr_t244_ic_celiski | FAILED (failures=1)
+test_defter_butunlugu | FAIL: test_gercek_kuyruk_atiflarinin_tumu_defterde_VAR (test_defter_butunlugu.GercekDosyaPozitifKontrolTests.test_gercek_kuyruk_atiflarinin_tumu_defterde_VAR)
+test_defter_butunlugu | Ran 13 tests in 0.061s
+test_defter_butunlugu | FAILED (failures=1)
+
+## yeni (bilgilendirme-he)
+test_saha_parametrik | ERROR: test_GEVSETME_ACIKCA_istenmeli (test_saha_parametrik.FailClosedTests.test_GEVSETME_ACIKCA_istenmeli)
+test_saha_parametrik | ERROR: test_UYUM_varsa_yuklenir (test_saha_parametrik.FailClosedTests.test_UYUM_varsa_yuklenir)
+test_saha_parametrik | ERROR: test_kayit_defteri_YOKSA_uyum_SAYILMAZ (test_saha_parametrik.FailClosedTests.test_kayit_defteri_YOKSA_uyum_SAYILMAZ)
+test_saha_parametrik | ERROR: test_UC_UC_ayni_agirligi_gosteriyor (test_saha_parametrik.KayitDefteriDurumuTests.test_UC_UC_ayni_agirligi_gosteriyor)
+test_saha_parametrik | ERROR: test_manifest_ile_kayit_defteri_ESLESIYOR (test_saha_parametrik.KayitDefteriDurumuTests.test_manifest_ile_kayit_defteri_ESLESIYOR)
+test_saha_parametrik | ERROR: test_varsayilan_MANIFESTTEN_gelir (test_saha_parametrik.ModelVarsayilaniTests.test_varsayilan_MANIFESTTEN_gelir)
+test_saha_parametrik | FAIL: test_UYUSMAZLIKTA_yukselir (test_saha_parametrik.FailClosedTests.test_UYUSMAZLIKTA_yukselir)
+test_saha_parametrik | Ran 20 tests in 0.030s
+test_saha_parametrik | FAILED (failures=1, errors=6)
+test_t38_kuru_kosu_fiksturu | FAIL: test_kareler_ve_sha_tutuyor (test_t38_kuru_kosu_fiksturu.FiksturSozlesmesi.test_kareler_ve_sha_tutuyor) (kare='images/sa_000000.jpg')
+test_t38_kuru_kosu_fiksturu | FAIL: test_kareler_ve_sha_tutuyor (test_t38_kuru_kosu_fiksturu.FiksturSozlesmesi.test_kareler_ve_sha_tutuyor) (kare='images/sa_000001.jpg')
+test_t38_kuru_kosu_fiksturu | FAIL: test_kareler_ve_sha_tutuyor (test_t38_kuru_kosu_fiksturu.FiksturSozlesmesi.test_kareler_ve_sha_tutuyor) (kare='images/sa_000002.jpg')
+test_t38_kuru_kosu_fiksturu | FAIL: test_okuyucu_dortlu_donuyor (test_t38_kuru_kosu_fiksturu.FiksturSozlesmesi.test_okuyucu_dortlu_donuyor)
+test_t38_kuru_kosu_fiksturu | FAIL: test_varsayilan_fiksturden_gelir (test_t38_kuru_kosu_fiksturu.VarsayilanKare.test_varsayilan_fiksturden_gelir)
+test_t38_kuru_kosu_fiksturu | Ran 11 tests in 1.987s
+test_t38_kuru_kosu_fiksturu | FAILED (failures=5)
+test_t123_gecis_provasi | ERROR: test_MUTASYON_kunyedeki_sha_bozulursa_UYUSMAZ_der (test_t123_gecis_provasi.G2KosulabilirTests.test_MUTASYON_kunyedeki_sha_bozulursa_UYUSMAZ_der)
+test_t123_gecis_provasi | ERROR: test_g2_KOSUYOR_ve_PATLAMIYOR (test_t123_gecis_provasi.G2KosulabilirTests.test_g2_KOSUYOR_ve_PATLAMIYOR)
+test_t123_gecis_provasi | ERROR: test_g2_YEDEGI_OK_diye_dogruluyor (test_t123_gecis_provasi.G2KosulabilirTests.test_g2_YEDEGI_OK_diye_dogruluyor)
+test_t123_gecis_provasi | FAIL: test_BIRINCIL_ve_YEDEK_ikisi_de_pakette (test_t123_gecis_provasi.YedekPaketteTests.test_BIRINCIL_ve_YEDEK_ikisi_de_pakette)
+test_t123_gecis_provasi | Ran 6 tests in 0.025s
+test_t123_gecis_provasi | FAILED (failures=1, errors=3)
+test_mavlink_tunel_uctan_uca | FAIL: test_K4_03_K4_04_tampon_256_ZORUNLU (test_mavlink_tunel_uctan_uca.K4UctanUca.test_K4_03_K4_04_tampon_256_ZORUNLU) (kayip=0.0, tampon=256)
+test_mavlink_tunel_uctan_uca | FAIL: test_K4_03_K4_04_tampon_256_ZORUNLU (test_mavlink_tunel_uctan_uca.K4UctanUca.test_K4_03_K4_04_tampon_256_ZORUNLU) (kayip=0.05, tampon=256)
+test_mavlink_tunel_uctan_uca | Ran 15 tests in 148.146s
+test_mavlink_tunel_uctan_uca | FAILED (failures=2)
+test_imgsz_tek_kaynak | ERROR: test_uretim_defteri_ile_INFER_SIZE_UYUSUYOR (test_imgsz_tek_kaynak.ImgszTekKaynak.test_uretim_defteri_ile_INFER_SIZE_UYUSUYOR)
+test_imgsz_tek_kaynak | FAIL: test_load_model_hata_mesaji_IMGSZ_degerlerini_yaziyor (test_imgsz_tek_kaynak.ImgszTekKaynak.test_load_model_hata_mesaji_IMGSZ_degerlerini_yaziyor)
+test_imgsz_tek_kaynak | Ran 9 tests in 0.017s
+test_imgsz_tek_kaynak | FAILED (failures=1, errors=1)
+test_gece_akis_diyagramlari | FAIL: test_her_dugum_dosya_satir_tasir_ve_kodda_durur (test_gece_akis_diyagramlari.DugumlerKodaTutar.test_her_dugum_dosya_satir_tasir_ve_kodda_durur)
+test_gece_akis_diyagramlari | FAIL: test_dugum_tablosu_mmd_ile_birebir (test_gece_akis_diyagramlari.TabloBayatDegil.test_dugum_tablosu_mmd_ile_birebir)
+test_gece_akis_diyagramlari | Ran 13 tests in 0.194s
+test_gece_akis_diyagramlari | FAILED (failures=2)
+test_d373_defter_geri_isaret | FAIL: test_HER_CURUTULEN_KAYIT_ILERI_ISARET_VERIYOR (test_d373_defter_geri_isaret.DefterGeriIsaret.test_HER_CURUTULEN_KAYIT_ILERI_ISARET_VERIYOR)
+test_d373_defter_geri_isaret | FAIL: test_BIR_ISARET_SILININCE_KAPI_DUSUYOR (test_d373_defter_geri_isaret.MutasyonKontrolu.test_BIR_ISARET_SILININCE_KAPI_DUSUYOR)
+test_d373_defter_geri_isaret | Ran 6 tests in 0.152s
+test_d373_defter_geri_isaret | FAILED (failures=2)
+test_atolye_test_gunu | FAIL: test_kod_atiflari_satirda_birebir (test_atolye_test_gunu.K5_Kaynaklar.test_kod_atiflari_satirda_birebir) (atif='comms/yks_gui.py:4387')
+test_atolye_test_gunu | FAIL: test_kod_atiflari_satirda_birebir (test_atolye_test_gunu.K5_Kaynaklar.test_kod_atiflari_satirda_birebir) (atif='comms/yks_gui.py:4428')
+test_atolye_test_gunu | Ran 39 tests in 2.111s
+test_atolye_test_gunu | FAILED (failures=2)
+test_yks_gui_uretim_hizasi | FAIL: test_kompozit_dizini_listeleniyor (test_yks_gui_uretim_hizasi.KompozitKaynakTests.test_kompozit_dizini_listeleniyor)
+test_yks_gui_uretim_hizasi | Ran 55 tests in 7.078s
+test_yks_gui_uretim_hizasi | FAILED (failures=1)
+test_t202_jetson_paket_butunlugu | FAIL: test_KULLANILAN_HER_YOL_KURULUYOR (test_t202_jetson_paket_butunlugu.KurulumBlogu.test_KULLANILAN_HER_YOL_KURULUYOR)
+test_t202_jetson_paket_butunlugu | Ran 7 tests in 4.734s
+test_t202_jetson_paket_butunlugu | FAILED (failures=1)
+test_saha_kuru_kosu | FAIL: test_t20_sonrasi_kalan_kopukluklar_isim_isim_yakalaniyor (test_saha_kuru_kosu.PozitifKontrolTests.test_t20_sonrasi_kalan_kopukluklar_isim_isim_yakalaniyor) (halka='motor')
+test_saha_kuru_kosu | Ran 36 tests in 24.590s
+test_saha_kuru_kosu | FAILED (failures=1)
+test_model_registry | ERROR: test_default_is_verified_v36_competition_model (test_model_registry.ModelRegistryTests.test_default_is_verified_v36_competition_model)
+test_model_registry | Ran 4 tests in 0.002s
+test_model_registry | FAILED (errors=1)
+test_fdr_t244_ic_celiski | FAIL: test_T7b_iki_yardim_kod_satiriyla (test_fdr_t244_ic_celiski.T7_Durustluk.test_T7b_iki_yardim_kod_satiriyla)
+test_fdr_t244_ic_celiski | Ran 44 tests in 9.540s
+test_fdr_t244_ic_celiski | FAILED (failures=1)
+test_defter_butunlugu | FAIL: test_gercek_kuyruk_atiflarinin_tumu_defterde_VAR (test_defter_butunlugu.GercekDosyaPozitifKontrolTests.test_gercek_kuyruk_atiflarinin_tumu_defterde_VAR)
+test_defter_butunlugu | Ran 13 tests in 0.050s
+test_defter_butunlugu | FAILED (failures=1)
