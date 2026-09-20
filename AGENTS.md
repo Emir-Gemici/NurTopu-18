@@ -59,8 +59,13 @@ Kayıt biçimi, görev satırının altına:
 `- **Rol devri:** <tarih> · <ajan> ← <rol> · sebep: <ne> · denetim: <kim>`
 
 **Mutlak yasaklar (istisnasız, herkes için):**
-- 🔴 **`git push` — 2026-08-21'den beri DONDURULDU** (kullanıcı emri, ikinci emre kadar).
-  `git commit` **sürer**; ikisini karıştırmak iş kaybettirir. Ayrıntı: `CLAUDE.md §5`.
+- ⚠ **`git push` — DONDURMA 2026-08-28'de KALKTI** (kullanıcı emri: *"push artık istediğin
+  zaman yapabilirsin"*). Bu satır 2026-08-21 dondurmasını yazıyordu ve **23 gün bayat kaldı**;
+  2026-09-20'de `CLAUDE.md §5` ile hizalandı. Atıf verilen anayasa maddesi her zaman üstündür.
+  **Push serbesttir ama kapı kırmızıyken push YOK:** `codes/test_rota_sentetik.py` 15/15 **ve**
+  tam süit koşulmuş, çıktısı **okunmuş** olmalı (D-360: süiti commit/push ile aynı zincirde
+  koşmak bir kez kırmızı push'a yol açtı). Kapı koşulamıyorsa bu **eksiklik olarak yazılır**,
+  sessizce geçilmez; o durumda push **kullanıcı onayına** bağlıdır. Ayrıntı: `CLAUDE.md §5`.
 - Kullanıcının dosyalarını **silmek**.
 - `REVIEW_LOG.md` içindeki mevcut kayıtları **değiştirmek veya silmek** — yalnız sona eklenir.
 - Başka bir ajanın `[IN_PROGRESS]` görevine dokunmak (bkz. §3).
