@@ -1,0 +1,27 @@
+COMMAND: ['/usr/bin/python3', '-B', '-m', 'unittest', 'discover', '-s', 'tests', '-p', 'test_faz_b_yks_fda_kipi.py', '-v']
+test_6_iha_limiti_kipe_gore (test_faz_b_yks_fda_kipi.FdaButcesi.test_6_iha_limiti_kipe_gore) ... ok
+test_6b_cli_fda_bayragi_var_ve_varsayilan_kapali (test_faz_b_yks_fda_kipi.FdaButcesi.test_6b_cli_fda_bayragi_var_ve_varsayilan_kapali) ... ok
+test_10_YARISMA_kipinde_dugme_PASIF_kalir_regresyon_yok (test_faz_b_yks_fda_kipi.FdaIkinciOnayDugmesi.test_10_YARISMA_kipinde_dugme_PASIF_kalir_regresyon_yok) ... ok
+test_11_FDA_kanit_kilidi_varken_dugme_ACILMAZ (test_faz_b_yks_fda_kipi.FdaIkinciOnayDugmesi.test_11_FDA_kanit_kilidi_varken_dugme_ACILMAZ) ... ok
+test_12_FDA_kanit_kilidi_afisini_etiket_EZMEZ (test_faz_b_yks_fda_kipi.FdaIkinciOnayDugmesi.test_12_FDA_kanit_kilidi_afisini_etiket_EZMEZ) ... ok
+test_13_FDA_ankor_yoksa_ANKOR_kilidi_FDA_dalindan_ONCE_gelir (test_faz_b_yks_fda_kipi.FdaIkinciOnayDugmesi.test_13_FDA_ankor_yoksa_ANKOR_kilidi_FDA_dalindan_ONCE_gelir) ... ok
+test_14_FDA_gecersiz_geometride_etiket_dugmeyle_CELISMEZ (test_faz_b_yks_fda_kipi.FdaIkinciOnayDugmesi.test_14_FDA_gecersiz_geometride_etiket_dugmeyle_CELISMEZ) ... ok
+test_7_FDA_1_2_sonrasi_ikinci_dugme_ACIK (test_faz_b_yks_fda_kipi.FdaIkinciOnayDugmesi.test_7_FDA_1_2_sonrasi_ikinci_dugme_ACIK) ... ok
+test_8_FDA_periyodik_tazeleme_dugmeyi_geri_KAPATMAZ (test_faz_b_yks_fda_kipi.FdaIkinciOnayDugmesi.test_8_FDA_periyodik_tazeleme_dugmeyi_geri_KAPATMAZ) ... ok
+test_9_FDA_dugme_yolu_2_2_yi_tamamlar_ve_ref_tipli_ACK_gider (test_faz_b_yks_fda_kipi.FdaIkinciOnayDugmesi.test_9_FDA_dugme_yolu_2_2_yi_tamamlar_ve_ref_tipli_ACK_gider) ... ok
+test_3_FDA_parasut_link_e_HICBIR_SEY_yazmaz (test_faz_b_yks_fda_kipi.FdaKapaliDugmeler.test_3_FDA_parasut_link_e_HICBIR_SEY_yazmaz) ... ok
+test_3b_YARISMA_kipinde_parasut_iki_adimla_GIDER (test_faz_b_yks_fda_kipi.FdaKapaliDugmeler.test_3b_YARISMA_kipinde_parasut_iki_adimla_GIDER)
+Pozitif kontrol: 3 numaralı testteki sessizlik FDA kilididir. ... ok
+test_4_FDA_ika_baslat_IKA_GO_yazmaz (test_faz_b_yks_fda_kipi.FdaKapaliDugmeler.test_4_FDA_ika_baslat_IKA_GO_yazmaz) ... ok
+test_5_FDA_firlatma_etiketi_KRONOMETRE_ve_ARM_kilidi_SURUYOR (test_faz_b_yks_fda_kipi.FdaKapaliDugmeler.test_5_FDA_firlatma_etiketi_KRONOMETRE_ve_ARM_kilidi_SURUYOR) ... ok
+test_1_FDA_ika_kaniti_OLMADAN_onay_tamamlanir_ve_ACK_gider (test_faz_b_yks_fda_kipi.HakemOnayiFdaKipi.test_1_FDA_ika_kaniti_OLMADAN_onay_tamamlanir_ve_ACK_gider) ... ok
+test_2_YARISMA_kipinde_ayni_senaryo_REDDEDILIR (test_faz_b_yks_fda_kipi.HakemOnayiFdaKipi.test_2_YARISMA_kipinde_ayni_senaryo_REDDEDILIR) ... ok
+test_2b_YARISMA_kipinde_ika_kaniti_varsa_onay_tamamlanir (test_faz_b_yks_fda_kipi.HakemOnayiFdaKipi.test_2b_YARISMA_kipinde_ika_kaniti_varsa_onay_tamamlanir)
+Pozitif kontrol: 2 numaralı testin reddi kanıt yokluğundandır. ... ok
+
+----------------------------------------------------------------------
+Ran 17 tests in 0.004s
+
+OK
+
+EXIT=0

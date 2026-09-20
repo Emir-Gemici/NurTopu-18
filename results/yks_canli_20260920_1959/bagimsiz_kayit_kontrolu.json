@@ -1,0 +1,32 @@
+{
+  "olay_sayilari": {
+    "OTURUM_BASLADI": 1,
+    "YKS_ARAYUZ_HAZIR": 1,
+    "KAMERA_KANIT": 8,
+    "TELEMETRI_KANIT": 10,
+    "UI_OLAYI": 291,
+    "ROTA_ALINDI": 95,
+    "HAKEM_ONAYI_1": 1,
+    "ROTA_YOK": 4,
+    "HAKEM_ONAYI_2": 1
+  },
+  "no_route_donusleri": [
+    {
+      "seq": 19019,
+      "sonraki_open_ack_s": 3.2186639308929443
+    },
+    {
+      "seq": 19039,
+      "sonraki_open_ack_s": 1.167344570159912
+    },
+    {
+      "seq": 19059,
+      "sonraki_open_ack_s": 1.113692283630371
+    },
+    {
+      "seq": 19079,
+      "sonraki_open_ack_s": 1.0646650791168213
+    }
+  ],
+  "exit": 0
+}

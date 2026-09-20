@@ -32040,3 +32040,15 @@ geri alınabilir, Jetson gerekmez. Şart: parametre dökümü önce **ve** sonra
 **Düzeltme:** belge revize edildi (REVİZYON 2), yanlış tablo değiştirildi, geç ACK bulgusu asıl
 teşhis olarak yazıldı, sabah sırası "Max Window tek başına + gecikme dağılımı kaydı" olarak
 güncellendi. Kod değişikliği önerileri uçuş sonrasına alındı.
+
+
+## 2026-09-20 · YKS canlı USB onay ölçümü (Codex-1)
+
+Kullanıcının doğrudan kontrol isteği ve iki gerçek tıklamasıyla saha dalı
+324ce42b üzerinde 100 saniyelik prova: GECTI, exit 0. 95 OPEN_ROUTE /
+4 NO_ROUTE; 74 yeni-seq rota ACK / 4 NO_ROUTE ACK; en uzun boşluk 2,1 s
+(ön kayıt 10 s), hayalet ACK yok. HAKEM_ONAYI_1/2 birer kez.
+Komutlar, gerçek çıktılar ve sınırlar: `results/yks_canli_20260920_1959/SONUC.md`.
+Telsiz/model kabulü değildir. Üretimde son örnekler MASKE_YOK ve Pixhawk
+alanları null; ham kayıt aynı dizinde. Genel kapı cv2 yokluğuyla exit 1;
+geçti sayılmadı. Kod/servis değişikliği ve görev kapatma yapılmadı.

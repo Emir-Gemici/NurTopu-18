@@ -1,0 +1,96 @@
+CWD: .
+COMMAND: ['/usr/bin/python3', '-B', '-m', 'unittest', 'discover', '-s', 'SAHA_20260920', '-p', 'test_rota_testi_yeniseq.py', '-v']
+test_1_saglam_yki_GECTI_der (test_rota_testi_yeniseq.AracKendiniKanitliyor.test_1_saglam_yki_GECTI_der) ... ERROR
+test_2_mutant_yeni_seq_onayi_siliyor_YAKALANIR (test_rota_testi_yeniseq.AracKendiniKanitliyor.test_2_mutant_yeni_seq_onayi_siliyor_YAKALANIR) ... ERROR
+test_3_mutant_no_route_onayi_siliyor_YAKALANIR (test_rota_testi_yeniseq.AracKendiniKanitliyor.test_3_mutant_no_route_onayi_siliyor_YAKALANIR) ... ERROR
+test_4_mutant_hayalet_ack_YAKALANIR (test_rota_testi_yeniseq.AracKendiniKanitliyor.test_4_mutant_hayalet_ack_YAKALANIR) ... ERROR
+test_5_no_route_otomatik_ack_saglamda_geliyor (test_rota_testi_yeniseq.AracKendiniKanitliyor.test_5_no_route_otomatik_ack_saglamda_geliyor)
+NO_ROUTE'un otomatik ACK'i sayiliyor mu (sartname davranisi kaybolmasin). ... ERROR
+
+======================================================================
+ERROR: test_1_saglam_yki_GECTI_der (test_rota_testi_yeniseq.AracKendiniKanitliyor.test_1_saglam_yki_GECTI_der)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/trs/projects/navitas-unified-20260822/SAHA_20260920/test_rota_testi_yeniseq.py", line 99, in test_1_saglam_yki_GECTI_der
+    h = senaryo("saglam", 5601, 5701)
+  File "/home/trs/projects/navitas-unified-20260822/SAHA_20260920/test_rota_testi_yeniseq.py", line 85, in senaryo
+    yki = SahteYKI(hub_port, kip)
+  File "/home/trs/projects/navitas-unified-20260822/SAHA_20260920/test_rota_testi_yeniseq.py", line 38, in __init__
+    self.s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+             ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib64/python3.14/socket.py", line 236, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 1] Operation not permitted
+
+======================================================================
+ERROR: test_2_mutant_yeni_seq_onayi_siliyor_YAKALANIR (test_rota_testi_yeniseq.AracKendiniKanitliyor.test_2_mutant_yeni_seq_onayi_siliyor_YAKALANIR)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/trs/projects/navitas-unified-20260822/SAHA_20260920/test_rota_testi_yeniseq.py", line 106, in test_2_mutant_yeni_seq_onayi_siliyor_YAKALANIR
+    h = senaryo("yeni_seq", 5602, 5702)
+  File "/home/trs/projects/navitas-unified-20260822/SAHA_20260920/test_rota_testi_yeniseq.py", line 85, in senaryo
+    yki = SahteYKI(hub_port, kip)
+  File "/home/trs/projects/navitas-unified-20260822/SAHA_20260920/test_rota_testi_yeniseq.py", line 38, in __init__
+    self.s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+             ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib64/python3.14/socket.py", line 236, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 1] Operation not permitted
+
+======================================================================
+ERROR: test_3_mutant_no_route_onayi_siliyor_YAKALANIR (test_rota_testi_yeniseq.AracKendiniKanitliyor.test_3_mutant_no_route_onayi_siliyor_YAKALANIR)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/trs/projects/navitas-unified-20260822/SAHA_20260920/test_rota_testi_yeniseq.py", line 113, in test_3_mutant_no_route_onayi_siliyor_YAKALANIR
+    h = senaryo("no_route", 5603, 5703)
+  File "/home/trs/projects/navitas-unified-20260822/SAHA_20260920/test_rota_testi_yeniseq.py", line 85, in senaryo
+    yki = SahteYKI(hub_port, kip)
+  File "/home/trs/projects/navitas-unified-20260822/SAHA_20260920/test_rota_testi_yeniseq.py", line 38, in __init__
+    self.s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+             ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib64/python3.14/socket.py", line 236, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 1] Operation not permitted
+
+======================================================================
+ERROR: test_4_mutant_hayalet_ack_YAKALANIR (test_rota_testi_yeniseq.AracKendiniKanitliyor.test_4_mutant_hayalet_ack_YAKALANIR)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/trs/projects/navitas-unified-20260822/SAHA_20260920/test_rota_testi_yeniseq.py", line 119, in test_4_mutant_hayalet_ack_YAKALANIR
+    h = senaryo("hayalet", 5604, 5704)
+  File "/home/trs/projects/navitas-unified-20260822/SAHA_20260920/test_rota_testi_yeniseq.py", line 85, in senaryo
+    yki = SahteYKI(hub_port, kip)
+  File "/home/trs/projects/navitas-unified-20260822/SAHA_20260920/test_rota_testi_yeniseq.py", line 38, in __init__
+    self.s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+             ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib64/python3.14/socket.py", line 236, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 1] Operation not permitted
+
+======================================================================
+ERROR: test_5_no_route_otomatik_ack_saglamda_geliyor (test_rota_testi_yeniseq.AracKendiniKanitliyor.test_5_no_route_otomatik_ack_saglamda_geliyor)
+NO_ROUTE'un otomatik ACK'i sayiliyor mu (sartname davranisi kaybolmasin).
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/trs/projects/navitas-unified-20260822/SAHA_20260920/test_rota_testi_yeniseq.py", line 127, in test_5_no_route_otomatik_ack_saglamda_geliyor
+    h = senaryo("saglam", 5605, 5705)
+  File "/home/trs/projects/navitas-unified-20260822/SAHA_20260920/test_rota_testi_yeniseq.py", line 85, in senaryo
+    yki = SahteYKI(hub_port, kip)
+  File "/home/trs/projects/navitas-unified-20260822/SAHA_20260920/test_rota_testi_yeniseq.py", line 38, in __init__
+    self.s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+             ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib64/python3.14/socket.py", line 236, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 1] Operation not permitted
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.010s
+
+FAILED (errors=5)
+
+EXIT=1

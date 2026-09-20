@@ -1,0 +1,21 @@
+COMMAND: ['/usr/bin/python3', '-B', '-m', 'unittest', 'discover', '-s', 'tests', '-p', 'test_yks_telemetri_akla_yatkinlik.py', '-v']
+test_F1_fix_alani_yok_sayilar_gosterilir_isaretli (test_yks_telemetri_akla_yatkinlik.FixAlaniYok.test_F1_fix_alani_yok_sayilar_gosterilir_isaretli) ... ok
+test_F2_fix_iki_gizler (test_yks_telemetri_akla_yatkinlik.FixAlaniYok.test_F2_fix_iki_gizler) ... ok
+test_F3_fixsiz_sifir_sifir_gizlenir (test_yks_telemetri_akla_yatkinlik.FixAlaniYok.test_F3_fixsiz_sifir_sifir_gizlenir) ... ok
+test_F4_fix_uc_degismedi (test_yks_telemetri_akla_yatkinlik.FixAlaniYok.test_F4_fix_uc_degismedi) ... ok
+test_F5_uctan_uca_fixsiz_heartbeat_sayilari_gosterir_kirmizi (test_yks_telemetri_akla_yatkinlik.FixAlaniYok.test_F5_uctan_uca_fixsiz_heartbeat_sayilari_gosterir_kirmizi) ... ok
+test_G1_sifir_sifir_gecersiz_tek_eksen_sifir_gecerli (test_yks_telemetri_akla_yatkinlik.GnssGosterimi.test_G1_sifir_sifir_gecersiz_tek_eksen_sifir_gecerli) ... ok
+test_G2_sifir_sifir_ve_fixsiz_koordinat_basilmaz (test_yks_telemetri_akla_yatkinlik.GnssGosterimi.test_G2_sifir_sifir_ve_fixsiz_koordinat_basilmaz) ... ok
+test_G3_gecerli_3B_fix_koordinati_basar (test_yks_telemetri_akla_yatkinlik.GnssGosterimi.test_G3_gecerli_3B_fix_koordinati_basar) ... ok
+test_G4_uctan_uca_etiket_kirmizi_kayit_ham_kalir (test_yks_telemetri_akla_yatkinlik.GnssGosterimi.test_G4_uctan_uca_etiket_kirmizi_kayit_ham_kalir) ... ok
+test_A1_bant_disi_irtifa_GECERSIZ_saglaniyor_demez (test_yks_telemetri_akla_yatkinlik.IrtifaUyumSatiri.test_A1_bant_disi_irtifa_GECERSIZ_saglaniyor_demez) ... ok
+test_A2_ust_sinir_sozlesmedeki_makul_ust (test_yks_telemetri_akla_yatkinlik.IrtifaUyumSatiri.test_A2_ust_sinir_sozlesmedeki_makul_ust) ... ok
+test_A3_yerdeki_arac_saglaniyor_DEMEZ_uyari_verir (test_yks_telemetri_akla_yatkinlik.IrtifaUyumSatiri.test_A3_yerdeki_arac_saglaniyor_DEMEZ_uyari_verir) ... ok
+test_A4_gecerli_irtifa_regresyon (test_yks_telemetri_akla_yatkinlik.IrtifaUyumSatiri.test_A4_gecerli_irtifa_regresyon) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.003s
+
+OK
+
+EXIT=0

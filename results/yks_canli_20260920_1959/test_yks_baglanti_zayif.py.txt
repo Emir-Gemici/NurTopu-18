@@ -1,0 +1,14 @@
+COMMAND: ['/usr/bin/python3', '-B', '-m', 'unittest', 'discover', '-s', 'tests', '-p', 'test_yks_baglanti_zayif.py', '-v']
+test_Z1_taze_yesil (test_yks_baglanti_zayif.IhaBaglantiSatiri.test_Z1_taze_yesil) ... ok
+test_Z2_kisa_bosluk_sari_zayif (test_yks_baglanti_zayif.IhaBaglantiSatiri.test_Z2_kisa_bosluk_sari_zayif) ... ok
+test_Z3_sinir_ve_gercek_kayip_kirmizi (test_yks_baglanti_zayif.IhaBaglantiSatiri.test_Z3_sinir_ve_gercek_kayip_kirmizi) ... ok
+test_Z4_ondokuz_eylul_oruntusu_hic_kirmizi_olmaz (test_yks_baglanti_zayif.IhaBaglantiSatiri.test_Z4_ondokuz_eylul_oruntusu_hic_kirmizi_olmaz) ... ok
+test_Z5_ika_satiri_degismedi (test_yks_baglanti_zayif.IhaBaglantiSatiri.test_Z5_ika_satiri_degismedi) ... ok
+test_Z6_kapi_esikleri_gevsemedi (test_yks_baglanti_zayif.IhaBaglantiSatiri.test_Z6_kapi_esikleri_gevsemedi) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.002s
+
+OK
+
+EXIT=0

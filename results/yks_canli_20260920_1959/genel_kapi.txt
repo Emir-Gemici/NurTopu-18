@@ -1,0 +1,8 @@
+CWD: .
+COMMAND: ['/usr/bin/python3', '-B', 'codes/test_rota_sentetik.py']
+Traceback (most recent call last):
+  File "/home/trs/projects/navitas-unified-20260822/codes/test_rota_sentetik.py", line 41, in <module>
+    import cv2
+ModuleNotFoundError: No module named 'cv2'
+
+EXIT=1

@@ -1,0 +1,45 @@
+CWD: /home/trs/projects/navitas-wt-bilgilendirme
+COMMAND: ['/usr/bin/python3', '-B', '-m', 'unittest', 'discover', '-s', 'tests', '-p', 'test_fda_onay_*.py', '-v']
+test_1_NO_ROUTE_1sn_sonra_ayni_serit_tam_onay_geri_gelir_ACK (test_fda_onay_askida.FdaOnayAskisi.test_1_NO_ROUTE_1sn_sonra_ayni_serit_tam_onay_geri_gelir_ACK) ... ok
+test_1b_birinci_asama_askidan_doner_ACK_yok (test_fda_onay_askida.FdaOnayAskisi.test_1b_birinci_asama_askidan_doner_ACK_yok) ... ok
+test_2_6sn_bosluk_onay_duser_ACK_yok (test_fda_onay_askida.FdaOnayAskisi.test_2_6sn_bosluk_onay_duser_ACK_yok) ... ok
+test_2b_tik_suresi_dolunca_duser_bir_kez_loglar (test_fda_onay_askida.FdaOnayAskisi.test_2b_tik_suresi_dolunca_duser_bir_kez_loglar) ... ok
+test_3_dusuk_guven_arada_tasir (test_fda_onay_askida.FdaOnayAskisi.test_3_dusuk_guven_arada_tasir) ... ok
+test_3b_karisik_kayip_kareler_pencere_icinde_tasir (test_fda_onay_askida.FdaOnayAskisi.test_3b_karisik_kayip_kareler_pencere_icinde_tasir) ... ok
+test_4_NO_ROUTE_sonrasi_farkli_serit_duser (test_fda_onay_askida.FdaOnayAskisi.test_4_NO_ROUTE_sonrasi_farkli_serit_duser) ... ok
+test_6_askidayken_onayla_ACK_uretmez_tazeleme_dugmeyi_acmaz (test_fda_onay_askida.FdaOnayAskisi.test_6_askidayken_onayla_ACK_uretmez_tazeleme_dugmeyi_acmaz) ... ok
+test_7_ankorsuz_donus_tasinmaz (test_fda_onay_askida.FdaOnayAskisi.test_7_ankorsuz_donus_tasinmaz) ... ok
+test_7b_bayat_donus_tasinmaz (test_fda_onay_askida.FdaOnayAskisi.test_7b_bayat_donus_tasinmaz) ... ok
+test_7c_iha_indiyse_donus_tasinmaz (test_fda_onay_askida.FdaOnayAskisi.test_7c_iha_indiyse_donus_tasinmaz) ... ok
+test_8_pencere_son_kabul_edilen_rotadan_olculur (test_fda_onay_askida.FdaOnayAskisi.test_8_pencere_son_kabul_edilen_rotadan_olculur) ... ok
+test_5_yarisma_kipinde_NO_ROUTE_bugunku_gibi_sifirlar (test_fda_onay_askida.YarismaKipiAskisiz.test_5_yarisma_kipinde_NO_ROUTE_bugunku_gibi_sifirlar) ... ok
+test_5b_yarisma_kipinde_dusuk_guven_bugunku_gibi_sifirlar (test_fda_onay_askida.YarismaKipiAskisiz.test_5b_yarisma_kipinde_dusuk_guven_bugunku_gibi_sifirlar) ... ok
+test_a_birinci_asama_yeni_seqte_korunur_ikinci_asama_tek_ACK (test_fda_onay_yeni_seq.FdaAyniSeritYeniSeq.test_a_birinci_asama_yeni_seqte_korunur_ikinci_asama_tek_ACK) ... ok
+test_b_tamamlanmis_onay_korunur_yeni_seqe_tek_ACK (test_fda_onay_yeni_seq.FdaAyniSeritYeniSeq.test_b_tamamlanmis_onay_korunur_yeni_seqe_tek_ACK) ... ok
+test_c2_tamamlanmis_onayda_serit_degisirse_ACK_yok (test_fda_onay_yeni_seq.FdaAyniSeritYeniSeq.test_c2_tamamlanmis_onayda_serit_degisirse_ACK_yok) ... ok
+test_c_serit_degisince_iki_asama_sifirlanir_ACK_yok (test_fda_onay_yeni_seq.FdaAyniSeritYeniSeq.test_c_serit_degisince_iki_asama_sifirlanir_ACK_yok) ... ok
+test_e2_tamamlanmis_onayda_ankorsuz_yeni_seq_ACK_yok (test_fda_onay_yeni_seq.FdaAyniSeritYeniSeq.test_e2_tamamlanmis_onayda_ankorsuz_yeni_seq_ACK_yok) ... ok
+test_e3_tek_rotasiz_FDA_ankorsuz_yeni_seq_onayi_tasimaz (test_fda_onay_yeni_seq.FdaAyniSeritYeniSeq.test_e3_tek_rotasiz_FDA_ankorsuz_yeni_seq_onayi_tasimaz)
+`tek_rota` geometri kapısı yokken de (Tk'siz FDA fikstürü) ankor ... ok
+test_e4_tek_rotasiz_FDA_tam_onayda_ankorsuz_yeni_seq_ACK_yok (test_fda_onay_yeni_seq.FdaAyniSeritYeniSeq.test_e4_tek_rotasiz_FDA_tam_onayda_ankorsuz_yeni_seq_ACK_yok) ... ok
+test_e_ankorsuz_yeni_seq_onayi_tasimaz_ACK_yok (test_fda_onay_yeni_seq.FdaAyniSeritYeniSeq.test_e_ankorsuz_yeni_seq_onayi_tasimaz_ACK_yok) ... ok
+test_f2_gercek_bayatlik_birinci_asamayi_tasimaz_dugme_kapali (test_fda_onay_yeni_seq.FdaAyniSeritYeniSeq.test_f2_gercek_bayatlik_birinci_asamayi_tasimaz_dugme_kapali) ... ok
+test_f3_gercek_bayatlik_tamamlanmis_onayi_tasimaz_ACK_yok (test_fda_onay_yeni_seq.FdaAyniSeritYeniSeq.test_f3_gercek_bayatlik_tamamlanmis_onayi_tasimaz_ACK_yok) ... ok
+test_f_bayat_tespit_yeni_seqe_ACK_gondermez (test_fda_onay_yeni_seq.FdaAyniSeritYeniSeq.test_f_bayat_tespit_yeni_seqe_ACK_gondermez)
+Görev metni: `_tespiti_yaslandir` True dönerse yeni seq'e ACK yok. ... ok
+test_g_iha_indiyse_onay_tasinmaz_ACK_yok (test_fda_onay_yeni_seq.FdaAyniSeritYeniSeq.test_g_iha_indiyse_onay_tasinmaz_ACK_yok) ... ok
+test_h_kanit_kilidi_varken_onay_tasinmaz_ACK_yok (test_fda_onay_yeni_seq.FdaAyniSeritYeniSeq.test_h_kanit_kilidi_varken_onay_tasinmaz_ACK_yok) ... ok
+test_i_tasinan_tam_onayda_irtifa_notu_etiketi_ezmez (test_fda_onay_yeni_seq.FdaAyniSeritYeniSeq.test_i_tasinan_tam_onayda_irtifa_notu_etiketi_ezmez) ... ok
+test_j_dusuk_guven_arada_ise_onay_askidan_doner (test_fda_onay_yeni_seq.FdaAyniSeritYeniSeq.test_j_dusuk_guven_arada_ise_onay_askidan_doner) ... ok
+test_k_NO_ROUTE_arada_ise_onay_askidan_doner (test_fda_onay_yeni_seq.FdaAyniSeritYeniSeq.test_k_NO_ROUTE_arada_ise_onay_askidan_doner) ... ok
+test_d2_yarisma_kipinde_tam_onay_yeni_seqte_sifirlanir_ACK_yok (test_fda_onay_yeni_seq.YarismaKipiRegresyonKilidi.test_d2_yarisma_kipinde_tam_onay_yeni_seqte_sifirlanir_ACK_yok) ... ok
+test_d3_tek_rota_ama_FDA_degil_sifirlar (test_fda_onay_yeni_seq.YarismaKipiRegresyonKilidi.test_d3_tek_rota_ama_FDA_degil_sifirlar)
+`--tek-rota` (FDA'sız) yarışma kipidir: K8 kanıtı olmadan yeni ... ok
+test_d_yarisma_kipinde_yeni_seq_bugunku_gibi_sifirlar (test_fda_onay_yeni_seq.YarismaKipiRegresyonKilidi.test_d_yarisma_kipinde_yeni_seq_bugunku_gibi_sifirlar) ... ok
+
+----------------------------------------------------------------------
+Ran 33 tests in 0.011s
+
+OK
+
+EXIT=0
