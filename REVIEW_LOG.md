@@ -31863,3 +31863,52 @@ Diğer: 19:36:51 "Potential Thrust Loss (2)" — pervanesiz arm + gaz (beklenen)
 **D-516 ek 4 — YKİ gerileme düzeltmesi eb6a0c20 denetlendi (KABUL):** mimarın 5 durum ölçümü: fix alanı yok + geçerli konum → sayılar + "fix BİLİNMİYOR · FIX YETERSİZ" (bu geceden önceki davranış geri); fix 3 → "3B FIX ✓"; fix 0 + 0/0 → "konum BİLİNMİYOR"; fix yok + 0/0 → "konum BİLİNMİYOR … konum 0/0"; fix 2 → "konum BİLİNMİYOR". `gps_telemetrisi_dogrula` katı sonucu değişmedi; çağıranları yalnız ekran (yks_gui.py:725, :5018; gps_gosterim_metni :1299, :5019). Testler: akla_yatkinlik 13, arm_gps_canli 7, fda_onay_askida 14, fda_onay_yeni_seq 19, baglanti_zayif 6, yks_gui_tunel 7 OK; genel kapı 15/15. YKİ tarafı (tunel dalı a2e69b9b → eb6a0c20) sahaya hazır; çalışan YKİ penceresi yeniden açılınca yüklenir.
 
 **D-516 ek 5 — Jetson telemetri kapısı c9ee27f0 denetlendi (KABUL, kurulum Jetson açılınca):** kurallar (mimar 5 durumla ölçtü): fix alanı yok + geçerli konum → lat/lon/alt gider; fix yok + 0/0 + 890,6 m → hepsi düşer (`[TELEMETRI] gecersiz alan bastirildi: lat/lon(0/0) alt(890.6)`); fix 2 → konum düşer, gps_fix gider; alt 250 → düşer (üst sınır IRTIFA_MAKUL_UST_M=200); fix 3 + 30 m → tam. Testler: telemetri_gecerlilik 27, yki_gnss_telemetri 17, kamera_bekleme 19, rpi_canli_olcek 20, rpi_telsiz_yayin 11, t162_alan_ihlali 19 OK; genel kapı 15/15. Kurulum dosyaları `results/jetson_20260919/kurulum2/` (karar_sozlesmesi = Jetson'daki 3bc18e5d + yalnız TELEMETRI eki; IKA_IZ_GENISLIGI_M 0.4595 korunur). GPS_RAW_INT kök nedeni (çalışan, salt okuma): yalnız iha_inis_yayinci 8 Hz ister (iha_inis_yayinci.py:98-101, 10 s tazeleme), SR2_EXT_STAT 0; `telemetri_snapshot` gps_fix için 0,5 s tazelik + time_usec eşitliğinde ret (inis_kaniti.py:868-877, :364-365) → gps_fix sık düşüyor; öneri (a) GPS alanlarına 2,5 s durum tazeliği — inis_kaniti ortak modül, UÇUŞ SONRASI.
+
+## 2026-09-21 · D-524 (mimar) — 🔴 20 Eyl 67 dakikalık saha oturumu deftere HİÇ girmemişti: 0 rota, 0 hakem onayı, komut bacağı 12/12 düştü; kök neden ölçüldü (odak), ama MODEL GÜVENİ de eşiğin altında
+
+**Nasıl bulundu:** kullanıcı "son gönderilen 2 push'u incele" dedi. `07f3e0ce` ve `d1b3f94d` okundu; ikisi de yalnız belge/kanıt taşıyor, üretim kodu içermiyor. Asıl ölçüm ikisinin de **dışında**, takipsiz bir dizinde duruyordu.
+
+**Kanıt 1 — oturumun kendisi** (`results/yks_baglanti_20260920_205239/`, 20 Eyl 20:57→22:04, gerçek Pixhawk + gerçek telsiz tüneli; `git status` → `??`, hiçbir dalda yoktu):
+`ROTA_YOK 4371` · `MASKE_YOK 4112` · `UC_BANT_TEMAS_YOK 179` · `GORUS_HATTI_KOPUK 80` · `ROTA_ALINDI 0` · `HAKEM_ONAYI_1 0` · `HAKEM_ONAYI_2 0`.
+Taşıma ayakta: `TELEMETRI_KANIT 267`, 136'sı `iha=TAZE`, gerçek GPS (37,7448841 / 38,2245816), 24 uydu, `gps_fix 3`, mod LOITER. **Yani telsiz telemetrisi çalışıyor — kullanıcının beyanı doğru.** Karar zinciri ise hiç ürün vermedi.
+
+**Kanıt 2 — bozulma monotonik** (ROTA_YOK sebepleri, üçte birlik dilimler, mimar saydı):
+ilk 1/3 → 1265/1457 MASKE_YOK (**192 karede zemin maskesi ÜRETİLDİ**, geometriden düştü) · orta 1/3 → 1390/1457 · son 1/3 → **1457/1457** (hiçbir karede zemin yok). Algı 67 dakikada tamamen söndü.
+
+**Kanıt 3 — komut bacağı** (aynı günlük): `11 × "İHA ONAY VERMEDİ ✗ ARM 20 kez gönderildi; güçlü ACK gelmedi"`, `1 × RTL … Pixhawk COMMAND_ACK gelmedi — RC pilotu fiziksel yedeğini kullansın`. İki adımlı arayüz çalıştı (11 kez "TEKRAR bas" uyarısı); kusur aşağı akıştadır. ⚠ `SAHA_20260920/UYGUNLUK_OLCUMU.md` L1–L13 zincirinde **bu bacak için satır yok** — ölçülmüş ve düşmüş bir halka uygunluk hükmünün dışında kalıyor.
+
+**Kanıt 4 — kök neden optik, deponun KENDİ kapısıyla ölçüldü.** `scripts/kamera_odak_olcer.py --dosya SAHA_20260920/kanit/kare_20260920.jpg` → `keskinlik 3.6 BULANIK`, çıkış 1 (`KESKINLIK_NET_ESIK=100`). Bağımsız ölçüm: Laplacian varyansı 1,77; Canny kenar pikseli oranı **%0,00000** — 1280×720 karede tek kenar yok. Aracın kendi ön kaydı (ONARIM-04): canlı IMX477 + 6 mm kareleri 1,5–2,3 → *"model zemini tamamen kaybedip kareyi ENGEL sayıyor"*. Pozitif kontrol aynı araçla: `kare_guncel_2005.jpg` → `2139.9 NET`, çıkış 0. **Araç ayırt edicidir.**
+
+**Kanıt 5 — ⚠ odak TEK sebep DEĞİL (mimarın çevrimdışı ölçümü; üretim ön işlemesiyle: `_preprocess` + `get_masks` + `_maskeleri_icerige_kirp`, v36, imgsz 512):**
+
+| kare | üretim eşiği `conf=0.30` ile sonuç |
+|---|---|
+| `kare_20260920.jpg` (3,6 BULANIK) | **0 tespit** |
+| `kamera_yeniden_baglanti.jpg` (36,7 ŞÜPHELİ) | **0 tespit** |
+| `kare_guncel_2005.jpg` (**2139,9 NET**) | zemin **%0**, engel %17,8, 2 tespit — güven **0,366 / 0,352** |
+| pozitif kontrol `data/kabul/…/val/sa_000000.jpg` | zemin %33,3, engel %35,6, **30 tespit, güven 0,92** |
+
+Aynı NET kare `conf=0.05`'te zemin %20,2 veriyor, güvenler **0,126–0,202**. Yani **model zemini görüyor ama güveni kabul kümesindeki 0,92'den 0,13–0,20'ye çökmüş**; üretim eşiği 0,30 hepsini kesiyor → `zemin_px=0` → `MASKE_YOK`. Odak düzeltilmeden bu ayrışmaz; ama odak düzelince kendiliğinden kapanacağı da **gösterilmiş değildir**.
+
+🔴 **Eşik gevşetme meşru değildir:** `conf 0,30→0,05` engeli %17,8→%47,8 çıkarırken zemini 0→%20,2 yapıyor, yani **serbest alanı ölçümsüz büyütüyor** — madde 15. Ayrıca kenar sayısı sıfır olan bir karede üretilen "zemin" hiçbir şeyin kanıtı değildir.
+
+⚠ **Ölçümün sınırı:** `kare_guncel_2005.jpg` bir **ekranın fotoğrafıdır** (vinyet, macenta kayması, eğri kenar). Gerçek stadyum zemininden NET bir kare alınmadan model hakkında verilecek her hüküm tahmindir.
+
+**Kanıt 6 — hiçbir git çizgisi tam zinciri içermiyordu** (`git cat-file -e`, dört ref): `comms/mavlink_tunel.py` + `yks_gui --tunel` → master ve `bilgilendirme-he`'de VAR, `origin/master` ve `kamera-dayanikli`'de YOK. `scripts/fda_gorev_uret.py`, `scripts/kamera_odak_olcer.py`, `codes/kare_keskinligi.py` → tam tersi. `scripts/yer_yonlendirici.py` ve `SAHA_YKI_BASLAT.cmd` → yalnız `bilgilendirme-he`. `SAHA_20260920/` → yalnız `origin/master`. Operatör dün yönlendiriciyi `.claude/worktrees/bilgilendirme-he` altından koşmak zorunda kalmıştı. **Somut 0-puan yolu:** `O:\navitas`'tan görev dosyası üretilemiyordu; başka dizinden üretilirken `--montaj-yaw` unutulursa varsayılan **0,0** devreye girer → `MONTAJ_YAW.md`'nin ifadesiyle "sol/sağ takası = 0 puan".
+
+**Kanıt 7 — uçakta koşan kod git'te yoktu.** `results/jetson_20260919/` takipsizdi. `kurulum/rpi_inference.py` sha256 `6fe5819b` = commit `67467c4f` sürümü (kurtarılabilirdi). `kurulum/karar_sozlesmesi_jetson_yeni.py` sha256 `3bc18e5d` **hiçbir commit'te yoktu** — 54 commit / 48 farklı sürüm tarandı, eşleşme çıkmadı. (D-516 ek 5 bu dosyayı "Jetson'daki 3bc18e5d" diye zaten anıyordu; eksik olan **izi** idi.) `codes/karar_sozlesmesi.py` ile **işlevsel farkı sıfır** — yalnız satır sonu yorumları; eşik kayması yok.
+
+**Kanıt 8 — T18 aynı işin ikinci, daha zayıf kopyası.** Çalışma ağacındaki commit'siz T18 ile `67467c4f` arasında **493 satır fark**; T18 imza sayımı `67467c4f`'de 14, çalışma ağacında 6. `JETSON_GERCEK_DURUM.md` §9'un beklenen sha'sı (`6fe5819b`) uçakta **Emir'in dalındaki** sürümün koştuğunu söylüyor. T18 commit'lenip kurulursa daha eksiksiz uygulamanın yerine daha zayıfı geçer.
+
+**Yapılan (iki commit, `saha-kanit-20260921` dalı, origin'e itildi):**
+
+1. `31294606` — iki takipsiz kanıt dizini + `REVIEW_LOG.md` D-505…D-516 kayıt altına alındı. `.gitattributes`'a `-text` eklendi: bu dosyaların kanıt değeri sha256'larındadır. Doğrulandı: **blob sha == disk sha** (`6fe5819b`, `3bc18e5d`). Push, yalnız-yerel duran **82 commit**'i de uzağa taşıdı; `origin/master`'a dokunulmadı.
+2. `a4129a79` — saha dizini tamamlandı: yer yönlendiricisi (185c2f97 yeniden-açma düzeltmesi içinde), `SAHA_YKI_BASLAT.cmd`, görev üreteci, odak ölçer, `kare_keskinligi`, odak önizleme, `SAHA_20260920/` ve iki nöbetçi. **Kapılar koşuldu:** genel kapı `GEÇTİ 15/15 · 15/15` çıkış 0; `test_t235e_fda_gorev_ureteci` 7 OK; `test_yer_yonlendirici_yeniden_baglanti` 6 OK; `test_rota_testi_yeniseq` 5 OK (65,5 s); yedi aracın tamamı `--help` rc=0.
+
+Görev üreteci `--montaj-yaw 90` ile koşuldu: `CONDITION_YAW (115)` satırı `LOITER_TIME (19)`'dan **önce** üretiliyor (D-457 şartı) ve `LOITER_TIME` merkez koordinatını taşıyor, 0/0 değil (D-451 kusuru yapısal olarak yok). Kullanılan köşeler **doğrulama fikstürüdür**; gerçek plan sahada ölçülmüş köşelerle üretilmelidir.
+
+**Yapılmayan, bilerek:** (a) dal birleştirme ve T18 kararı — kullanıcı "şimdilik dokunma" dedi, üretim kodu değiştirilmedi; (b) `tests/test_onarim04_keskinlik.py` + `test_onarim03_gorev_kaydi.py` alınmadı: görev kaydının `keskinlik` alanını denetliyorlar, o alan bu çizginin inference'ında **yok** (`codes/rpi_inference.py` 0 geçiş · `jetson_paket/kod/` 0 · Jetson'a kurulu sürüm 4). **Kalan boşluk:** bu çizgiden koşulan inference görev kaydına keskinlik yazmaz, yani odak teşhisi canlı kayıttan izlenemez; ölçer jpg/URL üzerinde bağımsız çalıştığı için saha işi bundan etkilenmez.
+
+**D-numarası uyarısı (kalıcı).** Defter üç çizgiye bölündü ve numaralar çakışıyor: `master` HEAD → **D-493** · `origin/master` ve `kamera-dayanikli-20260919` → **D-505** · `bilgilendirme-he` ve `origin/bilgilendirme-he` → **D-516** · **D-517…D-523** hiçbir REVIEW_LOG'da yok, `SAHA_20260920/KANIT_DEFTERI.md` içinde (commit `07f3e0ce`). Hiçbiri kaybolmuş değil, hepsi uzakta; risk **aranabilirlik ve aynı numaranın ikinci kez verilmesidir**. Bu kayıt **D-524**'tür; sonraki kayıtlar buradan devam eder, geri dönük numara **değiştirilmez** (mevcut atıflar kırılır).
+
+**Yanılıyorsam beni çürütecek ölçümler:** (1) aynı kurulumda 5 dakikalık yeni bir oturumda günlükte en az bir `"olay":"ROTA_ALINDI"` ve ardından `"HAKEM_ONAYI_2"` görülürse Kanıt 1 düşer; (2) odak ayarından sonra alınan karede `kamera_odak_olcer` **NET (≥100)** dönüp aynı karede `conf=0.30` ile `zemin_px > 0` çıkarsa Kanıt 5'in "odak tek sebep değil" kısmı düşer; (3) `3bc18e5d` üreten bir commit gösterilirse Kanıt 7 düşer.

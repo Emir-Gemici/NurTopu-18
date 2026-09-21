@@ -1,5 +1,258 @@
 # NAVITAS — DEVİR PROTOKOLÜ
 
+## Devir 2026-09-14 · 15 dakikalık teknik sunum
+
+**Teslim:** `fdrtakim/NAVITAS_FDR_15_DAKIKA_TEKNIK_SUNUM.pptx` ve aynı adlı PDF.
+17 slayt; kapak ilk, takım tanıtımı ikinci. İHA/İKA/mancınığa dörder slayt
+ve 3:45'er dakika ayrıldı; toplam anlatım planı 15:00. 29 kaynak görsel
+kullanımı ve dört düzenlenebilir nicel grafik var. Konuşmacı süreleri,
+metinleri ve teknik kaynakları slayt notlarında; ayrıca
+`fdrtakim/NAVITAS_FDR_SUNUM_KONUSMACI_NOTLARI.md` içinde.
+
+Ana klasör sunum şablonu kullanıldı; özgün raporlar ve şablon değiştirilmedi.
+Takım tanıtımı rol bazlıdır; kullanıcıdan istenen ad–görev–eğitim/fotoğraf
+yanıtı gelirse ikinci slayta eklenebilir. Kaynaktaki eski 7,029 kg etiketli
+V-n grafiği yerine güncel 7,05949 kg ile pozitif V-n hesabı çizildi.
+İHA tahrik/BOM ve mancınık ortak kütle-hız çelişkileri gizlenmedi;
+başarısız simülasyon sonuçları ve hesap/gerçek kayıt ayrımı korundu.
+
+**Gerçek kapılar:** `test_fdr_teknik_sunum.py` 12/12; genel rota kapısı
+kol1 15/15, kol2 15/15. Çıkışlar 0. PDF: 17 sayfa, boş slayt/taşma yok.
+Kanıtlar `results/fdr_sunum_20260914/`: `TESLIM_NOTU.md`, `sunum_kunye.json`,
+`pdf_denetim.json`, `test_sunum.txt`, `test_genel.txt`, `onizleme/`.
+Üretici: `scripts/fdr_teknik_sunum_uret.py`; yardımcı python-pptx kullanıcı
+onayıyla yalnız `results/fdr_sunum_20260914/python_deps` altına kuruldu.
+
+PPTX SHA `437b09dd70361690578de6fb02b3a31e3502a69186c32f280a345332b35257b0`;
+PDF SHA `e9ee9b70bdce55f2c626098bc8562f82fdc3e4d83d31bcd5fe05a562c42a9fe0`.
+**Yazan:** Codex · **Denetleyen:** bağımsız mimar/ekip onayı bekleniyor.
+Doğrudan kullanıcı sunum görevi; başka görev kilidi değiştirilmedi. Commit/push yok.
+
+## Devir 2026-09-14 · Takım raporu birleşimi ve tablo yerleşimi
+
+**Güncel birleşik teslim:** `fdrtakim/NAVITAS_FDR_BIRLESIK.docx` ve PDF
+(168 sayfa). Yalnız yeni 1, 2, 4, 5, 6, 7 bölümleri:
+`fdrtakim/NAVITAS_FDR_BOLUM_1_2_4_5_6_7.docx` ve PDF (12 sayfa).
+Tekil bölümler de aynı klasördedir. Kaynak beş DOCX ve altı medya değişmedi;
+5.390 metin parçası ve 114 kaynak görsel kullanımı eksiksiz korundu.
+
+Son kullanıcı isteği tablolardaki dikey kelime yığılmasını düzeltmekti.
+`scripts/fdr_takim_birlestir.py` artık 48 üst düzey tablonun yanında
+`w:sdtContent` içindeki 88 tabloyu da işler: toplam 136 gerçek Word tablosu.
+Girintiler, hücre/sütun genişlikleri, satır yükseklikleri, başlık tekrarları ve
+yatay tablo sayfaları düzenlendi; gövde ve tablo metinleri Times New Roman 12.
+Tablo başlığı tabloyla aynı bölüme alınır, boş ara bölüm üretilmez.
+
+**Gerçek kontroller:** rapor testi 18/18, genel rota kapısı kol1 15/15 ve
+kol2 15/15; çıkışlar 0. PDF 168/12 sayfa; boş sayfa ve sayfa dışına taşan
+sözcük yok. İçindekilerin 17 başlangıç sayfası PDF ile doğrulandı.
+Komutlar/ham çıktılar ve kaynak sınırları:
+`results/fdr_bolum1_20260914/TESLIM_NOTU.md`, `test_birlestir.txt`,
+`test_genel.txt`, `birlesim_kunye.json`, `pdf/denetim.json`.
+
+DOCX SHA `e490ceab313235eab3d56f3a1036b27f1cc75eb68da817c40ef6466d8b8ccb91`;
+PDF SHA `53cfa18de185b44b1e565a8446e6a0fd6a02773f98af6ab0af664023b67712a2`.
+Paylaşılan Drive klasörü bu oturumda giriş sayfasına döndü; uzak dosyalar
+incelenmedi (`drive_envanter.json`). Yerel kaynaklar kullanıldı.
+Kaynak teknik konfigürasyon çelişkileri Bölüm 6.2'de, mali gerçekleşme sınırı
+Bölüm 7'de korunur; koşulsuz jüri/bağımsız teknik onay iddiası yoktur.
+**Yazan:** Codex · **Denetleyen:** bağımsız mimar/ekip onayı bekleniyor.
+Doğrudan kullanıcı belge görevi; başka görev kilidine dokunulmadı. Commit/push yok.
+
+## Devir 2026-09-14 18:28 · FINAL_REV6 güncel konfigürasyon ve ölçüm yöntemleri
+
+**Güncel teslim:** `FDR/JURI/NAVITAS_FDR_3_3_FINAL_REV6.docx` ve aynı adlı PDF.
+326 paragraf, 50 tablo, 63 görsel; PDF 49 sayfa. Önceki REV3/4/5 ve kullanıcının
+`33.docx` kaynağı korunur. DOCX SHA
+`a3c6f25f039cee9b03dd4068b4eed701d09f4756f63c7e0fac437d2f7c3d84fa`;
+PDF SHA `fb33466192d5b1e9348ff1dd35b22807fb3996e2398dd98753618bfb340339d0`.
+Künye `results/fdr_33_20260914/sunum_rev6/rev6_kunye.json`, PDF kanıtı
+aynı dizindeki `pdf/denetim.json` dosyasıdır. Drive bağlantısı sayfa 38'de,
+bağlı teker montajı ve yakın planı sayfa 34'tedir.
+
+**Kullanıcı isteği:** REV3'ün sade anlatımı esas alındı; iki boş test tablosu,
+17 “Ölçülmedi” hücresi, tekrarlanan yapılacak-test listeleri, eski kapasite
+karşılaştırması ve arşiv GT koşusunun 44 noktalı tablosu çıkarıldı. Güncel video
+ve YKS planının 42 model noktası, gerçek test sonuçları ve başarısız deneyler
+korundu. FDA multirotor güncel kapasitesi 8 Ah / `BATT_CAPACITY=8000` olarak
+verilir; geçmiş logların ham parametreleri değiştirilmez. DataFlash, enerji
+integrali, piksel karşılaştırması, Jetson süre ölçümü, RF RTT/kayıp hesabı,
+paket boyutu ve GNSS kayıt aktarımının yöntemleri açıklandı. Gerçek veri,
+simülasyon, kuramsal hesap ve bütçe değerleri birbirine dönüştürülmedi.
+
+**Önceki iki adım:** REV4'te 77 kaynak SHA'sı, 80 sayısal kontrol, 6 BIN,
+13 tlog ve 105 simülasyon koşusu karşılaştırıldı. REV5'te elektronikçinin
+`33.docx` düzeltmeleri birleştirildi: Pixhawk 6C + PM02 + M9N, Skywalker 60A
+V2, Camera Module 3 Wide / IMX708, AS150 ve güncel kalem fiyatları. İHA alt
+toplamı 1,543 kg / 141.407,57 TL'dir; kit ve kablaj kütleleri bütçe değeridir.
+Kaynak belgedeki eski mimari çizimleri güncel bileşenlerle yeniden çizildi.
+REV6, bu iki güncellemenin üstüne sunum sadeleştirmesidir.
+
+**Gerçek kapılar:** `scripts/fdr_33_test_kaydi.py --final-rev6` → genel iki kol
+15/15; REV6 13 test / REV5 11 test / REV4 12 test `OK`, tüm çıkışlar 0.
+Ham kayıt `results/fdr_33_20260914/test_20260914_182755/`. Önceki gerçek YKS
+259 test koşusu `test_20260914_161306/` altındadır; tam depo süiti değildir.
+`scripts/fdr_33_final_rev6_pdf.py` → 49 sayfa, bağlantı/açıklamalar mevcut,
+sayfa dışına taşan sözcük ve boş gövde sayfası yok, çıkış 0. Tüm 49 sayfa
+küçültülmüş dizinde görsel olarak tarandı; her satırın tam çözünürlüklü veya
+bağımsız denetçi kontrolü yapılmış sayılmaz.
+
+**Mühendislik sınırları:** Boş ölçüm planının rapordan çıkarılması kabul
+testlerinin yapıldığı anlamına gelmez. Fiziksel İKA motor arayüzü ve sabit
+kanat saha kabulü bu belge işlemiyle doğrulanmadı. U45 AMS1117-5.0 / 3,3 V
+etiketi ile XL4015 geri besleme/hedef gerilim farkları raporda kısa tasarım
+kontrolü olarak korunur; şema onarılmış sayılmaz. Temsili fotoğraf/CAD
+etiketleri, `plan=False` Jetson kapsamı ve gerçek RF donanım ayrımı korunur.
+**Yazan:** Codex · **Denetleyen:** bağımsız mimar onayı bekleniyor ·
+**Kapı çıktısı:** yukarıdaki gerçek komutlar ve ham kayıtlar. Commit/push yok.
+
+## Devir 2026-09-14 14:24 · FINAL_REV3 gömülü CAD görsel düzeltmesi
+
+**Güncel teslim:** `FDR/JURI/NAVITAS_FDR_3_3_FINAL_REV3.docx` ve aynı adlı PDF.
+353 paragraf, 50 tablo, 63 görsel; PDF 50 sayfa. İKA genel montaj ve bağlantı
+yakın planı PDF sayfa 34'tedir. REV2 ve orijinal FINAL değiştirilmedi.
+DOCX SHA `3f01f2473c6c28020df635f17841f447af903d1189bc3fbfef06bac7ff5fea78`;
+PDF SHA `97174011d00bd0f2842c47efbff78eb6fada5cc8434be9c62fb111ce57c5d072`.
+
+**Kök neden:** Önceki video düzeltmesi, rapordaki üç eski gömülü CAD görseline
+aktarılmamıştı. Eski görseller paket ilişkileriyle birlikte kaldırıldı. Aynı
+video montajından MuJoCo ile dört yeni stüdyo karesi üretildi: İKA genel/bağlantı,
+magenta İHA ve beyaz mancınık. Dört tekerin gövde-braket-redüktör-mil zinciri
+görünür; kaynak CAD'de bulunmayan bağlantı parçaları açıkça TEMSİLİDİR.
+Ek olarak yanlış 3B PCB başlığı 2B yapıldı, CAD kaynak zarfı ayrımı netleştirildi,
+kaynak tablosu Kimlik sütunu ve ondalık ayırıcılar düzeltildi.
+
+**Kanıt:** `scripts/fdr_33_test_kaydi.py --final-rev3` → genel iki kol 15/15,
+6 REV3 testi / 7 arena montaj testi OK; tüm çıkışlar 0. Ham kayıt
+`results/fdr_33_20260914/test_20260914_142111/`.
+`scripts/fdr_33_final_rev3_pdf.py` → 50 sayfa; yeni açıklamalar ve tıklanabilir
+Drive bağlantısı mevcut; sayfa dışına taşan sözcük yok, çıkış 0. Tüm sayfalar
+küçültülmüş dizin olarak; 8/33/34/35/49 ayrıca büyük önizleme ile incelendi.
+Künye ve önizlemeler `results/fdr_33_20260914/gorsel_rev3/` altındadır.
+
+**Korunan sınırlar:** Video baytları/Drive bağlantısı, test sonuçları ve 42 rota
+noktası değiştirilmedi. Bu görsel montaj düzeltmesi gerçek imalat veya fiziksel
+entegrasyon kanıtı değildir. Önceki elektriksel şema/BOM/fiziksel test açıkları
+raporda korunuyor. Tam depo süiti veya bağımsız denetçi onayı yok.
+**Yazan:** Codex · **Denetleyen:** bağımsız mimar onayı bekleniyor ·
+**Kapı çıktısı:** yukarıdaki gerçek komutlar ve ham kayıtlar.
+
+## Devir 2026-09-14 13:52 · FINAL_REV2 DOCX/PDF ve Drive bağlantısı
+
+**Kullanıcının yeni bilgisi:** `331-332.pdf` güncel şema kaynağıdır;
+İHA/İKA yerleşim fotoğrafları **temsili** olarak kullanılacaktır. Drive bağlantısı
+`https://drive.google.com/file/d/1xXzQdDCefh2u9UxndF86EfQE8nWI1fjH/view?usp=sharing`
+videoya aittir. Onaylı ağ erişimiyle oturumsuz HTTP 200 ve
+`navitas_cad_arena_rev1_1080p.mp4 - Google Drive` başlığı doğrulandı; uzak video
+indirilip SHA karşılaştırılmadı. Link DOCX ve PDF'de tıklanabilir.
+
+**Yeni teslim:** `FDR/JURI/NAVITAS_FDR_3_3_FINAL_REV2.docx` ve aynı adlı PDF.
+351 paragraf, 50 tablo, 62 görsel; LibreOffice çıktısı 49 sayfa.
+DOCX SHA `f4b16f21582bf87c3feccd6dd50206c14f8aab14cdc9af723a1bfc31b3f44007`;
+PDF SHA `738fed2e8cf11071b911449f7ec736618b515a9119912a25d4b501064eb7d8c5`.
+Orijinal Claude FINAL ve kullanıcının PDF'si değiştirilmedi.
+
+**Düzeltmeler:** temsili iki görselin başlık, açıklama, alternatif metinleri;
+1,407 kg alt toplam ve eksik motor fiyatı; 250 g İKA kablaj tasarım bütçesi;
+İHA ana döngü 0,60 m / ESC kolu başına 0,70 m (eşit paylaşım varsayımı açık)
+ile yeniden direnç/kayıp hesapları; 30 V Jetson kademe girişi için hedef 12 V
+ripple 0,851 A; güncel video ve başarısız eski koşuların ayrı sunumu;
+videosuz tek-rota YKS görseli, gerçek GNSS gösteriminden ayrı tutuldu.
+42 nokta yeni videonun ham rota.json dosyasıyla testte tek tek karşılaştırıldı;
+referans (-4,48; -23,02) m ve 0–41 tablo / P1–P42 ekran indeks ayrımı yazıldı.
+
+**Açık fiziksel hususlar:** güncel PDF'nin SHA'sı önceden incelenenle aynı:
+`e880e266d3e9264c747c80036f3cf8a861213b2d2d4f4544f760a7916d00d090`.
+Sayfa 4 şeması/sayfa 6 alt-BOM yine U45 12,4k/3,3k ve U4 10k/3,3k içeriyor;
+12 V/5,3 V hedefleri nominal 5,947/5,038 V hesabıyla uyuşmuyor. Bu açıkça rapora
+yazıldı, düzeltilmiş kart veya yükte test var sayılmadı. PDF'deki sarı ÖN
+değerleri kaynakta gerçek ölçüm değil olarak tanımlanıyor; sonuç diye alınmadı.
+Eksik nihai BOM kütle/fiyat ve fiziksel tam-yük/entegrasyon kabulü hâlâ açık.
+
+**Gerçek kapı:** tam Python yolu + `-X utf8 -B scripts/fdr_33_test_kaydi.py
+--final-rev2` → genel iki kol 15/15; `Ran 15 tests in 0.227s / OK`; tüm çıkışlar 0.
+Kanıt `results/fdr_33_20260914/test_20260914_135031/`. Önceki tek başarısız testte
+beklenen gerilim değeri yuvarlatılmıştı; kesin 0,069159744 V beklentisiyle düzeltildi.
+`scripts/fdr_33_final_rev2_pdf.py` → `REV2_PDF_OK 49 sayfa; Drive bağlantısı var;
+sayfa dışına taşan sözcük yok`, çıkış 0. 2/7/13/29/30/36/37/38/46/47/48/49
+sayfaları görsel incelendi; tüm sayfalara bağımsız görsel onay verilmedi.
+
+**Üreteçler:** `scripts/fdr_33_final_rev2.py`, `scripts/fdr_33_final_rev2_pdf.py`;
+`scripts/fdr_33_test_kaydi.py` yeni `--final-rev2` seçeneği;
+`tests/test_fdr_33_final_rev2.py`. Kanıt `son_kontrol/final_rev2_kunye.json`,
+`son_kontrol/rev2_pdf/denetim.json`. Üreteç, kaynak SHA değişirse bilinçli durur.
+**Yazan:** Codex · **Bağımsız denetleyen:** yok; kilit/görev kapatma/commit/push yok.
+
+---
+
+## Devir 2026-09-14 · Arena videosu tamam; kullanıcının FINAL.docx belgesi henüz teslim edilemez
+
+**Yetki ve kapsam:** kullanıcının doğrudan video düzeltme ve Claude'un
+`FDR/JURI/NAVITAS_FDR_3_3_FINAL.docx` belgesini denetleme talebi. Bu belge artık
+esas kaynaktır; eski `BIRLESIK`/`REV1` raporları güncel FINAL yerine teslim edilmez.
+FINAL DOCX/PDF değiştirilmedi. T107/T260 kilitlerine dokunulmadı; commit/push yok.
+
+**Video teslimi:** `FDR/JURI/video/navitas_cad_arena_rev1_1080p.mp4`;
+1920×1080, 25 FPS, 4.205 kare, 168,20 s, 81.082.874 bayt.
+SHA-256: `e46a9dd5796bfdede20d0c067ebcbc2acde8fa3e69c2302292f7240c8d89177e`.
+01:30 sonrası önce teker bağlantısı yakın planı, sonra arena içinde sürekli İKA
+sürüşü var; sonuç ekranındaki başlangıç konumu hatası da düzeltildi. Açık model
+rotası zemin üstünde ince yeşil şerit; İHA magenta, İKA Turan mavisi, mancınık beyaz.
+Eksik CAD motor/braket/mil bağlantıları **temsili** ve çarpışmasız/kütlesizdir;
+gerçek imalat kanıtı değildir. İKA teker hareketi qpos kaydından, İHA aktüatör
+gösterimi temsili. TUR3 kayıtlı algı girdisiyle yeni fizik kaydının tekrar oynatımı;
+canlı algı/saha testi değil. Eski NO_ROUTE koşusu korunuyor, GT model başarısı yapılmadı.
+
+**Gerçek doğrulama:** `scripts/fdr_33_arena_video_rev1.py --render` →
+`ARENA_VIDEO_OK 4205 KARE 168.2 s`, çıkış 0.
+`scripts/fdr_33_arena_video_denetle.py --test` → genel kapı iki kol 15/15;
+`Ran 7 tests in 2.837s / OK`, çıkış 0. `--video` →
+`TESLIM_VIDEO_DOGRULANDI 4205 kare 13 sürüş örneği`, çıkış 0.
+Kanıtlar: `results/fdr_33_20260914/cad_video_arena_rev1_v2/`.
+90/120/166 s kareleri ayrıca görsel incelendi; insan görsel kabulünün yerine geçmez.
+İlk `cad_video_arena_rev1/` dizinindeki yarım video eski WIP olarak korunuyor.
+
+**FINAL denetimi:** `scripts/fdr_33_final_denetle.py` →
+`FINAL_OKUMA_OK 348 paragraf 50 tablo 61 görsel 54 PDF sayfası` ve
+`FINAL_DENETIM_KAYDEDILDI 10 bulgu; kurulu alt toplam 1.407 kg; TESLIME_HAZIR=False`,
+çıkış 0. Kaynak ve bulgular: `results/fdr_33_20260914/son_kontrol/final_denetim.json`.
+DOCX SHA: `f3120da5eff126ddb97eb6860ccf16f9ac1792d2d18d104951c94cfca16c6b9c`.
+Sayısal alt toplam 1,876 değil 1,407 kg; 143.098,77 TL bütçe dahil doğrudur, motor
+fiyatı da eksiktir. Şemada U45 hedef 12 V fakat bölücü nominal 5,947 V;
+U4 hedef 5,3 V fakat nominal 5,038 V. Jetson son buck girişi şemada 30 V,
+hesapta 16,8 V. Fiziksel çıkış ölçülmedi. İHA görseli kökteki Gemini adlı JPG ile
+güçlü eşleşiyor; ham fotoğraf/temsili görsel kökeni kullanıcıya soruldu, yanıt yok.
+İKA fotoğrafına yapay hükmü verilmedi. Kablaj boy/kütle çelişkileri, eski video
+bağlantısı ve tasarım NX/SiK ile ölçülen Nano/RFD platform ayrımı da listede.
+
+**Önemli düzeltme:** 64 waypoint raporda bütünüyle yanlış sayı değildir;
+planlayıcı için yumuşak hedef, `comms/iha_sender.py:62` için zorunlu gönderim
+sınırıdır. 65/67 planlar göndericide geometri reddi alır; sınır kaldırılmadı.
+RC olayının ham kayıtta bulunmadığı iddiası yanlış: 08-34-30 BIN'de olay var,
+ama son ARM durumu 0; havada RC failsafe kanıtı sayılamaz.
+
+**Diğer gerçek kapılar:** `scripts/fdr_33_test_kaydi.py --hedef` →
+`Ran 259 tests in 50.718s / OK`, genel iki kol 15/15, çıkış 0
+(`test_20260914_125633/`). Küçük pencere rota listesi ve görünüm testi hizalandı.
+`scripts/yki_tek_rota_onizleme.py` → `YKI_ONIZLEME_OK 3 görsel 42 nokta`, çıkış 0;
+kayıt etiketi korunuyor, sentetik canlı GNSS/ACK/onay yok.
+`-m unittest discover -s tests -p test_fdr_33_final_denetle.py -v` →
+`Ran 6 tests in 0.000s / OK`, çıkış 0.
+Son `codes/test_rota_sentetik.py` → iki kol 15/15, çıkış 0
+(`son_kontrol/final_genel_kapi.txt`). Yorumlayıcı tümünde
+`O:\navitas-local-train\venv\Scripts\python.exe -X utf8 -B`.
+Tam süit son denemesi kesildi; tamamlanmış yeşil sonuç olarak raporlanamaz.
+
+**Devralanın ilk işi:** kullanıcının video Drive linki ve görsel kökeni yanıtını
+almak; elektronik sorumlusundan güncel şema/yükte çıkış doğrulaması istemek.
+Yeni rapor hazırlanırsa FINAL'in ayrı revizyonu olmalı; eksik nihai donanım
+kütle/fiyat/tam-yük ölçümleri veya saha testi uydurulmamalı. 2×SunnySky/4S13Ah
+arkadaş listesi güncel; eski Excel 4×AT3520/6S16Ah tasarımına geri dönülmez.
+8 Ah multirotor test aşamasıdır, sabit kanattan vazgeçilmedi.
+**Yazan:** Codex · **Bağımsız denetleyen:** henüz yok; görev kapatılmadı.
+
+---
+
 ## Devir 2026-09-11 · Onaylı birleşim tamam, tam süit yeşil
 
 **Yetki:** kullanıcının "onay" mesajı, üç hazır dalın commit ve master'a
@@ -292,3 +545,58 @@ iş yoktur.
 - **Kapı:** `O:\navitas-local-train\venv\Scripts\python.exe -X utf8 -B scripts/fdr_33_test_kaydi.py --eklemli` → genel iki kol 15/15; 11 hareket testi `OK` (3,965 s), 5 sinematik testi `OK` (1,450 s), 10 CAD testi `OK` (2,041 s); her biri çıkış 0. Ham kayıt `results/fdr_33_20260914/test_20260914_093849/`. İlk denemedeki ikinci-pervane testi başarısızlığı `test_20260914_093050/` altında korunur; kusur onarıldıktan sonra tekrar geçti. Tam süit yeniden koşulmadı.
 - **Video komutu:** aynı yorumlayıcıyla `-X utf8 -B scripts/fdr_33_sinematik_video.py --eklemli --render` → `SINEMATIK_VIDEO_OK 4300 KARE 172.0 s`, çıkış 0. Önizleme ve 14 mesh hareket kanıtı `cad_video_eklemli/eklem_kaniti.json`; uçuş görünürlüğü 50 örneğin 46'sında eşiği geçti.
 - `simulation/mujoco/cad_hareket.py`, `scripts/fdr_33_cad_teshis.py`, `scripts/fdr_33_model_teshis.py`, `tests/test_fdr_33_cad_hareket.py` eklendi; sinematik betik ve test kayıt betiği güncellendi. DOCX/PDF/ZIP güncellenmedi. Video tamamlandığından kullanıcının devam mesajı beklenir. Commit/push ve kilit değişikliği yok; 60 MB eski sınır hâlâ karşılanmıyor.
+
+## 21 Eylül 2026 07:4x — SAHA DEVRİ (Adıyaman, yarışma günü) · mimar
+
+- **Yazan:** mimar (Claude 1) · **Denetleyen:** bağımsız denetim BEKLİYOR. Görev kapatma yapılmadı, üretim kodu değiştirilmedi.
+- **Bağlam:** takım sahada. Yarışma 21–25 Eylül, Adıyaman Üniversitesi Stadyumu. Takımın kendi slotu hâlâ insan teyidi bekliyor (D-517).
+
+### Nerede çalışılıyor
+
+**Dal: `saha-kanit-20260921`** (= eski yerel `master` + iki commit). `O:\navitas` bu dalda. Uzağa itildi: `origin/saha-kanit-20260921`.
+`origin/master`'a **dokunulmadı**. Yerel/uzak iraksaması duruyor: `origin/master` 110 ileri, bu dal 83 ileri. Birleştirme **yapılmadı** — kullanıcı kararı ("şimdilik dokunma").
+
+### Bu oturumda yapılanlar
+
+1. `31294606` — iki takipsiz kanıt dizini kayıt altına alındı:
+   `results/yks_baglanti_20260920_205239/` (20 Eyl 67 dakikalık gerçek saha oturumu) ve
+   `results/jetson_20260919/` (Jetson'a **fiilen kurulan** dosyalar). `.gitattributes`'a `-text`:
+   kanıt değeri sha256'da olduğu için satır sonu dönüşümü yasaklandı. Blob sha == disk sha doğrulandı
+   (`6fe5819b`, `3bc18e5d`). `REVIEW_LOG.md` D-505…D-516 de bu commit'te.
+2. `a4129a79` — saha dizini tamamlandı. Önceden hiçbir git çizgisi tam FDA zincirini içermiyordu.
+   Getirilenler: `scripts/yer_yonlendirici.py`, `SAHA_YKI_BASLAT.cmd`, `scripts/fda_gorev_uret.py`,
+   `scripts/kamera_odak_olcer.py`, `codes/kare_keskinligi.py`, `scripts/tezgah/odak_onizleme.py`,
+   `SAHA_20260920/`, iki nöbetçi test.
+3. `REVIEW_LOG.md` **D-524** — bu oturumun tüm ölçümleri, çürütücü ölçümleriyle birlikte.
+
+### Koşulan kapılar (gerçek çıktı)
+
+- `codes/test_rota_sentetik.py` → **GENEL KAPI: GEÇTİ — kol1 15/15 · kol2 şerit 15/15**, çıkış 0
+- `tests/test_t235e_fda_gorev_ureteci.py` → Ran 7, OK
+- `tests/test_yer_yonlendirici_yeniden_baglanti.py` → Ran 6, OK
+- `SAHA_20260920/test_rota_testi_yeniseq.py` → Ran 5 in 65,5 s, OK
+- Yedi saha aracı `--help` ile çalıştırıldı, rc=0 (eksik import yok)
+- **Tam süit KOŞULMADI.** Geçti sayılmaz.
+
+### Açık durum — uçuştan önce bilinmesi gerekenler
+
+- 🔴 **Kamera odağı BULANIK.** Depodaki tek gerçek saha karesi: keskinlik **3,6** (NET eşiği 100), Canny kenar oranı %0,00000. 20 Eyl oturumunda 4112 kare `MASKE_YOK`. Kullanıcı bu maddeyi **"geç"** dedi; kapanmadı.
+- 🔴 **Odak tek sebep değil.** NET bir karede (2139,9) bile üretim eşiği `conf=0.30` ile zemin %0; aynı karede `conf=0.05` zemin %20,2 veriyor ama güvenler 0,126–0,202. Kabul kümesinde aynı model 0,92 veriyor. **Eşik gevşetilmez** (madde 15: serbest alan büyütülemez).
+- 🟠 **YKS→İHA komut bacağı** 20 Eyl'de 12/12 düştü (11 ARM, 1 RTL: "güçlü ACK gelmedi"). Kullanıcı bu maddeyi **"yapıldı"** olarak bildirdi; depoda doğrulayıcı yeni kanıt YOK.
+- 🟠 **Hakem onayı canlı provası** kullanıcı tarafından **"yapıldı"** bildirildi; depoda kanıt YOK. `UYGUNLUK_OLCUMU.md` L5 hâlâ AÇIK yazıyor.
+- 🟡 **T18** çalışma ağacında commit'siz duruyor ve `67467c4f`'in daha zayıf ikinci uygulamasıdır (493 satır fark). Jetson'da `67467c4f` sürümü koşuyor. **Karar verilmedi.**
+- 🟡 Bu çizginin inference'ı görev kaydına `keskinlik` yazmıyor (Jetson'a kurulu sürüm yazıyor) → odak teşhisi canlı kayıttan izlenemez.
+
+### Saha komutları (internetsiz çalışır)
+
+```
+odak:     O:\navitas-local-train\venv\Scripts\python.exe scripts\kamera_odak_olcer.py --url http://127.0.0.1:8080/kare.jpg
+görev:    ...\python.exe scripts\fda_gorev_uret.py --kose LAT LON (x4) --montaj-yaw 90 --cikti gorev.waypoints
+YKİ:      SAHA_YKI_BASLAT.cmd        (ÖNCE Mission Planner'ı COM portundan AYIR)
+kapı:     ...\python.exe -X utf8 -B codes\test_rota_sentetik.py
+```
+
+### Sıradaki iş
+
+- 8 alanlık tam yazılım taraması başlatıldı, **7 alan oturum limitinde düştü** (algı · rota/ölçek · taşıma · YKS · Jetson dağıtımı · uçuş parametreleri · kapılar/testler). Yalnız `saha` alanı tamamlandı; bulguları D-524'te. Tarama önbellekli, `resumeFromRunId` ile kaldığı yerden sürer.
+- Gerçek stadyum zemininden **NET** bir kare alınıp modelin çevrimdışı koşulması — D-524 Kanıt 5'in çürütücü ölçümü budur ve L1 hükmü buna bağlıdır.
