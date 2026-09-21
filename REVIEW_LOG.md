@@ -31931,3 +31931,49 @@ Kusur üründe değil ölçüm aletindeydi: mimar `codes/test_rota_sentetik.py:5
 
 **Sonuç:** rota üretimi, ölçek kâhini, HB bağlama ve şerit yayını kabul kümesinde uçtan uca çalışıyor. 20 Eyl sahasındaki `ROTA_YOK` yağmurunun sebebi bu katman **değildir**; sebep D-524'te ölçülen girdi kalitesidir (odak) ve model güveninin eşik altına çökmesidir.
 **Çürütücü ölçüm:** gerçek stadyum zemininden NET (≥100) bir kare alınıp aynı üretim biçimiyle koşulur; `zemin_px > 0` çıkıp yine `0 waypoint` dönerse bu ek geçersizdir ve şüphe geri döner.
+
+**D-524 ek 2 — saha bilgisi geldi (21 Eyl): zemin BEYAZ, engeller kaldırım taşı, uçuş 30 m irtifa / 40 m ileri. Üç kontrollü deney koşuldu; beyaz zemin ENGEL DEĞİL, asıl kırılgan halka KIRMIZI H PEDİ.**
+
+**Ölçek (hesap, `mpp_irtifadan`, FOV 54° — Jetson `/etc/navitas.env: --fov 54`, 1280×720):**
+
+| irtifa | mpp | kare zemini | HB 2 m | araç 1,80 m | kapama 0,25 m |
+|---|---|---|---|---|---|
+| 10 m | 0,00796 | 10,2 × 5,7 m | 251 px | 226 px | 31 px |
+| 20 m | 0,01592 | 20,4 × 11,5 m | 126 px | 113 px | 16 px |
+| **30 m** | **0,02388** | **30,6 × 17,2 m** | **84 px** | 75 px | 10,5 px |
+| 40 m | 0,03185 | 40,8 × 22,9 m | 63 px | 57 px | 8 px |
+
+30 m'de HB 83,7 px; `HB_OLCEK_BANDI (0,883–1,258)` kabul aralığı **73,9–105,3 px** → **uyumlu**. Saha ölçeği kabul kümesinden (≈0,0755) **3,2× daha ince**. 40 m'lik koridor 30 m irtifada tek karede görünmez, **≈2,3 kareye** yayılır (kare derinliği 17,2 m).
+
+**Deney 1 — global beyazlatma (adil değil, kayda not düşülür).** 6 kabul karesi, tüm kare beyaza çekildi: %45'e kadar zemin %30,6→%31,4 ve rota 6/6; **%60'ta engel %32,6→%15,7'ye düştü** ve rota 0/6. Ama bu deney HB'yi ve engelleri de soldurduğu için beyaz zemini temsil etmiyor.
+
+**Deney 2 — yalnız ZEMİN beyazlatıldı** (yer gerçeği sınıf 0 poligonları; engeller ve — ikinci turda — HB pedi korundu):
+
+| beyazlatma | zemin % | engel % | rota |
+|---|---|---|---|
+| 0,00 | 30,63 | 32,65 | 6/6 |
+| 0,40 | 31,23 | 32,78 | 6/6 |
+| 0,60 | 31,38 | 32,73 | 6/6 |
+| 0,80 | 26,66 | 32,73 | 5/6 |
+| **1,00 (tam beyaz)** | **24,12** | **32,91** | **5/6** |
+
+**Hüküm: beyaz zemin tek başına zinciri düşürmüyor.** Zemin maskesi %30,6→%24,1 (bağıl −%21) zayıflıyor ama engel maskesi **hiç bozulmuyor** (%32,9) ve tam beyaz zeminde bile 6 karenin 5'inde rota üretiliyor. Tek düşen kare `UC_BANT_TEMAS_YOK` (geometri), algı çöküşü değil.
+⚠ **Mimarın ilk turdaki hatası:** HB pedi zemin poligonunun **içindedir**; ilk koşumda o da beyazlatıldığı için sonuç 0/6 `HEDEF_YOK` çıktı ve "beyaz zemin zinciri öldürüyor" gibi göründü. HB korunarak tekrarlandı. **Deneyin kendisi bozuksa ürün suçlu görünür** — D-524 ek 1'deki mpp hatasıyla aynı ders, aynı gün ikinci kez.
+
+**Deney 3 — yalnız HB pedi soldurulur** (zemin ve engeller aynen kalır). Bu, ek 1'deki kazayı kasıtlı ölçüme çevirir:
+
+| solma | HB bulunan | şekil puanı | rota |
+|---|---|---|---|
+| 0,00–0,50 | **6/6** | 0,35–0,50 | **6/6** |
+| **0,60** | **0/6** | — | **0/6 · HEDEF_YOK** |
+
+**Kademeli bozulma yok, UÇURUM var.** Kırmızı H %50'ye kadar solabilir; %60'ta tespit tamamen ölür ve `HEDEF_YOK` ile rota üretilmez. **Beyaz zeminde güçlü güneş + otomatik pozlama kırmızıyı bu bandın ötesine kolayca taşır** — beyaz zemin dolaylı olarak buradan risk üretir, zemin segmentasyonundan değil.
+
+**Kaldırım taşı engelleri ÖLÇÜLEMEDİ.** Elde o dokudan tek kare yok; v36 RescueNet molozu + sentetik arena üzerinde eğitildi. Düzgün, gri, keskin kenarlı kaldırım taşlarının ENGEL sınıfına düşüp düşmeyeceği hakkında **hiçbir ölçüm yoktur**; bu satır tahmin olarak bile yazılmaz.
+
+**Uçuş öncesi kapatılabilir üç madde (ölçümle, kısa):**
+1. **H pedinin gerçek kenarı ölçülür.** Sözleşme 2,00 m varsayar (`HB_KENAR_M`). 30 m'de kabul aralığı 73,9–105,3 px; ped 1,5 m ise 62,8 px verir ve **reddedilir** → `HEDEF_YOK`. Ped 2 m değilse bu mimar kararıdır, sahada eşik oynanmaz.
+2. **İrtifa doğruluğu.** Ölçek bandı ±%13/−%12 tolerans bırakır: gerçek 30 m'de bildirilen irtifa ≈26,5–37,7 m dışına çıkarsa HB reddedilir. `relative_alt` yerine AMSL okunması bu bandı tek başına aşar.
+3. **Tek kare.** Arenadan 30 m'den (ya da erişilebilen en yüksek noktadan) NET tek kare alınıp aynı üretim biçimiyle çevrimdışı koşulur. Beyaz zemin + kaldırım taşı + gerçek H'yi tek ölçümde kapatan şey budur.
+
+**Çürütücü ölçümler:** (1) gerçek arenadan alınan NET karede `conf=0,30` ile `zemin_px > 0` ve rota üretilirse Deney 2'nin "beyaz zemin engel değil" hükmü pekişir, üretilmezse hüküm düşer ve sebep kaldırım taşı dokusudur; (2) arenadaki H pedi `hb_konumu(kare, mpp=0,02388, sekil_esigi=HB_SEKIL_ESIGI)` ile bulunamazsa Deney 3'ün uçurumu sahada gerçekleşmiş demektir.
