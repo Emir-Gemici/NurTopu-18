@@ -32058,3 +32058,35 @@ Tek kareden beş halkayı **sırayla ve ayrı ayrı** raporlar — odak → öl�
 **Bugünkü ders (aynı gün üçüncü kez).** D-524 ek 1'de yanlış `mpp`, ek 2'de yanlış beyazlatma, ek 4'te yanlış saha beyanı — üçünde de **ölçüm aleti ya da girdi** bozuktu, ürün değil. Üçü de hüküm kalıcılaşmadan yakalandı. Bu araç tam da bunu kurumsallaştırır: sahada "neyin bozuk olduğunu" tahmin etmek yerine **tek komutla ölçtürür**.
 
 **Çürütücü ölçüm:** arenadan alınan gerçek karede `python scripts/arena_kare_teshis.py --url http://127.0.0.1:8080/kare.jpg --irtifa 30` koşulur. Araç bir halkayı DÜŞTÜ gösterip o halka elle incelendiğinde sağlam çıkarsa, araç yanlış ölçüyordur ve bu ek geçersizdir.
+
+**D-524 ek 6 — Jetson'a doğrudan bağlanıldı (21 Eyl, USB + SSH, salt okunur). Kamera görüntüsünü döndüren bir ayar HİÇ OLMADI; yönelim mekanizması yazılmış ama üretime BAĞLI DEĞİL. Güç kesintisi sonrası saat 1970'e düştü.**
+
+**Bağlantı:** PC'de `Remote NDIS Compatible Device`, IP `192.168.55.100` (DHCP sunucusu Jetson `192.168.55.1`), ping 0 kayıp. SSH `n4vitas` parolayla açıldı (paramiko; parola diske yazılmadı). Tüm Jetson işlemleri **salt okunur**; tek yazım `/tmp/navitas_yedek_ara.txt` (arama çıktısı, açılışta silinir).
+
+**1. Kamerayı döndüren ayar hiçbir yerde yok — ölçüldü:**
+- `scripts/kamera_koprusu.py` altı dalda da (`master`, `origin/master`, `bilgilendirme-he`, `kamera-dayanikli-20260919`, `tunel-saha-20260918`, `saha-kanit-20260921`) sha256 **`fe4ae3fe`** — Jetson'da koşan dosya da **aynı**.
+- 18 Eyl öncesi "ikili" kurulum yedeği (`~/yedek_arkadas_ikili_20260918.tar.gz`, 986 MB) içindeki köprü de **`fe4ae3fe`**.
+- GStreamer borusu (`:173-176`) `nvarguscamerasrc ! … ! nvvidconv ! …` — **`flip-method` yok**. Köprü argparse'ında (`:851-882`) döndürme seçeneği yok. systemd birimi `$KAMERA_KOPRU_ARGS` geçiriyor, o da boş. `~/.bash_history`'de yalnız düz `gst-launch` denemeleri.
+Dolayısıyla "repo güncel değil" bu konuda sebep **değildir**.
+
+**2. "Dün yapılmıştı" hissinin iki gerçek karşılığı — ikisi de görüntüyü döndürmez:**
+- `montaj_yaw = +90` ölçüldü ve **görev üreticisine** girdi (`CONDITION_YAW = β − 90`, commit `07f3e0ce`). Görüntüyü değil **uçağı** döndürür.
+- `analyze_path(…, rota_ekseni_derece=…)` — S2 yönelim mekanizması: maske döndürülür, rota döndürülmüş çerçevede aranır, waypoint'ler geri çevrilir; madde 15 korumalı (INTER_NEAREST, köşeler ENGEL, geri çevrilen maske kesiştirilir). `tests/test_rota_ekseni.py` **7/7 OK** (mutasyon dahil). **Ama üretime bağlı değil:** CLI bayrağı yok; üretimin üç çağrı yeri (`:2013, :2236, :2389`) parametreyi geçirmiyor → varsayılan `None` → döndürme yok. Jetson'da koşan sürümde (`6a03cd4f`) de aynı.
+⚠ Nöbetçi waypoint geometrisini sınıyor; **yayınlanan şerit numarasını döndürülmüş çerçevede sınamıyor.** Mekanizma üretime bağlanırsa şerit takası bu boşluktan geçebilir.
+
+**3. Tutarlı iki yol — karıştırmak ÇİFT DÜZELTMEDİR:** (A) görev `--montaj-yaw 90`, analiz döndürmesiz → mevcut kayıtlı durum, kod gerekmez; (B) görev `--montaj-yaw 0` + `rota_ekseni_derece=-90` üretime bağlanır. A ile B'nin analiz kısmı birlikte uygulanırsa rota ekseni 90° kayar → 0 puan. **Kullanıcı seçim yapmadı; sistem A'da, değişiklik yapılmadı.** ⚠ Kullanıcı aynı gün kaydın **ters** olabileceğini sordu: canlı videoda yaka kartı bir karede 90° dönük, sonraki karede düz göründü. Kart serbest bir cisimdir ve burna göre yönü bilinmeden montaj açısı hakkında **hiçbir şey söylemez**; görüntü AYNALI ya da 180° DEĞİL (metin soldan sağa doğru okunuyor). `+90` kaydı, burna göre yönü bilinen bir referansla ok testi yeniden yapılana kadar **teyit bekliyor** sayılır.
+
+**4. Güç kesintisi (kullanıcı: "dron pili bitti sanırım"):**
+- Önceki açılışın günlüğü **kapanış kaydı olmadan** bitiyor (son satırlar DHCP yenilemeleri) → ani güç kaybı. D-512'deki iki kapanmanın üçüncü tekrarı.
+- 🔴 **Saat 1970'e düştü:** `Thu Jan 1 02:03:17 AM EET 1970` (önceki açılışta 12 saat gerideydi). RTC pili yok, NTP yok. Görev kaydının tüm zaman damgaları geçersiz; uçuştan önce saat verilmeli.
+- Servisler temiz döndü: 6/6 `active`, `NRestarts 0`, köprü 10 FPS, 0 düşen kare.
+
+**5. USB kopmalarının imzası:** önceki açılışın son dakikalarında `dhcpd` PC'ye **her ~7,5 s'de** `DHCPREQUEST/DHCPACK` veriyor (l4tbr0). Gözlenen ~10 s'lik SSH kopmalarıyla uyumlu; hat sürekli yeniden anlaşıyor. Konnektör/kablo — insan işi (Halil).
+
+**6. FOV tuzağı (dosyaya dokunulmadı):** aktif `/etc/navitas.env` → `--fov 54` (ölçülmüş). Ama Jetson'da iki kaynak **`--fov 63`** taşıyor: `~/navitas_env_yeni.txt` ve 18 Eyl yedeğindeki `etc/navitas.env`. "Yeni" dosya uygulanır ya da `~/GERI_DON_ARKADAS_IKILI.txt` ile yedeğe dönülürse FOV sessizce 63 olur → `mpp` %20 büyür, HB oranı 1,20'ye çıkar (bant üst sınırı 1,258 — sınırda), metrik kapılar %20 kayar.
+
+**7. "Adres" neden dün vardı, bugün yok:** yedekteki eski ayar `KAMERA_KOPRU_ARGS=--host 0.0.0.0` → akış doğrudan `192.168.55.1:8080`'den açılıyordu. 18 Eyl tünel kurulumu köprüyü `127.0.0.1`'e çekti (tasarım). Bugün akış SSH tüneliyle PC'de `http://127.0.0.1:8080/video` olarak verildi; USB kopmalarında donar.
+
+**8. `JETSON_GERCEK_DURUM.md` §9 bayat:** beklenen sha'lar `6fe5819b/3bc18e5d` (`kurulum/`); Jetson'da `6a03cd4f/45646ab9` (`kurulum2/`) koşuyor — ikisi de depoda bayt-eş (`31294606`). §9'u izleyen yanlış alarm verir.
+
+**Çürütücü ölçümler:** (1) herhangi bir ref'te ya da Jetson'da `flip-method` veya görüntü döndüren bir satır gösterilirse madde 1 düşer; (2) üretim çağrı yerlerinden biri `rota_ekseni_derece` geçiriyorsa madde 2 düşer; (3) Jetson `date` doğru bir 2026 tarihi verirse madde 4'ün saat kısmı düşer.
