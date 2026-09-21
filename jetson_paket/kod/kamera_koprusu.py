@@ -82,6 +82,11 @@ VARSAYILAN_PORT = 8080
 VIDEO_YOLU = "/video"
 KARE_YOLU = "/kare.jpg"
 DURUM_YOLU = "/durum"
+#: YALNIZ GORUNTULEME hatti (21 Eyl 2026): model hattindan (/video) AYRI.
+#: /video'nun sundugu JPEG'den turetilir; uretici ve /video koduna dokunulmaz.
+EKRAN_YOLU = "/ekran"
+EKRAN_KARE_YOLU = "/ekran.jpg"
+EKRAN_BOYUT = (1280, 720)           # (genislik, yukseklik) — 16:9 yatay ekran
 #: JPEG kalitesi: 80 -> 720p'de ~60-120 KB/kare; 95 uzeri Nano CPU'sunu bosa yer.
 VARSAYILAN_KALITE = 80
 #: Uretici fps tavani. Tuketici (rpi_inference, Nano CPU'da ~1 FPS) daha hizli
@@ -189,6 +194,39 @@ def kare_dondur(kare, derece):
         return np.ascontiguousarray(kare[::-1, ::-1])
     satir, sutun = _dondurme_indeksi(derece, kare.shape[0], kare.shape[1])
     return kare[satir, sutun]
+
+
+def ekran_karesi(kare, hedef=EKRAN_BOYUT):
+    """YALNIZ GORUNTULEME: en-boy KORUNARAK buyut, ORTADAN kirp -> `hedef` (w, h).
+
+    Model hattina GIRMEZ: FOV, olcek (mpp), koordinat ve tespit bu kareyi GORMEZ.
+    Tam FOV + bozulmamis oran + 16:9 doldurma ayni anda mumkun olmadigi icin
+    kenarlar BILINCLI kirpilir (720x1280 kaynakta ortadaki 720x405 kalir).
+    Once kirpip sonra olcekler (ayni sonuc, Jetson'da daha az is).
+    """
+    tw, th = hedef
+    h, w = kare.shape[:2]
+    olcek = max(tw / float(w), th / float(h))
+    kw = min(w, int(round(tw / olcek)))
+    kh = min(h, int(round(th / olcek)))
+    x0 = (w - kw) // 2
+    y0 = (h - kh) // 2
+    pencere = kare[y0:y0 + kh, x0:x0 + kw]
+    yontem = cv2.INTER_LINEAR if olcek > 1.0 else cv2.INTER_AREA
+    return cv2.resize(pencere, (tw, th), interpolation=yontem)
+
+
+def ekran_jpeg(veri, kalite=VARSAYILAN_KALITE, hedef=EKRAN_BOYUT):
+    """Model hattinin JPEG'i -> ekran JPEG'i; cozulemez/kodlanamazsa None."""
+    try:
+        kare = cv2.imdecode(np.frombuffer(veri, np.uint8), cv2.IMREAD_COLOR)
+        if kare is None:
+            return None
+        ok, tampon = cv2.imencode(".jpg", ekran_karesi(kare, hedef),
+                                  [int(cv2.IMWRITE_JPEG_QUALITY), int(kalite)])
+    except cv2.error:
+        return None
+    return tampon.tobytes() if ok else None
 
 
 def logla(metin, kirmizi=False, saat=time.monotonic):
@@ -769,6 +807,8 @@ class KopruIstekleyici(BaseHTTPRequestHandler):
         d["video_url"] = _uc_url(yetki, VIDEO_YOLU)
         d["kare_url"] = _uc_url(yetki, KARE_YOLU)
         d["durum_url"] = _uc_url(yetki, DURUM_YOLU)
+        d["ekran_url"] = _uc_url(yetki, EKRAN_YOLU)
+        d["ekran_boyut"] = list(EKRAN_BOYUT)
         return d
 
     def do_GET(self):
@@ -777,6 +817,10 @@ class KopruIstekleyici(BaseHTTPRequestHandler):
             self._video()
         elif yol == KARE_YOLU:
             self._kare()
+        elif yol == EKRAN_YOLU:
+            self._ekran_video()
+        elif yol == EKRAN_KARE_YOLU:
+            self._ekran_kare()
         elif yol == DURUM_YOLU:
             self._json(200, self._durum_sozlugu())
         elif yol == "/":
@@ -852,6 +896,56 @@ class KopruIstekleyici(BaseHTTPRequestHandler):
             pass                       # istemci kapatti
         finally:
             u.istemci_cikar()
+
+    # ── YALNIZ GORUNTULEME hatti ────────────────────────────────────────
+    # /video ve /kare.jpg'ye (model hatti) DOKUNMAZ; ayni JPEG'i okuyup kendi
+    # ipliginde donusturur. Isleme maliyeti yalniz biri ekrani izlerken olusur.
+    # Ekran istemcileri `istemci_sayisi`na SAYILMAZ (o sayac model tuketicisidir).
+    def _ekran_kare(self):
+        u = self.server.uretici
+        veri, sira = u.kare_bekle(None, zaman_asimi_s=0.0, azami_yas_s=AKIS_KARE_BEKLEME_S)
+        ekran = None if veri is None else ekran_jpeg(veri, u.kalite)
+        if ekran is None:
+            self._kaynak_yok()
+            return
+        self.send_response(200)
+        self.send_header("Content-Type", "image/jpeg")
+        self.send_header("Content-Length", str(len(ekran)))
+        self.send_header("Cache-Control", "no-cache")
+        self.send_header("X-Kare-Sira", str(sira))
+        self.end_headers()
+        self.wfile.write(ekran)
+
+    def _ekran_video(self):
+        u = self.server.uretici
+        with u.kilit:
+            acik = u.kaynak_acik
+        veri, sira = (u.kare_bekle(None, AKIS_KARE_BEKLEME_S, azami_yas_s=AKIS_KARE_BEKLEME_S)
+                      if acik else (None, 0))
+        if veri is None:
+            self._kaynak_yok()
+            return
+        self.send_response(200)
+        self.send_header("Content-Type",
+                         "multipart/x-mixed-replace; boundary={}".format(SINIR))
+        self.send_header("Cache-Control", "no-cache, private")
+        self.send_header("Pragma", "no-cache")
+        self.send_header("Connection", "close")
+        self.end_headers()
+        try:
+            while veri is not None:
+                ekran = ekran_jpeg(veri, u.kalite)
+                if ekran is not None:
+                    baslik = ("--{}\r\nContent-Type: image/jpeg\r\n"
+                              "Content-Length: {}\r\n\r\n").format(
+                                  SINIR, len(ekran)).encode("ascii")
+                    self.wfile.write(baslik)
+                    self.wfile.write(ekran)
+                    self.wfile.write(b"\r\n")
+                    self.wfile.flush()
+                veri, sira = u.kare_bekle(sira, AKIS_KARE_BEKLEME_S)
+        except (BrokenPipeError, ConnectionResetError, ConnectionAbortedError, OSError):
+            pass                       # istemci kapatti
 
 
 class KopruSunucusu(ThreadingMixIn, HTTPServer):

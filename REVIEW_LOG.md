@@ -32132,3 +32132,21 @@ Kullanıcı: *"sen yap … sadece döndür, montaj yanlış yapıldı diye geri 
 3. Döndürme hızı Jetson'da ölçülmedi (PC 11,2 ms/kare); köprü 9,6 FPS ölçtü, tavan 10.
 4. Madde 19: kodu mimar yazdı ve kurdu; bağımsız denetim borcu açık.
 5. Görev kaydında `mpp` ancak canlı irtifa telemetrisiyle üretilir; masada irtifa yok, bu yüzden `--fov 31.99`'un canlı `mpp` üzerindeki etkisi sahada ilk kalkışta doğrulanmalı (beklenen: 30 m'de 0,02389 m/px).
+
+**D-524 ek 9 — İKİ AYRI GÖRÜNTÜ HATTI kuruldu: model tam FOV'da dikey (720×1280), ekran yatay 1280×720. Jetson'da canlı ölçüldü.**
+
+**Kullanıcı kararı (21 Eyl):** kamera fiziksel olarak 90° yan monte ve montaj **değiştirilemez**. Model hattı döndürülmüş 720×1280 tam FOV görüntüyü kullanmaya devam eder; **ayrı** bir görüntüleme hattı, en-boy korunarak büyütülmüş + ortadan kırpılmış 1280×720 üretir. Model hattına, koordinat hesabına, FOV'a ve tespit görüntüsüne **dokunulmaz**. Gerekçe (kullanıcı ile mimar aynı hükümde): tam FOV + bozulmamış oran + 16:9 doldurma aynı anda matematiksel olarak mümkün değildir.
+
+**Uygulama — `scripts/kamera_koprusu.py` (+ ayna):** yeni uçlar `/ekran` (MJPEG) ve `/ekran.jpg`. Ekran karesi, `/video`'nun zaten sunduğu JPEG'den türetilir (çöz → `ekran_karesi` → kodla); **üretici ve `/video`/`/kare.jpg` kodu değişmedi**. `ekran_karesi`: ölçek = max(1280/w, 720/h), önce ortadan kırpılır (720×1280 kaynakta ortadaki 720×405), sonra 1280×720'ye büyütülür — Jetson'da daha az iş, aynı sonuç. İşleme maliyeti yalnız biri ekranı izlerken, izleyenin ipliğinde oluşur. Ekran istemcileri `istemci_sayisi`na (model tüketici sayacı) **sayılmaz**. `/durum` `ekran_url` ve `ekran_boyut` taşır.
+
+**Kanıt:**
+- `tests/test_kamera_koprusu_ekran.py` **10/10 OK**: 720×1280 → 1280×720; **oran korunur** (100×100 kare işaret ekranda da kare, ölçek 1280/720); ortadan kırpar (merkez merkezde, üst/alt kenar kırpılır); 16:9 kare aynen geçer; **model hattı bayt-eş** (`/kare.jpg` üreticinin JPEG'iyle birebir, boyut dikey); uçtan uca `/ekran.jpg` ve `/ekran` akışı 1280×720; ekran istemcisi model sayacını kirletmez.
+- `test_kamera_koprusu_dondur` 15/15 · `test_faz_b_kamera_koprusu` 12/12 (**Python 3.6 beyaz listesi dahil**: `cv2.resize`, `imdecode`, `INTER_*` listede) · genel kapı 15/15 · 15/15.
+- **Jetson (kullanıcı onaylı kurulum, otomatik geri almalı):** köprü sha `43674bf5`, sistem `python3` derleme TAMAM; yedek `*.yedek_20260921_dondur` (çalışan döndürme sürümü; orijinal `*.yedek_20260921` korunuyor). Jetson'un kendi Python'uyla ölçüm: **`ekran 1280 x 720 | model 720 x 1280`**. Env **değişmedi** (`--dondur 90`, `--fov 31.99`). Servisler 6/6 `active`, `NRestarts 0`.
+- **Canlı ekran karesi** (SSH ile çekildi): 1280×720, yaka kartı yazıları düz, ekranı dolduruyor, esneme yok. Önce/sonra kareleri `results/jetson_20260921_dondur/`.
+
+**Adresler (PC, SSH tüneli üzerinden):** ekran `http://127.0.0.1:8080/ekran` · model `http://127.0.0.1:8080/video` (dikey, tam FOV).
+
+**Geri alma:** köprüde `.yedek_20260921_dondur` → yalnız ekran hattı geri alınır (döndürme kalır); `.yedek_20260921` + `/etc/navitas.env.yedek_20260921` → tamamen döndürme öncesine dönülür; ikisinden sonra `sudo systemctl restart navitas-kamera-koprusu navitas-rpi-inference`.
+
+**Açık kalanlar:** (1) montaj açısı döndürülmüş videoda ok testiyle ölçülmedi (0 ya da 180; `+90` geçersiz — ek 7); (2) ekran hattının Jetson'daki işlem maliyeti ölçülmedi (yalnız izleyen varken oluşur); (3) madde 19: mimar yazdı ve kurdu, bağımsız denetim borcu açık.
