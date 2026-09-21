@@ -31912,3 +31912,22 @@ Görev üreteci `--montaj-yaw 90` ile koşuldu: `CONDITION_YAW (115)` satırı `
 **D-numarası uyarısı (kalıcı).** Defter üç çizgiye bölündü ve numaralar çakışıyor: `master` HEAD → **D-493** · `origin/master` ve `kamera-dayanikli-20260919` → **D-505** · `bilgilendirme-he` ve `origin/bilgilendirme-he` → **D-516** · **D-517…D-523** hiçbir REVIEW_LOG'da yok, `SAHA_20260920/KANIT_DEFTERI.md` içinde (commit `07f3e0ce`). Hiçbiri kaybolmuş değil, hepsi uzakta; risk **aranabilirlik ve aynı numaranın ikinci kez verilmesidir**. Bu kayıt **D-524**'tür; sonraki kayıtlar buradan devam eder, geri dönük numara **değiştirilmez** (mevcut atıflar kırılır).
 
 **Yanılıyorsam beni çürütecek ölçümler:** (1) aynı kurulumda 5 dakikalık yeni bir oturumda günlükte en az bir `"olay":"ROTA_ALINDI"` ve ardından `"HAKEM_ONAYI_2"` görülürse Kanıt 1 düşer; (2) odak ayarından sonra alınan karede `kamera_odak_olcer` **NET (≥100)** dönüp aynı karede `conf=0.30` ile `zemin_px > 0` çıkarsa Kanıt 5'in "odak tek sebep değil" kısmı düşer; (3) `3bc18e5d` üreten bir commit gösterilirse Kanıt 7 düşer.
+
+**D-524 ek 1 — rota/ölçek katmanı TEMİZ; mimarın kendi şüphesi ÇÜRÜTÜLDÜ (21 Eyl, çevrimdışı ölçüm).**
+`HANDOFF.md` 14 Eyl girdisi *"269.752 zemin / 359.404 engel pikseli, **0 waypoint**, `BELIRSIZ_TEK_KAPI`"* diyordu; yani "maske varken bile rota üretilemiyor" şüphesi. Bu şüphe kabul kümesinde **tekrarlanmadı**.
+
+**Ölçüm (üretim çağrı biçimiyle, `rpi_inference.py:2003` birebir: `analyze_path(masks[0], icerik=…, engel_mask=masks[1], mpp=…, goruntu=sq)`):**
+`data/kabul/sentetik_arena_kadraj_t66/images/val` ilk 5 kare → **5/5 rota üretildi**, 8 waypoint, güven 1,000, şerit 2/1/3/1/2, `ret=None`. Zemin maskesi %25,4–%37,4.
+Aynı biçimle saha karesi `kare_guncel_2005.jpg` → `MASKE_YOK` (zemin 0 px). **Yani zincir sağlam; düşen halka maskeden ÖNCESİ.**
+
+**⚠ Mimarın kendi hatası ve nasıl yakalandığı (kayda geçirilir, çünkü yordamı doğruluyor).** İlk koşumda üretim biçimi 10/10 karede `HEDEF_YOK` verdi ve bu "üretim yolu HB'yi bulamıyor, genel kapı da bu dalı hiç sınamıyor" gibi ağır bir bulguya benziyordu. Hüküm verilmeden önce izole edildi:
+- `hb_konumu(sq, mpp=None, sekil_esigi=None)` → **HB BULUNDU**: kutu (252,14,26,27), kenar 26,5 px, aday 1. Dedektör çalışıyor.
+- `mpp` taraması + şekil kapısı kapalı → yalnız **mpp≈0,0755**'te geçiyor; 0,05/0,10/0,15'te fiziksel bant reddediyor (**doğru davranış**: HB 2 m × 2 m'dir).
+- Gerçek ölçekte şekil kapısı **açıkken** → `sekil_puani = 0,3795` > `HB_SEKIL_ESIGI = 0,17656…` → **GEÇİYOR**.
+
+Kusur üründe değil ölçüm aletindeydi: mimar `codes/test_rota_sentetik.py:51`'deki `MPP = 0.10`'u bu veri kümesine taşımıştı; kabul kümesinin gerçek ölçeği ≈0,0755'tir. **Yanlış ölçekle beslenen bir kapı, doğru çalışan bir dedektörü suçlu gösterir.** Ölçek düzeltilince 5/5 rota çıktı.
+
+**Ayrıca sınanıp geçersiz bulunan ikinci şüphe:** "genel kapı `goruntu` geçirmediği için HB dalı hiç denetlenmiyor". Genel kapı gerçekten `goruntu` geçirmiyor (`test_rota_sentetik.py:161-163`), ama dal başka nöbetçilerle kilitli: `tests/test_hb_dedektoru.py`, `tests/test_t198_hb_sekil.py`, `tests/test_t150_baglama.py`, `tests/test_saha_kuru_kosu.py`. Vakum kapı değil.
+
+**Sonuç:** rota üretimi, ölçek kâhini, HB bağlama ve şerit yayını kabul kümesinde uçtan uca çalışıyor. 20 Eyl sahasındaki `ROTA_YOK` yağmurunun sebebi bu katman **değildir**; sebep D-524'te ölçülen girdi kalitesidir (odak) ve model güveninin eşik altına çökmesidir.
+**Çürütücü ölçüm:** gerçek stadyum zemininden NET (≥100) bir kare alınıp aynı üretim biçimiyle koşulur; `zemin_px > 0` çıkıp yine `0 waypoint` dönerse bu ek geçersizdir ve şüphe geri döner.
