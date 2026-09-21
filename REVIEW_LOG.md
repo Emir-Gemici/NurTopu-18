@@ -32000,3 +32000,39 @@ Kusur üründe değil ölçüm aletindeydi: mimar `codes/test_rota_sentetik.py:5
 **Kod değiştirmeden kapatma yolu:** rota yayını ve hakem onayı, koridorun **tamamının + HB'nin** kadraja girdiği konumda (askıda) yapılır; 40 m'lik geçişin tamamı boyunca rota beklenmez. Bu bir eşik veya sözleşme değişikliği değildir, **uçuş profili kararıdır** ve insanındır.
 
 **Çürütücü ölçüm:** arenadan 30 m'de alınan tek karede hem başlangıç bandı hem HB görünüyorsa ve `analyze_path(..., goruntu=sq)` rota üretiyorsa bu ekteki pencere kısıtı o yerleşim için geçersizdir. Tersine, sahada `HEDEF_YOK` sayısı `MASKE_YOK`'u geçiyorsa kısıt gerçekleşmiş demektir — 20 Eyl oturumunda `HEDEF_YOK` **sıfırdı**, baskın sebep `MASKE_YOK` (4112) idi; yani bu kısıt o gece henüz devreye bile girmemişti.
+
+**D-524 ek 4 — 🔴🔴 ARENADA H PEDİ YOK (kullanıcı, 21 Eyl). Üretim algı yolu bu durumda HER KAREDE `HEDEF_YOK` döner: sıfır rota, sıfır hakem onayı. Genel kapı bunu GÖREMEZ — aynı karelerde 15/15 verir.**
+
+**Ölçüm (6 kabul karesi; H pedi çevresindeki zemin renginin medyanıyla kapatılarak "ped yok" durumu üretildi):**
+
+| durum | ÜRETİM yolu (`goruntu=sq`, `rpi_inference.py:2013`) | KAPI yolu (`goruntu` yok, `test_rota_sentetik.py:161`) |
+|---|---|---|
+| H pedi VAR (kabul kümesi) | rota **6/6** | rota **6/6** |
+| **H pedi YOK (saha gerçeği)** | **rota 0/6 · `HEDEF_YOK` 6/6** | rota **6/6** |
+
+Aynı kareler, aynı model, aynı maske, aynı eşik. Fark yalnızca **çağrı biçimidir**.
+
+**Mekanizma (kod):** üretim `analyze_path`'i üç çağrı yerinde de `goruntu=sq` ile çağırır (`:2013, :2236, :2389`) ve `goruntu` verilince sözleşme şudur (`:1696-1699`):
+```
+hb = hb_konumu(goruntu, mpp=mpp, sekil_esigi=...)
+if hb is None:
+    return _don(None, 0.0, [], clean, hedef_yok_reddi(), None)
+```
+HB yoksa rota **uydurulmaz** — bu kasıtlı ve doğru bir fail-closed tasarımdır (T150/D-386). Kusur tasarımda değil, **varsayımın arenayla uyuşmamasındadır**: kod "arenada 2 m × 2 m kırmızı H pedi vardır" (şartname SS2.1, `HB_KENAR_M = 2.0`) varsayar; kullanıcının 21 Eyl beyanına göre **bu arenada öyle bir ped yok**.
+
+🔴 **HB'yi kapatan bir bayrak YOKTUR.** `rpi_inference` CLI'sinde `--hb`, `--hedef`, `--goruntu` türü hiçbir anahtar bulunmuyor; `goruntu=sq` üç çağrı yerinde de çıplak yazılıdır.
+
+**Neden bugüne kadar görünmedi — iki ayrı sebep:**
+1. **Genel kapı bu dalı hiç çalıştırmıyor.** `codes/test_rota_sentetik.py:161-163` `analyze_path`'i `goruntu` **geçirmeden** çağırır. Kapı "ÜRETİM YOLU" başlığını taşır (`:24`, `:207`) ama üretimin gerçekte kullandığı çağrı biçimini kullanmaz. Yukarıdaki tablonun sağ sütunu tam olarak budur: ped yokken bile **15/15**. ⚠ Bu bir **vakum kapı** durumudur: ürün kesin düşerken kapı yeşil kalır.
+2. **20 Eylül sahasında `MASKE_YOK` bu hatayı ÖRTTÜ.** `analyze_path` zemin maskesi 0 pikselse HB bloğuna **varmadan** döner (`:1534-1540`, HB bloğu `:1687`). O gece 4112 kare `MASKE_YOK`, **`HEDEF_YOK` sıfırdı** — çünkü sıra HB'ye hiç gelmedi.
+
+**🔴 Bunun doğrudan sonucu: yalnız lensi odaklamak rota ÜRETMEZ.** İki arıza üst üste binmiştir. Odak düzelir → zemin maskesi gelir → `MASKE_YOK` biter → **yerine `HEDEF_YOK` geçer** ve rota yine üretilmez. Ölçülebilir öngörü: odak düzeltildikten sonraki oturumda `HEDEF_YOK` sayısı `MASKE_YOK`'un yerini alır.
+
+**Seçenekler (karar mimarın + kullanıcının; sahada eşik oynanmaz):**
+- **(A) `goruntu` geçirilmez** → hedef sözleşme gereği **üst banda** döner (`:1682-1683`: *"`goruntu` VERİLMEZSE davranış DEĞİŞMEZ: hedef eskisi gibi üst banttır"*). Bu, genel kapının 15/15 ile doğruladığı davranıştır. En küçük değişiklik, en iyi kapı desteği. Bedeli: varış noktası artık kadrajın üst bandıdır, arenadaki fiziksel bir hedef değil.
+- **(B) Bayrakla seçilebilir yapılır** (`--hedef ust-bant|hb`), varsayılan sahaya göre konur. A'nın üzerine ince bir katman; nöbetçi testi gerekir.
+- **(C) Dokunulmaz** → arenada H pedi yoksa **rota hiç üretilmez**; şartname §5.3.2 hakem onayı oluşmaz. **0 puan.**
+
+⚠ **Açık soru (insan teyidi, koddan çıkarılamaz):** H pedi yoksa İKA'nın varış bölgesi bu arenada **neyle** tanımlanıyor? Şartname SS2.1 HB'yi tanımlıyor; arena onu taşımıyorsa ya işaret farklı (renk/şekil), ya hedef yordamı farklıdır. Seçenek A bu soruyu kapatmaz, yalnız rota üretimini yeniden açar.
+
+**Çürütücü ölçümler:** (1) arenada 2 m'lik kırmızı H pedi aslında varsa (uzaktan görülmemiş olabilir) bu ek düşer — tek komutla sınanır: arenadan alınan karede `hb_konumu(kare, mpp=0,02388, sekil_esigi=HB_SEKIL_ESIGI)` bir kutu döndürürse HB vardır; (2) odak düzeltildikten sonraki oturumda `HEDEF_YOK` sayısı sıfır kalır ve rota üretilirse bu ekteki mekanizma yanlıştır.
