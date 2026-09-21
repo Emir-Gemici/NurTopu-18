@@ -32110,3 +32110,25 @@ Dolayısıyla "repo güncel değil" bu konuda sebep **değildir**.
 **Kurulum DURDU — yapılmadı.** Planlanan: SFTP ile köprü → sha + Jetson sistem `python3 -m py_compile` → yedekler (`*.yedek_20260921`, `/etc/navitas.env.yedek_20260921`) → `KAMERA_KOPRU_ARGS=--dondur 90`, `--fov 54 → 31.99` → köprüyü yeniden başlat → `/durum`'da `dondur 90` + `kaynak_acik true` doğrulanamazsa **otomatik geri alma** → `rpi_inference` yeniden başlat → canlı kare. Otomatik mod sınıflandırıcısı bunu "Production Deploy" diye reddetti; atlatılmadı. Jetson şu an **dokunulmamış** (dondur yok, fov 54).
 
 **Çürütücü ölçümler:** (1) Jetson'a kurulduktan sonra `/durum` `dondur: 90`, `boyut: [720, 1280]` vermezse ya da canlı karede yaka kartı yazısı üstte değilse kurulum geçersiz; (2) döndürülmüş karede `arena_kare_teshis.py --fov 31.99 --irtifa 30` HB'yi 73,9–105,3 px bandında bulamazsa FOV hesabı yanlış; (3) ok testinde burun yukarı ya da aşağı dışında bir yöne bakarsa `yeni = eski − 90` çıkarımı yanlış.
+
+**D-524 ek 8 — `--dondur 90` Jetson'a KURULDU ve canlı karede doğrulandı (kullanıcının açık onayıyla, 21 Eyl).**
+
+Kullanıcı: *"sen yap … sadece döndür, montaj yanlış yapıldı diye geri kalanı halledilir."* Ek 7'de otomatik mod kurulumu durdurmuştu; kullanıcı açıkça onaylayınca yapıldı.
+
+**Kurulan:** `~/navitas/scripts/kamera_koprusu.py` (+ `jetson_paket/kod/` aynası) → sha256 `491df063` (LF). `/etc/navitas.env`: `KAMERA_KOPRU_ARGS=--dondur 90`, `RPI_EK_ARGS=--fov 31.99 …` (önce `--fov 54`). FOV değişikliği döndürmeyle **birlikte** yapıldı: tek başına döndürme ölçeği %77,8 kaydırırdı (ek 7). Montaj açısı / görev dosyası **değiştirilmedi** (kullanıcı: "geri kalanı halledilir").
+
+**Kurulum kanıtı (Jetson günlüğü, gerçek çıktı):**
+- sha doğrulandı + Jetson sistem `python3 -m py_compile` TAMAM
+- yedekler: `scripts/kamera_koprusu.py.yedek_20260921`, `jetson_paket/kod/kamera_koprusu.py.yedek_20260921`, `/etc/navitas.env.yedek_20260921`
+- köprü `/durum`: `"dondur": 90`, `"boyut": [720, 1280]`, `"kaynak_acik": true`, 9,6 FPS, 0 düşen kare
+- servisler 6/6 `active`, `NRestarts(inference) 0`, inference komut satırı `--fov 31.99` içeriyor
+- **Canlı kare** (SSH ile çekildi, 720×1280): yaka kartının "YARIŞMACI" yazısı **ÜSTTE ve düz okunuyor** — kullanıcının işaretlediği hedef (mavi → kırmızı) sağlandı.
+
+**Geri alma (tek adım):** iki `.yedek_20260921` dosyası yerine kopyalanır, `/etc/navitas.env.yedek_20260921` → `/etc/navitas.env`, sonra `sudo systemctl restart navitas-kamera-koprusu navitas-rpi-inference`.
+
+**Açık kalanlar (bu ek kapatmaz):**
+1. **Montaj açısı ölçülmedi.** Döndürülmüş videoda ok testi: burun yukarı → `--montaj-yaw 0`, aşağı → `180`. `+90` her iki durumda da yanlış (ek 7). Ölçülmeden görev dosyası üretilmez.
+2. `arena_kare_teshis.py` ve `kamera_odak_olcer.py` döndürülmüş karede **`--fov 31.99`** ile koşulmalı (araç FOV'u kendisi bilmiyor).
+3. Döndürme hızı Jetson'da ölçülmedi (PC 11,2 ms/kare); köprü 9,6 FPS ölçtü, tavan 10.
+4. Madde 19: kodu mimar yazdı ve kurdu; bağımsız denetim borcu açık.
+5. Görev kaydında `mpp` ancak canlı irtifa telemetrisiyle üretilir; masada irtifa yok, bu yüzden `--fov 31.99`'un canlı `mpp` üzerindeki etkisi sahada ilk kalkışta doğrulanmalı (beklenen: 30 m'de 0,02389 m/px).
