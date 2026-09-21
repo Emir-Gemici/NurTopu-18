@@ -32090,3 +32090,23 @@ Dolayısıyla "repo güncel değil" bu konuda sebep **değildir**.
 **8. `JETSON_GERCEK_DURUM.md` §9 bayat:** beklenen sha'lar `6fe5819b/3bc18e5d` (`kurulum/`); Jetson'da `6a03cd4f/45646ab9` (`kurulum2/`) koşuyor — ikisi de depoda bayt-eş (`31294606`). §9'u izleyen yanlış alarm verir.
 
 **Çürütücü ölçümler:** (1) herhangi bir ref'te ya da Jetson'da `flip-method` veya görüntü döndüren bir satır gösterilirse madde 1 düşer; (2) üretim çağrı yerlerinden biri `rota_ekseni_derece` geçiriyorsa madde 2 düşer; (3) Jetson `date` doğru bir 2026 tarihi verirse madde 4'ün saat kısmı düşer.
+
+**D-524 ek 7 — kamera köprüsüne `--dondur` eklendi (saat yönü 90/180/270; varsayılan 0 = bayt-eş). Montaj `+90` GEÇERSİZ; açı döndürülmüş videoda yeniden ölçülecek. Jetson'a KURULMADI (otomatik mod "üretime dağıtım" diye durdurdu; karar kullanıcıda).**
+
+**İstek (kullanıcı, 21 Eyl, işaretli ekran görüntüsüyle):** canlı videoda yaka kartının "YARIŞMACI" yazısı SOLDA (mavi), ÜSTTE (kırmızı) olmalı → sol→üst = **saat yönünde 90°**. Yön çevrimdışı doğrulandı: `CANLI_2.jpg` CW 90 döndürülünce yazı üstte, düz okunuyor.
+
+**Değişiklik — `scripts/kamera_koprusu.py` (+ `jetson_paket/kod/` aynası bayt-eş):**
+- `--dondur {0,90,180,270}` (saat yönü); döndürme `_kare_yayinla` içinde, JPEG'e basılmadan HEMEN ÖNCE, tek noktada → hakem ekranı, `rpi_inference` ve kayıt aynı yönü görür.
+- `/durum` artık `"dondur"` alanını ve **döndürülmüş gerçek boyutu** (`boyut: [720, 1280]`) raporlar. `_cozunurluk_eslesti` kamera kipi isteğini döndürme ÖNCESİ boyutla kıyaslar.
+- Geçersiz açı (45) hem yapıcıda hem argparse'ta reddedilir.
+- ⚠ İlk sürüm `cv2.rotate` kullandı ve **Python 3.6 beyaz liste kapısı düştü** (`tests/test_faz_b_kamera_koprusu.py` K5: `ROTATE_90_CLOCKWISE` listede yok). Kapı gevşetilmedi; döndürme yalnız onaylı numpy ile (`asarray`, `reshape`, `ascontiguousarray`, dilimleme) yeniden yazıldı. İndeks dizileri boyut başına bir kez kurulur.
+
+**Kanıt:** `tests/test_kamera_koprusu_dondur.py` **15/15 OK** — yön (sol→üst 90, →alt 270, →sağ 180), 0'da aynı nesne + JPEG eski davranışla birebir, `/durum` dürüstlüğü, geçersiz açı reddi, kip eşleşmesi, **uçtan uca** (sahte MJPG AVI → köprü `dondur=90` → HTTP `/kare.jpg` → işaret üstte, mock yok), ayna bayt-eş. `tests/test_faz_b_kamera_koprusu.py` **12/12 OK** (3.6 kapısı dahil). numpy döndürmesi `cv2.rotate` ile **piksel piksel aynı** (90/180/270, 1280×720 rastgele kare). Hız 11,2 ms/kare (PC; Jetson'da ölçülmedi, 10 FPS bütçesi 100 ms). Genel kapı 15/15 · 15/15.
+
+**Döndürme ile BİRLİKTE zorunlu — FOV:** döndürülmüş karenin yatay ekseni 720 px ve sensörün DİKEY FOV'unu görür: `2·atan(tan(27°)·720/1280) = 31,9855°`. Ölçüldü (`mpp_irtifadan`): `--fov 31.99` ile ölçek farkı **%+0,015**; **`--fov 54`'te bırakılırsa %+77,8** → HB bandı, kapama tavanı, araç genişliği, bütün metrik kapılar bozulur. Üretim kararında 1280×720 varsayımı YOK (Jetson sürümü tarandı; tek geçiş T227 işaretli yayının yardım metni).
+
+**Montaj açısı — iki çelişen insan gözlemi, 180° fark:** 20 Eyl "burun 4'te (sol)" → +90; 21 Eyl "sağdaymış" → −90. Döndürme sonrası `yeni = eski − 90`: eski +90 ise **0**, eski −90 ise **180**. **Her iki durumda `+90` yanlıştır.** `SAHA_20260920/MONTAJ_YAW.md` REVİZYON 3 ve `HANDOFF.md` saha komutu buna göre güncellendi; açı, **döndürülmüş videoda burna göre yönü bilinen bir cisimle** (ok testi) ölçülmeden görev dosyası üretilmez.
+
+**Kurulum DURDU — yapılmadı.** Planlanan: SFTP ile köprü → sha + Jetson sistem `python3 -m py_compile` → yedekler (`*.yedek_20260921`, `/etc/navitas.env.yedek_20260921`) → `KAMERA_KOPRU_ARGS=--dondur 90`, `--fov 54 → 31.99` → köprüyü yeniden başlat → `/durum`'da `dondur 90` + `kaynak_acik true` doğrulanamazsa **otomatik geri alma** → `rpi_inference` yeniden başlat → canlı kare. Otomatik mod sınıflandırıcısı bunu "Production Deploy" diye reddetti; atlatılmadı. Jetson şu an **dokunulmamış** (dondur yok, fov 54).
+
+**Çürütücü ölçümler:** (1) Jetson'a kurulduktan sonra `/durum` `dondur: 90`, `boyut: [720, 1280]` vermezse ya da canlı karede yaka kartı yazısı üstte değilse kurulum geçersiz; (2) döndürülmüş karede `arena_kare_teshis.py --fov 31.99 --irtifa 30` HB'yi 73,9–105,3 px bandında bulamazsa FOV hesabı yanlış; (3) ok testinde burun yukarı ya da aşağı dışında bir yöne bakarsa `yeni = eski − 90` çıkarımı yanlış.

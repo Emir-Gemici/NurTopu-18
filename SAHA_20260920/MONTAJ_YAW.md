@@ -1,5 +1,24 @@
 # Kamera montaj açısı — ÖLÇÜLDÜ (20 Eylül 2026)
 
+> 🔴 **REVİZYON 3 — 21 Eylül 2026 (mimar). Aşağıdaki `+90` artık GEÇERSİZ SAYILIR.**
+>
+> 1. **Çelişki:** 20 Eyl ölçümü "burun görüntüde **4** (sol)" → `+90`. 21 Eyl kullanıcı:
+>    "**sağdaymış**, solda değilmiş" → `−90`. İki insan gözlemi çelişiyor; ikisi de burna
+>    göre yönü bilinen bir referansla kaydedilmedi. Bu fark **180°'dir**: yanlış işaretle
+>    üretilen görevde görüntünün üstü rotanın tersine bakar → şeritler aynalanır (1↔3) → 0 puan.
+> 2. **Görüntü döndürmesi eklendi:** kullanıcı canlı videoda "soldaki yazı üstte olmalı"
+>    dedi → kamera köprüsüne `--dondur 90` (saat yönü) eklendi (`scripts/kamera_koprusu.py`).
+>    Döndürme uygulanınca görüntünün üstü **eski solu** olur ve montaj açısı değişir:
+>    `yeni = eski − 90`. Eski +90 idiyse **yeni 0** (burun üstte); eski −90 idiyse **yeni 180**
+>    (burun altta). **İki durumda da `+90` yanlıştır.**
+> 3. **Döndürme ile BİRLİKTE zorunlu:** `rpi_inference --fov 54` → **`--fov 31.99`**. Döndürülmüş
+>    karenin yatay ekseni (720 px) sensörün DİKEY FOV'unu görür; 54'te bırakılırsa ölçek
+>    **%77,8** kayar (ölçüldü). `arena_kare_teshis.py` de döndürülmüş karede `--fov 31.99` ister.
+> 4. **Uçuştan önce ZORUNLU ölçüm (ok testi, döndürülmüş videoda):** burnun baktığı yöne
+>    uzun bir cisim koy, `http://127.0.0.1:8080/video`'da ucuna bak.
+>    **Yukarı → `--montaj-yaw 0`** · **Aşağı → `--montaj-yaw 180`** · sola → +90 · sağa → −90.
+>    Ölçülmeden görev dosyası üretilmez. Ayrıntı: `REVIEW_LOG.md` D-524 ek 7.
+
 > A9 ölçümü bugüne kadar hiç yapılmamıştı (`BILGILENDIRME_HE/05`), bu yüzden `montaj_yaw`
 > varsayılan **0** kalıyordu ve yanlış şerit → **0 puan** riski açıktı. Bugün kapatıldı.
 >

@@ -154,6 +154,41 @@ ACMA_LOG_SEYREKLIGI = 10
 SINIR = "navitas-kare"              # multipart boundary
 FPS_PENCERESI = 30                  # olculen fps icin son N kare zamani
 VARSAYILAN_LOG_ARALIGI_S = 10.0     # periyodik sayac logu (0 = kapali)
+#: Montaj duzeltmesi (21 Eyl 2026, saha): kare JPEG'e basilmadan HEMEN ONCE saat
+#: yonunde dondurulur. 0 = dokunulmaz (eski davranis BAYT-ES). 90/270'te EN ve
+#: BOY YER DEGISTIRIR (1280x720 -> 720x1280): tuketici olcegi FOV'dan genislikle
+#: turetiyorsa (`mpp_irtifadan`) FOV'u YENI yatay eksene gore vermelidir.
+DONDURME_SECENEKLERI = (0, 90, 180, 270)
+_DONDURME_INDEKS = {}   # (derece, h, w) -> (satir, sutun); boyut basina BIR KEZ kurulur
+
+
+def _dondurme_indeksi(derece, h, w):
+    anahtar = (derece, h, w)
+    ind = _DONDURME_INDEKS.get(anahtar)
+    if ind is None:
+        if derece == 90:        # cikis[i, j] = giris[h-1-j, i]
+            satir = np.asarray(list(range(h - 1, -1, -1))).reshape(1, h)
+            sutun = np.asarray(list(range(w))).reshape(w, 1)
+        else:                   # 270: cikis[i, j] = giris[j, w-1-i]
+            satir = np.asarray(list(range(h))).reshape(1, h)
+            sutun = np.asarray(list(range(w - 1, -1, -1))).reshape(w, 1)
+        ind = (satir, sutun)
+        _DONDURME_INDEKS[anahtar] = ind
+    return ind
+
+
+def kare_dondur(kare, derece):
+    """Kareyi saat yonunde `derece` kadar dondur. 0 -> AYNI nesne (kopya yok).
+
+    Yalniz 3.6 beyaz listesindeki numpy kullanilir: `cv2.rotate` listede YOK
+    (tests/test_faz_b_kamera_koprusu.py K5). Cikis her zaman bitisik (imencode).
+    """
+    if derece == 0:
+        return kare
+    if derece == 180:
+        return np.ascontiguousarray(kare[::-1, ::-1])
+    satir, sutun = _dondurme_indeksi(derece, kare.shape[0], kare.shape[1])
+    return kare[satir, sutun]
 
 
 def logla(metin, kirmizi=False, saat=time.monotonic):
@@ -320,8 +355,13 @@ class KareUretici(threading.Thread):
 
     def __init__(self, kaynak_metin, kalite=VARSAYILAN_KALITE,
                  fps_tavani=VARSAYILAN_FPS_TAVANI, log_aralik_s=VARSAYILAN_LOG_ARALIGI_S,
-                 saat=time.monotonic, log=logla, arka_uc=ARKA_UC_OTOMATIK, **kip_ayari):
+                 saat=time.monotonic, log=logla, arka_uc=ARKA_UC_OTOMATIK, dondur=0,
+                 **kip_ayari):
         super().__init__(name="kamera-uretici", daemon=True)
+        if dondur not in DONDURME_SECENEKLERI:
+            raise ValueError("dondur {!r} gecersiz; secenekler {}".format(
+                dondur, DONDURME_SECENEKLERI))
+        self.dondur = int(dondur)
         self.kaynak_metin = "" if kaynak_metin is None else str(kaynak_metin)
         # T226: None = "verilmedi" -> nvargus'ta boru varsayilani, indeks/aygitta
         # surucu varsayilani (cap.set CAGRILMAZ — eski davranis birebir).
@@ -411,6 +451,9 @@ class KareUretici(threading.Thread):
         """
         w = self.kip_istegi.get("genislik")
         h = self.kip_istegi.get("yukseklik")
+        if self.dondur in (90, 270):
+            # istek KAMERA kipidir (dondurme oncesi); sunulan kare en/boy degistirir
+            w, h = h, w
         if self.sekil is None or (w is None and h is None):
             return None
         return bool((w is None or self.sekil[1] == int(w)) and
@@ -433,6 +476,7 @@ class KareUretici(threading.Thread):
                 "fps_tavani": self.fps_tavani,
                 "kalite": self.kalite,
                 "boyut": [self.sekil[1], self.sekil[0]] if self.sekil else None,
+                "dondur": self.dondur,
                 "son_kare_yasi_s": (None if self.son_kare_t is None
                                     else round(simdi - self.son_kare_t, 3)),
                 "son_hata": self.son_hata,
@@ -559,6 +603,7 @@ class KareUretici(threading.Thread):
     def _kare_yayinla(self, kare):
         if not isinstance(kare, np.ndarray) or kare.ndim != 3 or kare.shape[2] != 3:
             return False, False
+        kare = kare_dondur(kare, self.dondur)
         try:
             ok, tampon = cv2.imencode(".jpg", kare, [int(cv2.IMWRITE_JPEG_QUALITY), self.kalite])
         except cv2.error:
@@ -822,7 +867,8 @@ class KopruSunucusu(ThreadingMixIn, HTTPServer):
 
 def kopru_kur(kaynak, port=VARSAYILAN_PORT, host=YEREL_HOST, kalite=VARSAYILAN_KALITE,
               fps_tavani=VARSAYILAN_FPS_TAVANI, log_aralik_s=VARSAYILAN_LOG_ARALIGI_S,
-              istek_logu=False, log=logla, arka_uc=ARKA_UC_OTOMATIK, **kip_ayari):
+              istek_logu=False, log=logla, arka_uc=ARKA_UC_OTOMATIK, dondur=0,
+              **kip_ayari):
     """Uretici ipligini baslat + HTTP sunucuyu BAGLA (serve_forever CAGIRMAZ).
 
     -> (sunucu, uretici). port=0: efemer (test). Kaynak yoksa da doner —
@@ -831,7 +877,7 @@ def kopru_kur(kaynak, port=VARSAYILAN_PORT, host=YEREL_HOST, kalite=VARSAYILAN_K
     """
     uretici = KareUretici(kaynak, kalite=kalite, fps_tavani=fps_tavani,
                           log_aralik_s=log_aralik_s, log=log, arka_uc=arka_uc,
-                          **kip_ayari)
+                          dondur=dondur, **kip_ayari)
     sunucu = KopruSunucusu((host, int(port)), uretici, istek_logu=istek_logu)
     uretici.start()
     return sunucu, uretici
@@ -880,6 +926,10 @@ def _parser():
     p.add_argument("--log-aralik", type=float, default=VARSAYILAN_LOG_ARALIGI_S,
                    help="periyodik sayac logu (s), 0 = kapali")
     p.add_argument("--istek-logu", action="store_true", help="her HTTP istegini logla")
+    p.add_argument("--dondur", type=int, choices=DONDURME_SECENEKLERI, default=0,
+                   help="kareyi SAAT YONUNDE dondur (derece; montaj duzeltmesi). "
+                        "90/270'te en-boy yer degistirir: tuketicinin FOV'u yeni "
+                        "yatay eksene gore verilmeli. Varsayilan 0 = dokunulmaz")
     return p
 
 
@@ -902,7 +952,7 @@ def main(argv=None):
         sunucu, uretici = kopru_kur(
             args.kaynak, port=args.port, host=args.host, kalite=args.kalite,
             fps_tavani=args.fps, log_aralik_s=args.log_aralik, istek_logu=args.istek_logu,
-            arka_uc=args.arka_uc,
+            arka_uc=args.arka_uc, dondur=args.dondur,
             genislik=args.genislik, yukseklik=args.yukseklik, fps=args.kamera_fps,
             sensor_id=args.sensor_id)
     except OSError as exc:
@@ -911,12 +961,12 @@ def main(argv=None):
         return 3
     port = sunucu.server_address[1]
     logla("dinliyor {} · kare {} · durum {} · kaynak={!r} [{}] kalite={} fps_tavani={} "
-          "arka_uc={} kip={}".format(
+          "arka_uc={} kip={} dondur={}".format(
               video_url(port, args.host), "http://{}:{}{}".format(args.host, port, KARE_YOLU),
               "http://{}:{}{}".format(args.host, port, DURUM_YOLU),
               uretici.kaynak_metin or KAYNAK_NVARGUS, uretici.kaynak_turu, args.kalite,
               args.fps, args.arka_uc,
-              _kip_metni(uretici.kip_istegi) if uretici.kip_istegi else "-"))
+              _kip_metni(uretici.kip_istegi) if uretici.kip_istegi else "-", args.dondur))
 
     def _sinyal(_s, _f):
         raise SystemExit(0)

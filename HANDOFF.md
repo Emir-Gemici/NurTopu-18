@@ -591,7 +591,9 @@ iş yoktur.
 
 ```
 odak:     O:\navitas-local-train\venv\Scripts\python.exe scripts\kamera_odak_olcer.py --url http://127.0.0.1:8080/kare.jpg
-görev:    ...\python.exe scripts\fda_gorev_uret.py --kose LAT LON (x4) --montaj-yaw 90 --cikti gorev.waypoints
+görev:    ...\python.exe scripts\fda_gorev_uret.py --kose LAT LON (x4) --montaj-yaw <OK TESTİ> --cikti gorev.waypoints
+          ⚠ 21 Eyl REVİZYON: +90 GEÇERSİZ. Açı döndürülmüş videoda ok testiyle ölçülür (üst → 0, alt → 180).
+          Ayrıntı: SAHA_20260920/MONTAJ_YAW.md REVİZYON 3 ve REVIEW_LOG D-524 ek 7.
 YKİ:      SAHA_YKI_BASLAT.cmd        (ÖNCE Mission Planner'ı COM portundan AYIR)
 kapı:     ...\python.exe -X utf8 -B codes\test_rota_sentetik.py
 ```
