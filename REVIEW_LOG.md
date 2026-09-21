@@ -31977,3 +31977,26 @@ Kusur üründe değil ölçüm aletindeydi: mimar `codes/test_rota_sentetik.py:5
 3. **Tek kare.** Arenadan 30 m'den (ya da erişilebilen en yüksek noktadan) NET tek kare alınıp aynı üretim biçimiyle çevrimdışı koşulur. Beyaz zemin + kaldırım taşı + gerçek H'yi tek ölçümde kapatan şey budur.
 
 **Çürütücü ölçümler:** (1) gerçek arenadan alınan NET karede `conf=0,30` ile `zemin_px > 0` ve rota üretilirse Deney 2'nin "beyaz zemin engel değil" hükmü pekişir, üretilmezse hüküm düşer ve sebep kaldırım taşı dokusudur; (2) arenadaki H pedi `hb_konumu(kare, mpp=0,02388, sekil_esigi=HB_SEKIL_ESIGI)` ile bulunamazsa Deney 3'ün uçurumu sahada gerçekleşmiş demektir.
+
+**D-524 ek 3 — "iniş yeri = kalkış yeri, 40 m ileri + 40 m geri" bilgisi: rota YALNIZCA HB kadrajdayken üretilir; 30 m'de 40 m'lik koridor TEK KAREYE SIĞMAZ.**
+
+**Kural nereden geliyor:** üretim `analyze_path`'i üç çağrı yerinde de `goruntu=sq` ile çağırır (`codes/rpi_inference.py:2013, :2236, :2389`). `goruntu` verildiğinde sözleşme şudur (`:1684-1700`): *"varış noktası HB'den alınır; HB bulunamazsa UYDURULMAZ, `HEDEF_YOK` ile çekimser kalınır."* Yani **HB kadrajda değilse rota üretilmez** — zemin maskesi kusursuz olsa bile. Koridor araması da HB tohumuna bağlıdır (`_bagli_koridor_yolu(..., hedef_tohumu=hb_tohumu)`), dolayısıyla başlangıç bandı ile HB **aynı karede** olmak zorundadır.
+
+**Geometri (FOV 54°, 1280×720, `montaj_yaw=+90` → burun görüntüde solda, yani uçuş ekseni görüntünün UZUN eksenine denk gelir):**
+
+| irtifa | uçuş ekseni | yanal | HB görünürlük penceresi |
+|---|---|---|---|
+| **30 m** | **30,6 m** | **17,2 m** | kadraj merkezinden **±15,3 m** |
+| 35 m | 35,7 m | 20,1 m | ±17,8 m |
+| 40 m | 40,8 m | 22,9 m | ±20,4 m |
+
+**Sonuçlar:**
+- 30 m'de tek kare uçuş ekseninde **30,6 m** görür; **40 m'lik koridor tek kareye sığmaz.** Sığması için gereken irtifa **39,3 m**.
+- 20 m derinliğin kısa eksene (yanal) sığması için gereken irtifa **34,9 m**; 30 m'de yanal kapsama yalnız **17,2 m**.
+- HB koridorun uzak ucundaysa, ileri bacağın ilk **≈24,7 m**'sinde HB kadraj dışındadır → o kareler `HEDEF_YOK` döner, `OPEN_ROUTE` yayınlanmaz, **hakemin onaylayacağı bir şey oluşmaz.**
+
+**Bilinmeyen (insan teyidi gerekir, kayıttan çıkarılamaz):** KB (başlangıç) ve HB (hedef) pedlerinin kalkış noktasına göre **nerede** durduğu. Yukarıdaki pencere ancak bu bilindiğinde uçuş profiline oturur. ⚠ Dronun iniş yerinin kalkış yeri olması HB ile **ilgisiz**dir: HB, İKA'nın varış bölgesidir (`HB_KENAR_M = 2.0`, şartname SS2.1), dronun iniş pedi değil.
+
+**Kod değiştirmeden kapatma yolu:** rota yayını ve hakem onayı, koridorun **tamamının + HB'nin** kadraja girdiği konumda (askıda) yapılır; 40 m'lik geçişin tamamı boyunca rota beklenmez. Bu bir eşik veya sözleşme değişikliği değildir, **uçuş profili kararıdır** ve insanındır.
+
+**Çürütücü ölçüm:** arenadan 30 m'de alınan tek karede hem başlangıç bandı hem HB görünüyorsa ve `analyze_path(..., goruntu=sq)` rota üretiyorsa bu ekteki pencere kısıtı o yerleşim için geçersizdir. Tersine, sahada `HEDEF_YOK` sayısı `MASKE_YOK`'u geçiyorsa kısıt gerçekleşmiş demektir — 20 Eyl oturumunda `HEDEF_YOK` **sıfırdı**, baskın sebep `MASKE_YOK` (4112) idi; yani bu kısıt o gece henüz devreye bile girmemişti.
