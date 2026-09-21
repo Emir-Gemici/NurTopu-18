@@ -1,0 +1,21 @@
+test_1_saglam_yki_GECTI_der (__main__.AracKendiniKanitliyor.test_1_saglam_yki_GECTI_der) ... ok
+test_2_mutant_yeni_seq_onayi_siliyor_YAKALANIR (__main__.AracKendiniKanitliyor.test_2_mutant_yeni_seq_onayi_siliyor_YAKALANIR) ... ok
+test_3_mutant_no_route_onayi_siliyor_YAKALANIR (__main__.AracKendiniKanitliyor.test_3_mutant_no_route_onayi_siliyor_YAKALANIR) ... ok
+test_4_mutant_hayalet_ack_YAKALANIR (__main__.AracKendiniKanitliyor.test_4_mutant_hayalet_ack_YAKALANIR) ... ok
+test_5_no_route_otomatik_ack_saglamda_geliyor (__main__.AracKendiniKanitliyor.test_5_no_route_otomatik_ack_saglamda_geliyor)
+NO_ROUTE'un otomatik ACK'i sayiliyor mu (sartname davranisi kaybolmasin). ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 65.634s
+
+OK
+
+SAGLAM: {"sonuc": "GECTI", "gerekce": [], "pencere_s": 3.0, "hayalet_ack_seq": [], "open_route_gonderim": 11, "no_route_gonderim": 2, "open_route_ack": 8, "no_route_ack": 2, "en_uzun_ack_boslugu_s": 2.0, "yeni_seq_ack_sayisi": 8, "toparlanmayan_no_route_seq": []}
+
+MUTANT yeni_seq: {"sonuc": "DUSTU", "gerekce": ["OLCUT 1 DUSTU: hic OPEN_ROUTE ACK'i gelmedi (hakem basmadi mi, yoksa onay silindi mi? gunluge bak)", "OLCUT 2 DUSTU: NO_ROUTE sonrasi 3 s icinde OPEN_ROUTE ACK'i donmedi: [9005]"], "pencere_s": 3.0, "hayalet_ack_seq": [], "open_route_gonderim": 11, "no_route_gonderim": 2, "open_route_ack": 0, "no_route_ack": 2, "en_uzun_ack_boslugu_s": null, "toparlanmayan_no_route_seq": [9005]}
+
+MUTANT no_route: {"sonuc": "DUSTU", "gerekce": ["OLCUT 1 DUSTU: yeni-seq ACK'leri arasinda 8.0 s bosluk var (sinir 3 s)", "OLCUT 2 DUSTU: NO_ROUTE sonrasi 3 s icinde OPEN_ROUTE ACK'i donmedi: [9005]"], "pencere_s": 3.0, "hayalet_ack_seq": [], "open_route_gonderim": 11, "no_route_gonderim": 2, "open_route_ack": 2, "no_route_ack": 2, "en_uzun_ack_boslugu_s": 8.0, "yeni_seq_ack_sayisi": 2, "toparlanmayan_no_route_seq": [9005]}
+
+MUTANT hayalet: {"sonuc": "DUSTU", "gerekce": ["OLCUT 3 DUSTU: gonderilmemis seq'lere ACK geldi: [509003, 509004, 509006, 509007, 509008, 509009, 509010, 509012]", "OLCUT 1 DUSTU: hic OPEN_ROUTE ACK'i gelmedi (hakem basmadi mi, yoksa onay silindi mi? gunluge bak)", "OLCUT 2 DUSTU: NO_ROUTE sonrasi 3 s icinde OPEN_ROUTE ACK'i donmedi: [9005]"], "pencere_s": 3.0, "hayalet_ack_seq": [509003, 509004, 509006, 509007, 509008, 509009, 509010, 509012], "open_route_gonderim": 11, "no_route_gonderim": 2, "open_route_ack": 0, "no_route_ack": 2, "en_uzun_ack_boslugu_s": null, "toparlanmayan_no_route_seq": [9005]}
+
+[exited with code 0]
