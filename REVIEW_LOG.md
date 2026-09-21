@@ -32036,3 +32036,25 @@ HB yoksa rota **uydurulmaz** — bu kasıtlı ve doğru bir fail-closed tasarım
 ⚠ **Açık soru (insan teyidi, koddan çıkarılamaz):** H pedi yoksa İKA'nın varış bölgesi bu arenada **neyle** tanımlanıyor? Şartname SS2.1 HB'yi tanımlıyor; arena onu taşımıyorsa ya işaret farklı (renk/şekil), ya hedef yordamı farklıdır. Seçenek A bu soruyu kapatmaz, yalnız rota üretimini yeniden açar.
 
 **Çürütücü ölçümler:** (1) arenada 2 m'lik kırmızı H pedi aslında varsa (uzaktan görülmemiş olabilir) bu ek düşer — tek komutla sınanır: arenadan alınan karede `hb_konumu(kare, mpp=0,02388, sekil_esigi=HB_SEKIL_ESIGI)` bir kutu döndürürse HB vardır; (2) odak düzeltildikten sonraki oturumda `HEDEF_YOK` sayısı sıfır kalır ve rota üretilirse bu ekteki mekanizma yanlıştır.
+
+**D-524 ek 5 — ⚠ EK 4'ÜN DAYANAĞI DÜŞTÜ: arenada kırmızı H pedi VARMIŞ (kullanıcı düzeltmesi, 21 Eyl). Ek 4'ün "0 puan" hükmü GEÇERSİZDİR; iki bulgusu AYAKTA kalır.**
+
+Ek 4, kullanıcının "H pedi yok" beyanı üzerine yazılmıştı ve üretim yolunun her karede `HEDEF_YOK` döneceğini ölçmüştü. Kullanıcı aynı gün düzeltti: **ped var ve kırmızı.** Dolayısıyla ek 4'teki (A)/(B)/(C) seçenekleri ve "kod değiştirilmeli" sonucu **düşer**; `goruntu=sq` bağlaması yerinde kalır, kod değiştirilmedi. Kayıt silinmez (defter append-only); yanlış çıkan hüküm burada işaretlenir.
+
+**Ek 4'ten AYAKTA kalan iki bulgu — ikisi de pedin varlığından bağımsızdır:**
+
+1. **Genel kapı üretimin çağrı biçimini koşmuyor.** `codes/test_rota_sentetik.py:161-163` `analyze_path`'i `goruntu` geçirmeden çağırır; üretim üç yerde de `goruntu=sq` geçirir (`rpi_inference.py:2013, :2236, :2389`). Yani HB dalı — boyut bandı, şekil kapısı, `HEDEF_YOK` çekimserliği — **genel kapının görüş alanı dışındadır.** Ölçüldü: HB'si silinmiş karelerde üretim yolu 0/6 rota üretirken kapı yolu **6/6** veriyordu. Dal başka nöbetçilerle kaplı (`test_hb_dedektoru`, `test_t198_hb_sekil`, `test_t150_baglama`), dolayısıyla **vakum kapı değil**, ama genel kapının "ÜRETİM YOLU" başlığı (`:24`, `:207`) taşıdığı iddiadan daha dardır.
+
+2. **Halkalar sıralıdır ve önceki halka sonrakini GİZLER.** Zemin maskesi 0 piksel ise `analyze_path` HB bloğuna **varmadan** döner (`:1534-1540` vs `:1687`). 20 Eylül oturumunda 4112 `MASKE_YOK`, `HEDEF_YOK` **sıfır** olmasının sebebi budur — HB tarafının sağlam olduğunu göstermez, yalnız **sıranın oraya gelmediğini** gösterir. Operasyonel sonuç: odak düzeltildikten sonra HB kapıları (boyut bandı, şekil, kadraj) **ilk kez** devreye girecektir.
+
+**Bu iki bulguya karşı üretilen araç: `scripts/arena_kare_teshis.py` (+ `tests/test_arena_kare_teshis.py`, 12/12 OK).**
+Tek kareden beş halkayı **sırayla ve ayrı ayrı** raporlar — odak → ölçek → HB → maske → rota — ve bir halka düşse bile sonrakilerin durumunu yazar; böylece operatör tek düzeltmeden sonra ikinci duvara çarpmaz. Üretimin çağrı biçimini (`goruntu=sq`) kullanır, yani genel kapının koşmadığı dalı sahada koşar. Hiçbir eşik yeniden tanımlanmaz (madde 16); tek kaynak `karar_sozlesmesi` ve `kare_keskinligi`dir. Teşhistir, kabul kapısı değildir.
+
+**Ölçülen ayırt edicilik (nöbetçi bunu kilitler):**
+- sağlam kare (`data/kabul/.../val/sa_000000.jpg`, irtifa 47,4 m) → **5/5 halka GEÇTİ**, şerit 2, güven 1,000, 8 waypoint, çıkış 0.
+- bulanık saha karesi (`SAHA_20260920/kanit/kare_20260920.jpg`, irtifa 30 m) → ilk kopan halka **odak** (keskinlik 3,6 → BULANIK), red `MASKE_YOK`, çıkış 1; **HB satırı da düşük** olarak ayrıca raporlanıyor.
+- mutasyon: aynı sağlam kare, irtifa **iki katı** → HB boyut bandından düşer, ilk kopan halka HB olur. Aracın irtifayı gerçekten kullandığının kanıtı.
+
+**Bugünkü ders (aynı gün üçüncü kez).** D-524 ek 1'de yanlış `mpp`, ek 2'de yanlış beyazlatma, ek 4'te yanlış saha beyanı — üçünde de **ölçüm aleti ya da girdi** bozuktu, ürün değil. Üçü de hüküm kalıcılaşmadan yakalandı. Bu araç tam da bunu kurumsallaştırır: sahada "neyin bozuk olduğunu" tahmin etmek yerine **tek komutla ölçtürür**.
+
+**Çürütücü ölçüm:** arenadan alınan gerçek karede `python scripts/arena_kare_teshis.py --url http://127.0.0.1:8080/kare.jpg --irtifa 30` koşulur. Araç bir halkayı DÜŞTÜ gösterip o halka elle incelendiğinde sağlam çıkarsa, araç yanlış ölçüyordur ve bu ek geçersizdir.
