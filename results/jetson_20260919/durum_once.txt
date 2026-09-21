@@ -1,0 +1,80 @@
+== kimlik ==
+n4vitas
+navitas-jetson
+ 16:13:05 up 30 min,  2 users,  load average: 0.09, 0.15, 0.17
+enP8p1s0         UP             169.254.201.50/16 10.21.8.7/24 
+l4tbr0           DOWN           192.168.55.1/24 
+== navitas servisleri ==
+ navitas-cogullayici.service loaded active running NAVITAS MAVLink cogullayici (MAVProxy) - seri Pixhawk'in tek sahibi (CONTRACTS 7.4)
+ navitas-iha-inis-yayinci.service loaded active running NAVITAS iha_inis_yayinci - Pixhawk kanitli IHA_LANDED (cogullayici ucu udp:14551)
+ navitas-iha-komut-alici.service loaded active running NAVITAS iha_komut_alici - YKS PARACHUTE/ARM -> Pixhawk COMMAND_LONG (cogullayici ucu udp:14552)
+ navitas-kamera-koprusu.service loaded active running NAVITAS kamera koprusu - CSI nvarguscamerasrc (sistem Python) -> MJPEG HTTP 127.0.0.1 (Gorev K)
+ navitas-rpi-inference.service loaded activating auto-restart NAVITAS uretim algi yolu (rpi_inference --camera) - cogullayici ucu udp:14550
+ navitas-seri-hub.service loaded active running NAVITAS seri hub - SiK seri portun tek sahibi, UDP loopback dagitici (D-403 4b, KIP=sik)
+== enabled? ==
+navitas-cogullayici.service enabled enabled
+navitas-iha-inis-yayinci.service enabled enabled
+navitas-iha-komut-alici.service enabled enabled
+navitas-kamera-koprusu.service enabled enabled
+navitas-rpi-inference.service enabled enabled
+navitas-seri-hub.service enabled enabled
+== seri-hub birimi ==
+EnvironmentFile=/etc/navitas.env
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/opt/navitas/python/bin/python /home/n4vitas/navitas/comms/seri_hub.py $HUB_TASIYICI_ARGS --bind 127.0.0.1:5100 --tuketici 127.0.0.1:5007
+== ortam dosyalari ==
+== surecler ==
+   1902    1808 /home/n4vitas/venv312/bin/python /home/n4vitas/.local/bin/mavproxy.py --master=/dev/ttyTHS1 --baudrate 57600 --streamrate 8 --out udp:127.0.0.1:14550 --out udp:127.0.0.1:14551 --out udp:127.0.0.1:14552 --
+   1926    1808 /opt/navitas/python/bin/python /home/n4vitas/navitas/comms/seri_hub.py --tunel 127.0.0.1:14553 --tunel-kimlik hava --bind 127.0.0.1:5100 --tuketici 127.0.0.1:5007
+   1929    1808 /opt/navitas/python/bin/python /home/n4vitas/navitas/comms/iha_inis_yayinci.py --mavlink udp:127.0.0.1:14551 --sysid 1 --kanit-timeout 900 --yks 127.0.0.1:5100 --kalkis-bekle --heartbeat-sure 0
+   1933    1808 /opt/navitas/python/bin/python /home/n4vitas/navitas/comms/iha_komut_alici.py --mavlink udp:127.0.0.1:14552 --sysid 1 --bind 127.0.0.1:5007 --izinli-kaynak 127.0.0.1:5100
+   2005    1808 /usr/bin/python3 /home/n4vitas/navitas/scripts/kamera_koprusu.py --port 8080
+== dinleyen portlar ==
+udp   UNCONN 0      0          127.0.0.1:14551      0.0.0.0:*    users:(("python",pid=1929,fd=3))      
+udp   UNCONN 1920   0          127.0.0.1:14552      0.0.0.0:*    users:(("python",pid=1933,fd=3))      
+udp   UNCONN 0      0          127.0.0.1:14553      0.0.0.0:*    users:(("python",pid=1926,fd=4))      
+udp   UNCONN 0      0          127.0.0.1:5007       0.0.0.0:*    users:(("python",pid=1933,fd=4))      
+udp   UNCONN 0      0          127.0.0.1:5100       0.0.0.0:*    users:(("python",pid=1926,fd=3))      
+tcp   LISTEN 0      5          127.0.0.1:8080       0.0.0.0:*    users:(("python3",pid=2005,fd=3))     
+== seri ==
+crw-rw---- 1 root dialout 236, 1 Sep 19 16:13 /dev/ttyTHS1
+crw-rw---- 1 root dialout 236, 2 Sep 19 13:45 /dev/ttyTHS2
+== seri_hub gunluk ==
+2026-09-19T16:11:29+03:00 navitas-jetson python[1926]: [SERI_HUB] t=1725.813 tunel sayac gonderilen_cerceve=76 gonderilen_parca=121 tavan_ustu=0 akran_yok=0 gonderim_hatasi=0 akran_sessizken_gonderilen=0 alinan_datagram=
+2026-09-19T16:11:39+03:00 navitas-jetson python[1926]: [SERI_HUB] t=1735.826 sayac udp_alinan=76 seri_yazilan=76 seri_cerceve=0 fanout_gonderim=0 fanout_hata=0 hedefsiz=0 bozuk=0 dusurulen=0 seri_ariza=0 yeniden_acma=0 y
+2026-09-19T16:11:39+03:00 navitas-jetson python[1926]: [SERI_HUB] t=1735.826 tunel sayac gonderilen_cerceve=76 gonderilen_parca=121 tavan_ustu=0 akran_yok=0 gonderim_hatasi=0 akran_sessizken_gonderilen=0 alinan_datagram=
+2026-09-19T16:11:49+03:00 navitas-jetson python[1926]: [SERI_HUB] t=1745.836 sayac udp_alinan=76 seri_yazilan=76 seri_cerceve=0 fanout_gonderim=0 fanout_hata=0 hedefsiz=0 bozuk=0 dusurulen=0 seri_ariza=0 yeniden_acma=0 y
+2026-09-19T16:11:49+03:00 navitas-jetson python[1926]: [SERI_HUB] t=1745.836 tunel sayac gonderilen_cerceve=76 gonderilen_parca=121 tavan_ustu=0 akran_yok=0 gonderim_hatasi=0 akran_sessizken_gonderilen=0 alinan_datagram=
+2026-09-19T16:11:59+03:00 navitas-jetson python[1926]: [SERI_HUB] t=1755.846 sayac udp_alinan=76 seri_yazilan=76 seri_cerceve=0 fanout_gonderim=0 fanout_hata=0 hedefsiz=0 bozuk=0 dusurulen=0 seri_ariza=0 yeniden_acma=0 y
+2026-09-19T16:11:59+03:00 navitas-jetson python[1926]: [SERI_HUB] t=1755.846 tunel sayac gonderilen_cerceve=76 gonderilen_parca=121 tavan_ustu=0 akran_yok=0 gonderim_hatasi=0 akran_sessizken_gonderilen=0 alinan_datagram=
+2026-09-19T16:12:09+03:00 navitas-jetson python[1926]: [SERI_HUB] t=1765.856 sayac udp_alinan=76 seri_yazilan=76 seri_cerceve=0 fanout_gonderim=0 fanout_hata=0 hedefsiz=0 bozuk=0 dusurulen=0 seri_ariza=0 yeniden_acma=0 y
+2026-09-19T16:12:09+03:00 navitas-jetson python[1926]: [SERI_HUB] t=1765.856 tunel sayac gonderilen_cerceve=76 gonderilen_parca=121 tavan_ustu=0 akran_yok=0 gonderim_hatasi=0 akran_sessizken_gonderilen=0 alinan_datagram=
+2026-09-19T16:12:19+03:00 navitas-jetson python[1926]: [SERI_HUB] t=1775.867 sayac udp_alinan=76 seri_yazilan=76 seri_cerceve=0 fanout_gonderim=0 fanout_hata=0 hedefsiz=0 bozuk=0 dusurulen=0 seri_ariza=0 yeniden_acma=0 y
+2026-09-19T16:12:19+03:00 navitas-jetson python[1926]: [SERI_HUB] t=1775.867 tunel sayac gonderilen_cerceve=76 gonderilen_parca=121 tavan_ustu=0 akran_yok=0 gonderim_hatasi=0 akran_sessizken_gonderilen=0 alinan_datagram=
+2026-09-19T16:12:29+03:00 navitas-jetson python[1926]: [SERI_HUB] t=1785.885 sayac udp_alinan=76 seri_yazilan=76 seri_cerceve=0 fanout_gonderim=0 fanout_hata=0 hedefsiz=0 bozuk=0 dusurulen=0 seri_ariza=0 yeniden_acma=0 y
+2026-09-19T16:12:29+03:00 navitas-jetson python[1926]: [SERI_HUB] t=1785.885 tunel sayac gonderilen_cerceve=76 gonderilen_parca=121 tavan_ustu=0 akran_yok=0 gonderim_hatasi=0 akran_sessizken_gonderilen=0 alinan_datagram=
+2026-09-19T16:12:30+03:00 navitas-jetson python[1926]: [SERI_HUB] t=1786.732 tuketici ogrenildi: 127.0.0.1:51176
+2026-09-19T16:12:39+03:00 navitas-jetson python[1926]: [SERI_HUB] t=1795.899 sayac udp_alinan=82 seri_yazilan=82 seri_cerceve=0 fanout_gonderim=0 fanout_hata=0 hedefsiz=0 bozuk=0 dusurulen=0 seri_ariza=0 yeniden_acma=0 y
+2026-09-19T16:12:39+03:00 navitas-jetson python[1926]: [SERI_HUB] t=1795.899 tunel sayac gonderilen_cerceve=82 gonderilen_parca=132 tavan_ustu=0 akran_yok=0 gonderim_hatasi=0 akran_sessizken_gonderilen=0 alinan_datagram=
+2026-09-19T16:12:49+03:00 navitas-jetson python[1926]: [SERI_HUB] t=1805.910 sayac udp_alinan=82 seri_yazilan=82 seri_cerceve=0 fanout_gonderim=0 fanout_hata=0 hedefsiz=0 bozuk=0 dusurulen=0 seri_ariza=0 yeniden_acma=0 y
+2026-09-19T16:12:49+03:00 navitas-jetson python[1926]: [SERI_HUB] t=1805.910 tunel sayac gonderilen_cerceve=82 gonderilen_parca=132 tavan_ustu=0 akran_yok=0 gonderim_hatasi=0 akran_sessizken_gonderilen=0 alinan_datagram=
+2026-09-19T16:12:59+03:00 navitas-jetson python[1926]: [SERI_HUB] t=1815.920 sayac udp_alinan=82 seri_yazilan=82 seri_cerceve=0 fanout_gonderim=0 fanout_hata=0 hedefsiz=0 bozuk=0 dusurulen=0 seri_ariza=0 yeniden_acma=0 y
+2026-09-19T16:12:59+03:00 navitas-jetson python[1926]: [SERI_HUB] t=1815.920 tunel sayac gonderilen_cerceve=82 gonderilen_parca=132 tavan_ustu=0 akran_yok=0 gonderim_hatasi=0 akran_sessizken_gonderilen=0 alinan_datagram=
+== cogullayici gunluk ==
+2026-09-19T16:12:56+03:00 navitas-jetson env[1902]: Got COMMAND_ACK: SET_MESSAGE_INTERVAL: ACCEPTED
+2026-09-19T16:12:56+03:00 navitas-jetson env[1902]: Got COMMAND_ACK: SET_MESSAGE_INTERVAL: ACCEPTED
+2026-09-19T16:13:01+03:00 navitas-jetson env[1902]: Flight battery 100 percent
+2026-09-19T16:13:03+03:00 navitas-jetson env[1902]: AP: PreArm: RC not found
+2026-09-19T16:13:03+03:00 navitas-jetson env[1902]: AP: PreArm: Hardware safety switch
+2026-09-19T16:13:03+03:00 navitas-jetson env[1902]: AP: PreArm: Compasses inconsistent
+2026-09-19T16:13:03+03:00 navitas-jetson env[1902]: AP: PreArm: GPS 1: Bad fix
+2026-09-19T16:13:03+03:00 navitas-jetson env[1902]: AP: PreArm: Fence requires position
+== kamera gunluk ==
+2026-09-19T16:13:03+03:00 navitas-jetson env[2005]: Error generated. /dvs/git/dirty/git-master_linux/multimedia/nvgstreamer/gst-nvarguscamera/gstnvarguscamerasrc.cpp, execute:945 No cameras available
+2026-09-19T16:13:03+03:00 navitas-jetson env[2005]: [ WARN:0@1805.099] global ./modules/videoio/src/cap_gstreamer.cpp (1405) open OpenCV | GStreamer warning: Cannot query video position: status=0, val
+2026-09-19T16:13:03+03:00 navitas-jetson env[2005]: [KAMERA_KOPRUSU] t=1820.173 kaynak ACILDI (deneme 1129): 'nvarguscamerasrc sensor-id=0 ! video/x-raw(memory:NVMM), width=(int)1280, height=(int)720,
+2026-09-19T16:13:04+03:00 navitas-jetson env[2005]: [KAMERA_KOPRUSU] t=1820.756 KIRMIZI 30 ardisik dusen kare (ust sinir 30) — kaynak KAPATILDI, 1.0 s sonra yeniden acilacak
+2026-09-19T16:13:05+03:00 navitas-jetson env[2005]: Error generated. /dvs/git/dirty/git-master_linux/multimedia/nvgstreamer/gst-nvarguscamera/gstnvarguscamerasrc.cpp, execute:945 No cameras available
+2026-09-19T16:13:05+03:00 navitas-jetson env[2005]: [ WARN:0@1806.698] global ./modules/videoio/src/cap_gstreamer.cpp (1405) open OpenCV | GStreamer warning: Cannot query video position: status=0, val
+2026-09-19T16:13:05+03:00 navitas-jetson env[2005]: [KAMERA_KOPRUSU] t=1821.772 kaynak ACILDI (deneme 1130): 'nvarguscamerasrc sensor-id=0 ! video/x-raw(memory:NVMM), width=(int)1280, height=(int)720,
+2026-09-19T16:13:05+03:00 navitas-jetson env[2005]: [KAMERA_KOPRUSU] t=1822.356 KIRMIZI 30 ardisik dusen kare (ust sinir 30) — kaynak KAPATILDI, 1.0 s sonra yeniden acilacak

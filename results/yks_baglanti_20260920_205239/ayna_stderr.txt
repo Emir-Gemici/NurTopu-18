@@ -1,0 +1,2 @@
+[TUNEL] KIRMIZI akran YOK (arac HEARTBEAT'i henuz gelmedi): cerceve dusuruldu; sonrakiler yalniz akran_yok sayacinda
+[TUNEL] KIRMIZI kimlik SICRAMASI 62393 -> 46546 (karsi uc yeniden basladi?); sonrakiler yalniz kimlik_sicramasi sayacinda

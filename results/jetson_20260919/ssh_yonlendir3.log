@@ -1,0 +1,2 @@
+yonlendirme: 127.0.0.1:18080 -> 10.21.8.7:127.0.0.1:8080
+Socket exception: Varolan bir bağlantı uzaktaki bir ana bilgisayar tarafından zorla kapatıldı (10054)

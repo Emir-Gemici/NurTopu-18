@@ -2,3 +2,7 @@
 data/kabul/** -text
 # simulasyon video kanit kosumlari: sha256 kaniti ham baytla hesaplanir (test_sim_mujoco_video :221 LF varsayar) — 10 Eylul, D-449
 results/fdr_sprint_20260910/video/kosum/** -text
+
+# Saha kaniti: bayt-es korunur (sha ile kanit degeri tasirlar)
+results/jetson_20260919/** -text
+results/yks_baglanti_20260920_205239/** -text
