@@ -1,0 +1,10 @@
+pyinstaller>=6.0
+pymavlink==2.4.49
+pyserial>=3.5
+Pillow>=10.0
+opencv-python>=4.10
+numpy>=2.0
+psutil>=6.0
+ultralytics>=8.3
+torch
+torchvision

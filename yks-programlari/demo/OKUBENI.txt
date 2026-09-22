@@ -1,0 +1,37 @@
+NAVITAS YKİ (Yer Kontrol İstasyonu hakem ekranı) — taşınabilir Windows paketi
+=============================================================================
+
+KURULUM
+  1. YKS.zip'i C:\NAVITAS\ gibi yazma izni olan bir klasöre aç (Program Files OLMAZ:
+     ekran, kanıt günlüğünü kendi klasörü altına yazar: results\prova\<tarih>\hakem_log.jsonl).
+  2. Python, pip veya başka kurulum GEREKMEZ; her şey klasörün içindedir (_internal\).
+  3. Windows SmartScreen "tanınmayan uygulama" derse: Daha fazla bilgi → Yine de çalıştır.
+
+ÇALIŞTIRMA
+  Çift tık: YKS_baslat.bat  → DEMO kipi (dahili İHA/İKA beslemesi, kurulumu denemek için)
+
+  Saha (tek telsiz, tünel kipi — 18 Eylül düzeni, D-494):
+    Mission Planner telsizin COM portuna bağlı; MP'de UDP Client aynası 127.0.0.1:14590 açık.
+    YKS_baslat.bat --tunel 127.0.0.1:14590 --fda
+
+  Saha (YKİ doğrudan SiK telsize bağlıysa, MP yok):
+    YKS_baslat.bat --serial COM5 --baud 57600 --fda        (COM numarasını Aygıt Yöneticisi'nden al)
+
+  Jetson kamera önizlemesi (yalnız ayrı Wi-Fi/LAN, telsizden video geçmez):
+    ... --kamera-url http://<JETSON_IP>:8080
+
+  Tüm seçenekler:  YKS.exe --help
+
+PAKETE GİRMEYENLER (bilerek)
+  - "Canlı algı" görünümü (YOLO çıkarımı): çıkarım Jetson'da koşar; bu pakette ultralytics/torch
+    ve model ağırlıkları YOKTUR. O görünüm açılırsa ekranda "Kaynak boş" yazar ve model yüklenmez; program çökmez (ölçüldü, 19 Eyl).
+  - Git: paket kopyasında commit kimliği "BILINMIYOR" görünür; bu normaldir.
+
+SORUN GİDERME
+  - Pencere hiç açılmıyor: YKS_baslat.bat çift tıkla, siyah pencerede kalan hata satırını gönder.
+  - "model_registry.json okunamadı": config\ klasörü silinmiş/taşınmış; zip'i yeniden aç.
+  - COM port açılmıyor: Mission Planner aynı portu tutuyordur; ya MP'yi kapat ya --tunel kullan.
+
+SÜRÜM
+  Kaynak: comms/yks_gui.py (depo kökünde `git rev-parse HEAD` ile eşleştir).
+  Yeniden paketleme: tools\yki_paket\paketle.bat (proje kökünde, venv gerekir).

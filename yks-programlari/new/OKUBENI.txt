@@ -1,0 +1,24 @@
+NAVITAS YKI - PC radyo telemetri ve yerel video
+
+Cift tik: NAVITAS YKI masaustu kisayolu.
+USB radyo: COM7, 57600 baud.
+PC yonlendirmesi: radyo -> Mission Planner UDP 14550 + YKI UDP 14590.
+YKI Pixhawk MAVLink verisini dogrudan okur. Jetson gerekmez.
+Mission Planner COM7 kullanmamali; UDP 14550 kullanabilir.
+Bir yonlendirici zaten calisiyorsa baglanti penceresindeki ikinci secenegi secin.
+
+Terminalden tek program:
+  NAVITAS_YKI.exe --radyo COM7 --baud 57600
+Mevcut yonlendiriciyle:
+  NAVITAS_YKI.exe --mavlink --tunel 127.0.0.1:14590 --fda
+
+Video baslangicta kapalidir. Kamera goruntusu icin YKI canli isleme sekmesinde
+ulasabilen kamera/RTSP adresini girip BASLAT secilir. Model ve bagimliliklar
+pakette bulunur. Radyo paketleri video tasimaz. Farkli agdaki kamera adresine
+ulasim ayrica kurulmalidir; bu paket ag gecidi veya internet yayin servisi kurmaz.
+
+Bu surum telemetri/goruntu IZLEME icindir. Ucus komutlari Mission Planner'da.
+Rota/ACK/otonom gorev komutlari bu paket tarafindan uretilemez.
+
+NAVITAS_YKI.exe ile _internal, config, data, models klasorlerini birlikte tutun.
+Python kurmak gerekmez. Gunlukler results klasorundedir.
