@@ -112,7 +112,13 @@ Build betikleri kökü otomatik keşfeder; gerekirse `-ProjectRoot` verin.
 
 ## Güvenlik ve saha sınırı
 
-NEW `radio_mode.py` doğrudan radyo telemetrisi için fail-closed izleme kipidir.
-Telemetri bayat veya yoksa GUI kontrolü komut göndermez. Uçuş komutlarını
-Mission Planner/ayrı doğrulanmış komut alıcısı üzerinden vermek gerekir; yalnız
-düğmeyi görsel olarak etkinleştirmek komut yolunu oluşturmaz.
+NEW `radio_mode.py` doğrudan RFD/MAVLink taşıyıcısıdır. Taze Pixhawk heartbeat'i
+geldiğinde İHA uçuş düğmeleri gerçek `COMMAND_LONG` gönderir; YKI yalnız Pixhawk
+`COMMAND_ACK` kabulünü güçlü ACK olarak gösterir. GUI'nin iki tık, tazelik ve
+ACK sonrası heartbeat güvenlik kapıları korunur. Telemetri bayat veya yoksa
+komut gönderilmez.
+
+Bu radyo yolu Pixhawk/İHA içindir. `IKA_GO`, rota ve hakem aktarımı için ayrıca
+İKA'yı taşıyan NAVITAS bağlantısı gerekir; bu komutlar doğrudan radyo üzerinden
+sahte başarıyla kabul edilmez. Mission Planner aynı COM portunu açmaz; istenirse
+yalnız UDP 14550 üzerinden izleyici olarak kullanılabilir.

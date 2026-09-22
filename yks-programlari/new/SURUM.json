@@ -6,11 +6,11 @@
   "yki_udp": "127.0.0.1:14590",
   "mission_planner_udp": "127.0.0.1:14550",
   "video_autostart": false,
-  "flight_commands": "Mission Planner",
+  "flight_commands": "YKI direct MAVLink COMMAND_LONG + Pixhawk ACK; IKA separate link",
   "files": {
     "yks-programlari\\new\\navitas_yki_app.py": "c0ce64001fc0edc3aef2da3a9d655de178ebfb5b750cb9c79cc037d7a1c329c0",
-    "yks-programlari\\new\\radio_mode.py": "faa8a33af0c5633dad8fd1560001fee410e6692648695ba1f0ba511ec89ec758",
-    "yks-programlari\\new\\NAVITAS_YKI.spec": "621ca3d50c96ec8b6488dd0359a6316149612db44138fae148d9061f558d6a2e",
+    "yks-programlari\\new\\radio_mode.py": "bfcbfa3dff0c540d28b0cd1e248fbb8563c5da75c040f072035af4c5dc4d6323",
+    "yks-programlari\\new\\NAVITAS_YKI.spec": "34ccb4070f7f1edb7d6a5ce12d6505f7468302c2a289e3c7b7a8a2fbeb78a616",
     "comms\\yks_gui.py": "039c755c505039695670ba26409d3004e82d430fdff157c91d703f2b9af01223",
     "comms\\yki_canli_isleme.py": "83205b4450c63650bb68950b004f46d6711198503f5f78651f9087d1a5500c55",
     "scripts\\yer_yonlendirici.py": "2a437e84bbdcf87ed3e05caa6d224f6ab4bbf4023414a96e7e646f69d5724574"

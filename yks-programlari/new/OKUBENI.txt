@@ -17,8 +17,15 @@ ulasabilen kamera/RTSP adresini girip BASLAT secilir. Model ve bagimliliklar
 pakette bulunur. Radyo paketleri video tasimaz. Farkli agdaki kamera adresine
 ulasim ayrica kurulmalidir; bu paket ag gecidi veya internet yayin servisi kurmaz.
 
-Bu surum telemetri/goruntu IZLEME icindir. Ucus komutlari Mission Planner'da.
-Rota/ACK/otonom gorev komutlari bu paket tarafindan uretilemez.
+Bu surum Pixhawk telemetrisi ve dogrudan IHA ucus komutlari icindir.
+Taze heartbeat geldikten sonra YKI; ARM, DISARM, RTL, LAND, PARACHUTE ve
+desteklenen ucus modu komutlarini COMMAND_LONG olarak yollar. Pixhawk'in
+COMMAND_ACK cevabi gelmeden komut basarili sayilmaz; GUI tazelik ve iki tik
+guvenliklerini korur.
+
+IKA_GO, rota ve hakem aktarimi bu Pixhawk-only radyo yolundan gonderilmez;
+IKA icin ayri NAVITAS linki gerekir. Mission Planner ayni COM portunu acmaz;
+isterseniz UDP 14550'den yalniz izleyici olarak kullanabilirsiniz.
 
 NAVITAS_YKI.exe ile _internal, config, data, models klasorlerini birlikte tutun.
 Python kurmak gerekmez. Gunlukler results klasorundedir.

@@ -1,10 +1,12 @@
-"""NEDEN: dogrudan radyo akisinda gercek, taze telemetri disinda veri uretilmemeli."""
+"""Dogrudan radyo telemetry + guarded Pixhawk COMMAND_LONG/ACK tests."""
 from pathlib import Path
 import json
+import socket
 import sys
 import unittest
 sys.path[:0] = [str(Path(__file__).resolve().parents[2] / p) for p in ("comms", "codes")]
 from pymavlink.dialects.v20 import ardupilotmega as mav
+from protocol import command, decode, encode
 from radio_mode import NativeRadioLink, RadioTelemetry, ARM_DURUM_TAZELIK_S
 
 
@@ -54,21 +56,53 @@ class RadioTests(unittest.TestCase):
             self.assertIsNone(self.telemetry.accept(message))
         self.assertEqual(self.telemetry.sequence, 0)
 
-    def test_real_mavlink_fragmentation_and_no_outbound_commands(self):
+    def test_direct_command_and_pixhawk_ack_return_to_yki(self):
+        peer = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        peer.bind(("127.0.0.1", 0))
+        peer.settimeout(1.0)
         link = NativeRadioLink(("127.0.0.1", 0), "yer")
         self.addCleanup(link.close)
+        self.addCleanup(peer.close)
         enc = mav.MAVLink(None, srcSystem=1, srcComponent=1)
         wire = hb().pack(enc)
-        link._datagram_isle(wire[:5], ("127.0.0.1", 12001))
+        peer_address = peer.getsockname()
+        link._datagram_isle(wire[:5], peer_address)
         self.assertFalse(link._teslim)
-        link._datagram_isle(wire[5:], ("127.0.0.1", 12001))
+        link._datagram_isle(wire[5:], peer_address)
         result = json.loads(link._teslim.popleft())
         self.assertEqual(result["type"], "HEARTBEAT")
-        self.assertEqual(link.akran, ("127.0.0.1", 12001))
-        with self.assertRaises(OSError):
-            link.send(b'{"type":"CMD","cmd":"ARM"}')
-        link._datagram_isle(wire, ("127.0.0.1", 12002))
-        self.assertFalse(link._teslim)
+        self.assertEqual(link.akran, peer_address)
+        request = command("ARM", "iha", oturum="a" * 16)
+        link.send(encode(request))
+        command_wire, _ = peer.recvfrom(4096)
+        parser = mav.MAVLink(None)
+        command_message = parser.parse_buffer(command_wire)[0]
+        self.assertEqual(command_message.get_type(), "COMMAND_LONG")
+        self.assertEqual(command_message.command, mav.MAV_CMD_COMPONENT_ARM_DISARM)
+        self.assertEqual(command_message.target_system, 1)
+        self.assertEqual(command_message.target_component, 1)
+        self.assertEqual(command_message.param1, 1.0)
+
+        ack_wire = mav.MAVLink_command_ack_message(
+            mav.MAV_CMD_COMPONENT_ARM_DISARM, mav.MAV_RESULT_ACCEPTED,
+            0, 0, 1, 1).pack(enc)
+        link._datagram_isle(ack_wire, peer_address)
+        response = decode(link.recv()[0])
+        self.assertEqual(response["type"], "ACK")
+        self.assertEqual(response["ref"], request["seq"])
+        self.assertEqual(response["ref_cmd"], "ARM")
+        self.assertEqual(response["sonuc"], "ACCEPTED")
+        self.assertEqual(response["oturum"], "a" * 16)
+
+    def test_direct_radio_rejects_ika_and_stale_heartbeat(self):
+        link = NativeRadioLink(("127.0.0.1", 0), "yer")
+        self.addCleanup(link.close)
+        with self.assertRaisesRegex(OSError, "IKA"):
+            link.send(encode(command("IKA_GO", "ika", oturum="b" * 16)))
+        link.akran = ("127.0.0.1", 12001)
+        link._son_heartbeat_t = link.saat() - ARM_DURUM_TAZELIK_S - 1
+        with self.assertRaisesRegex(OSError, "bayat"):
+            link.send(encode(command("ARM", "iha", oturum="b" * 16)))
 
 
 if __name__ == "__main__":
