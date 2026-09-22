@@ -44,6 +44,7 @@ from mavlink_tunel import (KIMLIK_YER, TASIYICI_TUNEL, TUNEL_YER_UC, TunelLink,
 from ika_receiver import IkaReceiver
 from hakem_kaydi import HakemKaydi, varsayilan_hakem_log_yolu
 from komut_tekrar import AckliTekrar, BOS, ONAYLANDI, VAZGECILDI
+from yki_canli_isleme import YkiCanliIsleme
 from protocol import (ACK_SONUC_KABUL, encode, ack, command, heartbeat, iha_landed,
                       kritik_komut_ack_gecerli_mi, MESAJ_OPEN_ROUTE, MESAJ_NO_ROUTE,
                       open_route, MESAJ_HEARTBEAT, MESAJ_ACK, MESAJ_CMD, MESAJ_IHA_LANDED,
@@ -94,7 +95,16 @@ MAVI    = "#4aa3df"
 # T80: CLI görünüm adları ↔ iç görünüm adları. İç adlar ("harita"/"algi")
 # butonlara ve V kısayoluna bağlıdır; CLI hakeme/tanıtıma bakar. Eşleme TEK
 # YERDE durur ki iki taraf ayrışmasın (madde 16).
-GORUNUM_SECENEKLERI = {"saha": "harita", "canli": "algi", "kamera": "kamera", "rota": "rota"}
+GORUNUM_SECENEKLERI = {
+    "saha": "harita",
+    "canli": "algi",
+    "kamera": "kamera",
+    "rota": "rota",
+    "yerel": "isleme",
+}
+YKI_RTSP_VARSAYILAN_KAMERA = "rtsp://192.168.144.25:8554/main.264"
+UCUS_MODU_SECENEKLERI = ("AUTO", "LOITER", "GUIDED", "STABILIZE", "ALT_HOLD",
+                         "POSHOLD", "BRAKE", "RTL", "LAND")
 
 ARENA_M = 50.0        # HTAB 50×50 m (şartname)
 OLCEK = 1.0           # main() ekran DPI'sine göre ayarlar (yüksek DPI okunurluk)
@@ -620,6 +630,20 @@ def heartbeat_telemetrisi_dogrula(mesaj):
         return {}, ("mesaj",)
     temiz = {}
     reddedilen = []
+    if "gorev_hazir" in mesaj:
+        if type(mesaj["gorev_hazir"]) is bool:
+            temiz["gorev_hazir"] = mesaj["gorev_hazir"]
+        else:
+            reddedilen.append("gorev_hazir")
+    for alan, uzunluk in (("gorev_durum", 48), ("gorev_id", 32)):
+        if alan not in mesaj:
+            continue
+        deger = mesaj[alan]
+        if (isinstance(deger, str) and 0 < len(deger) <= uzunluk
+                and all(harf.isascii() and (harf.isalnum() or harf == "_") for harf in deger)):
+            temiz[alan] = deger
+        else:
+            reddedilen.append(alan)
 
     def sayi(ad, *, alt=None, ust=None, ust_dahil=True):
         deger = mesaj.get(ad)
@@ -799,7 +823,8 @@ class YksArayuz:
     def __init__(
             self, kok, link, otomatik_onay=False, demo=False, ika_peer=None,
             iha_peer=None, kamera_url=None, hakem_log_yolu=None,
-            oturum_kunyesi=None, kamera_etiket="", tek_rota=False):
+            oturum_kunyesi=None, kamera_etiket="", tek_rota=False,
+            yerel_kamera_kaynagi=YKI_RTSP_VARSAYILAN_KAMERA, yerel_mpp=None):
         self.kok = kok
         self.tek_rota = bool(tek_rota)
         self.link = link
@@ -890,6 +915,10 @@ class YksArayuz:
             ARM_TEKRAR_UST_SINIRI)
         self.acil_bekleyen_komut = None
         self.acil_ack_zamani = None
+        self.mod_tekrar = AckliTekrar(
+            self._ham_gonder, ARM_TEKRAR_ARALIGI_S, ARM_TEKRAR_UST_SINIRI)
+        self.mod_bekleyen = None
+        self.mod_ack_zamani = None
         # K8: İKA'nın OPEN_ROUTE ACK kanıtı: seq -> duvar saati. Hakem 2. onayı
         # ancak geçerli rota seq'i bu sözlükte varsa verebilir (fail-closed).
         self.ika_rota_ack = {}
@@ -936,6 +965,14 @@ class YksArayuz:
         self.kamera_istemci = None
         self._kamera_surum = -1
         self._kamera_foto = None
+        # YKS bilgisayarındaki kamera ve model için ayrı, komut üretmeyen görünüm.
+        self.yki_isleme = None
+        self._yki_isleme_surum = -1
+        self._yki_isleme_foto = None
+        self.yki_isleme_gorunum = "AI"
+        self._yki_isleme_gorunum_dugmeleri = {}
+        self.yki_isleme_varsayilan_kaynak = str(yerel_kamera_kaynagi or "0")
+        self.yki_isleme_varsayilan_mpp = yerel_mpp
         # CONTRACTS §6.8 — döngüsel kanıt olaylarının KENAR durumu ve son
         # yazma damgası. Dördü de `_kanit_durumu_yaz` tarafından OKUNUR:
         # kenar tespiti için DURUM, tekrar sınırlaması için DAMGA gerekir.
@@ -1065,6 +1102,11 @@ class YksArayuz:
             fg=METIN, bg="#232e3a", relief="flat", padx=8, pady=3,
             command=lambda: self.gorunum("rota"))
         self.btn_gor_rota.pack(side="left", padx=(6, 0))
+        self.btn_gor_isleme = tk.Button(
+            anahtar, text="YKİ canlı işleme", font=self.f_kucuk,
+            fg=METIN, bg="#232e3a", relief="flat", padx=8, pady=3,
+            command=lambda: self.gorunum("isleme"))
+        self.btn_gor_isleme.pack(side="left", padx=(6, 0))
         if self.tek_rota:
             self.btn_gor_harita.config(text="Rota haritası")
             self.btn_gor_algi.config(text="Yerel algı")
@@ -1139,6 +1181,73 @@ class YksArayuz:
             font=self.f_kucuk, fg=SOLUK, bg=PANEL, anchor="w",
             wraplength=S(640), justify="left")
         self.lbl_kamera_bilgi.pack(fill="x", padx=10, pady=(2, 4))
+
+        # YKS bilgisayarına doğrudan bağlı kamera için beşinci görünüm.
+        # Bu panel mevcut telsiz/hakem karar yolundan ayrıdır: yerel maske ve
+        # isteğe bağlı ölçekli rota yalnız görsel olarak gösterilir.
+        self.isleme_cerceve = tk.Frame(sol, bg=PANEL)
+        tk.Label(
+            self.isleme_cerceve,
+            text="YKİ CANLI GÖRÜNTÜ İŞLEME · JETSON YOK · İNTERNET GEREKMEZ",
+            font=self.f_kucuk, fg=SARI, bg=PANEL, anchor="w",
+        ).pack(fill="x", padx=10, pady=(4, 0))
+        isleme_ayar = tk.Frame(self.isleme_cerceve, bg=PANEL)
+        isleme_ayar.pack(fill="x", padx=10, pady=(4, 2))
+        tk.Label(isleme_ayar, text="Kamera kaynağı", font=self.f_kucuk,
+                 fg=SOLUK, bg=PANEL).pack(side="left")
+        self.yki_isleme_kaynak = tk.Entry(
+            isleme_ayar, width=10, font=self.f_kucuk,
+            fg=METIN, bg="#121920", insertbackground=METIN,
+            relief="flat")
+        self.yki_isleme_kaynak.insert(0, self.yki_isleme_varsayilan_kaynak)
+        self.yki_isleme_kaynak.pack(side="left", padx=(6, 12))
+        tk.Label(isleme_ayar, text="m/px (opsiyonel)", font=self.f_kucuk,
+                 fg=SOLUK, bg=PANEL).pack(side="left")
+        self.yki_isleme_mpp = tk.Entry(
+            isleme_ayar, width=10, font=self.f_kucuk,
+            fg=METIN, bg="#121920", insertbackground=METIN,
+            relief="flat")
+        if self.yki_isleme_varsayilan_mpp is not None:
+            self.yki_isleme_mpp.insert(0, str(self.yki_isleme_varsayilan_mpp))
+        self.yki_isleme_mpp.pack(side="left", padx=(6, 12))
+        tk.Button(isleme_ayar, text="BAŞLAT", font=self.f_kucuk,
+                  fg=BG, bg=YESIL, activebackground=YESIL, relief="flat",
+                  padx=8, pady=3,
+                  command=self._yki_isleme_baslat).pack(side="left", padx=(0, 6))
+        tk.Button(isleme_ayar, text="DURDUR", font=self.f_kucuk,
+                  fg=METIN, bg="#232e3a", activebackground=KIRMIZI,
+                  relief="flat", padx=8, pady=3,
+                  command=self._yki_isleme_durdur).pack(side="left")
+        tk.Label(isleme_ayar, text="Gösterim", font=self.f_kucuk,
+                 fg=SOLUK, bg=PANEL).pack(side="left", padx=(14, 4))
+        for metin, kip in (("AI MASKE", "AI"), ("HAM KAMERA", "HAM")):
+            dugme = tk.Button(
+                isleme_ayar, text=metin, font=self.f_kucuk,
+                fg=BG if kip == "AI" else METIN,
+                bg=YESIL if kip == "AI" else "#232e3a",
+                activebackground=YESIL, relief="flat", padx=7, pady=3,
+                command=lambda secim=kip: self._yki_isleme_gorunum_sec(secim))
+            dugme.pack(side="left", padx=(0, 4))
+            self._yki_isleme_gorunum_dugmeleri[kip] = dugme
+        self.lbl_yki_isleme_img = tk.Label(
+            self.isleme_cerceve, bg="#121920", fg=SOLUK,
+            text=(f"Yerel kamera kapalı\nKaynak: {self.yki_isleme_varsayilan_kaynak}\n"
+                   "BAŞLAT ile canlı işleme açılır"),
+            font=self.f_orta, justify="center")
+        self.lbl_yki_isleme_img.pack(fill="both", expand=True, padx=10, pady=(4, 4))
+        self.lbl_yki_isleme_bilgi = tk.Label(
+            self.isleme_cerceve,
+            text=("Bu sekme yalnız görsel maske/rota gösterir; "
+                  "telsiz, hakem ACK'i ve uçuş komutu üretmez."),
+            font=self.f_kucuk, fg=SOLUK, bg=PANEL, anchor="w",
+            wraplength=S(640), justify="left")
+        self.lbl_yki_isleme_bilgi.pack(fill="x", padx=10, pady=(2, 4))
+        self.lbl_yki_isleme_baglanti = tk.Label(
+            self.isleme_cerceve,
+            text="● MK15/RTSP BAĞLANTISI BEKLENİYOR",
+            font=self.f_kucuk, fg=SARI, bg=PANEL, anchor="w",
+            wraplength=S(640), justify="left")
+        self.lbl_yki_isleme_baglanti.pack(fill="x", padx=10, pady=(0, 4))
         self.gorunum_adi = "harita"
 
         # Acil durum senaryo tatbikatı (yalnız --demo modunda etkin)
@@ -1333,10 +1442,32 @@ class YksArayuz:
         # ACK yalnız Pixhawk'ın komutu KABUL ettiğini söyler; tamamlandığını değil.
         self.btn_rtl = gbuton(satir3, "ACİL RTL", lambda: self.acil_komut("RTL"))
         self.btn_land = gbuton(satir3, "ACİL LAND", lambda: self.acil_komut("LAND"))
+        self.btn_fda_gorev = gbuton(satir3, "FDA UÇUŞ PLANI", self.fda_gorev_ac)
         self.lbl_acil = tk.Label(
             satir3, text="ACİL UÇUŞ KOMUTU: — · RC pilotu fiziksel yedektir",
             font=self.f_orta, fg=SOLUK, bg=PANEL)
         self.lbl_acil.pack(side="left", padx=10)
+
+        # Uçuş modu seçimi: komut yalnız iki tık teyidi, Pixhawk ACK'i ve
+        # ACK sonrasındaki eşleşen HEARTBEAT ile tamamlanır; ARM komutu üretmez.
+        satir4 = tk.Frame(gorev, bg=PANEL)
+        satir4.pack(fill="x")
+        tk.Label(satir4, text="İHA UÇUŞ MODU", font=self.f_kucuk,
+                 fg=SOLUK, bg=PANEL).pack(side="left", padx=(10, 4), pady=3)
+        self.mod_secim = tk.StringVar(value="LOITER")
+        self.mod_menu = tk.OptionMenu(
+            satir4, self.mod_secim, *UCUS_MODU_SECENEKLERI)
+        self.mod_menu.config(font=self.f_kucuk, fg=METIN, bg="#232e3a",
+                             activebackground=SARI, activeforeground=BG,
+                             relief="flat", highlightthickness=0, padx=6, pady=2)
+        self.mod_menu["menu"].config(font=self.f_kucuk, bg=PANEL, fg=METIN,
+                                      activebackground=SARI, activeforeground=BG)
+        self.mod_menu.pack(side="left", padx=4, pady=3)
+        self.btn_mod = gbuton(satir4, "MODU GÖNDER", self.mod_sec)
+        self.lbl_mod = tk.Label(
+            satir4, text="PIXHAWK MODU: BİLİNMİYOR",
+            font=self.f_orta, fg=KIRMIZI, bg=PANEL)
+        self.lbl_mod.pack(side="left", padx=10)
         if self.tek_rota:
             alt.pack_configure(before=govde)
             gorev.pack_configure(before=govde)
@@ -1904,7 +2035,14 @@ class YksArayuz:
             self._logla(f"⚠ tünel sayaç izleme hatası — {type(exc).__name__}: {exc}",
                         "sari")
         self._kamera_tazele()
+        self._yki_isleme_tazele()
         self._durum_tazele()
+        fda = getattr(self, "fda_gorev", None)
+        if fda is not None:
+            try:
+                fda.tik()
+            except Exception as exc:
+                self._logla(f"FDA panel hatası: {exc}", "kirmizi")
         self.kok.after(120, self._tik)
 
     def _tunel_sayac_izle(self, simdi=None):
@@ -2194,7 +2332,8 @@ class YksArayuz:
                         + ", ".join(bozuk), "sari")
             tel = {k: temiz[k] for k in (
                 "alt", "hiz", "yon", "bat", "bat_yuzde", "uydu", "lat",
-                "lon", "gps_fix", "pixhawk_canli") if k in temiz}
+                "lon", "gps_fix", "pixhawk_canli", "gorev_hazir",
+                "gorev_durum", "gorev_id") if k in temiz}
             self.tel[dugum] = tel
             if dugum == "iha":
                 armed = arm_telemetri_degeri(m)
@@ -2218,6 +2357,7 @@ class YksArayuz:
                 if dugum == "iha":
                     self._ucus(*ucus_modu_sunumu(mod))
                     self._acil_bekleyeni_tamamla()
+                    self._mod_bekleyeni_tamamla()
                 if (mod not in ({"AUTO"} | ACIL_UCUS_MODLARI)
                         and not self._manuel_uyarildi):
                     self._manuel_uyarildi = True
@@ -2473,8 +2613,28 @@ class YksArayuz:
         # olaylarda görünür (IKA_AKTARIM_KANITI, HAKEM_ONAYI_2). Bozuk `ref`
         # taşıyan çerçeve yukarıda düşer: kayıt da onu ACK saymaz.
         self._kanit_yaz("ACK_ALINDI", node=m.get("node"), ref=ref,
-                        ref_tip=m.get("ref_tip"))
+                        ref_tip=m.get("ref_tip"), ref_cmd=m.get("ref_cmd"),
+                        sonuc=m.get("sonuc"), neden=m.get("neden"))
         if m.get("node") == "iha":
+            fda = getattr(self, "fda_gorev", None)
+            if fda is not None:
+                fda.ack(m)
+            if m.get("sonuc") == "REJECTED":
+                for ad in ("arm_tekrar", "acil_tekrar", "parasut_tekrar",
+                           "mod_tekrar"):
+                    bekleyen = getattr(getattr(self, ad, None), "mesaj", None)
+                    if (isinstance(bekleyen, dict)
+                            and bekleyen.get("seq") == ref
+                            and bekleyen.get("cmd") == m.get("ref_cmd")
+                            and bekleyen.get("oturum") == m.get("oturum")
+                            and m.get("ref_tip") == MESAJ_CMD):
+                        anahtar = (m.get("oturum"), ref, m.get("neden"))
+                        if getattr(self, "_son_komut_teshisi", None) != anahtar:
+                            self._son_komut_teshisi = anahtar
+                            self._logla(f"İHA {m.get('ref_cmd')}: {m.get('neden')} — "
+                                        f"{str(m.get('aciklama', ''))[:240]}", "kirmizi")
+                        break
+                return  # Teşhis hiçbir zaman kabul veya durum değişikliği sayılmaz.
             arm_tekrar = getattr(self, "arm_tekrar", None)
             arm_komut = getattr(self, "arm_bekleyen_komut", None)
             arm_mesaji = getattr(arm_tekrar, "mesaj", None)
@@ -2527,6 +2687,20 @@ class YksArayuz:
                         fg=SARI)
                 self._acil_bekleyeni_tamamla()
                 self._acil_ui_uygula()
+            mod_tekrar = getattr(self, "mod_tekrar", None)
+            mod_hedef = getattr(self, "mod_bekleyen", None)
+            mod_mesaji = getattr(mod_tekrar, "mesaj", None)
+            mod_komutu = f"SET_MODE_{mod_hedef}" if mod_hedef else None
+            if (mod_tekrar is not None and mod_hedef and mod_mesaji
+                    and kritik_komut_ack_gecerli_mi(
+                        m, mod_mesaji.get("seq"), mod_komutu, node="iha")
+                    and mod_tekrar.ack_geldi(m)):
+                self.mod_ack_zamani = time.monotonic()
+                self._logla(
+                    f"İHA ALDI ✓ {mod_hedef} modu Pixhawk ACK ACCEPTED; "
+                    "ACK sonrası HEARTBEAT bekleniyor", "yesil")
+                self._mod_bekleyeni_tamamla()
+                self._mod_ui_uygula()
             return
         if m.get("node") != "ika":
             return
@@ -2862,6 +3036,9 @@ class YksArayuz:
     ALGI_ARENA_KADRAJ_KOKU = _kabul_kumesi_koku()
     ALGI_ARENA_GERCEK_DOSYA = (
         _PROJE_KOKU / "data" / "arena_referans" / "sartname_s9_arena.png")
+    _ALGI_ARENA_GERCEK_GUNCEL_DOSYA = (
+        _PROJE_KOKU / "data" / "arena_referans" /
+        "WhatsApp Image 2026-09-22 at 21.24.42.jpeg")
     # 🔴 T86 · D-90: bu kaynaklarda TEK SKALER ÖLÇEK GEÇERSİZDİR — eğik arena
     # bakışında 2,0 m hedef yatayda ~72 px, dikeyde ~38 px'tir. `_kaynak_olcegi`
     # orada ölçeği "bilmiyorum" diye değil **REDDEDEREK** döndürür. Ölçek
@@ -2903,6 +3080,14 @@ class YksArayuz:
             "dji_gece": kok_dizin / "data" / "dji_prova_kareler",
         }
         yol = kaynaklar[self.algi_kaynak]
+        # Yeni saha karesi varsa yalnızca varsayılan sabit kaynak için onu
+        # kullan; test/entegrasyonların geçici dosya enjeksiyonunu ezme.
+        if (self.algi_kaynak == "arena_gercek" and
+                Path(self.ALGI_ARENA_GERCEK_DOSYA) ==
+                (_PROJE_KOKU / "data" / "arena_referans" /
+                 "sartname_s9_arena.png") and
+                self._ALGI_ARENA_GERCEK_GUNCEL_DOSYA.is_file()):
+            yol = self._ALGI_ARENA_GERCEK_GUNCEL_DOSYA
         uzantilar = (".png", ".jpg", ".jpeg")
         if yol.is_file():
             return [yol] if yol.suffix.lower() in uzantilar else []
@@ -3075,8 +3260,10 @@ class YksArayuz:
         return model
 
     def gorunum(self, ad):
-        if ad not in ("harita", "algi", "kamera", "rota"):
+        if ad not in ("harita", "algi", "kamera", "rota", "isleme"):
             raise ValueError(f"bilinmeyen görünüm: {ad!r}")
+        if ad != "isleme" and getattr(self, "gorunum_adi", None) == "isleme":
+            self._yki_isleme_durdur()
         self.gorunum_adi = ad
         # T81: kutu GÖRÜNÜMÜN kaynağından beslenir — geçişte yeniden çizilir.
         # Harita görünümüne dönüldüğünde protokol durumu OLDUĞU GİBİ görünür;
@@ -3096,39 +3283,58 @@ class YksArayuz:
             self.harita.pack_forget()
             self.algi_cerceve.pack_forget()
             self.kamera_cerceve.pack_forget()
+            self.isleme_cerceve.pack_forget()
             self.rota_paneli.pack(fill="both", expand=True, **yer)
-            for dugme in (self.btn_gor_harita, self.btn_gor_algi, self.btn_gor_kamera):
+            for dugme in (self.btn_gor_harita, self.btn_gor_algi,
+                          self.btn_gor_kamera, self.btn_gor_isleme):
                 dugme.config(fg=METIN, bg="#232e3a")
             self._rota_panelini_tazele()
             return
         if ad == "harita":
             self.algi_cerceve.pack_forget()
             self.kamera_cerceve.pack_forget()
+            self.isleme_cerceve.pack_forget()
             self.harita.pack(padx=10, pady=(4, 6), fill="both", expand=True,
                              **yer)
             self.btn_gor_harita.config(fg=BG, bg=YESIL)
             self.btn_gor_algi.config(fg=METIN, bg="#232e3a")
             self.btn_gor_kamera.config(fg=METIN, bg="#232e3a")
+            self.btn_gor_isleme.config(fg=METIN, bg="#232e3a")
             self._harita_ciz()
         elif ad == "algi":
             self.harita.pack_forget()
             self.kamera_cerceve.pack_forget()
+            self.isleme_cerceve.pack_forget()
             self.algi_cerceve.pack(fill="both", expand=True, **yer)
             self.btn_gor_algi.config(fg=BG, bg=YESIL)
             self.btn_gor_harita.config(fg=METIN, bg="#232e3a")
             self.btn_gor_kamera.config(fg=METIN, bg="#232e3a")
+            self.btn_gor_isleme.config(fg=METIN, bg="#232e3a")
             self._algi_iste()
-        else:
+        elif ad == "kamera":
             self.harita.pack_forget()
             self.algi_cerceve.pack_forget()
+            self.isleme_cerceve.pack_forget()
             # T226 (D-443 kusur a): kamera çerçevesi görünüm düğmelerinin HEMEN
             # altına; içindeki KÜÇÜK harita GİZLENMEZ (video + rota aynı anda).
             self.kamera_cerceve.pack(fill="both", expand=True, **yer)
             self.btn_gor_kamera.config(fg=BG, bg=YESIL)
             self.btn_gor_harita.config(fg=METIN, bg="#232e3a")
             self.btn_gor_algi.config(fg=METIN, bg="#232e3a")
+            self.btn_gor_isleme.config(fg=METIN, bg="#232e3a")
             self._harita_ciz()          # küçük kopya güncel rotayla
             self._kamera_tazele()
+        else:
+            self.harita.pack_forget()
+            self.algi_cerceve.pack_forget()
+            self.kamera_cerceve.pack_forget()
+            self.rota_paneli.pack_forget()
+            self.isleme_cerceve.pack(fill="both", expand=True, **yer)
+            self.btn_gor_isleme.config(fg=BG, bg=YESIL)
+            self.btn_gor_harita.config(fg=METIN, bg="#232e3a")
+            self.btn_gor_algi.config(fg=METIN, bg="#232e3a")
+            self.btn_gor_kamera.config(fg=METIN, bg="#232e3a")
+            self.btn_gor_rota.config(fg=METIN, bg="#232e3a")
 
     def _videosuz_panel_yaz(self, etiket, neden):
         """Video yokken kamera panelini boş bırakma: telemetri kipini söyle.
@@ -3231,6 +3437,135 @@ class YksArayuz:
                 getattr(self, "kamera_etiket", "")),
             hata=(str(hata) if hata else None),
             calisiyor=bool(snap.get("calisiyor")))
+
+    def _yki_isleme_mpp_degeri(self):
+        """Paneldeki isteğe bağlı metre/piksel değerini fail-closed çöz."""
+        alan = getattr(self, "yki_isleme_mpp", None)
+        if alan is None:
+            return None
+
+        try:
+            metin = alan.get().strip().replace(",", ".")
+            deger = float(metin)
+            return deger if math.isfinite(deger) and deger > 0 else None
+        except (TypeError, ValueError):
+            return None
+
+    def _yki_isleme_gorunum_sec(self, kip):
+        """YKİ panelinde maskeli veya aynı akışın ham karesini seç."""
+        if kip not in ("AI", "HAM"):
+            return
+        self.yki_isleme_gorunum = kip
+        self._yki_isleme_surum = -1
+        for ad, dugme in self._yki_isleme_gorunum_dugmeleri.items():
+            secili = ad == kip
+            dugme.config(fg=BG if secili else METIN,
+                         bg=YESIL if secili else "#232e3a")
+
+    def _yki_isleme_baslat(self):
+        """Yerel kamerayı başlat; bu yol hiçbir telemetri komutu göndermez."""
+        self._yki_isleme_durdur()
+        kaynak_alan = getattr(self, "yki_isleme_kaynak", None)
+        kaynak = kaynak_alan.get().strip() if kaynak_alan is not None else "0"
+        kaynak = kaynak or "0"
+        self.yki_isleme = YkiCanliIsleme(
+            kaynak, mpp=self._yki_isleme_mpp_degeri())
+        self._yki_isleme_surum = -1
+        self._yki_isleme_foto = None
+        self.yki_isleme.start()
+        self._logla(
+            f"YKİ yerel canlı işleme başlatıldı: kaynak={kaynak} · "
+            "rota/ACK/komut üretmez", "mavi")
+        self._logla(f"YKİ ayrıntılı ağ/işleme günlüğü: {self.yki_isleme.log_path}",
+                    "mavi")
+
+    def _yki_isleme_durdur(self):
+        isleme = getattr(self, "yki_isleme", None)
+        if isleme is not None:
+            try:
+                isleme.stop()
+            except Exception as exc:
+                self._logla(f"YKİ yerel kamera kapatma hatası: {exc}", "sari")
+        self.yki_isleme = None
+        self._yki_isleme_foto = None
+
+    def _yki_isleme_tazele(self):
+        """Worker karesini Tk ana döngüsünde göster; kamera I/O'su yapma."""
+        etiket = getattr(self, "lbl_yki_isleme_img", None)
+        bilgi = getattr(self, "lbl_yki_isleme_bilgi", None)
+        isleme = getattr(self, "yki_isleme", None)
+        if etiket is None or bilgi is None or isleme is None:
+            return
+        try:
+            snap = isleme.snapshot()
+        except Exception as exc:
+            bilgi.config(text=f"Yerel işleme durumu okunamadı: {exc}", fg=KIRMIZI)
+            return
+        frame = snap.get("frame")
+        ham_frame = snap.get("raw_frame")
+        gorunum = getattr(self, "yki_isleme_gorunum", "AI")
+        gosterilecek = ham_frame if gorunum == "HAM" else frame
+        if gosterilecek is None:
+            gosterilecek = frame
+        yas = snap.get("frame_age_s")
+        taze = (frame is not None and
+                (yas is None or float(yas) <= 2.0))
+        if taze and snap.get("sequence") != self._yki_isleme_surum:
+            try:
+                from PIL import Image, ImageTk
+                # Worker BGR üretir; Tk etiketi RGB bekler.
+                resim = Image.fromarray(gosterilecek[:, :, ::-1].copy())
+                resim.thumbnail(self._kamera_resim_kutusu(etiket),
+                                Image.Resampling.LANCZOS)
+                self._yki_isleme_foto = ImageTk.PhotoImage(resim)
+                etiket.config(image=self._yki_isleme_foto, text="", fg=METIN)
+                self._yki_isleme_surum = snap.get("sequence")
+            except Exception as exc:
+                etiket.config(image="", text=f"Görüntü gösterilemedi: {exc}")
+        elif not taze:
+            # Son başarılı kareyi bağlantı kopunca canlıymış gibi bırakma.
+            self._yki_isleme_foto = None
+            etiket.config(
+                image="",
+                text="RTSP SİNYALİ YOK\nMK15 ağı / Air Unit bağlantısını kontrol edin",
+                fg=KIRMIZI)
+            self._yki_isleme_surum = snap.get("sequence")
+        durum = str(snap.get("status") or "BİLİNMİYOR")
+        baglanti = getattr(self, "lbl_yki_isleme_baglanti", None)
+        if baglanti is not None:
+            if taze:
+                yerel = snap.get("local_endpoint") or "yerel uç bilinmiyor"
+                uzak = snap.get("remote_endpoint") or "192.168.144.25:8554"
+                baglanti.config(
+                    text=(f"● MK15/RTSP BAĞLI · {yerel} -> {uzak} · "
+                          f"son kare {float(yas):.2f} s"),
+                                fg=YESIL)
+            elif ("BEKLENİYOR" in durum or "YENİDEN" in durum or
+                  frame is not None):
+                baglanti.config(text="● MK15/RTSP KOPUK · yeniden bağlanıyor",
+                                fg=KIRMIZI)
+            else:
+                baglanti.config(text="● MK15/RTSP DURUMU BELİRSİZ",
+                                fg=SARI)
+        ayrinti = [f"{durum} · kaynak={snap.get('source')}",
+                   f"FPS {float(snap.get('fps') or 0):.1f}",
+                   f"gösterim={('ham' if gorunum == 'HAM' else 'AI maske')}"]
+        if frame is not None and snap.get("frame_age_s") is not None:
+            ayrinti.append(f"kare yaşı {float(snap['frame_age_s']):.2f} s")
+        if snap.get("error"):
+            ayrinti.append(str(snap["error"]))
+        if snap.get("route"):
+            rota = snap["route"]
+            ayrinti.append(
+                f"Yerel gösterim: yol {rota['yol']} · güven {rota['guven']:.2f}"
+            )
+        elif snap.get("route_reason"):
+            ayrinti.append(str(snap["route_reason"]))
+        ayrinti.append("Telsiz/hakem ACK'i ve uçuş komutu bu sekmeden gönderilmez.")
+        if snap.get("log_path"):
+            ayrinti.append(f"JSONL log: {snap['log_path']}")
+        bilgi.config(text=" · ".join(ayrinti),
+                     fg=YESIL if taze else KIRMIZI)
 
     def _rota_kanit_geometrisi(self, mesaj):
         if not getattr(self, "tek_rota", False):
@@ -3821,7 +4156,9 @@ class YksArayuz:
             # İHA eyleyici komutu saha protokolüne oturumsuz çıkmaz.
             oturum = uuid.uuid4().hex
             self.komut_oturumu = oturum
-        return command(cmd, hedef_dugum, oturum=oturum)
+        mesaj = command(cmd, hedef_dugum, oturum=oturum)
+        mesaj["teshis"] = True
+        return mesaj
 
     # T180 (D-323): ucus surerken TEYITSIZ DISARM. Tek 'a' tusu ya da tek tik
     # ucan araca DISARM yolluyordu ve ekran ayni anda "OTONOM GOREV (AUTO)" ile
@@ -4053,7 +4390,7 @@ class YksArayuz:
         self._acil_ui_uygula()
         return True
 
-    def acil_komut(self, komut):
+    def acil_komut(self, komut, *, teyit_anahtari=None, teyit_metni=None):
         """İki tık + aynı-seq tekrar + güçlü Pixhawk ACK ile RTL/LAND iste."""
         if komut not in ("RTL", "LAND"):
             raise ValueError(f"bilinmeyen acil komut: {komut!r}")
@@ -4062,8 +4399,8 @@ class YksArayuz:
                         "gönderilmedi", "sari")
             return
         if not self._kritik_teyit_al(
-                komut,
-                f"ACİL {komut} (ACK yalnız kabulü kanıtlar; RC pilotu hazır olmalı)"):
+                teyit_anahtari or komut,
+                teyit_metni or f"ACİL {komut} (ACK yalnız kabulü kanıtlar; RC pilotu hazır olmalı)"):
             # Metni `_acil_ui_uygula` `_kritik_teyit`ten türetir (tek yazar).
             self._acil_ui_uygula()
             return
@@ -4128,6 +4465,118 @@ class YksArayuz:
         kok = getattr(self, "kok", None)
         if kok is not None:
             kok.after(int(ARM_TEKRAR_ARALIGI_S * 1000), self._acil_tik)
+
+    def _mod_ui_uygula(self):
+        """Uçuş modu seçicisini yalnız doğrulanmış Pixhawk durumuyla güncelle."""
+        dugme = getattr(self, "btn_mod", None)
+        etiket = getattr(self, "lbl_mod", None)
+        if dugme is None:
+            return
+        mevcut = (getattr(self, "mod", {}) or {}).get("iha")
+        bekleyen = getattr(self, "mod_bekleyen", None)
+        if etiket is not None:
+            if mevcut:
+                etiket.config(text=f"PIXHAWK MODU: {mevcut}",
+                              fg=KIRMIZI if mevcut in ACIL_UCUS_MODLARI else YESIL)
+            else:
+                etiket.config(text="PIXHAWK MODU: BİLİNMİYOR", fg=KIRMIZI)
+        if bekleyen:
+            dugme.config(state="disabled", bg=SARI,
+                         text=f"{bekleyen} BEKLENİYOR")
+            return
+        secim = getattr(getattr(self, "mod_secim", None), "get", lambda: "")()
+        anahtar = f"SET_MODE_{secim}" if secim else "SET_MODE"
+        if self._kritik_teyit_bekliyor(anahtar):
+            dugme.config(state="normal", bg=SARI,
+                         text=f"{secim} ? TEKRAR BAS")
+        else:
+            dugme.config(state="normal", bg="#232e3a", text="MODU GÖNDER")
+
+    def _mod_bekleyeni_tamamla(self, simdi=None):
+        """Mod değişimini ACK'ten sonra gelen taze HEARTBEAT ile tamamla."""
+        hedef = getattr(self, "mod_bekleyen", None)
+        ack_zamani = getattr(self, "mod_ack_zamani", None)
+        if not hedef or ack_zamani is None:
+            return False
+        simdi = time.monotonic() if simdi is None else float(simdi)
+        mod_zamani = (getattr(self, "mod_durum_zamani", {}) or {}).get("iha")
+        hb_zamani = (getattr(self, "son_hb", {}) or {}).get("iha")
+        if (mod_zamani is None or hb_zamani is None
+                or mod_zamani < ack_zamani
+                or not 0.0 <= simdi - hb_zamani <= ARM_DURUM_TAZELIK_S
+                or (getattr(self, "mod", {}) or {}).get("iha") != hedef):
+            return False
+        deneme = getattr(getattr(self, "mod_tekrar", None), "deneme", 0)
+        self.mod_bekleyen = None
+        self.mod_ack_zamani = None
+        self._logla(
+            f"İHA MODU DOĞRULANDI ✓ {hedef} · Pixhawk ACK + taze HEARTBEAT "
+            f"({deneme} gönderim)", "yesil")
+        self._mod_ui_uygula()
+        return True
+
+    def mod_sec(self):
+        """Seçilen İHA uçuş modunu iki tık + ACK + HEARTBEAT ile gönder."""
+        secim = getattr(getattr(self, "mod_secim", None), "get", lambda: "")()
+        secim = str(secim).strip().upper()
+        if secim not in UCUS_MODU_SECENEKLERI:
+            self._logla("MOD REDDEDİLDİ: izinli uçuş modu seçilmedi", "kirmizi")
+            return
+        if getattr(self, "mod_bekleyen", None):
+            self._logla("Uçuş modu isteği zaten ACK bekliyor — ikinci komut gönderilmedi",
+                        "sari")
+            return
+        if not self._arm_durumu_taze_mi():
+            self._logla("MOD REDDEDİLDİ: taze Pixhawk ARM/DISARM HEARTBEAT'i yok",
+                        "kirmizi")
+            return
+        komut = f"SET_MODE_{secim}"
+        if not self._kritik_teyit_al(komut, f"İHA UÇUŞ MODU {secim}"):
+            self._mod_ui_uygula()
+            return
+        mesaj = self._komut_mesaji(komut, "iha")
+        if not self.mod_tekrar.baslat(mesaj):
+            self._mod_ui_uygula()
+            return
+        self.mod_bekleyen = secim
+        self.mod_ack_zamani = None
+        self._logla(
+            f"CMD → iha: {secim} modu (seq={mesaj['seq']}, Pixhawk ACK + "
+            "HEARTBEAT bekleniyor)", "mavi")
+        self._mod_ui_uygula()
+        self._mod_tik()
+
+    def _mod_tik(self):
+        """Uçuş modu komutunun tekrarını ve ACK sonrası durum penceresini izle."""
+        tekrar = getattr(self, "mod_tekrar", None)
+        if tekrar is None or not getattr(self, "mod_bekleyen", None):
+            return
+        durum = tekrar.tik()
+        if durum == VAZGECILDI:
+            hedef = self.mod_bekleyen
+            self.mod_bekleyen = None
+            self.mod_ack_zamani = None
+            self._logla(
+                f"İHA MODU DOĞRULANAMADI ✗ {hedef}; Pixhawk ACK gelmedi",
+                "kirmizi")
+            self._mod_ui_uygula()
+            return
+        if durum == ONAYLANDI:
+            if self._mod_bekleyeni_tamamla():
+                return
+            ack_zamani = getattr(self, "mod_ack_zamani", None)
+            if (ack_zamani is not None
+                    and time.monotonic() - ack_zamani > ARM_DURUM_TAZELIK_S):
+                hedef = self.mod_bekleyen
+                self.mod_bekleyen = None
+                self.mod_ack_zamani = None
+                self._logla(
+                    f"İHA {hedef} ACK verdi ama ACK sonrası eşleşen taze "
+                    "mod HEARTBEAT'i gelmedi — MOD TAMAMLANMADI",
+                    "kirmizi")
+                self._mod_ui_uygula()
+                return
+        self.kok.after(int(ARM_TEKRAR_ARALIGI_S * 1000), self._mod_tik)
 
     def firlatma(self):
         if self.t_iha0 is not None:
@@ -4302,6 +4751,15 @@ class YksArayuz:
                     "hazırlığa ekleniyor; bitince tekrar TAKIM HAZIR verin", "sari")
         self.btn_hazir.config(state="normal", bg=SARI)
         self.btn_mudahale.config(state="disabled", bg="#232e3a")
+
+    def fda_gorev_ac(self):
+        if not getattr(self, "fda_kipi", False) or getattr(self, "demo", False):
+            self._logla("FDA uçuş planı yalnız gerçek çoklu rotor FDA kipinde açılır", "sari")
+            return
+        if getattr(self, "fda_gorev", None) is None:
+            from yks_fda_panel import FdaGorevDenetleyici
+            self.fda_gorev = FdaGorevDenetleyici(self)
+        self.fda_gorev.ac()
 
     def fda_kipini_uygula(self):
         """CONTRACTS §6.7: `--fda` açılışta çağrılır; kip koşarken DEĞİŞMEZ.
@@ -4706,6 +5164,7 @@ class YksArayuz:
                 self._ucus("PIXHAWK MODU YOK", KIRMIZI)
         self._arm_ui_uygula()
         self._acil_ui_uygula()
+        self._mod_ui_uygula()
         self.lbl_sayac.config(
             text=f"OPEN_ROUTE {self.sayac['OPEN_ROUTE']} · "
                  f"RED {self.sayac['OPEN_ROUTE_RED']} · "
@@ -5024,6 +5483,7 @@ def kapanis_kaynaklarini_temizle(app, link):
     """
     kaynaklar = (
         ("KAMERA", getattr(app, "kamera_istemci", None), "durdur"),
+        ("YKİ YEREL İŞLEME", getattr(app, "yki_isleme", None), "stop"),
         ("KANIT KAYDI", getattr(app, "hakem_kaydi", None), "kapat"),
         ("HABERLEŞME", link, "close"),
     )
@@ -5111,12 +5571,23 @@ def main():
                     help="Şerit şeması yerine gelen waypoint geometrisi ve hareket planı; FDA'da otomatik açılır")
     ap.add_argument("--gorunum", choices=tuple(GORUNUM_SECENEKLERI),
                     help="açılış görünümü (varsayılan: saha; --tek-rota/--fda ile rota)")
+    ap.add_argument(
+        "--yerel-kamera", default=YKI_RTSP_VARSAYILAN_KAMERA,
+        help=("YKİ canlı işleme sekmesinin kamera kaynağı: indeks (0, 1), "
+              "cihaz yolu veya RTSP URL. Varsayılan: R1M RTSP akışı"))
+    ap.add_argument(
+        "--yerel-mpp", type=float, default=None,
+        help=("YKİ canlı işleme için isteğe bağlı metre/piksel ölçeği; "
+              "verilmezse yerel rota yalnız görsel olarak gösterilir"))
     args = ap.parse_args()
 
     try:
         args.kamera_etiket = kamera_etiketi_dogrula(args.kamera_etiket)
     except ValueError as exc:
         ap.error(f"--kamera-etiket: {exc}")
+    if (args.yerel_mpp is not None
+            and (not math.isfinite(args.yerel_mpp) or args.yerel_mpp <= 0)):
+        ap.error("--yerel-mpp sonlu ve pozitif olmalıdır")
     if args.tunel and args.serial:
         ap.error("--tunel ile --serial birlikte kullanılamaz")
     if args.tunel and args.demo:
@@ -5198,7 +5669,9 @@ def main():
             iha_peer=iha_peer, kamera_url=args.kamera_url,
             hakem_log_yolu=hakem_log_yolu,
             oturum_kunyesi=oturum_kunyesi,
-            kamera_etiket=args.kamera_etiket, tek_rota=args.tek_rota or args.fda)
+            kamera_etiket=args.kamera_etiket, tek_rota=args.tek_rota or args.fda,
+            yerel_kamera_kaynagi=args.yerel_kamera,
+            yerel_mpp=args.yerel_mpp)
     except Exception:
         link.close()
         kok.destroy()
@@ -5245,6 +5718,13 @@ def main():
     if args.gorunum:
         app.gorunum(GORUNUM_SECENEKLERI[args.gorunum])
         app._logla(f"Açılış görünümü (--gorunum): {args.gorunum}", "mavi")
+        if args.gorunum == "yerel":
+            app._yki_isleme_baslat()
+            app._logla(
+                f"YKİ yerel kamera kaynağı: {args.yerel_kamera}"
+                + (f" · mpp={args.yerel_mpp}" if args.yerel_mpp is not None else
+                   " · ölçek verilmedi; rota yayını kapalı"),
+                "mavi")
     elif args.tek_rota or args.fda:
         app.gorunum("rota")
         app._logla("TEK ROTA GÖSTERİMİ: alınan waypoint geometrisi; şerit veya GPS konumu uydurulmaz", "mavi")
