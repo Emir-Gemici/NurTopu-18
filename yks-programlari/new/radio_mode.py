@@ -9,11 +9,16 @@ link.
 from __future__ import annotations
 
 import math
+from pathlib import Path
+import queue
+import threading
 import time
 from numbers import Real
 
 from mavlink_tunel import TunelLink, TUNEL_AKRAN_SESSIZLIK_S
 from karar_sozlesmesi import ARM_DURUM_TAZELIK_S
+from fda_gorev import CMD_FDA_HAZIRLA, GOREV_TEKRAR_SAYISI
+from fda_mavlink import FdaPlanYukleyici
 from protocol import ACK_SONUC_KABUL, MESAJ_CMD, ack, decode, encode, heartbeat, oturum_dogrula
 from iha_komut_alici import (
     ARM_DISARM_PARAM2_FORCE,
@@ -28,6 +33,7 @@ class RadioTelemetry:
         self.sysid, self.clock = sysid, clock
         self.messages = {}
         self.sequence = 0
+        self.fda_plan_hazir = False
 
     def accept(self, message):
         from pymavlink.dialects.v20 import ardupilotmega as mav
@@ -81,8 +87,56 @@ class RadioTelemetry:
             if 0 <= power.battery_remaining <= 100:
                 fields["bat_yuzde"] = int(power.battery_remaining)
         result = heartbeat("iha", seq=self.sequence, **fields)
+        if self.fda_plan_hazir:
+            result["gorev_hazir"] = True
         result["kaynak"] = "PIXHAWK_MAVLINK_RADYO"
         return result
+
+
+class _NativeMavlinkAdapter:
+    def __init__(self, link):
+        self.link = link
+        self.mav = self
+        self.srcSystem = link._kodlayici.srcSystem
+        self.srcComponent = link._kodlayici.srcComponent
+
+    def recv_match(self, blocking=True, timeout=None):
+        if not blocking:
+            timeout = 0.0
+        return self.link.recv_mavlink(timeout)
+
+    def _send(self, message):
+        self.link._send_raw_message(message)
+
+    def _send_encoded(self, name, *args):
+        self._send(getattr(self.link._kodlayici, name)(*args))
+
+    def command_long_send(self, *args):
+        self._send_encoded("command_long_encode", *args)
+
+    def param_request_read_send(self, *args):
+        self._send_encoded("param_request_read_encode", *args)
+
+    def mission_count_send(self, *args):
+        self._send_encoded("mission_count_encode", *args)
+
+    def mission_item_send(self, *args):
+        self._send_encoded("mission_item_encode", *args)
+
+    def mission_item_int_send(self, *args):
+        self._send_encoded("mission_item_int_encode", *args)
+
+    def mission_request_list_send(self, *args):
+        self._send_encoded("mission_request_list_encode", *args)
+
+    def mission_request_int_send(self, *args):
+        self._send_encoded("mission_request_int_encode", *args)
+
+    def mission_ack_send(self, *args):
+        self._send_encoded("mission_ack_encode", *args)
+
+    def mission_set_current_send(self, *args):
+        self._send_encoded("mission_set_current_encode", *args)
 
 
 class NativeRadioLink(TunelLink):
@@ -90,11 +144,15 @@ class NativeRadioLink(TunelLink):
 
     TASIYICI_ADI = "mavlink_radyo"
     MISSION_PLANNER_FORCE_ARM = True
+    MISSION_PLANNER_FDA = True
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.telemetry = RadioTelemetry(self.beklenen_arac_sysid, self.saat)
         self._son_heartbeat_t = None
+        self._mavlink_messages = queue.Queue()
+        self._fda_lock = threading.Lock()
+        self._fda_jobs = {}
         # One latest request per MAVLink command. Retries use the same NAVITAS
         # sequence, while a newer request replaces an old unacknowledged one.
         self._bekleyen_ack = {}
@@ -159,6 +217,95 @@ class NativeRadioLink(TunelLink):
         mav_cmd, param1, param2 = self._komut_cevir(cmd)
         return message, cmd, seq, oturum, mav_cmd, param1, param2
 
+    def recv_mavlink(self, timeout=None):
+        try:
+            if timeout is None:
+                return self._mavlink_messages.get()
+            timeout = float(timeout)
+            if timeout <= 0:
+                return self._mavlink_messages.get_nowait()
+            return self._mavlink_messages.get(timeout=timeout)
+        except queue.Empty:
+            return None
+
+    def _send_raw_message(self, message):
+        self._kapali_mi()
+        with self._kilit:
+            akran = self.akran
+            if akran is None:
+                raise OSError("Pixhawk HEARTBEAT bekleniyor; MAVLink gönderilmedi")
+            paket = message.pack(self._kodlayici)
+            try:
+                self.sock.sendto(paket, akran)
+            except (ConnectionResetError, ConnectionRefusedError, OSError):
+                self._link_sayac["gonderim_hatasi"] += 1
+                raise
+
+    def _fda_ack(self, message, sonuc, aciklama=None):
+        response = ack(
+            message["seq"], "iha", MESAJ_CMD,
+            ref_cmd=CMD_FDA_HAZIRLA, sonuc=sonuc)
+        response["oturum"] = message["oturum"]
+        if aciklama:
+            response["aciklama"] = str(aciklama)[:400]
+        return encode(response)
+
+    def _fda_planini_yukle(self, message):
+        try:
+            root = Path.cwd() / "results" / "fda_direct"
+            root.mkdir(parents=True, exist_ok=True)
+            plan_path = root / f"plan_{message['seq']}_{message['oturum'][:8]}.json"
+            uploader = FdaPlanYukleyici(
+                _NativeMavlinkAdapter(self), plan_path,
+                target_system=self.beklenen_arac_sysid,
+                target_component=1, require_algi_hazir=False)
+            uploader.hazirla(message["gorev"])
+            self.telemetry.fda_plan_hazir = True
+            return self._fda_ack(message, ACK_SONUC_KABUL)
+        except Exception as exc:
+            return self._fda_ack(message, "REJECTED", exc)
+
+    def send_fda_plan_direct(self, data, peer=None):
+        """Upload the FDA mission directly to Orange Cube over MAVLink."""
+        self._kapali_mi()
+        try:
+            message = decode(bytes(data))
+        except (TypeError, ValueError, UnicodeDecodeError) as exc:
+            raise OSError("Geçersiz FDA komutu") from exc
+        if (not isinstance(message, dict)
+                or message.get("type") != MESAJ_CMD
+                or message.get("hedef") != "iha"
+                or message.get("cmd") != CMD_FDA_HAZIRLA):
+            raise OSError("Doğrudan FDA yolu yalnız hedef=iha FDA_HAZIRLA kabul eder")
+        if isinstance(message.get("seq"), bool) or not isinstance(message.get("seq"), int):
+            raise OSError("FDA seq geçersiz")
+        try:
+            message["oturum"] = oturum_dogrula(message.get("oturum"))
+        except (TypeError, ValueError) as exc:
+            raise OSError("FDA oturumu geçersiz") from exc
+        if not isinstance(message.get("gorev"), dict):
+            raise OSError("FDA görevi eksik")
+        key = (message["oturum"], message["seq"])
+        with self._fda_lock:
+            job = self._fda_jobs.get(key)
+            if job is not None:
+                if job["durum"] == "bekliyor":
+                    return
+                self._teslim.append(job["ack"])
+                return
+            self._fda_jobs[key] = {"durum": "bekliyor", "ack": None}
+
+        def worker():
+            response = self._fda_planini_yukle(message)
+            with self._fda_lock:
+                self._fda_jobs[key] = {
+                    "durum": "tamam" if decode(response).get("sonuc") == ACK_SONUC_KABUL else "red",
+                    "ack": response,
+                }
+            self._teslim.append(response)
+
+        threading.Thread(target=worker, name="fda-cube-upload", daemon=True).start()
+
     def _send_verified_command(self, verified, peer=None):
         message, cmd, seq, oturum, mav_cmd, param1, param2 = verified
         now = self.saat()
@@ -202,6 +349,13 @@ class NativeRadioLink(TunelLink):
     def send(self, data, peer=None):
         """Translate one verified NAVITAS IHA CMD to MAVLink COMMAND_LONG."""
         self._kapali_mi()
+        try:
+            aday = decode(bytes(data))
+        except (TypeError, ValueError, UnicodeDecodeError):
+            aday = None
+        if isinstance(aday, dict) and aday.get("cmd") == CMD_FDA_HAZIRLA:
+            self.send_fda_plan_direct(data, peer)
+            return
         verified = self._komut_dogrula(data)
         if verified[1] == CMD_FORCE_ARM:
             self.send_mission_planner_force_arm(data, peer)
@@ -260,6 +414,7 @@ class NativeRadioLink(TunelLink):
                 self._link_sayac["cozum_hatasi"] += 1
                 continue
             self._link_sayac["mavlink_paket"] += 1
+            self._mavlink_messages.put(msg)
             if msg.get_type() == "COMMAND_ACK":
                 self._ack_isle(msg)
                 continue

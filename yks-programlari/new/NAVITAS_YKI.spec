@@ -14,7 +14,14 @@ a = Analysis(
     [str(Path(SPECPATH) / "navitas_yki_app.py")],
     pathex=[str(KOK / x) for x in ("comms", "codes", "scripts")],
     binaries=[], datas=datas,
-    hiddenimports=["yks_gui", "yer_yonlendirici", "radio_mode", "rpi_inference", "model_registry", "karar_sozlesmesi", "serial.tools.list_ports", "pymavlink.dialects.v20.ardupilotmega", "pymavlink.dialects.v10.ardupilotmega", "ultralytics", "psutil"],
+    hiddenimports=[
+        "yks_gui", "yer_yonlendirici", "radio_mode", "rpi_inference",
+        "model_registry", "karar_sozlesmesi", "fda_gorev", "fda_mavlink",
+        "yks_fda_panel", "video_kaynagi", "rota_inceleme", "yki_canli_isleme",
+        "yks_kesif", "serial.tools.list_ports",
+        "pymavlink.dialects.v20.ardupilotmega",
+        "pymavlink.dialects.v10.ardupilotmega", "ultralytics", "psutil",
+    ],
     excludes=["IPython", "jupyter", "PyQt5", "PyQt6", "PySide2", "PySide6", "mujoco", "trimesh", "tensorflow", "tensorboard", "onnxruntime"],
     hookspath=[], runtime_hooks=[], noarchive=False,
 )
