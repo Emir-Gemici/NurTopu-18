@@ -746,7 +746,7 @@ class AcilisArgumanlariTests(unittest.TestCase):
             ic_adlar, set(yks_gui.GORUNUM_SECENEKLERI.values()),
             "CLI gorunum eslemesi butonlarin kullandigi ic adlardan AYRISTI")
         self.assertEqual(
-            {"saha", "canli", "kamera"},
+            {"saha", "canli", "kamera", "rota", "yerel"},
             set(yks_gui.GORUNUM_SECENEKLERI),
         )
 

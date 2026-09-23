@@ -16,6 +16,8 @@ from mavlink_tunel import TunelLink, TUNEL_AKRAN_SESSIZLIK_S
 from karar_sozlesmesi import ARM_DURUM_TAZELIK_S
 from protocol import ACK_SONUC_KABUL, MESAJ_CMD, ack, decode, encode, heartbeat, oturum_dogrula
 from iha_komut_alici import (
+    ARM_DISARM_PARAM2_FORCE,
+    CMD_FORCE_ARM,
     KOMUT_ADLARI, KOMUT_YAS_TAVANI_S, UCUS_MODLARI, CMD_MOD_PREFIX,
     mavlink_komut_tablosu, ucus_modu_komutu_mu,
 )
@@ -87,6 +89,7 @@ class NativeRadioLink(TunelLink):
     """RFD900A byte link with a guarded ground-side Pixhawk command bridge."""
 
     TASIYICI_ADI = "mavlink_radyo"
+    MISSION_PLANNER_FORCE_ARM = True
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -104,7 +107,9 @@ class NativeRadioLink(TunelLink):
                 mav_cmd, param1 = mavlink_komut_tablosu()[cmd]
             except KeyError as exc:
                 raise OSError(f"Pixhawk komutu desteklenmiyor: {cmd}") from exc
-            return int(mav_cmd), float(param1), 0.0
+            param2 = (ARM_DISARM_PARAM2_FORCE
+                      if cmd == CMD_FORCE_ARM else 0.0)
+            return int(mav_cmd), float(param1), float(param2)
         if not ucus_modu_komutu_mu(cmd):
             raise OSError(
                 f"Doğrudan radyo yalnız İHA uçuş komutlarını destekler: {cmd!r}")
@@ -154,10 +159,8 @@ class NativeRadioLink(TunelLink):
         mav_cmd, param1, param2 = self._komut_cevir(cmd)
         return message, cmd, seq, oturum, mav_cmd, param1, param2
 
-    def send(self, data, peer=None):
-        """Translate one verified NAVITAS IHA CMD to MAVLink COMMAND_LONG."""
-        self._kapali_mi()
-        message, cmd, seq, oturum, mav_cmd, param1, param2 = self._komut_dogrula(data)
+    def _send_verified_command(self, verified, peer=None):
+        message, cmd, seq, oturum, mav_cmd, param1, param2 = verified
         now = self.saat()
         with self._kilit:
             akran = self.akran
@@ -187,6 +190,23 @@ class NativeRadioLink(TunelLink):
                 self._bekleyen_ack.pop(mav_cmd, None)
                 self._link_sayac["gonderim_hatasi"] += 1
                 raise
+
+    def send_mission_planner_force_arm(self, data, peer=None):
+        """Send the Mission Planner-equivalent ArduPilot force-arm command."""
+        self._kapali_mi()
+        verified = self._komut_dogrula(data)
+        if verified[1] != CMD_FORCE_ARM:
+            raise OSError("Doğrudan force-arm yolu yalnız FORCE_ARM kabul eder")
+        self._send_verified_command(verified, peer)
+
+    def send(self, data, peer=None):
+        """Translate one verified NAVITAS IHA CMD to MAVLink COMMAND_LONG."""
+        self._kapali_mi()
+        verified = self._komut_dogrula(data)
+        if verified[1] == CMD_FORCE_ARM:
+            self.send_mission_planner_force_arm(data, peer)
+            return
+        self._send_verified_command(verified, peer)
 
     def _ack_isle(self, message):
         from pymavlink import mavutil

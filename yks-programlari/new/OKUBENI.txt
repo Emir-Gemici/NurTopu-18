@@ -18,10 +18,12 @@ pakette bulunur. Radyo paketleri video tasimaz. Farkli agdaki kamera adresine
 ulasim ayrica kurulmalidir; bu paket ag gecidi veya internet yayin servisi kurmaz.
 
 Bu surum Pixhawk telemetrisi ve dogrudan IHA ucus komutlari icindir.
-Taze heartbeat geldikten sonra YKI; ARM, DISARM, RTL, LAND, PARACHUTE ve
+Taze heartbeat geldikten sonra YKI; ARM, FORCE ARM, DISARM, RTL, LAND, PARACHUTE ve
 desteklenen ucus modu komutlarini COMMAND_LONG olarak yollar. Pixhawk'in
 COMMAND_ACK cevabi gelmeden komut basarili sayilmaz; GUI tazelik ve iki tik
-guvenliklerini korur.
+guvenliklerini korur. FORCE ARM, Pixhawk on-arm kontrollerini atlar; yalniz
+pervaneler sokuluyken ve FORCE ARM dugmesine 4 saniye icinde iki kez basilarak
+kullanilmalidir.
 
 IKA_GO, rota ve hakem aktarimi bu Pixhawk-only radyo yolundan gonderilmez;
 IKA icin ayri NAVITAS linki gerekir. Mission Planner ayni COM portunu acmaz;

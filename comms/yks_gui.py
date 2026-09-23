@@ -44,6 +44,8 @@ from mavlink_tunel import (KIMLIK_YER, TASIYICI_TUNEL, TUNEL_YER_UC, TunelLink,
 from ika_receiver import IkaReceiver
 from hakem_kaydi import HakemKaydi, varsayilan_hakem_log_yolu
 from komut_tekrar import AckliTekrar, BOS, ONAYLANDI, VAZGECILDI
+from video_kaynagi import DEFAULT_CACHE as VIDEO_KAYNAGI_ONBELLEGI
+from video_kaynagi import kesfet as video_kesfet
 from yki_canli_isleme import YkiCanliIsleme
 from protocol import (ACK_SONUC_KABUL, encode, ack, command, heartbeat, iha_landed,
                       kritik_komut_ack_gecerli_mi, MESAJ_OPEN_ROUTE, MESAJ_NO_ROUTE,
@@ -567,7 +569,7 @@ def _dosya_sha256_oku(yol):
 def yki_oturum_kunyesi(*, fda_kipi, dinleme, iha_hedef=None,
                        ika_hedef=None, seri_port=None, baud=None,
                        kamera_url=None, algi_kaynagi=None, gorunum=None,
-                       baslatma_argumanlari=()):
+                       baslatma_argumanlari=(), fda_drone_test=False):
     """YKS başlangıcını uçuş sonrasında yeniden kurmaya yeterli künye üret."""
     profil, _defter = _kayit_profili()
     model_yolu = profil.get("path") if isinstance(profil, dict) else None
@@ -576,6 +578,7 @@ def yki_oturum_kunyesi(*, fda_kipi, dinleme, iha_hedef=None,
     return {
         "gorev_kipi": "fda" if fda_kipi else "yarisma",
         "fda_kipi": bool(fda_kipi),
+        "fda_drone_test": bool(fda_drone_test),
         "protokol_surum": PROTOCOL_VERSION,
         "dinleme": dinleme,
         "iha_hedef": list(iha_hedef) if iha_hedef is not None else None,
@@ -824,9 +827,11 @@ class YksArayuz:
             self, kok, link, otomatik_onay=False, demo=False, ika_peer=None,
             iha_peer=None, kamera_url=None, hakem_log_yolu=None,
             oturum_kunyesi=None, kamera_etiket="", tek_rota=False,
-            yerel_kamera_kaynagi=YKI_RTSP_VARSAYILAN_KAMERA, yerel_mpp=None):
+            yerel_kamera_kaynagi=YKI_RTSP_VARSAYILAN_KAMERA, yerel_mpp=None,
+            fda_drone_test=False):
         self.kok = kok
         self.tek_rota = bool(tek_rota)
+        self.fda_drone_test = bool(fda_drone_test)
         self.link = link
         self.reader = FrameReader()
         self.gelen = queue.Queue()
@@ -973,6 +978,8 @@ class YksArayuz:
         self._yki_isleme_gorunum_dugmeleri = {}
         self.yki_isleme_varsayilan_kaynak = str(yerel_kamera_kaynagi or "0")
         self.yki_isleme_varsayilan_mpp = yerel_mpp
+        self._yki_video_kesif_thread = None
+        self._yki_video_kesif_son = None
         # CONTRACTS §6.8 — döngüsel kanıt olaylarının KENAR durumu ve son
         # yazma damgası. Dördü de `_kanit_durumu_yaz` tarafından OKUNUR:
         # kenar tespiti için DURUM, tekrar sınırlaması için DAMGA gerekir.
@@ -1169,7 +1176,7 @@ class YksArayuz:
             "<Configure>", lambda _e: self._harita_ciz(self.mini_harita))
         self.lbl_kamera_img = tk.Label(
             kamera_govde, bg="#121920", fg=SOLUK,
-            text=("KAMERA URL YOK — --kamera-url http://<JETSON_IP>:8080"
+            text=("KAMERA URL YOK — KAYNAK BUL veya RTSP/UDP URL girin"
                   if not self.kamera_url else "RAW kamera bağlanıyor…"),
             font=self.f_orta, justify="center")
         self.lbl_kamera_img.pack(side="left", padx=10, pady=(4, 4), fill="both",
@@ -1188,7 +1195,7 @@ class YksArayuz:
         self.isleme_cerceve = tk.Frame(sol, bg=PANEL)
         tk.Label(
             self.isleme_cerceve,
-            text="YKİ CANLI GÖRÜNTÜ İŞLEME · JETSON YOK · İNTERNET GEREKMEZ",
+            text="YKİ CANLI GÖRÜNTÜ İŞLEME · PC/MK15 · İNTERNET GEREKMEZ",
             font=self.f_kucuk, fg=SARI, bg=PANEL, anchor="w",
         ).pack(fill="x", padx=10, pady=(4, 0))
         isleme_ayar = tk.Frame(self.isleme_cerceve, bg=PANEL)
@@ -1196,7 +1203,7 @@ class YksArayuz:
         tk.Label(isleme_ayar, text="Kamera kaynağı", font=self.f_kucuk,
                  fg=SOLUK, bg=PANEL).pack(side="left")
         self.yki_isleme_kaynak = tk.Entry(
-            isleme_ayar, width=10, font=self.f_kucuk,
+            isleme_ayar, width=30, font=self.f_kucuk,
             fg=METIN, bg="#121920", insertbackground=METIN,
             relief="flat")
         self.yki_isleme_kaynak.insert(0, self.yki_isleme_varsayilan_kaynak)
@@ -1218,6 +1225,10 @@ class YksArayuz:
                   fg=METIN, bg="#232e3a", activebackground=KIRMIZI,
                   relief="flat", padx=8, pady=3,
                   command=self._yki_isleme_durdur).pack(side="left")
+        tk.Button(isleme_ayar, text="KAYNAK BUL", font=self.f_kucuk,
+                  fg=METIN, bg="#232e3a", activebackground=MAVI,
+                  relief="flat", padx=8, pady=3,
+                  command=self._yki_video_kaynagini_bul).pack(side="left", padx=(6, 0))
         tk.Label(isleme_ayar, text="Gösterim", font=self.f_kucuk,
                  fg=SOLUK, bg=PANEL).pack(side="left", padx=(14, 4))
         for metin, kip in (("AI MASKE", "AI"), ("HAM KAMERA", "HAM")):
@@ -1424,6 +1435,8 @@ class YksArayuz:
         # satır 2 — uçuş/intikal
         self.btn_arm = gbuton(satir2, "ARM DURUMU BEKLENİYOR", self.arm_degistir,
                               aktif=False)
+        self.btn_force_arm = gbuton(
+            satir2, "FORCE ARM (2×)", self.force_arm, aktif=False)
         self.btn_firlat = gbuton(satir2, "FIRLATMA", self.firlatma, aktif=False)
         self.btn_iha_indi = gbuton(satir2, "İHA İNDİ", self.iha_indi, aktif=False)
         self.btn_parasut = gbuton(satir2, "PARAŞÜT (manuel −50)", self.parasut)
@@ -3379,6 +3392,8 @@ class YksArayuz:
             # CONTRACTS §6.8: "kamera yoktu" da KANITTIR — kayıtta boşluk
             # bırakmak, sonradan "kamera vardı ama yazılmadı" savunmasına
             # kapı açar. Kenar olayı: bir kez yazılır, sonra tekrar aralığında.
+            bilgi.config(text="--kamera-url http://<PC_IP>:<PORT> veya RTSP/UDP URL verin",
+                         fg=KIRMIZI)
             self._kamera_kanitini_yaz(
                 "YAPILANDIRILMADI", kare_yasi_s=None, kare_sira=None,
                 kaynak=None, hata="kamera URL verilmedi", calisiyor=False)
@@ -3462,20 +3477,81 @@ class YksArayuz:
             dugme.config(fg=BG if secili else METIN,
                          bg=YESIL if secili else "#232e3a")
 
+    def _yki_video_kaynagini_bul(self, otomatik_baslat=False):
+        """MK15/Air Unit kaynağını ağda doğrular; GUI döngüsünü bloklamaz."""
+        thread = getattr(self, "_yki_video_kesif_thread", None)
+        if thread is not None and thread.is_alive():
+            self._logla("YKİ video kaynak taraması zaten çalışıyor", "sari")
+            return
+        alan = getattr(self, "yki_isleme_kaynak", None)
+        girilen = alan.get().strip() if alan is not None else ""
+        elle = None if not girilen or girilen.lower().startswith("auto://") else girilen
+        if getattr(self, "lbl_yki_isleme_baglanti", None) is not None:
+            self.lbl_yki_isleme_baglanti.config(
+                text="● MK15/RTSP KAYNAK TARANIYOR · eski kare gösterilmiyor",
+                fg=SARI)
+
+        def tara():
+            try:
+                cache = _PROJE_KOKU / VIDEO_KAYNAGI_ONBELLEGI
+                secilen, sonuclar = video_kesfet(elle=elle, onbellek=cache)
+                self._yki_video_kesif_son = (secilen, sonuclar)
+                self.kok.after(0, lambda: tamamla(secilen, sonuclar))
+            except Exception as exc:
+                self.kok.after(0, lambda: hata(exc))
+
+        def hata(exc):
+            self._logla(f"YKİ video kaynak taraması başarısız: {exc}", "kirmizi")
+            if getattr(self, "lbl_yki_isleme_baglanti", None) is not None:
+                self.lbl_yki_isleme_baglanti.config(
+                    text="● MK15/RTSP KAYNAĞI BULUNAMADI · elle URL verin",
+                    fg=KIRMIZI)
+
+        def tamamla(secilen, sonuclar):
+            canlı = secilen.aday.url if secilen is not None else None
+            if canlı and alan is not None:
+                alan.delete(0, "end")
+                alan.insert(0, canlı)
+            durum = (f"CANLI kaynak bulundu: {canlı}"
+                     if canlı else "CANLI kaynak bulunamadı; eski kare kullanılmayacak")
+            self._logla(
+                f"YKİ video keşfi: {durum} · aday={len(sonuclar)} · "
+                f"log={getattr(self, 'yki_isleme', None) and self.yki_isleme.log_path or 'GUI'}",
+                "yesil" if canlı else "sari")
+            if getattr(self, "lbl_yki_isleme_baglanti", None) is not None:
+                self.lbl_yki_isleme_baglanti.config(
+                    text=(f"● MK15/RTSP KAYNAĞI HAZIR · {canlı}"
+                          if canlı else
+                          "● MK15/RTSP KOPUK · yeniden bağlanacak veya elle URL verin"),
+                    fg=YESIL if canlı else KIRMIZI)
+            if otomatik_baslat and canlı:
+                self._yki_isleme_baslat()
+
+        self._yki_video_kesif_thread = threading.Thread(
+            target=tara, name="yki-video-kesif", daemon=True)
+        self._yki_video_kesif_thread.start()
+
     def _yki_isleme_baslat(self):
         """Yerel kamerayı başlat; bu yol hiçbir telemetri komutu göndermez."""
         self._yki_isleme_durdur()
         kaynak_alan = getattr(self, "yki_isleme_kaynak", None)
         kaynak = kaynak_alan.get().strip() if kaynak_alan is not None else "0"
         kaynak = kaynak or "0"
+        if kaynak.lower().startswith("auto://"):
+            self._yki_video_kaynagini_bul(otomatik_baslat=True)
+            return
         self.yki_isleme = YkiCanliIsleme(
-            kaynak, mpp=self._yki_isleme_mpp_degeri())
+            kaynak, mpp=self._yki_isleme_mpp_degeri(),
+            telemetry_provider=lambda: dict(self.tel.get("iha") or {}),
+            yatay_fov_derece=120.0,
+            kirmizi_h_etkin=bool(getattr(self, "fda_drone_test", False)))
         self._yki_isleme_surum = -1
         self._yki_isleme_foto = None
         self.yki_isleme.start()
         self._logla(
             f"YKİ yerel canlı işleme başlatıldı: kaynak={kaynak} · "
-            "rota/ACK/komut üretmez", "mavi")
+            + ("kırmızı H + dinamik ölçek etkin" if self.fda_drone_test else
+             "rota/ACK/komut üretmez"), "mavi")
         self._logla(f"YKİ ayrıntılı ağ/işleme günlüğü: {self.yki_isleme.log_path}",
                     "mavi")
 
@@ -3488,6 +3564,23 @@ class YksArayuz:
                 self._logla(f"YKİ yerel kamera kapatma hatası: {exc}", "sari")
         self.yki_isleme = None
         self._yki_isleme_foto = None
+
+    def _yki_video_telemetri_eslestir(self, snap):
+        """Son video karesini en yakin Pixhawk heartbeat zamaniyla eslestir."""
+        kare_ts = snap.get("frame_ts_monotonic")
+        tel_ts = getattr(self, "son_hb", {}).get("iha")
+        if kare_ts is None or tel_ts is None:
+            return {"durum": "ESLESME_YOK", "fark_s": None, "tel_yasi_s": None}
+        try:
+            kare_ts = float(kare_ts)
+            tel_ts = float(tel_ts)
+        except (TypeError, ValueError):
+            return {"durum": "ESLESME_GECERSIZ", "fark_s": None, "tel_yasi_s": None}
+        tel_yasi = max(0.0, time.monotonic() - tel_ts)
+        fark = kare_ts - tel_ts
+        durum = ("ESLESTI" if abs(fark) <= 2.0 and tel_yasi <= 3.0
+                 else "TELEMETRI_BAYAT")
+        return {"durum": durum, "fark_s": fark, "tel_yasi_s": tel_yasi}
 
     def _yki_isleme_tazele(self):
         """Worker karesini Tk ana döngüsünde göster; kamera I/O'su yapma."""
@@ -3552,6 +3645,14 @@ class YksArayuz:
                    f"gösterim={('ham' if gorunum == 'HAM' else 'AI maske')}"]
         if frame is not None and snap.get("frame_age_s") is not None:
             ayrinti.append(f"kare yaşı {float(snap['frame_age_s']):.2f} s")
+        eslesme = self._yki_video_telemetri_eslestir(snap)
+        if eslesme["fark_s"] is None:
+            ayrinti.append(f"video/telemetri: {eslesme['durum']}")
+        else:
+            ayrinti.append(
+                f"video/telemetri: {eslesme['durum']} | "
+                f"dt={eslesme['fark_s']:+.2f}s | "
+                f"tel yasi={eslesme['tel_yasi_s']:.2f}s")
         if snap.get("error"):
             ayrinti.append(str(snap["error"]))
         if snap.get("route"):
@@ -3561,6 +3662,18 @@ class YksArayuz:
             )
         elif snap.get("route_reason"):
             ayrinti.append(str(snap["route_reason"]))
+        hedef = snap.get("target")
+        if isinstance(hedef, dict):
+            if hedef.get("lat") is not None and hedef.get("lon") is not None:
+                ayrinti.append(
+                    f"KIRMIZI H: {float(hedef['lat']):.7f}, {float(hedef['lon']):.7f}"
+                    f" · güven {float(hedef.get('confidence') or 0):.2f}")
+            else:
+                ayrinti.append("KIRMIZI H görüldü; GPS koordinatı bekleniyor")
+        elif getattr(self, "fda_drone_test", False):
+            ayrinti.append("KIRMIZI H bekleniyor (20 m test drone profili)")
+        if snap.get("mpp") is not None:
+            ayrinti.append(f"ölçek {float(snap['mpp']):.5f} m/px")
         ayrinti.append("Telsiz/hakem ACK'i ve uçuş komutu bu sekmeden gönderilmez.")
         if snap.get("log_path"):
             ayrinti.append(f"JSONL log: {snap['log_path']}")
@@ -4123,7 +4236,13 @@ class YksArayuz:
         cmd = komut_mesaji["cmd"]
         mesaj = encode(komut_mesaji)
         try:
-            if saha_tasiyicisi_mi(self.link):
+            if (cmd == "FDA_HAZIRLA"
+                    and getattr(type(self.link), "MISSION_PLANNER_FDA", False)):
+                self.link.send_fda_plan_direct(mesaj)
+            elif (cmd == "FORCE_ARM"
+                    and getattr(type(self.link), "MISSION_PLANNER_FORCE_ARM", False)):
+                self.link.send_mission_planner_force_arm(mesaj)
+            elif saha_tasiyicisi_mi(self.link):
                 self.link.send(mesaj)
             elif adr is not None and adr[1]:
                 self.link.send(mesaj, adr)
@@ -4222,6 +4341,7 @@ class YksArayuz:
     def _arm_ui_uygula(self):
         """ARM gerçeğini tek yerden çiz; bilinmeyen/bekleyen fail-closed."""
         btn = getattr(self, "btn_arm", None)
+        force_btn = getattr(self, "btn_force_arm", None)
         etiket = getattr(self, "lbl_arm", None)
         firlat = getattr(self, "btn_firlat", None)
         if btn is None or etiket is None or firlat is None:
@@ -4233,6 +4353,9 @@ class YksArayuz:
         if bekleyen:
             btn.config(state="disabled", bg=SARI,
                        text=f"{bekleyen} — ACK + ARAÇ DURUMU BEKLENİYOR")
+            if force_btn is not None:
+                force_btn.config(state="disabled", bg="#5b3030",
+                                 text="FORCE ARM BEKLENİYOR")
             etiket.config(
                 text=f"SİSTEM: {bekleyen} İSTEĞİ GÖNDERİLDİ — doğrulanmadı",
                 fg=SARI)
@@ -4241,27 +4364,38 @@ class YksArayuz:
         if not self._arm_durumu_taze_mi():
             btn.config(state="disabled", bg="#232e3a",
                        text="ARM DURUMU BEKLENİYOR")
+            if force_btn is not None:
+                force_btn.config(state="disabled", bg="#232e3a",
+                                 text="FORCE ARM (HEARTBEAT BEKLENİYOR)")
             etiket.config(text="SİSTEM: ARM DURUMU BİLİNMİYOR/BAYAT", fg=KIRMIZI)
             self._firlat_dugmesini_ciz(False)
             return
         if self.arm_acik:
             btn.config(state="normal", text="DISARM (A)", bg=KIRMIZI)
+            if force_btn is not None:
+                force_btn.config(state="disabled", bg="#232e3a",
+                                 text="FORCE ARM (ZATEN ARM)")
             etiket.config(text="SİSTEM: ARM ✓ — PIXHAWK HEARTBEAT", fg=SARI)
             self._firlat_dugmesini_ciz(True)
         else:
             btn.config(state="normal", text="ARM (A)", bg="#232e3a")
+            if force_btn is not None:
+                force_btn.config(state="normal", bg=KIRMIZI,
+                                 text="FORCE ARM (2×)")
             etiket.config(text="SİSTEM: DISARM ✓ — PIXHAWK HEARTBEAT", fg=SOLUK)
             self._firlat_dugmesini_ciz(False)
         komut = "DISARM" if self.arm_acik else "ARM"
         if self._kritik_teyit_bekliyor(komut):
             btn.config(text=f"{komut}? TEKRAR BAS", bg=SARI)
+        if force_btn is not None and self._kritik_teyit_bekliyor("FORCE_ARM"):
+            force_btn.config(text="FORCE ARM? TEKRAR BAS", bg=SARI)
 
     def _arm_bekleyeni_tamamla(self):
         """Güçlü ACK ve eşleşen taze araç durumu birlikteyse işlemi bitir."""
         komut = getattr(self, "arm_bekleyen_komut", None)
         if not komut or getattr(self, "arm_ack_zamani", None) is None:
             return False
-        beklenen = komut == "ARM"
+        beklenen = komut in ("ARM", "FORCE_ARM")
         if not self._arm_durumu_taze_mi() or self.arm_acik is not beklenen:
             return False
         deneme = getattr(getattr(self, "arm_tekrar", None), "deneme", 0)
@@ -4309,6 +4443,49 @@ class YksArayuz:
                     f"durum DEĞİŞMEDİ; ACK + HEARTBEAT bekleniyor · "
                     f"{ARM_TEKRAR_ARALIGI_S:.2f} s × ≤{ARM_TEKRAR_UST_SINIRI})",
                     "mavi")
+        self._arm_tik()
+
+    def force_arm(self):
+        """ArduPilot force-arm isteğini iki tıklamayla gönder.
+
+        Bu komut Pixhawk'ın ön-arm kontrollerini bilinçli olarak atlar; yalnız
+        taze disarm HEARTBEAT varken ve aynı düğmeye dört saniye içinde ikinci
+        kez basıldığında gönderilir. Normal ARM düğmesinden ayrı tutulur.
+        """
+        if getattr(self, "arm_bekleyen_komut", None):
+            self._logla("ARM/FORCE ARM isteği zaten bekliyor — ikinci komut gönderilmedi",
+                        "sari")
+            return
+        if not self._arm_durumu_taze_mi():
+            self._arm_ui_uygula()
+            self._logla(
+                f"FORCE ARM REDDEDİLDİ: Pixhawk `armed` telemetrisi yok veya "
+                f"{ARM_DURUM_TAZELIK_S:.1f} sn'den bayat", "kirmizi")
+            return
+        if self.arm_acik:
+            self._arm_ui_uygula()
+            self._logla("FORCE ARM REDDEDİLDİ: araç zaten ARM durumunda", "sari")
+            return
+        if not self._kritik_teyit_al(
+                "FORCE_ARM",
+                "⚠ FORCE ARM — Pixhawk ön-arm kontrolleri atlanır; pervaneler sökülü olmalı"):
+            self._arm_ui_uygula()
+            return
+        mesaj = self._komut_mesaji("FORCE_ARM", "iha")
+        if not self.arm_tekrar.baslat(mesaj):
+            self._arm_ui_uygula()
+            return
+        self.arm_bekleyen_komut = "FORCE_ARM"
+        self.arm_ack_zamani = None
+        self._arm_ui_uygula()
+        self._logla(
+            f"CMD → iha: FORCE_ARM (seq={mesaj['seq']}, ArduPilot param2=21196; "
+            "ACK + HEARTBEAT bekleniyor)", "kirmizi")
+        if getattr(type(self.link), "MISSION_PLANNER_FORCE_ARM", False):
+            self._logla(
+                "MISSION PLANNER EŞDEĞERİ: MAV_CMD_COMPONENT_ARM_DISARM "
+                "COMMAND_LONG doğrudan Pixhawk MAVLink hattına gönderiliyor",
+                "mavi")
         self._arm_tik()
 
     def _arm_tik(self):
@@ -5330,7 +5507,8 @@ class YksArayuz:
 # kanitini yayinlar. Sunucunun aktarimi ekranda gorup anlatmasina zaman birakir;
 # saha davranisini taklit eder (once aktarim, sonra inis — sartname §2.2.4).
 INIS_GECIKME_S = 6.0
-DEMO_IHA_KOMUTLARI = frozenset(("ARM", "DISARM", "PARACHUTE", "RTL", "LAND"))
+DEMO_IHA_KOMUTLARI = frozenset(
+    ("ARM", "FORCE_ARM", "DISARM", "PARACHUTE", "RTL", "LAND"))
 
 
 def demo_iha_komutunu_uygula(mesaj, armed, ucus_modu):
@@ -5345,7 +5523,7 @@ def demo_iha_komutunu_uygula(mesaj, armed, ucus_modu):
             or mesaj.get("cmd") not in DEMO_IHA_KOMUTLARI):
         return armed, ucus_modu, False
     komut = mesaj["cmd"]
-    if komut == "ARM":
+    if komut in ("ARM", "FORCE_ARM"):
         armed = True
     elif komut == "DISARM":
         armed = False
@@ -5521,7 +5699,7 @@ def main():
     ap.add_argument("--baud", type=int, default=57600)
     ap.add_argument(
         "--kamera-url", default=os.environ.get("NAVITAS_KAMERA_URL"),
-        help=("Jetson RAW kamera kökü (örn. http://192.168.4.2:8080). "
+        help=("PC/MK15 RAW kamera kökü (örn. http://192.168.4.2:8080). "
               "Yalnız ayrı Wi-Fi/LAN; SiK üzerinden video taşınmaz. "
               "Varsayılan: NAVITAS_KAMERA_URL, yoksa kamera kapalı"))
     # T226 (D-443): video kaynak etiketi — başlık + KAMERA_KANIT kaynak alanı.
@@ -5567,6 +5745,10 @@ def main():
               "kronometresi TÜM operasyon için 10 dk gösterir (kalkış + "
               "tespit + aktarım + iniş). Verilmezse §6.2 yarışma günü "
               "bütçesi (15 dk) kullanılır"))
+    ap.add_argument(
+        "--fda-test-drone", action="store_true",
+        help=("ayrı çoklu rotor test profili: 20 m yüksel, 30 m ileri, "
+              "hedefte 6 m kare; resmi §5.3.2 uçuşu için 30 m şartının yerine geçmez"))
     ap.add_argument("--tek-rota", action="store_true",
                     help="Şerit şeması yerine gelen waypoint geometrisi ve hareket planı; FDA'da otomatik açılır")
     ap.add_argument("--gorunum", choices=tuple(GORUNUM_SECENEKLERI),
@@ -5574,12 +5756,19 @@ def main():
     ap.add_argument(
         "--yerel-kamera", default=YKI_RTSP_VARSAYILAN_KAMERA,
         help=("YKİ canlı işleme sekmesinin kamera kaynağı: indeks (0, 1), "
-              "cihaz yolu veya RTSP URL. Varsayılan: R1M RTSP akışı"))
+              "cihaz yolu, RTSP veya UDP URL. Varsayılan: MK15/R1M RTSP akışı"))
+    ap.add_argument(
+        "--video-tara", action="store_true",
+        help=("YKS açılışında PC'nin bağlı olduğu ağlarda MK15/Air Unit video "
+              "kaynağını doğrula ve canlı kaynağı yerel işleme sekmesinde başlat"))
     ap.add_argument(
         "--yerel-mpp", type=float, default=None,
         help=("YKİ canlı işleme için isteğe bağlı metre/piksel ölçeği; "
               "verilmezse yerel rota yalnız görsel olarak gösterilir"))
     args = ap.parse_args()
+
+    if args.fda_test_drone and not args.fda:
+        ap.error("--fda-test-drone yalnız --fda ile birlikte kullanılabilir")
 
     try:
         args.kamera_etiket = kamera_etiketi_dogrula(args.kamera_etiket)
@@ -5657,6 +5846,7 @@ def main():
         algi_kaynagi=args.kaynak or YksArayuz.ALGI_VARSAYILAN_KAYNAK,
         gorunum=args.gorunum or ("rota" if args.tek_rota or args.fda else "saha"),
         baslatma_argumanlari=sys.argv[1:],
+        fda_drone_test=args.fda_test_drone,
     )
 
     hakem_log_yolu = (args.hakem_log if args.hakem_log is not None
@@ -5671,7 +5861,8 @@ def main():
             oturum_kunyesi=oturum_kunyesi,
             kamera_etiket=args.kamera_etiket, tek_rota=args.tek_rota or args.fda,
             yerel_kamera_kaynagi=args.yerel_kamera,
-            yerel_mpp=args.yerel_mpp)
+            yerel_mpp=args.yerel_mpp,
+            fda_drone_test=args.fda_test_drone)
     except Exception:
         link.close()
         kok.destroy()
@@ -5703,6 +5894,11 @@ def main():
         # T170 · §5.3.2: FDA test ucusunun butcesi TEK ve daha SIKIDIR (10 dk).
         # Ornek duzeyinde ezilir; sinif varsayilani (yarisma gunu) DEGISMEZ.
         app.fda_kipini_uygula()          # CONTRACTS §6.7 (bütçe + etiket + kilitler)
+        if args.fda_test_drone:
+            app._logla(
+                "AYRI TEST DRONE PROFİLİ: 20 m yükseklik / 30 m ileri / "
+                "6 m kare; başlangıç Pixhawk'tan, kırmızı H koordinatı canlı videodan.",
+                "sari")
         app._logla(
             "§5.3.2 FDA KİPİ: İHA bütçesi "
             f"{_ss(SARTNAME_FDA_OPERASYON_SURESI_S)} (kalkış+tespit+aktarım+"
@@ -5728,6 +5924,13 @@ def main():
     elif args.tek_rota or args.fda:
         app.gorunum("rota")
         app._logla("TEK ROTA GÖSTERİMİ: alınan waypoint geometrisi; şerit veya GPS konumu uydurulmaz", "mavi")
+
+    if args.video_tara:
+        app.gorunum("isleme")
+        app._yki_video_kaynagini_bul(otomatik_baslat=True)
+        app._logla(
+            "PC/MK15 video keşfi başlatıldı; canlı kare doğrulanmadan model açılmayacak",
+            "mavi")
 
     if args.senaryo:
         # Senaryolar YALNIZ demo kipinde etkindir (`senaryo()` kendi de

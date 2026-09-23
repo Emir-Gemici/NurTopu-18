@@ -104,6 +104,25 @@ class RadioTests(unittest.TestCase):
         with self.assertRaisesRegex(OSError, "bayat"):
             link.send(encode(command("ARM", "iha", oturum="b" * 16)))
 
+    def test_force_arm_sets_ardupilot_force_parameter(self):
+        peer = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        peer.bind(("127.0.0.1", 0))
+        peer.settimeout(1.0)
+        link = NativeRadioLink(("127.0.0.1", 0), "yer")
+        self.addCleanup(link.close)
+        self.addCleanup(peer.close)
+        enc = mav.MAVLink(None, srcSystem=1, srcComponent=1)
+        peer_address = peer.getsockname()
+        link._datagram_isle(hb().pack(enc), peer_address)
+        link._teslim.clear()
+        request = command("FORCE_ARM", "iha", oturum="f" * 16)
+        link.send(encode(request))
+        command_wire, _ = peer.recvfrom(4096)
+        command_message = mav.MAVLink(None).parse_buffer(command_wire)[0]
+        self.assertEqual(command_message.command, mav.MAV_CMD_COMPONENT_ARM_DISARM)
+        self.assertEqual(command_message.param1, 1.0)
+        self.assertEqual(command_message.param2, 21196.0)
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

@@ -45,6 +45,7 @@ def _arayuz(armed=False):
     g.ika_go_tekrar.ack_geldi.return_value = False
     g.rota = None
     g.btn_arm = _Widget(state="normal", text="ARM (A)", bg="#232e3a")
+    g.btn_force_arm = _Widget(state="disabled", text="FORCE ARM (2×)", bg="#232e3a")
     g.lbl_arm = _Widget(text="", fg=yks_gui.SOLUK)
     g.btn_firlat = _Widget(state="disabled", bg="#232e3a")
     g.son_hb = {}
@@ -75,6 +76,20 @@ class ArmGercegiTests(unittest.TestCase):
         self.assertFalse(g.arm_acik)
         self.assertEqual("ARM", g.arm_bekleyen_komut)
         self.assertEqual("disabled", g.btn_firlat.cget("state"))
+
+    def test_force_arm_iki_tikla_ve_ayri_komut_olarak_gonderilir(self):
+        g = _arayuz(False)
+        g._arm_ui_uygula()
+        g.force_arm()
+        g.link.send.assert_not_called()
+        self.assertIn("TEKRAR BAS", g.btn_force_arm.cget("text"))
+        g.force_arm()
+        veri, hedef = g.link.send.call_args.args
+        self.assertEqual(("127.0.0.1", 5007), hedef)
+        mesaj = decode(veri)
+        self.assertEqual("FORCE_ARM", mesaj["cmd"])
+        self.assertEqual("FORCE_ARM", g.arm_bekleyen_komut)
+        self.assertEqual("disabled", g.btn_force_arm.cget("state"))
 
     def test_zayif_ve_yanlis_ack_dusurulur(self):
         for degisen in ("ref_cmd", "sonuc", "ref_tip", "node"):
